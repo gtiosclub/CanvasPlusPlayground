@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct CanvasPlusPlaygroundApp: App {
+    @State private var courseManager = CourseManager()
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            CourseListView()
+                .environment(CourseManager())
         }
     }
 }
