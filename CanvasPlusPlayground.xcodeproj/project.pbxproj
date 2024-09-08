@@ -6,17 +6,38 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		B76454FE2C8DF61B002DF00E /* Course.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454ED2C8DF61B002DF00E /* Course.swift */; };
+		B76454FF2C8DF61B002DF00E /* Enrollment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454EE2C8DF61B002DF00E /* Enrollment.swift */; };
+		B76455002C8DF61B002DF00E /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454EF2C8DF61B002DF00E /* File.swift */; };
+		B76455012C8DF61B002DF00E /* StorageKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454F02C8DF61B002DF00E /* StorageKeys.swift */; };
+		B76455022C8DF61B002DF00E /* CourseFilesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454F42C8DF61B002DF00E /* CourseFilesView.swift */; };
+		B76455032C8DF61B002DF00E /* CourseListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454F52C8DF61B002DF00E /* CourseListView.swift */; };
+		B76455042C8DF61B002DF00E /* CourseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454F62C8DF61B002DF00E /* CourseView.swift */; };
+		B76455052C8DF61B002DF00E /* SetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454F72C8DF61B002DF00E /* SetupView.swift */; };
+		B76455062C8DF61B002DF00E /* CanvasPlusPlaygroundApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454FA2C8DF61B002DF00E /* CanvasPlusPlaygroundApp.swift */; };
+		B76455072C8DF61B002DF00E /* CourseFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454FB2C8DF61B002DF00E /* CourseFileManager.swift */; };
+		B76455082C8DF61B002DF00E /* CourseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454FC2C8DF61B002DF00E /* CourseManager.swift */; };
+		B76455092C8DF61B002DF00E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B76454F22C8DF61B002DF00E /* Preview Assets.xcassets */; };
+		B764550A2C8DF61B002DF00E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B76454F92C8DF61B002DF00E /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		B76454642C8BBC7F002DF00E /* CanvasPlusPlayground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CanvasPlusPlayground.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B76454ED2C8DF61B002DF00E /* Course.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Course.swift; sourceTree = "<group>"; };
+		B76454EE2C8DF61B002DF00E /* Enrollment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enrollment.swift; sourceTree = "<group>"; };
+		B76454EF2C8DF61B002DF00E /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		B76454F02C8DF61B002DF00E /* StorageKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageKeys.swift; sourceTree = "<group>"; };
+		B76454F22C8DF61B002DF00E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		B76454F42C8DF61B002DF00E /* CourseFilesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseFilesView.swift; sourceTree = "<group>"; };
+		B76454F52C8DF61B002DF00E /* CourseListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseListView.swift; sourceTree = "<group>"; };
+		B76454F62C8DF61B002DF00E /* CourseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseView.swift; sourceTree = "<group>"; };
+		B76454F72C8DF61B002DF00E /* SetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupView.swift; sourceTree = "<group>"; };
+		B76454F92C8DF61B002DF00E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B76454FA2C8DF61B002DF00E /* CanvasPlusPlaygroundApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasPlusPlaygroundApp.swift; sourceTree = "<group>"; };
+		B76454FB2C8DF61B002DF00E /* CourseFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseFileManager.swift; sourceTree = "<group>"; };
+		B76454FC2C8DF61B002DF00E /* CourseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		B76454662C8BBC7F002DF00E /* CanvasPlusPlayground */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = CanvasPlusPlayground;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		B76454612C8BBC7F002DF00E /* Frameworks */ = {
@@ -32,7 +53,7 @@
 		B764545B2C8BBC7F002DF00E = {
 			isa = PBXGroup;
 			children = (
-				B76454662C8BBC7F002DF00E /* CanvasPlusPlayground */,
+				B76454FD2C8DF61B002DF00E /* CanvasPlusPlayground */,
 				B76454652C8BBC7F002DF00E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -43,6 +64,50 @@
 				B76454642C8BBC7F002DF00E /* CanvasPlusPlayground.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		B76454F12C8DF61B002DF00E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B76454ED2C8DF61B002DF00E /* Course.swift */,
+				B76454EE2C8DF61B002DF00E /* Enrollment.swift */,
+				B76454EF2C8DF61B002DF00E /* File.swift */,
+				B76454F02C8DF61B002DF00E /* StorageKeys.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		B76454F32C8DF61B002DF00E /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				B76454F22C8DF61B002DF00E /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		B76454F82C8DF61B002DF00E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B76454F42C8DF61B002DF00E /* CourseFilesView.swift */,
+				B76454F52C8DF61B002DF00E /* CourseListView.swift */,
+				B76454F62C8DF61B002DF00E /* CourseView.swift */,
+				B76454F72C8DF61B002DF00E /* SetupView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		B76454FD2C8DF61B002DF00E /* CanvasPlusPlayground */ = {
+			isa = PBXGroup;
+			children = (
+				B76454F12C8DF61B002DF00E /* Model */,
+				B76454F32C8DF61B002DF00E /* Preview Content */,
+				B76454F82C8DF61B002DF00E /* Views */,
+				B76454F92C8DF61B002DF00E /* Assets.xcassets */,
+				B76454FA2C8DF61B002DF00E /* CanvasPlusPlaygroundApp.swift */,
+				B76454FB2C8DF61B002DF00E /* CourseFileManager.swift */,
+				B76454FC2C8DF61B002DF00E /* CourseManager.swift */,
+			);
+			path = CanvasPlusPlayground;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -59,9 +124,6 @@
 			buildRules = (
 			);
 			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				B76454662C8BBC7F002DF00E /* CanvasPlusPlayground */,
 			);
 			name = CanvasPlusPlayground;
 			packageProductDependencies = (
@@ -111,6 +173,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B76455092C8DF61B002DF00E /* Preview Assets.xcassets in Resources */,
+				B764550A2C8DF61B002DF00E /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -121,6 +185,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B76454FE2C8DF61B002DF00E /* Course.swift in Sources */,
+				B76454FF2C8DF61B002DF00E /* Enrollment.swift in Sources */,
+				B76455002C8DF61B002DF00E /* File.swift in Sources */,
+				B76455012C8DF61B002DF00E /* StorageKeys.swift in Sources */,
+				B76455022C8DF61B002DF00E /* CourseFilesView.swift in Sources */,
+				B76455032C8DF61B002DF00E /* CourseListView.swift in Sources */,
+				B76455042C8DF61B002DF00E /* CourseView.swift in Sources */,
+				B76455052C8DF61B002DF00E /* SetupView.swift in Sources */,
+				B76455062C8DF61B002DF00E /* CanvasPlusPlaygroundApp.swift in Sources */,
+				B76455072C8DF61B002DF00E /* CourseFileManager.swift in Sources */,
+				B76455082C8DF61B002DF00E /* CourseManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
