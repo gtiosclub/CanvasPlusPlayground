@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B5B40E762C94EFA000BD9131 /* Endpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B40E752C94EFA000BD9131 /* Endpoints.swift */; };
 		B76454FE2C8DF61B002DF00E /* Course.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454ED2C8DF61B002DF00E /* Course.swift */; };
 		B76454FF2C8DF61B002DF00E /* Enrollment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454EE2C8DF61B002DF00E /* Enrollment.swift */; };
 		B76455002C8DF61B002DF00E /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454EF2C8DF61B002DF00E /* File.swift */; };
@@ -23,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B5B40E752C94EFA000BD9131 /* Endpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoints.swift; sourceTree = "<group>"; };
 		B76454642C8BBC7F002DF00E /* CanvasPlusPlayground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CanvasPlusPlayground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B76454ED2C8DF61B002DF00E /* Course.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Course.swift; sourceTree = "<group>"; };
 		B76454EE2C8DF61B002DF00E /* Enrollment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enrollment.swift; sourceTree = "<group>"; };
@@ -73,6 +75,7 @@
 				B76454EE2C8DF61B002DF00E /* Enrollment.swift */,
 				B76454EF2C8DF61B002DF00E /* File.swift */,
 				B76454F02C8DF61B002DF00E /* StorageKeys.swift */,
+				B5B40E752C94EFA000BD9131 /* Endpoints.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -195,6 +198,7 @@
 				B76455052C8DF61B002DF00E /* SetupView.swift in Sources */,
 				B76455062C8DF61B002DF00E /* CanvasPlusPlaygroundApp.swift in Sources */,
 				B76455072C8DF61B002DF00E /* CourseFileManager.swift in Sources */,
+				B5B40E762C94EFA000BD9131 /* Endpoints.swift in Sources */,
 				B76455082C8DF61B002DF00E /* CourseManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
