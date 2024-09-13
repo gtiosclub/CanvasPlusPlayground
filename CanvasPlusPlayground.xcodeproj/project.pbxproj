@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 63;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -148,6 +148,7 @@
 				};
 			};
 			buildConfigurationList = B764545F2C8BBC7F002DF00E /* Build configuration list for PBXProject "CanvasPlusPlayground" */;
+			compatibilityVersion = "Xcode 15.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -158,7 +159,6 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 			);
-			preferredProjectObjectVersion = 77;
 			productRefGroup = B76454652C8BBC7F002DF00E /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
