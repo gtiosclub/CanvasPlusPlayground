@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7FE831722C95321D0047AC25 /* CourseGradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FE831712C95321D0047AC25 /* CourseGradeView.swift */; };
+		7FE831742C9540220047AC25 /* CourseGradeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FE831732C9540220047AC25 /* CourseGradeManager.swift */; };
 		B76454FE2C8DF61B002DF00E /* Course.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454ED2C8DF61B002DF00E /* Course.swift */; };
 		B76454FF2C8DF61B002DF00E /* Enrollment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454EE2C8DF61B002DF00E /* Enrollment.swift */; };
 		B76455002C8DF61B002DF00E /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454EF2C8DF61B002DF00E /* File.swift */; };
@@ -23,6 +25,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7FE831712C95321D0047AC25 /* CourseGradeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseGradeView.swift; sourceTree = "<group>"; };
+		7FE831732C9540220047AC25 /* CourseGradeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseGradeManager.swift; sourceTree = "<group>"; };
 		B76454642C8BBC7F002DF00E /* CanvasPlusPlayground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CanvasPlusPlayground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B76454ED2C8DF61B002DF00E /* Course.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Course.swift; sourceTree = "<group>"; };
 		B76454EE2C8DF61B002DF00E /* Enrollment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enrollment.swift; sourceTree = "<group>"; };
@@ -92,6 +96,7 @@
 				B76454F52C8DF61B002DF00E /* CourseListView.swift */,
 				B76454F62C8DF61B002DF00E /* CourseView.swift */,
 				B76454F72C8DF61B002DF00E /* SetupView.swift */,
+				7FE831712C95321D0047AC25 /* CourseGradeView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -105,6 +110,7 @@
 				B76454F92C8DF61B002DF00E /* Assets.xcassets */,
 				B76454FA2C8DF61B002DF00E /* CanvasPlusPlaygroundApp.swift */,
 				B76454FB2C8DF61B002DF00E /* CourseFileManager.swift */,
+				7FE831732C9540220047AC25 /* CourseGradeManager.swift */,
 				B76454FC2C8DF61B002DF00E /* CourseManager.swift */,
 			);
 			path = CanvasPlusPlayground;
@@ -188,6 +194,7 @@
 				B76454FE2C8DF61B002DF00E /* Course.swift in Sources */,
 				B76454FF2C8DF61B002DF00E /* Enrollment.swift in Sources */,
 				B76455002C8DF61B002DF00E /* File.swift in Sources */,
+				7FE831742C9540220047AC25 /* CourseGradeManager.swift in Sources */,
 				B76455012C8DF61B002DF00E /* StorageKeys.swift in Sources */,
 				B76455022C8DF61B002DF00E /* CourseFilesView.swift in Sources */,
 				B76455032C8DF61B002DF00E /* CourseListView.swift in Sources */,
@@ -196,6 +203,7 @@
 				B76455062C8DF61B002DF00E /* CanvasPlusPlaygroundApp.swift in Sources */,
 				B76455072C8DF61B002DF00E /* CourseFileManager.swift in Sources */,
 				B76455082C8DF61B002DF00E /* CourseManager.swift in Sources */,
+				7FE831722C95321D0047AC25 /* CourseGradeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
