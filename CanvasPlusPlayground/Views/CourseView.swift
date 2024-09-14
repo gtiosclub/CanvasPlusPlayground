@@ -17,6 +17,12 @@ struct CourseView: View {
             } label: {
                 Label("Files", systemImage: "folder")
             }
+            
+            NavigationLink {
+                EmptyView()
+            } label: {
+                Label("Tabs", systemImage: "tray.2")
+            }
         }
         .navigationTitle(course.name ?? "Unknown Course")
     }

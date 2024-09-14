@@ -7,9 +7,10 @@
 
 import Foundation
 
-class CanvasService {
+struct CanvasService {
+    static let shared = CanvasService()
     
-    static func fetch(_ request: CanvasRequest) async -> (data: Data, response: URLResponse)? {
+    func fetch(_ request: CanvasRequest) async -> (data: Data, response: URLResponse)? {
         guard let url = request.url else { return nil }
 
         var request = URLRequest(url: url)

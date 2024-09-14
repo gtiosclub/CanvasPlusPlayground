@@ -12,7 +12,7 @@ class CourseManager {
     var courses = [Course]()
 
     func getCourses() async {
-        guard let (data, response) = await CanvasService.fetch(.getCourses(enrollmentState: "active")) else {
+        guard let (data, _) = await CanvasService.shared.fetch(.getCourses(enrollmentState: "active")) else {
             print("Failed to fetch files.")
             return
         }
