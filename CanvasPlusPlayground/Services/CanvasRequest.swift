@@ -14,7 +14,7 @@ enum CanvasRequest {
     case getCourse(id: Int)
     case getCourseFiles(courseId: Int)
     case getTabs(courseId: Int)
-    
+    case getAnnouncements(courseId: Int)
     var path: String {
         switch self {
         case .getCourses:
@@ -25,7 +25,11 @@ enum CanvasRequest {
             "courses/\(courseId)/files"
         case let .getTabs(courseId):
             "courses/\(courseId)/tabs"
+        case let .getAnnouncements:
+            "announcements"
         }
+    
+        
     }
     
     var queryParameters: [(name: String, value: String)] {
@@ -36,6 +40,10 @@ enum CanvasRequest {
             [
                 ("enrollment_state", enrollment_state),
                 ("per_page", perPage)
+            ]
+        case let .getAnnouncements(courseId):
+            [
+                ("context_codes[]", "course_\(courseId)")
             ]
         default:
             []

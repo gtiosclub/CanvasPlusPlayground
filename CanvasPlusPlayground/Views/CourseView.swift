@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CourseView: View {
     let course: Course
-
+    
     var body: some View {
         List {
             NavigationLink {
@@ -22,6 +22,11 @@ struct CourseView: View {
                 EmptyView()
             } label: {
                 Label("Tabs", systemImage: "tray.2")
+            }
+            NavigationLink {
+                CourseAnnouncementsView(course:course)
+            } label: {
+                Label("Announcements", systemImage: "bubble")
             }
         }
         .navigationTitle(course.name ?? "Unknown Course")

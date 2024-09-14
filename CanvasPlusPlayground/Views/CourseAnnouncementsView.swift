@@ -18,7 +18,6 @@ struct CourseAnnouncementsView: View {
     
     
     var body: some View {
-        ZStack {
             List(announcementManager.announcements, id:\.id) { announcment in
                 NavigationLink {
                     CourseAnnouncementDetailView(announcement: announcment)
@@ -26,11 +25,15 @@ struct CourseAnnouncementsView: View {
                     Text(announcment.title ?? "")
                 }
             }
-            if (announcementManager.announcements.count == 0) {
-                Text("No announcements available within last 14 days")
-                    .font(.subheadline)
+            .overlay {
+                if (announcementManager.announcements.count == 0) {
+                    ContentUnavailableView("No announcements available within last 14 days", systemImage: "exclamationmark.bubble.fill")
+                } else {
+                    EmptyView()
+                }
+                
             }
-        }
+        
         
         .task {
             await announcementManager.fetchAnnouncements()

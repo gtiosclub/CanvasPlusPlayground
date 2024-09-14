@@ -17,28 +17,19 @@ import Foundation
     }
     
     func fetchAnnouncements() async {
-        guard let url = URL(string: "https://gatech.instructure.com/api/v1/announcements?access_token=\(StorageKeys.accessTokenValue)&context_codes[]=course_\(courseId ?? 0)") else {
+        guard let courseId, let (data, _) = await CanvasService.shared.fetch(.getAnnouncements(courseId: courseId)) else {
+            print("Failed to fetch announcements.")
             return
         }
         
-        let request = URLRequest(url: url)
-        do {
-            let (data, response) = try await URLSession.shared.data(for: request)
-            guard (response as? HTTPURLResponse)?.statusCode == 200 else { fatalError("Error while fetching data") }
-            
-            let decoder = JSONDecoder()
-            decoder.dateDecodingStrategy = .iso8601
-            
-            var announcements = try decoder.decode(([Announcement]).self, from: data)
-            
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        
+        
+        if let announcements = try? decoder.decode([Announcement].self, from: data) {
             self.announcements = announcements
-            announcements.sort { first, second in
-                first.createdAt ?? Date() < second.createdAt ?? Date()
-            }
-            print("found \(announcements.count) announcements")
-            
-        } catch {
-            print("Error requesting announcements: \(error)")
+        } else {
+            print("Failed to decode file data.")
         }
     }
 }
