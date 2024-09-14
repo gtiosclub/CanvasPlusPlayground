@@ -17,10 +17,11 @@ struct CourseView: View {
             } label: {
                 Label("Files", systemImage: "folder")
             }
+            
             NavigationLink {
-                CourseAnnouncementsView(course:course)
+                EmptyView()
             } label: {
-                Label("Announcements", systemImage: "rectangle.3.group.bubble")
+                Label("Tabs", systemImage: "tray.2")
             }
         }
         .navigationTitle(course.name ?? "Unknown Course")
