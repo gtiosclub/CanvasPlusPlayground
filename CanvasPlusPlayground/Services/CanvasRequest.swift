@@ -16,6 +16,7 @@ enum CanvasRequest {
     case getTabs(courseId: Int)
     case getAnnouncements(courseId: Int)
     case getAssignments(courseId: Int)
+
     var path: String {
         switch self {
         case .getCourses:
