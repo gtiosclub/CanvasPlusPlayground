@@ -15,6 +15,7 @@ enum CanvasRequest {
     case getCourseFiles(courseId: Int)
     case getTabs(courseId: Int)
     case getAssignments(courseId: Int)
+    case getCalendar
     
     var path: String {
         switch self {
@@ -28,6 +29,8 @@ enum CanvasRequest {
             "courses/\(courseId)/tabs"
         case let .getAssignments(courseId):
             "courses/\(courseId)/assignments"
+        case .getCalendar:
+            "calendar_events"
         }
     }
     
