@@ -32,6 +32,9 @@
 		B76455082C8DF61B002DF00E /* CourseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454FC2C8DF61B002DF00E /* CourseManager.swift */; };
 		B76455092C8DF61B002DF00E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B76454F22C8DF61B002DF00E /* Preview Assets.xcassets */; };
 		B764550A2C8DF61B002DF00E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B76454F92C8DF61B002DF00E /* Assets.xcassets */; };
+		B76E292C2C9730AD003DCDE1 /* CalendarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76E292B2C9730AD003DCDE1 /* CalendarManager.swift */; };
+		B76E292E2C9730C1003DCDE1 /* Calendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76E292D2C9730C1003DCDE1 /* Calendar.swift */; };
+		B76E29302C9730D6003DCDE1 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76E292F2C9730D6003DCDE1 /* CalendarView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +63,9 @@
 		B76454FA2C8DF61B002DF00E /* CanvasPlusPlaygroundApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasPlusPlaygroundApp.swift; sourceTree = "<group>"; };
 		B76454FB2C8DF61B002DF00E /* CourseFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseFileManager.swift; sourceTree = "<group>"; };
 		B76454FC2C8DF61B002DF00E /* CourseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseManager.swift; sourceTree = "<group>"; };
+		B76E292B2C9730AD003DCDE1 /* CalendarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarManager.swift; sourceTree = "<group>"; };
+		B76E292D2C9730C1003DCDE1 /* Calendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calendar.swift; sourceTree = "<group>"; };
+		B76E292F2C9730D6003DCDE1 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +115,7 @@
 		B76454F12C8DF61B002DF00E /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				B76E292D2C9730C1003DCDE1 /* Calendar.swift */,
 				B76454ED2C8DF61B002DF00E /* Course.swift */,
 				B76454EE2C8DF61B002DF00E /* Enrollment.swift */,
 				B76454EF2C8DF61B002DF00E /* File.swift */,
@@ -130,6 +137,7 @@
 		B76454F82C8DF61B002DF00E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B76E292F2C9730D6003DCDE1 /* CalendarView.swift */,
 				B76454F42C8DF61B002DF00E /* CourseFilesView.swift */,
 				9B6663E22C9853BC0060990E /* AsyncAttributedText.swift */,
 				192EC04B2C963EE600AF8528 /* CourseAssignmentView.swift */,
@@ -153,6 +161,7 @@
 				B76454F92C8DF61B002DF00E /* Assets.xcassets */,
 				B76454FA2C8DF61B002DF00E /* CanvasPlusPlaygroundApp.swift */,
 				9B92A4242C93856100C21CFC /* CourseAnnouncementManager.swift */,
+				B76E292B2C9730AD003DCDE1 /* CalendarManager.swift */,
 				B76454FB2C8DF61B002DF00E /* CourseFileManager.swift */,
 				192EC0472C963ACB00AF8528 /* CourseAssignmentManager.swift */,
 				B76454FC2C8DF61B002DF00E /* CourseManager.swift */,
@@ -237,6 +246,7 @@
 			files = (
 				9B92A4232C93853C00C21CFC /* Announcement.swift in Sources */,
 				B76454FE2C8DF61B002DF00E /* Course.swift in Sources */,
+				B76E292E2C9730C1003DCDE1 /* Calendar.swift in Sources */,
 				B76454FF2C8DF61B002DF00E /* Enrollment.swift in Sources */,
 				B76455002C8DF61B002DF00E /* File.swift in Sources */,
 				192EC04A2C963B9000AF8528 /* Assignment.swift in Sources */,
@@ -250,6 +260,7 @@
 				9B350F082C9652C6003FC60D /* AttributedText.swift in Sources */,
 				9B9C2E042C93F6CD00E4B16B /* CourseAnnouncementsView.swift in Sources */,
 				192EC04C2C963EE600AF8528 /* CourseAssignmentView.swift in Sources */,
+				B76E29302C9730D6003DCDE1 /* CalendarView.swift in Sources */,
 				A3E7F3892C954E0500DC4300 /* CanvasRequest.swift in Sources */,
 				B76455062C8DF61B002DF00E /* CanvasPlusPlaygroundApp.swift in Sources */,
 				B76455072C8DF61B002DF00E /* CourseFileManager.swift in Sources */,
@@ -257,6 +268,7 @@
 				B76455082C8DF61B002DF00E /* CourseManager.swift in Sources */,
 				9B9C2E062C93F94C00E4B16B /* CourseAnnouncementDetailView.swift in Sources */,
 				9B6663E32C9853BC0060990E /* AsyncAttributedText.swift in Sources */,
+				B76E292C2C9730AD003DCDE1 /* CalendarManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
