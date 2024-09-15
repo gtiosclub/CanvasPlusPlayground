@@ -19,6 +19,12 @@ struct CourseView: View {
             }
             
             NavigationLink {
+                CourseAssignmentsView(course: course)
+            } label: {
+                Label("Assignments", systemImage: "circle.inset.filled")
+            }
+            
+            NavigationLink {
                 EmptyView()
             } label: {
                 Label("Tabs", systemImage: "tray.2")
