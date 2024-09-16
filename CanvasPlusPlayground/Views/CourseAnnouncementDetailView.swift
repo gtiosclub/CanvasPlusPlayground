@@ -17,7 +17,7 @@ struct CourseAnnouncementDetailView: View {
                     .font(.title)
                 Text(announcement.createdAt?.formatted() ?? "NULL_DATE")
                     .font(.subheadline)
-                AttributedText(.html(withBody: announcement.message ?? "NULL_MESSAGE"))
+                AsyncAttributedText(htmlText: announcement.message ?? "NULL_MESSAGE")
                 
             }
         }
