@@ -10,6 +10,8 @@
 		192EC0482C963ACB00AF8528 /* CourseAssignmentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192EC0472C963ACB00AF8528 /* CourseAssignmentManager.swift */; };
 		192EC04A2C963B9000AF8528 /* Assignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192EC0492C963B9000AF8528 /* Assignment.swift */; };
 		192EC04C2C963EE600AF8528 /* CourseAssignmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192EC04B2C963EE600AF8528 /* CourseAssignmentView.swift */; };
+		7F8535722C98DE230023E384 /* CourseGradeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8535712C98DE230023E384 /* CourseGradeManager.swift */; };
+		7F8535742C98DE3C0023E384 /* CourseGradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8535732C98DE3C0023E384 /* CourseGradeView.swift */; };
 		9B350F082C9652C6003FC60D /* AttributedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B350F072C9652C6003FC60D /* AttributedText.swift */; };
 		9B6663E32C9853BC0060990E /* AsyncAttributedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6663E22C9853BC0060990E /* AsyncAttributedText.swift */; };
 		9B92A4232C93853C00C21CFC /* Announcement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B92A4222C93853C00C21CFC /* Announcement.swift */; };
@@ -40,6 +42,8 @@
 		192EC0472C963ACB00AF8528 /* CourseAssignmentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAssignmentManager.swift; sourceTree = "<group>"; };
 		192EC0492C963B9000AF8528 /* Assignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assignment.swift; sourceTree = "<group>"; };
 		192EC04B2C963EE600AF8528 /* CourseAssignmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAssignmentView.swift; sourceTree = "<group>"; };
+		7F8535712C98DE230023E384 /* CourseGradeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseGradeManager.swift; sourceTree = "<group>"; };
+		7F8535732C98DE3C0023E384 /* CourseGradeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseGradeView.swift; sourceTree = "<group>"; };
 		9B350F072C9652C6003FC60D /* AttributedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedText.swift; sourceTree = "<group>"; };
 		9B6663E22C9853BC0060990E /* AsyncAttributedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncAttributedText.swift; sourceTree = "<group>"; };
 		9B92A4222C93853C00C21CFC /* Announcement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Announcement.swift; sourceTree = "<group>"; };
@@ -145,6 +149,7 @@
 				9B9C2E032C93F6CD00E4B16B /* CourseAnnouncementsView.swift */,
 				9B9C2E052C93F94C00E4B16B /* CourseAnnouncementDetailView.swift */,
 				B76454F72C8DF61B002DF00E /* SetupView.swift */,
+				7F8535732C98DE3C0023E384 /* CourseGradeView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -164,6 +169,7 @@
 				192EC0472C963ACB00AF8528 /* CourseAssignmentManager.swift */,
 				A3E7F3902C99317100DC4300 /* CourseTabsManager.swift */,
 				B76454FC2C8DF61B002DF00E /* CourseManager.swift */,
+				7F8535712C98DE230023E384 /* CourseGradeManager.swift */,
 			);
 			path = CanvasPlusPlayground;
 			sourceTree = "<group>";
@@ -249,6 +255,7 @@
 				B76455002C8DF61B002DF00E /* File.swift in Sources */,
 				192EC04A2C963B9000AF8528 /* Assignment.swift in Sources */,
 				192EC0482C963ACB00AF8528 /* CourseAssignmentManager.swift in Sources */,
+				7F8535722C98DE230023E384 /* CourseGradeManager.swift in Sources */,
 				B76455012C8DF61B002DF00E /* StorageKeys.swift in Sources */,
 				A3E7F3932C99338B00DC4300 /* Tab.swift in Sources */,
 				B76455022C8DF61B002DF00E /* CourseFilesView.swift in Sources */,
@@ -268,6 +275,7 @@
 				B76455082C8DF61B002DF00E /* CourseManager.swift in Sources */,
 				9B9C2E062C93F94C00E4B16B /* CourseAnnouncementDetailView.swift in Sources */,
 				9B6663E32C9853BC0060990E /* AsyncAttributedText.swift in Sources */,
+				7F8535742C98DE3C0023E384 /* CourseGradeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

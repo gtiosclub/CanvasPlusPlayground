@@ -34,6 +34,11 @@ struct CourseView: View {
             } label: {
                 Label("Announcements", systemImage: "bubble")
             }
+            NavigationLink {
+                CourseGradeView(course: course)
+            } label: {
+                Label("Grades", systemImage: "graduationcap.fill")
+            }
         }
         .navigationTitle(course.name ?? "Unknown Course")
     }
