@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+
 		9B350F082C9652C6003FC60D /* AttributedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B350F072C9652C6003FC60D /* AttributedText.swift */; };
 		9B6663E32C9853BC0060990E /* AsyncAttributedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6663E22C9853BC0060990E /* AsyncAttributedText.swift */; };
 		9B92A4232C93853C00C21CFC /* Announcement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B92A4222C93853C00C21CFC /* Announcement.swift */; };
