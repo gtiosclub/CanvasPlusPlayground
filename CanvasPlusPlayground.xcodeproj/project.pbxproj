@@ -12,6 +12,7 @@
 		192EC04C2C963EE600AF8528 /* CourseAssignmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192EC04B2C963EE600AF8528 /* CourseAssignmentView.swift */; };
 		A3E7F3892C954E0500DC4300 /* CanvasRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E7F3882C954E0500DC4300 /* CanvasRequest.swift */; };
 		A3E7F38B2C9555B200DC4300 /* CanvasService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E7F38A2C9555B200DC4300 /* CanvasService.swift */; };
+		A3E7F38F2C96C1CE00DC4300 /* CourseTabsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E7F38E2C96C1CE00DC4300 /* CourseTabsView.swift */; };
 		B76454FE2C8DF61B002DF00E /* Course.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454ED2C8DF61B002DF00E /* Course.swift */; };
 		B76454FF2C8DF61B002DF00E /* Enrollment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454EE2C8DF61B002DF00E /* Enrollment.swift */; };
 		B76455002C8DF61B002DF00E /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454EF2C8DF61B002DF00E /* File.swift */; };
@@ -33,6 +34,7 @@
 		192EC04B2C963EE600AF8528 /* CourseAssignmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAssignmentView.swift; sourceTree = "<group>"; };
 		A3E7F3882C954E0500DC4300 /* CanvasRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasRequest.swift; sourceTree = "<group>"; };
 		A3E7F38A2C9555B200DC4300 /* CanvasService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasService.swift; sourceTree = "<group>"; };
+		A3E7F38E2C96C1CE00DC4300 /* CourseTabsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseTabsView.swift; sourceTree = "<group>"; };
 		B76454642C8BBC7F002DF00E /* CanvasPlusPlayground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CanvasPlusPlayground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B76454ED2C8DF61B002DF00E /* Course.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Course.swift; sourceTree = "<group>"; };
 		B76454EE2C8DF61B002DF00E /* Enrollment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enrollment.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 			children = (
 				B76454F42C8DF61B002DF00E /* CourseFilesView.swift */,
 				192EC04B2C963EE600AF8528 /* CourseAssignmentView.swift */,
+				A3E7F38E2C96C1CE00DC4300 /* CourseTabsView.swift */,
 				B76454F52C8DF61B002DF00E /* CourseListView.swift */,
 				B76454F62C8DF61B002DF00E /* CourseView.swift */,
 				B76454F72C8DF61B002DF00E /* SetupView.swift */,
@@ -220,6 +223,7 @@
 				B76455052C8DF61B002DF00E /* SetupView.swift in Sources */,
 				192EC04C2C963EE600AF8528 /* CourseAssignmentView.swift in Sources */,
 				A3E7F3892C954E0500DC4300 /* CanvasRequest.swift in Sources */,
+				A3E7F38F2C96C1CE00DC4300 /* CourseTabsView.swift in Sources */,
 				B76455062C8DF61B002DF00E /* CanvasPlusPlaygroundApp.swift in Sources */,
 				B76455072C8DF61B002DF00E /* CourseFileManager.swift in Sources */,
 				A3E7F38B2C9555B200DC4300 /* CanvasService.swift in Sources */,

@@ -30,4 +30,6 @@ struct CanvasService {
             return nil
         }
     }
+    
+    // TODO: new method + dispatch queue for multiple concurrent requests - Aziz
 }
