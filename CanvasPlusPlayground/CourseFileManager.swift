@@ -22,10 +22,10 @@ class CourseFileManager {
             return
         }
         
-        if let retFiles = try? JSONDecoder().decode([File].self, from: data) {
-            self.files = retFiles
-        } else {
-            print("Failed to decode file data.")
+        do {
+            self.files = try JSONDecoder().decode([File].self, from: data)
+        } catch {
+            print(error)
         }
     }
 }
