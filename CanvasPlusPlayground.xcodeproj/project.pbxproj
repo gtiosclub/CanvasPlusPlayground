@@ -32,6 +32,9 @@
 		B76455082C8DF61B002DF00E /* CourseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454FC2C8DF61B002DF00E /* CourseManager.swift */; };
 		B76455092C8DF61B002DF00E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B76454F22C8DF61B002DF00E /* Preview Assets.xcassets */; };
 		B764550A2C8DF61B002DF00E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B76454F92C8DF61B002DF00E /* Assets.xcassets */; };
+		B76E292C2C9730AD003DCDE1 /* CalendarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76E292B2C9730AD003DCDE1 /* CalendarManager.swift */; };
+		B76E292E2C9730C1003DCDE1 /* Calendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76E292D2C9730C1003DCDE1 /* Calendar.swift */; };
+		B76E29302C9730D6003DCDE1 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76E292F2C9730D6003DCDE1 /* CalendarView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */

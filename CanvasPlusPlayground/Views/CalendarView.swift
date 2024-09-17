@@ -10,6 +10,7 @@ import SwiftUI
 struct CalendarView: View {
     let course: Course
     @State var courseManager: CourseManager
+
     init(course: Course) {
         self.course = course
         _courseManager = .init(initialValue: CourseManager())
