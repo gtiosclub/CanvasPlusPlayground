@@ -23,6 +23,11 @@ struct CourseView: View {
             } label: {
                 Label("Assignments", systemImage: "circle.inset.filled")
             }
+            NavigationLink {
+                CalendarView(course: course)
+            } label: {
+                Label("Calenar", systemImage: "calendar")
+            }
             
             NavigationLink {
                 EmptyView()
