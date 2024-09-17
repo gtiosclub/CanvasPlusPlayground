@@ -84,9 +84,3 @@ struct CalendarView: View {
         .navigationTitle(course.name ?? "")
     }
 }
-
-//
-//#Preview {
-//    CalendarView()
-//        .environment(CalendarManager())
-//}
