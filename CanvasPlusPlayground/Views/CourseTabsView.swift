@@ -8,11 +8,22 @@
 import SwiftUI
 
 struct CourseTabsView: View {
+    let course: Course
+    @State var tabsManager: CourseTabsManager
+    
+    init(course: Course) {
+        self.course = course
+        self.tabsManager = CourseTabsManager(course: course)
+    }
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        List(tabsManager.tabLabels, id: \.self) { label in
+            Text(label)
+        }
+        .navigationTitle(course.name ?? "")
+        .task {
+            await tabsManager.fetchTabs()
+        }
     }
 }
 
-#Preview {
-    CourseTabsView()
-}
