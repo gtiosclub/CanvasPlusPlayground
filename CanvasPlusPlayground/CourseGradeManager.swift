@@ -8,7 +8,7 @@
 import Foundation
 
 @Observable
-class CourseGradeManager {
+class CourseGradeManager: ObservableObject {
     var enrollments = [Enrollment]()
 
     func fetchEnrollments() async {

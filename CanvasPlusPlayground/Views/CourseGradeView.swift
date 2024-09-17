@@ -10,54 +10,33 @@ import SwiftUI
 struct CourseGradeView: View {
     let course: Course
     @State private var enrollment: Enrollment?
-    @State private var gradeManager: CourseGradeManager
+    @EnvironmentObject var gradeManager: CourseGradeManager
     
     init(course: Course) {
         self.course = course
-        _gradeManager = .init(initialValue: CourseGradeManager())
     }
-    
     
     var body: some View {
         List {
-            if let score = enrollment?.grades?.currentScore {
-                Text("Current Score: \(score)")
-            } else {
-                Text("Current Score unavailable")
-            }
-            
-            if let grade = enrollment?.grades?.currentGrade {
-                Text("Current Grade: \(grade)")
-            } else {
-                Text("Current grade unavailable")
-            }
-            
-            if let finalScore = enrollment?.grades?.finalScore {
-                Text("Final Score: \(finalScore)")
-            } else {
-                Text("Final Score unavailable")
-            }
-            
-            if let finalGrade = enrollment?.grades?.finalGrade {
-                Text("Current Score: \(finalGrade)")
-            } else {
-                Text("Final Grade unavailable")
-            }
-            
+            display("Current Score", value: enrollment?.grades?.currentScore)
+            display("Current grade", value: enrollment?.grades?.currentGrade)
+            display("Final Score", value: enrollment?.grades?.finalScore)
+            display("Final Grade", value: enrollment?.grades?.finalGrade)
         }
-        .task {
-            await gradeManager.fetchEnrollments()
-            
-            for enroll in self.gradeManager.enrollments {
-                if let idLHS = enroll.courseID, let idRHS = self.course.id {
-                    if idLHS == idRHS {
+        .onAppear {
+            for enroll in gradeManager.enrollments {
+                if let idLHS = self.course.id, let idRHS = enroll.courseID, idLHS == idRHS  {
                         self.enrollment = enroll
-                    }
                 }
             }
         }
-        .refreshable {
-            await gradeManager.fetchEnrollments()
+    }
+    
+    func display(_ label: String, value: Any?) -> Text {
+        if let value = value {
+            return Text("\(label): \(value)")
+        } else {
+            return Text("\(label) unavailable")
         }
     }
 }
