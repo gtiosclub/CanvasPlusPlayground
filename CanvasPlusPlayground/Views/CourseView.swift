@@ -25,7 +25,7 @@ struct CourseView: View {
             }
             
             NavigationLink {
-                EmptyView()
+                CourseTabsView(course: course)
             } label: {
                 Label("Tabs", systemImage: "tray.2")
             }

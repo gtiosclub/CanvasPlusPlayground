@@ -26,7 +26,7 @@ enum CanvasRequest {
             "courses/\(courseId)/files"
         case let .getTabs(courseId):
             "courses/\(courseId)/tabs"
-        case let .getAnnouncements:
+        case .getAnnouncements:
             "announcements"
         case let .getAssignments(courseId):
             "courses/\(courseId)/assignments"
