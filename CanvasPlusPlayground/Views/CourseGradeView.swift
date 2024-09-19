@@ -8,9 +8,11 @@
 import SwiftUI
 
 struct CourseGradeView: View {
-    let course: Course
+    @Environment(CourseManager.self) var courseManager
     @State private var enrollment: Enrollment?
-    @EnvironmentObject var gradeManager: CourseGradeManager
+    
+    let course: Course
+    
     
     init(course: Course) {
         self.course = course
@@ -24,7 +26,7 @@ struct CourseGradeView: View {
             display("Final Grade", value: enrollment?.grades?.finalGrade)
         }
         .onAppear {
-            for enroll in gradeManager.enrollments {
+            for enroll in courseManager.enrollments {
                 if let idLHS = self.course.id, let idRHS = enroll.courseID, idLHS == idRHS  {
                         self.enrollment = enroll
                 }
