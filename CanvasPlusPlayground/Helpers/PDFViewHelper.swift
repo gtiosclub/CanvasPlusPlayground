@@ -11,10 +11,6 @@ import PDFKit
 struct PDFViewHelper: UIViewRepresentable {
     let pdfURL: URL
     
-    init(pdfURL : URL) {
-        self.pdfURL = pdfURL
-    }
-    
     func makeUIView(context: Context) -> PDFView {
         let pdfView = PDFView()
         async {

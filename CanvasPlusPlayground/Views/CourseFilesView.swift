@@ -18,7 +18,7 @@ struct CourseFilesView: View {
 
     var body: some View {
         List(fileManager.files, id: \.id) { file in
-            NavigationLink(destination: PDFViewHelper(pdfURL: URL(string: file.url)!)) {
+            NavigationLink(destination: CoursePDFView(url: URL(string: file.url)!)) {
                     Text(file.displayName)
             }
         }
