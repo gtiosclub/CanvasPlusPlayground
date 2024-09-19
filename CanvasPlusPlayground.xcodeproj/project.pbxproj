@@ -7,16 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-
+		192EC0482C963ACB00AF8528 /* CourseAssignmentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192EC0472C963ACB00AF8528 /* CourseAssignmentManager.swift */; };
+		192EC04A2C963B9000AF8528 /* Assignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192EC0492C963B9000AF8528 /* Assignment.swift */; };
+		192EC04C2C963EE600AF8528 /* CourseAssignmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192EC04B2C963EE600AF8528 /* CourseAssignmentView.swift */; };
+		95BA93482C9CE20D00137A91 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95BA93472C9CE20D00137A91 /* CalendarView.swift */; };
 		9B350F082C9652C6003FC60D /* AttributedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B350F072C9652C6003FC60D /* AttributedText.swift */; };
 		9B6663E32C9853BC0060990E /* AsyncAttributedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6663E22C9853BC0060990E /* AsyncAttributedText.swift */; };
 		9B92A4232C93853C00C21CFC /* Announcement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B92A4222C93853C00C21CFC /* Announcement.swift */; };
 		9B92A4252C93856100C21CFC /* CourseAnnouncementManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B92A4242C93856100C21CFC /* CourseAnnouncementManager.swift */; };
 		9B9C2E042C93F6CD00E4B16B /* CourseAnnouncementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9C2E032C93F6CD00E4B16B /* CourseAnnouncementsView.swift */; };
 		9B9C2E062C93F94C00E4B16B /* CourseAnnouncementDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9C2E052C93F94C00E4B16B /* CourseAnnouncementDetailView.swift */; };
-		192EC0482C963ACB00AF8528 /* CourseAssignmentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192EC0472C963ACB00AF8528 /* CourseAssignmentManager.swift */; };
-		192EC04A2C963B9000AF8528 /* Assignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192EC0492C963B9000AF8528 /* Assignment.swift */; };
-		192EC04C2C963EE600AF8528 /* CourseAssignmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192EC04B2C963EE600AF8528 /* CourseAssignmentView.swift */; };
 		A3E7F3892C954E0500DC4300 /* CanvasRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E7F3882C954E0500DC4300 /* CanvasRequest.swift */; };
 		A3E7F38B2C9555B200DC4300 /* CanvasService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E7F38A2C9555B200DC4300 /* CanvasService.swift */; };
 		B76454FE2C8DF61B002DF00E /* Course.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454ED2C8DF61B002DF00E /* Course.swift */; };
@@ -35,15 +35,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		192EC0472C963ACB00AF8528 /* CourseAssignmentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAssignmentManager.swift; sourceTree = "<group>"; };
+		192EC0492C963B9000AF8528 /* Assignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assignment.swift; sourceTree = "<group>"; };
+		192EC04B2C963EE600AF8528 /* CourseAssignmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAssignmentView.swift; sourceTree = "<group>"; };
+		95BA93472C9CE20D00137A91 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		9B350F072C9652C6003FC60D /* AttributedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedText.swift; sourceTree = "<group>"; };
 		9B6663E22C9853BC0060990E /* AsyncAttributedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncAttributedText.swift; sourceTree = "<group>"; };
 		9B92A4222C93853C00C21CFC /* Announcement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Announcement.swift; sourceTree = "<group>"; };
 		9B92A4242C93856100C21CFC /* CourseAnnouncementManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAnnouncementManager.swift; sourceTree = "<group>"; };
 		9B9C2E032C93F6CD00E4B16B /* CourseAnnouncementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAnnouncementsView.swift; sourceTree = "<group>"; };
 		9B9C2E052C93F94C00E4B16B /* CourseAnnouncementDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAnnouncementDetailView.swift; sourceTree = "<group>"; };
-		192EC0472C963ACB00AF8528 /* CourseAssignmentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAssignmentManager.swift; sourceTree = "<group>"; };
-		192EC0492C963B9000AF8528 /* Assignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assignment.swift; sourceTree = "<group>"; };
-		192EC04B2C963EE600AF8528 /* CourseAssignmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAssignmentView.swift; sourceTree = "<group>"; };
 		A3E7F3882C954E0500DC4300 /* CanvasRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasRequest.swift; sourceTree = "<group>"; };
 		A3E7F38A2C9555B200DC4300 /* CanvasService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasService.swift; sourceTree = "<group>"; };
 		B76454642C8BBC7F002DF00E /* CanvasPlusPlayground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CanvasPlusPlayground.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -133,6 +134,7 @@
 				B76454F42C8DF61B002DF00E /* CourseFilesView.swift */,
 				9B6663E22C9853BC0060990E /* AsyncAttributedText.swift */,
 				192EC04B2C963EE600AF8528 /* CourseAssignmentView.swift */,
+				95BA93472C9CE20D00137A91 /* CalendarView.swift */,
 				B76454F52C8DF61B002DF00E /* CourseListView.swift */,
 				B76454F62C8DF61B002DF00E /* CourseView.swift */,
 				9B9C2E032C93F6CD00E4B16B /* CourseAnnouncementsView.swift */,
@@ -237,6 +239,7 @@
 			files = (
 				9B92A4232C93853C00C21CFC /* Announcement.swift in Sources */,
 				B76454FE2C8DF61B002DF00E /* Course.swift in Sources */,
+				95BA93482C9CE20D00137A91 /* CalendarView.swift in Sources */,
 				B76454FF2C8DF61B002DF00E /* Enrollment.swift in Sources */,
 				B76455002C8DF61B002DF00E /* File.swift in Sources */,
 				192EC04A2C963B9000AF8528 /* Assignment.swift in Sources */,
