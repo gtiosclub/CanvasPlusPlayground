@@ -8,7 +8,7 @@
 import SwiftUI
 import PDFKit
 
-struct PDFViewHelper: UIViewRepresentable {
+struct BridgedPDFView: UIViewRepresentable {
     let pdfURL: URL
     
     func makeUIView(context: Context) -> PDFView {

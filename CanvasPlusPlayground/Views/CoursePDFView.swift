@@ -11,7 +11,7 @@ struct CoursePDFView: View {
     let url: URL
     var body: some View {
         VStack {
-            PDFViewHelper(pdfURL: url)
+            BridgedPDFView(pdfURL: url)
     
         }
     }
