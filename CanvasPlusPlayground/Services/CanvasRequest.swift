@@ -17,6 +17,7 @@ enum CanvasRequest {
     case getAnnouncements(courseId: Int)
     case getAssignments(courseId: Int)
     case getEnrollments
+    case getPeople(courseId: Int, bookmark: String)
     var path: String {
         switch self {
         case .getCourses:
@@ -33,9 +34,9 @@ enum CanvasRequest {
             "courses/\(courseId)/assignments"
         case .getEnrollments:
             "users/self/enrollments"
+        case let .getPeople(courseId, _):
+            "courses/\(courseId)/enrollments"
         }
-    
-        
     }
     
     var queryParameters: [(name: String, value: String)] {
@@ -55,6 +56,8 @@ enum CanvasRequest {
             [
                 ("state[]", "active")
             ]
+        case let .getPeople(_, bookmark):
+            (!bookmark.isEmpty) ? [("page", bookmark)] : []
         default:
             []
         }
