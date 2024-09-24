@@ -18,7 +18,9 @@ struct CourseFilesView: View {
 
     var body: some View {
         List(fileManager.files, id: \.id) { file in
-            Text(file.displayName)
+            NavigationLink(destination: CoursePDFView(url: URL(string: file.url)!)) {
+                    Text(file.displayName)
+            }
         }
         .task {
             await fileManager.fetchFiles()

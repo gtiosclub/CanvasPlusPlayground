@@ -9,9 +9,10 @@ import SwiftUI
 
 struct CourseListView: View {
     @Environment(CourseManager.self) var courseManager
-
+    
     @State private var showSheet: Bool = false
-
+    
+    
     var body: some View {
         @Bindable var courseManager = courseManager
 
@@ -23,6 +24,7 @@ struct CourseListView: View {
                 showSheet = true
             } else {
                 await courseManager.getCourses()
+                await courseManager.getEnrollments()
             }
         }
         .refreshable {
