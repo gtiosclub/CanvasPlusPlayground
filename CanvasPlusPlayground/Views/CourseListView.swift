@@ -43,10 +43,25 @@ struct CourseListView: View {
     }
 
     private var mainBody: some View {
-        List(courseManager.courses, id: \.id) { course in
-            NavigationLink(course.name ?? "", value: course)
+        List {
+            Section("Grouped Tab") {
+                NavigationLink {
+                    AggregatedAssignmentsView(courseManager: courseManager)
+                        
+                } label: {
+                    Text("Your Assignments")
+                }
+
+            }
+            
+            Section("Courses") {
+                ForEach(courseManager.courses, id: \.id) { course in
+                    NavigationLink(course.name ?? "", value: course)
+                }
+            }
         }
-        .navigationTitle("Courses")
+        
+        .navigationTitle("Your Courses")
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button("Change Access Token", systemImage: "gear") {
