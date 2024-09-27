@@ -8,30 +8,31 @@
 import SwiftUI
 
 struct AggregatedAssignmentsView: View {
-    
-    var courseManager: CourseManager
-    @State var model: AggregatedAssignmentsViewModel
-    
-    init(courseManager: CourseManager) {
-        self.courseManager = courseManager
-        self.model = AggregatedAssignmentsViewModel(courses: courseManager.courses)
-        
-    }
+    @Environment(CourseManager.self) var courseManager
+    @State var course_assignments: [(Assignment, Course)] = []
     
     var body: some View {
-        
         List {
-            ForEach(model.assignments, id:\.0.id) { assignment, course in
+            ForEach(course_assignments, id:\.0.id) { assignment, course in
                 AggregatedAssignmentsListCell(assignment: assignment, course: course)
             }
             .onMove { old, new in
-                model.assignments.move(fromOffsets: old, toOffset: new)
+                self.course_assignments.move(fromOffsets: old, toOffset: new)
             }
         }
         .navigationTitle("Your Assignments")
         .task {
-            print("Is anything happening")
-            await model.loadAssignments()
+            
+            for course in courseManager.courses {
+                let assignments = await CourseAssignmentManager.getAssignmentsForCourse(courseID: course.id ?? -1)
+                
+                for assignment in assignments {
+                    if !(assignment.hasSubmittedSubmissions ?? false) {
+                        self.course_assignments.append((assignment, course))
+                    }
+                    
+                }
+            }
         }
     }
     

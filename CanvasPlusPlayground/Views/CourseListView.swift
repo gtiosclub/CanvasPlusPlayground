@@ -46,7 +46,7 @@ struct CourseListView: View {
         List {
             Section("Grouped Tab") {
                 NavigationLink {
-                    AggregatedAssignmentsView(courseManager: courseManager)
+                    AggregatedAssignmentsView()
                         
                 } label: {
                     Text("Your Assignments")
