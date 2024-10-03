@@ -10,6 +10,8 @@ import SwiftUI
 @Observable
 class CourseManager {
     var courses = [Course]()
+    var prefCourses = Set<Course>()
+    var orderedPrefCourse = [Course]()
     var enrollments = [Enrollment]()
 
     func getCourses() async {
@@ -23,6 +25,16 @@ class CourseManager {
         } else {
             print("Failed to decode file data.")
         }
+    }
+    
+    func addPref(course: Course) {
+        prefCourses.insert(course)
+        orderedPrefCourse.append(course)
+    }
+    
+    func removePref(course: Course) {
+        prefCourses.remove(course)
+        orderedPrefCourse.removeAll(where: {$0 == course})
     }
     
     func getEnrollments() async {

@@ -43,20 +43,29 @@ struct CourseListView: View {
     }
 
     private var mainBody: some View {
-        List(courseManager.courses, id: \.id) { course in
-            NavigationLink(course.name ?? "", value: course)
-        }
-        .navigationTitle("Courses")
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button("Change Access Token", systemImage: "gear") {
-                    showSheet.toggle()
+            ScrollView {
+                ForEach(courseManager.orderedPrefCourse, id: \.id) {course in
+                    IndividualCourseListView(isPref: true, course: course)
+                        .padding(.horizontal)
+                }
+                ForEach(courseManager.courses, id: \.id) {course in
+                    if (!courseManager.prefCourses.contains(course)) {
+                        IndividualCourseListView(course: course)
+                            .padding(.horizontal)
+                    }
+                    
                 }
             }
-        }
-        .navigationDestination(for: Course.self) { course in
-            CourseView(course: course)
-        }
+            .background(Color(red: 242/255, green: 242/255, blue: 247/255, opacity: 255/255))
+            
+            .navigationTitle("Courses")
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Change Access Token", systemImage: "gear") {
+                        showSheet.toggle()
+                    }
+                }
+            }
     }
 }
 
