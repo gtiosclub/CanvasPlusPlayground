@@ -19,11 +19,46 @@ struct CourseGradeView: View {
     }
     
     var body: some View {
-        List {
-            display("Current Score", value: enrollment?.grades?.currentScore)
-            display("Current grade", value: enrollment?.grades?.currentGrade)
-            display("Final Score", value: enrollment?.grades?.finalScore)
-            display("Final Grade", value: enrollment?.grades?.finalGrade)
+        VStack {
+            ScrollView {
+                
+                Text("Grade Overview")
+                    .font(.largeTitle)
+                display("Current Score", value: enrollment?.grades?.currentScore)
+                display("Current grade", value: enrollment?.grades?.currentGrade)
+                display("Final Score", value: enrollment?.grades?.finalScore)
+                display("Final Grade", value: enrollment?.grades?.finalGrade)
+                
+                
+                Text("All submissions' Scores")
+                    .font(.title)
+                ForEach(courseManager.submissions, id: \.id) { submission in
+                    display("Submission \(submission.id)'s score: ", value: submission.score)
+                }
+                
+                Text("Key Info in Syllabus")
+                    .font(.title)
+                
+                Text("Your Expected Grade of this Course")
+                    .font(.title)
+                
+                Text("The next assignment's lowest score")
+                    .font(.title)
+            }
+            .padding()
+        }
+        .padding()
+
+        .task {
+            await courseManager.getSubmissions(courseId: course.id)
+            print(courseManager.submissions)
+            await courseManager.getSyllabus(courseId: course.id)
+            print(courseManager.syllabus)
+            
+        }
+        .refreshable {
+            await courseManager.getCourses()
+            await courseManager.getSubmissions(courseId: course.id)
         }
         .onAppear {
             for enroll in courseManager.enrollments {

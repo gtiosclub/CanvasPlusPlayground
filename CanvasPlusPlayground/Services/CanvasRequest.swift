@@ -18,6 +18,9 @@ enum CanvasRequest {
     case getAssignments(courseId: Int)
     case getEnrollments
     case getPeople(courseId: Int, bookmark: String)
+    case getSubmissions(courseId: Int)
+    case getSyllabus(courseId: Int)
+    
     var path: String {
         switch self {
         case .getCourses:
@@ -36,6 +39,11 @@ enum CanvasRequest {
             "users/self/enrollments"
         case let .getPeople(courseId, _):
             "courses/\(courseId)/enrollments"
+        case let .getSubmissions(courseId):
+            "courses/\(courseId)/students/submissions"
+        case let .getSyllabus(courseId):
+            "courses/\(courseId)"
+            
         }
     }
     
@@ -58,6 +66,11 @@ enum CanvasRequest {
             ]
         case let .getPeople(_, bookmark):
             (!bookmark.isEmpty) ? [("page", bookmark)] : []
+            
+        case let .getSyllabus(courseId):
+            [
+                ("include[]", "syllabus_body")
+            ]
         default:
             []
         }

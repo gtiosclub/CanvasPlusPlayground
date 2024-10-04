@@ -11,6 +11,8 @@ import SwiftUI
 class CourseManager {
     var courses = [Course]()
     var enrollments = [Enrollment]()
+    var submissions = [Submission]()
+    var syllabus = [SyllabusUpdate]()
 
     func getCourses() async {
         guard let (data, _) = await CanvasService.shared.fetch(.getCourses(enrollmentState: "active")) else {
@@ -33,6 +35,40 @@ class CourseManager {
         
         do {
             enrollments = try JSONDecoder().decode([Enrollment].self, from: data)
+        } catch {
+            print(error)
+        }
+    }
+    
+    func getSubmissions(courseId: Int?) async {
+        guard let courseId else {
+            print("getSubmission failed: courseId is nil")
+            return
+        }
+        guard let (data, _) = await CanvasService.shared.fetch(.getSubmissions(courseId: courseId)) else {
+            print("Failed to fetch submissions")
+            return
+        }
+        
+        do {
+            submissions = try JSONDecoder().decode([Submission].self, from: data)
+        } catch {
+            print(error)
+        }
+    }
+    
+    func getSyllabus(courseId: Int?) async {
+        guard let courseId else {
+            print("getSubmission failed: courseId is nil")
+            return
+        }
+        guard let (data, _) = await CanvasService.shared.fetch(.getSyllabus(courseId: courseId)) else {
+            print("Failed to fetch submissions")
+            return
+        }
+        
+        do {
+            syllabus = try JSONDecoder().decode([SyllabusUpdate].self, from: data)
         } catch {
             print(error)
         }
