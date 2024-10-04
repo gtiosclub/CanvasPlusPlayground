@@ -17,7 +17,6 @@ struct CourseView: View {
             } label: {
                 Label("Files", systemImage: "folder")
             }
-            
             NavigationLink {
                 CourseAssignmentsView(course: course)
             } label: {
@@ -28,9 +27,8 @@ struct CourseView: View {
             } label: {
                 Label("Calendar", systemImage: "calendar")
             }
-            
             NavigationLink {
-                EmptyView()
+                CourseTabsView(course: course)
             } label: {
                 Label("Tabs", systemImage: "tray.2")
             }
@@ -38,6 +36,16 @@ struct CourseView: View {
                 CourseAnnouncementsView(course:course)
             } label: {
                 Label("Announcements", systemImage: "bubble")
+            }
+            NavigationLink {
+                CourseGradeView(course: course)
+            } label: {
+                Label("Grades", systemImage: "graduationcap.fill")
+            }
+            NavigationLink {
+                PeopleView(courseID: course.id)
+            } label: {
+                Label("People", systemImage: "person.crop.circle.fill")
             }
         }
         .navigationTitle(course.name ?? "Unknown Course")
