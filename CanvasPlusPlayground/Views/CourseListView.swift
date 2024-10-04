@@ -43,20 +43,47 @@ struct CourseListView: View {
     }
 
     private var mainBody: some View {
-            ScrollView {
-                ForEach(courseManager.orderedPrefCourse, id: \.id) {course in
-                    IndividualCourseListView(isPref: true, course: course)
-                        .padding(.horizontal)
-                }
-                ForEach(courseManager.courses, id: \.id) {course in
-                    if (!courseManager.prefCourses.contains(course)) {
-                        IndividualCourseListView(course: course)
-                            .padding(.horizontal)
+        Form {
+            List(courseManager.userFavCourses, id: \.self) { course in
+                HStack {
+                    Button {
+                        withAnimation {
+                            courseManager.togglePref(course: course)
+                        }
+                    } label: {
+                        Image(systemName: "star.fill")
                     }
+                    .buttonStyle(.plain)
                     
+                    NavigationLink(destination: CourseView(course: course), label: {
+                        Text(course.name ?? "")
+                            .frame(alignment: .leading)
+                            .multilineTextAlignment(.leading)
+                    })
                 }
+                
             }
-            .background(Color(red: 242/255, green: 242/255, blue: 247/255, opacity: 255/255))
+            
+             List(courseManager.userOtherCourses, id: \.self) { course in
+                HStack {
+                    Button {
+                        withAnimation {
+                            courseManager.togglePref(course: course)
+                        }
+                    } label: {
+                        Image(systemName: "star")
+                    }
+                    .buttonStyle(.plain)
+                    
+                    NavigationLink(destination: CourseView(course: course), label: {
+                        Text(course.name ?? "")
+                            .frame(alignment: .leading)
+                            .multilineTextAlignment(.leading)
+                    })
+                }
+                
+            }
+        }
             
             .navigationTitle("Courses")
             .toolbar {

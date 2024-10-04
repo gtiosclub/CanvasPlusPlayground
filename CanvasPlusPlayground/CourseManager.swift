@@ -11,7 +11,13 @@ import SwiftUI
 class CourseManager {
     var courses = [Course]()
     var prefCourses = Set<Course>()
-    var orderedPrefCourse = [Course]()
+    var userFavCourses: [Course] {
+        courses.filter { prefCourses.contains($0) }
+    }
+    var userOtherCourses: [Course] {
+        courses.filter { !prefCourses.contains($0) }
+    }
+    
     var enrollments = [Enrollment]()
 
     func getCourses() async {
@@ -27,14 +33,12 @@ class CourseManager {
         }
     }
     
-    func addPref(course: Course) {
-        prefCourses.insert(course)
-        orderedPrefCourse.append(course)
-    }
-    
-    func removePref(course: Course) {
-        prefCourses.remove(course)
-        orderedPrefCourse.removeAll(where: {$0 == course})
+    func togglePref(course: Course) {
+        if (prefCourses.contains(course)) {
+            prefCourses.remove(course)
+        } else {
+            prefCourses.insert(course)
+        }
     }
     
     func getEnrollments() async {
