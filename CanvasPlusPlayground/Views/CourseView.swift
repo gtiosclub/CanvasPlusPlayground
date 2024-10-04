@@ -17,7 +17,6 @@ struct CourseView: View {
             } label: {
                 Label("Files", systemImage: "folder")
             }
-            
             NavigationLink {
                 CourseAssignmentsView(course: course)
             } label: {
@@ -42,6 +41,11 @@ struct CourseView: View {
                 CourseGradeView(course: course)
             } label: {
                 Label("Grades", systemImage: "graduationcap.fill")
+            }
+            NavigationLink {
+                PeopleView(courseID: course.id)
+            } label: {
+                Label("People", systemImage: "person.crop.circle.fill")
             }
         }
         .navigationTitle(course.name ?? "Unknown Course")
