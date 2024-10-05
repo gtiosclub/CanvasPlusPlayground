@@ -10,12 +10,12 @@
 		192EC0482C963ACB00AF8528 /* CourseAssignmentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192EC0472C963ACB00AF8528 /* CourseAssignmentManager.swift */; };
 		192EC04A2C963B9000AF8528 /* Assignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192EC0492C963B9000AF8528 /* Assignment.swift */; };
 		192EC04C2C963EE600AF8528 /* CourseAssignmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192EC04B2C963EE600AF8528 /* CourseAssignmentView.swift */; };
-		94CB9A492CB09F8C00F524D9 /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94CB9A482CB09F8C00F524D9 /* CalendarViewModel.swift */; };
-		94CB9A4B2CB09FBB00F524D9 /* CalendarEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94CB9A4A2CB09FBB00F524D9 /* CalendarEvent.swift */; };
 		3DAE84FE2C9A0CE8008C22E7 /* CoursePDFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DAE84FD2C9A0CE8008C22E7 /* CoursePDFView.swift */; };
 		3DAE85002C9A0E4F008C22E7 /* PDFViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DAE84FF2C9A0E4F008C22E7 /* PDFViewHelper.swift */; };
 		7F8535742C98DE3C0023E384 /* CourseGradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8535732C98DE3C0023E384 /* CourseGradeView.swift */; };
-		95BA93482C9CE20D00137A91 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95BA93472C9CE20D00137A91 /* CalendarView.swift */; };
+		94CB9A492CB09F8C00F524D9 /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94CB9A482CB09F8C00F524D9 /* CalendarViewModel.swift */; };
+		94CB9A4B2CB09FBB00F524D9 /* CalendarEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94CB9A4A2CB09FBB00F524D9 /* CalendarEvent.swift */; };
+		94CB9A4D2CB12B7200F524D9 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94CB9A4C2CB12B7200F524D9 /* CalendarView.swift */; };
 		9B350F082C9652C6003FC60D /* AttributedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B350F072C9652C6003FC60D /* AttributedText.swift */; };
 		9B6663E32C9853BC0060990E /* AsyncAttributedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6663E22C9853BC0060990E /* AsyncAttributedText.swift */; };
 		9B92A4232C93853C00C21CFC /* Announcement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B92A4222C93853C00C21CFC /* Announcement.swift */; };
@@ -49,12 +49,12 @@
 		192EC0472C963ACB00AF8528 /* CourseAssignmentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAssignmentManager.swift; sourceTree = "<group>"; };
 		192EC0492C963B9000AF8528 /* Assignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assignment.swift; sourceTree = "<group>"; };
 		192EC04B2C963EE600AF8528 /* CourseAssignmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAssignmentView.swift; sourceTree = "<group>"; };
-		94CB9A482CB09F8C00F524D9 /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
-		94CB9A4A2CB09FBB00F524D9 /* CalendarEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarEvent.swift; sourceTree = "<group>"; };
 		3DAE84FD2C9A0CE8008C22E7 /* CoursePDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoursePDFView.swift; sourceTree = "<group>"; };
 		3DAE84FF2C9A0E4F008C22E7 /* PDFViewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFViewHelper.swift; sourceTree = "<group>"; };
 		7F8535732C98DE3C0023E384 /* CourseGradeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseGradeView.swift; sourceTree = "<group>"; };
-		95BA93472C9CE20D00137A91 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		94CB9A482CB09F8C00F524D9 /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
+		94CB9A4A2CB09FBB00F524D9 /* CalendarEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarEvent.swift; sourceTree = "<group>"; };
+		94CB9A4C2CB12B7200F524D9 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		9B350F072C9652C6003FC60D /* AttributedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedText.swift; sourceTree = "<group>"; };
 		9B6663E22C9853BC0060990E /* AsyncAttributedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncAttributedText.swift; sourceTree = "<group>"; };
 		9B92A4222C93853C00C21CFC /* Announcement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Announcement.swift; sourceTree = "<group>"; };
@@ -160,10 +160,9 @@
 				B76454F42C8DF61B002DF00E /* CourseFilesView.swift */,
 				9B6663E22C9853BC0060990E /* AsyncAttributedText.swift */,
 				192EC04B2C963EE600AF8528 /* CourseAssignmentView.swift */,
-				95BA93472C9CE20D00137A91 /* CalendarView.swift */,
 				A3E7F38E2C96C1CE00DC4300 /* CourseTabsView.swift */,
+				94CB9A4C2CB12B7200F524D9 /* CalendarView.swift */,
 				B76454F52C8DF61B002DF00E /* CourseListView.swift */,
-				95BA93432C9927E900137A91 /* CalendarView.swift */,
 				B76454F62C8DF61B002DF00E /* CourseView.swift */,
 				B53D95A12CA0A22A00647EE9 /* PeopleView.swift */,
 				B533C0BD2CADDDE700A74AF6 /* PeopleCommonView.swift */,
@@ -291,6 +290,7 @@
 				9B350F082C9652C6003FC60D /* AttributedText.swift in Sources */,
 				9B9C2E042C93F6CD00E4B16B /* CourseAnnouncementsView.swift in Sources */,
 				192EC04C2C963EE600AF8528 /* CourseAssignmentView.swift in Sources */,
+				94CB9A4D2CB12B7200F524D9 /* CalendarView.swift in Sources */,
 				B53D95A02CA0953900647EE9 /* PeopleManager.swift in Sources */,
 				A3E7F3892C954E0500DC4300 /* CanvasRequest.swift in Sources */,
 				A3E7F3912C99317100DC4300 /* CourseTabsManager.swift in Sources */,
