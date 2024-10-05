@@ -75,7 +75,7 @@ struct EventDetails: View {
         let endTime = event.endDate?.toHourMinute() ?? "No time"
         if startTime == endTime && startTime != "No time" {
             return Text(endTime).foregroundColor(.secondary)
-        } else if startTime == "No time" && endTime == "No time"  && event.startDate?.toDayMonthDay(){
+        } else if startTime == "No time" && endTime == "No time" {
             return Text("All day")
                 .foregroundColor(.secondary)
         } else if startTime == "No time" {
