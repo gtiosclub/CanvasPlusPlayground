@@ -73,16 +73,16 @@ struct EventDetails: View {
     private var eventTimeText: some View {
         let startTime = event.startDate?.toHourMinute() ?? "No time"
         let endTime = event.endDate?.toHourMinute() ?? "No time"
-        if startTime == endTime {
+        if startTime == endTime && startTime != "No time" {
             return Text(endTime).foregroundColor(.secondary)
-        } else if startTime == "No time" && endTime == "No time" {
+        } else if startTime == "No time" && endTime == "No time"  && event.startDate?.toDayMonthDay(){
             return Text("All day")
                 .foregroundColor(.secondary)
         } else if startTime == "No time" {
-            return Text(startTime)
+            return Text(endTime)
                 .foregroundColor(.secondary)
         } else if endTime == "No time" {
-            return Text(endTime)
+            return Text(startTime)
                 .foregroundColor(.secondary)
         } else {
             return Text("from \(startTime) to \(endTime)")
