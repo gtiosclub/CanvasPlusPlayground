@@ -15,7 +15,7 @@ struct CourseListView: View {
     
     var body: some View {
         @Bindable var courseManager = courseManager
-
+        
         NavigationStack {
             mainBody
         }
@@ -41,58 +41,73 @@ struct CourseListView: View {
             }
         }
     }
-
+    
     private var mainBody: some View {
-        Form {
-            List(courseManager.userFavCourses, id: \.self) { course in
-                HStack {
-                    Button {
-                        withAnimation {
-                            courseManager.togglePref(course: course)
-                        }
-                    } label: {
-                        Image(systemName: "star.fill")
-                    }
-                    .buttonStyle(.plain)
-                    
-                    NavigationLink(destination: CourseView(course: course), label: {
-                        Text(course.name ?? "")
-                            .frame(alignment: .leading)
-                            .multilineTextAlignment(.leading)
-                    })
+        List {
+            
+            Section() {
+                NavigationLink {
+                    AggregatedAssignmentsView()
+                } label: {
+                    Text("Your assigments")
                 }
-                
             }
             
-             List(courseManager.userOtherCourses, id: \.self) { course in
-                HStack {
-                    Button {
-                        withAnimation {
-                            courseManager.togglePref(course: course)
+            if (!courseManager.userFavCourses.isEmpty) {
+                Section("Favorites") {
+                    ForEach(courseManager.userFavCourses, id: \.self) { course in
+                        Section {
+                            HStack {
+                                Button {
+                                    withAnimation {
+                                        courseManager.togglePref(course: course)
+                                    }
+                                } label: {
+                                    Image(systemName: "star.fill")
+                                }
+                                .buttonStyle(.plain)
+                                
+                                NavigationLink(destination: CourseView(course: course), label: {
+                                    Text(course.name ?? "")
+                                        .frame(alignment: .leading)
+                                        .multilineTextAlignment(.leading)
+                                })
+                            }
                         }
-                    } label: {
-                        Image(systemName: "star")
                     }
-                    .buttonStyle(.plain)
-                    
-                    NavigationLink(destination: CourseView(course: course), label: {
-                        Text(course.name ?? "")
-                            .frame(alignment: .leading)
-                            .multilineTextAlignment(.leading)
-                    })
                 }
-                
+            }
+            
+            Section("Courses") {
+                ForEach(courseManager.userOtherCourses, id: \.self) { course in
+                    HStack {
+                        Button {
+                            withAnimation {
+                                courseManager.togglePref(course: course)
+                            }
+                        } label: {
+                            Image(systemName: "star")
+                        }
+                        .buttonStyle(.plain)
+                        
+                        NavigationLink(destination: CourseView(course: course), label: {
+                            Text(course.name ?? "")
+                                .frame(alignment: .leading)
+                                .multilineTextAlignment(.leading)
+                        })
+                    }
+                    
+                }
             }
         }
-            
-            .navigationTitle("Courses")
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button("Change Access Token", systemImage: "gear") {
-                        showSheet.toggle()
-                    }
+        .navigationTitle("Courses")
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button("Change Access Token", systemImage: "gear") {
+                    showSheet.toggle()
                 }
             }
+        }
     }
 }
 
