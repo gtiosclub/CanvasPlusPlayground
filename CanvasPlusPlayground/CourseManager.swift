@@ -10,6 +10,14 @@ import SwiftUI
 @Observable
 class CourseManager {
     var courses = [Course]()
+    var prefCourses = Set<Course>()
+    var userFavCourses: [Course] {
+        courses.filter { prefCourses.contains($0) }
+    }
+    var userOtherCourses: [Course] {
+        courses.filter { !prefCourses.contains($0) }
+    }
+    
     var enrollments = [Enrollment]()
 
     func getCourses() async {
@@ -22,6 +30,14 @@ class CourseManager {
             self.courses = retCourses
         } else {
             print("Failed to decode file data.")
+        }
+    }
+    
+    func togglePref(course: Course) {
+        if (prefCourses.contains(course)) {
+            prefCourses.remove(course)
+        } else {
+            prefCourses.insert(course)
         }
     }
     

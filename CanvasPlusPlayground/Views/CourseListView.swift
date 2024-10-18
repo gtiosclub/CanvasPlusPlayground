@@ -43,20 +43,56 @@ struct CourseListView: View {
     }
 
     private var mainBody: some View {
-        List(courseManager.courses, id: \.id) { course in
-            NavigationLink(course.name ?? "", value: course)
-        }
-        .navigationTitle("Courses")
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button("Change Access Token", systemImage: "gear") {
-                    showSheet.toggle()
+        Form {
+            List(courseManager.userFavCourses, id: \.self) { course in
+                HStack {
+                    Button {
+                        withAnimation {
+                            courseManager.togglePref(course: course)
+                        }
+                    } label: {
+                        Image(systemName: "star.fill")
+                    }
+                    .buttonStyle(.plain)
+                    
+                    NavigationLink(destination: CourseView(course: course), label: {
+                        Text(course.name ?? "")
+                            .frame(alignment: .leading)
+                            .multilineTextAlignment(.leading)
+                    })
                 }
+                
+            }
+            
+             List(courseManager.userOtherCourses, id: \.self) { course in
+                HStack {
+                    Button {
+                        withAnimation {
+                            courseManager.togglePref(course: course)
+                        }
+                    } label: {
+                        Image(systemName: "star")
+                    }
+                    .buttonStyle(.plain)
+                    
+                    NavigationLink(destination: CourseView(course: course), label: {
+                        Text(course.name ?? "")
+                            .frame(alignment: .leading)
+                            .multilineTextAlignment(.leading)
+                    })
+                }
+                
             }
         }
-        .navigationDestination(for: Course.self) { course in
-            CourseView(course: course)
-        }
+            
+            .navigationTitle("Courses")
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Change Access Token", systemImage: "gear") {
+                        showSheet.toggle()
+                    }
+                }
+            }
     }
 }
 
