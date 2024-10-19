@@ -46,7 +46,7 @@ struct CalendarView: View {
     }
 }
 
-struct EventSection: View {
+private struct EventSection: View {
     let date: Date?
     let events: [CalendarEvent]
     
@@ -59,7 +59,7 @@ struct EventSection: View {
     }
 }
 
-struct EventDetails: View {
+private struct EventDetails: View {
     let event: CalendarEvent
 
     var body: some View {
