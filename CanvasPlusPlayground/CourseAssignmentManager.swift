@@ -28,4 +28,10 @@ class CourseAssignmentManager {
             print(error)
         }
     }
+    
+    static func getAssignmentsForCourse(courseID: Int) async -> [Assignment] {
+            let manager = CourseAssignmentManager(courseID: courseID)
+            await manager.fetchAssignments()
+            return manager.assignments
+    }
 }
