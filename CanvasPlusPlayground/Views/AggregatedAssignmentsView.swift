@@ -9,15 +9,15 @@ import SwiftUI
 
 struct AggregatedAssignmentsView: View {
     @Environment(CourseManager.self) var courseManager
-    @State var course_assignments: [(Assignment, Course)] = []
+    @State var courseAssignments: [(Assignment, Course)] = []
     
     var body: some View {
         List {
-            ForEach(course_assignments, id:\.0.id) { assignment, course in
+            ForEach(courseAssignments, id:\.0.id) { assignment, course in
                 AggregatedAssignmentsListCell(assignment: assignment, course: course)
             }
             .onMove { old, new in
-                self.course_assignments.move(fromOffsets: old, toOffset: new)
+                self.courseAssignments.move(fromOffsets: old, toOffset: new)
             }
         }
         .navigationTitle("Your Assignments")
@@ -28,7 +28,7 @@ struct AggregatedAssignmentsView: View {
                 
                 for assignment in assignments {
                     if !(assignment.hasSubmittedSubmissions ?? false) {
-                        self.course_assignments.append((assignment, course))
+                        self.courseAssignments.append((assignment, course))
                     }
                     
                 }
