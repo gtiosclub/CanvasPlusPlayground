@@ -8,21 +8,44 @@
 import SwiftUI
 import PDFKit
 
-struct BridgedPDFView: UIViewRepresentable {
+#if os(macOS)
+typealias PlatformViewRepresentable = NSViewRepresentable
+#else
+typealias PlatformViewRepresentable = UIViewRepresentable
+#endif
+
+struct BridgedPDFView: PlatformViewRepresentable {
     let pdfURL: URL
-    
+
+    #if os(macOS)
+    func makeNSView(context: Context) -> some NSView {
+        makeView(context: context)
+    }
+    #else
     func makeUIView(context: Context) -> PDFView {
+        makeView(context: context)
+    }
+    #endif
+
+    #if os(macOS)
+    func updateNSView(_ nsView: NSViewType, context: Context) {
+
+    }
+    #else
+    func updateUIView(_ uiView: PDFView, context: Context) {
+
+    }
+    #endif
+
+    func makeView(context: Context) -> PDFView {
         let pdfView = PDFView()
-        async {
-            pdfView.document = PDFDocument(url: self.pdfURL)
+        Task {
+            let document = PDFDocument(url: self.pdfURL)
+            await MainActor.run {
+                pdfView.document = document
+            }
         }
         pdfView.autoScales = true
         return pdfView
     }
-    
-    func updateUIView(_ uiView: PDFView, context: Context) {
-//        uiView.document = pdfDoc
-        
-    }
-    
 }

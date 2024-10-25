@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import UIKit
 
 struct CourseAnnouncementDetailView: View {
     let announcement: Announcement
@@ -18,7 +17,6 @@ struct CourseAnnouncementDetailView: View {
                 Text(announcement.createdAt?.formatted() ?? "NULL_DATE")
                     .font(.subheadline)
                 AsyncAttributedText(htmlText: announcement.message ?? "NULL_MESSAGE")
-                
             }
         }
         .padding()

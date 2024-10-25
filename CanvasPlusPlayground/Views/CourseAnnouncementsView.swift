@@ -18,6 +18,7 @@ struct CourseAnnouncementsView: View {
     
     
     var body: some View {
+        NavigationStack {
             List(announcementManager.announcements, id:\.id) { announcment in
                 NavigationLink {
                     CourseAnnouncementDetailView(announcement: announcment)
@@ -31,14 +32,13 @@ struct CourseAnnouncementsView: View {
                 } else {
                     EmptyView()
                 }
-                
+
             }
-        
-        
-        .task {
-            await announcementManager.fetchAnnouncements()
+            .task {
+                await announcementManager.fetchAnnouncements()
+            }
+            .navigationTitle("Announcements")
         }
-        .navigationTitle(course.name ?? "")
     }
 }
 
