@@ -8,10 +8,8 @@
 import SwiftUI
 
 struct PeopleView: View {
-    
     let courseID: Int?
     @State private var peopleManager: PeopleManager
-    @State private var showSheet: Bool = false
     
     init(courseID: Int?) {
         self.courseID = courseID
@@ -25,24 +23,10 @@ struct PeopleView: View {
             mainBody
         }
         .task {
-            if StorageKeys.needsAuthorization {
-                showSheet = true
-            } else {
-                await peopleManager.fetchCurrentCoursePeople()
-            }
+            await peopleManager.fetchCurrentCoursePeople()
         }
         .refreshable {
             await peopleManager.fetchCurrentCoursePeople()
-        }
-        .fullScreenCover(isPresented: $showSheet) {
-            NavigationStack {
-                SetupView()
-            }
-            .onDisappear {
-                Task {
-                    await peopleManager.fetchCurrentCoursePeople()
-                }
-            }
         }
     }
     
@@ -51,12 +35,8 @@ struct PeopleView: View {
             NavigationLink(user.name ?? "", value: user)
         }
         .navigationTitle("People")
-        .task {
-            await peopleManager.fetchCurrentCoursePeople()
-        }
         .navigationDestination(for: User.self) { user in
-            PeopleCommonView(user: user)
-                .environment(peopleManager)
+            PeopleCommonView(user: user).environment(peopleManager)
         }
     }
 }

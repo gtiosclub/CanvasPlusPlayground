@@ -8,46 +8,46 @@
 import SwiftUI
 
 struct CourseView: View {
+    @Environment(NavigationModel.self) private var navigationModel
     let course: Course
     
     var body: some View {
-        List {
-            NavigationLink {
-                CourseFilesView(course: course)
-            } label: {
+        @Bindable var navigationModel = navigationModel
+
+        List(selection: $navigationModel.selectedCoursePage) {
+            NavigationLink(value: NavigationModel.CoursePage.files) {
                 Label("Files", systemImage: "folder")
             }
-            NavigationLink {
-                CourseAssignmentsView(course: course)
-            } label: {
+
+            NavigationLink(value: NavigationModel.CoursePage.assignments) {
                 Label("Assignments", systemImage: "circle.inset.filled")
             }
-            NavigationLink {
-                CalendarView(course: course)
-            } label: {
+
+            NavigationLink(value: NavigationModel.CoursePage.calendar) {
                 Label("Calendar", systemImage: "calendar")
             }
-            NavigationLink {
-                CourseTabsView(course: course)
-            } label: {
+
+            NavigationLink(value: NavigationModel.CoursePage.tabs) {
                 Label("Tabs", systemImage: "tray.2")
             }
-            NavigationLink {
-                CourseAnnouncementsView(course:course)
-            } label: {
+
+            NavigationLink(value: NavigationModel.CoursePage.announcements) {
                 Label("Announcements", systemImage: "bubble")
             }
-            NavigationLink {
-                CourseGradeView(course: course)
-            } label: {
+
+            NavigationLink(value: NavigationModel.CoursePage.grades) {
                 Label("Grades", systemImage: "graduationcap.fill")
             }
-            NavigationLink {
-                PeopleView(courseID: course.id)
-            } label: {
+
+            NavigationLink(value: NavigationModel.CoursePage.people) {
                 Label("People", systemImage: "person.crop.circle.fill")
             }
         }
         .navigationTitle(course.name ?? "Unknown Course")
+        #if os(iOS)
+        .listStyle(.insetGrouped)
+        #else
+        .listStyle(.sidebar)
+        #endif
     }
 }

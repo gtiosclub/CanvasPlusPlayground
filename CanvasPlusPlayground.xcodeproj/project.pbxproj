@@ -14,7 +14,7 @@
 		3DAE85002C9A0E4F008C22E7 /* PDFViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DAE84FF2C9A0E4F008C22E7 /* PDFViewHelper.swift */; };
 		7F8535742C98DE3C0023E384 /* CourseGradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8535732C98DE3C0023E384 /* CourseGradeView.swift */; };
 		95BA93482C9CE20D00137A91 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95BA93472C9CE20D00137A91 /* CalendarView.swift */; };
-		9B350F082C9652C6003FC60D /* AttributedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B350F072C9652C6003FC60D /* AttributedText.swift */; };
+		9B350F082C9652C6003FC60D /* NSAttributedString+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B350F072C9652C6003FC60D /* NSAttributedString+HTML.swift */; };
 		9B6663E32C9853BC0060990E /* AsyncAttributedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6663E22C9853BC0060990E /* AsyncAttributedText.swift */; };
 		9B69FA4B2CC2CC7F006101F3 /* AggregatedAssignmentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B69FA4A2CC2CC7F006101F3 /* AggregatedAssignmentsView.swift */; };
 		9B69FA4D2CC2CCB1006101F3 /* AggregatedAssignmentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B69FA4C2CC2CCB1006101F3 /* AggregatedAssignmentsViewModel.swift */; };
@@ -44,6 +44,7 @@
 		B76455082C8DF61B002DF00E /* CourseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454FC2C8DF61B002DF00E /* CourseManager.swift */; };
 		B76455092C8DF61B002DF00E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B76454F22C8DF61B002DF00E /* Preview Assets.xcassets */; };
 		B764550A2C8DF61B002DF00E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B76454F92C8DF61B002DF00E /* Assets.xcassets */; };
+		B7A26EE92CCB62A30084704A /* NavigationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A26EE82CCB62A00084704A /* NavigationModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,7 +55,7 @@
 		3DAE84FF2C9A0E4F008C22E7 /* PDFViewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFViewHelper.swift; sourceTree = "<group>"; };
 		7F8535732C98DE3C0023E384 /* CourseGradeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseGradeView.swift; sourceTree = "<group>"; };
 		95BA93472C9CE20D00137A91 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
-		9B350F072C9652C6003FC60D /* AttributedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedText.swift; sourceTree = "<group>"; };
+		9B350F072C9652C6003FC60D /* NSAttributedString+HTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+HTML.swift"; sourceTree = "<group>"; };
 		9B6663E22C9853BC0060990E /* AsyncAttributedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncAttributedText.swift; sourceTree = "<group>"; };
 		9B69FA4A2CC2CC7F006101F3 /* AggregatedAssignmentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AggregatedAssignmentsView.swift; sourceTree = "<group>"; };
 		9B69FA4C2CC2CCB1006101F3 /* AggregatedAssignmentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AggregatedAssignmentsViewModel.swift; sourceTree = "<group>"; };
@@ -85,6 +86,7 @@
 		B76454FA2C8DF61B002DF00E /* CanvasPlusPlaygroundApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasPlusPlaygroundApp.swift; sourceTree = "<group>"; };
 		B76454FB2C8DF61B002DF00E /* CourseFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseFileManager.swift; sourceTree = "<group>"; };
 		B76454FC2C8DF61B002DF00E /* CourseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseManager.swift; sourceTree = "<group>"; };
+		B7A26EE82CCB62A00084704A /* NavigationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,7 +103,8 @@
 		9B350F062C9652A8003FC60D /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				9B350F072C9652C6003FC60D /* AttributedText.swift */,
+				B7A26EE82CCB62A00084704A /* NavigationModel.swift */,
+				9B350F072C9652C6003FC60D /* NSAttributedString+HTML.swift */,
 				3DAE84FF2C9A0E4F008C22E7 /* PDFViewHelper.swift */,
 			);
 			path = Helpers;
@@ -278,6 +281,7 @@
 				95BA93482C9CE20D00137A91 /* CalendarView.swift in Sources */,
 				B76454FF2C8DF61B002DF00E /* Enrollment.swift in Sources */,
 				B76455002C8DF61B002DF00E /* File.swift in Sources */,
+				B7A26EE92CCB62A30084704A /* NavigationModel.swift in Sources */,
 				192EC04A2C963B9000AF8528 /* Assignment.swift in Sources */,
 				3DAE84FE2C9A0CE8008C22E7 /* CoursePDFView.swift in Sources */,
 				9B69FA4F2CC2CCCF006101F3 /* AggregatedAssignmentsViewCell.swift in Sources */,
@@ -291,7 +295,7 @@
 				B76455042C8DF61B002DF00E /* CourseView.swift in Sources */,
 				9B92A4252C93856100C21CFC /* CourseAnnouncementManager.swift in Sources */,
 				B76455052C8DF61B002DF00E /* SetupView.swift in Sources */,
-				9B350F082C9652C6003FC60D /* AttributedText.swift in Sources */,
+				9B350F082C9652C6003FC60D /* NSAttributedString+HTML.swift in Sources */,
 				9B9C2E042C93F6CD00E4B16B /* CourseAnnouncementsView.swift in Sources */,
 				192EC04C2C963EE600AF8528 /* CourseAssignmentView.swift in Sources */,
 				B53D95A02CA0953900647EE9 /* PeopleManager.swift in Sources */,
@@ -457,6 +461,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.rahulon.CanvasPlusPlayground;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -487,6 +495,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.rahulon.CanvasPlusPlayground;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
