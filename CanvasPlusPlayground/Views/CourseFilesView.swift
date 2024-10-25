@@ -17,14 +17,16 @@ struct CourseFilesView: View {
     }
 
     var body: some View {
-        List(fileManager.files, id: \.id) { file in
-            NavigationLink(destination: CoursePDFView(url: URL(string: file.url)!)) {
-                    Text(file.displayName)
+        NavigationStack {
+            List(fileManager.files, id: \.id) { file in
+                NavigationLink(destination: CoursePDFView(url: URL(string: file.url)!)) {
+                        Text(file.displayName)
+                }
             }
+            .task {
+                await fileManager.fetchFiles()
+            }
+            .navigationTitle("Files")
         }
-        .task {
-            await fileManager.fetchFiles()
-        }
-        .navigationTitle(course.name ?? "")
     }
 }

@@ -34,7 +34,7 @@ struct PeopleView: View {
         .refreshable {
             await peopleManager.fetchCurrentCoursePeople()
         }
-        .fullScreenCover(isPresented: $showSheet) {
+        .sheet(isPresented: $showSheet) {
             NavigationStack {
                 SetupView()
             }
@@ -43,6 +43,7 @@ struct PeopleView: View {
                     await peopleManager.fetchCurrentCoursePeople()
                 }
             }
+            .interactiveDismissDisabled()
         }
     }
     

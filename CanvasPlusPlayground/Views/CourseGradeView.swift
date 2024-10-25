@@ -32,6 +32,7 @@ struct CourseGradeView: View {
                 }
             }
         }
+        .navigationTitle("Grades")
     }
     
     func display(_ label: String, value: Any?) -> Text {

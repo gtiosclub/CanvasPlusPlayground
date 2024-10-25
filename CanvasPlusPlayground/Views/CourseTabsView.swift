@@ -20,7 +20,7 @@ struct CourseTabsView: View {
         List(tabsManager.tabLabels, id: \.self) { label in
             Text(label)
         }
-        .navigationTitle(course.name ?? "")
+        .navigationTitle("Tabs")
         .task {
             await tabsManager.fetchTabs()
         }

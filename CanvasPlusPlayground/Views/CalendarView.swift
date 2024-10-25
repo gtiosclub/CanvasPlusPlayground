@@ -8,12 +8,15 @@
 import SwiftUI
 
 struct CalendarView: View {
-let course: Course
-   var body: some View {
-       if let icsURL = course.calendar?.ics, let url = URL(string: icsURL) {
-        Link("Open in Calendar", destination: url)
-       } else {
-           Text("No calendar available")
-       }
-   }
+    let course: Course
+    var body: some View {
+        Group {
+            if let icsURL = course.calendar?.ics, let url = URL(string: icsURL) {
+                Link("Open in Calendar", destination: url)
+            } else {
+                Text("No calendar available")
+            }
+        }
+        .navigationTitle("Calendar")
+    }
 }
