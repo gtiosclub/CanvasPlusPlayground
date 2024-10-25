@@ -40,7 +40,10 @@ struct BridgedPDFView: PlatformViewRepresentable {
     func makeView(context: Context) -> PDFView {
         let pdfView = PDFView()
         Task {
-            pdfView.document = PDFDocument(url: self.pdfURL)
+            let document = PDFDocument(url: self.pdfURL)
+            await MainActor.run {
+                pdfView.document = document
+            }
         }
         pdfView.autoScales = true
         return pdfView
