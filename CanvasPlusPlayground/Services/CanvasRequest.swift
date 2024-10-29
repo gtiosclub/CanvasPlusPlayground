@@ -17,7 +17,7 @@ enum CanvasRequest {
     case getAnnouncements(courseId: Int)
     case getAssignments(courseId: Int)
     case getEnrollments
-    case getPeople(courseId: Int, bookmark: String)
+    case getPeople(courseId: Int, perPage: String = "100")
     var path: String {
         switch self {
         case .getCourses:
@@ -56,8 +56,8 @@ enum CanvasRequest {
             [
                 ("state[]", "active")
             ]
-        case let .getPeople(_, bookmark):
-            (!bookmark.isEmpty) ? [("page", bookmark)] : []
+        case let .getPeople(_, perPage):
+            [("per_page", perPage)]
         default:
             []
         }

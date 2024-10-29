@@ -32,16 +32,19 @@ class PeopleManager {
     }
 
     func fetchPeopleWith(courseID: Int) async -> ([Enrollment]) {
-        guard let (data, _) = await CanvasService.shared.fetch(.getPeople(courseId: courseID, bookmark: "")) else {
+        guard let dataResponse = await CanvasService.shared.fetchBatch(.getPeople(courseId: courseID)) else {
             print("Failed to fetch files.")
             return [];
         }
         
+        var enrollments: [Enrollment] = []
+        
+        
         do {
-            let enrollments = try JSONDecoder().decode([Enrollment].self, from: data)
+            for (data, _) in dataResponse {
+                enrollments.append(contentsOf: try JSONDecoder().decode([Enrollment].self, from: data))
+            }
             return enrollments
-            
-            // TODO: continue to query for next page and append to our lists
             
         } catch {
             print(error)
