@@ -9,8 +9,10 @@ import SwiftUI
 
 struct CourseListView: View {
     @Environment(CourseManager.self) var courseManager
-    
-    @State private var showSheet: Bool = false
+    @EnvironmentObject private var intelligenceManager: IntelligenceManager
+    @EnvironmentObject private var llmEvaluator: LLMEvaluator
+
+    @State private var showAuthorization: Bool = false
     @State private var navigationModel = NavigationModel()
 
     @State private var columnVisibility = NavigationSplitViewVisibility.all
@@ -31,7 +33,7 @@ struct CourseListView: View {
         }
         .task {
             if StorageKeys.needsAuthorization {
-                showSheet = true
+                showAuthorization = true
             } else {
                 await courseManager.getCourses()
                 await courseManager.getEnrollments()
@@ -40,7 +42,7 @@ struct CourseListView: View {
         .refreshable {
             await courseManager.getCourses()
         }
-        .sheet(isPresented: $showSheet) {
+        .sheet(isPresented: $showAuthorization) {
             NavigationStack {
                 SetupView()
             }
@@ -51,20 +53,48 @@ struct CourseListView: View {
             }
             .interactiveDismissDisabled()
         }
+        .sheet(isPresented: $navigationModel.showInstallIntelligenceSheet, content: {
+            NavigationStack {
+                IntelligenceOnboardingView()
+            }
+            .environmentObject(llmEvaluator)
+            .environmentObject(intelligenceManager)
+            .interactiveDismissDisabled()
+        })
         .environment(navigationModel)
     }
     
     private var mainBody: some View {
         List(selection: $navigationModel.selectedCourse) {
             Section {
+                Button {
+                    navigationModel.showInstallIntelligenceSheet = true
+                } label: {
+                    Label("Install Models", systemImage: "square.and.arrow.down")
+                }
+                .foregroundStyle(.blue)
+            } header: {
+                Label("Intelligence", systemImage: "wand.and.stars")
+            } footer: {
+                if intelligenceManager.installedModels.isEmpty {
+                    Text("Install models to use the intelligence features.")
+                } else {
+                    let count = intelligenceManager.installedModels.count
+                    Text(
+                        "You have \(count) installed \(count == 1 ? "model" : "models"). (\(intelligenceManager.installedModels.joined(separator: ", ")))"
+                    )
+                }
+            }
+
+
+            Section("Favorites") {
                 NavigationLink {
                     AggregatedAssignmentsView()
                 } label: {
                     Text("Your assigments")
                 }
-            }
-            
-            Section("Favorites") {
+                .disabled(courseManager.userFavCourses.isEmpty)
+
                 ForEach(courseManager.userFavCourses, id: \.id) { course in
                     NavigationLink(value: course) {
                         CourseListCell(course: course)
@@ -81,10 +111,13 @@ struct CourseListView: View {
             }
         }
         .navigationTitle("Courses")
+        #if os(iOS)
+        .listStyle(.insetGrouped)
+        #endif
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
                 Button("Change Access Token", systemImage: "gear") {
-                    showSheet.toggle()
+                    showAuthorization.toggle()
                 }
             }
         }
@@ -145,4 +178,6 @@ private struct CourseListCell: View {
 #Preview {
     CourseListView()
         .environment(CourseManager())
+        .environmentObject(LLMEvaluator())
+        .environmentObject(IntelligenceManager())
 }

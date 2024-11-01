@@ -17,4 +17,6 @@ class NavigationModel {
         didSet { selectedCoursePage = nil }
     }
     var selectedCoursePage: CoursePage?
+
+    var showInstallIntelligenceSheet = false
 }
