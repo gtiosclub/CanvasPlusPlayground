@@ -123,8 +123,10 @@ import Foundation
 import SwiftData
 
 @Model
-class CourseDTO {
-    var id: Int // TODO: change to strongly typed id like Tagged<Course, Int>
+class CourseDTO: DTO {
+    typealias Model = Course
+    
+    @Attribute(.unique) var id: Int // TODO: change to strongly typed id like Tagged<Course, Int>
     var courseData: Data
     
     init(id: Int, courseData: Data) {
@@ -138,9 +140,16 @@ class CourseDTO {
         }
         self.init(id: id, courseData: data)
     }
+    
+    func toModel() throws -> Model {
+        return try JSONDecoder().decode(Model.self, from: self.courseData)
+    }
+    
 }
 
-struct Course: Codable, Equatable, Hashable {
+struct Course: Cacheable {
+    typealias CachedDTO = CourseDTO
+    
     let id: Int?
     let sisCourseID: String?
     let uuid: String?
@@ -245,6 +254,10 @@ struct Course: Codable, Equatable, Hashable {
         case blueprintRestrictions = "blueprint_restrictions"
         case blueprintRestrictionsByObjectType = "blueprint_restrictions_by_object_type"
         case template
+    }
+    
+    func toDTO() throws -> CourseDTO {
+        try CourseDTO(course: self)
     }
 }
 

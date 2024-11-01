@@ -12,7 +12,7 @@ struct CanvasService {
     
     private let repository = CanvasRepository()
     
-    func fetch(_ request: CanvasRequest) async throws -> (data: Data, response: URLResponse) {
+    func fetchResponse(_ request: CanvasRequest) async throws -> (data: Data, response: URLResponse) {
         guard let url = request.url else { throw NetworkError.invalidURL(msg: request.path) }
 
         var request = URLRequest(url: url)
@@ -31,8 +31,8 @@ struct CanvasService {
         }
     }
     
-    func fetch<T>(_ request: CanvasRequest) async throws -> T where T : Codable  {
-        let (data, response) = try await CanvasService.shared.fetch(request)
+    func fetch<T: Codable>(_ request: CanvasRequest) async throws -> T {
+        let (data, _) = try await CanvasService.shared.fetchResponse(request)
         
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
@@ -40,6 +40,10 @@ struct CanvasService {
         
         do {
             let decoded = try decoder.decode(T.self, from: data)
+            
+            if let toCache = decoded as? (any Cacheable) {
+                try await repository.save(toCache)
+            }
             return decoded
         } catch {
             throw NetworkError.failedToDecode(msg: error.localizedDescription)
