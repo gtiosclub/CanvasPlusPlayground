@@ -17,7 +17,7 @@ import Foundation
     }
     
     func fetchAnnouncements() async {
-        guard let courseId, let (data, _) = await CanvasService.shared.fetch(.getAnnouncements(courseId: courseId)) else {
+        guard let courseId, let (data, _) = try? await CanvasService.shared.fetch(.getAnnouncements(courseId: courseId)) else {
             print("Failed to fetch announcements.")
             return
         }

@@ -17,7 +17,7 @@ class CourseFileManager {
     }
 
     func fetchFiles() async {
-        guard let courseID, let (data, _) = await CanvasService.shared.fetch(.getCourseFiles(courseId: courseID)) else {
+        guard let courseID, let (data, _) = try? await CanvasService.shared.fetch(.getCourseFiles(courseId: courseID)) else {
             print("Failed to fetch files.")
             return
         }
