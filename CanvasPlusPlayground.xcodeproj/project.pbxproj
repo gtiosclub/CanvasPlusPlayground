@@ -45,6 +45,12 @@
 		B76455092C8DF61B002DF00E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B76454F22C8DF61B002DF00E /* Preview Assets.xcassets */; };
 		B764550A2C8DF61B002DF00E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B76454F92C8DF61B002DF00E /* Assets.xcassets */; };
 		B7A26EE92CCB62A30084704A /* NavigationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A26EE82CCB62A00084704A /* NavigationModel.swift */; };
+		B7AD54F32CD41D7900FB09BB /* LLMEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AD54F12CD41D7900FB09BB /* LLMEvaluator.swift */; };
+		B7AD54F42CD41D7900FB09BB /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AD54F22CD41D7900FB09BB /* Models.swift */; };
+		B7AD54F52CD41D7900FB09BB /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AD54EF2CD41D7900FB09BB /* Data.swift */; };
+		B7AD54F62CD41D7900FB09BB /* DeviceStat.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AD54F02CD41D7900FB09BB /* DeviceStat.swift */; };
+		B7AD550A2CD4250700FB09BB /* LLM in Frameworks */ = {isa = PBXBuildFile; productRef = B7AD55092CD4250700FB09BB /* LLM */; };
+		B7AD550C2CD4257B00FB09BB /* IntelligenceOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AD550B2CD4257400FB09BB /* IntelligenceOnboardingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -87,6 +93,11 @@
 		B76454FB2C8DF61B002DF00E /* CourseFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseFileManager.swift; sourceTree = "<group>"; };
 		B76454FC2C8DF61B002DF00E /* CourseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseManager.swift; sourceTree = "<group>"; };
 		B7A26EE82CCB62A00084704A /* NavigationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationModel.swift; sourceTree = "<group>"; };
+		B7AD54EF2CD41D7900FB09BB /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
+		B7AD54F02CD41D7900FB09BB /* DeviceStat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceStat.swift; sourceTree = "<group>"; };
+		B7AD54F12CD41D7900FB09BB /* LLMEvaluator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLMEvaluator.swift; sourceTree = "<group>"; };
+		B7AD54F22CD41D7900FB09BB /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		B7AD550B2CD4257400FB09BB /* IntelligenceOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntelligenceOnboardingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +105,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B7AD550A2CD4250700FB09BB /* LLM in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,6 +150,7 @@
 		B76454F12C8DF61B002DF00E /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				B7AD54EE2CD41D5200FB09BB /* Intelligence */,
 				B76454ED2C8DF61B002DF00E /* Course.swift */,
 				B76454EE2C8DF61B002DF00E /* Enrollment.swift */,
 				B76454EF2C8DF61B002DF00E /* File.swift */,
@@ -160,6 +173,7 @@
 		B76454F82C8DF61B002DF00E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B7AD550B2CD4257400FB09BB /* IntelligenceOnboardingView.swift */,
 				3DAE84FD2C9A0CE8008C22E7 /* CoursePDFView.swift */,
 				B76454F42C8DF61B002DF00E /* CourseFilesView.swift */,
 				9B6663E22C9853BC0060990E /* AsyncAttributedText.swift */,
@@ -201,6 +215,17 @@
 			path = CanvasPlusPlayground;
 			sourceTree = "<group>";
 		};
+		B7AD54EE2CD41D5200FB09BB /* Intelligence */ = {
+			isa = PBXGroup;
+			children = (
+				B7AD54EF2CD41D7900FB09BB /* Data.swift */,
+				B7AD54F02CD41D7900FB09BB /* DeviceStat.swift */,
+				B7AD54F12CD41D7900FB09BB /* LLMEvaluator.swift */,
+				B7AD54F22CD41D7900FB09BB /* Models.swift */,
+			);
+			path = Intelligence;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -218,6 +243,7 @@
 			);
 			name = CanvasPlusPlayground;
 			packageProductDependencies = (
+				B7AD55092CD4250700FB09BB /* LLM */,
 			);
 			productName = CanvasPlusPlayground;
 			productReference = B76454642C8BBC7F002DF00E /* CanvasPlusPlayground.app */;
@@ -249,6 +275,7 @@
 			mainGroup = B764545B2C8BBC7F002DF00E;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				B7AD55082CD4250700FB09BB /* XCRemoteSwiftPackageReference "mlx-swift-examples" */,
 			);
 			productRefGroup = B76454652C8BBC7F002DF00E /* Products */;
 			projectDirPath = "";
@@ -295,6 +322,10 @@
 				B76455042C8DF61B002DF00E /* CourseView.swift in Sources */,
 				9B92A4252C93856100C21CFC /* CourseAnnouncementManager.swift in Sources */,
 				B76455052C8DF61B002DF00E /* SetupView.swift in Sources */,
+				B7AD54F32CD41D7900FB09BB /* LLMEvaluator.swift in Sources */,
+				B7AD54F42CD41D7900FB09BB /* Models.swift in Sources */,
+				B7AD54F52CD41D7900FB09BB /* Data.swift in Sources */,
+				B7AD54F62CD41D7900FB09BB /* DeviceStat.swift in Sources */,
 				9B350F082C9652C6003FC60D /* NSAttributedString+HTML.swift in Sources */,
 				9B9C2E042C93F6CD00E4B16B /* CourseAnnouncementsView.swift in Sources */,
 				192EC04C2C963EE600AF8528 /* CourseAssignmentView.swift in Sources */,
@@ -311,6 +342,7 @@
 				B76455082C8DF61B002DF00E /* CourseManager.swift in Sources */,
 				9B9C2E062C93F94C00E4B16B /* CourseAnnouncementDetailView.swift in Sources */,
 				9B6663E32C9853BC0060990E /* AsyncAttributedText.swift in Sources */,
+				B7AD550C2CD4257B00FB09BB /* IntelligenceOnboardingView.swift in Sources */,
 				7F8535742C98DE3C0023E384 /* CourseGradeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -527,6 +559,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B7AD55082CD4250700FB09BB /* XCRemoteSwiftPackageReference "mlx-swift-examples" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ml-explore/mlx-swift-examples/";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.16.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B7AD55092CD4250700FB09BB /* LLM */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B7AD55082CD4250700FB09BB /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
+			productName = LLM;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B764545C2C8BBC7F002DF00E /* Project object */;
 }
