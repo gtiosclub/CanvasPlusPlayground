@@ -9,6 +9,12 @@ import SwiftData
 
 struct CanvasRepository {
     
+    private let modelContext: ModelContext
+    
+    init() {
+
+    }
+    
     func save() {
         
     }
@@ -16,4 +22,8 @@ struct CanvasRepository {
     func get() {
         
     }
+}
+
+enum CacheError: Error {
+    case encodingError, decodingError
 }

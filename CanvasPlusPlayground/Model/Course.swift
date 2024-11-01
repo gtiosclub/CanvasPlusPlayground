@@ -120,6 +120,25 @@
  }
  */
 import Foundation
+import SwiftData
+
+@Model
+class CourseDTO {
+    var id: Int // TODO: change to strongly typed id like Tagged<Course, Int>
+    var courseData: Data
+    
+    init(id: Int, courseData: Data) {
+        self.id = id
+        self.courseData = courseData
+    }
+    
+    convenience init(course: Course) throws {
+        guard let id = course.id, let data = try? JSONEncoder().encode(course) else {
+            throw CacheError.encodingError
+        }
+        self.init(id: id, courseData: data)
+    }
+}
 
 struct Course: Codable, Equatable, Hashable {
     let id: Int?
