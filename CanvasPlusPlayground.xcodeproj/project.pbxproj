@@ -25,7 +25,6 @@
 		9B9C2E062C93F94C00E4B16B /* CourseAnnouncementDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9C2E052C93F94C00E4B16B /* CourseAnnouncementDetailView.swift */; };
 		A3269E8E2CD5533F006F7D14 /* CanvasRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3269E8D2CD5533F006F7D14 /* CanvasRepository.swift */; };
 		A3269E902CD57F75006F7D14 /* Cacheable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3269E8F2CD57F75006F7D14 /* Cacheable.swift */; };
-		A3269E942CD5A8BA006F7D14 /* Courses.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3269E932CD5A8BA006F7D14 /* Courses.swift */; };
 		A3E7F3892C954E0500DC4300 /* CanvasRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E7F3882C954E0500DC4300 /* CanvasRequest.swift */; };
 		A3E7F38B2C9555B200DC4300 /* CanvasService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E7F38A2C9555B200DC4300 /* CanvasService.swift */; };
 		A3E7F38F2C96C1CE00DC4300 /* CourseTabsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E7F38E2C96C1CE00DC4300 /* CourseTabsView.swift */; };
@@ -69,7 +68,6 @@
 		9B9C2E052C93F94C00E4B16B /* CourseAnnouncementDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAnnouncementDetailView.swift; sourceTree = "<group>"; };
 		A3269E8D2CD5533F006F7D14 /* CanvasRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasRepository.swift; sourceTree = "<group>"; };
 		A3269E8F2CD57F75006F7D14 /* Cacheable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cacheable.swift; sourceTree = "<group>"; };
-		A3269E932CD5A8BA006F7D14 /* Courses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Courses.swift; sourceTree = "<group>"; };
 		A3E7F3882C954E0500DC4300 /* CanvasRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasRequest.swift; sourceTree = "<group>"; };
 		A3E7F38A2C9555B200DC4300 /* CanvasService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasService.swift; sourceTree = "<group>"; };
 		A3E7F38E2C96C1CE00DC4300 /* CourseTabsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseTabsView.swift; sourceTree = "<group>"; };
@@ -153,7 +151,6 @@
 				9B92A4222C93853C00C21CFC /* Announcement.swift */,
 				A3E7F3922C99338B00DC4300 /* Tab.swift */,
 				A3269E8F2CD57F75006F7D14 /* Cacheable.swift */,
-				A3269E932CD5A8BA006F7D14 /* Courses.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -287,7 +284,6 @@
 			files = (
 				9B92A4232C93853C00C21CFC /* Announcement.swift in Sources */,
 				B76454FE2C8DF61B002DF00E /* Course.swift in Sources */,
-				A3269E942CD5A8BA006F7D14 /* Courses.swift in Sources */,
 				95BA93482C9CE20D00137A91 /* CalendarView.swift in Sources */,
 				B76454FF2C8DF61B002DF00E /* Enrollment.swift in Sources */,
 				B76455002C8DF61B002DF00E /* File.swift in Sources */,
