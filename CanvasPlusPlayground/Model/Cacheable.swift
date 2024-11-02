@@ -10,7 +10,7 @@ import Foundation
 
 protocol Cacheable: Codable, Hashable, Equatable {
     associatedtype CachedDTO: DTO
-    associatedtype ID: Hashable & Equatable
+    associatedtype ID: Hashable
 
     var id: ID? { get }
     static var tag: String { get }
@@ -22,7 +22,6 @@ protocol DTO: PersistentModel {
     associatedtype Model: Cacheable
 
     var id: String { get }
-    var tag: String { get }
     
     func toModel() throws -> Model
 }

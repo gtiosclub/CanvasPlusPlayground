@@ -35,7 +35,7 @@ struct CanvasRepository {
             item.id == id 
         })
         
-        let models = try await get<T>(descriptor: descriptor)
+        let models: [T] = try await get<T>(descriptor: descriptor)
         
         // Make sure model exists.
         if models.count > 0 {
@@ -46,11 +46,9 @@ struct CanvasRepository {
     /// Gets all data based on type. e.g. all Course objects to get all courses
     func get<T>() async throws -> [T]? where T : Cacheable {
         let tag = T.tag
-        let descriptor = FetchDescriptor<T.CachedDTO>(predicate: #Predicate { (item) in
-            item.tag == tag
-        })
+        let descriptor = FetchDescriptor<T.CachedDTO>()
         
-        let models = try await get<T>(descriptor: descriptor)
+        let models: [T] = try await get<T>(descriptor: descriptor)
         
         // Make sure model exists.
         if models.count > 0 {

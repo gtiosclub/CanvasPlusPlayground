@@ -34,7 +34,9 @@ class CourseManager {
         }*/
         
         do {
-            let courses: [Course] = try await CanvasService.shared.fetch(.getCourses(enrollmentState: "active"))
+            let courses: [Course] = try await CanvasService.shared.defaultAndFetch(.getCourses(enrollmentState: "active")) { cachedCourses in
+                self.courses = cachedCourses
+            }
             self.courses = courses
         } catch {
             print("Failed to fetch files. \(error)")

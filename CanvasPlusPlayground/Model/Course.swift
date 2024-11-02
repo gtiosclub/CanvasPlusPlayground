@@ -128,8 +128,7 @@ class CourseDTO: DTO {
     typealias Model = Course
     
     @Attribute(.unique) var id: String
-    var data: Data
-    let tag: String = Model.tag
+    @Attribute var data: Data
     
     init(id: Model.ID, data: Data) {
         self.id = String(describing: id)
@@ -149,7 +148,7 @@ class CourseDTO: DTO {
 }
 
 struct Course: Cacheable {
-    static var tag: String { "course" }
+    static var tag: String { String(describing: CachedDTO.self) }
     typealias CachedDTO = CourseDTO
     
     var id: Int?

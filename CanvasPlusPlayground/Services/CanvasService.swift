@@ -31,48 +31,32 @@ struct CanvasService {
         }
     }
     
-    /// To fetch data from the Canvas API, only!
-    func fetch<T: Codable>(_ request: CanvasRequest, onCacheReceive: (T) -> Void) async throws -> T {
+    func defaultAndFetch<T: Cacheable>(_ request: CanvasRequest, onCacheReceive: (T) -> Void) async throws -> T {
         // Cache fetch
         
         // If subject itself is cached
-        if T.self is (any Cacheable), let id = request.id, let cached = try await repository.get<T>(id: id) {
+        if let id = request.id,
+            let cached: T = try await repository.get(id: id as! T.ID) {
             onCacheReceive(cached)
         }
         
-        // API fetch
-        let (data, _) = try await CanvasService.shared.fetchResponse(request)
-        
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-        // TODO: each model should have its own decoder
-        
-        do {
-            let decoded = try decoder.decode(T.self, from: data)
-            
-            // if data itself is cacheable -> save, if data is an array of cacheables -> wrap-around
-            if let toCache = decoded as? (any Cacheable) {
-                try await repository.save(toCache)
-            } else if let arrayOfCacheables = decoded as? [any Cacheable] {
-                for cacheable in arrayOfCacheables {
-                    try await repository.save(cacheable)
-                }
-            }
-            
-            return decoded
-        } catch {
-            throw NetworkError.failedToDecode(msg: error.localizedDescription)
-        }
+        return try await fetch(request)
     }
     
-    /// To fetch data from the Canvas API, only!
-    func fetch<T: Codable>(_ request: CanvasRequest, onCacheReceive: (T) -> Void) async throws -> T where T : Collection {
+    /// To fetch a collection of data from the Canvas API, only!
+    func defaultAndFetch<T: Codable>(_ request: CanvasRequest, onCacheReceive: ([T.Element]) -> Void) async throws -> T where T : Collection, T.Element : Cacheable {
         // Cache fetch
         
         // If contents of subject are cached
-        if T.Element.self is (any Cacheable), let cached = try await repository.get<T.Element>() {
+        if let cached: [T.Element] = try await repository.get<T.Element>() {
             onCacheReceive(cached)
         }
+        
+        return try await fetch(request)
+    }
+    
+    /// To fetch data from the Canvas API, only!
+    func fetch<T: Codable>(_ request: CanvasRequest) async throws -> T {
         
         // API fetch
         let (data, _) = try await CanvasService.shared.fetchResponse(request)
