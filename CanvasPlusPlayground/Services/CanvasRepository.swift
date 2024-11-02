@@ -15,7 +15,7 @@ struct CanvasRepository {
     init() {
         self.modelContainer = try! ModelContainer(for:
             CourseDTO.self
-        ) // Add cacheable DTOs here
+        ) // TODO: Add cacheable DTOs here
     }
     
     func save<T>(_ item: T) async throws where T : Cacheable {
@@ -29,24 +29,48 @@ struct CanvasRepository {
         
     }
     
-    func get<T>(id: PersistentIdentifier) async throws -> T? where T : Cacheable {
-        try await MainActor.run {
-            let req = FetchDescriptor<T.CachedDTO>(predicate: #Predicate { item in
-                item.id == id
-            })
-            let DTOs = try modelContainer.mainContext.fetch(req)
+    func get<T>(id: T.ID) async throws -> T? where T : Cacheable {
+        let id = String(describing: id)
+        let descriptor = FetchDescriptor<T.CachedDTO>(predicate: #Predicate { (item) in
+            item.id == id 
+        })
+        
+        let models = try await get<T>(descriptor: descriptor)
+        
+        // Make sure model exists.
+        if models.count > 0 {
+            return models[0]
+        } else { return nil }
+    }
+    
+    /// Gets all data based on type. e.g. all Course objects to get all courses
+    func get<T>() async throws -> [T]? where T : Cacheable {
+        let tag = T.tag
+        let descriptor = FetchDescriptor<T.CachedDTO>(predicate: #Predicate { (item) in
+            item.tag == tag
+        })
+        
+        let models = try await get<T>(descriptor: descriptor)
+        
+        // Make sure model exists.
+        if models.count > 0 {
+            return models
+        } else { return nil }
+    }
+    
+    private func get<T>(descriptor: FetchDescriptor<T.CachedDTO>) async throws -> [T] where T : Cacheable {
+        let models = try await MainActor.run {
+            let DTOs = try modelContainer.mainContext.fetch(descriptor)
             
-            // Make sure model exists.
-            guard DTOs.count > 0 else {
-                return nil
-            }
             // Uncast it from DTO representation (into Model).
-            guard let model = try DTOs[0].toModel() as? T else {
-                print("Could not convert model with id \(id) of type \(T.self)")
+            guard let models = try DTOs.map({ try $0.toModel() }) as? [T] else {
+                print("Could not convert to model of type \(T.self)")
                 throw CacheError.decodingError
             }
-            return model
+            return models
         }
+        
+        return models
     }
 }
 

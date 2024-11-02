@@ -122,35 +122,37 @@
 import Foundation
 import SwiftData
 
+
 @Model
 class CourseDTO: DTO {
     typealias Model = Course
     
-    @Attribute(.unique) var id: Int // TODO: change to strongly typed id like Tagged<Course, Int>
-    var courseData: Data
+    @Attribute(.unique) var id: String
+    var data: Data
+    let tag: String = Model.tag
     
-    init(id: Int, courseData: Data) {
-        self.id = id
-        self.courseData = courseData
+    init(id: Model.ID, data: Data) {
+        self.id = String(describing: id)
+        self.data = data
     }
     
-    convenience init(course: Course) throws {
-        guard let id = course.id, let data = try? JSONEncoder().encode(course) else {
+    convenience init(model: Model) throws {
+        guard let id = model.id, let data = try? JSONEncoder().encode(model) else {
             throw CacheError.encodingError
         }
-        self.init(id: id, courseData: data)
+        self.init(id: id, data: data)
     }
-    
+
     func toModel() throws -> Model {
-        return try JSONDecoder().decode(Model.self, from: self.courseData)
+        return try JSONDecoder().decode(Model.self, from: self.data)
     }
-    
 }
 
 struct Course: Cacheable {
+    static var tag: String { "course" }
     typealias CachedDTO = CourseDTO
     
-    let id: Int?
+    var id: Int?
     let sisCourseID: String?
     let uuid: String?
     let integrationID: String?
@@ -256,8 +258,12 @@ struct Course: Cacheable {
         case template
     }
     
-    func toDTO() throws -> CourseDTO {
-        try CourseDTO(course: self)
+    func toDTO() throws -> CachedDTO {
+        try CourseDTO(model: self)
+    }
+    
+    func tag() -> String {
+        Course.tag
     }
 }
 
@@ -274,3 +280,4 @@ struct Permissions: Codable, Equatable, Hashable {
 struct CalendarLink: Codable, Equatable, Hashable {
     let ics: String
 }
+
