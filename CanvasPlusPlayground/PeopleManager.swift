@@ -32,7 +32,7 @@ class PeopleManager {
     }
 
     func fetchPeopleWith(courseID: Int) async -> ([Enrollment]) {
-        guard let (data, _) = await CanvasService.shared.fetch(.getPeople(courseId: courseID, bookmark: "")) else {
+        guard let (data, _) = try? await CanvasService.shared.fetchResponse(.getPeople(courseId: courseID, bookmark: "")) else {
             print("Failed to fetch files.")
             return [];
         }
@@ -50,7 +50,7 @@ class PeopleManager {
     }
     
     func fetchActiveCourses() async {
-        guard let (data, _) = await CanvasService.shared.fetch(.getCourses(enrollmentState: "active")) else {
+        guard let (data, _) = try? await CanvasService.shared.fetchResponse(.getCourses(enrollmentState: "active")) else {
             print("Failed to fetch files.")
             return
         }
