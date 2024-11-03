@@ -71,7 +71,7 @@ class PeopleManager {
             print("Is user in \(String(describing: course.name))?")
             
             // get enrollments in
-            guard let courseID = course.id else { continue }
+            let courseID = course.id.asInt
             let enrollments = await fetchPeopleWith(courseID: courseID)
             
             for enrollment in enrollments {

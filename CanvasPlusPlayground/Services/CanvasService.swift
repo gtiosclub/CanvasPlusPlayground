@@ -31,28 +31,63 @@ struct CanvasService {
         }
     }
     
-    func defaultAndFetch<T: Cacheable>(_ request: CanvasRequest, onCacheReceive: (T) -> Void) async throws -> T {
-        // Cache fetch
+    /// To fetch a single cacheable object from the Canvas API, also provides cached version via closure (if any).
+    func defaultAndFetchSingle<T: Cacheable>(
+        _ request: CanvasRequest,
+        onCacheReceive: (T?) -> Void = { _ in }
+    ) async throws -> T {
         
-        // If subject itself is cached
-        if let id = request.id,
-            let cached: T = try await repository.get(id: id as! T.ID) {
+        // If subject is cached
+        if let id = request.id as? T.ID, let cached: T = try await repository.getSingle(with: id) {
             onCacheReceive(cached)
+            
+            let latest: T = try await fetch(request)
+            cached.merge(with: latest)
+            
+            return latest
+        } else {
+            onCacheReceive(nil)
+            let latest: T = try await fetch(request)
+            
+            try await save(model: latest)
+            return latest
         }
-        
-        return try await fetch(request)
     }
     
-    /// To fetch a collection of data from the Canvas API, only!
-    func defaultAndFetch<T: Codable>(_ request: CanvasRequest, onCacheReceive: ([T.Element]) -> Void) async throws -> T where T : Collection, T.Element : Cacheable {
-        // Cache fetch
-        
+    /// To fetch a collection of data from the Canvas API, also provides cached version via closure (if any).
+    func defaultAndFetch<T: Codable>(
+        _ request: CanvasRequest, 
+        onCacheReceive: ([T.Element]?) -> Void,
+        predicate: Predicate<T.Element>
+    ) async throws -> T where T : Collection, T.Element : Cacheable {
         // If contents of subject are cached
-        if let cached: [T.Element] = try await repository.get<T.Element>() {
+        if let cached: [T.Element] = try await repository.get(with: predicate){
             onCacheReceive(cached)
+            
+            let latest: T = try await fetch(request)
+            
+            zip(cached, latest).forEach { c, l in
+                c.merge(with: l)
+            }
+            
+            return cached as! T
+        } else {
+            onCacheReceive(nil)
+            let latest: T = try await fetch(request)
+            
+            try await save(model: latest)
+            return latest
         }
         
-        return try await fetch(request)
+    }
+    
+    func defaultAndFetch<T: Codable>(
+        _ request: CanvasRequest,
+        onCacheReceive: ([T.Element]?) -> Void
+    ) async throws -> T where T : Collection, T.Element : Cacheable {
+        let predicate = #Predicate<T.Element> { _ in true }
+        
+        return try await  defaultAndFetch(request, onCacheReceive: onCacheReceive, predicate: predicate)
     }
     
     /// To fetch data from the Canvas API, only!
@@ -67,23 +102,22 @@ struct CanvasService {
         
         do {
             let decoded = try decoder.decode(T.self, from: data)
-            
-            // if data itself is cacheable -> save, if data is an array of cacheables -> wrap-around
-            if let toCache = decoded as? (any Cacheable) {
-                try await repository.save(toCache)
-            } else if let arrayOfCacheables = decoded as? [any Cacheable] {
-                for cacheable in arrayOfCacheables {
-                    try await repository.save(cacheable)
-                }
-            }
-            
             return decoded
         } catch {
             throw NetworkError.failedToDecode(msg: error.localizedDescription)
         }
     }
     
-    // TODO: new method + dispatch queue for multiple concurrent requests - Aziz
+    private func save(model: Any) async throws {
+        // if data itself is cacheable -> save, if data is an array of cacheables -> wrap-around
+        if let toCache = model as? (any Cacheable) {
+            try await repository.save(toCache)
+        } else if let arrayOfCacheables = model as? [any Cacheable] {
+            for cacheable in arrayOfCacheables {
+                try await repository.save(cacheable)
+            }
+        }
+    }
 }
 
 enum NetworkError: Error {

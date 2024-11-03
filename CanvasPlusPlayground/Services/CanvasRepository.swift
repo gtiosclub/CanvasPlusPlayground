@@ -14,25 +14,21 @@ struct CanvasRepository {
     
     init() {
         self.modelContainer = try! ModelContainer(for:
-            CourseDTO.self
+            Course.self
         ) // TODO: Add cacheable DTOs here
     }
     
     func save<T>(_ item: T) async throws where T : Cacheable {
-        let DTO = try item.toDTO()
-        
         try await MainActor.run {
-            modelContainer.mainContext.insert(DTO)
+            modelContainer.mainContext.insert(item)
             
             try modelContainer.mainContext.save()
         }
-        
     }
     
-    func get<T>(id: T.ID) async throws -> T? where T : Cacheable {
-        let id = String(describing: id)
-        let descriptor = FetchDescriptor<T.CachedDTO>(predicate: #Predicate { (item) in
-            item.id == id 
+    func getSingle<T>(with id: T.ID) async throws -> T? where T : Cacheable {
+        let descriptor = FetchDescriptor<T>(predicate: #Predicate { item in
+            true //id == $0.id
         })
         
         let models: [T] = try await get<T>(descriptor: descriptor)
@@ -44,9 +40,8 @@ struct CanvasRepository {
     }
     
     /// Gets all data based on type. e.g. all Course objects to get all courses
-    func get<T>() async throws -> [T]? where T : Cacheable {
-        let tag = T.tag
-        let descriptor = FetchDescriptor<T.CachedDTO>()
+    func get<T>(with predicate: Predicate<T>) async throws -> [T]? where T : Cacheable {
+        let descriptor = FetchDescriptor<T>(predicate: predicate)
         
         let models: [T] = try await get<T>(descriptor: descriptor)
         
@@ -56,15 +51,18 @@ struct CanvasRepository {
         } else { return nil }
     }
     
-    private func get<T>(descriptor: FetchDescriptor<T.CachedDTO>) async throws -> [T] where T : Cacheable {
+    /// Gets all data based on type. e.g. all Course objects to get all courses
+    func get<T>() async throws -> [T]? where T : Cacheable {
+        let predicate = #Predicate<T> { _ in true }
+        
+        return try await get(with: predicate)
+    }
+    
+    
+    private func get<T>(descriptor: FetchDescriptor<T>) async throws -> [T] where T : Cacheable {
+        
         let models = try await MainActor.run {
-            let DTOs = try modelContainer.mainContext.fetch(descriptor)
-            
-            // Uncast it from DTO representation (into Model).
-            guard let models = try DTOs.map({ try $0.toModel() }) as? [T] else {
-                print("Could not convert to model of type \(T.self)")
-                throw CacheError.decodingError
-            }
+            let models = try modelContainer.mainContext.fetch(descriptor)
             return models
         }
         

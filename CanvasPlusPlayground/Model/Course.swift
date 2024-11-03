@@ -124,84 +124,59 @@ import SwiftData
 
 
 @Model
-class CourseDTO: DTO {
-    typealias Model = Course
-    
+class Course: Cacheable {
     @Attribute(.unique) var id: String
-    @Attribute var data: Data
     
-    init(id: Model.ID, data: Data) {
-        self.id = String(describing: id)
-        self.data = data
-    }
-    
-    convenience init(model: Model) throws {
-        guard let id = model.id, let data = try? JSONEncoder().encode(model) else {
-            throw CacheError.encodingError
-        }
-        self.init(id: id, data: data)
-    }
-
-    func toModel() throws -> Model {
-        return try JSONDecoder().decode(Model.self, from: self.data)
-    }
-}
-
-struct Course: Cacheable {
-    static var tag: String { String(describing: CachedDTO.self) }
-    typealias CachedDTO = CourseDTO
-    
-    var id: Int?
-    let sisCourseID: String?
-    let uuid: String?
-    let integrationID: String?
-    let sisImportID: Int?
-    let name: String?
-    let courseCode: String?
-    let originalName: String?
-    let workflowState: String?
-    let accountID: Int?
-    let rootAccountID: Int?
-    let enrollmentTermID: Int?
-    let gradingPeriods: [String]?
-    let gradingStandardID: Int?
-    let gradePassbackSetting: String?
-    let createdAt: String?
-    let startAt: String?
-    let endAt: String?
-    let locale: String?
-    let enrollments: [Enrollment]?
-    let totalStudents: Int?
-    let calendar: CalendarLink?
-    let defaultView: String?
-    let syllabusBody: String?
-    let needsGradingCount: Int?
-    let term: String?
-    let courseProgress: String?
-    let applyAssignmentGroupWeights: Bool?
-    let permissions: Permissions?
-    let isPublic: Bool?
-    let isPublicToAuthUsers: Bool?
-    let publicSyllabus: Bool?
-    let publicSyllabusToAuth: Bool?
-    let publicDescription: String?
-    let storageQuotaMB: Int?
-    let storageQuotaUsedMB: Int?
-    let hideFinalGrades: Bool?
-    let license: String?
-    let allowStudentAssignmentEdits: Bool?
-    let allowWikiComments: Bool?
-    let allowStudentForumAttachments: Bool?
-    let openEnrollment: Bool?
-    let selfEnrollment: Bool?
-    let restrictEnrollmentsToCourseDates: Bool?
-    let courseFormat: String?
-    let accessRestrictedByDate: Bool?
-    let timeZone: String?
-    let blueprint: Bool?
-    let blueprintRestrictions: [String: Bool]?
-    let blueprintRestrictionsByObjectType: [String: [String: Bool]]?
-    let template: Bool?
+    @Attribute var sisCourseID: String?
+    @Attribute var uuid: String?
+    @Attribute var integrationID: String?
+    @Attribute var sisImportID: Int?
+    @Attribute var name: String?
+    @Attribute var courseCode: String?
+    @Attribute var originalName: String?
+    @Attribute var workflowState: String?
+    @Attribute var accountID: Int?
+    @Attribute var rootAccountID: Int?
+    @Attribute var enrollmentTermID: Int?
+    @Attribute var gradingPeriods: [String]?
+    @Attribute var gradingStandardID: Int?
+    @Attribute var gradePassbackSetting: String?
+    @Attribute var createdAt: String?
+    @Attribute var startAt: String?
+    @Attribute var endAt: String?
+    @Attribute var locale: String?
+    @Attribute var enrollments: [Enrollment]?
+    @Attribute var totalStudents: Int?
+    @Attribute var calendar: CalendarLink?
+    @Attribute var defaultView: String?
+    @Attribute var syllabusBody: String?
+    @Attribute var needsGradingCount: Int?
+    @Attribute var term: String?
+    @Attribute var courseProgress: String?
+    @Attribute var applyAssignmentGroupWeights: Bool?
+    @Attribute var permissions: Permissions?
+    @Attribute var isPublic: Bool?
+    @Attribute var isPublicToAuthUsers: Bool?
+    @Attribute var publicSyllabus: Bool?
+    @Attribute var publicSyllabusToAuth: Bool?
+    @Attribute var publicDescription: String?
+    @Attribute var storageQuotaMB: Int?
+    @Attribute var storageQuotaUsedMB: Int?
+    @Attribute var hideFinalGrades: Bool?
+    @Attribute var license: String?
+    @Attribute var allowStudentAssignmentEdits: Bool?
+    @Attribute var allowWikiComments: Bool?
+    @Attribute var allowStudentForumAttachments: Bool?
+    @Attribute var openEnrollment: Bool?
+    @Attribute var selfEnrollment: Bool?
+    @Attribute var restrictEnrollmentsToCourseDates: Bool?
+    @Attribute var courseFormat: String?
+    @Attribute var accessRestrictedByDate: Bool?
+    @Attribute var timeZone: String?
+    @Attribute var blueprint: Bool?
+    @Attribute var blueprintRestrictions: [String: Bool]?
+    @Attribute var blueprintRestrictionsByObjectType: [String: [String: Bool]]?
+    @Attribute var template: Bool?
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -257,12 +232,171 @@ struct Course: Cacheable {
         case template
     }
     
-    func toDTO() throws -> CachedDTO {
-        try CourseDTO(model: self)
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        let id = try container.decode(Int.self, forKey: .id)
+        self.id =  String(describing: id)
+        
+        self.sisCourseID = try container.decodeIfPresent(String.self, forKey: .sisCourseID)
+        self.uuid = try container.decodeIfPresent(String.self, forKey: .uuid)
+        self.integrationID = try container.decodeIfPresent(String.self, forKey: .integrationID)
+        self.sisImportID = try container.decodeIfPresent(Int.self, forKey: .sisImportID)
+        self.name = try container.decodeIfPresent(String.self, forKey: .name)
+        self.courseCode = try container.decodeIfPresent(String.self, forKey: .courseCode)
+        self.originalName = try container.decodeIfPresent(String.self, forKey: .originalName)
+        self.workflowState = try container.decodeIfPresent(String.self, forKey: .workflowState)
+        self.accountID = try container.decodeIfPresent(Int.self, forKey: .accountID)
+        self.rootAccountID = try container.decodeIfPresent(Int.self, forKey: .rootAccountID)
+        self.enrollmentTermID = try container.decodeIfPresent(Int.self, forKey: .enrollmentTermID)
+        self.gradingPeriods = try container.decodeIfPresent([String].self, forKey: .gradingPeriods)
+        self.gradingStandardID = try container.decodeIfPresent(Int.self, forKey: .gradingStandardID)
+        self.gradePassbackSetting = try container.decodeIfPresent(String.self, forKey: .gradePassbackSetting)
+        self.createdAt = try container.decodeIfPresent(String.self, forKey: .createdAt)
+        self.startAt = try container.decodeIfPresent(String.self, forKey: .startAt)
+        self.endAt = try container.decodeIfPresent(String.self, forKey: .endAt)
+        self.locale = try container.decodeIfPresent(String.self, forKey: .locale)
+        self.enrollments = try container.decodeIfPresent([Enrollment].self, forKey: .enrollments)
+        self.totalStudents = try container.decodeIfPresent(Int.self, forKey: .totalStudents)
+        self.calendar = try container.decodeIfPresent(CalendarLink.self, forKey: .calendar)
+        self.defaultView = try container.decodeIfPresent(String.self, forKey: .defaultView)
+        self.syllabusBody = try container.decodeIfPresent(String.self, forKey: .syllabusBody)
+        self.needsGradingCount = try container.decodeIfPresent(Int.self, forKey: .needsGradingCount)
+        self.term = try container.decodeIfPresent(String.self, forKey: .term)
+        self.courseProgress = try container.decodeIfPresent(String.self, forKey: .courseProgress)
+        self.applyAssignmentGroupWeights = try container.decodeIfPresent(Bool.self, forKey: .applyAssignmentGroupWeights)
+        self.permissions = try container.decodeIfPresent(Permissions.self, forKey: .permissions)
+        self.isPublic = try container.decodeIfPresent(Bool.self, forKey: .isPublic)
+        self.isPublicToAuthUsers = try container.decodeIfPresent(Bool.self, forKey: .isPublicToAuthUsers)
+        self.publicSyllabus = try container.decodeIfPresent(Bool.self, forKey: .publicSyllabus)
+        self.publicSyllabusToAuth = try container.decodeIfPresent(Bool.self, forKey: .publicSyllabusToAuth)
+        self.publicDescription = try container.decodeIfPresent(String.self, forKey: .publicDescription)
+        self.storageQuotaMB = try container.decodeIfPresent(Int.self, forKey: .storageQuotaMB)
+        self.storageQuotaUsedMB = try container.decodeIfPresent(Int.self, forKey: .storageQuotaUsedMB)
+        self.hideFinalGrades = try container.decodeIfPresent(Bool.self, forKey: .hideFinalGrades)
+        self.license = try container.decodeIfPresent(String.self, forKey: .license)
+        self.allowStudentAssignmentEdits = try container.decodeIfPresent(Bool.self, forKey: .allowStudentAssignmentEdits)
+        self.allowWikiComments = try container.decodeIfPresent(Bool.self, forKey: .allowWikiComments)
+        self.allowStudentForumAttachments = try container.decodeIfPresent(Bool.self, forKey: .allowStudentForumAttachments)
+        self.openEnrollment = try container.decodeIfPresent(Bool.self, forKey: .openEnrollment)
+        self.selfEnrollment = try container.decodeIfPresent(Bool.self, forKey: .selfEnrollment)
+        self.restrictEnrollmentsToCourseDates = try container.decodeIfPresent(Bool.self, forKey: .restrictEnrollmentsToCourseDates)
+        self.courseFormat = try container.decodeIfPresent(String.self, forKey: .courseFormat)
+        self.accessRestrictedByDate = try container.decodeIfPresent(Bool.self, forKey: .accessRestrictedByDate)
+        self.timeZone = try container.decodeIfPresent(String.self, forKey: .timeZone)
+        self.blueprint = try container.decodeIfPresent(Bool.self, forKey: .blueprint)
+        self.blueprintRestrictions = try container.decodeIfPresent([String: Bool].self, forKey: .blueprintRestrictions)
+        self.blueprintRestrictionsByObjectType = try container.decodeIfPresent([String: [String: Bool]].self, forKey: .blueprintRestrictionsByObjectType)
+        self.template = try container.decodeIfPresent(Bool.self, forKey: .template)
     }
     
-    func tag() -> String {
-        Course.tag
+    func encode(to encoder: Encoder) throws {
+       var container = encoder.container(keyedBy: CodingKeys.self)
+       try container.encode(id, forKey: .id)
+       try container.encodeIfPresent(sisCourseID, forKey: .sisCourseID)
+       try container.encodeIfPresent(uuid, forKey: .uuid)
+       try container.encodeIfPresent(integrationID, forKey: .integrationID)
+       try container.encodeIfPresent(sisImportID, forKey: .sisImportID)
+       try container.encodeIfPresent(name, forKey: .name)
+       try container.encodeIfPresent(courseCode, forKey: .courseCode)
+       try container.encodeIfPresent(originalName, forKey: .originalName)
+       try container.encodeIfPresent(workflowState, forKey: .workflowState)
+       try container.encodeIfPresent(accountID, forKey: .accountID)
+       try container.encodeIfPresent(rootAccountID, forKey: .rootAccountID)
+       try container.encodeIfPresent(enrollmentTermID, forKey: .enrollmentTermID)
+       try container.encodeIfPresent(gradingPeriods, forKey: .gradingPeriods)
+       try container.encodeIfPresent(gradingStandardID, forKey: .gradingStandardID)
+       try container.encodeIfPresent(gradePassbackSetting, forKey: .gradePassbackSetting)
+       try container.encodeIfPresent(createdAt, forKey: .createdAt)
+       try container.encodeIfPresent(startAt, forKey: .startAt)
+       try container.encodeIfPresent(endAt, forKey: .endAt)
+       try container.encodeIfPresent(locale, forKey: .locale)
+       try container.encodeIfPresent(enrollments, forKey: .enrollments)
+       try container.encodeIfPresent(totalStudents, forKey: .totalStudents)
+       try container.encodeIfPresent(calendar, forKey: .calendar)
+       try container.encodeIfPresent(defaultView, forKey: .defaultView)
+       try container.encodeIfPresent(syllabusBody, forKey: .syllabusBody)
+       try container.encodeIfPresent(needsGradingCount, forKey: .needsGradingCount)
+       try container.encodeIfPresent(term, forKey: .term)
+       try container.encodeIfPresent(courseProgress, forKey: .courseProgress)
+       try container.encodeIfPresent(applyAssignmentGroupWeights, forKey: .applyAssignmentGroupWeights)
+       try container.encodeIfPresent(permissions, forKey: .permissions)
+       try container.encodeIfPresent(isPublic, forKey: .isPublic)
+       try container.encodeIfPresent(isPublicToAuthUsers, forKey: .isPublicToAuthUsers)
+       try container.encodeIfPresent(publicSyllabus, forKey: .publicSyllabus)
+       try container.encodeIfPresent(publicSyllabusToAuth, forKey: .publicSyllabusToAuth)
+       try container.encodeIfPresent(publicDescription, forKey: .publicDescription)
+       try container.encodeIfPresent(storageQuotaMB, forKey: .storageQuotaMB)
+       try container.encodeIfPresent(storageQuotaUsedMB, forKey: .storageQuotaUsedMB)
+       try container.encodeIfPresent(hideFinalGrades, forKey: .hideFinalGrades)
+       try container.encodeIfPresent(license, forKey: .license)
+       try container.encodeIfPresent(allowStudentAssignmentEdits, forKey: .allowStudentAssignmentEdits)
+       try container.encodeIfPresent(allowWikiComments, forKey: .allowWikiComments)
+       try container.encodeIfPresent(allowStudentForumAttachments, forKey: .allowStudentForumAttachments)
+       try container.encodeIfPresent(openEnrollment, forKey: .openEnrollment)
+       try container.encodeIfPresent(selfEnrollment, forKey: .selfEnrollment)
+       try container.encodeIfPresent(restrictEnrollmentsToCourseDates, forKey: .restrictEnrollmentsToCourseDates)
+       try container.encodeIfPresent(courseFormat, forKey: .courseFormat)
+       try container.encodeIfPresent(accessRestrictedByDate, forKey: .accessRestrictedByDate)
+       try container.encodeIfPresent(timeZone, forKey: .timeZone)
+       try container.encodeIfPresent(blueprint, forKey: .blueprint)
+       try container.encodeIfPresent(blueprintRestrictions, forKey: .blueprintRestrictions)
+       try container.encodeIfPresent(blueprintRestrictionsByObjectType, forKey: .blueprintRestrictionsByObjectType)
+       try container.encodeIfPresent(template, forKey: .template)
+   }
+    
+    func merge(with other: Course) {
+        self.id = other.id
+        self.sisCourseID = other.sisCourseID
+        self.uuid = other.uuid
+        self.integrationID = other.integrationID
+        self.sisImportID = other.sisImportID
+        self.name = other.name
+        self.courseCode = other.courseCode
+        self.originalName = other.originalName
+        self.workflowState = other.workflowState
+        self.accountID = other.accountID
+        self.rootAccountID = other.rootAccountID
+        self.enrollmentTermID = other.enrollmentTermID
+        self.gradingPeriods = other.gradingPeriods
+        self.gradingStandardID = other.gradingStandardID
+        self.gradePassbackSetting = other.gradePassbackSetting
+        self.createdAt = other.createdAt
+        self.startAt = other.startAt
+        self.endAt = other.endAt
+        self.locale = other.locale
+        self.enrollments = other.enrollments
+        self.totalStudents = other.totalStudents
+        self.calendar = other.calendar
+        self.defaultView = other.defaultView
+        self.syllabusBody = other.syllabusBody
+        self.needsGradingCount = other.needsGradingCount
+        self.term = other.term
+        self.courseProgress = other.courseProgress
+        self.applyAssignmentGroupWeights = other.applyAssignmentGroupWeights
+        self.permissions = other.permissions
+        self.isPublic = other.isPublic
+        self.isPublicToAuthUsers = other.isPublicToAuthUsers
+        self.publicSyllabus = other.publicSyllabus
+        self.publicSyllabusToAuth = other.publicSyllabusToAuth
+        self.publicDescription = other.publicDescription
+        self.storageQuotaMB = other.storageQuotaMB
+        self.storageQuotaUsedMB = other.storageQuotaUsedMB
+        self.hideFinalGrades = other.hideFinalGrades
+        self.license = other.license
+        self.allowStudentAssignmentEdits = other.allowStudentAssignmentEdits
+        self.allowWikiComments = other.allowWikiComments
+        self.allowStudentForumAttachments = other.allowStudentForumAttachments
+        self.openEnrollment = other.openEnrollment
+        self.selfEnrollment = other.selfEnrollment
+        self.restrictEnrollmentsToCourseDates = other.restrictEnrollmentsToCourseDates
+        self.courseFormat = other.courseFormat
+        self.accessRestrictedByDate = other.accessRestrictedByDate
+        self.timeZone = other.timeZone
+        self.blueprint = other.blueprint
+        self.blueprintRestrictions = other.blueprintRestrictions
+        self.blueprintRestrictionsByObjectType = other.blueprintRestrictionsByObjectType
+        self.template = other.template
     }
 }
 
@@ -280,3 +414,8 @@ struct CalendarLink: Codable, Equatable, Hashable {
     let ics: String
 }
 
+extension String {
+    var asInt: Int {
+        Int(self) ?? 0
+    }
+}

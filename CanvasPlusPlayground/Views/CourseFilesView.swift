@@ -13,7 +13,7 @@ struct CourseFilesView: View {
 
     init(course: Course) {
         self.course = course
-        _fileManager = .init(initialValue: CourseFileManager(courseID: course.id))
+        _fileManager = .init(initialValue: CourseFileManager(courseID: course.id.asInt))
     }
 
     var body: some View {
