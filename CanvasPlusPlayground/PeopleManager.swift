@@ -53,7 +53,7 @@ class PeopleManager {
     }
     
     func fetchActiveCourses() async {
-        guard let (data, _) = await CanvasService.shared.fetch(.getCourses(enrollmentState: "active")) else {
+        guard let (data, _) = try? await CanvasService.shared.fetchResponse(.getCourses(enrollmentState: "active")) else {
             print("Failed to fetch files.")
             return
         }
@@ -91,4 +91,6 @@ class PeopleManager {
         print("number of common course: \(commonCourses.count)")
         return commonCourses
     }
+    
+    
 }

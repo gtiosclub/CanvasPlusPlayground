@@ -66,6 +66,15 @@ enum CanvasRequest {
         
         return params
     }
+    
+    var id: Int? {
+        switch self {
+        case .getCourse(let id):
+            return id
+        default:
+            return nil
+        }
+    }
 }
 
 extension CanvasRequest {

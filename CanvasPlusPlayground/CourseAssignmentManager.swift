@@ -17,7 +17,7 @@ class CourseAssignmentManager {
     }
 
     func fetchAssignments() async {
-        guard let courseID, let (data, _) = await CanvasService.shared.fetch(.getAssignments(courseId: courseID)) else {
+        guard let courseID, let (data, _) = try? await CanvasService.shared.fetchResponse(.getAssignments(courseId: courseID)) else {
             print("Failed to fetch assignments.")
             return
         }
