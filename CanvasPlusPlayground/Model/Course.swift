@@ -127,56 +127,57 @@ import SwiftData
 class Course: Cacheable {
     @Attribute(.unique) var id: String
     
-    @Attribute var sisCourseID: String?
-    @Attribute var uuid: String?
-    @Attribute var integrationID: String?
-    @Attribute var sisImportID: Int?
-    @Attribute var name: String?
-    @Attribute var courseCode: String?
-    @Attribute var originalName: String?
-    @Attribute var workflowState: String?
-    @Attribute var accountID: Int?
-    @Attribute var rootAccountID: Int?
-    @Attribute var enrollmentTermID: Int?
-    @Attribute var gradingPeriods: [String]?
-    @Attribute var gradingStandardID: Int?
-    @Attribute var gradePassbackSetting: String?
-    @Attribute var createdAt: String?
-    @Attribute var startAt: String?
-    @Attribute var endAt: String?
-    @Attribute var locale: String?
-    @Attribute var enrollments: [Enrollment]?
-    @Attribute var totalStudents: Int?
-    @Attribute var calendar: CalendarLink?
-    @Attribute var defaultView: String?
-    @Attribute var syllabusBody: String?
-    @Attribute var needsGradingCount: Int?
-    @Attribute var term: String?
-    @Attribute var courseProgress: String?
-    @Attribute var applyAssignmentGroupWeights: Bool?
-    @Attribute var permissions: Permissions?
-    @Attribute var isPublic: Bool?
-    @Attribute var isPublicToAuthUsers: Bool?
-    @Attribute var publicSyllabus: Bool?
-    @Attribute var publicSyllabusToAuth: Bool?
-    @Attribute var publicDescription: String?
-    @Attribute var storageQuotaMB: Int?
-    @Attribute var storageQuotaUsedMB: Int?
-    @Attribute var hideFinalGrades: Bool?
-    @Attribute var license: String?
-    @Attribute var allowStudentAssignmentEdits: Bool?
-    @Attribute var allowWikiComments: Bool?
-    @Attribute var allowStudentForumAttachments: Bool?
-    @Attribute var openEnrollment: Bool?
-    @Attribute var selfEnrollment: Bool?
-    @Attribute var restrictEnrollmentsToCourseDates: Bool?
-    @Attribute var courseFormat: String?
-    @Attribute var accessRestrictedByDate: Bool?
-    @Attribute var timeZone: String?
-    @Attribute var blueprint: Bool?
-    @Attribute var blueprintRestrictions: [String: Bool]?
-    @Attribute var blueprintRestrictionsByObjectType: [String: [String: Bool]]?
-    @Attribute var template: Bool?
+    @Relationship() var enrollments: [Enrollment]?
+    
+    var sisCourseID: String?
+    var uuid: String?
+    var integrationID: String?
+    var sisImportID: Int?
+    var name: String?
+    var courseCode: String?
+    var originalName: String?
+    var workflowState: String?
+    var accountID: Int?
+    var rootAccountID: Int?
+    var enrollmentTermID: Int?
+    var gradingPeriods: [String]?
+    var gradingStandardID: Int?
+    var gradePassbackSetting: String?
+    var createdAt: String?
+    var startAt: String?
+    var endAt: String?
+    var locale: String?
+    var totalStudents: Int?
+    var calendar: CalendarLink?
+    var defaultView: String?
+    var syllabusBody: String?
+    var needsGradingCount: Int?
+    var term: String?
+    var courseProgress: String?
+    var applyAssignmentGroupWeights: Bool?
+    var permissions: Permissions?
+    var isPublic: Bool?
+    var isPublicToAuthUsers: Bool?
+    var publicSyllabus: Bool?
+    var publicSyllabusToAuth: Bool?
+    var publicDescription: String?
+    var storageQuotaMB: Int?
+    var storageQuotaUsedMB: Int?
+    var hideFinalGrades: Bool?
+    var license: String?
+    var allowStudentAssignmentEdits: Bool?
+    var allowWikiComments: Bool?
+    var allowStudentForumAttachments: Bool?
+    var openEnrollment: Bool?
+    var selfEnrollment: Bool?
+    var restrictEnrollmentsToCourseDates: Bool?
+    var courseFormat: String?
+    var accessRestrictedByDate: Bool?
+    var timeZone: String?
+    var blueprint: Bool?
+    var blueprintRestrictions: [String: Bool]?
+    var blueprintRestrictionsByObjectType: [String: [String: Bool]]?
+    var template: Bool?
 
     enum CodingKeys: String, CodingKey {
         case id
