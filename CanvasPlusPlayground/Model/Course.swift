@@ -246,7 +246,14 @@ struct CalendarLink: Codable, Equatable, Hashable {
 
 extension Course {
     init?(from data:Data) {
-        self = try! JSONDecoder().decode(Course.self, from: data)
+        do {
+            self = try JSONDecoder().decode(Course.self, from: data)
+            
+        } catch {
+            print("Error decoding course from data: \(error)")
+            return nil
+        }
+        
     }
     
     

@@ -11,7 +11,7 @@ struct CourseListView: View {
     @Environment(CourseManager.self) var courseManager
     
     @State private var showSheet: Bool = false
-    @State private var navigationModel = NavigationModel()
+    @StateObject private var navigationModel = NavigationModel()
 
     @State private var columnVisibility = NavigationSplitViewVisibility.all
 
@@ -51,7 +51,7 @@ struct CourseListView: View {
             }
             .interactiveDismissDisabled()
         }
-        .environment(navigationModel)
+        .environmentObject(navigationModel)
     }
     
     private var mainBody: some View {
