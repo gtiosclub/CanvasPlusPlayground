@@ -120,10 +120,40 @@
  }
  */
 import Foundation
+import SwiftData
 
 
-struct Course: Codable, Equatable, Hashable {
-    let id: Int?
+
+@Model
+class CourseDTO: DTO {
+    typealias Model = Course
+    
+    @Attribute(.unique) var id: String
+    @Attribute var data: Data
+    
+    init(id: Model.ID, data: Data) {
+        self.id = String(describing: id)
+        self.data = data
+    }
+    
+    convenience init(model: Model) throws {
+        guard let id = model.id, let data = try? JSONEncoder().encode(model) else {
+            throw CacheError.encodingError
+        }
+        self.init(id: id, data: data)
+    }
+
+    func toModel() throws -> Model {
+        return try JSONDecoder().decode(Model.self, from: self.data)
+    }
+}
+
+struct Course: Cacheable {
+    static var tag: String { String(describing: CachedDTO.self) }
+    typealias CachedDTO = CourseDTO
+    
+    var id: Int?
+
     let sisCourseID: String?
     let uuid: String?
     let integrationID: String?
@@ -228,6 +258,14 @@ struct Course: Codable, Equatable, Hashable {
         case blueprintRestrictionsByObjectType = "blueprint_restrictions_by_object_type"
         case template
     }
+    
+    func toDTO() throws -> CachedDTO {
+        try CourseDTO(model: self)
+    }
+    
+    func tag() -> String {
+        Course.tag
+    }
 }
 
 struct Permissions: Codable, Equatable, Hashable {
@@ -244,8 +282,9 @@ struct CalendarLink: Codable, Equatable, Hashable {
     let ics: String
 }
 
+
 extension Course {
-    init?(from data:Data) {
+    init?(from data: Data) {
         do {
             self = try JSONDecoder().decode(Course.self, from: data)
             

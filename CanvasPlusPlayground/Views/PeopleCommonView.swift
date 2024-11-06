@@ -11,17 +11,35 @@ struct PeopleCommonView: View {
     @Environment(PeopleManager.self) var peopleManager
     let user: User
     @State var courses: [Course] = []
-    
-    var body: some View {
-        Text("\(courses.count) Common Course\(courses.count == 1 ? "" : "s")")
+    @State private var loading: Bool = false
 
-        List(courses, id: \.id) { course in
-            Text(course.name ?? "")
+    var body: some View {
+        List {
+            Section {
+                statusLabel
+            }
+
+            ForEach(courses, id: \.id) { course in
+                Text(course.name ?? "")
+            }
         }
         .task {
+            loading = true
             self.courses = await peopleManager.fetchAllClassesWith(userID: user.id!)
+            loading = false
         }
-        
+    }
+
+    private var statusLabel: some View {
+        HStack {
+            Text("\(courses.count) Common Course\(courses.count == 1 ? "" : "s")")
+
+            Spacer()
+
+            if loading {
+                ProgressView()
+            }
+        }
     }
 }
 
