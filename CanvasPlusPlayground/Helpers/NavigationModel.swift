@@ -20,6 +20,7 @@ class NavigationModel: ObservableObject {
             selectedCoursePage = nil
         }
     }
+    
     @Published var selectedCoursePage: CoursePage? {
         didSet {
             print("Course page changed")
@@ -47,4 +48,6 @@ class NavigationModel: ObservableObject {
         self.selectedCourse = course
         self.selectedCoursePage = page
     }
+    
+    var showInstallIntelligenceSheet = false
 }

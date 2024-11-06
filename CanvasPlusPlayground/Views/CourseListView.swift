@@ -18,7 +18,6 @@ struct CourseListView: View {
     @EnvironmentObject private var llmEvaluator: LLMEvaluator
 
     @State private var showAuthorization: Bool = false
-    @State private var navigationModel = NavigationModel()
 
 
     @State private var columnVisibility = NavigationSplitViewVisibility.all
@@ -61,6 +60,7 @@ struct CourseListView: View {
         }
 
         .environmentObject(navigationModel)
+        
         .sheet(isPresented: $navigationModel.showInstallIntelligenceSheet, content: {
             NavigationStack {
                 IntelligenceOnboardingView()
