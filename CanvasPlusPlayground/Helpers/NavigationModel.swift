@@ -49,5 +49,5 @@ class NavigationModel: ObservableObject {
         self.selectedCoursePage = page
     }
     
-    var showInstallIntelligenceSheet = false
+    @Published var showInstallIntelligenceSheet = false
 }
