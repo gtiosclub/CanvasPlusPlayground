@@ -9,11 +9,16 @@ import SwiftUI
 
 struct CourseListView: View {
     @Environment(CourseManager.self) var courseManager
+
+    
+    @State private var showSheet: Bool = false
+    @StateObject private var navigationModel = NavigationModel()
+
     @EnvironmentObject private var intelligenceManager: IntelligenceManager
     @EnvironmentObject private var llmEvaluator: LLMEvaluator
 
     @State private var showAuthorization: Bool = false
-    @State private var navigationModel = NavigationModel()
+
 
     @State private var columnVisibility = NavigationSplitViewVisibility.all
 
@@ -53,6 +58,8 @@ struct CourseListView: View {
             }
             .interactiveDismissDisabled()
         }
+        .environmentObject(navigationModel)
+        
         .sheet(isPresented: $navigationModel.showInstallIntelligenceSheet, content: {
             NavigationStack {
                 IntelligenceOnboardingView()
@@ -61,7 +68,6 @@ struct CourseListView: View {
             .environmentObject(intelligenceManager)
             .interactiveDismissDisabled()
         })
-        .environment(navigationModel)
     }
     
     private var mainBody: some View {

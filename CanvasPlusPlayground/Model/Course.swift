@@ -123,6 +123,7 @@ import Foundation
 import SwiftData
 
 
+
 @Model
 class CourseDTO: DTO {
     typealias Model = Course
@@ -152,6 +153,7 @@ struct Course: Cacheable {
     typealias CachedDTO = CourseDTO
     
     var id: Int?
+
     let sisCourseID: String?
     let uuid: String?
     let integrationID: String?
@@ -202,7 +204,7 @@ struct Course: Cacheable {
     let blueprintRestrictions: [String: Bool]?
     let blueprintRestrictionsByObjectType: [String: [String: Bool]]?
     let template: Bool?
-
+    
     enum CodingKeys: String, CodingKey {
         case id
         case sisCourseID = "sis_course_id"
@@ -269,7 +271,7 @@ struct Course: Cacheable {
 struct Permissions: Codable, Equatable, Hashable {
     let createDiscussionTopic: Bool
     let createAnnouncement: Bool
-
+    
     enum CodingKeys: String, CodingKey {
         case createDiscussionTopic = "create_discussion_topic"
         case createAnnouncement = "create_announcement"
@@ -280,3 +282,18 @@ struct CalendarLink: Codable, Equatable, Hashable {
     let ics: String
 }
 
+
+extension Course {
+    init?(from data: Data) {
+        do {
+            self = try JSONDecoder().decode(Course.self, from: data)
+            
+        } catch {
+            print("Error decoding course from data: \(error)")
+            return nil
+        }
+        
+    }
+    
+    
+}
