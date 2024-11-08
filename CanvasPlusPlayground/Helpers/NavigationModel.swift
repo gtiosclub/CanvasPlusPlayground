@@ -28,6 +28,9 @@ class NavigationModel: ObservableObject {
         }
     }
     
+    @Published var showInstallIntelligenceSheet = false
+    
+    
     init(){
         let courseData = UserDefaults.standard.data(forKey: "selectedCourse")
         let pageString = UserDefaults.standard.string(forKey: "selectedPage")
@@ -49,5 +52,5 @@ class NavigationModel: ObservableObject {
         self.selectedCoursePage = page
     }
     
-    @Published var showInstallIntelligenceSheet = false
+    
 }
