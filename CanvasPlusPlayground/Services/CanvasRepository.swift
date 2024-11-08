@@ -42,19 +42,12 @@ struct CanvasRepository {
     
     /// Gets all data based on type. e.g. all Course objects to get all courses
     func get<T, V: Equatable>(
-        with keypath: KeyPath<T,V>? = nil,
-        equals value: V? = nil
+        condition: LookupCondition<T, V>?
     ) async throws -> [T]? where T : Cacheable {
         
         let descriptor = {
-            if let keypath, let value {
-                let pred = Foundation.Predicate<T> { model in
-                    PredicateExpressions.build_Equal(
-                        lhs: PredicateExpressions.KeyPath(root: model, keyPath: keypath),
-                        rhs: PredicateExpressions.Value(value)
-                    ) as! any StandardPredicateExpression<Bool>
-                }
-                return FetchDescriptor<T>(predicate: pred)
+            if let predicate = condition?.expression() {
+                return FetchDescriptor<T>(predicate: predicate)
             } else {
                 return FetchDescriptor<T>()
             }

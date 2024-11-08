@@ -58,12 +58,11 @@ struct CanvasService {
     /// To fetch a collection of data from the Canvas API, also provides cached version via closure (if any). Allows for filtering.
     func defaultAndFetch<T: Codable, V: Equatable>(
         _ request: CanvasRequest,
-        with keypath: KeyPath<T.Element,V>?,
-        equals value: V?,
+        condition: LookupCondition<T.Element, V>?,
         onCacheReceive: ([T.Element]?) -> Void
     ) async throws -> T where T : Collection, T.Element : Cacheable {
         // If contents of subject are cached
-        if let cached: [T.Element] = try await repository.get(with: keypath, equals: value){
+        if let cached: [T.Element] = try await repository.get(condition: condition) {
             onCacheReceive(cached)
             
             let latest: T = try await fetch(request)
@@ -97,7 +96,7 @@ struct CanvasService {
         _ request: CanvasRequest,
         onCacheReceive: ([T.Element]?) -> Void
     ) async throws -> T where T : Collection, T.Element : Cacheable {
-        return try await defaultAndFetch<T, String>(request, with: nil as KeyPath<T.Element, String>?, equals: nil, onCacheReceive: onCacheReceive)
+        return try await defaultAndFetch<T, String>(request, condition: nil as LookupCondition<T.Element, String>?, onCacheReceive: onCacheReceive)
     }
     
     /// To fetch data from the Canvas API, only!
