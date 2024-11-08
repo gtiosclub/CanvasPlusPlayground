@@ -124,10 +124,12 @@ import SwiftData
 
 
 @Model
-class Course: Cacheable {
+final class Course: Cacheable {
+    typealias ServerID = Int
+    
     @Attribute(.unique) var id: String
     
-    @Relationship() var enrollments: [Enrollment]?
+    /*@Relationship()*/ var enrollments: [Enrollment]?
     
     var sisCourseID: String?
     var uuid: String?
@@ -236,7 +238,7 @@ class Course: Cacheable {
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        let id = try container.decode(Int.self, forKey: .id)
+        let id = try container.decode(ServerID.self, forKey: .id)
         self.id =  String(describing: id)
         
         self.sisCourseID = try container.decodeIfPresent(String.self, forKey: .sisCourseID)

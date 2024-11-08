@@ -10,7 +10,7 @@ import Foundation
 struct CanvasService {
     static let shared = CanvasService()
     
-    private let repository = CanvasRepository()
+    let repository = CanvasRepository()
     
     func fetchResponse(_ request: CanvasRequest) async throws -> (data: Data, response: URLResponse) {
         guard let url = request.url else { throw NetworkError.invalidURL(msg: request.path) }
@@ -38,12 +38,13 @@ struct CanvasService {
     ) async throws -> T {
         
         // If subject is cached
-        if let id = request.id as? T.ID, let cached: T = try await repository.getSingle(with: id) {
+        if let id = request.id as? T.ServerID, let cached: T = try await repository.getSingle(with: id) {
             onCacheReceive(cached)
             
             let latest: T = try await fetch(request)
             cached.merge(with: latest)
             
+            try await save(model: cached)
             return latest
         } else {
             onCacheReceive(nil)
@@ -55,13 +56,14 @@ struct CanvasService {
     }
     
     /// To fetch a collection of data from the Canvas API, also provides cached version via closure (if any).
-    func defaultAndFetch<T: Codable>(
-        _ request: CanvasRequest, 
-        onCacheReceive: ([T.Element]?) -> Void,
-        predicate: Predicate<T.Element>
+    func defaultAndFetch<T: Codable, V: Equatable>(
+        _ request: CanvasRequest,
+        with keypath: KeyPath<T.Element,V>?,
+        equals value: V?,
+        onCacheReceive: ([T.Element]?) -> Void
     ) async throws -> T where T : Collection, T.Element : Cacheable {
         // If contents of subject are cached
-        if let cached: [T.Element] = try await repository.get(with: predicate){
+        if let cached: [T.Element] = try await repository.get(with: keypath, equals: value){
             onCacheReceive(cached)
             
             let latest: T = try await fetch(request)
@@ -70,13 +72,14 @@ struct CanvasService {
                 c.merge(with: l)
             }
             
+            try await save(model: cached)
             return cached as! T
         } else {
             onCacheReceive(nil)
             let latest: T = try await fetch(request)
             
             try await save(model: latest)
-            return latest
+            return [] as! T
         }
         
     }
@@ -85,9 +88,7 @@ struct CanvasService {
         _ request: CanvasRequest,
         onCacheReceive: ([T.Element]?) -> Void
     ) async throws -> T where T : Collection, T.Element : Cacheable {
-        let predicate = #Predicate<T.Element> { _ in true }
-        
-        return try await  defaultAndFetch(request, onCacheReceive: onCacheReceive, predicate: predicate)
+        return try await defaultAndFetch<T, String>(request, with: nil as KeyPath<T.Element, String>?, equals: nil, onCacheReceive: onCacheReceive)
     }
     
     /// To fetch data from the Canvas API, only!

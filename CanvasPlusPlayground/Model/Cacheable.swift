@@ -8,11 +8,13 @@
 import SwiftData
 import Foundation
 
-protocol Cacheable: Codable, Hashable, Equatable, PersistentModel where ID: Hashable {
+protocol Cacheable: Codable, Sendable, PersistentModel {
+    associatedtype ServerID: Hashable
     var id: String { get }
     
     func merge(with other: Self)
 }
+
 
 /**
  To define new attribute in existing models:

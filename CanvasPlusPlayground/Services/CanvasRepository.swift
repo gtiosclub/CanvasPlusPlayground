@@ -10,12 +10,12 @@ import SwiftUI
 
 struct CanvasRepository {
     
-    private let modelContainer: ModelContainer
+    let modelContainer: ModelContainer
     
     init() {
         self.modelContainer = try! ModelContainer(for:
             Course.self
-        ) // TODO: Add cacheable DTOs here
+        ) // TODO: Add cacheable models here
     }
     
     func save<T>(_ item: T) async throws where T : Cacheable {
@@ -26,9 +26,10 @@ struct CanvasRepository {
         }
     }
     
-    func getSingle<T>(with id: T.ID) async throws -> T? where T : Cacheable {
-        let descriptor = FetchDescriptor<T>(predicate: #Predicate { item in
-            true //id == $0.id
+    func getSingle<T>(with id: T.ServerID) async throws -> T? where T : Cacheable {
+        let id = String(describing: id)
+        let descriptor = FetchDescriptor<T>(predicate: #Predicate { model in
+            model.id == id
         })
         
         let models: [T] = try await get<T>(descriptor: descriptor)
@@ -40,8 +41,24 @@ struct CanvasRepository {
     }
     
     /// Gets all data based on type. e.g. all Course objects to get all courses
-    func get<T>(with predicate: Predicate<T>) async throws -> [T]? where T : Cacheable {
-        let descriptor = FetchDescriptor<T>(predicate: predicate)
+    func get<T, V: Equatable>(
+        with keypath: KeyPath<T,V>? = nil,
+        equals value: V? = nil
+    ) async throws -> [T]? where T : Cacheable {
+        
+        let descriptor = {
+            if let keypath, let value {
+                let pred = Foundation.Predicate<T> { model in
+                    PredicateExpressions.build_Equal(
+                        lhs: PredicateExpressions.KeyPath(root: model, keyPath: keypath),
+                        rhs: PredicateExpressions.Value(value)
+                    ) as! any StandardPredicateExpression<Bool>
+                }
+                return FetchDescriptor<T>(predicate: pred)
+            } else {
+                return FetchDescriptor<T>()
+            }
+        }()
         
         let models: [T] = try await get<T>(descriptor: descriptor)
         
@@ -49,13 +66,6 @@ struct CanvasRepository {
         if models.count > 0 {
             return models
         } else { return nil }
-    }
-    
-    /// Gets all data based on type. e.g. all Course objects to get all courses
-    func get<T>() async throws -> [T]? where T : Cacheable {
-        let predicate = #Predicate<T> { _ in true }
-        
-        return try await get(with: predicate)
     }
     
     
