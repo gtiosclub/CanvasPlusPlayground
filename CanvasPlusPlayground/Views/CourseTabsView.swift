@@ -8,14 +8,34 @@
 import SwiftUI
 import WebKit
 
-struct WebView: UIViewRepresentable {
+#if os(iOS)
+typealias PlatformRepresentable = UIViewRepresentable
+#else
+typealias PlatformRepresentable = NSViewRepresentable
+#endif
+
+struct WebView: PlatformRepresentable {
     let url: URL
 
+    #if os(iOS)
     func makeUIView(context: Context) -> WKWebView {
         return WKWebView()
     }
 
     func updateUIView(_ webView: WKWebView, context: Context) {
+        loadRequest(webView)
+    }
+    #else
+    func makeNSView(context: Context) -> WKWebView {
+        return WKWebView()
+    }
+
+    func updateNSView(_ webView: WKWebView, context: Context) {
+        loadRequest(webView)
+    }
+    #endif
+    
+    private func loadRequest(_ webView: WKWebView) {
         var request = URLRequest(url: url)
         
         // TODO: pass auth token, not accessToken
@@ -56,21 +76,19 @@ struct CourseTabsView: View {
         }
         .sheet(isPresented: $showWebView) {
             
-            VStack {
-                HStack {
-                    Spacer()
-                    Button("Close") {
-                        showWebView = false
+            NavigationStack {
+                Group {
+                    if let url = selectedURL {
+                        WebView(url: url)
                     }
-                    .padding(.top, 15)
-                    .padding(.trailing, 20)
                 }
-                
-                if let url = selectedURL {
-                    WebView(url: url)
-                }
-                Spacer()
+               .toolbar {
+                   Button("Close") {
+                       showWebView = false
+                   }
+               }
             }
+            .frame(minWidth: 800, minHeight: 600)
         }
     }
 }
