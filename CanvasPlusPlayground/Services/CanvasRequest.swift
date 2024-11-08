@@ -75,27 +75,6 @@ enum CanvasRequest {
             return nil
         }
     }
-    
-    var associatedModel: Codable.Type {
-        return switch self {
-        case .getCourses:
-            [Course].self
-        case .getCourse:
-            Course.self
-        case .getCourseFiles:
-            [File].self
-        case .getTabs:
-            [Tab].self
-        case .getAnnouncements:
-            [Announcement].self
-        case .getAssignments:
-            [Assignment].self
-        case .getEnrollments:
-            [Enrollment].self
-        case .getPeople:
-            [User].self
-        }
-    }
 }
 
 extension CanvasRequest {
