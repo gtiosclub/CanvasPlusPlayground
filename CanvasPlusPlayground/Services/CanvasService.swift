@@ -10,7 +10,7 @@ import Foundation
 struct CanvasService {
     static let shared = CanvasService()
     
-    let repository = CanvasRepository.shared
+    let repository = CanvasRepository()
     
     func fetchResponse(_ request: CanvasRequest) async throws -> (data: Data, response: URLResponse) {
         guard let url = request.url else { throw NetworkError.invalidURL(msg: request.path) }
@@ -44,13 +44,13 @@ struct CanvasService {
             let latest: T = try await fetch(request)
             cached.merge(with: latest)
             
-            try await save(model: cached)
+            try await insert(model: cached)
             return latest
         } else {
             onCacheReceive(nil)
             let latest: T = try await fetch(request)
             
-            try await save(model: latest)
+            try await insert(model: latest)
             return latest
         }
     }
@@ -72,13 +72,13 @@ struct CanvasService {
                 c.merge(with: l)
             }
             
-            try await save(model: cached)
+            try await insert(model: cached)
             return cached as! T
         } else {
             onCacheReceive(nil)
             let latest: T = try await fetch(request)
             
-            try await save(model: latest)
+            try await insert(model: latest)
             return [] as! T
         }
         
@@ -109,7 +109,13 @@ struct CanvasService {
         }
     }
     
-    private func save(model: Any) async throws {
+    func update() {
+        Task {
+            await repository.update()
+        }
+    }
+    
+    private func insert(model: Any) async throws {
         // if data itself is cacheable -> save, if data is an array of cacheables -> wrap-around
         if let toCache = model as? (any Cacheable) {
             try await repository.save(toCache)

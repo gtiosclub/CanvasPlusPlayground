@@ -29,6 +29,7 @@ class CourseManager {
                    self.courses = cachedCourses
                 }
             )
+
             self.courses = courses
         } catch {
             print("Failed to fetch files. \(error)")

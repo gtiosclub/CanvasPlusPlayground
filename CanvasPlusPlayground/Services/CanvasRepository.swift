@@ -10,7 +10,6 @@ import SwiftUI
 
 struct CanvasRepository {
     
-    static var shared = CanvasRepository()
     let modelContainer: ModelContainer
     
     init() {
@@ -80,9 +79,9 @@ struct CanvasRepository {
         return models
     }
     
-    static func update() async {
+    func update() async {
         await MainActor.run {
-            try? shared.modelContainer.mainContext.save()
+            try? modelContainer.mainContext.save()
         }
     }
 }
