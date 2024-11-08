@@ -79,7 +79,7 @@ struct CanvasRepository {
         return models
     }
     
-    func update() async {
+    func saveAll() async {
         await MainActor.run {
             try? modelContainer.mainContext.save()
         }

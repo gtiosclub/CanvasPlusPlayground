@@ -20,7 +20,7 @@ extension Cacheable {
     func update<V>(keypath: ReferenceWritableKeyPath<Self, V>, value: V) {
         self[keyPath: keypath] = value
         
-        CanvasService.shared.update()
+        CanvasService.shared.saveAll()
     }
 
 }

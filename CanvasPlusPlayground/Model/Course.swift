@@ -399,7 +399,9 @@ final class Course: Cacheable {
         self.blueprint = other.blueprint
         self.blueprintRestrictions = other.blueprintRestrictions
         self.blueprintRestrictionsByObjectType = other.blueprintRestrictionsByObjectType
-        self.template = other.template        
+        self.template = other.template 
+        
+        CanvasService.shared.saveAll()
     }
 }
 

@@ -55,7 +55,7 @@ struct CanvasService {
         }
     }
     
-    /// To fetch a collection of data from the Canvas API, also provides cached version via closure (if any).
+    /// To fetch a collection of data from the Canvas API, also provides cached version via closure (if any). Allows for filtering.
     func defaultAndFetch<T: Codable, V: Equatable>(
         _ request: CanvasRequest,
         with keypath: KeyPath<T.Element,V>?,
@@ -67,12 +67,20 @@ struct CanvasService {
             onCacheReceive(cached)
             
             let latest: T = try await fetch(request)
-            
-            zip(cached, latest).forEach { c, l in
-                c.merge(with: l)
+            let cachedById = Dictionary(uniqueKeysWithValues: cached.map { ($0.id, $0) })
+
+            // If model exists in cache, merge latest with it. Otherwise, insert it as new.
+            await withTaskGroup(of: Void.self) { group in
+                for latestModel in latest {
+                    if let matchedCached = cachedById[latestModel.id] {
+                        matchedCached.merge(with: latestModel)
+                    } else {
+                        try? await repository.insert(latestModel)
+                    }
+                }
             }
             
-            try await insert(model: cached)
+            
             return cached as! T
         } else {
             onCacheReceive(nil)
@@ -84,6 +92,7 @@ struct CanvasService {
         
     }
     
+    /// To fetch a collection of data from the Canvas API, also provides cached version via closure (if any).
     func defaultAndFetch<T: Codable>(
         _ request: CanvasRequest,
         onCacheReceive: ([T.Element]?) -> Void
@@ -109,9 +118,10 @@ struct CanvasService {
         }
     }
     
-    func update() {
+    /// Push SwiftData changes to disk.
+    func saveAll() {
         Task {
-            await repository.update()
+            await repository.saveAll()
         }
     }
     
