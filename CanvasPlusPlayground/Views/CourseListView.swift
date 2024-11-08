@@ -58,7 +58,6 @@ struct CourseListView: View {
             }
             .interactiveDismissDisabled()
         }
-
         .environmentObject(navigationModel)
         
         .sheet(isPresented: $navigationModel.showInstallIntelligenceSheet, content: {
