@@ -118,10 +118,10 @@ struct CanvasService {
     private func insert(model: Any) async throws {
         // if data itself is cacheable -> save, if data is an array of cacheables -> wrap-around
         if let toCache = model as? (any Cacheable) {
-            try await repository.save(toCache)
+            try await repository.insert(toCache)
         } else if let arrayOfCacheables = model as? [any Cacheable] {
             for cacheable in arrayOfCacheables {
-                try await repository.save(cacheable)
+                try await repository.insert(cacheable)
             }
         }
     }

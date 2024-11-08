@@ -18,7 +18,7 @@ struct CanvasRepository {
         ) // TODO: Add cacheable models here
     }
     
-    func save<T>(_ item: T) async throws where T : Cacheable {
+    func insert<T>(_ item: T) async throws where T : Cacheable {
         try await MainActor.run {
             modelContainer.mainContext.insert(item)
             
