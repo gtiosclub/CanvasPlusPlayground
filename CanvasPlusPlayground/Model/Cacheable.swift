@@ -8,13 +8,24 @@
 import SwiftData
 import Foundation
 
-protocol Cacheable: Codable, Sendable, PersistentModel {
+protocol Cacheable: Codable, PersistentModel {
     associatedtype ServerID: Hashable
     var id: String { get }
     
     func merge(with other: Self)
 }
 
+
+extension Cacheable {
+    func update<V>(keypath: ReferenceWritableKeyPath<Self, V>, value: V) {
+        self[keyPath: keypath] = value
+        
+        Task {
+            await CanvasRepository.update()
+        }
+    }
+
+}
 
 /**
  To define new attribute in existing models:

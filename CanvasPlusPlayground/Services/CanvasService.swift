@@ -10,7 +10,7 @@ import Foundation
 struct CanvasService {
     static let shared = CanvasService()
     
-    let repository = CanvasRepository()
+    let repository = CanvasRepository.shared
     
     func fetchResponse(_ request: CanvasRequest) async throws -> (data: Data, response: URLResponse) {
         guard let url = request.url else { throw NetworkError.invalidURL(msg: request.path) }
