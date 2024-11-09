@@ -418,9 +418,3 @@ struct Permissions: Codable, Equatable, Hashable {
 struct CalendarLink: Codable, Equatable, Hashable {
     let ics: String
 }
-
-extension String {
-    var asInt: Int {
-        Int(self) ?? 0
-    }
-}

@@ -18,12 +18,11 @@ struct CanvasRepository {
         ) // TODO: Add cacheable models here
     }
     
+    @MainActor
     func insert<T>(_ item: T) async throws where T : Cacheable {
-        try await MainActor.run {
-            modelContainer.mainContext.insert(item)
-            
-            try modelContainer.mainContext.save()
-        }
+        modelContainer.mainContext.insert(item)
+        
+        try modelContainer.mainContext.save()
     }
     
     func getSingle<T>(with id: T.ServerID) async throws -> T? where T : Cacheable {
@@ -72,10 +71,9 @@ struct CanvasRepository {
         return models
     }
     
-    func saveAll() async {
-        await MainActor.run {
-            try? modelContainer.mainContext.save()
-        }
+    @MainActor
+    func saveAll()  {
+        try? modelContainer.mainContext.save()
     }
 }
 

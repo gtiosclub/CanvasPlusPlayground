@@ -85,7 +85,11 @@ struct CanvasService {
             onCacheReceive(nil)
             let latest: T = try await fetch(request)
             
-            try await insert(model: latest)
+            await withTaskGroup(of: Void.self) { group in
+                for latestModel in latest {
+                    try? await insert(model: latest)
+                }
+            }
             return [] as! T
         }
         
