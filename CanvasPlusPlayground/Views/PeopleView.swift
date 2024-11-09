@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct PeopleView: View {
-    let courseID: Int?
+    let courseID: String?
     @State private var peopleManager: PeopleManager
     
-    init(courseID: Int?) {
+    init(courseID: String?) {
         self.courseID = courseID
         self.peopleManager = PeopleManager(courseID: courseID)
     }
@@ -42,5 +42,5 @@ struct PeopleView: View {
 }
 
 #Preview {
-    PeopleView(courseID: 409318)
+    PeopleView(courseID: "409318")
 }

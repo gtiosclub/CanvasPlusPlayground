@@ -27,8 +27,8 @@ struct CourseGradeView: View {
         }
         .onAppear {
             for enroll in courseManager.enrollments {
-                let idLHS = self.course.id.asInt
-                let idRHS = enroll.courseID
+                let idLHS = self.course.id
+                let idRHS = String(describing: enroll.courseID)
                 if idLHS == idRHS  {
                     self.enrollment = enroll
                 }

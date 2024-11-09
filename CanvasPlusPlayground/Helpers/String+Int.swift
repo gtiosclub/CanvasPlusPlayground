@@ -8,7 +8,13 @@
 import Foundation
 
 extension String {
-    var asInt: Int {
-        Int(self) ?? 0
+    var asInt: Int? {
+        Int(self)
+    }
+}
+
+extension Int {
+    var asString: String {
+        "\(self)"
     }
 }

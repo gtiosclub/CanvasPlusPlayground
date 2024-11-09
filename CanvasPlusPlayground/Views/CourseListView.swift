@@ -106,7 +106,7 @@ struct CourseListView: View {
             case .grades:
                 CourseGradeView(course: selectedCourse)
             case .people:
-                PeopleView(courseID: selectedCourse.id.asInt)
+                PeopleView(courseID: selectedCourse.id)
             case .tabs:
                 CourseTabsView(course: selectedCourse)
             }

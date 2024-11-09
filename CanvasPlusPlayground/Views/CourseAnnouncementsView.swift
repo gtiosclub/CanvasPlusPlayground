@@ -13,7 +13,7 @@ struct CourseAnnouncementsView: View {
     
     init(course: Course) {
         self.course = course
-        self.announcementManager = CourseAnnouncementManager(courseId: course.id.asInt)
+        self.announcementManager = CourseAnnouncementManager(courseId: course.id)
     }
     
     

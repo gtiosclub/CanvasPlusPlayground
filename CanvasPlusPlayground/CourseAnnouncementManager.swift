@@ -8,10 +8,10 @@
 import Foundation
 
 @Observable class CourseAnnouncementManager {
-    let courseId: Int?
+    let courseId: String?
     var announcements: [Announcement]
     
-    init(courseId: Int?) {
+    init(courseId: String?) {
         self.courseId = courseId
         self.announcements = []
     }

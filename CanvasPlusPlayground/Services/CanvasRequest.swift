@@ -11,13 +11,13 @@ enum CanvasRequest {
     static let baseURL = URL(string: "https://gatech.instructure.com/api/v1")
     
     case getCourses(enrollmentState: String, perPage: String = "50")
-    case getCourse(id: Int)
-    case getCourseFiles(courseId: Int)
-    case getTabs(courseId: Int)
-    case getAnnouncements(courseId: Int)
-    case getAssignments(courseId: Int)
+    case getCourse(id: String)
+    case getCourseFiles(courseId: String)
+    case getTabs(courseId: String)
+    case getAnnouncements(courseId: String)
+    case getAssignments(courseId: String)
     case getEnrollments
-    case getPeople(courseId: Int, bookmark: String)
+    case getPeople(courseId: String, bookmark: String)
     var path: String {
         switch self {
         case .getCourses:
@@ -67,12 +67,21 @@ enum CanvasRequest {
         return params
     }
     
-    var id: Int? {
+    var id: String? {
         switch self {
         case .getCourse(let id):
             return id
         default:
             return nil
+        }
+    }
+    
+    var yieldsCollection: Bool {
+        switch self {
+        case .getCourse:
+            false
+        default:
+            true
         }
     }
     

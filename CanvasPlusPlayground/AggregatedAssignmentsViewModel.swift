@@ -20,7 +20,7 @@ public class AggregatedAssignmentsViewModel: ObservableObject {
     
     func loadAssignments() async {
         for course in courses {
-            let newAssignments = await CourseAssignmentManager.getAssignmentsForCourse(courseID: course.id.asInt)
+            let newAssignments = await CourseAssignmentManager.getAssignmentsForCourse(courseID: course.id)
             
             for assignment in newAssignments {
                 if (!(assignment.hasSubmittedSubmissions ?? false)) { // we only want to show assignments w/o submissions

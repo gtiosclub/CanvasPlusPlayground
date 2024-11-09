@@ -13,7 +13,7 @@ struct CourseAssignmentsView: View {
 
     init(course: Course) {
         self.course = course
-        _assignmentManager = .init(initialValue: CourseAssignmentManager(courseID: course.id.asInt))
+        _assignmentManager = .init(initialValue: CourseAssignmentManager(courseID: course.id))
     }
 
     var body: some View {

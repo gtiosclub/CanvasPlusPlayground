@@ -24,7 +24,7 @@ struct AggregatedAssignmentsView: View {
         .task {
             
             for course in courseManager.userFavCourses {
-                let assignments = await CourseAssignmentManager.getAssignmentsForCourse(courseID: course.id.asInt)
+                let assignments = await CourseAssignmentManager.getAssignmentsForCourse(courseID: course.id)
                 
                 for assignment in assignments {
                     if !(assignment.hasSubmittedSubmissions ?? false) {

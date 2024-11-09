@@ -9,19 +9,24 @@ import SwiftUI
 
 @Observable
 class PeopleManager {
-    private let courseID: Int?
+    private let courseID: String?
     var enrollments = [Enrollment]()
     var users = [User] ()
     var courses = [Course]()
 
-    init(courseID: Int?) {
+    init(courseID: String?) {
         self.courseID = courseID
         self.enrollments = []
         self.users = []
     }
     
     func fetchCurrentCoursePeople() async {
-        let enrollments = await fetchPeopleWith(courseID: self.courseID!)
+        guard let courseID else {
+            print("People course Id is nil.")
+            return
+        }
+        
+        let enrollments = await fetchPeopleWith(courseID: courseID)
         self.enrollments = enrollments
 
         for enrollment in self.enrollments {
@@ -31,9 +36,9 @@ class PeopleManager {
         }
     }
 
-    func fetchPeopleWith(courseID: Int) async -> ([Enrollment]) {
+    func fetchPeopleWith(courseID: String) async -> ([Enrollment]) {
         guard let (data, _) = try? await CanvasService.shared.fetchResponse(.getPeople(courseId: courseID, bookmark: "")) else {
-            print("Failed to fetch files.")
+            print("Failed to fetch people.")
             return [];
         }
         
@@ -71,7 +76,7 @@ class PeopleManager {
             print("Is user in \(String(describing: course.name))?")
             
             // get enrollments in
-            let courseID = course.id.asInt
+            let courseID = course.id
             let enrollments = await fetchPeopleWith(courseID: courseID)
             
             for enrollment in enrollments {

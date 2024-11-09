@@ -9,10 +9,10 @@ import SwiftUI
 
 @Observable
 class CourseFileManager {
-    private let courseID: Int?
+    private let courseID: String?
     var files = [File]()
 
-    init(courseID: Int?) {
+    init(courseID: String?) {
         self.courseID = courseID
     }
 
