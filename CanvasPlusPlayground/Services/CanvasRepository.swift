@@ -25,20 +25,6 @@ struct CanvasRepository {
         try modelContainer.mainContext.save()
     }
     
-    func getSingle<T>(with id: T.ServerID) async throws -> T? where T : Cacheable {
-        let id = String(describing: id)
-        let descriptor = FetchDescriptor<T>(predicate: #Predicate { model in
-            model.id == id
-        })
-        
-        let models: [T] = try await get<T>(descriptor: descriptor)
-        
-        // Make sure model exists.
-        if models.count > 0 {
-            return models[0]
-        } else { return nil }
-    }
-    
     /// Gets all data based on type. e.g. all Course objects to get all courses
     func get<T, V: Equatable>(
         condition: LookupCondition<T, V>?

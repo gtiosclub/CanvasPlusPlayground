@@ -16,16 +16,19 @@ enum LookupCondition<M: Cacheable, V: Equatable> {
         return Predicate<M> { model in
             
             switch self {
+                
             case let .equals(keypath, value):
                 PredicateExpressions.build_Equal(
                     lhs: PredicateExpressions.KeyPath(root: model, keyPath: keypath),
                     rhs: PredicateExpressions.Value(value)
                 ) as! any StandardPredicateExpression<Bool>
+            
             case let .contains(keypath, value):
                 PredicateExpressions.build_contains(
                     PredicateExpressions.KeyPath(root: model, keyPath: keypath),
                     PredicateExpressions.Value(value)
                 ) as! any StandardPredicateExpression<Bool>
+                
             }
             
         }

@@ -31,44 +31,38 @@ struct CanvasService {
         }
     }
     
-    /// To fetch a single cacheable object from the Canvas API, also provides cached version via closure (if any).
-    func defaultAndFetchSingle<T: Cacheable>(
-        _ request: CanvasRequest,
-        onCacheReceive: (T?) -> Void = { _ in }
-    ) async throws -> T {
-        
-        // If subject is cached
-        if let id = request.id as? T.ServerID, let cached: T = try await repository.getSingle(with: id) {
-            onCacheReceive(cached)
-            
-            let latest: T = try await fetch(request)
-            cached.merge(with: latest)
-            
-            try await insert(model: cached)
-            return latest
-        } else {
-            onCacheReceive(nil)
-            let latest: T = try await fetch(request)
-            
-            try await insert(model: latest)
-            return latest
-        }
-    }
     
-    /// To fetch a collection of data from the Canvas API, also provides cached version via closure (if any). Allows for filtering.
-    func defaultAndFetch<T: Codable, V: Equatable>(
+    /**
+     Fetch a collection of data from the Canvas API. Also provides cached version via closure (if any). Allows filtering.
+     - Parameters:
+        - request: the desired API query for a **collection** of models.
+        - condition: an optimized filter to be performed in the query.
+        - onCacheReceive: a closure for early execution when cached version is received - if any.
+     - Returns: An array of models concerning the desired query.
+     **/
+    func defaultAndFetch<T: Codable & Collection, V: Equatable>(
         _ request: CanvasRequest,
         condition: LookupCondition<T.Element, V>?,
         onCacheReceive: ([T.Element]?) -> Void
-    ) async throws -> T where T : Collection, T.Element : Cacheable {
-        // If contents of subject are cached
+    ) async throws -> T where T.Element : Cacheable {
+        if request.associatedModel != T.self {
+            preconditionFailure("Provided generic type T does not match the expected associatedModel type in request.")
+        }
+        
+        // If contents of subject are cached.
         if let cached: [T.Element] = try await repository.get(condition: condition) {
-            onCacheReceive(cached)
+            onCacheReceive(cached) // Share cached version with caller.
             
-            let latest: T = try await fetch(request)
+            // Fetch newest version from API, then filter as desired by caller.
+            let latest: [T.Element] = try await {
+                let fetched: T = try await fetch(request)
+                return fetched.filter { (try? condition?.expression().evaluate($0)) ?? true }
+            }()
+            
+            // Create cache lookup by id
             let cachedById = Dictionary(uniqueKeysWithValues: cached.map { ($0.id, $0) })
 
-            // If model exists in cache, merge latest with it. Otherwise, insert it as new.
+            // For each fetched model, if fetched model exists in cache, merged fetched model into cached model. Otherwise, cache fetched model as new.
             await withTaskGroup(of: Void.self) { group in
                 for latestModel in latest {
                     if let matchedCached = cachedById[latestModel.id] {
@@ -82,9 +76,15 @@ struct CanvasService {
             
             return cached as! T
         } else {
-            onCacheReceive(nil)
-            let latest: T = try await fetch(request)
+            onCacheReceive(nil) // Inform caller that no cache for request exists.
             
+            // Fetch newest version from API, then filter as desired by caller.
+            let latest: [T.Element] = try await {
+                let fetched: T = try await fetch(request)
+                return fetched.filter { (try? condition?.expression().evaluate($0)) ?? true }
+            }()
+            
+            // Cache each fetched model as new.
             await withTaskGroup(of: Void.self) { group in
                 for latestModel in latest {
                     try? await insert(model: latest)
@@ -95,12 +95,36 @@ struct CanvasService {
         
     }
     
-    /// To fetch a collection of data from the Canvas API, also provides cached version via closure (if any).
-    func defaultAndFetch<T: Codable>(
+    /**
+     Fetch a collection of data from the Canvas API. Also provides cached version via closure (if any). No filtering.
+     - Parameters:
+        - request: the desired API query for a **collection** of models.
+        - onCacheReceive: a closure for early execution when cached version is received - if any.
+     - Returns: An array of models concerning the desired query.
+     **/
+    func defaultAndFetch<T: Codable & Collection>(
         _ request: CanvasRequest,
         onCacheReceive: ([T.Element]?) -> Void
-    ) async throws -> T where T : Collection, T.Element : Cacheable {
+    ) async throws -> T where T.Element : Cacheable {
         return try await defaultAndFetch<T, String>(request, condition: nil as LookupCondition<T.Element, String>?, onCacheReceive: onCacheReceive)
+    }
+    
+    /**
+     Fetch a single instance of data from the Canvas API. Also provides cached version via closure (if any). No filtering.
+     - Parameters:
+        - request: the desired API query for a **single** model.
+        - onCacheReceive: a closure for early execution when cached version is received - if any.
+     - Returns: An array of size 1, containing the model concerning the request.
+     **/
+    func defaultAndFetch<T: Cacheable>(
+        _ request: CanvasRequest,
+        onCacheReceive: ([T]?) -> Void
+    ) async throws -> [T] {
+        return try await defaultAndFetch<[T], String>(
+            request,
+            condition: nil as LookupCondition<T, String>?,
+            onCacheReceive: onCacheReceive
+        )
     }
     
     /// To fetch data from the Canvas API, only!
@@ -129,7 +153,7 @@ struct CanvasService {
     }
     
     private func insert(model: Any) async throws {
-        // if data itself is cacheable -> save, if data is an array of cacheables -> wrap-around
+        // if data itself is cacheable -> save, if data is an array of cacheables -> save each individually
         if let toCache = model as? (any Cacheable) {
             try await repository.insert(toCache)
         } else if let arrayOfCacheables = model as? [any Cacheable] {
