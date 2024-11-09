@@ -50,7 +50,7 @@ struct CanvasService {
         }
                 
         // If contents of subject are cached.
-        if var cached: [T.Element] = try await repository.get(condition: condition) {
+        if let cached: [T.Element] = try await repository.get(condition: condition) {
             onCacheReceive(cached) // Share cached version with caller.
             
             // Fetch newest version from API, then filter as desired by caller.
@@ -69,21 +69,21 @@ struct CanvasService {
             
             // Create cache lookup by id
             let cachedById = Dictionary(uniqueKeysWithValues: cached.map { ($0.id, $0) })
-
+            
             // For each fetched model, if fetched model exists in cache, merged fetched model into cached model. Otherwise, cache fetched model as new.
-            await withTaskGroup(of: Void.self) { group in
-                for latestModel in latest {
-                    if let matchedCached = cachedById[latestModel.id] {
-                        matchedCached.merge(with: latestModel)
-                    } else {
-                        try? await repository.insert(latestModel)
-                        cached.append(latestModel)
-                    }
+            var final: [T.Element] = []
+                
+            for latestModel in latest {
+                if let matchedCached = cachedById[latestModel.id] {
+                    matchedCached.merge(with: latestModel)
+                    final.append(matchedCached)
+                } else {
+                    try? await repository.insert(latestModel)
+                    final.append(latestModel)
                 }
             }
             
-            
-            return cached as! T
+            return final as! T
         } else {
             onCacheReceive(nil) // Inform caller that no cache for request exists.
             
@@ -101,10 +101,8 @@ struct CanvasService {
             }()
             
             // Cache each fetched model as new.
-            await withTaskGroup(of: Void.self) { group in
-                for latestModel in latest {
-                    try? await insert(model: latestModel)
-                }
+            for latestModel in latest {
+                try? await insert(model: latestModel)
             }
             return latest as! T
         }
