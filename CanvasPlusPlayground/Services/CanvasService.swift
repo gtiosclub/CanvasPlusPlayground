@@ -110,7 +110,9 @@ struct CanvasService {
                     return
                 }
                 returnData.append((data, response))
-                
+                if let oneNewBatch {
+                    oneNewBatch((data, response))
+                }
                 
                 guard let linkValue = httpResponse.allHeaderFields["Link"] as? String else {
                     print("No link field data")
@@ -132,9 +134,7 @@ struct CanvasService {
                 ])
                 
                 count += 1
-                if let oneNewBatch {
-                    oneNewBatch((data, response))
-                }
+                
                 
             } catch {
                 print("Batch fetch error: \(error)")
