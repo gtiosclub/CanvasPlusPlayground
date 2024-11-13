@@ -85,10 +85,17 @@ struct CanvasService {
     
     // TODO: new method + dispatch queue for multiple concurrent requests - Aziz
     
-    func fetchBatch(_ requst: CanvasRequest) async -> [(data: Data, response: URLResponse)]? {
+    func fetchBatch(_ requst: CanvasRequest, oneNewBatch: (((data: Data, url: URLResponse)) -> ())? = nil, oneCompleteBatch: (([(data: Data, url: URLResponse)]) -> ())? = nil ) async {
+        /*
+         var currUrl =
+         1) while loop
+            a) people, newUrl = fetch(currUrl)
+            b) onNewBatch(people)
+            c) currUrl = newUrl
+            d) if (newUrl = nil) break
+         */
         
-        
-        var returnData:[(Data, URLResponse)] = []
+        var returnData: [(data: Data, url: URLResponse)] = []
         var currURL = requst.url;
         var count = 1
         while let url = currURL {
@@ -100,10 +107,10 @@ struct CanvasService {
                 let (data, response) = try await URLSession.shared.data(for: request)
                 guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
                     print("HTTP error: $\(response)$")
-                    return nil
+                    return
                 }
-                
                 returnData.append((data, response))
+                
                 
                 guard let linkValue = httpResponse.allHeaderFields["Link"] as? String else {
                     print("No link field data")
@@ -123,15 +130,20 @@ struct CanvasService {
                 currURL = currURL?.appending(queryItems: [
                     URLQueryItem(name: "access_token", value: StorageKeys.accessTokenValue)
                 ])
-                print("Fetch \(count) \(urlString)! ")
+                
                 count += 1
+                if let oneNewBatch {
+                    oneNewBatch((data, response))
+                }
+                
             } catch {
                 print("Batch fetch error: \(error)")
-                return nil
+                return
             }
         }
-        
-        return returnData
+        if let oneCompleteBatch {
+            oneCompleteBatch(returnData)
+        }
     }
 }
 
