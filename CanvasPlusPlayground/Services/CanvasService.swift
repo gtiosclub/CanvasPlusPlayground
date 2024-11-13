@@ -12,7 +12,7 @@ struct CanvasService {
     
     let repository = CanvasRepository()
     
-    /*private*/ func fetchResponse(_ request: CanvasRequest) async throws -> (data: Data, response: URLResponse) {
+    func fetchResponse(_ request: CanvasRequest) async throws -> (data: Data, response: URLResponse) {
         guard let url = request.url else { throw NetworkError.invalidURL(msg: request.path) }
 
         var request = URLRequest(url: url)
@@ -49,64 +49,38 @@ struct CanvasService {
             preconditionFailure("Provided generic type T = \(T.self) does not match the expected `associatedModel` type \(request.associatedModel) in request.")
         }
                 
-        // If contents of subject are cached.
-        if let cached: [T.Element] = try await repository.get(condition: condition) {
-            onCacheReceive(cached) // Share cached version with caller.
+        let cached: [T.Element]? = try await repository.get(condition: condition)?.filter(request.cacheFilter)
+        onCacheReceive(cached) // Share cached version with caller.
             
-            // Fetch newest version from API, then filter as desired by caller.
-            let latest: [T.Element] = try await {
-                // Adjust `fetch` generic parameter based on whether request is for a collection.
-                let fetched: [T.Element]
-                if request.associatedModel is any Collection.Type {
-                    fetched = try await fetch(request)
-                } else {
-                    let fetchedItem: T.Element = try await fetch(request)
-                    fetched = [fetchedItem]
-                }
-                
-                return fetched.filter { (try? condition?.expression().evaluate($0)) ?? true }
-            }()
+        // Fetch newest version from API, then filter as desired by caller.
+        let latest: [T.Element] = try await {
             
-            // Create cache lookup by id
-            let cachedById = Dictionary(uniqueKeysWithValues: cached.map { ($0.id, $0) })
-            
-            // For each fetched model, if fetched model exists in cache, merged fetched model into cached model. Otherwise, cache fetched model as new.
-            var final: [T.Element] = []
-                
-            for latestModel in latest {
-                if let matchedCached = cachedById[latestModel.id] {
-                    matchedCached.merge(with: latestModel)
-                    final.append(matchedCached)
-                } else {
-                    try? await repository.insert(latestModel)
-                    final.append(latestModel)
-                }
+            // Adjust `fetch` generic parameter based on whether request is for a collection.
+            let fetched: [T.Element]
+            if request.associatedModel is any Collection.Type {
+                fetched = try await fetch(request)
+            } else {
+                let fetchedItem: T.Element = try await fetch(request)
+                fetched = [fetchedItem]
             }
             
-            return final as! T
-        } else {
-            onCacheReceive(nil) // Inform caller that no cache for request exists.
+            return fetched.filter { ((try? condition?.expression().evaluate($0)) ?? true) }
+        }()
             
-            // Fetch newest version from API, then filter as desired by caller.
-            let latest: [T.Element] = try await {
-                let fetched: [T.Element]
-                if request.associatedModel is any Collection.Type {
-                    fetched = try await fetch(request)
-                } else {
-                    let fetchedItem: T.Element = try await fetch(request)
-                    fetched = [fetchedItem]
-                }
-                
-                return fetched.filter { (try? condition?.expression().evaluate($0)) ?? true }
-            }()
-            
-            // Cache each fetched model as new.
-            for latestModel in latest {
-                try? await insert(model: latestModel)
+        // Create cache lookup by id
+        let cachedById = Dictionary(uniqueKeysWithValues: (cached ?? []).map { ($0.id, $0) })
+        
+        // For each fetched model, if fetched model exists in cache, replace cached model with fetched model. Otherwise, cache fetched model as new.
+        for latestModel in latest {
+            if let matchedCached = cachedById[latestModel.id] {
+                await repository.delete(matchedCached)
+                try? await repository.insert(latestModel)
+            } else {
+                try? await repository.insert(latestModel)
             }
-            return latest as! T
         }
         
+        return latest as! T
     }
     
     /**
@@ -165,9 +139,14 @@ struct CanvasService {
     
     /// Push SwiftData changes to disk.
     func saveAll() {
-        Task {
-            await repository.saveAll()
+        Task { @MainActor in
+            try? repository.modelContainer.mainContext.save()
         }
+    }
+    
+    @MainActor
+    func setupRepository() async {
+        repository.modelContainer.mainContext.autosaveEnabled = true
     }
     
     func insert(model: Any) async throws {
@@ -182,6 +161,17 @@ struct CanvasService {
     }
 }
 
-enum NetworkError: Error {
-    case failedToDecode(msg: String), fetchFailed(msg: String), invalidURL(msg: String), failedToEncode
+private extension CanvasRequest {
+    /// Used by service to fetch correct models
+    func cacheFilter<M: Cacheable>(_ model: M) -> Bool {
+        let expectedM = self.associatedModel
+        
+        if (expectedM is any Cacheable.Type) {
+            return model.id == self.id
+        } else if let _ = expectedM as? any Collection<M>.Type {
+            return model.parentId == self.id
+        }
+        
+        return false
+    }
 }

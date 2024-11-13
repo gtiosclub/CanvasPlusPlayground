@@ -14,7 +14,7 @@ struct CanvasRepository {
     
     init() {
         self.modelContainer = try! ModelContainer(for:
-            Course.self
+            Course.self, Announcement.self
         ) // TODO: Add cacheable models here
     }
     
@@ -58,7 +58,8 @@ struct CanvasRepository {
     }
     
     @MainActor
-    func saveAll()  {
+    func delete(_ model: any PersistentModel) {
+        modelContainer.mainContext.delete(model)
         try? modelContainer.mainContext.save()
     }
 }

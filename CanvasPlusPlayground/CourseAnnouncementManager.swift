@@ -8,28 +8,37 @@
 import Foundation
 
 @Observable class CourseAnnouncementManager {
-    let courseId: String?
+    let course: Course
+    var courseId: String { course.id }
     var announcements: [Announcement]
     
-    init(courseId: String?) {
-        self.courseId = courseId
+    init(course: Course) {
+        self.course = course
         self.announcements = []
     }
     
     func fetchAnnouncements() async {
-        guard let courseId, let (data, _) = try? await CanvasService.shared.fetchResponse(.getAnnouncements(courseId: courseId)) else {
+        let announcements: [Announcement]? = try? await CanvasService.shared.defaultAndFetch(
+            .getAnnouncements(courseId: courseId),
+            onCacheReceive: { (cached: [Announcement]?) in
+                guard let cached else { return }
+                
+                self.announcements = cached
+            }
+        )
+        
+        guard let announcements else {
             print("Failed to fetch announcements.")
             return
         }
         
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-        
-        
-        if let announcements = try? decoder.decode([Announcement].self, from: data) {
-            self.announcements = announcements
-        } else {
-            print("Failed to decode file data.")
+        /*for announcement in announcements {
+            await course.addAnnouncement(announcement)
+        }*/
+        for announcement in announcements {
+            await announcement.update(keypath: \.parentId, value: courseId)
         }
+        self.announcements = announcements
+        
     }
 }

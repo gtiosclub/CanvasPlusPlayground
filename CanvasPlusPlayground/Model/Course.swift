@@ -127,10 +127,15 @@ import SwiftData
 final class Course: Cacheable {
     typealias ServerID = Int
     
+    // MARK: IDs
     @Attribute(.unique) var id: String
+    var parentId: String?
     
+    // MARK: Relationships
+    //@Relationship(deleteRule: .nullify, inverse: \Announcement.course) var announcements: [Announcement]?
     /*@Relationship()*/ var enrollments: [Enrollment]?
     
+    // MARK: Other
     var sisCourseID: String?
     var uuid: String?
     var integrationID: String?
@@ -183,6 +188,8 @@ final class Course: Cacheable {
 
     enum CodingKeys: String, CodingKey {
         case id
+        case parentId = "parent_id"
+                
         case sisCourseID = "sis_course_id"
         case uuid
         case integrationID = "integration_id"
@@ -241,6 +248,8 @@ final class Course: Cacheable {
         let id = try container.decode(ServerID.self, forKey: .id)
         self.id =  String(describing: id)
         
+        self.parentId = try container.decodeIfPresent(String.self, forKey: .parentId)
+        
         self.sisCourseID = try container.decodeIfPresent(String.self, forKey: .sisCourseID)
         self.uuid = try container.decodeIfPresent(String.self, forKey: .uuid)
         self.integrationID = try container.decodeIfPresent(String.self, forKey: .integrationID)
@@ -297,6 +306,9 @@ final class Course: Cacheable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(id, forKey: .id)
+        
+        try container.encodeIfPresent(parentId, forKey: .parentId)
+        
         try container.encodeIfPresent(sisCourseID, forKey: .sisCourseID)
         try container.encodeIfPresent(uuid, forKey: .uuid)
         try container.encodeIfPresent(integrationID, forKey: .integrationID)
@@ -348,62 +360,6 @@ final class Course: Cacheable {
         try container.encodeIfPresent(blueprintRestrictionsByObjectType, forKey: .blueprintRestrictionsByObjectType)
         try container.encodeIfPresent(template, forKey: .template)
    }
-    
-    func merge(with other: Course) {
-        self.id = other.id
-        self.sisCourseID = other.sisCourseID
-        self.uuid = other.uuid
-        self.integrationID = other.integrationID
-        self.sisImportID = other.sisImportID
-        self.name = other.name
-        self.courseCode = other.courseCode
-        self.originalName = other.originalName
-        self.workflowState = other.workflowState
-        self.accountID = other.accountID
-        self.rootAccountID = other.rootAccountID
-        self.enrollmentTermID = other.enrollmentTermID
-        self.gradingPeriods = other.gradingPeriods
-        self.gradingStandardID = other.gradingStandardID
-        self.gradePassbackSetting = other.gradePassbackSetting
-        self.createdAt = other.createdAt
-        self.startAt = other.startAt
-        self.endAt = other.endAt
-        self.locale = other.locale
-        self.enrollments = other.enrollments
-        self.totalStudents = other.totalStudents
-        self.calendar = other.calendar
-        self.defaultView = other.defaultView
-        self.syllabusBody = other.syllabusBody
-        self.needsGradingCount = other.needsGradingCount
-        self.term = other.term
-        self.courseProgress = other.courseProgress
-        self.applyAssignmentGroupWeights = other.applyAssignmentGroupWeights
-        self.permissions = other.permissions
-        self.isPublic = other.isPublic
-        self.isPublicToAuthUsers = other.isPublicToAuthUsers
-        self.publicSyllabus = other.publicSyllabus
-        self.publicSyllabusToAuth = other.publicSyllabusToAuth
-        self.publicDescription = other.publicDescription
-        self.storageQuotaMB = other.storageQuotaMB
-        self.storageQuotaUsedMB = other.storageQuotaUsedMB
-        self.hideFinalGrades = other.hideFinalGrades
-        self.license = other.license
-        self.allowStudentAssignmentEdits = other.allowStudentAssignmentEdits
-        self.allowWikiComments = other.allowWikiComments
-        self.allowStudentForumAttachments = other.allowStudentForumAttachments
-        self.openEnrollment = other.openEnrollment
-        self.selfEnrollment = other.selfEnrollment
-        self.restrictEnrollmentsToCourseDates = other.restrictEnrollmentsToCourseDates
-        self.courseFormat = other.courseFormat
-        self.accessRestrictedByDate = other.accessRestrictedByDate
-        self.timeZone = other.timeZone
-        self.blueprint = other.blueprint
-        self.blueprintRestrictions = other.blueprintRestrictions
-        self.blueprintRestrictionsByObjectType = other.blueprintRestrictionsByObjectType
-        self.template = other.template 
-        
-        CanvasService.shared.saveAll()
-    }
 }
 
 struct Permissions: Codable, Equatable, Hashable {

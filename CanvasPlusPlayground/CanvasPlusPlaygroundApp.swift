@@ -15,6 +15,11 @@ struct CanvasPlusPlaygroundApp: App {
         WindowGroup {
             CourseListView()
                 .environment(CourseManager())
+                .onAppear {
+                    Task {
+                        await CanvasService.shared.setupRepository()
+                    }
+                }
         }
     }
 }

@@ -67,22 +67,20 @@ enum CanvasRequest {
         return params
     }
     
+    /// The id that most uniquely identifies the request (if any), e.g. getCourses -> nil, getCourse -> courseId, getAnnouncements -> courseId, getAnnouncement -> announcementId
     var id: String? {
         switch self {
-        case .getCourse(let id):
+        case let .getCourse(id):
             return id
+        case let .getTabs(courseId), let .getAnnouncements(courseId), let .getAssignments(courseId), let .getCourseFiles(courseId), let .getPeople(courseId, _):
+            return courseId
         default:
             return nil
         }
     }
     
     var yieldsCollection: Bool {
-        switch self {
-        case .getCourse:
-            false
-        default:
-            true
-        }
+        self.associatedModel is any Collection.Type
     }
     
     var associatedModel: Codable.Type {

@@ -11,16 +11,14 @@ import Foundation
 protocol Cacheable: Codable, PersistentModel {
     associatedtype ServerID: Hashable
     var id: String { get }
-    
-    func merge(with other: Self)
+    var parentId: String? { get set }    
 }
 
 
 extension Cacheable {
+    @MainActor
     func update<V>(keypath: ReferenceWritableKeyPath<Self, V>, value: V) {
-        self[keyPath: keypath] = value
-        
-        CanvasService.shared.saveAll()
+        self[keyPath: keypath] = value        
     }
 
 }
