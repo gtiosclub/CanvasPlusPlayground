@@ -44,13 +44,10 @@ struct CanvasRepository {
         } else { return nil }
     }
         
-    private func get<T>(descriptor: FetchDescriptor<T>) async throws -> [T] where T : Cacheable {
+    @MainActor
+    private func get<T>(descriptor: FetchDescriptor<T>) throws -> [T] where T : Cacheable {
         
-        let models = try await MainActor.run {
-            let models = try modelContainer.mainContext.fetch(descriptor)
-            return models
-        }
-        
+        let models = try modelContainer.mainContext.fetch(descriptor)
         return models
     }
     
