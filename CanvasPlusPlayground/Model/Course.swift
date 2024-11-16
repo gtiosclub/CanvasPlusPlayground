@@ -431,19 +431,3 @@ struct Permissions: Codable, Equatable, Hashable {
 struct CalendarLink: Codable, Equatable, Hashable {
     let ics: String
 }
-
-
-extension Course {
-    init?(from data: Data) {
-        do {
-            self = try JSONDecoder().decode(Course.self, from: data)
-            
-        } catch {
-            print("Error decoding course from data: \(error)")
-            return nil
-        }
-        
-    }
-    
-    
-}
