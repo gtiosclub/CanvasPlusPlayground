@@ -23,7 +23,9 @@ import Foundation
             onCacheReceive: { (cached: [Announcement]?) in
                 guard let cached else { return }
                 
-                self.announcements = cached
+                self.announcements = cached.sorted(by: { 
+                    ($0.createdAt ?? Date()) > ($1.createdAt ?? Date())
+                })
             }
         )
         
@@ -32,12 +34,6 @@ import Foundation
             return
         }
         
-        /*for announcement in announcements {
-            await course.addAnnouncement(announcement)
-        }*/
-        for announcement in announcements {
-            await announcement.update(keypath: \.parentId, value: courseId)
-        }
         self.announcements = announcements
         
     }

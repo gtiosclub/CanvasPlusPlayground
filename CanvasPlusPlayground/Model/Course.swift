@@ -360,6 +360,61 @@ final class Course: Cacheable {
         try container.encodeIfPresent(blueprintRestrictionsByObjectType, forKey: .blueprintRestrictionsByObjectType)
         try container.encodeIfPresent(template, forKey: .template)
    }
+    
+    @MainActor
+    func merge(with other: Course) {
+        self.enrollments = other.enrollments
+        self.sisCourseID = other.sisCourseID
+        self.uuid = other.uuid
+        self.integrationID = other.integrationID
+        self.sisImportID = other.sisImportID
+        self.name = other.name
+        self.courseCode = other.courseCode
+        self.originalName = other.originalName
+        self.workflowState = other.workflowState
+        self.accountID = other.accountID
+        self.rootAccountID = other.rootAccountID
+        self.enrollmentTermID = other.enrollmentTermID
+        self.gradingPeriods = other.gradingPeriods
+        self.gradingStandardID = other.gradingStandardID
+        self.gradePassbackSetting = other.gradePassbackSetting
+        self.createdAt = other.createdAt
+        self.startAt = other.startAt
+        self.endAt = other.endAt
+        self.locale = other.locale
+        self.totalStudents = other.totalStudents
+        self.calendar = other.calendar
+        self.defaultView = other.defaultView
+        self.syllabusBody = other.syllabusBody
+        self.needsGradingCount = other.needsGradingCount
+        self.term = other.term
+        self.courseProgress = other.courseProgress
+        self.applyAssignmentGroupWeights = other.applyAssignmentGroupWeights
+        self.permissions = other.permissions
+        self.isPublic = other.isPublic
+        self.isPublicToAuthUsers = other.isPublicToAuthUsers
+        self.publicSyllabus = other.publicSyllabus
+        self.publicSyllabusToAuth = other.publicSyllabusToAuth
+        self.publicDescription = other.publicDescription
+        self.storageQuotaMB = other.storageQuotaMB
+        self.storageQuotaUsedMB = other.storageQuotaUsedMB
+        self.hideFinalGrades = other.hideFinalGrades
+        self.license = other.license
+        self.allowStudentAssignmentEdits = other.allowStudentAssignmentEdits
+        self.allowWikiComments = other.allowWikiComments
+        self.allowStudentForumAttachments = other.allowStudentForumAttachments
+        self.openEnrollment = other.openEnrollment
+        self.selfEnrollment = other.selfEnrollment
+        self.restrictEnrollmentsToCourseDates = other.restrictEnrollmentsToCourseDates
+        self.courseFormat = other.courseFormat
+        self.accessRestrictedByDate = other.accessRestrictedByDate
+        self.timeZone = other.timeZone
+        self.blueprint = other.blueprint
+        self.blueprintRestrictions = other.blueprintRestrictions
+        self.blueprintRestrictionsByObjectType = other.blueprintRestrictionsByObjectType
+        self.template = other.template
+    }
+
 }
 
 struct Permissions: Codable, Equatable, Hashable {

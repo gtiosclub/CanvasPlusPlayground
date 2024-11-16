@@ -17,8 +17,11 @@ final class Announcement: Cacheable {
     var createdAt:Date?
     var message:String?
     
+    var isRead: Bool?
+    
     weak var course: Course?
     var parentId: String?
+    
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -54,5 +57,12 @@ final class Announcement: Cacheable {
         case createdAt = "created_at"
         case title
         case message
+    }
+    
+    @MainActor
+    func merge(with other: Announcement) {
+        self.title = other.title
+        self.message = other.message
+        self.createdAt = other.createdAt
     }
 }

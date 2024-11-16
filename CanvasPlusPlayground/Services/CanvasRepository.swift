@@ -21,8 +21,6 @@ struct CanvasRepository {
     @MainActor
     func insert<T>(_ item: T) async throws where T : Cacheable {
         modelContainer.mainContext.insert(item)
-        
-        try modelContainer.mainContext.save()
     }
     
     /// Gets all data based on type. e.g. all Course objects to get all courses
@@ -60,7 +58,17 @@ struct CanvasRepository {
     @MainActor
     func delete(_ model: any PersistentModel) {
         modelContainer.mainContext.delete(model)
-        try? modelContainer.mainContext.save()
+    }
+    
+    /// Push SwiftData changes to disk.
+    func flush() {
+        Task { @MainActor in
+            do {
+                try self.modelContainer.mainContext.save()
+            } catch {
+                print("Trouble saving to cache")
+            }
+        }
     }
 }
 

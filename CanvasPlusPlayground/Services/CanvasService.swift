@@ -49,11 +49,12 @@ struct CanvasService {
             preconditionFailure("Provided generic type T = \(T.self) does not match the expected `associatedModel` type \(request.associatedModel) in request.")
         }
                 
+        //
         let cached: [T.Element]? = try await repository.get(condition: condition)?.filter(request.cacheFilter)
         onCacheReceive(cached) // Share cached version with caller.
             
         // Fetch newest version from API, then filter as desired by caller.
-        let latest: [T.Element] = try await {
+        var latest: [T.Element] = try await {
             
             // Adjust `fetch` generic parameter based on whether request is for a collection.
             let fetched: [T.Element]
@@ -70,15 +71,22 @@ struct CanvasService {
         // Create cache lookup by id
         let cachedById = Dictionary(uniqueKeysWithValues: (cached ?? []).map { ($0.id, $0) })
         
-        // For each fetched model, if fetched model exists in cache, replace cached model with fetched model. Otherwise, cache fetched model as new.
-        for latestModel in latest {
+        // Replace cached models with fetched models OR cache fetched model as new.
+        for (i, latestModel) in latest.enumerated() {
             if let matchedCached = cachedById[latestModel.id] {
-                await repository.delete(matchedCached)
-                try? await repository.insert(latestModel)
+                await matchedCached.merge(with: latestModel)
+                latest[i] = matchedCached
             } else {
                 try? await repository.insert(latestModel)
             }
         }
+        
+        // Store the request / parent id in each model so that we can recall all models for that parent
+        if let id = request.id {
+            latest.forEach { $0.parentId = id }
+        }
+        
+        repository.flush()
         
         return latest as! T
     }
@@ -137,13 +145,6 @@ struct CanvasService {
         }
     }
     
-    /// Push SwiftData changes to disk.
-    func saveAll() {
-        Task { @MainActor in
-            try? repository.modelContainer.mainContext.save()
-        }
-    }
-    
     @MainActor
     func setupRepository() async {
         repository.modelContainer.mainContext.autosaveEnabled = true
@@ -162,7 +163,7 @@ struct CanvasService {
 }
 
 private extension CanvasRequest {
-    /// Used by service to fetch correct models
+    /// If the request is for a single model, it returns a filter that checks for the model's id. If the request is for multiple models, it filters based on the model's parent ids.
     func cacheFilter<M: Cacheable>(_ model: M) -> Bool {
         let expectedM = self.associatedModel
         
