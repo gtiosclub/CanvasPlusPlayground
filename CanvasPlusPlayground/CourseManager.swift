@@ -21,22 +21,15 @@ class CourseManager {
     var enrollments = [Enrollment]()
 
     func getCourses() async {
-        /*
-        guard let (data, _) = try? await CanvasService.shared.fetch(.getCourses(enrollmentState: "active")) else {
-            print("Failed to fetch files.")
-            return
-        }
-        
-        if let retCourses = try? JSONDecoder().decode([Course].self, from: data) {
-            self.courses = retCourses
-        } else {
-            print("Failed to decode file data.")
-        }*/
-        
         do {
-            let courses: [Course] = try await CanvasService.shared.defaultAndFetch(.getCourses(enrollmentState: "active")) { cachedCourses in
-                self.courses = cachedCourses
-            }
+            let courses: [Course] = try await CanvasService.shared.defaultAndFetch(
+                .getCourses(enrollmentState: "active"),
+                onCacheReceive: { cachedCourses in
+                   guard let cachedCourses else { return }
+                   self.courses = cachedCourses
+                }
+            )
+
             self.courses = courses
         } catch {
             print("Failed to fetch files. \(error)")
@@ -52,18 +45,6 @@ class CourseManager {
     }
     
     func getEnrollments() async {
-        /*
-        guard let (data, _) = try? await CanvasService.shared.fetchResponse(.getEnrollments) else {
-            print("Failed to fetch enrollments")
-            return
-        }
-        
-        do {
-            enrollments = try JSONDecoder().decode([Enrollment].self, from: data)
-        } catch {
-            print(error)
-        }*/
-        
         do {
             let enrollments: [Enrollment] = try await CanvasService.shared.fetch(.getCourses(enrollmentState: "active"))
             self.enrollments = enrollments

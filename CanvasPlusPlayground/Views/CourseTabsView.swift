@@ -55,7 +55,7 @@ struct CourseTabsView: View {
     init(course: Course) {
         self.course = course
         self.tabsManager = CourseTabsManager(course: course)
-        self.base_url = "https://gatech.instructure.com/courses/\(String(course.id!))"
+        self.base_url = "https://gatech.instructure.com/courses/\(String(course.id))"
     }
     
     var body: some View {

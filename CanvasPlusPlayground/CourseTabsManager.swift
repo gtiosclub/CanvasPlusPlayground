@@ -21,7 +21,8 @@ class CourseTabsManager {
     }
     
     func fetchTabs() async {
-        guard let courseId = course.id, let (data, _) = try? await CanvasService.shared.fetchResponse(.getTabs(courseId: courseId)) else {
+        let courseId = course.id
+        guard let (data, _) = try? await CanvasService.shared.fetchResponse(.getTabs(courseId: courseId)) else {
             print("Unable to fetch tabs.")
             return
         }

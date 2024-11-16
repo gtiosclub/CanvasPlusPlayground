@@ -8,21 +8,19 @@
 import SwiftData
 import Foundation
 
-protocol Cacheable: Codable, Hashable, Equatable {
-    associatedtype CachedDTO: DTO
-    associatedtype ID: Hashable
-
-    var id: ID? { get }
-    static var tag: String { get }
-    
-    func toDTO() throws -> CachedDTO
-}
-
-protocol DTO: PersistentModel {
-    associatedtype Model: Cacheable
-
+protocol Cacheable: Codable, PersistentModel {
+    associatedtype ServerID: Hashable
     var id: String { get }
+    var parentId: String? { get set }    
     
-    func toModel() throws -> Model
+    @MainActor
+    func merge(with other: Self)
 }
-// MARK: Canvas-derived Data
+
+
+extension Cacheable {
+    @MainActor
+    func update<V>(keypath: ReferenceWritableKeyPath<Self, V>, value: V) {
+        self[keyPath: keypath] = value        
+    }
+}

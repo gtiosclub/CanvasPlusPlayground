@@ -11,13 +11,13 @@ enum CanvasRequest {
     static let baseURL = URL(string: "https://gatech.instructure.com/api/v1")
     
     case getCourses(enrollmentState: String, perPage: String = "50")
-    case getCourse(id: Int)
-    case getCourseFiles(courseId: Int)
-    case getTabs(courseId: Int)
-    case getAnnouncements(courseId: Int)
-    case getAssignments(courseId: Int)
+    case getCourse(id: String)
+    case getCourseFiles(courseId: String)
+    case getTabs(courseId: String)
+    case getAnnouncements(courseId: String)
+    case getAssignments(courseId: String)
     case getEnrollments
-    case getPeople(courseId: Int, bookmark: String)
+    case getPeople(courseId: String, bookmark: String)
     var path: String {
         switch self {
         case .getCourses:
@@ -67,12 +67,40 @@ enum CanvasRequest {
         return params
     }
     
-    var id: Int? {
+    /// The id that most uniquely identifies the request (if any), e.g. getCourses -> nil, getCourse -> courseId, getAnnouncements -> courseId, getAnnouncement -> announcementId
+    var id: String? {
         switch self {
-        case .getCourse(let id):
+        case let .getCourse(id):
             return id
+        case let .getTabs(courseId), let .getAnnouncements(courseId), let .getAssignments(courseId), let .getCourseFiles(courseId), let .getPeople(courseId, _):
+            return courseId
         default:
             return nil
+        }
+    }
+    
+    var yieldsCollection: Bool {
+        self.associatedModel is any Collection.Type
+    }
+    
+    var associatedModel: Codable.Type {
+        return switch self {
+        case .getCourses:
+            [Course].self
+        case .getCourse:
+            Course.self
+        case .getCourseFiles:
+            [File].self
+        case .getTabs:
+            [Tab].self
+        case .getAnnouncements:
+            [Announcement].self
+        case .getAssignments:
+            [Assignment].self
+        case .getEnrollments:
+            [Enrollment].self
+        case .getPeople:
+            [User].self
         }
     }
 }

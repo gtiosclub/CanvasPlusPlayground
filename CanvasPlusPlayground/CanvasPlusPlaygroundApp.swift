@@ -19,6 +19,9 @@ struct CanvasPlusPlaygroundApp: App {
                 .environment(CourseManager())
                 .environmentObject(IntelligenceManager())
                 .environmentObject(LLMEvaluator())
+                .task {
+                    await CanvasService.shared.setupRepository()
+                }
         }
     }
 }

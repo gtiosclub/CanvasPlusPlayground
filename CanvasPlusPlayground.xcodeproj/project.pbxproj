@@ -30,6 +30,11 @@
 		A3E7F38F2C96C1CE00DC4300 /* CourseTabsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E7F38E2C96C1CE00DC4300 /* CourseTabsView.swift */; };
 		A3E7F3912C99317100DC4300 /* CourseTabsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E7F3902C99317100DC4300 /* CourseTabsManager.swift */; };
 		A3E7F3932C99338B00DC4300 /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E7F3922C99338B00DC4300 /* Tab.swift */; };
+		A3E822372CE9518500DB5D3C /* LLM in Frameworks */ = {isa = PBXBuildFile; productRef = A3E822362CE9518500DB5D3C /* LLM */; };
+		A3E822392CE9518500DB5D3C /* MNIST in Frameworks */ = {isa = PBXBuildFile; productRef = A3E822382CE9518500DB5D3C /* MNIST */; };
+		A3FFD03A2CDEC2AC006BAB51 /* LookupCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FFD0392CDEC2AC006BAB51 /* LookupCondition.swift */; };
+		A3FFD03C2CDED67C006BAB51 /* String+Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FFD03B2CDED67C006BAB51 /* String+Int.swift */; };
+		A3FFD03E2CE0065A006BAB51 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FFD03D2CE0065A006BAB51 /* NetworkError.swift */; };
 		B533C0BE2CADDDE700A74AF6 /* PeopleCommonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B533C0BD2CADDDE700A74AF6 /* PeopleCommonView.swift */; };
 		B53D95A02CA0953900647EE9 /* PeopleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D959F2CA0952F00647EE9 /* PeopleManager.swift */; };
 		B53D95A22CA0A22A00647EE9 /* PeopleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D95A12CA0A22A00647EE9 /* PeopleView.swift */; };
@@ -51,7 +56,6 @@
 		B7AD54F42CD41D7900FB09BB /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AD54F22CD41D7900FB09BB /* Models.swift */; };
 		B7AD54F52CD41D7900FB09BB /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AD54EF2CD41D7900FB09BB /* Data.swift */; };
 		B7AD54F62CD41D7900FB09BB /* DeviceStat.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AD54F02CD41D7900FB09BB /* DeviceStat.swift */; };
-		B7AD550A2CD4250700FB09BB /* LLM in Frameworks */ = {isa = PBXBuildFile; productRef = B7AD55092CD4250700FB09BB /* LLM */; };
 		B7AD550C2CD4257B00FB09BB /* IntelligenceOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AD550B2CD4257400FB09BB /* IntelligenceOnboardingView.swift */; };
 /* End PBXBuildFile section */
 
@@ -79,6 +83,9 @@
 		A3E7F38E2C96C1CE00DC4300 /* CourseTabsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseTabsView.swift; sourceTree = "<group>"; };
 		A3E7F3902C99317100DC4300 /* CourseTabsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseTabsManager.swift; sourceTree = "<group>"; };
 		A3E7F3922C99338B00DC4300 /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
+		A3FFD0392CDEC2AC006BAB51 /* LookupCondition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookupCondition.swift; sourceTree = "<group>"; };
+		A3FFD03B2CDED67C006BAB51 /* String+Int.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Int.swift"; sourceTree = "<group>"; };
+		A3FFD03D2CE0065A006BAB51 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		B533C0BD2CADDDE700A74AF6 /* PeopleCommonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleCommonView.swift; sourceTree = "<group>"; };
 		B53D959F2CA0952F00647EE9 /* PeopleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleManager.swift; sourceTree = "<group>"; };
 		B53D95A12CA0A22A00647EE9 /* PeopleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleView.swift; sourceTree = "<group>"; };
@@ -109,7 +116,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B7AD550A2CD4250700FB09BB /* LLM in Frameworks */,
+				A3E822392CE9518500DB5D3C /* MNIST in Frameworks */,
+				A3E822372CE9518500DB5D3C /* LLM in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -122,6 +130,7 @@
 				B7A26EE82CCB62A00084704A /* NavigationModel.swift */,
 				9B350F072C9652C6003FC60D /* NSAttributedString+HTML.swift */,
 				3DAE84FF2C9A0E4F008C22E7 /* PDFViewHelper.swift */,
+				A3FFD03B2CDED67C006BAB51 /* String+Int.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -132,6 +141,8 @@
 				A3E7F3882C954E0500DC4300 /* CanvasRequest.swift */,
 				A3E7F38A2C9555B200DC4300 /* CanvasService.swift */,
 				A3269E8D2CD5533F006F7D14 /* CanvasRepository.swift */,
+				A3FFD0392CDEC2AC006BAB51 /* LookupCondition.swift */,
+				A3FFD03D2CE0065A006BAB51 /* NetworkError.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -249,7 +260,8 @@
 			);
 			name = CanvasPlusPlayground;
 			packageProductDependencies = (
-				B7AD55092CD4250700FB09BB /* LLM */,
+				A3E822362CE9518500DB5D3C /* LLM */,
+				A3E822382CE9518500DB5D3C /* MNIST */,
 			);
 			productName = CanvasPlusPlayground;
 			productReference = B76454642C8BBC7F002DF00E /* CanvasPlusPlayground.app */;
@@ -281,7 +293,7 @@
 			mainGroup = B764545B2C8BBC7F002DF00E;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				B7AD55082CD4250700FB09BB /* XCRemoteSwiftPackageReference "mlx-swift-examples" */,
+				A3E822352CE9518500DB5D3C /* XCRemoteSwiftPackageReference "mlx-swift-examples" */,
 			);
 			productRefGroup = B76454652C8BBC7F002DF00E /* Products */;
 			projectDirPath = "";
@@ -320,11 +332,13 @@
 				9B69FA4F2CC2CCCF006101F3 /* AggregatedAssignmentsViewCell.swift in Sources */,
 				192EC0482C963ACB00AF8528 /* CourseAssignmentManager.swift in Sources */,
 				B76455012C8DF61B002DF00E /* StorageKeys.swift in Sources */,
+				A3FFD03A2CDEC2AC006BAB51 /* LookupCondition.swift in Sources */,
 				A3E7F3932C99338B00DC4300 /* Tab.swift in Sources */,
 				9B69FA4D2CC2CCB1006101F3 /* AggregatedAssignmentsViewModel.swift in Sources */,
 				B76455022C8DF61B002DF00E /* CourseFilesView.swift in Sources */,
 				B76455032C8DF61B002DF00E /* CourseListView.swift in Sources */,
 				A3269E8E2CD5533F006F7D14 /* CanvasRepository.swift in Sources */,
+				A3FFD03E2CE0065A006BAB51 /* NetworkError.swift in Sources */,
 				B53D95A22CA0A22A00647EE9 /* PeopleView.swift in Sources */,
 				B76455042C8DF61B002DF00E /* CourseView.swift in Sources */,
 				9B92A4252C93856100C21CFC /* CourseAnnouncementManager.swift in Sources */,
@@ -336,6 +350,7 @@
 				9B350F082C9652C6003FC60D /* NSAttributedString+HTML.swift in Sources */,
 				9B9C2E042C93F6CD00E4B16B /* CourseAnnouncementsView.swift in Sources */,
 				192EC04C2C963EE600AF8528 /* CourseAssignmentView.swift in Sources */,
+				A3FFD03C2CDED67C006BAB51 /* String+Int.swift in Sources */,
 				B53D95A02CA0953900647EE9 /* PeopleManager.swift in Sources */,
 				A3E7F3892C954E0500DC4300 /* CanvasRequest.swift in Sources */,
 				A3E7F3912C99317100DC4300 /* CourseTabsManager.swift in Sources */,
@@ -571,21 +586,26 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		B7AD55082CD4250700FB09BB /* XCRemoteSwiftPackageReference "mlx-swift-examples" */ = {
+		A3E822352CE9518500DB5D3C /* XCRemoteSwiftPackageReference "mlx-swift-examples" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ml-explore/mlx-swift-examples/";
+			repositoryURL = "https://github.com/ml-explore/mlx-swift-examples";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.16.0;
+				kind = exactVersion;
+				version = 1.16.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		B7AD55092CD4250700FB09BB /* LLM */ = {
+		A3E822362CE9518500DB5D3C /* LLM */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B7AD55082CD4250700FB09BB /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
+			package = A3E822352CE9518500DB5D3C /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
 			productName = LLM;
+		};
+		A3E822382CE9518500DB5D3C /* MNIST */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A3E822352CE9518500DB5D3C /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
+			productName = MNIST;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
