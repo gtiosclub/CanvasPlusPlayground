@@ -13,17 +13,24 @@ struct CourseAnnouncementsView: View {
     
     init(course: Course) {
         self.course = course
-        self.announcementManager = CourseAnnouncementManager(courseId: course.id)
+        self.announcementManager = CourseAnnouncementManager(course: course)
     }
-    
     
     var body: some View {
         NavigationStack {
             List(announcementManager.announcements, id:\.id) { announcment in
                 NavigationLink {
                     CourseAnnouncementDetailView(announcement: announcment)
+                        .onAppear {
+                            announcment.update(keypath: \.isRead, value: true)
+                        }
                 } label: {
-                    Text(announcment.title ?? "")
+                    HStack {
+                        Text(announcment.title ?? "")
+                        Spacer()
+                        Text(announcment.isRead == true ? "Read" : "Unread")
+                            .foregroundStyle(.blue)
+                    }
                 }
             }
             .overlay {
