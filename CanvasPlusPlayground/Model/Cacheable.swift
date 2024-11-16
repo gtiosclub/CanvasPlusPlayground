@@ -24,9 +24,3 @@ extension Cacheable {
         self[keyPath: keypath] = value        
     }
 }
-
-/**
- To define new attribute in existing models:
- 1. Define attribute in model. 
- 2. In definitions, provide a default value to avoid corrupting existing storage.
- */

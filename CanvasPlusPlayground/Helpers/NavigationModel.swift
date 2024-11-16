@@ -7,14 +7,50 @@
 
 import SwiftUI
 
-@Observable
-class NavigationModel {
-    enum CoursePage {
+
+class NavigationModel: ObservableObject {
+    enum CoursePage:String {
         case assignments, files, announcements, grades, calendar, people, tabs
     }
 
-    var selectedCourse: Course? {
-        didSet { selectedCoursePage = nil }
+    @Published var selectedCourse: Course? {
+        didSet {
+            let dataRep = try! JSONEncoder().encode(selectedCourse)
+            UserDefaults.standard.set(dataRep, forKey: "selectedCourse")
+            selectedCoursePage = nil
+        }
     }
-    var selectedCoursePage: CoursePage?
+    
+    @Published var selectedCoursePage: CoursePage? {
+        didSet {
+            print("Course page changed")
+            UserDefaults.standard.set(selectedCoursePage?.rawValue, forKey: "selectedPage")
+        }
+    }
+    
+    @Published var showInstallIntelligenceSheet = false
+    
+    
+    init(){
+        let courseData = UserDefaults.standard.data(forKey: "selectedCourse")
+        let pageString = UserDefaults.standard.string(forKey: "selectedPage")
+        print("Nav created")
+        guard let data = courseData else { return }
+        var course:Course? = nil
+        var page:CoursePage? = nil
+        do {
+            course = try JSONDecoder().decode(Course.self, from: data)
+            guard let pageString else { return }
+            print("page content \(pageString)")
+            page = CoursePage(rawValue: pageString)
+            
+        } catch {
+            print("Error fetching selected course from user defaults \(error.localizedDescription)")
+            course = nil
+        }
+        self.selectedCourse = course
+        self.selectedCoursePage = page
+    }
+    
+    
 }

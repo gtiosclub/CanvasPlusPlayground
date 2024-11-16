@@ -43,8 +43,7 @@ struct CanvasRepository {
             return models
         } else { return nil }
     }
-    
-    
+        
     private func get<T>(descriptor: FetchDescriptor<T>) async throws -> [T] where T : Cacheable {
         
         let models = try await MainActor.run {
@@ -70,6 +69,7 @@ struct CanvasRepository {
             }
         }
     }
+
 }
 
 enum CacheError: Error {
