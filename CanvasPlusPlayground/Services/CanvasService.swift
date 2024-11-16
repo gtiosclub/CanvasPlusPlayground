@@ -177,6 +177,3 @@ private extension CanvasRequest {
     }
 }
 
-enum NetworkError: Error {
-    case failedToDecode(msg: String), fetchFailed(msg: String), invalidURL(msg: String)
-}
