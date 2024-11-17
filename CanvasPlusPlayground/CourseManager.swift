@@ -12,11 +12,11 @@ class CourseManager {
     var courses = [Course]()
 
     var userFavCourses: [Course] {
-        courses.filter { $0.isFavorite ?? false }
+        courses.filter { $0.isFavorite ?? false }.sorted { $0.name ?? "" < $1.name ?? "" }
     }
 
     var userOtherCourses: [Course] {
-        courses.filter { !($0.isFavorite ?? false) }
+        courses.filter { !($0.isFavorite ?? false) }.sorted { $0.name ?? "" < $1.name ?? "" }
     }
     
     var enrollments = [Enrollment]()

@@ -158,7 +158,7 @@ private struct CourseListCell: View {
 
     var body: some View {
         HStack {
-            Text(course.name ?? "")
+            Label(course.name ?? "", systemImage: "book.pages")
                 .frame(alignment: .leading)
                 .multilineTextAlignment(.leading)
         }
