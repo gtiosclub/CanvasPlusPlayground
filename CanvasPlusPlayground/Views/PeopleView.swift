@@ -23,10 +23,10 @@ struct PeopleView: View {
             mainBody
         }
         .task {
-            await peopleManager.fetchCurrentCoursePeople()
+            await peopleManager.fetchPeople()
         }
         .refreshable {
-            await peopleManager.fetchCurrentCoursePeople()
+            await peopleManager.fetchPeople()
         }
     }
     

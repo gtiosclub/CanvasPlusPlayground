@@ -20,37 +20,23 @@ class PeopleManager {
         self.users = []
     }
     
-    func fetchCurrentCoursePeople() async {
-        guard let courseID else {
-            print("People course Id is nil.")
-            return
-        }
-        
-        let enrollments = await fetchPeopleWith(courseID: courseID)
-        self.enrollments = enrollments
-
-        for enrollment in self.enrollments {
-            if let user = enrollment.user {
-                self.users.append(user)
+    func fetchPeople() async {
+        guard let courseID else { return }
+        let _ = try? await CanvasService.shared.fetchBatch(.getPeople(courseId: courseID)) { dataResponseArr in
+            do {
+                let enrollments = try CanvasService.shared.decodeData(arg: dataResponseArr) as [Enrollment]
+                
+                // this is a completion that is executed once the function has finished
+                for enrollment in enrollments {
+                    if let user = enrollment.user {
+                        if !self.users.contains(where: { $0.id == user.id }) {
+                            self.users.append(user)
+                        }
+                    }
+                }
+            } catch {
+                print(error)
             }
-        }
-    }
-
-    func fetchPeopleWith(courseID: String) async -> ([Enrollment]) {
-        guard let (data, _) = try? await CanvasService.shared.fetchResponse(.getPeople(courseId: courseID, bookmark: "")) else {
-            print("Failed to fetch people.")
-            return [];
-        }
-        
-        do {
-            let enrollments = try JSONDecoder().decode([Enrollment].self, from: data)
-            return enrollments
-            
-            // TODO: continue to query for next page and append to our lists
-            
-        } catch {
-            print(error)
-            return []
         }
     }
     
@@ -77,7 +63,21 @@ class PeopleManager {
             
             // get enrollments in
             let courseID = course.id
-            let enrollments = await fetchPeopleWith(courseID: courseID)
+            
+            let _ = try? await CanvasService.shared.fetchBatch(.getPeople(courseId: courseID)) { dataResponseArr in
+                do {
+                    let enrollments = try CanvasService.shared.decodeData(arg: dataResponseArr) as [Enrollment]
+                    
+                    // this is a completion that is executed once the function has finished
+                    for enrollment in enrollments {
+                        if let user = enrollment.user {
+                            self.users.append(user)
+                        }
+                    }
+                } catch {
+                    print(error)
+                }
+            }
             
             for enrollment in enrollments {
                 if let user = enrollment.user {

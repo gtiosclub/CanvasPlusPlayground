@@ -17,7 +17,7 @@ enum CanvasRequest {
     case getAnnouncements(courseId: String)
     case getAssignments(courseId: String)
     case getEnrollments
-    case getPeople(courseId: String, bookmark: String)
+    case getPeople(courseId: String, perPage: String = "100")
     var path: String {
         switch self {
         case .getCourses:
@@ -54,10 +54,12 @@ enum CanvasRequest {
             ]
         case .getEnrollments:
             [
-                ("state[]", "active")
+                ("state[]", "active"),
             ]
-        case let .getPeople(_, bookmark):
-            (!bookmark.isEmpty) ? [("page", bookmark)] : []
+        case let .getPeople(_, perPage):
+            [
+                ("per_page", perPage)
+            ]
         default:
             []
         }
@@ -81,6 +83,15 @@ enum CanvasRequest {
     
     var yieldsCollection: Bool {
         self.associatedModel is any Collection.Type
+    }
+    
+    var isPaginated: Bool {
+        switch self {
+        case .getCourses, .getAnnouncements, .getPeople:
+            true
+        default:
+            false
+        }
     }
     
     var associatedModel: Codable.Type {
