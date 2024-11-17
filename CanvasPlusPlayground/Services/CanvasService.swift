@@ -26,19 +26,21 @@ struct CanvasService {
         condition: LookupCondition<T.Element, V>?,
         onCacheReceive: ([T.Element]?) -> Void = { _ in },
         onNewBatch: ([T.Element]) -> Void = { _ in }
-    ) async throws -> T where T.Element : Cacheable {
+    ) async throws -> ([T.Element], T.Type) where T.Element : Cacheable {
         if !(request.associatedModel == T.self || request.associatedModel == T.Element.self){
             preconditionFailure("Provided generic type T = \(T.self) does not match the expected `associatedModel` type \(request.associatedModel) in request.")
         }
+        
+        typealias Model = T.Element
                 
         // Get cached data for this type then filter to only get models related to `request`
-        let cached: [T.Element]? = try await repository.get(condition: condition)?.filter(request.cacheFilter)
+        let cached: [Model]? = try await repository.get(condition: condition)?.filter(request.cacheFilter)
         onCacheReceive(cached) // Share cached version with caller.
             
         // Search cache by id
         let cacheLookup = Dictionary(uniqueKeysWithValues: (cached ?? []).map { ($0.id, $0) })
         
-        let cachedBatch: (T) async -> [T.Element] = { page in
+        let cachedBatch: ([Model]) async -> [Model] = { page in
             // New batch received
             
             // Filter as desired by caller
@@ -63,27 +65,19 @@ struct CanvasService {
         }
         
         // Fetch newest version from API, then filter as desired by caller.
-        var latest: [T.Element] = try await {
+        var latest: [Model] = try await {
             
-            // Adjust `fetch` generic parameter based on whether request is for a collection.
-            let fetched: [T.Element]
+            // If request is for a collection of models, fetch Array of Model type with `fetch`. Otherwise, fetch standalone Model.
+            let fetched: [Model]
             if request.associatedModel is any Collection.Type {
-                fetched = try await fetch(request, onNewPage: {
-                    guard let batch = $0 as? T else {
-                        print("Couldn't unwrap batch to T from [T.Element].")
-                        return
-                    }
+                fetched = try await fetch(request, onNewPage: { batch in
                     let transformed = await cachedBatch(batch)
                     
                     onNewBatch(transformed)
                 })
             } else {
-                let fetchedItem: T.Element = try await fetch(request, onNewPage: {
-                    guard let batch = [$0] as? T else {
-                        print("Couldn't unwrap batch to T from [T.Element].")
-                        return
-                    }
-                    let model = await cachedBatch(batch) // $0 is T.Element but should be T
+                let fetchedItem: Model = try await fetch(request, onNewPage: { batch in
+                    let model = await cachedBatch([batch])
                     onNewBatch(model)
                 })
                 fetched = [fetchedItem]
@@ -100,7 +94,7 @@ struct CanvasService {
         
         repository.flush()
         
-        return latest as! T
+        return (latest, T.self)
     }
     
     /**
@@ -115,7 +109,7 @@ struct CanvasService {
         _ request: CanvasRequest,
         onCacheReceive: ([T.Element]?) -> Void,
         onNewBatch: ([T.Element]) -> Void = { _ in}
-    ) async throws -> T where T.Element : Cacheable {
+    ) async throws -> ([T.Element], T.Type) where T.Element : Cacheable {
         return try await defaultAndFetch<T, String>(
             request,
             condition: nil as LookupCondition<T.Element, String>?,
@@ -140,12 +134,13 @@ struct CanvasService {
             preconditionFailure("Attempted to fetch a single model for request with yieldsCollection: \(request.yieldsCollection), uniqueId: \(request.id ?? "nil"). Expected (false, non-nil value).")
         }
          
-        return try await defaultAndFetch<[T], String>(
+        let (result, _): ([T], [T].Type) = try await defaultAndFetch<[T], String>(
             request,
             condition: LookupCondition.equals(keypath: \.id, value: uniqueId) as LookupCondition<T, String>?,
             onCacheReceive: onCacheReceive,
             onNewBatch: { _ in}
         )
+        return result
     }
     
     // MARK: Network Requests

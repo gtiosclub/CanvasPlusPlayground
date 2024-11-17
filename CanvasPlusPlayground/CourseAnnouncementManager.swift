@@ -18,7 +18,7 @@ import Foundation
     }
     
     func fetchAnnouncements() async {
-        let announcements: [Announcement]? = try? await CanvasService.shared.defaultAndFetch(
+        let announcements: ([Announcement], [Announcement].Type)? = try? await CanvasService.shared.defaultAndFetch(
             .getAnnouncements(courseId: courseId),
             onCacheReceive: { (cached: [Announcement]?) in
                 guard let cached else { return }
@@ -42,7 +42,7 @@ import Foundation
             return
         }
         
-        self.announcements = announcements
+        self.announcements = announcements.0
         
     }
 }
