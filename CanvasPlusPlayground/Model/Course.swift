@@ -186,6 +186,9 @@ final class Course: Cacheable {
     var blueprintRestrictionsByObjectType: [String: [String: Bool]]?
     var template: Bool?
 
+    // MARK: Custom Properties
+    // We cannot use `Color` directly because it needs to conform to `PersistentModel`
+    var rgbColors: RGBColors?
     var isFavorite: Bool?
 
     enum CodingKeys: String, CodingKey {

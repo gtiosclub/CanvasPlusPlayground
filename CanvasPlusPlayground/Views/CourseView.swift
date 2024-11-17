@@ -42,6 +42,7 @@ struct CourseView: View {
                 Label("People", systemImage: "person.crop.circle.fill")
             }
         }
+        .tint(course.rgbColors?.color)
         .navigationTitle(course.name ?? "Unknown Course")
         #if os(iOS)
         .listStyle(.insetGrouped)
