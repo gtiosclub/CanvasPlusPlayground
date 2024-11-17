@@ -16,9 +16,11 @@ final class Announcement: Cacheable {
     var title:String?
     var createdAt:Date?
     var message:String?
-    
+
+    // MARK: Custom Properties
     var isRead: Bool?
-    
+    var summary: String?
+
     weak var course: Course?
     var parentId: String?
     
