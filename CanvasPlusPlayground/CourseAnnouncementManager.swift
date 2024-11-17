@@ -27,9 +27,7 @@ import Foundation
                     ($0.createdAt ?? Date()) > ($1.createdAt ?? Date())
                 })
             },
-            onNewBatch: { batch in
-                guard let batch else { return }
-                
+            onNewBatch: { batch in                
                 for announcement in batch {
                     if !self.announcements.contains(announcement) {
                         self.announcements.insert(announcement, at: 0)

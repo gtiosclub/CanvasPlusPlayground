@@ -25,7 +25,7 @@ struct CanvasService {
         _ request: CanvasRequest,
         condition: LookupCondition<T.Element, V>?,
         onCacheReceive: ([T.Element]?) -> Void = { _ in },
-        onNewBatch: ([T.Element]?) -> Void = { _ in }
+        onNewBatch: ([T.Element]) -> Void = { _ in }
     ) async throws -> T where T.Element : Cacheable {
         if !(request.associatedModel == T.self || request.associatedModel == T.Element.self){
             preconditionFailure("Provided generic type T = \(T.self) does not match the expected `associatedModel` type \(request.associatedModel) in request.")
@@ -114,7 +114,7 @@ struct CanvasService {
     func defaultAndFetch<T: Codable & Collection>(
         _ request: CanvasRequest,
         onCacheReceive: ([T.Element]?) -> Void,
-        onNewBatch: ([T.Element]?) -> Void = { _ in}
+        onNewBatch: ([T.Element]) -> Void = { _ in}
     ) async throws -> T where T.Element : Cacheable {
         return try await defaultAndFetch<T, String>(
             request,
