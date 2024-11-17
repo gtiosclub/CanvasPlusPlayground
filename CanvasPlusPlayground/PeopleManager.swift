@@ -28,7 +28,9 @@ class PeopleManager {
                 // this is a completion that is executed once the function has finished
                 for enrollment in enrollments {
                     if let user = enrollment.user {
-                        self.users.append(user)
+                        if !self.users.contains(where: { $0.id == user.id }) {
+                            self.users.append(user)
+                        }
                     }
                 }
             } catch {
