@@ -11,7 +11,6 @@ struct CourseAnnouncementDetailView: View {
     @EnvironmentObject private var llmEvaluator: LLMEvaluator
     @EnvironmentObject private var intelligenceManager: IntelligenceManager
 
-    @State private var announcementSummary: String?
     @State private var loadingSummary = false
 
     let announcement: Announcement
@@ -21,7 +20,25 @@ struct CourseAnnouncementDetailView: View {
             Section {
                 summarySection
             } header: {
-                Label("Summary", systemImage: "wand.and.stars")
+                HStack {
+                    Label("Summary", systemImage: "wand.and.stars")
+
+                    Spacer()
+
+                    if loadingSummary {
+                        ProgressView()
+                            .controlSize(.small)
+                    } else if announcement.summary != nil {
+                        Button("Summarize Again", systemImage: "arrow.clockwise") {
+                            Task {
+                                await summarize()
+                            }
+                        }
+                        .disabled(loadingSummary)
+                        .buttonStyle(.plain)
+                        .tint(.accentColor)
+                    }
+                }
             } footer: {
                 Group {
                     if let currentModelName = intelligenceManager.currentModelName {
@@ -57,25 +74,17 @@ struct CourseAnnouncementDetailView: View {
 
     private var summarySection: some View {
         Group {
-            if let announcementSummary {
+            if let announcementSummary = announcement.summary {
                 Text(announcementSummary)
+                    .foregroundStyle(loadingSummary ? .secondary : .primary)
             } else {
                 HStack {
                     Button("Summarize") {
                         Task {
-                            loadingSummary = true
                             await summarize()
-                            loadingSummary = false
                         }
                     }
                     .disabled(loadingSummary)
-
-                    Spacer()
-
-                    if loadingSummary {
-                        ProgressView()
-                            .controlSize(.small)
-                    }
                 }
             }
         }
@@ -94,13 +103,15 @@ struct CourseAnnouncementDetailView: View {
         """
 
         if let modelName = intelligenceManager.currentModelName {
-            announcementSummary = await llmEvaluator
+            loadingSummary = true
+            announcement.summary = await llmEvaluator
                 .generate(
                     modelName: modelName,
                     message: prompt,
                     systemPrompt: intelligenceManager.systemPrompt
                 )
                 .trimmingCharacters(in: .whitespacesAndNewlines)
+            loadingSummary = false
         }
     }
 }

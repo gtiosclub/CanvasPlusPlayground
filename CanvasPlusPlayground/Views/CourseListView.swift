@@ -18,8 +18,6 @@ struct CourseListView: View {
     @EnvironmentObject private var llmEvaluator: LLMEvaluator
 
     @State private var showAuthorization: Bool = false
-
-
     @State private var columnVisibility = NavigationSplitViewVisibility.all
 
     var body: some View {
@@ -165,23 +163,23 @@ private struct CourseListCell: View {
 
     var body: some View {
         HStack {
+            Label(course.name ?? "", systemImage: "book.pages")
+                .frame(alignment: .leading)
+                .multilineTextAlignment(.leading)
+        }
+        .swipeActions(edge: .leading) {
             Button {
                 withAnimation {
-                    courseManager.togglePref(course: course)
+                    course.isFavorite = !(course.isFavorite ?? false)
                 }
             } label: {
                 Image(systemName: "star")
                     .symbolVariant(
                         courseManager.userFavCourses.contains(course)
-                        ? .fill
+                        ? .slash
                         : .none
                     )
             }
-            .buttonStyle(.plain)
-
-            Text(course.name ?? "")
-                .frame(alignment: .leading)
-                .multilineTextAlignment(.leading)
         }
         .onAppear {
             resolvedCourseColor = course.rgbColors?.color ?? .accentColor

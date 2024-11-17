@@ -189,6 +189,7 @@ final class Course: Cacheable {
     // MARK: Custom Properties
     // We cannot use `Color` directly because it needs to conform to `PersistentModel`
     var rgbColors: RGBColors?
+    var isFavorite: Bool?
 
     enum CodingKeys: String, CodingKey {
         case id
