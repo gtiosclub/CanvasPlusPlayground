@@ -184,7 +184,7 @@ struct CanvasService {
         
     }
     
-    private func fetchResponse(_ request: CanvasRequest) async throws -> (data: Data, response: URLResponse) {
+    func fetchResponse(_ request: CanvasRequest) async throws -> (data: Data, response: URLResponse) {
         guard let url = request.url else { throw NetworkError.invalidURL(msg: request.path) }
 
         var urlRequest = URLRequest(url: url)
