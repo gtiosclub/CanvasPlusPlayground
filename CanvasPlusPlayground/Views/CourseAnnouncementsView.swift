@@ -28,8 +28,11 @@ struct CourseAnnouncementsView: View {
                     HStack {
                         Text(announcment.title ?? "")
                         Spacer()
-                        Text(announcment.isRead == true ? "Read" : "Unread")
-                            .foregroundStyle(.blue)
+                        if !(announcment.isRead ?? false) {
+                            Circle()
+                                .fill(.tint)
+                                .frame(width: 10, height: 10)
+                        }
                     }
                 }
             }
