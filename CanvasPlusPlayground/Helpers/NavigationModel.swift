@@ -23,7 +23,6 @@ class NavigationModel: ObservableObject {
     
     @Published var selectedCoursePage: CoursePage? {
         didSet {
-            print("Course page changed")
             UserDefaults.standard.set(selectedCoursePage?.rawValue, forKey: "selectedPage")
         }
     }

@@ -105,6 +105,7 @@ struct CourseListView: View {
                     NavigationLink(value: course) {
                         CourseListCell(course: course)
                     }
+                    .tint(course.rgbColors?.color)
                 }
             }
 
@@ -113,6 +114,7 @@ struct CourseListView: View {
                     NavigationLink(value: course) {
                         CourseListCell(course: course)
                     }
+                    .tint(course.rgbColors?.color)
                 }
             }
         }
@@ -158,6 +160,9 @@ private struct CourseListCell: View {
 
     let course: Course
 
+    @State private var showColorPicker = false
+    @State private var resolvedCourseColor: Color = .accentColor
+
     var body: some View {
         HStack {
             Button {
@@ -178,6 +183,29 @@ private struct CourseListCell: View {
                 .frame(alignment: .leading)
                 .multilineTextAlignment(.leading)
         }
+        .onAppear {
+            resolvedCourseColor = course.rgbColors?.color ?? .accentColor
+        }
+        .contextMenu {
+            Button("Change Color", systemImage: "paintbrush.fill") {
+                showColorPicker = true
+            }
+        }
+        #if os(macOS)
+        .popover(isPresented: $showColorPicker) {
+            ColorPicker(selection: $resolvedCourseColor) { }
+                .onDisappear {
+                    course.rgbColors = .init(color: resolvedCourseColor)
+                }
+        }
+        #elseif os(iOS)
+        .colorPickerSheet(
+            isPresented: $showColorPicker,
+            selection: $resolvedCourseColor
+        ) {
+            course.rgbColors = .init(color: resolvedCourseColor)
+        }
+        #endif
     }
 }
 
