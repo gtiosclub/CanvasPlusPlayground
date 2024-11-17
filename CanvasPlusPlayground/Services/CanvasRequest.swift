@@ -83,6 +83,15 @@ enum CanvasRequest {
         self.associatedModel is any Collection.Type
     }
     
+    var isPaginated: Bool {
+        switch self {
+        case .getCourses, .getAnnouncements, .getPeople:
+            true
+        default:
+            false
+        }
+    }
+    
     var associatedModel: Codable.Type {
         return switch self {
         case .getCourses:
