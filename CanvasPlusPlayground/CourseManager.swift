@@ -10,12 +10,13 @@ import SwiftUI
 @Observable
 class CourseManager {
     var courses = [Course]()
-    var prefCourses = Set<Course>()
+
     var userFavCourses: [Course] {
-        courses.filter { prefCourses.contains($0) }
+        courses.filter { $0.isFavorite ?? false }.sorted { $0.name ?? "" < $1.name ?? "" }
     }
+
     var userOtherCourses: [Course] {
-        courses.filter { !prefCourses.contains($0) }
+        courses.filter { !($0.isFavorite ?? false) }.sorted { $0.name ?? "" < $1.name ?? "" }
     }
     
     var enrollments = [Enrollment]()
@@ -33,14 +34,6 @@ class CourseManager {
             self.courses = courses
         } catch {
             print("Failed to fetch files. \(error)")
-        }
-    }
-    
-    func togglePref(course: Course) {
-        if (prefCourses.contains(course)) {
-            prefCourses.remove(course)
-        } else {
-            prefCourses.insert(course)
         }
     }
     

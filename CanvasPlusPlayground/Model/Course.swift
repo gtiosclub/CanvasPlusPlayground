@@ -186,6 +186,7 @@ final class Course: Cacheable {
     var blueprintRestrictionsByObjectType: [String: [String: Bool]]?
     var template: Bool?
 
+    var isFavorite: Bool?
 
     enum CodingKeys: String, CodingKey {
         case id
