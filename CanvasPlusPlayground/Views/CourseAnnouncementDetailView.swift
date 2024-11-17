@@ -11,7 +11,6 @@ struct CourseAnnouncementDetailView: View {
     @EnvironmentObject private var llmEvaluator: LLMEvaluator
     @EnvironmentObject private var intelligenceManager: IntelligenceManager
 
-    @State private var announcementSummary: String?
     @State private var loadingSummary = false
 
     let announcement: Announcement
@@ -57,7 +56,7 @@ struct CourseAnnouncementDetailView: View {
 
     private var summarySection: some View {
         Group {
-            if let announcementSummary {
+            if let announcementSummary = announcement.summary {
                 Text(announcementSummary)
             } else {
                 HStack {
@@ -94,7 +93,7 @@ struct CourseAnnouncementDetailView: View {
         """
 
         if let modelName = intelligenceManager.currentModelName {
-            announcementSummary = await llmEvaluator
+            announcement.summary = await llmEvaluator
                 .generate(
                     modelName: modelName,
                     message: prompt,
