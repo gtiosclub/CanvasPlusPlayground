@@ -278,7 +278,7 @@ struct CanvasService {
     
     // MARK: Helpers
     
-    private func decodeData<T: Codable>(arg: (Data, URLResponse)) throws -> T {
+    func decodeData<T: Codable>(arg: (Data, URLResponse)) throws -> T {
         let (data, _) = arg
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601

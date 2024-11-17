@@ -26,6 +26,16 @@ import Foundation
                 self.announcements = cached.sorted(by: { 
                     ($0.createdAt ?? Date()) > ($1.createdAt ?? Date())
                 })
+            },
+            onNewBatch: { batch in
+                guard let batch else { return }
+                
+                for announcement in batch {
+                    if !self.announcements.contains(announcement) {
+                        self.announcements.append(announcement)
+                    }
+                }
+                
             }
         )
         
