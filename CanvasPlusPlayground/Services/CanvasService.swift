@@ -11,33 +11,14 @@ struct CanvasService {
     static let shared = CanvasService()
     
     let repository = CanvasRepository()
-    
-    func fetchResponse(_ request: CanvasRequest) async throws -> (data: Data, response: URLResponse) {
-        guard let url = request.url else { throw NetworkError.invalidURL(msg: request.path) }
 
-        var urlRequest = URLRequest(url: url)
-        urlRequest.httpMethod = "GET"
-        
-        do {
-            let (data, response) = try await URLSession.shared.data(for: urlRequest)
-
-            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-                throw NetworkError.fetchFailed(msg: response.description)
-            }
-            
-            return (data, response)
-        } catch {
-            throw NetworkError.fetchFailed(msg: error.localizedDescription)
-        }
-    }
-    
-    
     /**
      Fetch a collection of data from the Canvas API. Also provides cached version via closure (if any). Allows filtering.
      - Parameters:
         - request: the desired API query for a **collection** of models.
         - condition: an optimized filter to be performed in the query.
         - onCacheReceive: a closure for early execution when cached version is received - if any.
+        - onNewBatch: if the request involves pagination, this closure will be executed upon arrival of each batch
      - Returns: An array of models concerning the desired query.
      **/
     func defaultAndFetch<T: Codable & Collection, V: Equatable>(
@@ -127,6 +108,7 @@ struct CanvasService {
      - Parameters:
         - request: the desired API query for a **collection** of models.
         - onCacheReceive: a closure for early execution when cached version is received - if any.
+        - onNewBatch: if the request involves pagination, this closure will be executed upon arrival of each batch
      - Returns: An array of models concerning the desired query.
      **/
     func defaultAndFetch<T: Codable & Collection>(
@@ -202,7 +184,25 @@ struct CanvasService {
         
     }
     
-    
+    private func fetchResponse(_ request: CanvasRequest) async throws -> (data: Data, response: URLResponse) {
+        guard let url = request.url else { throw NetworkError.invalidURL(msg: request.path) }
+
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = "GET"
+        
+        do {
+            let (data, response) = try await URLSession.shared.data(for: urlRequest)
+
+            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                throw NetworkError.fetchFailed(msg: response.description)
+            }
+            
+            return (data, response)
+        } catch {
+            throw NetworkError.fetchFailed(msg: error.localizedDescription)
+        }
+    }
+
     func fetchBatch(
         _ request: CanvasRequest,
         oneNewBatch: (((data: Data, url: URLResponse)) async throws -> ())
