@@ -23,14 +23,10 @@ struct PeopleView: View {
             mainBody
         }
         .task {
-            if let courseID {
-                await peopleManager.fetchPeople(with: courseID)
-            }
+            await peopleManager.fetchPeople()
         }
         .refreshable {
-            if let courseID {
-                await peopleManager.fetchPeople(with: courseID)
-            }
+            await peopleManager.fetchPeople()
         }
     }
     

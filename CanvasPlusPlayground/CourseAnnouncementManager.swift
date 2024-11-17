@@ -32,7 +32,7 @@ import Foundation
                 
                 for announcement in batch {
                     if !self.announcements.contains(announcement) {
-                        self.announcements.append(announcement)
+                        self.announcements.insert(announcement, at: 0)
                     }
                 }
                 

@@ -20,7 +20,8 @@ class PeopleManager {
         self.users = []
     }
     
-    func fetchPeople(with courseID: String) async {
+    func fetchPeople() async {
+        guard let courseID else { return }
         let _ = try? await CanvasService.shared.fetchBatch(.getPeople(courseId: courseID)) { dataResponseArr in
             do {
                 let enrollments = try CanvasService.shared.decodeData(arg: dataResponseArr) as [Enrollment]
