@@ -126,6 +126,12 @@ struct CourseListView: View {
                     showAuthorization.toggle()
                 }
             }
+
+            ToolbarItem(placement: .cancellationAction) {
+                Button("Clear cache", systemImage: "opticaldiscdrive") {
+                    CanvasService.shared.clearCache()
+                }
+            }
         }
     }
 

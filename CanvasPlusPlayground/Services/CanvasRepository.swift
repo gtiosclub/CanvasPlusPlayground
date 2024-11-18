@@ -14,7 +14,7 @@ struct CanvasRepository {
     
     init() {
         self.modelContainer = try! ModelContainer(for:
-            Course.self, Announcement.self
+            Course.self, Announcement.self, Enrollment.self
         ) // TODO: Add cacheable models here
     }
     
