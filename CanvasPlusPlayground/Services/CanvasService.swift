@@ -56,7 +56,9 @@ struct CanvasService {
             
             // Store the request / parent id in each model so that we can recall all models for that parent
             if let id = request.id {
-                latest.forEach { $0.parentId = id }
+                for model in latest {
+                    await model.update(keypath: \.parentId, value: id)
+                }
             }
             
             return latest
@@ -102,6 +104,7 @@ struct CanvasService {
         
         return latest as! T
     }
+    
     
     /**
      Fetch a collection of data from the Canvas API. Also provides cached version via closure (if any). No filtering.
