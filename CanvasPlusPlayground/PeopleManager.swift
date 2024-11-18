@@ -22,22 +22,30 @@ class PeopleManager {
     
     func fetchPeople() async {
         guard let courseID else { return }
-        let _ = try? await CanvasService.shared.fetchBatch(.getPeople(courseId: courseID)) { dataResponseArr in
-            do {
-                let enrollments = try CanvasService.shared.decodeData(arg: dataResponseArr) as [Enrollment]
-                
-                // this is a completion that is executed once the function has finished
-                for enrollment in enrollments {
+
+        let _: [Enrollment]? = try? await CanvasService.shared.defaultAndFetch(
+            .getPeople(courseId: courseID),
+            onCacheReceive: { (cached: [Enrollment]?) in
+                guard let cached else { return }
+
+                for enrollment in cached {
                     if let user = enrollment.user {
                         if !self.users.contains(where: { $0.id == user.id }) {
                             self.users.append(user)
                         }
                     }
                 }
-            } catch {
-                print(error)
+            },
+            onNewBatch: { batch in
+                for enrollment in batch {
+                    if let user = enrollment.user {
+                        if !self.users.contains(where: { $0.id == user.id }) {
+                            self.users.append(user)
+                        }
+                    }
+                }
             }
-        }
+        )
     }
     
     func fetchActiveCourses() async {
