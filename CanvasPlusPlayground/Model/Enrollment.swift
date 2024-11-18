@@ -13,7 +13,7 @@ final class Enrollment: Cacheable {
     typealias ServerID = Int
 
     @Attribute(.unique)
-    let id: String
+    var id: String
     var courseID: Int?
     var sisCourseID: String?
     var courseIntegrationID: String?
