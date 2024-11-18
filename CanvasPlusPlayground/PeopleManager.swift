@@ -28,22 +28,16 @@ class PeopleManager {
             onCacheReceive: { (cached: [Enrollment]?) in
                 guard let cached else { return }
 
-                for enrollment in cached {
-                    if let user = enrollment.user {
-                        if !self.users.contains(where: { $0.id == user.id }) {
-                            self.users.append(user)
-                        }
-                    }
-                }
+                let users = cached.compactMap { $0.user }
+                        .filter { user in !self.users.contains(where: { $0.id == user.id }) }
+
+                self.users.append(contentsOf: Set(users))
             },
             onNewBatch: { batch in
-                for enrollment in batch {
-                    if let user = enrollment.user {
-                        if !self.users.contains(where: { $0.id == user.id }) {
-                            self.users.append(user)
-                        }
-                    }
-                }
+                let users = batch.compactMap { $0.user }
+                                    .filter { user in !self.users.contains(where: { $0.id == user.id }) }
+
+                self.users.append(contentsOf: Set(users))
             }
         )
     }
