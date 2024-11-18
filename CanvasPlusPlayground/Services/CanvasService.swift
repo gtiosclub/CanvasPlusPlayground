@@ -279,6 +279,12 @@ struct CanvasService {
         }
     }
     
+    func clearCache() {
+        Task { @MainActor in
+            repository.modelContainer.deleteAllData()
+        }
+    }
+    
     // MARK: Helpers
     
     func decodeData<T: Codable>(arg: (Data, URLResponse)) throws -> T {

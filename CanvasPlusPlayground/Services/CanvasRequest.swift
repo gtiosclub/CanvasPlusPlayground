@@ -111,7 +111,7 @@ enum CanvasRequest {
         case .getEnrollments:
             [Enrollment].self
         case .getPeople:
-            [User].self
+            [Enrollment].self
         }
     }
 }
