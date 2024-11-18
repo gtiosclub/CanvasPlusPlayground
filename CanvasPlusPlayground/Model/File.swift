@@ -42,33 +42,139 @@
    "preview_url": null
  }
  */
-struct File: Codable {
-    let id: Int
-    let uuid: String
-    let folderID: Int
-    let displayName: String
-    let filename: String
-    let uploadStatus: String
-    let contentType: String
-    let url: String
-    let size: Int
-    let createdAt: String
-    let updatedAt: String
-    let unlockAt: String?
-    let locked: Bool
-    let hidden: Bool
-    let lockAt: String?
-    let hiddenForUser: Bool
-    let thumbnailUrl: String?
-    let modifiedAt: String
-    let mimeClass: String
-    let mediaEntryID: String?
-    let category: String
-    let lockedForUser: Bool
-    let visibilityLevel: String
+
+import Foundation
+import SwiftData
+
+@Model
+class File: Cacheable {
+    typealias ServerID = Int
+
+    // MARK: - Attributes
+    @Attribute(.unique) var id: String
+    var parentId: String?
     
+    var uuid: String?
+    var folderId: String?
+    var displayName: String?
+    var filename: String?
+    var uploadStatus: String?
+    var contentType: String?
+    var url: String?
+    var size: Int?
+    var createdAt: Date?
+    var updatedAt: Date?
+    var unlockAt: String?
+    var locked: Bool?
+    var hidden: Bool?
+    var lockAt: String?
+    var hiddenForUser: Bool?
+    var thumbnailUrl: String?
+    var modifiedAt: String?
+    var mimeClass: String?
+    var mediaEntryID: String?
+    var category: String?
+    var lockedForUser: Bool?
+    var visibilityLevel: String?
+
+    // MARK: - Decodable
+    required init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        let id = try container.decode(ServerID.self, forKey: .id)
+        self.id =  String(describing: id)
+        
+        self.parentId = try container.decodeIfPresent(String.self, forKey: .parentId)
+        
+        // Decode remaining properties
+        self.uuid = try container.decodeIfPresent(String.self, forKey: .uuid)
+        self.folderId = try container.decodeIfPresent(String.self, forKey: .folderID)
+        self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
+        self.filename = try container.decodeIfPresent(String.self, forKey: .filename)
+        self.uploadStatus = try container.decodeIfPresent(String.self, forKey: .uploadStatus)
+        self.contentType = try container.decodeIfPresent(String.self, forKey: .contentType)
+        self.url = try container.decodeIfPresent(String.self, forKey: .url)
+        self.size = try container.decodeIfPresent(Int.self, forKey: .size)
+        self.createdAt = try container.decodeIfPresent(Date.self, forKey: .createdAt)
+        self.updatedAt = try container.decodeIfPresent(Date.self, forKey: .updatedAt)
+        self.unlockAt = try container.decodeIfPresent(String.self, forKey: .unlockAt)
+        self.locked = try container.decodeIfPresent(Bool.self, forKey: .locked)
+        self.hidden = try container.decodeIfPresent(Bool.self, forKey: .hidden)
+        self.lockAt = try container.decodeIfPresent(String.self, forKey: .lockAt)
+        self.hiddenForUser = try container.decodeIfPresent(Bool.self, forKey: .hiddenForUser)
+        self.thumbnailUrl = try container.decodeIfPresent(String.self, forKey: .thumbnailUrl)
+        self.modifiedAt = try container.decodeIfPresent(String.self, forKey: .modifiedAt)
+        self.mimeClass = try container.decodeIfPresent(String.self, forKey: .mimeClass)
+        self.mediaEntryID = try container.decodeIfPresent(String.self, forKey: .mediaEntryID)
+        self.category = try container.decodeIfPresent(String.self, forKey: .category)
+        self.lockedForUser = try container.decodeIfPresent(Bool.self, forKey: .lockedForUser)
+        self.visibilityLevel = try container.decodeIfPresent(String.self, forKey: .visibilityLevel)
+    }
+
+    // MARK: - Encodable
+    func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        try container.encode(id, forKey: .id)
+        
+        try container.encodeIfPresent(parentId, forKey: .parentId)
+        
+        try container.encodeIfPresent(uuid, forKey: .uuid)
+        try container.encodeIfPresent(folderId, forKey: .folderID)
+        try container.encodeIfPresent(displayName, forKey: .displayName)
+        try container.encodeIfPresent(filename, forKey: .filename)
+        try container.encodeIfPresent(uploadStatus, forKey: .uploadStatus)
+        try container.encodeIfPresent(contentType, forKey: .contentType)
+        try container.encodeIfPresent(url, forKey: .url)
+        try container.encodeIfPresent(size, forKey: .size)
+        try container.encodeIfPresent(createdAt, forKey: .createdAt)
+        try container.encodeIfPresent(updatedAt, forKey: .updatedAt)
+        try container.encodeIfPresent(unlockAt, forKey: .unlockAt)
+        try container.encodeIfPresent(locked, forKey: .locked)
+        try container.encodeIfPresent(hidden, forKey: .hidden)
+        try container.encodeIfPresent(lockAt, forKey: .lockAt)
+        try container.encodeIfPresent(hiddenForUser, forKey: .hiddenForUser)
+        try container.encodeIfPresent(thumbnailUrl, forKey: .thumbnailUrl)
+        try container.encodeIfPresent(modifiedAt, forKey: .modifiedAt)
+        try container.encodeIfPresent(mimeClass, forKey: .mimeClass)
+        try container.encodeIfPresent(mediaEntryID, forKey: .mediaEntryID)
+        try container.encodeIfPresent(category, forKey: .category)
+        try container.encodeIfPresent(lockedForUser, forKey: .lockedForUser)
+        try container.encodeIfPresent(visibilityLevel, forKey: .visibilityLevel)
+    }
+
+    // MARK: - Merge
+    @MainActor
+    func merge(with other: File) {
+        self.uuid = other.uuid
+        self.folderId = other.folderId
+        self.displayName = other.displayName
+        self.filename = other.filename
+        self.uploadStatus = other.uploadStatus
+        self.contentType = other.contentType
+        self.url = other.url
+        self.size = other.size
+        self.createdAt = other.createdAt
+        self.updatedAt = other.updatedAt
+        self.unlockAt = other.unlockAt
+        self.locked = other.locked
+        self.hidden = other.hidden
+        self.lockAt = other.lockAt
+        self.hiddenForUser = other.hiddenForUser
+        self.thumbnailUrl = other.thumbnailUrl
+        self.modifiedAt = other.modifiedAt
+        self.mimeClass = other.mimeClass
+        self.mediaEntryID = other.mediaEntryID
+        self.category = other.category
+        self.lockedForUser = other.lockedForUser
+        self.visibilityLevel = other.visibilityLevel
+    }
+
+    // MARK: - CodingKeys
     enum CodingKeys: String, CodingKey {
         case id
+        case parentId
+        
         case uuid
         case folderID = "folder_id"
         case displayName = "display_name"
