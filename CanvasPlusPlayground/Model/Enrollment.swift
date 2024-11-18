@@ -106,6 +106,7 @@ final class Enrollment: Cacheable {
         case currentPeriodUnpostedFinalScore = "current_period_unposted_final_score"
         case currentPeriodUnpostedCurrentGrade = "current_period_unposted_current_grade"
         case currentPeriodUnpostedFinalGrade = "current_period_unposted_final_grade"
+        case parentID = "parent_id"
     }
 
     required init(from decoder: Decoder) throws {
@@ -157,6 +158,8 @@ final class Enrollment: Cacheable {
         self.currentPeriodUnpostedFinalScore = try container.decodeIfPresent(Double.self, forKey: .currentPeriodUnpostedFinalScore)
         self.currentPeriodUnpostedCurrentGrade = try container.decodeIfPresent(String.self, forKey: .currentPeriodUnpostedCurrentGrade)
         self.currentPeriodUnpostedFinalGrade = try container.decodeIfPresent(String.self, forKey: .currentPeriodUnpostedFinalGrade)
+        self.parentId = try container
+            .decodeIfPresent(String.self, forKey: .parentID)
     }
 
     func encode(to encoder: any Encoder) throws {
@@ -206,6 +209,7 @@ final class Enrollment: Cacheable {
         try container.encodeIfPresent(currentPeriodUnpostedFinalScore, forKey: .currentPeriodUnpostedFinalScore)
         try container.encodeIfPresent(currentPeriodUnpostedCurrentGrade, forKey: .currentPeriodUnpostedCurrentGrade)
         try container.encodeIfPresent(currentPeriodUnpostedFinalGrade, forKey: .currentPeriodUnpostedFinalGrade)
+        try container.encodeIfPresent(parentId, forKey: .parentID)
     }
 
     @MainActor
