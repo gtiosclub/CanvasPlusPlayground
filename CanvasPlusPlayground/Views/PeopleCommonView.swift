@@ -14,13 +14,22 @@ struct PeopleCommonView: View {
     @State private var loading: Bool = false
 
     var body: some View {
-        List {
+        Form {
             Section {
                 statusLabel
+            } footer: {
+                if !peopleManager.allCoursesCached {
+                    Text("Showing only results from cached courses")
+                        .foregroundStyle(.secondary)
+                }
             }
 
-            ForEach(courses, id: \.id) { course in
-                Text(course.name ?? "")
+            Section {
+                ForEach(courses, id: \.id) { course in
+                    Text(course.name ?? "")
+                }
+            } header: {
+                Text("Courses")
             }
         }
         .task {
@@ -28,16 +37,21 @@ struct PeopleCommonView: View {
             self.courses = await peopleManager.fetchAllClassesWith(userID: user.id!)
             loading = false
         }
+        .formStyle(.grouped)
     }
 
     private var statusLabel: some View {
         HStack {
-            Text("\(courses.count) Common Course\(courses.count == 1 ? "" : "s")")
+            Text("Common Courses")
 
             Spacer()
 
             if loading {
                 ProgressView()
+                    .controlSize(.small)
+            } else {
+                Text("\(courses.count)")
+                    .bold()
             }
         }
     }

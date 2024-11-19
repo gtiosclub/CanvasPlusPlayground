@@ -13,6 +13,31 @@ struct CanvasService {
     let repository = CanvasRepository()
 
     /**
+     Fetch a collection of data from the cache only.
+     - Parameters:
+        - request: the desired query to identify cached models.
+        - condition: an optimized filter to be applied to cached models (optional).
+     - Returns: An array of models matching the desired query, fetched solely from the cache.
+     **/
+    func fetchFromCache<T: Codable & Collection, V: Equatable>(
+        _ request: CanvasRequest,
+        condition: LookupCondition<T.Element, V>? = nil
+    ) async throws -> T where T.Element: Cacheable {
+        if !(request.associatedModel == T.self || request.associatedModel == T.Element.self) {
+            preconditionFailure("Provided generic type T = \(T.self) does not match the expected `associatedModel` type \(request.associatedModel) in request.")
+        }
+
+        // Retrieve cached data for the specified type and condition, then filter based on request
+        let cached: [T.Element]? = try await repository.get(condition: condition)?.filter(request.cacheFilter)
+
+        guard let result = cached as? T else {
+            throw NetworkError.failedToDecode(msg: "Could not cast cached data to type \(T.self).")
+        }
+
+        return result
+    }
+
+    /**
      Fetch a collection of data from the Canvas API. Also provides cached version via closure (if any). Allows filtering.
      - Parameters:
         - request: the desired API query for a **collection** of models.
