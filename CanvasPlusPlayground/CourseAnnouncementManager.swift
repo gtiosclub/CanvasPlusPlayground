@@ -23,7 +23,7 @@ import Foundation
         let startDate = endDate.addingTimeInterval(-1 * 60 * 60 * 24 * 30 * 5)
         
         let announcements: [Announcement]? = try? await CanvasService.shared.defaultAndFetch(
-            .getAnnouncements(courseId: courseId, startDate: startDate.ISO8601Format(), endDate: endDate.ISO8601Format()),
+            .getAnnouncements(courseId: courseId, startDate: startDate, endDate: endDate),
             onCacheReceive: { (cached: [Announcement]?) in
                 guard let cached else { return }
                 
