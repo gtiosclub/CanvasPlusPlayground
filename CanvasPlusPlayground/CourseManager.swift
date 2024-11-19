@@ -32,8 +32,42 @@ class CourseManager {
             )
 
             self.courses = courses
+            
+            //prepare()
+
         } catch {
-            print("Failed to fetch files. \(error)")
+            print("Failed to fetch courses. \(error)")
+        }
+    }
+    
+    func prepare() {
+        Task.detached(priority: .background) {
+            await withTaskGroup(of: Void.self) { group in
+                let prepares: [(Course) async -> Void] = [
+                    self.preparePeople
+                ]
+                
+                for course in self.courses {
+                    for prepare in prepares {
+                        group.addTask(priority: .low) {
+                            await prepare(course)
+                        }
+                    }
+                }
+                
+            }
+        }
+    }
+    
+    func preparePeople(for course: Course) async {
+        do {
+            let enrollments: [Enrollment] = try await CanvasService.shared.defaultAndFetch(
+                .getPeople(courseId: course.id),
+                onCacheReceive: { _ in}
+            )
+            print("Done fetching people in \(#function) for \(course.id). \(enrollments.count)")
+        } catch {
+            print("Failed to fetch people in \(#function). \(error)")
         }
     }
     
