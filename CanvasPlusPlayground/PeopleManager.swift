@@ -14,6 +14,8 @@ class PeopleManager {
     var users = [User] ()
     var courses = [Course]()
 
+    var allCoursesCached = true
+
     init(courseID: String?) {
         self.courseID = courseID
         self.enrollments = []
@@ -62,26 +64,17 @@ class PeopleManager {
         
         for course in courses {
             print("Is user in \(String(describing: course.name))?")
-            
-            // get enrollments in
-            let courseID = course.id
-            
-            let _ = try? await CanvasService.shared.fetchBatch(.getPeople(courseId: courseID)) { dataResponseArr in
-                do {
-                    let enrollments = try CanvasService.shared.decodeData(arg: dataResponseArr) as [Enrollment]
-                    
-                    // this is a completion that is executed once the function has finished
-                    for enrollment in enrollments {
-                        if let user = enrollment.user {
-                            self.users.append(user)
-                        }
-                    }
-                } catch {
-                    print(error)
-                }
+
+            let enrollments: [Enrollment]? = try? await CanvasService.shared.fetchFromCache(
+                .getPeople(courseId: course.id),
+                condition: nil as LookupCondition<Enrollment, String>?
+            )
+
+            if enrollments == nil || enrollments!.isEmpty {
+                allCoursesCached = false
             }
-            
-            for enrollment in enrollments {
+
+            for enrollment in enrollments ?? [] {
                 if let user = enrollment.user {
                     if userID == user.id {
                         print("Yes")

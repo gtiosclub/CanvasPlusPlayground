@@ -31,7 +31,7 @@ struct PeopleView: View {
     }
     
     private var mainBody: some View {
-        List(peopleManager.users, id: \.id) { user in
+        List(peopleManager.users.sorted { $0.name ?? "" < $1.name ?? "" }, id: \.id) { user in
             NavigationLink(user.name ?? "", value: user)
         }
         .navigationTitle("People")
