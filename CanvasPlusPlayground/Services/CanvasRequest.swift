@@ -14,7 +14,7 @@ enum CanvasRequest {
     case getCourse(id: String)
     case getCourseFiles(courseId: String)
     case getTabs(courseId: String)
-    case getAnnouncements(courseId: String)
+    case getAnnouncements(courseId: String, startDate: Date, endDate: Date)
     case getAssignments(courseId: String)
     case getEnrollments
     case getPeople(courseId: String, perPage: String = "100")
@@ -48,9 +48,11 @@ enum CanvasRequest {
                 ("enrollment_state", enrollment_state),
                 ("per_page", perPage)
             ]
-        case let .getAnnouncements(courseId):
+        case let .getAnnouncements(courseId, startDate, endDate):
             [
-                ("context_codes[]", "course_\(courseId)")
+                ("context_codes[]", "course_\(courseId)"),
+                ("start_date", startDate.ISO8601Format()),
+                ("end_date", endDate.ISO8601Format())
             ]
         case .getEnrollments:
             [
@@ -74,7 +76,7 @@ enum CanvasRequest {
         switch self {
         case let .getCourse(id):
             return id
-        case let .getTabs(courseId), let .getAnnouncements(courseId), let .getAssignments(courseId), let .getCourseFiles(courseId), let .getPeople(courseId, _):
+        case let .getTabs(courseId), let .getAnnouncements(courseId, _, _), let .getAssignments(courseId), let .getCourseFiles(courseId), let .getPeople(courseId, _):
             return courseId
         default:
             return nil
