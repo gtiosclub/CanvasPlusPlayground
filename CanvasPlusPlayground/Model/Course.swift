@@ -128,7 +128,7 @@ final class Course: Cacheable {
     typealias ServerID = Int
     
     // MARK: IDs
-    @Attribute(.unique) var id: String
+    @Attribute(.unique) let id: String
     var parentId: String?
     
     // MARK: Relationships

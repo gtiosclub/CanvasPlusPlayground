@@ -12,7 +12,7 @@ import Foundation
 final class Announcement: Cacheable {
     typealias ServerID = Int
     
-    @Attribute(.unique) var id: String
+    @Attribute(.unique) let id: String
     var title:String?
     var createdAt:Date?
     var message:String?
