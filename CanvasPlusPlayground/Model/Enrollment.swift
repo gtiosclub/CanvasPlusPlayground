@@ -212,7 +212,7 @@ final class Enrollment: Cacheable {
         try container.encodeIfPresent(parentId, forKey: .parentID)
     }
 
-    @MainActor
+    
     func merge(with other: Enrollment) {
         courseID = other.courseID
         sisCourseID = other.sisCourseID

@@ -10,7 +10,25 @@ import Foundation
 struct CanvasService {
     static let shared = CanvasService()
     
-    let repository = CanvasRepository()
+    let repository: CanvasRepository
+    
+    init()  {
+        var repo: CanvasRepository?
+        let semaphore = DispatchSemaphore(value: 0)
+        
+        Task.detached {
+            let initializedRepo = CanvasRepository()
+            repo = initializedRepo
+            semaphore.signal()
+        }
+        
+        semaphore.wait()
+        
+        guard let repo else {
+            preconditionFailure("Error initializing CanvasRepository.")
+        }
+        self.repository = repo
+    }
 
     /**
      Fetch a collection of data from the cache only.
@@ -72,7 +90,8 @@ struct CanvasService {
             // Replace merge fetched model into cached model OR cache fetched model as new.
             for (i, latestModel) in latest.enumerated() {
                 if let matchedCached = cacheLookup[latestModel.id] {
-                    await matchedCached.merge(with: latestModel)
+                    await repository.merge(other: latestModel, into: matchedCached)
+                    //await matchedCached.merge(with: latestModel)
                     latest[i] = matchedCached
                 } else {
                     try? await repository.insert(latestModel)
@@ -125,7 +144,7 @@ struct CanvasService {
             }
         }
         
-        repository.flush()
+        await repository.flush()
         
         return latest as! T
     }
@@ -288,10 +307,12 @@ struct CanvasService {
     
     // MARK: Repository actions
     
-    @MainActor
+    /*
     func setupRepository() async {
-        repository.modelContainer.mainContext.autosaveEnabled = true
-    }
+        Task {
+            await repository.modelContext.autosaveEnabled = true
+        }
+    }*/
     
     func insert(model: Any) async throws {
         // if data itself is cacheable -> save, if data is an array of cacheables -> save each individually
@@ -305,7 +326,7 @@ struct CanvasService {
     }
     
     func clearCache() {
-        Task { @MainActor in
+        Task {
             repository.modelContainer.deleteAllData()
         }
     }

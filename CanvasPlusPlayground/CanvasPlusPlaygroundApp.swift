@@ -20,7 +20,7 @@ struct CanvasPlusPlaygroundApp: App {
                 .environmentObject(IntelligenceManager())
                 .environmentObject(LLMEvaluator())
                 .task {
-                    await CanvasService.shared.setupRepository()
+                    await CanvasService.shared.repository.setAutosave(true)
                 }
         }
     }

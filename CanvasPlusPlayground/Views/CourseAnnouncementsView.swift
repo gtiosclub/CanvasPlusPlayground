@@ -22,7 +22,9 @@ struct CourseAnnouncementsView: View {
                 NavigationLink {
                     CourseAnnouncementDetailView(announcement: announcment)
                         .onAppear {
-                            announcment.update(keypath: \.isRead, value: true)
+                            Task {
+                                await announcment.update(keypath: \.isRead, value: true)
+                            }
                         }
                 } label: {
                     HStack {
