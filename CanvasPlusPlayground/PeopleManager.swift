@@ -23,7 +23,7 @@ class PeopleManager {
     func fetchPeople() async {
         guard let courseID else { return }
 
-        let enrollments: [Enrollment]? = try? await CanvasService.shared.defaultAndFetch(
+        let enrollments: [Enrollment]? = try? await CanvasService.shared.loadAndSync(
             .getPeople(courseId: courseID),
             descriptor: .init(sortBy: [
                 SortDescriptor(\.user?.name, order: .forward)

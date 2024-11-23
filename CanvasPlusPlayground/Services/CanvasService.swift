@@ -128,7 +128,7 @@ struct CanvasService {
         - onNewBatch: if the request involves pagination, this closure will be executed upon arrival of each batch
      - Returns: An array of models concerning the desired query.
      **/
-    func defaultAndFetch<T: Cacheable>(
+    func loadAndSync<T: Cacheable>(
         _ request: CanvasRequest,
         descriptor: FetchDescriptor<T> = FetchDescriptor<T>(),
         onCacheReceive: ([T]?) -> Void = { _ in },
