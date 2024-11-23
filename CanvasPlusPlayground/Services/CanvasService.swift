@@ -15,6 +15,10 @@ struct CanvasService {
     
     /// Only loads from storage, doesn't make a network call
     func load<T: Cacheable>(_ request: CanvasRequest, descriptor: FetchDescriptor<T>) async throws -> [T]? {
+        if !(request.associatedModel == T.self || request.associatedModel == [T].self){
+            preconditionFailure("Provided generic type T = \(T.self) does not match the expected `associatedModel` type \(request.associatedModel) in request.")
+        }
+        
         // Join custom predicate with id-filtering predicate
         var cacheDescriptor = descriptor
         let customPred = cacheDescriptor.predicate ?? .isAlwaysTrue()
@@ -51,8 +55,11 @@ struct CanvasService {
         using cache: [T],
         onNewBatch: ([T]) -> Void
     ) async throws -> [T] {
-        let cacheLookup = Dictionary(uniqueKeysWithValues: cache.map { ($0.id, $0) } )
+        if !(request.associatedModel == T.self || request.associatedModel == [T].self){
+            preconditionFailure("Provided generic type T = \(T.self) does not match the expected `associatedModel` type \(request.associatedModel) in request.")
+        }
         
+        let cacheLookup = Dictionary(uniqueKeysWithValues: cache.map { ($0.id, $0) } )
         
         let updateStorage: ([T]) async -> [T] = { newModels in
             // New batch received
