@@ -12,7 +12,22 @@ struct CanvasService {
     static let shared = CanvasService()
     
     let repository = CanvasRepository()
-
+    
+    /// Only loads from storage, doesn't make a network call
+    func load<T: Cacheable>(_ request: CanvasRequest, descriptor: FetchDescriptor<T>) async throws -> [T]? {
+        // Join custom predicate with id-filtering predicate
+        var cacheDescriptor = descriptor
+        let customPred = cacheDescriptor.predicate ?? .isAlwaysTrue()
+        let idPred = request.cacheFilter() as Predicate<T>
+        cacheDescriptor.predicate = #Predicate {
+            customPred.evaluate($0) && idPred.evaluate($0)
+        }
+                
+        // Get cached data for this type then filter to only get models related to `request`
+        let cached: [T]? = try await repository.get(descriptor: cacheDescriptor)
+        
+        return cached
+    }
     /**
      Fetch a collection of data from the Canvas API. Also provides cached version via closure (if any). Allows filtering.
      - Parameters:
@@ -32,16 +47,7 @@ struct CanvasService {
             preconditionFailure("Provided generic type T = \(T.self) does not match the expected `associatedModel` type \(request.associatedModel) in request.")
         }
         
-        // Join custom predicate with id-filtering predicate
-        var cacheDescriptor = descriptor
-        let descriptorPred = cacheDescriptor.predicate ?? .isAlwaysTrue()
-        let idPred = request.cacheFilter() as Predicate<T.Element>
-        cacheDescriptor.predicate = #Predicate {
-            descriptorPred.evaluate($0) && idPred.evaluate($0)
-        }
-                
-        // Get cached data for this type then filter to only get models related to `request`
-        let cached: [T.Element]? = try await repository.get(descriptor: cacheDescriptor)
+        let cached: [T.Element]? = try await load(request, descriptor: descriptor)
         onCacheReceive(cached) // Share cached version with caller.
             
         // Search cache by id
@@ -52,7 +58,6 @@ struct CanvasService {
             
             // Filter as desired by caller
             var latest = (try? filterByDescriptor(descriptor, models: page as! [T.Element])) ?? page as! [T.Element]
-            // TODO: filter based on FetchDescriptor
 
             // Replace merge fetched model into cached model OR cache fetched model as new.
             for (i, latestModel) in latest.enumerated() {
