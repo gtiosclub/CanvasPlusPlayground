@@ -23,23 +23,27 @@ class PeopleManager {
     func fetchPeople() async {
         guard let courseID else { return }
 
-        let _: [Enrollment]? = try? await CanvasService.shared.defaultAndFetch(
+        let enrollments: [Enrollment]? = try? await CanvasService.shared.defaultAndFetch(
             .getPeople(courseId: courseID),
+            descriptor: .init(sortBy: [
+                SortDescriptor(\.user?.name, order: .forward)
+            ]),
             onCacheReceive: { (cached: [Enrollment]?) in
                 guard let cached else { return }
 
                 let users = cached.compactMap { $0.user }
                         .filter { user in !self.users.contains(where: { $0.id == user.id }) }
 
-                self.users.append(contentsOf: Set(users))
-            },
-            onNewBatch: { batch in
-                let users = batch.compactMap { $0.user }
-                                    .filter { user in !self.users.contains(where: { $0.id == user.id }) }
-
-                self.users.append(contentsOf: Set(users))
+                self.users = users
             }
         )
+        
+        guard let enrollments else {
+            print("Enrollments is nil, fetch failed.")
+            return
+        }
+        
+        self.enrollments = enrollments
     }
     
     func fetchActiveCourses() async {

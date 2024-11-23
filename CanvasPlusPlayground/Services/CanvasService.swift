@@ -28,37 +28,39 @@ struct CanvasService {
         
         return cached
     }
-    /**
-     Fetch a collection of data from the Canvas API. Also provides cached version via closure (if any). Allows filtering.
-     - Parameters:
-        - request: the desired API query for a **collection** of models.
-        - condition: an optimized filter to be performed in the query.
-        - onCacheReceive: a closure for early execution when cached version is received - if any.
-        - onNewBatch: if the request involves pagination, this closure will be executed upon arrival of each batch
-     - Returns: An array of models concerning the desired query.
-     **/
-    func defaultAndFetch<T: Codable & Collection>(
+    
+    func syncWithAPI<T: Cacheable>(
         _ request: CanvasRequest,
-        descriptor: FetchDescriptor<T.Element> = FetchDescriptor<T.Element>(),
-        onCacheReceive: ([T.Element]?) -> Void = { _ in },
-        onNewBatch: ([T.Element]) -> Void = { _ in }
-    ) async throws -> T where T.Element : Cacheable {
-        if !(request.associatedModel == T.self || request.associatedModel == T.Element.self){
-            preconditionFailure("Provided generic type T = \(T.self) does not match the expected `associatedModel` type \(request.associatedModel) in request.")
-        }
+        descriptor: FetchDescriptor<T> = FetchDescriptor<T>(),
+        onNewBatch: ([T]) -> Void
+    ) async throws -> [T] {
+        let cached = try await load(request, descriptor: descriptor) ?? []
         
-        let cached: [T.Element]? = try await load(request, descriptor: descriptor)
-        onCacheReceive(cached) // Share cached version with caller.
-            
-        // Search cache by id
-        let cacheLookup = Dictionary(uniqueKeysWithValues: (cached ?? []).map { ($0.id, $0) })
+        return try await syncWithAPI(
+            request,
+            descriptor: descriptor,
+            using: cached,
+            onNewBatch: onNewBatch
+        )
+    }
+    
+    
+    private func syncWithAPI<T: Cacheable>(
+        _ request: CanvasRequest,
+        descriptor: FetchDescriptor<T> = FetchDescriptor<T>(),
+        using cache: [T],
+        onNewBatch: ([T]) -> Void
+    ) async throws -> [T] {
+        let cacheLookup = Dictionary(uniqueKeysWithValues: cache.map { ($0.id, $0) } )
         
-        let cachedBatch: (T) async -> [T.Element] = { page in
+        
+        let updateStorage: ([T]) async -> [T] = { newModels in
             // New batch received
             
             // Filter as desired by caller
-            var latest = (try? filterByDescriptor(descriptor, models: page as! [T.Element])) ?? page as! [T.Element]
-
+            let newModelsFilteredAccordingToDescriptor = (try? filterByDescriptor(descriptor, models: newModels)) ?? newModels
+            
+            var latest = newModelsFilteredAccordingToDescriptor
             // Replace merge fetched model into cached model OR cache fetched model as new.
             for (i, latestModel) in latest.enumerated() {
                 if let matchedCached = cacheLookup[latestModel.id] {
@@ -80,36 +82,25 @@ struct CanvasService {
         }
         
         // Fetch newest version from API, then filter as desired by caller.
-        var latest: [T.Element] = try await {
+        var latest: [T] = try await {
             
             // Adjust `fetch` generic parameter based on whether request is for a collection.
-            let fetched: [T.Element]
+            let fetched: [T]
             if request.associatedModel is any Collection.Type {
-                fetched = try await fetch(request, onNewPage: {
-                    guard let batch = $0 as? T else {
-                        print("Couldn't unwrap batch to T from [T.Element].")
-                        return
-                    }
-                    let transformed = await cachedBatch(batch)
+                fetched = try await fetch(request, onNewPage: { batch in
+                    let transformed = await updateStorage(batch)
                     
                     onNewBatch(transformed)
                 })
             } else {
-                let fetchedItem: T.Element = try await fetch(request, onNewPage: {
-                    guard let batch = [$0] as? T else {
-                        print("Couldn't unwrap batch to T from [T.Element].")
-                        return
-                    }
-                    let model = await cachedBatch(batch) // $0 is T.Element but should be T
-                    onNewBatch(model)
-                })
-                fetched = [fetchedItem]
+                fetched = [try await fetch(request)]
             }
             
             let filtered = (try? filterByDescriptor(descriptor, models: fetched)) ?? fetched
             return filtered
         }()
         
+        // User storage version of model
         for (i, latestModel) in latest.enumerated() {
             if let matchedCached = cacheLookup[latestModel.id] {
                 latest[i] = matchedCached
@@ -118,59 +109,34 @@ struct CanvasService {
         
         repository.flush()
         
-        return latest as! T
+        return latest
     }
     
-    
     /**
-     Fetch a collection of data from the Canvas API. Also provides cached version via closure (if any). No filtering.
+     Fetch a collection of data from the Canvas API. Also provides cached version via closure (if any). Allows filtering.
      - Parameters:
         - request: the desired API query for a **collection** of models.
+        - condition: an optimized filter to be performed in the query.
         - onCacheReceive: a closure for early execution when cached version is received - if any.
         - onNewBatch: if the request involves pagination, this closure will be executed upon arrival of each batch
      - Returns: An array of models concerning the desired query.
      **/
-    func defaultAndFetch<T: Codable & Collection>(
+    func defaultAndFetch<T: Cacheable>(
         _ request: CanvasRequest,
-        onCacheReceive: ([T.Element]?) -> Void,
-        onNewBatch: ([T.Element]) -> Void = { _ in}
-    ) async throws -> T where T.Element : Cacheable {
-        return try await defaultAndFetch<T, String>(
-            request,
-            descriptor: FetchDescriptor<T.Element>(),
-            onCacheReceive: onCacheReceive,
-            onNewBatch: onNewBatch
-        )
-    }
-    
-    /**
-     Fetch a single instance of data from the Canvas API. Also provides cached version via closure (if any). No filtering.
-     - Parameters:
-        - request: the desired API query for a **single** model.
-        - onCacheReceive: a closure for early execution when cached version is received - if any.
-     - Returns: An array of size 1, containing the model concerning the request.
-     **/
-    func defaultAndFetchSingle<T: Cacheable>(
-        _ request: CanvasRequest,
-        onCacheReceive: ([T]?) -> Void
+        descriptor: FetchDescriptor<T> = FetchDescriptor<T>(),
+        onCacheReceive: ([T]?) -> Void = { _ in },
+        onNewBatch: ([T]) -> Void = { _ in }
     ) async throws -> [T] {
-        // To check if query is for single model (not a collection)
-        guard !request.yieldsCollection, let uniqueId = request.id else {
-            preconditionFailure("Attempted to fetch a single model for request with yieldsCollection: \(request.yieldsCollection), uniqueId: \(request.id ?? "nil"). Expected (false, non-nil value).")
+        if !(request.associatedModel == T.self || request.associatedModel == [T].self){
+            preconditionFailure("Provided generic type T = \(T.self) does not match the expected `associatedModel` type \(request.associatedModel) in request.")
         }
         
-        let predicate = FetchDescriptor<T>(
-            predicate: #Predicate {
-                $0.id == uniqueId
-            }
-        )
-         
-        return try await defaultAndFetch<[T], String>(
-            request,
-            descriptor: predicate,
-            onCacheReceive: onCacheReceive,
-            onNewBatch: { _ in}
-        )
+        let cached: [T]? = try await load(request, descriptor: descriptor)
+        onCacheReceive(cached) // Share cached version with caller.
+            
+        let latest = try await syncWithAPI(request, using: cached ?? [], onNewBatch: onNewBatch)
+        
+        return latest
     }
     
     // MARK: Network Requests
@@ -285,23 +251,13 @@ struct CanvasService {
     
     // MARK: Repository actions
     
-    @MainActor
-    func setupRepository() async {
-        repository.modelContainer.mainContext.autosaveEnabled = true
-    }
-    
-    func insert(model: Any) async throws {
-        // if data itself is cacheable -> save, if data is an array of cacheables -> save each individually
-        if let toCache = model as? (any Cacheable) {
-            try await repository.insert(toCache)
-        } else if let arrayOfCacheables = model as? [any Cacheable] {
-            for cacheable in arrayOfCacheables {
-                try await repository.insert(cacheable)
-            }
+    func setupRepository() {
+        Task { @MainActor in
+            repository.modelContainer.mainContext.autosaveEnabled = true
         }
     }
     
-    func clearCache() {
+    func clearStorage() {
         Task { @MainActor in
             repository.modelContainer.deleteAllData()
         }
