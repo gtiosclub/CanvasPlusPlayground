@@ -33,6 +33,22 @@ struct CanvasService {
         return cached
     }
     
+    func loadCount<T: Cacheable>(_ request: CanvasRequest, descriptor: FetchDescriptor<T>) async throws -> Int {
+        if !(request.associatedModel == T.self || request.associatedModel == [T].self){
+            preconditionFailure("Provided generic type T = \(T.self) does not match the expected `associatedModel` type \(request.associatedModel) in request.")
+        }
+        
+        // Join custom predicate with id-filtering predicate
+        var cacheDescriptor = descriptor
+        let customPred = cacheDescriptor.predicate ?? .isAlwaysTrue()
+        let idPred = request.cacheFilter() as Predicate<T>
+        cacheDescriptor.predicate = #Predicate {
+            customPred.evaluate($0) && idPred.evaluate($0)
+        }
+                
+        return try await repository.count(descriptor: cacheDescriptor)
+    }
+    
     func syncWithAPI<T: Cacheable>(
         _ request: CanvasRequest,
         descriptor: FetchDescriptor<T> = FetchDescriptor<T>(),

@@ -19,34 +19,30 @@ struct CanvasRepository {
     }
     
     @MainActor
-    func insert<T>(_ item: T) async throws where T : Cacheable {
+    func insert<T>(_ item: T) where T : Cacheable {
         modelContainer.mainContext.insert(item)
     }
     
     /// Gets all data based on type. e.g. all Course objects to get all courses
+    @MainActor
     func get<T>(
         descriptor: FetchDescriptor<T>
-    ) async throws -> [T]? where T : Cacheable {
+    ) throws -> [T]? where T : Cacheable {
         
-        let descriptor = {
-            var descriptor = descriptor
-            
-            return descriptor
-        }()
-        
-        let models: [T] = try await get<T>(descriptor: descriptor)
+        let models: [T] = try modelContainer.mainContext.fetch(descriptor)
         
         // Make sure model exists.
         if models.count > 0 {
             return models
         } else { return nil }
     }
-        
+    
     @MainActor
-    private func get<T>(descriptor: FetchDescriptor<T>) throws -> [T] where T : Cacheable {
+    func count<T>(
+        descriptor: FetchDescriptor<T>
+    ) throws -> Int where T : Cacheable {
         
-        let models = try modelContainer.mainContext.fetch(descriptor)
-        return models
+        return try modelContainer.mainContext.fetchCount(descriptor)
     }
     
     @MainActor
