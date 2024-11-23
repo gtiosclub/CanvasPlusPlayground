@@ -1,5 +1,5 @@
 //
-//  Predicate+.swift
+//  Predicate+Extensions.swift
 //  CanvasPlusPlayground
 //
 //  Created by Abdulaziz Albahar on 11/22/24.
