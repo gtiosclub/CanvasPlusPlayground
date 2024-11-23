@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @Observable
 class PeopleManager {
@@ -71,24 +72,55 @@ class PeopleManager {
         await fetchActiveCourses()
         
         var commonCourses = [Course]()
+        let commonCoursesQueue = DispatchQueue(label: "com.example.commonCoursesQueue")
         
-        await withTaskGroup(of: Void.self, body: { group in
-            for course in courses {
-                group.addTask { [weak self] in
-                    print("Is user in \(String(describing: course.name))?")
-                    
-                    // get enrollments in
-                    let courseID = course.id
-                    let _: [Enrollment]? = try? await CanvasService.shared.syncWithAPI(.getPeople(courseId: courseID))
-                    
-                    let courseIsShared = self?.enrollments.compactMap(\.user?.id).contains([userID])
-                    if let courseIsShared, courseIsShared {
+        await withTaskGroup(of: Void.self) { group in
+            for course in courses {                
+                // get enrollments in
+                let courseID = course.id
+                let request = CanvasRequest.getPeople(courseId: courseID)
+                
+                func processEnrollments(_ enrollments: [Enrollment]) {
+                    let courseIsShared = enrollments.compactMap(\.user?.id).contains([userID])
+                    if courseIsShared {
                         print("User \(userID) is also in course \(course.name ?? "n/a").")
-                        commonCourses.append(course)
+                        
+                        commonCoursesQueue.sync {
+                            commonCourses.append(course)
+                        }
                     }
                 }
+                
+                group.addTask {
+                    print("Is user in \(String(describing: course.name))?")
+                    
+                    // If request was already made, retrieve from cache
+                    guard !CanvasService.shared.isRequestCompleted(request) else {
+                        // Check that no loading error occurred
+                        guard let enrollments = try? await CanvasService.shared.load(request) as [Enrollment]? else {
+                            // TODO: indicate storage error here
+                            print("Couldn't load enrollment count for course \(course.name ?? "n/a")")
+                            return
+                        }
+                        
+                        processEnrollments(enrollments)
+                        
+                        return
+                    }
+                    
+                    guard let enrollments: [Enrollment] = try? await CanvasService.shared.syncWithAPI(request) else {
+                        // TODO: indicate network error here
+                        print("Couldn't fetch enrollment count for course \(course.name ?? "n/a")")
+                        return
+                    }
+                    
+                    processEnrollments(enrollments)
+                    
+                    CanvasService.shared.markRequestAsCompleted(request)
+                }
             }
-        })
+        }
+        
         
         print("number of common course: \(commonCourses.count)")
         return commonCourses

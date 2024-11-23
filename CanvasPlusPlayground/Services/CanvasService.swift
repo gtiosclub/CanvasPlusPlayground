@@ -9,12 +9,15 @@ import Foundation
 import SwiftData
 
 struct CanvasService {
-    static let shared = CanvasService()
+    static var shared = CanvasService()
+    
+    var completedRequests: Set<CanvasRequest> = []
+    let completedRequestsQueue = DispatchQueue(label: "com.example.completedRequestsQueue")
     
     let repository = CanvasRepository()
     
     /// Only loads from storage, doesn't make a network call
-    func load<T: Cacheable>(_ request: CanvasRequest, descriptor: FetchDescriptor<T>) async throws -> [T]? {
+    func load<T: Cacheable>(_ request: CanvasRequest, descriptor: FetchDescriptor<T> = .init()) async throws -> [T]? {
         if !(request.associatedModel == T.self || request.associatedModel == [T].self){
             preconditionFailure("Provided generic type T = \(T.self) does not match the expected `associatedModel` type \(request.associatedModel) in request.")
         }
@@ -287,7 +290,7 @@ struct CanvasService {
     
     // MARK: Helpers
     
-    func decodeData<T: Codable>(arg: (Data, URLResponse)) throws -> T {
+    private func decodeData<T: Codable>(arg: (Data, URLResponse)) throws -> T {
         let (data, _) = arg
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
@@ -295,7 +298,7 @@ struct CanvasService {
         return try decoder.decode(T.self, from: data)
     }
     
-    func filterByDescriptor<T>(
+    private func filterByDescriptor<T>(
         _ descriptor: FetchDescriptor<T>, models: [T]
     ) throws -> [T] where T: Cacheable {
         let predicate = descriptor.predicate ?? #Predicate { _ in true }
@@ -317,7 +320,16 @@ struct CanvasService {
         }
         
         return filteredModels
-        
+    }
+    
+    mutating func markRequestAsCompleted(_ request: CanvasRequest) {
+        completedRequestsQueue.sync {
+            let _ = self.completedRequests.insert(request)
+        }
+    }
+    
+    func isRequestCompleted(_ request: CanvasRequest) -> Bool {
+        completedRequests.contains(request)
     }
 }
 

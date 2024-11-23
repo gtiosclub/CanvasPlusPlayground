@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum CanvasRequest {
+enum CanvasRequest: Hashable {
     static let baseURL = URL(string: "https://gatech.instructure.com/api/v1")
     
     case getCourses(enrollmentState: String, perPage: String = "50")
