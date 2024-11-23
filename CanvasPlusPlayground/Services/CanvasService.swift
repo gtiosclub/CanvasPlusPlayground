@@ -52,7 +52,7 @@ struct CanvasService {
     func syncWithAPI<T: Cacheable>(
         _ request: CanvasRequest,
         descriptor: FetchDescriptor<T> = FetchDescriptor<T>(),
-        onNewBatch: ([T]) -> Void
+        onNewBatch: ([T]) -> Void = { _ in }
     ) async throws -> [T] {
         let cached = try await load(request, descriptor: descriptor) ?? []
         
@@ -157,7 +157,7 @@ struct CanvasService {
         let cached: [T]? = try await load(request, descriptor: descriptor)
         onCacheReceive(cached) // Share cached version with caller.
             
-        let latest = try await syncWithAPI(request, using: cached ?? [], onNewBatch: onNewBatch)
+        let latest = try await syncWithAPI(request, descriptor: descriptor, using: cached ?? [], onNewBatch: onNewBatch)
         
         return latest
     }

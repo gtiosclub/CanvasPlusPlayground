@@ -11,13 +11,14 @@ import SwiftUI
 class PeopleManager {
     private let courseID: String?
     var enrollments = [Enrollment]()
-    var users = [User] ()
+    var users: [User] {
+        enrollments.compactMap(\.user)
+    }
     var courses = [Course]()
 
     init(courseID: String?) {
         self.courseID = courseID
         self.enrollments = []
-        self.users = []
     }
     
     func fetchPeople() async {
@@ -30,11 +31,11 @@ class PeopleManager {
             ]),
             onCacheReceive: { (cached: [Enrollment]?) in
                 guard let cached else { return }
-
-                let users = cached.compactMap { $0.user }
-                        .filter { user in !self.users.contains(where: { $0.id == user.id }) }
-
-                self.users = users
+                
+                addEnrollments(cached)
+            },
+            onNewBatch: { enrollmentsBatch in
+                addEnrollments(enrollmentsBatch)
             }
         )
         
@@ -44,6 +45,13 @@ class PeopleManager {
         }
         
         self.enrollments = enrollments
+    }
+    
+    private func addEnrollments(_ enrollments: [Enrollment]) {
+        self.enrollments = Set(self.enrollments + enrollments).sorted {
+            guard let name1 = $0.user?.name, let name2 = $1.user?.name else { return false }
+            return (name1) < (name2)
+        }
     }
     
     func fetchActiveCourses() async {
@@ -64,37 +72,23 @@ class PeopleManager {
         
         var commonCourses = [Course]()
         
-        for course in courses {
-            print("Is user in \(String(describing: course.name))?")
-            
-            // get enrollments in
-            let courseID = course.id
-            
-            let _ = try? await CanvasService.shared.fetchBatch(.getPeople(courseId: courseID)) { dataResponseArr in
-                do {
-                    let enrollments = try CanvasService.shared.decodeData(arg: dataResponseArr) as [Enrollment]
+        await withTaskGroup(of: Void.self, body: { group in
+            for course in courses {
+                group.addTask { [weak self] in
+                    print("Is user in \(String(describing: course.name))?")
                     
-                    // this is a completion that is executed once the function has finished
-                    for enrollment in enrollments {
-                        if let user = enrollment.user {
-                            self.users.append(user)
-                        }
-                    }
-                } catch {
-                    print(error)
-                }
-            }
-            
-            for enrollment in enrollments {
-                if let user = enrollment.user {
-                    if userID == user.id {
-                        print("Yes")
+                    // get enrollments in
+                    let courseID = course.id
+                    let _: [Enrollment]? = try? await CanvasService.shared.syncWithAPI(.getPeople(courseId: courseID))
+                    
+                    let courseIsShared = self?.enrollments.compactMap(\.user?.id).contains([userID])
+                    if let courseIsShared, courseIsShared {
+                        print("User \(userID) is also in course \(course.name ?? "n/a").")
                         commonCourses.append(course)
-                        break
                     }
                 }
             }
-        }
+        })
         
         print("number of common course: \(commonCourses.count)")
         return commonCourses

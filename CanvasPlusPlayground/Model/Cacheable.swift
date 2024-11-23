@@ -23,4 +23,12 @@ extension Cacheable {
     func update<V>(keypath: ReferenceWritableKeyPath<Self, V>, value: V) {
         self[keyPath: keypath] = value        
     }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        return lhs.id == rhs.id
+    }
 }
