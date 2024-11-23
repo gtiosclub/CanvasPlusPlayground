@@ -13,15 +13,15 @@ protocol Cacheable: Codable, PersistentModel {
     var id: String { get }
     var parentId: String? { get set }    
     
-    @MainActor
+    
     func merge(with other: Self)
 }
 
 
 extension Cacheable {
-    @MainActor
-    func update<V>(keypath: ReferenceWritableKeyPath<Self, V>, value: V) {
-        self[keyPath: keypath] = value        
+    
+    func update<V>(keypath: ReferenceWritableKeyPath<Self, V>, value: V) async {
+        await CanvasService.shared.repository.update(model: self, keypath: keypath, value: value)
     }
     
     func hash(into hasher: inout Hasher) {

@@ -61,7 +61,6 @@ final class Announcement: Cacheable {
         case message
     }
     
-    @MainActor
     func merge(with other: Announcement) {
         self.title = other.title
         self.message = other.message

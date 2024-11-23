@@ -14,7 +14,25 @@ struct CanvasService {
     var completedRequests: Set<CanvasRequest> = []
     let completedRequestsQueue = DispatchQueue(label: "com.example.completedRequestsQueue")
     
-    let repository = CanvasRepository()
+    let repository: CanvasRepository
+    
+    init()  {
+        var repo: CanvasRepository?
+        let semaphore = DispatchSemaphore(value: 0)
+
+        Task.detached {
+            let initializedRepo = CanvasRepository()
+            repo = initializedRepo
+            semaphore.signal()
+        }
+
+        semaphore.wait()
+
+        guard let repo else {
+            preconditionFailure("Error initializing CanvasRepository.")
+        }
+        self.repository = repo
+    }
     
     /// Only loads from storage, doesn't make a network call
     func load<T: Cacheable>(_ request: CanvasRequest, descriptor: FetchDescriptor<T> = .init()) async throws -> [T]? {
@@ -90,7 +108,8 @@ struct CanvasService {
             // Replace merge fetched model into cached model OR cache fetched model as new.
             for (i, latestModel) in latest.enumerated() {
                 if let matchedCached = cacheLookup[latestModel.id] {
-                    await matchedCached.merge(with: latestModel)
+                    await repository.merge(other: latestModel, into: matchedCached)
+                    //await matchedCached.merge(with: latestModel)
                     latest[i] = matchedCached
                 } else {
                     await repository.insert(latestModel)
@@ -133,7 +152,7 @@ struct CanvasService {
             }
         }
         
-        repository.flush()
+        await repository.flush()
         
         return latest
     }
@@ -277,15 +296,12 @@ struct CanvasService {
     
     // MARK: Repository actions
     
-    @MainActor
     func setupRepository() async {
-        repository.modelContainer.mainContext.autosaveEnabled = true
+        await repository.setAutosave(true)
     }
     
     func clearStorage() {
-        Task { @MainActor in
-            repository.modelContainer.deleteAllData()
-        }
+        repository.modelContainer.deleteAllData()
     }
     
     // MARK: Helpers

@@ -366,7 +366,6 @@ final class Course: Cacheable {
         try container.encodeIfPresent(template, forKey: .template)
    }
     
-    @MainActor
     func merge(with other: Course) {
         self.enrollments = other.enrollments
         self.sisCourseID = other.sisCourseID

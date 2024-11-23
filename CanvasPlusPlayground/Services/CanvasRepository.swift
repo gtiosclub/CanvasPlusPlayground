@@ -8,28 +8,27 @@
 import SwiftData
 import SwiftUI
 
-struct CanvasRepository {
-    
-    let modelContainer: ModelContainer
-    
+@ModelActor
+actor CanvasRepository {
+        
     init() {
         self.modelContainer = try! ModelContainer(for:
             Course.self, Announcement.self, Enrollment.self
         ) // TODO: Add cacheable models here
+        let context = ModelContext(modelContainer)
+        self.modelExecutor = DefaultSerialModelExecutor(modelContext: context)
     }
     
-    @MainActor
     func insert<T>(_ item: T) where T : Cacheable {
-        modelContainer.mainContext.insert(item)
+        modelContext.insert(item)
     }
     
     /// Gets all data based on type. e.g. all Course objects to get all courses
-    @MainActor
     func get<T>(
         descriptor: FetchDescriptor<T>
     ) throws -> [T]? where T : Cacheable {
         
-        let models: [T] = try modelContainer.mainContext.fetch(descriptor)
+        let models: [T] = try modelContext.fetch(descriptor)
         
         // Make sure model exists.
         if models.count > 0 {
@@ -37,28 +36,36 @@ struct CanvasRepository {
         } else { return nil }
     }
     
-    @MainActor
     func count<T>(
         descriptor: FetchDescriptor<T>
     ) throws -> Int where T : Cacheable {
         
-        return try modelContainer.mainContext.fetchCount(descriptor)
+        return try modelContext.fetchCount(descriptor)
     }
     
-    @MainActor
     func delete(_ model: any PersistentModel) {
-        modelContainer.mainContext.delete(model)
+        modelContext.delete(model)
     }
     
     /// Push SwiftData changes to disk.
     func flush() {
-        Task { @MainActor in
-            do {
-                try self.modelContainer.mainContext.save()
-            } catch {
-                print("Trouble saving to cache")
-            }
+        do {
+            try modelContext.save()
+        } catch {
+            print("Trouble saving to cache")
         }
+    }
+    
+    func update<T, V>(model: T, keypath: ReferenceWritableKeyPath<T, V>, value: V) where T : Cacheable {
+        model[keyPath: keypath] = value
+    }
+
+    func merge<T>(other: T, into model: T) where T : Cacheable {
+        model.merge(with: other)
+    }
+
+    func setAutosave(_ enabled: Bool) async {
+        self.modelContext.autosaveEnabled = enabled
     }
 
 }
