@@ -13,7 +13,10 @@ class PeopleManager {
     private let courseID: String?
     var enrollments = [Enrollment]()
     var users: [User] {
-        enrollments.compactMap(\.user)
+        Set(enrollments.compactMap(\.user))
+            .sorted {
+                ($0.name ?? "") < ($1.name ?? "")
+            }
     }
     var courses = [Course]()
 

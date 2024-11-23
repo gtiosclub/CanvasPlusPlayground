@@ -287,4 +287,12 @@ struct User: Codable, Equatable, Hashable {
         case sortableName = "sortable_name"
         case shortName = "short_name"
     }
+    
+    static func == (lhs: User, rhs: User) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 }
