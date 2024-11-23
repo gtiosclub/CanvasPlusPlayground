@@ -33,7 +33,7 @@ import Foundation
             return
         }
         
-        self.announcements = announcements
+        self.announcements = announcements.reversed()
         
     }
 }
