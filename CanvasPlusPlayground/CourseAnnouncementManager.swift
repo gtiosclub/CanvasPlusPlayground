@@ -18,14 +18,13 @@ import Foundation
     }
     
     func fetchAnnouncements() async {
-        let announcements: [Announcement]? = try? await CanvasService.shared.defaultAndFetch(
+        let announcements: [Announcement]? = try? await CanvasService.shared.loadAndSync(
             .getAnnouncements(courseId: courseId),
+            descriptor: .init(sortBy: [.init(\.createdAt, order: .reverse)]),
             onCacheReceive: { (cached: [Announcement]?) in
                 guard let cached else { return }
                 
-                self.announcements = cached.sorted(by: { 
-                    ($0.createdAt ?? Date()) > ($1.createdAt ?? Date())
-                })
+                self.announcements = cached
             }
         )
         

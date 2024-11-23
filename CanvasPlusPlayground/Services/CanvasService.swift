@@ -6,51 +6,94 @@
 //
 
 import Foundation
+import SwiftData
 
 struct CanvasService {
-    static let shared = CanvasService()
+    static var shared = CanvasService()
+    
+    var completedRequests: Set<CanvasRequest> = []
+    let completedRequestsQueue = DispatchQueue(label: "com.example.completedRequestsQueue")
     
     let repository = CanvasRepository()
-
-    /**
-     Fetch a collection of data from the Canvas API. Also provides cached version via closure (if any). Allows filtering.
-     - Parameters:
-        - request: the desired API query for a **collection** of models.
-        - condition: an optimized filter to be performed in the query.
-        - onCacheReceive: a closure for early execution when cached version is received - if any.
-        - onNewBatch: if the request involves pagination, this closure will be executed upon arrival of each batch
-     - Returns: An array of models concerning the desired query.
-     **/
-    func defaultAndFetch<T: Codable & Collection, V: Equatable>(
-        _ request: CanvasRequest,
-        condition: LookupCondition<T.Element, V>?,
-        onCacheReceive: ([T.Element]?) -> Void = { _ in },
-        onNewBatch: ([T.Element]) -> Void = { _ in }
-    ) async throws -> T where T.Element : Cacheable {
-        if !(request.associatedModel == T.self || request.associatedModel == T.Element.self){
+    
+    /// Only loads from storage, doesn't make a network call
+    func load<T: Cacheable>(_ request: CanvasRequest, descriptor: FetchDescriptor<T> = .init()) async throws -> [T]? {
+        if !(request.associatedModel == T.self || request.associatedModel == [T].self){
             preconditionFailure("Provided generic type T = \(T.self) does not match the expected `associatedModel` type \(request.associatedModel) in request.")
+        }
+        
+        // Join custom predicate with id-filtering predicate
+        var cacheDescriptor = descriptor
+        let customPred = cacheDescriptor.predicate ?? .isAlwaysTrue()
+        let idPred = request.cacheFilter() as Predicate<T>
+        cacheDescriptor.predicate = #Predicate {
+            customPred.evaluate($0) && idPred.evaluate($0)
         }
                 
         // Get cached data for this type then filter to only get models related to `request`
-        let cached: [T.Element]? = try await repository.get(condition: condition)?.filter(request.cacheFilter)
-        onCacheReceive(cached) // Share cached version with caller.
-            
-        // Search cache by id
-        let cacheLookup = Dictionary(uniqueKeysWithValues: (cached ?? []).map { ($0.id, $0) })
+        let cached: [T]? = try await repository.get(descriptor: cacheDescriptor)
         
-        let cachedBatch: (T) async -> [T.Element] = { page in
+        return cached
+    }
+    
+    func loadCount<T: Cacheable>(_ request: CanvasRequest, descriptor: FetchDescriptor<T>) async throws -> Int {
+        if !(request.associatedModel == T.self || request.associatedModel == [T].self){
+            preconditionFailure("Provided generic type T = \(T.self) does not match the expected `associatedModel` type \(request.associatedModel) in request.")
+        }
+        
+        // Join custom predicate with id-filtering predicate
+        var cacheDescriptor = descriptor
+        let customPred = cacheDescriptor.predicate ?? .isAlwaysTrue()
+        let idPred = request.cacheFilter() as Predicate<T>
+        cacheDescriptor.predicate = #Predicate {
+            customPred.evaluate($0) && idPred.evaluate($0)
+        }
+                
+        return try await repository.count(descriptor: cacheDescriptor)
+    }
+    
+    func syncWithAPI<T: Cacheable>(
+        _ request: CanvasRequest,
+        descriptor: FetchDescriptor<T> = FetchDescriptor<T>(),
+        onNewBatch: ([T]) -> Void = { _ in }
+    ) async throws -> [T] {
+        let cached = try await load(request, descriptor: descriptor) ?? []
+        
+        return try await syncWithAPI(
+            request,
+            descriptor: descriptor,
+            using: cached,
+            onNewBatch: onNewBatch
+        )
+    }
+    
+    
+    private func syncWithAPI<T: Cacheable>(
+        _ request: CanvasRequest,
+        descriptor: FetchDescriptor<T> = FetchDescriptor<T>(),
+        using cache: [T],
+        onNewBatch: ([T]) -> Void
+    ) async throws -> [T] {
+        if !(request.associatedModel == T.self || request.associatedModel == [T].self){
+            preconditionFailure("Provided generic type T = \(T.self) does not match the expected `associatedModel` type \(request.associatedModel) in request.")
+        }
+        
+        let cacheLookup = Dictionary(uniqueKeysWithValues: cache.map { ($0.id, $0) } )
+        
+        let updateStorage: ([T]) async -> [T] = { newModels in
             // New batch received
             
             // Filter as desired by caller
-            var latest = page.filter { ((try? condition?.expression().evaluate($0)) ?? true) }
+            let newModelsFilteredAccordingToDescriptor = (try? filterByDescriptor(descriptor, models: newModels)) ?? newModels
             
+            var latest = newModelsFilteredAccordingToDescriptor
             // Replace merge fetched model into cached model OR cache fetched model as new.
             for (i, latestModel) in latest.enumerated() {
                 if let matchedCached = cacheLookup[latestModel.id] {
                     await matchedCached.merge(with: latestModel)
                     latest[i] = matchedCached
                 } else {
-                    try? await repository.insert(latestModel)
+                    await repository.insert(latestModel)
                 }
             }
             
@@ -65,35 +108,25 @@ struct CanvasService {
         }
         
         // Fetch newest version from API, then filter as desired by caller.
-        var latest: [T.Element] = try await {
+        var latest: [T] = try await {
             
             // Adjust `fetch` generic parameter based on whether request is for a collection.
-            let fetched: [T.Element]
+            let fetched: [T]
             if request.associatedModel is any Collection.Type {
-                fetched = try await fetch(request, onNewPage: {
-                    guard let batch = $0 as? T else {
-                        print("Couldn't unwrap batch to T from [T.Element].")
-                        return
-                    }
-                    let transformed = await cachedBatch(batch)
+                fetched = try await fetch(request, onNewPage: { batch in
+                    let transformed = await updateStorage(batch)
                     
                     onNewBatch(transformed)
                 })
             } else {
-                let fetchedItem: T.Element = try await fetch(request, onNewPage: {
-                    guard let batch = [$0] as? T else {
-                        print("Couldn't unwrap batch to T from [T.Element].")
-                        return
-                    }
-                    let model = await cachedBatch(batch) // $0 is T.Element but should be T
-                    onNewBatch(model)
-                })
-                fetched = [fetchedItem]
+                fetched = [try await fetch(request)]
             }
             
-            return fetched.filter { ((try? condition?.expression().evaluate($0)) ?? true) }
+            let filtered = (try? filterByDescriptor(descriptor, models: fetched)) ?? fetched
+            return filtered
         }()
         
+        // User storage version of model
         for (i, latestModel) in latest.enumerated() {
             if let matchedCached = cacheLookup[latestModel.id] {
                 latest[i] = matchedCached
@@ -102,53 +135,34 @@ struct CanvasService {
         
         repository.flush()
         
-        return latest as! T
+        return latest
     }
     
-    
     /**
-     Fetch a collection of data from the Canvas API. Also provides cached version via closure (if any). No filtering.
+     Fetch a collection of data from the Canvas API. Also provides cached version via closure (if any). Allows filtering.
      - Parameters:
         - request: the desired API query for a **collection** of models.
+        - condition: an optimized filter to be performed in the query.
         - onCacheReceive: a closure for early execution when cached version is received - if any.
         - onNewBatch: if the request involves pagination, this closure will be executed upon arrival of each batch
      - Returns: An array of models concerning the desired query.
      **/
-    func defaultAndFetch<T: Codable & Collection>(
+    func loadAndSync<T: Cacheable>(
         _ request: CanvasRequest,
-        onCacheReceive: ([T.Element]?) -> Void,
-        onNewBatch: ([T.Element]) -> Void = { _ in}
-    ) async throws -> T where T.Element : Cacheable {
-        return try await defaultAndFetch<T, String>(
-            request,
-            condition: nil as LookupCondition<T.Element, String>?,
-            onCacheReceive: onCacheReceive,
-            onNewBatch: onNewBatch
-        )
-    }
-    
-    /**
-     Fetch a single instance of data from the Canvas API. Also provides cached version via closure (if any). No filtering.
-     - Parameters:
-        - request: the desired API query for a **single** model.
-        - onCacheReceive: a closure for early execution when cached version is received - if any.
-     - Returns: An array of size 1, containing the model concerning the request.
-     **/
-    func defaultAndFetchSingle<T: Cacheable>(
-        _ request: CanvasRequest,
-        onCacheReceive: ([T]?) -> Void
+        descriptor: FetchDescriptor<T> = FetchDescriptor<T>(),
+        onCacheReceive: ([T]?) -> Void = { _ in },
+        onNewBatch: ([T]) -> Void = { _ in }
     ) async throws -> [T] {
-        // To check if query is for single model (not a collection)
-        guard !request.yieldsCollection, let uniqueId = request.id else {
-            preconditionFailure("Attempted to fetch a single model for request with yieldsCollection: \(request.yieldsCollection), uniqueId: \(request.id ?? "nil"). Expected (false, non-nil value).")
+        if !(request.associatedModel == T.self || request.associatedModel == [T].self){
+            preconditionFailure("Provided generic type T = \(T.self) does not match the expected `associatedModel` type \(request.associatedModel) in request.")
         }
-         
-        return try await defaultAndFetch<[T], String>(
-            request,
-            condition: LookupCondition.equals(keypath: \.id, value: uniqueId) as LookupCondition<T, String>?,
-            onCacheReceive: onCacheReceive,
-            onNewBatch: { _ in}
-        )
+        
+        let cached: [T]? = try await load(request, descriptor: descriptor)
+        onCacheReceive(cached) // Share cached version with caller.
+            
+        let latest = try await syncWithAPI(request, descriptor: descriptor, using: cached ?? [], onNewBatch: onNewBatch)
+        
+        return latest
     }
     
     // MARK: Network Requests
@@ -268,18 +282,7 @@ struct CanvasService {
         repository.modelContainer.mainContext.autosaveEnabled = true
     }
     
-    func insert(model: Any) async throws {
-        // if data itself is cacheable -> save, if data is an array of cacheables -> save each individually
-        if let toCache = model as? (any Cacheable) {
-            try await repository.insert(toCache)
-        } else if let arrayOfCacheables = model as? [any Cacheable] {
-            for cacheable in arrayOfCacheables {
-                try await repository.insert(cacheable)
-            }
-        }
-    }
-    
-    func clearCache() {
+    func clearStorage() {
         Task { @MainActor in
             repository.modelContainer.deleteAllData()
         }
@@ -287,27 +290,69 @@ struct CanvasService {
     
     // MARK: Helpers
     
-    func decodeData<T: Codable>(arg: (Data, URLResponse)) throws -> T {
+    private func decodeData<T: Codable>(arg: (Data, URLResponse)) throws -> T {
         let (data, _) = arg
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
         
         return try decoder.decode(T.self, from: data)
     }
+    
+    private func filterByDescriptor<T>(
+        _ descriptor: FetchDescriptor<T>, models: [T]
+    ) throws -> [T] where T: Cacheable {
+        let predicate = descriptor.predicate ?? #Predicate { _ in true }
+        let sorters = descriptor.sortBy
+        
+        let filteredModels = try models.filter(predicate).sorted { a, b in
+            for sorter in sorters {
+                let comparison = sorter.compare(a, b)
+                switch sorter.order {
+                    case .forward:
+                        if comparison == .orderedAscending { return true }
+                        if comparison == .orderedDescending { return false }
+                    case .reverse:
+                        if comparison == .orderedDescending { return true }
+                        if comparison == .orderedAscending { return false }
+                }
+            }
+            return false
+        }
+        
+        return filteredModels
+    }
+    
+    mutating func markRequestAsCompleted(_ request: CanvasRequest) {
+        completedRequestsQueue.sync {
+            let _ = self.completedRequests.insert(request)
+        }
+    }
+    
+    func isRequestCompleted(_ request: CanvasRequest) -> Bool {
+        completedRequests.contains(request)
+    }
 }
 
 private extension CanvasRequest {
     /// If the request is for a single model, it returns a filter that checks for the model's id. If the request is for multiple models, it filters based on the model's parent ids.
-    func cacheFilter<M: Cacheable>(_ model: M) -> Bool {
+    func cacheFilter<M: Cacheable>() -> Predicate<M> {
         let expectedM = self.associatedModel
+        guard let id = self.id else { return #Predicate<M> { _ in true } }
         
+        let predicate: Predicate<M>
         if (expectedM is any Cacheable.Type) {
-            return model.id == self.id
+            // model.id = self.id
+            let condition = LookupCondition<M, String>.equals(keypath: \M.id, value: id)
+            return condition.expression()
         } else if let _ = expectedM as? any Collection<M>.Type {
-            return model.parentId == self.id
+            //model.parentId == self.id
+            let condition = LookupCondition<M, String?>.equals(keypath: \M.parentId, value: id)
+            return condition.expression()
+        } else {
+            predicate = #Predicate<M> { _ in false }
         }
         
-        return false
+        return predicate
     }
 }
 

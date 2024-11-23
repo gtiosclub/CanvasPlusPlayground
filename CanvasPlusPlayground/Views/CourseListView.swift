@@ -129,7 +129,7 @@ struct CourseListView: View {
 
             ToolbarItem(placement: .cancellationAction) {
                 Button("Clear cache", systemImage: "opticaldiscdrive") {
-                    CanvasService.shared.clearCache()
+                    CanvasService.shared.clearStorage()
                 }
             }
         }
