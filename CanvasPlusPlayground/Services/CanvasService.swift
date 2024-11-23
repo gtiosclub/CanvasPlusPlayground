@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftData
 
 struct CanvasService {
     static let shared = CanvasService()
@@ -21,18 +22,26 @@ struct CanvasService {
         - onNewBatch: if the request involves pagination, this closure will be executed upon arrival of each batch
      - Returns: An array of models concerning the desired query.
      **/
-    func defaultAndFetch<T: Codable & Collection, V: Equatable>(
+    func defaultAndFetch<T: Codable & Collection>(
         _ request: CanvasRequest,
-        condition: LookupCondition<T.Element, V>?,
+        descriptor: FetchDescriptor<T.Element> = FetchDescriptor<T.Element>(),
         onCacheReceive: ([T.Element]?) -> Void = { _ in },
         onNewBatch: ([T.Element]) -> Void = { _ in }
     ) async throws -> T where T.Element : Cacheable {
         if !(request.associatedModel == T.self || request.associatedModel == T.Element.self){
             preconditionFailure("Provided generic type T = \(T.self) does not match the expected `associatedModel` type \(request.associatedModel) in request.")
         }
+        
+        // Join custom predicate with id-filtering predicate
+        var cacheDescriptor = descriptor
+        let descriptorPred = cacheDescriptor.predicate ?? .isAlwaysTrue()
+        let idPred = request.cacheFilter() as Predicate<T.Element>
+        cacheDescriptor.predicate = #Predicate {
+            descriptorPred.evaluate($0) && idPred.evaluate($0)
+        }
                 
         // Get cached data for this type then filter to only get models related to `request`
-        let cached: [T.Element]? = try await repository.get(condition: condition)?.filter(request.cacheFilter)
+        let cached: [T.Element]? = try await repository.get(descriptor: cacheDescriptor)
         onCacheReceive(cached) // Share cached version with caller.
             
         // Search cache by id
@@ -42,8 +51,9 @@ struct CanvasService {
             // New batch received
             
             // Filter as desired by caller
-            var latest = page.filter { ((try? condition?.expression().evaluate($0)) ?? true) }
-            
+            var latest = (try? filterByDescriptor(descriptor, models: page as! [T.Element])) ?? page as! [T.Element]
+            // TODO: filter based on FetchDescriptor
+
             // Replace merge fetched model into cached model OR cache fetched model as new.
             for (i, latestModel) in latest.enumerated() {
                 if let matchedCached = cacheLookup[latestModel.id] {
@@ -91,7 +101,8 @@ struct CanvasService {
                 fetched = [fetchedItem]
             }
             
-            return fetched.filter { ((try? condition?.expression().evaluate($0)) ?? true) }
+            let filtered = (try? filterByDescriptor(descriptor, models: fetched)) ?? fetched
+            return filtered
         }()
         
         for (i, latestModel) in latest.enumerated() {
@@ -121,7 +132,7 @@ struct CanvasService {
     ) async throws -> T where T.Element : Cacheable {
         return try await defaultAndFetch<T, String>(
             request,
-            condition: nil as LookupCondition<T.Element, String>?,
+            descriptor: FetchDescriptor<T.Element>(),
             onCacheReceive: onCacheReceive,
             onNewBatch: onNewBatch
         )
@@ -142,10 +153,16 @@ struct CanvasService {
         guard !request.yieldsCollection, let uniqueId = request.id else {
             preconditionFailure("Attempted to fetch a single model for request with yieldsCollection: \(request.yieldsCollection), uniqueId: \(request.id ?? "nil"). Expected (false, non-nil value).")
         }
+        
+        let predicate = FetchDescriptor<T>(
+            predicate: #Predicate {
+                $0.id == uniqueId
+            }
+        )
          
         return try await defaultAndFetch<[T], String>(
             request,
-            condition: LookupCondition.equals(keypath: \.id, value: uniqueId) as LookupCondition<T, String>?,
+            descriptor: predicate,
             onCacheReceive: onCacheReceive,
             onNewBatch: { _ in}
         )
@@ -294,20 +311,53 @@ struct CanvasService {
         
         return try decoder.decode(T.self, from: data)
     }
+    
+    func filterByDescriptor<T>(
+        _ descriptor: FetchDescriptor<T>, models: [T]
+    ) throws -> [T] where T: Cacheable {
+        let predicate = descriptor.predicate ?? #Predicate { _ in true }
+        let sorters = descriptor.sortBy
+        
+        let filteredModels = try models.filter(predicate).sorted { a, b in
+            for sorter in sorters {
+                let comparison = sorter.compare(a, b)
+                switch sorter.order {
+                    case .forward:
+                        if comparison == .orderedAscending { return true }
+                        if comparison == .orderedDescending { return false }
+                    case .reverse:
+                        if comparison == .orderedDescending { return true }
+                        if comparison == .orderedAscending { return false }
+                }
+            }
+            return false
+        }
+        
+        return filteredModels
+        
+    }
 }
 
 private extension CanvasRequest {
     /// If the request is for a single model, it returns a filter that checks for the model's id. If the request is for multiple models, it filters based on the model's parent ids.
-    func cacheFilter<M: Cacheable>(_ model: M) -> Bool {
+    func cacheFilter<M: Cacheable>() -> Predicate<M> {
         let expectedM = self.associatedModel
+        guard let id = self.id else { return #Predicate<M> { _ in true } }
         
+        let predicate: Predicate<M>
         if (expectedM is any Cacheable.Type) {
-            return model.id == self.id
+            // model.id = self.id
+            let condition = LookupCondition<M, String>.equals(keypath: \M.id, value: id)
+            return condition.expression()
         } else if let _ = expectedM as? any Collection<M>.Type {
-            return model.parentId == self.id
+            //model.parentId == self.id
+            let condition = LookupCondition<M, String?>.equals(keypath: \M.parentId, value: id)
+            return condition.expression()
+        } else {
+            predicate = #Predicate<M> { _ in false }
         }
         
-        return false
+        return predicate
     }
 }
 

@@ -24,16 +24,14 @@ struct CanvasRepository {
     }
     
     /// Gets all data based on type. e.g. all Course objects to get all courses
-    func get<T, V: Equatable>(
-        condition: LookupCondition<T, V>?
+    func get<T>(
+        descriptor: FetchDescriptor<T>
     ) async throws -> [T]? where T : Cacheable {
         
         let descriptor = {
-            if let predicate = condition?.expression() {
-                return FetchDescriptor<T>(predicate: predicate)
-            } else {
-                return FetchDescriptor<T>()
-            }
+            var descriptor = descriptor
+            
+            return descriptor
         }()
         
         let models: [T] = try await get<T>(descriptor: descriptor)
