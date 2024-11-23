@@ -90,7 +90,7 @@ struct CanvasService {
                     await matchedCached.merge(with: latestModel)
                     latest[i] = matchedCached
                 } else {
-                    try? await repository.insert(latestModel)
+                    await repository.insert(latestModel)
                 }
             }
             
