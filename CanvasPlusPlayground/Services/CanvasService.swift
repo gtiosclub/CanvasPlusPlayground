@@ -274,10 +274,9 @@ struct CanvasService {
     
     // MARK: Repository actions
     
-    func setupRepository() {
-        Task { @MainActor in
-            repository.modelContainer.mainContext.autosaveEnabled = true
-        }
+    @MainActor
+    func setupRepository() async {
+        repository.modelContainer.mainContext.autosaveEnabled = true
     }
     
     func clearStorage() {
