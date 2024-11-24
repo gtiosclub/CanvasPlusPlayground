@@ -212,7 +212,6 @@ final class Enrollment: Cacheable {
         try container.encodeIfPresent(parentId, forKey: .parentID)
     }
 
-    @MainActor
     func merge(with other: Enrollment) {
         courseID = other.courseID
         sisCourseID = other.sisCourseID
@@ -287,5 +286,13 @@ struct User: Codable, Equatable, Hashable {
         case name
         case sortableName = "sortable_name"
         case shortName = "short_name"
+    }
+    
+    static func == (lhs: User, rhs: User) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }

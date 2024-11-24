@@ -14,7 +14,7 @@ enum CanvasRequest: Hashable {
     case getCourse(id: String)
     case getCourseFiles(courseId: String)
     case getTabs(courseId: String)
-    case getAnnouncements(courseId: String)
+    case getAnnouncements(courseId: String, startDate: Date = .distantPast, endDate: Date = .now, perPage: String = "100")
     case getAssignments(courseId: String)
     case getEnrollments
     case getPeople(courseId: String, perPage: String = "100")
@@ -48,9 +48,12 @@ enum CanvasRequest: Hashable {
                 ("enrollment_state", enrollment_state),
                 ("per_page", perPage)
             ]
-        case let .getAnnouncements(courseId):
+        case let .getAnnouncements(courseId, startDate, endDate, perPage):
             [
-                ("context_codes[]", "course_\(courseId)")
+                ("context_codes[]", "course_\(courseId)"),
+                ("start_date", startDate.ISO8601Format()),
+                ("end_date", endDate.ISO8601Format()),
+                ("per_page", perPage)
             ]
         case .getEnrollments:
             [
@@ -74,7 +77,7 @@ enum CanvasRequest: Hashable {
         switch self {
         case let .getCourse(id):
             return id
-        case let .getTabs(courseId), let .getAnnouncements(courseId), let .getAssignments(courseId), let .getCourseFiles(courseId), let .getPeople(courseId, _):
+        case let .getTabs(courseId), let .getAnnouncements(courseId, _, _, _), let .getAssignments(courseId), let .getCourseFiles(courseId), let .getPeople(courseId, _):
             return courseId
         default:
             return nil
