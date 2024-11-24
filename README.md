@@ -1,4 +1,4 @@
-# Canvas+ (iOS)
+# Canvas Plus (iOS)
 Working towards a better iOS client for students of Canvas.
 
 ### Resources
