@@ -21,8 +21,8 @@ struct CourseAnnouncementsView: View {
             List(announcementManager.announcements, id:\.id) { announcement in
                 NavigationLink {
                     CourseAnnouncementDetailView(announcement: announcement)
-                        .task {
-                            await announcement.update(keypath: \.isRead, value: true)
+                        .onAppear {
+                            announcement.isRead = true
                         }
                 } label: {
                     HStack {
