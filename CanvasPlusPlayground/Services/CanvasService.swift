@@ -161,7 +161,7 @@ struct CanvasService {
      Fetch a collection of data from the Canvas API. Also provides cached version via closure (if any). Allows filtering.
      - Parameters:
         - request: the desired API query for a **collection** of models.
-        - condition: an optimized filter to be performed in the query.
+        - descriptor: an optimized filter to be performed in the query.
         - onCacheReceive: a closure for early execution when cached version is received - if any.
         - onNewBatch: if the request involves pagination, this closure will be executed upon arrival of each batch
      - Returns: An array of models concerning the desired query.
@@ -295,10 +295,6 @@ struct CanvasService {
     }
     
     // MARK: Repository actions
-    
-    func setupRepository() async {
-        await repository.setAutosave(true)
-    }
     
     func clearStorage() {
         repository.modelContainer.deleteAllData()

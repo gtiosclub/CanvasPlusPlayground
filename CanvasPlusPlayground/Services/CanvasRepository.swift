@@ -16,6 +16,7 @@ actor CanvasRepository {
             Course.self, Announcement.self, Enrollment.self
         ) // TODO: Add cacheable models here
         let context = ModelContext(modelContainer)
+        context.autosaveEnabled = true
         self.modelExecutor = DefaultSerialModelExecutor(modelContext: context)
     }
     
