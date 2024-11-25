@@ -11,6 +11,7 @@ import SwiftData
 @Observable
 class PeopleManager {
     private let courseID: String?
+
     var enrollments = [Enrollment]()
     var users: [User] {
         Set(enrollments.compactMap(\.user))
@@ -18,7 +19,6 @@ class PeopleManager {
                 ($0.name ?? "") < ($1.name ?? "")
             }
     }
-    var courses = [Course]()
 
     init(courseID: String?) {
         self.courseID = courseID
@@ -58,23 +58,26 @@ class PeopleManager {
         }
     }
     
-    func fetchActiveCourses() async {
+    private func fetchActiveCourses() async -> [Course] {
         guard let (data, _) = try? await CanvasService.shared.fetchResponse(.getCourses(enrollmentState: "active")) else {
-            print("Failed to fetch files.")
-            return
+            print("Failed to fetch courses.")
+            return []
         }
         
         if let retCourses = try? JSONDecoder().decode([Course].self, from: data) {
-            self.courses = retCourses
+            return retCourses
         } else {
             print("Failed to decode file data.")
+            return []
         }
     }
     
-    func fetchAllClassesWith(userID: Int) async -> ([Course]) {
-        await fetchActiveCourses()
-        
-        var commonCourses = [Course]()
+    func fetchAllClassesWith(
+        userID: Int,
+        receivedNewCourse: @escaping (Course) -> Void = { _ in }
+    ) async {
+        let courses = await fetchActiveCourses()
+
         let commonCoursesQueue = DispatchQueue(label: "com.example.commonCoursesQueue")
         
         await withTaskGroup(of: Void.self) { group in
@@ -89,7 +92,7 @@ class PeopleManager {
                         print("User \(userID) is also in course \(course.name ?? "n/a").")
                         
                         commonCoursesQueue.sync {
-                            commonCourses.append(course)
+                            receivedNewCourse(course)
                         }
                     }
                 }
@@ -123,9 +126,5 @@ class PeopleManager {
                 }
             }
         }
-        
-        
-        print("number of common course: \(commonCourses.count)")
-        return commonCourses
     }
 }
