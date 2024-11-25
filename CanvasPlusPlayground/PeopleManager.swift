@@ -78,8 +78,8 @@ class PeopleManager {
     ) async {
         let courses = await fetchActiveCourses()
 
-        let commonCoursesQueue = DispatchQueue(label: "com.example.commonCoursesQueue")
-        
+        let commonCoursesQueue = DispatchQueue(label: "com.CanvasPlus.commonCoursesQueue")
+
         await withTaskGroup(of: Void.self) { group in
             for course in courses {                
                 // get enrollments in
@@ -114,7 +114,11 @@ class PeopleManager {
                         return
                     }
                     
-                    guard let enrollments: [Enrollment] = try? await CanvasService.shared.syncWithAPI(request) else {
+                    guard let enrollments: [Enrollment] = try? await CanvasService.shared.loadAndSync(request, onCacheReceive: { cached in
+                        guard let cached else { return }
+
+                        processEnrollments(cached)
+                    }) else {
                         // TODO: indicate network error here
                         print("Couldn't fetch enrollment count for course \(course.name ?? "n/a")")
                         return
