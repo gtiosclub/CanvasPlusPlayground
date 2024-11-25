@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PeopleCommonView: View {
     @Environment(PeopleManager.self) var peopleManager
+    @Environment(CourseManager.self) var courseManager
     let user: User
 
     @State private var commonCourses: [Course] = []
@@ -60,11 +61,15 @@ struct PeopleCommonView: View {
     }
 
     private func getCommonCourses() async {
+        guard let id = user.id else { return }
+
         fetchingCommonCourses = true
-        await peopleManager.fetchAllClassesWith(userID: user.id!) {
-            if !commonCourses.contains($0) {
-                commonCourses.append($0)
-            }
+        await peopleManager
+            .fetchAllClassesWith(
+                userID: id,
+                activeCourses: courseManager.courses
+            ) {
+            commonCourses.append($0)
         }
         fetchingCommonCourses = false
     }

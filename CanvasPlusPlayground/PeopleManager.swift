@@ -58,39 +58,27 @@ class PeopleManager {
         }
     }
     
-    private func fetchActiveCourses() async -> [Course] {
-        guard let (data, _) = try? await CanvasService.shared.fetchResponse(.getCourses(enrollmentState: "active")) else {
-            print("Failed to fetch courses.")
-            return []
-        }
-        
-        if let retCourses = try? JSONDecoder().decode([Course].self, from: data) {
-            return retCourses
-        } else {
-            print("Failed to decode file data.")
-            return []
-        }
-    }
-    
     func fetchAllClassesWith(
         userID: Int,
+        activeCourses courses: [Course],
         receivedNewCourse: @escaping (Course) -> Void = { _ in }
     ) async {
-        let courses = await fetchActiveCourses()
-
         let commonCoursesQueue = DispatchQueue(label: "com.CanvasPlus.commonCoursesQueue")
 
         await withTaskGroup(of: Void.self) { group in
             for course in courses {                
-                // get enrollments in
+                var didAlreadyAddCourse = false
                 let courseID = course.id
                 let request = CanvasRequest.getPeople(courseId: courseID)
                 
                 func processEnrollments(_ enrollments: [Enrollment]) {
+                    guard !didAlreadyAddCourse else { return }
+
                     let courseIsShared = enrollments.compactMap(\.user?.id).contains([userID])
                     if courseIsShared {
-                        print("User \(userID) is also in course \(course.name ?? "n/a").")
-                        
+                        // Found a Common Course
+
+                        didAlreadyAddCourse = true
                         commonCoursesQueue.sync {
                             receivedNewCourse(course)
                         }
@@ -98,8 +86,8 @@ class PeopleManager {
                 }
                 
                 group.addTask {
-                    print("Is user in \(String(describing: course.name))?")
-                    
+                    // Get the enrollments of course
+
                     // If request was already made, retrieve from cache
                     guard !CanvasService.shared.isRequestCompleted(request) else {
                         // Check that no loading error occurred
@@ -114,18 +102,18 @@ class PeopleManager {
                         return
                     }
                     
-                    guard let enrollments: [Enrollment] = try? await CanvasService.shared.loadAndSync(request, onCacheReceive: { cached in
+                    guard let _: [Enrollment] = try? await CanvasService.shared.loadAndSync(request, onCacheReceive: { cached in
                         guard let cached else { return }
 
                         processEnrollments(cached)
+                    }, onNewBatch: { batchedResults in
+                        processEnrollments(batchedResults)
                     }) else {
                         // TODO: indicate network error here
                         print("Couldn't fetch enrollment count for course \(course.name ?? "n/a")")
                         return
                     }
-                    
-                    processEnrollments(enrollments)
-                    
+
                     CanvasService.shared.markRequestAsCompleted(request)
                 }
             }
