@@ -11,6 +11,7 @@ import SwiftData
 @Observable
 class PeopleManager {
     private let courseID: String?
+
     var enrollments = [Enrollment]()
     var users: [User] {
         Set(enrollments.compactMap(\.user))
@@ -18,7 +19,6 @@ class PeopleManager {
                 ($0.name ?? "") < ($1.name ?? "")
             }
     }
-    var courses = [Course]()
 
     init(courseID: String?) {
         self.courseID = courseID
@@ -58,45 +58,36 @@ class PeopleManager {
         }
     }
     
-    func fetchActiveCourses() async {
-        guard let (data, _) = try? await CanvasService.shared.fetchResponse(.getCourses(enrollmentState: "active")) else {
-            print("Failed to fetch files.")
-            return
-        }
-        
-        if let retCourses = try? JSONDecoder().decode([Course].self, from: data) {
-            self.courses = retCourses
-        } else {
-            print("Failed to decode file data.")
-        }
-    }
-    
-    func fetchAllClassesWith(userID: Int) async -> ([Course]) {
-        await fetchActiveCourses()
-        
-        var commonCourses = [Course]()
-        let commonCoursesQueue = DispatchQueue(label: "com.example.commonCoursesQueue")
-        
+    func fetchAllClassesWith(
+        userID: Int,
+        activeCourses courses: [Course],
+        receivedNewCourse: @escaping (Course) -> Void = { _ in }
+    ) async {
+        let commonCoursesQueue = DispatchQueue(label: "com.CanvasPlus.commonCoursesQueue")
+
         await withTaskGroup(of: Void.self) { group in
             for course in courses {                
-                // get enrollments in
+                var didAlreadyAddCourse = false
                 let courseID = course.id
                 let request = CanvasRequest.getPeople(courseId: courseID)
                 
                 func processEnrollments(_ enrollments: [Enrollment]) {
+                    guard !didAlreadyAddCourse else { return }
+
                     let courseIsShared = enrollments.compactMap(\.user?.id).contains([userID])
                     if courseIsShared {
-                        print("User \(userID) is also in course \(course.name ?? "n/a").")
-                        
+                        // Found a Common Course
+
+                        didAlreadyAddCourse = true
                         commonCoursesQueue.sync {
-                            commonCourses.append(course)
+                            receivedNewCourse(course)
                         }
                     }
                 }
                 
                 group.addTask {
-                    print("Is user in \(String(describing: course.name))?")
-                    
+                    // Get the enrollments of course
+
                     // If request was already made, retrieve from cache
                     guard !CanvasService.shared.isRequestCompleted(request) else {
                         // Check that no loading error occurred
@@ -111,21 +102,21 @@ class PeopleManager {
                         return
                     }
                     
-                    guard let enrollments: [Enrollment] = try? await CanvasService.shared.syncWithAPI(request) else {
+                    guard let _: [Enrollment] = try? await CanvasService.shared.loadAndSync(request, onCacheReceive: { cached in
+                        guard let cached else { return }
+
+                        processEnrollments(cached)
+                    }, onNewBatch: { batchedResults in
+                        processEnrollments(batchedResults)
+                    }) else {
                         // TODO: indicate network error here
                         print("Couldn't fetch enrollment count for course \(course.name ?? "n/a")")
                         return
                     }
-                    
-                    processEnrollments(enrollments)
-                    
+
                     CanvasService.shared.markRequestAsCompleted(request)
                 }
             }
         }
-        
-        
-        print("number of common course: \(commonCourses.count)")
-        return commonCourses
     }
 }
