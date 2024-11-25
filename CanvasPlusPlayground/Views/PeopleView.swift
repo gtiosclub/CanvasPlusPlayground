@@ -40,14 +40,28 @@ struct PeopleView: View {
         .navigationDestination(for: User.self) { user in
             PeopleCommonView(user: user).environment(peopleManager)
         }
-        .searchable(text: $searchText, prompt: "Search...")
+        #if os(iOS)
+        .searchable(
+            text: $searchText,
+            placement:
+                    .navigationBarDrawer(
+                        displayMode: .always
+                    )
+            ,
+            prompt: "Search People..."
+        )
+        #else
+        .searchable(text: $searchText, prompt: "Search People...")
+        #endif
     }
 
     private var displayedUsers: [User] {
         searchText.isEmpty ?
         peopleManager.users :
         peopleManager.users
-            .filter { $0.name?.localizedStandardContains(searchText) ?? true }
+            .filter {
+                $0.name?.localizedCaseInsensitiveContains(searchText) ?? true
+            }
     }
 }
 
