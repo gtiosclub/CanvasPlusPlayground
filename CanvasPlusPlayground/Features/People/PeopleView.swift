@@ -34,7 +34,14 @@ struct PeopleView: View {
     
     private var mainBody: some View {
         List(displayedUsers, id: \.id) { user in
-            NavigationLink(user.name ?? "", value: user)
+            NavigationLink(value: user) {
+                HStack {
+                    Text(user.name ?? "")
+                    Spacer()
+                    Text(user.role ?? "nil")
+                        .foregroundStyle(.secondary)
+                }
+            }
         }
         .navigationTitle("People")
         .navigationDestination(for: User.self) { user in
