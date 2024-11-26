@@ -176,12 +176,12 @@ private struct CourseListCell: View {
         .swipeActions(edge: .leading) {
             Button {
                 withAnimation {
-                    course.isFavorite = !(course.isFavorite ?? false)
+                    course.isFavorite = !wrappedCourseIsFavorite
                 }
             } label: {
                 Image(systemName: "star")
                     .symbolVariant(
-                        course.isFavorite ?? false
+                        wrappedCourseIsFavorite
                         ? .slash
                         : .none
                     )
@@ -196,11 +196,11 @@ private struct CourseListCell: View {
             }
 
             Button(
-                (course.isFavorite ?? false) ? "Unfavorite Course" : "Favorite Course",
-                systemImage: (course.isFavorite ?? false) ? "star.slash.fill" : "star.fill"
+                wrappedCourseIsFavorite ? "Unfavorite Course" : "Favorite Course",
+                systemImage: wrappedCourseIsFavorite ? "star.slash.fill" : "star.fill"
             ) {
                 withAnimation {
-                    course.isFavorite = !(course.isFavorite ?? false)
+                    course.isFavorite = !wrappedCourseIsFavorite
                 }
             }
         }
@@ -219,6 +219,10 @@ private struct CourseListCell: View {
             course.rgbColors = .init(color: resolvedCourseColor)
         }
         #endif
+    }
+
+    private var wrappedCourseIsFavorite: Bool {
+        course.isFavorite ?? false
     }
 }
 
