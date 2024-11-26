@@ -181,7 +181,7 @@ private struct CourseListCell: View {
             } label: {
                 Image(systemName: "star")
                     .symbolVariant(
-                        courseManager.userFavCourses.contains(course)
+                        course.isFavorite ?? false
                         ? .slash
                         : .none
                     )
@@ -193,6 +193,15 @@ private struct CourseListCell: View {
         .contextMenu {
             Button("Change Color", systemImage: "paintbrush.fill") {
                 showColorPicker = true
+            }
+
+            Button(
+                (course.isFavorite ?? false) ? "Unfavorite Course" : "Favorite Course",
+                systemImage: (course.isFavorite ?? false) ? "star.slash.fill" : "star.fill"
+            ) {
+                withAnimation {
+                    course.isFavorite = !(course.isFavorite ?? false)
+                }
             }
         }
         #if os(macOS)
