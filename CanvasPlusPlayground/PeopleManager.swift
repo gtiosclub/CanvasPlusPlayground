@@ -12,12 +12,25 @@ import SwiftData
 class PeopleManager {
     private let courseID: String?
 
-    var enrollments = [Enrollment]()
+    private var enrollments = [Enrollment]()
+
     var users: [User] {
-        Set(enrollments.compactMap(\.user))
-            .sorted {
-                ($0.name ?? "") < ($1.name ?? "")
+        let usersAndRoles: [(User, String?)] = enrollments.compactMap {
+            guard let user = $0.user else { return nil }
+            return (user, $0.role)
+        }
+
+        let mergedUsers = Set(
+            usersAndRoles.map {
+                var user = $0.0
+                user.setRole($0.1)
+                return user
             }
+        )
+
+        return mergedUsers.sorted {
+            ($0.name ?? "") < ($1.name ?? "")
+        }
     }
 
     init(courseID: String?) {

@@ -280,6 +280,7 @@ struct User: Codable, Equatable, Hashable {
     let name: String?
     let sortableName: String?
     let shortName: String?
+    private(set) var role: String?
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -294,5 +295,9 @@ struct User: Codable, Equatable, Hashable {
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
+    }
+
+    mutating func setRole(_ newValue: String?) {
+        role = newValue?.replacingOccurrences(of: "Enrollment", with: "")
     }
 }
