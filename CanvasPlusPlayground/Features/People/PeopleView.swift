@@ -7,11 +7,22 @@
 
 import SwiftUI
 
+struct Token: Identifiable {
+    let id = UUID()
+    let text: String
+}
+
 struct PeopleView: View {
     let courseID: String?
 
     @State private var peopleManager: PeopleManager
     @State private var searchText: String = ""
+    @State private var selectedTokens = [Token]()
+
+    private var suggestedTokens: [Token] {
+        Set(peopleManager.users.compactMap(\.role)).map { Token(text: $0) }
+            .sorted { $0.text < $1.text }
+    }
 
     init(courseID: String?) {
         self.courseID = courseID
@@ -50,15 +61,25 @@ struct PeopleView: View {
         #if os(iOS)
         .searchable(
             text: $searchText,
+            tokens: $selectedTokens,
+            suggestedTokens: .constant(suggestedTokens),
             placement:
                     .navigationBarDrawer(
                         displayMode: .always
-                    )
-            ,
+                    ),
             prompt: "Search People..."
-        )
+        ) { token in
+            Label(token.text, systemImage: "person.fill")
+        }
         #else
-        .searchable(text: $searchText, prompt: "Search People...")
+        .searchable(
+            text: $searchText,
+            tokens: $selectedTokens,
+            suggestedTokens: .constant(suggestedTokens),
+            prompt: "Search People..."
+        ) { token in
+            Label(token.text, systemImage: "person.fill")
+        }
         #endif
         .overlay {
             if !searchText.isEmpty && displayedUsers.isEmpty {
@@ -68,12 +89,20 @@ struct PeopleView: View {
     }
 
     private var displayedUsers: [User] {
-        searchText.isEmpty ?
-        peopleManager.users :
-        peopleManager.users
-            .filter {
+        var result = peopleManager.users
+        if !searchText.isEmpty {
+            result = result.filter {
                 $0.name?.localizedCaseInsensitiveContains(searchText) ?? true
             }
+        }
+
+        selectedTokens.forEach { token in
+            result = result.filter {
+                $0.role?.contains(token.text) ?? true
+            }
+        }
+
+        return result
     }
 }
 
