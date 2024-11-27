@@ -8,3 +8,4 @@ This [feature database](https://gt-ios-club.notion.site/d2d21e2e80f3417d8528553f
 ### Resources
 - [Live API](https://gatech.instructure.com/doc/api/live#!/access_tokens.json)
 - [API Docs](https://canvas.instructure.com/doc/api/assignments.html)
+- [How to start](https://community.canvaslms.com/t5/Canvas-Developers-Group/Canvas-APIs-Getting-started-the-practical-ins-and-outs-gotchas/ba-p/263685)
