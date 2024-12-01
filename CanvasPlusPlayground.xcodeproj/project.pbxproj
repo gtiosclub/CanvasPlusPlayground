@@ -31,8 +31,6 @@
 		A3E7F38F2C96C1CE00DC4300 /* CourseTabsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E7F38E2C96C1CE00DC4300 /* CourseTabsView.swift */; };
 		A3E7F3912C99317100DC4300 /* CourseTabsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E7F3902C99317100DC4300 /* CourseTabsManager.swift */; };
 		A3E7F3932C99338B00DC4300 /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E7F3922C99338B00DC4300 /* Tab.swift */; };
-		A3E822372CE9518500DB5D3C /* LLM in Frameworks */ = {isa = PBXBuildFile; productRef = A3E822362CE9518500DB5D3C /* LLM */; };
-		A3E822392CE9518500DB5D3C /* MNIST in Frameworks */ = {isa = PBXBuildFile; productRef = A3E822382CE9518500DB5D3C /* MNIST */; };
 		A3FFD03A2CDEC2AC006BAB51 /* LookupCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FFD0392CDEC2AC006BAB51 /* LookupCondition.swift */; };
 		A3FFD03C2CDED67C006BAB51 /* String+Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FFD03B2CDED67C006BAB51 /* String+Int.swift */; };
 		A3FFD03E2CE0065A006BAB51 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FFD03D2CE0065A006BAB51 /* NetworkError.swift */; };
@@ -52,6 +50,7 @@
 		B76455082C8DF61B002DF00E /* CourseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454FC2C8DF61B002DF00E /* CourseManager.swift */; };
 		B76455092C8DF61B002DF00E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B76454F22C8DF61B002DF00E /* Preview Assets.xcassets */; };
 		B764550A2C8DF61B002DF00E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B76454F92C8DF61B002DF00E /* Assets.xcassets */; };
+		B785BE652CF592710094BF94 /* LLM in Frameworks */ = {isa = PBXBuildFile; productRef = B785BE642CF592710094BF94 /* LLM */; };
 		B7926D162CE95CED00BFFBE1 /* RGBColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7926D152CE95CE900BFFBE1 /* RGBColors.swift */; };
 		B7926D182CE962C200BFFBE1 /* ColorPickerWithoutLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7926D172CE962C200BFFBE1 /* ColorPickerWithoutLabel.swift */; };
 		B7A26EE92CCB62A30084704A /* NavigationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A26EE82CCB62A00084704A /* NavigationModel.swift */; };
@@ -122,8 +121,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A3E822392CE9518500DB5D3C /* MNIST in Frameworks */,
-				A3E822372CE9518500DB5D3C /* LLM in Frameworks */,
+				B785BE652CF592710094BF94 /* LLM in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -269,8 +267,7 @@
 			);
 			name = CanvasPlusPlayground;
 			packageProductDependencies = (
-				A3E822362CE9518500DB5D3C /* LLM */,
-				A3E822382CE9518500DB5D3C /* MNIST */,
+				B785BE642CF592710094BF94 /* LLM */,
 			);
 			productName = CanvasPlusPlayground;
 			productReference = B76454642C8BBC7F002DF00E /* CanvasPlusPlayground.app */;
@@ -302,7 +299,7 @@
 			mainGroup = B764545B2C8BBC7F002DF00E;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				A3E822352CE9518500DB5D3C /* XCRemoteSwiftPackageReference "mlx-swift-examples" */,
+				B785BE632CF592710094BF94 /* XCRemoteSwiftPackageReference "mlx-swift-examples" */,
 			);
 			productRefGroup = B76454652C8BBC7F002DF00E /* Products */;
 			projectDirPath = "";
@@ -598,26 +595,21 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		A3E822352CE9518500DB5D3C /* XCRemoteSwiftPackageReference "mlx-swift-examples" */ = {
+		B785BE632CF592710094BF94 /* XCRemoteSwiftPackageReference "mlx-swift-examples" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ml-explore/mlx-swift-examples";
+			repositoryURL = "https://github.com/ml-explore/mlx-swift-examples/";
 			requirement = {
-				kind = exactVersion;
-				version = 1.16.0;
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.18.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		A3E822362CE9518500DB5D3C /* LLM */ = {
+		B785BE642CF592710094BF94 /* LLM */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = A3E822352CE9518500DB5D3C /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
+			package = B785BE632CF592710094BF94 /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
 			productName = LLM;
-		};
-		A3E822382CE9518500DB5D3C /* MNIST */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = A3E822352CE9518500DB5D3C /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
-			productName = MNIST;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
