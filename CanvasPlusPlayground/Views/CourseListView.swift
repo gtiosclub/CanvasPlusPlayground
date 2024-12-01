@@ -176,12 +176,12 @@ private struct CourseListCell: View {
         .swipeActions(edge: .leading) {
             Button {
                 withAnimation {
-                    course.isFavorite = !(course.isFavorite ?? false)
+                    course.isFavorite = !wrappedCourseIsFavorite
                 }
             } label: {
                 Image(systemName: "star")
                     .symbolVariant(
-                        courseManager.userFavCourses.contains(course)
+                        wrappedCourseIsFavorite
                         ? .slash
                         : .none
                     )
@@ -193,6 +193,15 @@ private struct CourseListCell: View {
         .contextMenu {
             Button("Change Color", systemImage: "paintbrush.fill") {
                 showColorPicker = true
+            }
+
+            Button(
+                wrappedCourseIsFavorite ? "Unfavorite Course" : "Favorite Course",
+                systemImage: wrappedCourseIsFavorite ? "star.slash.fill" : "star.fill"
+            ) {
+                withAnimation {
+                    course.isFavorite = !wrappedCourseIsFavorite
+                }
             }
         }
         #if os(macOS)
@@ -210,6 +219,10 @@ private struct CourseListCell: View {
             course.rgbColors = .init(color: resolvedCourseColor)
         }
         #endif
+    }
+
+    private var wrappedCourseIsFavorite: Bool {
+        course.isFavorite ?? false
     }
 }
 

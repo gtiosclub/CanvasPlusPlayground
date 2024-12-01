@@ -53,6 +53,11 @@ struct PeopleView: View {
         #else
         .searchable(text: $searchText, prompt: "Search People...")
         #endif
+        .overlay {
+            if !searchText.isEmpty && displayedUsers.isEmpty {
+                ContentUnavailableView("No results for '\(searchText)'", systemImage: "magnifyingglass")
+            }
+        }
     }
 
     private var displayedUsers: [User] {
