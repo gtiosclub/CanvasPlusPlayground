@@ -9,4 +9,13 @@ This [feature database](https://gt-ios-club.notion.site/d2d21e2e80f3417d8528553f
 - [Live API](https://gatech.instructure.com/doc/api/live#!/access_tokens.json)
 - [API Docs](https://canvas.instructure.com/doc/api/assignments.html)
 - [Understanding the Canvas API](https://community.canvaslms.com/t5/Canvas-Developers-Group/Canvas-APIs-Getting-started-the-practical-ins-and-outs-gotchas/ba-p/263685)
-- [SQLite Viewer](https://sqlitebrowser.org/blog/version-3-13-1-released/) for debugging SwiftData operations
+
+### Debugging SwiftData
+- [SQLite Viewer](https://sqlitebrowser.org/blog/version-3-13-1-released/) for viewing SQLite files that SwiftData writes to.
+- Print the following at app launch to get the directory storing these SQLite files.
+
+```swift
+print(URL.applicationSupportDirectory.path(percentEncoded: false))
+```
+
+  
