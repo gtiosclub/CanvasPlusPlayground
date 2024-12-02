@@ -125,6 +125,7 @@ import SwiftData
 
 @Model
 final class Course: Cacheable {
+    typealias ID = String
     typealias ServerID = Int
     
     // MARK: IDs

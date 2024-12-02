@@ -18,19 +18,39 @@ struct CourseListView: View {
     @State private var showAuthorization: Bool = false
     @State private var columnVisibility = NavigationSplitViewVisibility.all
 
+    @SceneStorage("CourseListView.selectedCourse")
+    private var selectedCourseID: Course.ID?
+
+    @SceneStorage("CourseListView.selectedCoursePage")
+    private var selectedCoursePage: NavigationModel.CoursePage?
+
+    private var selectedCourse: Course? {
+        courseManager.courses.first(where: { $0.id == selectedCourseID })
+    }
+
     var body: some View {
         @Bindable var courseManager = courseManager
         
         NavigationSplitView(columnVisibility: $columnVisibility) {
             mainBody
         } content: {
-            if let selectedCourse = navigationModel.selectedCourse {
+            if let selectedCourse {
                 CourseView(course: selectedCourse)
             } else {
                 ContentUnavailableView("Select a course.", systemImage: "folder")
             }
         } detail: {
             detailView
+        }
+        .task {
+            navigationModel.selectedCourseID = selectedCourseID
+            navigationModel.selectedCoursePage = selectedCoursePage
+        }
+        .onChange(of: navigationModel.selectedCourseID) { _, new in
+            selectedCourseID = new
+        }
+        .onChange(of: navigationModel.selectedCoursePage) { _, new in
+            selectedCoursePage = new
         }
         .task {
             if StorageKeys.needsAuthorization {
@@ -66,7 +86,7 @@ struct CourseListView: View {
     }
     
     private var mainBody: some View {
-        List(selection: $navigationModel.selectedCourse) {
+        List(selection: $navigationModel.selectedCourseID) {
             Section {
                 Button {
                     navigationModel.showInstallIntelligenceSheet = true
@@ -97,19 +117,15 @@ struct CourseListView: View {
                 .disabled(courseManager.userFavCourses.isEmpty)
 
                 ForEach(courseManager.userFavCourses, id: \.id) { course in
-                    NavigationLink(value: course) {
-                        CourseListCell(course: course)
-                    }
-                    .tint(course.rgbColors?.color)
+                    CourseListCell(course: course)
+                        .tint(course.rgbColors?.color)
                 }
             }
 
             Section("Courses") {
                 ForEach(courseManager.userOtherCourses, id: \.id) { course in
-                    NavigationLink(value: course) {
-                        CourseListCell(course: course)
-                    }
-                    .tint(course.rgbColors?.color)
+                    CourseListCell(course: course)
+                        .tint(course.rgbColors?.color)
                 }
             }
         }
@@ -134,8 +150,8 @@ struct CourseListView: View {
 
     @ViewBuilder
     private var detailView: some View {
-        if let selectedCourse = navigationModel.selectedCourse,
-           let selectedCoursePage = navigationModel.selectedCoursePage {
+        if let selectedCourse,
+           let selectedCoursePage {
             switch selectedCoursePage {
             case .files:
                 CourseFilesView(course: selectedCourse)

@@ -13,7 +13,11 @@ class NavigationModel {
         case assignments, files, announcements, grades, calendar, people, tabs
     }
 
-    var selectedCourse: Course?
+    var selectedCourseID: Course.ID? {
+        didSet {
+            selectedCoursePage = nil
+        }
+    }
     var selectedCoursePage: CoursePage?
     var showInstallIntelligenceSheet = false
 }
