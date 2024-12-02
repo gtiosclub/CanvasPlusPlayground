@@ -128,12 +128,12 @@ final class Course: Cacheable {
     typealias ServerID = Int
     
     // MARK: IDs
-    @Attribute(.unique) var id: String
+    @Attribute(.unique) let id: String
     var parentId: String?
     
     // MARK: Relationships
     //@Relationship(deleteRule: .nullify, inverse: \Announcement.course) var announcements: [Announcement]?
-    /*@Relationship()*/ var enrollments: [Enrollment]?
+    /*@Relationship()*/ var enrollments: [CourseEnrollment]?
     
     // MARK: Other
     var sisCourseID: String?
@@ -273,7 +273,7 @@ final class Course: Cacheable {
         self.startAt = try container.decodeIfPresent(String.self, forKey: .startAt)
         self.endAt = try container.decodeIfPresent(String.self, forKey: .endAt)
         self.locale = try container.decodeIfPresent(String.self, forKey: .locale)
-        self.enrollments = try container.decodeIfPresent([Enrollment].self, forKey: .enrollments)
+        self.enrollments = try container.decodeIfPresent([CourseEnrollment].self, forKey: .enrollments)
         self.totalStudents = try container.decodeIfPresent(Int.self, forKey: .totalStudents)
         self.calendar = try container.decodeIfPresent(CalendarLink.self, forKey: .calendar)
         self.defaultView = try container.decodeIfPresent(String.self, forKey: .defaultView)
@@ -366,7 +366,6 @@ final class Course: Cacheable {
         try container.encodeIfPresent(template, forKey: .template)
    }
     
-    @MainActor
     func merge(with other: Course) {
         self.enrollments = other.enrollments
         self.sisCourseID = other.sisCourseID
@@ -434,4 +433,22 @@ struct Permissions: Codable, Equatable, Hashable {
 
 struct CalendarLink: Codable, Equatable, Hashable {
     let ics: String
+}
+
+struct CourseEnrollment: Codable, Equatable, Hashable {
+    let type: String?
+    let role: String?
+    let roleId: Int?
+    let userId: Int?
+    let enrollmentState: String?
+    let limitPrivelegesToCourseSection: Bool?
+    
+    enum CodingKeys: String, CodingKey {
+        case type
+        case role
+        case roleId = "role_id"
+        case userId = "user_id"
+        case enrollmentState = "enrollment_state"
+        case limitPrivelegesToCourseSection = "limit_privileges_to_course_section"
+    }
 }

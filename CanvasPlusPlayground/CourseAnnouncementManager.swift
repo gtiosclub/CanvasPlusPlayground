@@ -18,22 +18,13 @@ import Foundation
     }
     
     func fetchAnnouncements() async {
-        let announcements: [Announcement]? = try? await CanvasService.shared.defaultAndFetch(
+        let announcements: [Announcement]? = try? await CanvasService.shared.loadAndSync(
             .getAnnouncements(courseId: courseId),
+            descriptor: .init(sortBy: [.init(\.createdAt, order: .reverse)]),
             onCacheReceive: { (cached: [Announcement]?) in
                 guard let cached else { return }
                 
-                self.announcements = cached.sorted(by: { 
-                    ($0.createdAt ?? Date()) > ($1.createdAt ?? Date())
-                })
-            },
-            onNewBatch: { batch in                
-                for announcement in batch {
-                    if !self.announcements.contains(announcement) {
-                        self.announcements.insert(announcement, at: 0)
-                    }
-                }
-                
+                self.announcements = cached
             }
         )
         
@@ -42,7 +33,7 @@ import Foundation
             return
         }
         
-        self.announcements = announcements
+        self.announcements = announcements.reversed()
         
     }
 }

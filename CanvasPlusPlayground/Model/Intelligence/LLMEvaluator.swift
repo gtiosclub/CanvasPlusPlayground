@@ -87,10 +87,9 @@ class LLMEvaluator: ObservableObject {
                 thread: thread,
                 systemPrompt: systemPrompt
             )
-            let prompt = modelConfiguration.prepare(prompt: promptHistory)
 
             let promptTokens = await modelContainer.perform { _, tokenizer in
-                tokenizer.encode(text: prompt)
+                tokenizer.encode(text: promptHistory)
             }
 
             // each time you generate you will get something new

@@ -6,91 +6,117 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @Observable
 class PeopleManager {
     private let courseID: String?
+
     var enrollments = [Enrollment]()
-    var users = [User] ()
-    var courses = [Course]()
+    var users: [User] {
+        Set(enrollments.compactMap(\.user))
+            .sorted {
+                ($0.name ?? "") < ($1.name ?? "")
+            }
+    }
 
     init(courseID: String?) {
         self.courseID = courseID
         self.enrollments = []
-        self.users = []
     }
     
     func fetchPeople() async {
         guard let courseID else { return }
-        let _ = try? await CanvasService.shared.fetchBatch(.getPeople(courseId: courseID)) { dataResponseArr in
-            do {
-                let enrollments = try CanvasService.shared.decodeData(arg: dataResponseArr) as [Enrollment]
+
+        let enrollments: [Enrollment]? = try? await CanvasService.shared.loadAndSync(
+            .getPeople(courseId: courseID),
+            descriptor: .init(sortBy: [
+                SortDescriptor(\.user?.name, order: .forward)
+            ]),
+            onCacheReceive: { (cached: [Enrollment]?) in
+                guard let cached else { return }
                 
-                // this is a completion that is executed once the function has finished
-                for enrollment in enrollments {
-                    if let user = enrollment.user {
-                        if !self.users.contains(where: { $0.id == user.id }) {
-                            self.users.append(user)
-                        }
-                    }
-                }
-            } catch {
-                print(error)
+                addEnrollments(cached)
+            },
+            onNewBatch: { enrollmentsBatch in
+                addEnrollments(enrollmentsBatch)
             }
-        }
-    }
-    
-    func fetchActiveCourses() async {
-        guard let (data, _) = try? await CanvasService.shared.fetchResponse(.getCourses(enrollmentState: "active")) else {
-            print("Failed to fetch files.")
+        )
+        
+        guard let enrollments else {
+            print("Enrollments is nil, fetch failed.")
             return
         }
         
-        if let retCourses = try? JSONDecoder().decode([Course].self, from: data) {
-            self.courses = retCourses
-        } else {
-            print("Failed to decode file data.")
+        self.enrollments = enrollments
+    }
+    
+    private func addEnrollments(_ enrollments: [Enrollment]) {
+        self.enrollments = Set(self.enrollments + enrollments).sorted {
+            guard let name1 = $0.user?.name, let name2 = $1.user?.name else { return false }
+            return (name1) < (name2)
         }
     }
     
-    func fetchAllClassesWith(userID: Int) async -> ([Course]) {
-        await fetchActiveCourses()
-        
-        var commonCourses = [Course]()
-        
-        for course in courses {
-            print("Is user in \(String(describing: course.name))?")
-            
-            // get enrollments in
-            let courseID = course.id
-            
-            let _ = try? await CanvasService.shared.fetchBatch(.getPeople(courseId: courseID)) { dataResponseArr in
-                do {
-                    let enrollments = try CanvasService.shared.decodeData(arg: dataResponseArr) as [Enrollment]
-                    
-                    // this is a completion that is executed once the function has finished
-                    for enrollment in enrollments {
-                        if let user = enrollment.user {
-                            self.users.append(user)
+    func fetchAllClassesWith(
+        userID: Int,
+        activeCourses courses: [Course],
+        receivedNewCourse: @escaping (Course) -> Void = { _ in }
+    ) async {
+        let commonCoursesQueue = DispatchQueue(label: "com.CanvasPlus.commonCoursesQueue")
+
+        await withTaskGroup(of: Void.self) { group in
+            for course in courses {                
+                var didAlreadyAddCourse = false
+                let courseID = course.id
+                let request = CanvasRequest.getPeople(courseId: courseID)
+                
+                func processEnrollments(_ enrollments: [Enrollment]) {
+                    guard !didAlreadyAddCourse else { return }
+
+                    let courseIsShared = enrollments.compactMap(\.user?.id).contains([userID])
+                    if courseIsShared {
+                        // Found a Common Course
+
+                        didAlreadyAddCourse = true
+                        commonCoursesQueue.sync {
+                            receivedNewCourse(course)
                         }
                     }
-                } catch {
-                    print(error)
                 }
-            }
-            
-            for enrollment in enrollments {
-                if let user = enrollment.user {
-                    if userID == user.id {
-                        print("Yes")
-                        commonCourses.append(course)
-                        break
+                
+                group.addTask {
+                    // Get the enrollments of course
+
+                    // If request was already made, retrieve from cache
+                    guard !CanvasService.shared.isRequestCompleted(request) else {
+                        // Check that no loading error occurred
+                        guard let enrollments = try? await CanvasService.shared.load(request) as [Enrollment]? else {
+                            // TODO: indicate storage error here
+                            print("Couldn't load enrollment count for course \(course.name ?? "n/a")")
+                            return
+                        }
+                        
+                        processEnrollments(enrollments)
+                        
+                        return
                     }
+                    
+                    guard let _: [Enrollment] = try? await CanvasService.shared.loadAndSync(request, onCacheReceive: { cached in
+                        guard let cached else { return }
+
+                        processEnrollments(cached)
+                    }, onNewBatch: { batchedResults in
+                        processEnrollments(batchedResults)
+                    }) else {
+                        // TODO: indicate network error here
+                        print("Couldn't fetch enrollment count for course \(course.name ?? "n/a")")
+                        return
+                    }
+
+                    CanvasService.shared.markRequestAsCompleted(request)
                 }
             }
         }
-        
-        print("number of common course: \(commonCourses.count)")
-        return commonCourses
     }
 }

@@ -9,37 +9,69 @@ import SwiftUI
 
 struct PeopleCommonView: View {
     @Environment(PeopleManager.self) var peopleManager
+    @Environment(CourseManager.self) var courseManager
     let user: User
-    @State var courses: [Course] = []
-    @State private var loading: Bool = false
+
+    @State private var commonCourses: [Course] = []
+    @State private var fetchingCommonCourses: Bool = false
 
     var body: some View {
-        List {
+        Form {
             Section {
                 statusLabel
             }
 
-            ForEach(courses, id: \.id) { course in
-                Text(course.name ?? "")
+            Section {
+                ForEach(commonCourses, id: \.id) { course in
+                    Text(course.name ?? "")
+                }
+            } footer: {
+                if fetchingCommonCourses {
+                    HStack {
+                        Text("Results may be incomplete...")
+
+                        Spacer()
+
+                        ProgressView()
+                            .controlSize(.small)
+                    }
+                    .foregroundStyle(.secondary)
+                    .font(.caption)
+                }
             }
         }
+        .formStyle(.grouped)
         .task {
-            loading = true
-            self.courses = await peopleManager.fetchAllClassesWith(userID: user.id!)
-            loading = false
+            await getCommonCourses()
         }
+        .animation(.default, value: commonCourses)
     }
 
     private var statusLabel: some View {
         HStack {
-            Text("\(courses.count) Common Course\(courses.count == 1 ? "" : "s")")
+            Text("Common Courses")
 
             Spacer()
 
-            if loading {
-                ProgressView()
-            }
+            Text("\(commonCourses.count)")
+                .bold()
+                .foregroundStyle(.secondary)
+                .contentTransition(.numericText())
         }
+    }
+
+    private func getCommonCourses() async {
+        guard let id = user.id else { return }
+
+        fetchingCommonCourses = true
+        await peopleManager
+            .fetchAllClassesWith(
+                userID: id,
+                activeCourses: courseManager.courses
+            ) {
+            commonCourses.append($0)
+        }
+        fetchingCommonCourses = false
     }
 }
 
