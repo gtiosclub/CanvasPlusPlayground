@@ -12,26 +12,50 @@ enum CanvasRequest {
     
     case getCourses(enrollmentState: String, perPage: String = "50")
     case getCourse(id: String)
-    case getCourseFiles(courseId: String)
+    
+    case getCourseRootFolder(courseId: String)
+    case getAllCourseFiles(courseId: String)
+    case getAllCourseFolders(courseId: String)
+    case getFilesForFolder(folderId: String)
+    case getFoldersForFolder(folderId: String)
+    
     case getTabs(courseId: String)
+    
     case getAnnouncements(courseId: String)
+    
     case getAssignments(courseId: String)
+    
     case getEnrollments
     case getPeople(courseId: String, perPage: String = "100")
+    
     var path: String {
         switch self {
+            
         case .getCourses:
             "courses"
         case let .getCourse(id):
             "courses/\(id)"
-        case let .getCourseFiles(courseId):
+            
+        case let .getCourseRootFolder(courseId):
+            "courses/\(courseId)/folders/root"
+        case let .getAllCourseFiles(courseId):
             "courses/\(courseId)/files"
+        case let .getAllCourseFolders(courseId):
+            "courses/\(courseId)/folders"
+        case let .getFilesForFolder(folderId):
+            "folders/\(folderId)/files"
+        case let .getFoldersForFolder(folderId):
+            "folders/\(folderId)/folders"
+            
         case let .getTabs(courseId):
             "courses/\(courseId)/tabs"
+            
         case .getAnnouncements:
             "announcements"
+            
         case let .getAssignments(courseId):
             "courses/\(courseId)/assignments"
+            
         case .getEnrollments:
             "users/self/enrollments"
         case let .getPeople(courseId, _):
@@ -74,8 +98,10 @@ enum CanvasRequest {
         switch self {
         case let .getCourse(id):
             return id
-        case let .getTabs(courseId), let .getAnnouncements(courseId), let .getAssignments(courseId), let .getCourseFiles(courseId), let .getPeople(courseId, _):
+        case let .getTabs(courseId), let .getAnnouncements(courseId), let .getAssignments(courseId), let .getPeople(courseId, _), let.getCourseRootFolder(courseId), let .getAllCourseFiles(courseId),  let .getAllCourseFolders(courseId):
             return courseId
+        case let .getFilesForFolder(folderId), let .getFoldersForFolder(folderId):
+            return folderId
         default:
             return nil
         }
@@ -87,7 +113,7 @@ enum CanvasRequest {
     
     var isPaginated: Bool {
         switch self {
-        case .getCourses, .getAnnouncements, .getPeople:
+        case .getCourses, .getAnnouncements, .getPeople, .getAllCourseFiles, .getAllCourseFolders, .getFilesForFolder, .getFoldersForFolder:
             true
         default:
             false
@@ -100,8 +126,18 @@ enum CanvasRequest {
             [Course].self
         case .getCourse:
             Course.self
-        case .getCourseFiles:
+            
+        case .getCourseRootFolder:
+            Folder.self
+        case .getAllCourseFiles:
             [File].self
+        case .getAllCourseFolders:
+            [Folder].self
+        case .getFilesForFolder:
+            [File].self
+        case .getFoldersForFolder:
+            [Folder].self
+            
         case .getTabs:
             [Tab].self
         case .getAnnouncements:
