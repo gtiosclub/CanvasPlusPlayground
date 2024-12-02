@@ -28,8 +28,12 @@ class CourseFileManager {
     
     func fetchContent(in folder: Folder) async {
         
-        async let foldersInRootFolder: [Folder] = CanvasService.shared.loadAndSync(.getFoldersInFolder(folderId: folder.id))
-        async let filesInRootFolder: [File] = CanvasService.shared.loadAndSync(.getFilesInFolder(folderId: folder.id))
+        async let foldersInRootFolder: [Folder] = CanvasService.shared.loadAndSync(.getFoldersInFolder(folderId: folder.id), onCacheReceive: { folders in
+            self.folders = folders ?? []
+        })
+        async let filesInRootFolder: [File] = CanvasService.shared.loadAndSync(.getFilesInFolder(folderId: folder.id), onCacheReceive: { files in
+            self.files = files ?? []
+        })
         
         let (folders, files) = await ((try? foldersInRootFolder) ?? [], (try? filesInRootFolder) ?? [])
         
