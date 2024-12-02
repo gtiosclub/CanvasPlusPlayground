@@ -55,15 +55,15 @@ class File: Cacheable {
     var parentId: String?
     
     var uuid: String?
-    var folderId: String?
+    var folderId: Int?
     var displayName: String?
     var filename: String?
     var uploadStatus: String?
     var contentType: String?
     var url: String?
     var size: Int?
-    var createdAt: Date?
-    var updatedAt: Date?
+    var createdAt: String?
+    var updatedAt: String?
     var unlockAt: String?
     var locked: Bool?
     var hidden: Bool?
@@ -88,15 +88,15 @@ class File: Cacheable {
         
         // Decode remaining properties
         self.uuid = try container.decodeIfPresent(String.self, forKey: .uuid)
-        self.folderId = try container.decodeIfPresent(String.self, forKey: .folderID)
+        self.folderId = try container.decodeIfPresent(Int.self, forKey: .folderID)
         self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
         self.filename = try container.decodeIfPresent(String.self, forKey: .filename)
         self.uploadStatus = try container.decodeIfPresent(String.self, forKey: .uploadStatus)
         self.contentType = try container.decodeIfPresent(String.self, forKey: .contentType)
         self.url = try container.decodeIfPresent(String.self, forKey: .url)
         self.size = try container.decodeIfPresent(Int.self, forKey: .size)
-        self.createdAt = try container.decodeIfPresent(Date.self, forKey: .createdAt)
-        self.updatedAt = try container.decodeIfPresent(Date.self, forKey: .updatedAt)
+        self.createdAt = try container.decodeIfPresent(String.self, forKey: .createdAt)
+        self.updatedAt = try container.decodeIfPresent(String.self, forKey: .updatedAt)
         self.unlockAt = try container.decodeIfPresent(String.self, forKey: .unlockAt)
         self.locked = try container.decodeIfPresent(Bool.self, forKey: .locked)
         self.hidden = try container.decodeIfPresent(Bool.self, forKey: .hidden)
@@ -198,4 +198,14 @@ class File: Cacheable {
         case lockedForUser = "locked_for_user"
         case visibilityLevel = "visibility_level"
     }
+}
+
+fileprivate extension DateFormatter {
+    static let apiDateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        return formatter
+    }()
 }

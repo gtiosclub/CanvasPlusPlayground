@@ -46,10 +46,10 @@ class Folder: Cacheable {
     var contextId: Int?
     var contextType: String?
     var parentFolderId: Int?
-    var createdAt: Date?
-    var updatedAt: Date?
-    var lockAt: Date?
-    var unlockAt: Date?
+    var createdAt: String?
+    var updatedAt: String?
+    var lockAt: String?
+    var unlockAt: String?
     var position: Int?
     var locked: Bool?
     var foldersUrl: String?
@@ -62,7 +62,7 @@ class Folder: Cacheable {
     var forSubmissions: Bool?
     var canUpload: Bool?
     
-    required init(from decoder: any Decoder) throws {
+    required init(from decoder: any Decoder)  throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         let id = try container.decode(ServerID.self, forKey: .id)
@@ -75,10 +75,10 @@ class Folder: Cacheable {
         self.contextId = try container.decodeIfPresent(Int.self, forKey: .contextId)
         self.contextType = try container.decodeIfPresent(String.self, forKey: .contextType)
         self.parentFolderId = try container.decodeIfPresent(Int.self, forKey: .parentFolderId)
-        self.createdAt = try container.decodeIfPresent(Date.self, forKey: .createdAt)
-        self.updatedAt = try container.decodeIfPresent(Date.self, forKey: .updatedAt)
-        self.lockAt = try container.decodeIfPresent(Date.self, forKey: .lockAt)
-        self.unlockAt = try container.decodeIfPresent(Date.self, forKey: .unlockAt)
+        self.createdAt = try container.decodeIfPresent(String.self, forKey: .createdAt)
+        self.updatedAt = try container.decodeIfPresent(String.self, forKey: .updatedAt)
+        self.lockAt = try container.decodeIfPresent(String.self, forKey: .lockAt)
+        self.unlockAt = try container.decodeIfPresent(String.self, forKey: .unlockAt)
         self.position = try container.decodeIfPresent(Int.self, forKey: .position)
         self.locked = try container.decodeIfPresent(Bool.self, forKey: .locked)
         self.foldersUrl = try container.decodeIfPresent(String.self, forKey: .foldersUrl)
