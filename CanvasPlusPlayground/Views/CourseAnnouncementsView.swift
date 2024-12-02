@@ -18,17 +18,17 @@ struct CourseAnnouncementsView: View {
     
     var body: some View {
         NavigationStack {
-            List(announcementManager.announcements, id:\.id) { announcment in
+            List(announcementManager.announcements, id:\.id) { announcement in
                 NavigationLink {
-                    CourseAnnouncementDetailView(announcement: announcment)
+                    CourseAnnouncementDetailView(announcement: announcement)
                         .onAppear {
-                            announcment.update(keypath: \.isRead, value: true)
+                            announcement.isRead = true
                         }
                 } label: {
                     HStack {
-                        Text(announcment.title ?? "")
+                        Text(announcement.title ?? "")
                         Spacer()
-                        if !(announcment.isRead ?? false) {
+                        if !(announcement.isRead ?? false) {
                             Circle()
                                 .fill(.tint)
                                 .frame(width: 10, height: 10)

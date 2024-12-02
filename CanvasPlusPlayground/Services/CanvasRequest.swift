@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum CanvasRequest {
+enum CanvasRequest: Hashable {
     static let baseURL = URL(string: "https://gatech.instructure.com/api/v1")
     
     case getCourses(enrollmentState: String, perPage: String = "50")
@@ -20,9 +20,9 @@ enum CanvasRequest {
     case getFoldersForFolder(folderId: String)
     
     case getTabs(courseId: String)
-    
-    case getAnnouncements(courseId: String)
-    
+
+    case getAnnouncements(courseId: String, startDate: Date = .distantPast, endDate: Date = .now, perPage: String = "100")
+  
     case getAssignments(courseId: String)
     
     case getEnrollments
@@ -72,9 +72,12 @@ enum CanvasRequest {
                 ("enrollment_state", enrollment_state),
                 ("per_page", perPage)
             ]
-        case let .getAnnouncements(courseId):
+        case let .getAnnouncements(courseId, startDate, endDate, perPage):
             [
-                ("context_codes[]", "course_\(courseId)")
+                ("context_codes[]", "course_\(courseId)"),
+                ("start_date", startDate.ISO8601Format()),
+                ("end_date", endDate.ISO8601Format()),
+                ("per_page", perPage)
             ]
         case .getEnrollments:
             [
@@ -98,7 +101,7 @@ enum CanvasRequest {
         switch self {
         case let .getCourse(id):
             return id
-        case let .getTabs(courseId), let .getAnnouncements(courseId), let .getAssignments(courseId), let .getPeople(courseId, _), let.getCourseRootFolder(courseId), let .getAllCourseFiles(courseId),  let .getAllCourseFolders(courseId):
+        case let .getTabs(courseId), let .getAnnouncements(courseId, _, _, _), let .getAssignments(courseId), let .getPeople(courseId, _), let.getCourseRootFolder(courseId), let .getAllCourseFiles(courseId),  let .getAllCourseFolders(courseId):
             return courseId
         case let .getFilesForFolder(folderId), let .getFoldersForFolder(folderId):
             return folderId
@@ -147,7 +150,7 @@ enum CanvasRequest {
         case .getEnrollments:
             [Enrollment].self
         case .getPeople:
-            [User].self
+            [Enrollment].self
         }
     }
 }
