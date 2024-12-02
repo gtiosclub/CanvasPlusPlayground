@@ -24,4 +24,8 @@ struct CanvasPlusPlaygroundApp: App {
                 }
         }
     }
+    
+    init() {
+        print(URL.applicationSupportDirectory.path(percentEncoded: false))
+    }
 }
