@@ -121,7 +121,6 @@ class Folder: Cacheable {
         try container.encodeIfPresent(canUpload, forKey: .canUpload)
     }
     
-    @MainActor
     func merge(with other: Folder) {
         self.name = other.name
         self.fullName = other.fullName

@@ -144,7 +144,6 @@ class File: Cacheable {
     }
 
     // MARK: - Merge
-    @MainActor
     func merge(with other: File) {
         self.uuid = other.uuid
         self.folderId = other.folderId
