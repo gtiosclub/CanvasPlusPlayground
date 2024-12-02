@@ -10,9 +10,7 @@ import SwiftUI
 struct CourseListView: View {
     @Environment(CourseManager.self) var courseManager
 
-    
-    @State private var showSheet: Bool = false
-    @StateObject private var navigationModel = NavigationModel()
+    @State private var navigationModel = NavigationModel()
 
     @EnvironmentObject private var intelligenceManager: IntelligenceManager
     @EnvironmentObject private var llmEvaluator: LLMEvaluator
@@ -56,8 +54,7 @@ struct CourseListView: View {
             }
             .interactiveDismissDisabled()
         }
-        .environmentObject(navigationModel)
-        
+        .environment(navigationModel)
         .sheet(isPresented: $navigationModel.showInstallIntelligenceSheet, content: {
             NavigationStack {
                 IntelligenceOnboardingView()

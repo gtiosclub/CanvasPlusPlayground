@@ -8,10 +8,11 @@
 import SwiftUI
 
 struct CourseView: View {
-    @EnvironmentObject private var navigationModel: NavigationModel
+    @Environment(NavigationModel.self) private var navigationModel
     let course: Course
     
     var body: some View {
+        @Bindable var navigationModel = navigationModel
 
         List(selection: $navigationModel.selectedCoursePage) {
             NavigationLink(value: NavigationModel.CoursePage.files) {
