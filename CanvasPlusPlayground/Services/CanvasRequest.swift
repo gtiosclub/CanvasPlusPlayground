@@ -16,8 +16,8 @@ enum CanvasRequest: Hashable {
     case getCourseRootFolder(courseId: String)
     case getAllCourseFiles(courseId: String)
     case getAllCourseFolders(courseId: String)
-    case getFilesForFolder(folderId: String)
-    case getFoldersForFolder(folderId: String)
+    case getFilesInFolder(folderId: String)
+    case getFoldersInFolder(folderId: String)
     
     case getTabs(courseId: String)
 
@@ -42,9 +42,9 @@ enum CanvasRequest: Hashable {
             "courses/\(courseId)/files"
         case let .getAllCourseFolders(courseId):
             "courses/\(courseId)/folders"
-        case let .getFilesForFolder(folderId):
+        case let .getFilesInFolder(folderId):
             "folders/\(folderId)/files"
-        case let .getFoldersForFolder(folderId):
+        case let .getFoldersInFolder(folderId):
             "folders/\(folderId)/folders"
             
         case let .getTabs(courseId):
@@ -103,7 +103,7 @@ enum CanvasRequest: Hashable {
             return id
         case let .getTabs(courseId), let .getAnnouncements(courseId, _, _, _), let .getAssignments(courseId), let .getPeople(courseId, _), let.getCourseRootFolder(courseId), let .getAllCourseFiles(courseId),  let .getAllCourseFolders(courseId):
             return courseId
-        case let .getFilesForFolder(folderId), let .getFoldersForFolder(folderId):
+        case let .getFilesInFolder(folderId), let .getFoldersInFolder(folderId):
             return folderId
         default:
             return nil
@@ -116,7 +116,7 @@ enum CanvasRequest: Hashable {
     
     var isPaginated: Bool {
         switch self {
-        case .getCourses, .getAnnouncements, .getPeople, .getAllCourseFiles, .getAllCourseFolders, .getFilesForFolder, .getFoldersForFolder:
+        case .getCourses, .getAnnouncements, .getPeople, .getAllCourseFiles, .getAllCourseFolders, .getFilesInFolder, .getFoldersInFolder:
             true
         default:
             false
@@ -136,9 +136,9 @@ enum CanvasRequest: Hashable {
             [File].self
         case .getAllCourseFolders:
             [Folder].self
-        case .getFilesForFolder:
+        case .getFilesInFolder:
             [File].self
-        case .getFoldersForFolder:
+        case .getFoldersInFolder:
             [Folder].self
             
         case .getTabs:

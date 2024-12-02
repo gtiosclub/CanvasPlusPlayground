@@ -9,23 +9,31 @@ import SwiftUI
 
 @Observable
 class CourseFileManager {
-    private let courseID: String?
+    private let courseID: String
     var files = [File]()
+    var folders = [Folder]()
 
-    init(courseID: String?) {
+    init(courseID: String) {
         self.courseID = courseID
     }
 
-    func fetchFiles() async {
-        guard let courseID, let (data, _) = try? await CanvasService.shared.fetchResponse(.getAllCourseFiles(courseId: courseID)) else {
-            print("Failed to fetch files.")
+    func fetchRoot() async {
+        guard let rootFolder: Folder = try? await CanvasService.shared.loadAndSync(.getCourseRootFolder(courseId: courseID))[0] else {
+            print("Failed to fetch root folder.")
             return
         }
         
-        do {
-            self.files = try JSONDecoder().decode([File].self, from: data)
-        } catch {
-            print(error)
-        }
+        await fetchContent(in: rootFolder)
+    }
+    
+    func fetchContent(in folder: Folder) async {
+        
+        async let foldersInRootFolder: [Folder] = CanvasService.shared.loadAndSync(.getFoldersInFolder(folderId: folder.id))
+        async let filesInRootFolder: [File] = CanvasService.shared.loadAndSync(.getFilesInFolder(folderId: folder.id))
+        
+        let (folders, files) = await ((try? foldersInRootFolder) ?? [], (try? filesInRootFolder) ?? [])
+        
+        self.folders = folders
+        self.files = files
     }
 }
