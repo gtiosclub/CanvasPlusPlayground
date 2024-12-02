@@ -13,7 +13,7 @@ actor CanvasRepository {
         
     init() {
         self.modelContainer = try! ModelContainer(for:
-            Course.self, Announcement.self, Enrollment.self
+            Course.self, Announcement.self, Enrollment.self, File.self, Folder.self
         ) // TODO: Add cacheable models here
         let context = ModelContext(modelContainer)
         context.autosaveEnabled = true

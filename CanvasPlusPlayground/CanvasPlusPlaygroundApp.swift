@@ -21,4 +21,8 @@ struct CanvasPlusPlaygroundApp: App {
                 .environmentObject(LLMEvaluator())
         }
     }
+    
+    init() {
+        print(URL.applicationSupportDirectory.path(percentEncoded: false))
+    }
 }

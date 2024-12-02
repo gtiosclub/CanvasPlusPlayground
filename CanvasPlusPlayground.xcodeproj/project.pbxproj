@@ -23,6 +23,7 @@
 		9B92A4252C93856100C21CFC /* CourseAnnouncementManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B92A4242C93856100C21CFC /* CourseAnnouncementManager.swift */; };
 		9B9C2E042C93F6CD00E4B16B /* CourseAnnouncementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9C2E032C93F6CD00E4B16B /* CourseAnnouncementsView.swift */; };
 		9B9C2E062C93F94C00E4B16B /* CourseAnnouncementDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9C2E052C93F94C00E4B16B /* CourseAnnouncementDetailView.swift */; };
+		A306ED112CEAC09E00556D1E /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A306ED102CEAC09E00556D1E /* Folder.swift */; };
 		A3269E8E2CD5533F006F7D14 /* CanvasRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3269E8D2CD5533F006F7D14 /* CanvasRepository.swift */; };
 		A3269E902CD57F75006F7D14 /* Cacheable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3269E8F2CD57F75006F7D14 /* Cacheable.swift */; };
 		A3E59D362CF271C000AF91BD /* Predicate+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E59D352CF271C000AF91BD /* Predicate+Extensions.swift */; };
@@ -78,6 +79,7 @@
 		9B92A4242C93856100C21CFC /* CourseAnnouncementManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAnnouncementManager.swift; sourceTree = "<group>"; };
 		9B9C2E032C93F6CD00E4B16B /* CourseAnnouncementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAnnouncementsView.swift; sourceTree = "<group>"; };
 		9B9C2E052C93F94C00E4B16B /* CourseAnnouncementDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAnnouncementDetailView.swift; sourceTree = "<group>"; };
+		A306ED102CEAC09E00556D1E /* Folder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Folder.swift; sourceTree = "<group>"; };
 		A3269E8D2CD5533F006F7D14 /* CanvasRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasRepository.swift; sourceTree = "<group>"; };
 		A3269E8F2CD57F75006F7D14 /* Cacheable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cacheable.swift; sourceTree = "<group>"; };
 		A3E59D352CF271C000AF91BD /* Predicate+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Predicate+Extensions.swift"; sourceTree = "<group>"; };
@@ -182,6 +184,7 @@
 				9B92A4222C93853C00C21CFC /* Announcement.swift */,
 				A3E7F3922C99338B00DC4300 /* Tab.swift */,
 				A3269E8F2CD57F75006F7D14 /* Cacheable.swift */,
+				A306ED102CEAC09E00556D1E /* Folder.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -376,6 +379,7 @@
 				9B6663E32C9853BC0060990E /* AsyncAttributedText.swift in Sources */,
 				B7AD550C2CD4257B00FB09BB /* IntelligenceOnboardingView.swift in Sources */,
 				7F8535742C98DE3C0023E384 /* CourseGradeView.swift in Sources */,
+				A306ED112CEAC09E00556D1E /* Folder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

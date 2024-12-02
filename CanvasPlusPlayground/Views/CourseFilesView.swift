@@ -19,8 +19,12 @@ struct CourseFilesView: View {
     var body: some View {
         NavigationStack {
             List(fileManager.files, id: \.id) { file in
-                NavigationLink(destination: CoursePDFView(url: URL(string: file.url)!)) {
-                        Text(file.displayName)
+                if let url = file.url, let url = URL(string: url)  {
+                    NavigationLink(destination: CoursePDFView(url: url)) {
+                        Text(file.displayName ?? "Couldn't find file name.")
+                    }
+                } else {
+                    Text("File not available")
                 }
             }
             .task {
