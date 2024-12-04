@@ -23,7 +23,7 @@ final class Announcement: Cacheable {
     var summary: String?
 
     weak var course: Course?
-    var parentId: String?
+    var parentId: String
     
     
     required init(from decoder: Decoder) throws {
@@ -32,7 +32,7 @@ final class Announcement: Cacheable {
         let id = try container.decode(ServerID.self, forKey: .id)
         self.id = String(describing: id)
         
-        self.parentId = try container.decodeIfPresent(String.self, forKey: .parentId)
+        self.parentId = try container.decodeIfPresent(String.self, forKey: .parentId) ?? ""
         
         self.title = try container.decodeIfPresent(String.self, forKey: .title)
         self.createdAt = try container.decodeIfPresent(Date.self, forKey: .createdAt)

@@ -39,7 +39,7 @@ class Folder: Cacheable {
     typealias ServerID = Int
     
     @Attribute(.unique) var id: String
-    var parentId: String?
+    var parentId: String
     
     var name: String?
     var fullName: String?
@@ -68,7 +68,7 @@ class Folder: Cacheable {
         let id = try container.decode(ServerID.self, forKey: .id)
         self.id =  String(describing: id)
         
-        self.parentId = try container.decodeIfPresent(String.self, forKey: .parentId)
+        self.parentId = try container.decodeIfPresent(String.self, forKey: .parentId) ?? ""
         
         self.name = try container.decodeIfPresent(String.self, forKey: .name)
         self.fullName = try container.decodeIfPresent(String.self, forKey: .fullName)

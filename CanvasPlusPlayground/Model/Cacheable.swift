@@ -11,7 +11,7 @@ import Foundation
 protocol Cacheable: Codable, PersistentModel {
     associatedtype ServerID: Hashable
     var id: String { get }
-    var parentId: String? { get set }    
+    var parentId: String { get set }    
     
     
     func merge(with other: Self)
