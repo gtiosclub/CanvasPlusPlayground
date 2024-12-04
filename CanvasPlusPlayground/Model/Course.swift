@@ -129,7 +129,7 @@ final class Course: Cacheable {
     
     // MARK: IDs
     @Attribute(.unique) let id: String
-    var parentId: String?
+    var parentId: String
     
     // MARK: Relationships
     //@Relationship(deleteRule: .nullify, inverse: \Announcement.course) var announcements: [Announcement]?
@@ -253,7 +253,7 @@ final class Course: Cacheable {
         let id = try container.decode(ServerID.self, forKey: .id)
         self.id =  String(describing: id)
         
-        self.parentId = try container.decodeIfPresent(String.self, forKey: .parentId)
+        self.parentId = try container.decodeIfPresent(String.self, forKey: .parentId) ?? ""
         
         self.sisCourseID = try container.decodeIfPresent(String.self, forKey: .sisCourseID)
         self.uuid = try container.decodeIfPresent(String.self, forKey: .uuid)

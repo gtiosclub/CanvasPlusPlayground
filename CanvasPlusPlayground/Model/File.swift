@@ -52,7 +52,7 @@ class File: Cacheable {
 
     // MARK: - Attributes
     @Attribute(.unique) var id: String
-    var parentId: String?
+    var parentId: String
     
     var uuid: String?
     var folderId: Int?
@@ -84,7 +84,7 @@ class File: Cacheable {
         let id = try container.decode(ServerID.self, forKey: .id)
         self.id =  String(describing: id)
         
-        self.parentId = try container.decodeIfPresent(String.self, forKey: .parentId)
+        self.parentId = try container.decodeIfPresent(String.self, forKey: .parentId) ?? ""
         
         // Decode remaining properties
         self.uuid = try container.decodeIfPresent(String.self, forKey: .uuid)

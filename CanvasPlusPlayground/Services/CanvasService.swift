@@ -109,19 +109,22 @@ struct CanvasService {
             for (i, latestModel) in latest.enumerated() {
                 if let matchedCached = cacheLookup[latestModel.id] {
                     await repository.merge(other: latestModel, into: matchedCached)
-                    //await matchedCached.merge(with: latestModel)
                     latest[i] = matchedCached
                 } else {
                     await repository.insert(latestModel)
                 }
             }
             
-            // Store the request / parent id in each model so that we can recall all models for that parent
-            if let id = request.id {
+            
+            let writeKeyPath = request.writableIdKeypath() as ReferenceWritableKeyPath<T, String>?
+            if let writeKeyPath {
+                // Store the request / parent id in each model so that we can recall all models when repeating a request
                 for model in latest {
-                    await model.update(keypath: \.parentId, value: id)
+                    await model.update(keypath: writeKeyPath, value: request.id)
                 }
             }
+            
+            
             
             return latest
         }
@@ -138,7 +141,7 @@ struct CanvasService {
                     onNewBatch(transformed)
                 })
             } else {
-                fetched = [try await fetch(request)]
+                fetched = await updateStorage( [try await fetch(request)] )
             }
             
             let filtered = (try? filterByDescriptor(descriptor, models: fetched)) ?? fetched
@@ -344,27 +347,3 @@ struct CanvasService {
         completedRequests.contains(request)
     }
 }
-
-private extension CanvasRequest {
-    /// If the request is for a single model, it returns a filter that checks for the model's id. If the request is for multiple models, it filters based on the model's parent ids.
-    func cacheFilter<M: Cacheable>() -> Predicate<M> {
-        let expectedM = self.associatedModel
-        guard let id = self.id else { return #Predicate<M> { _ in true } }
-        
-        let predicate: Predicate<M>
-        if (expectedM is any Cacheable.Type) {
-            // model.id = self.id
-            let condition = LookupCondition<M, String>.equals(keypath: \M.id, value: id)
-            return condition.expression()
-        } else if let _ = expectedM as? any Collection<M>.Type {
-            //model.parentId == self.id
-            let condition = LookupCondition<M, String?>.equals(keypath: \M.parentId, value: id)
-            return condition.expression()
-        } else {
-            predicate = #Predicate<M> { _ in false }
-        }
-        
-        return predicate
-    }
-}
-

@@ -59,7 +59,7 @@ final class Enrollment: Cacheable {
     var currentPeriodUnpostedFinalGrade: String?
 
     // MARK: Cacheable
-    var parentId: String?
+    var parentId: String
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -159,7 +159,7 @@ final class Enrollment: Cacheable {
         self.currentPeriodUnpostedCurrentGrade = try container.decodeIfPresent(String.self, forKey: .currentPeriodUnpostedCurrentGrade)
         self.currentPeriodUnpostedFinalGrade = try container.decodeIfPresent(String.self, forKey: .currentPeriodUnpostedFinalGrade)
         self.parentId = try container
-            .decodeIfPresent(String.self, forKey: .parentID)
+            .decodeIfPresent(String.self, forKey: .parentID) ?? ""
     }
 
     func encode(to encoder: any Encoder) throws {

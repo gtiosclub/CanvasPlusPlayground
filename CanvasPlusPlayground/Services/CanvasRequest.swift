@@ -25,7 +25,6 @@ enum CanvasRequest: Hashable {
   
     case getAssignments(courseId: String)
     
-    case getEnrollments
     case getPeople(courseId: String, perPage: String = "100")
     
     var path: String {
@@ -56,8 +55,6 @@ enum CanvasRequest: Hashable {
         case let .getAssignments(courseId):
             "courses/\(courseId)/assignments"
             
-        case .getEnrollments:
-            "users/self/enrollments"
         case let .getPeople(courseId, _):
             "courses/\(courseId)/enrollments"
         }
@@ -79,10 +76,6 @@ enum CanvasRequest: Hashable {
                 ("end_date", endDate.ISO8601Format()),
                 ("per_page", perPage)
             ]
-        case .getEnrollments:
-            [
-                ("state[]", "active"),
-            ]
         case let .getPeople(_, perPage):
             [
                 ("per_page", perPage)
@@ -97,16 +90,18 @@ enum CanvasRequest: Hashable {
     }
     
     /// The id that most uniquely identifies the request (if any), e.g. getCourses -> nil, getCourse -> courseId, getAnnouncements -> courseId, getAnnouncement -> announcementId
-    var id: String? {
+    var id: String {
         switch self {
         case let .getCourse(id):
             return id
-        case let .getTabs(courseId), let .getAnnouncements(courseId, _, _, _), let .getAssignments(courseId), let .getPeople(courseId, _), let.getCourseRootFolder(courseId), let .getAllCourseFiles(courseId),  let .getAllCourseFolders(courseId):
+        case let .getTabs(courseId), let .getAnnouncements(courseId, _, _, _), let .getAssignments(courseId), let .getPeople(courseId, _), let .getAllCourseFiles(courseId),  let .getAllCourseFolders(courseId):
             return courseId
+        case let.getCourseRootFolder(courseId):
+            return "\(courseId)_root"
         case let .getFilesInFolder(folderId), let .getFoldersInFolder(folderId):
             return folderId
-        default:
-            return nil
+        case .getCourses:
+            return "courses_\(StorageKeys.accessTokenValue)" // In case user changes
         }
     }
     
@@ -147,8 +142,6 @@ enum CanvasRequest: Hashable {
             [Announcement].self
         case .getAssignments:
             [Assignment].self
-        case .getEnrollments:
-            [Enrollment].self
         case .getPeople:
             [Enrollment].self
         }
