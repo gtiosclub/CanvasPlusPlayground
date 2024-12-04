@@ -20,7 +20,6 @@ class CourseFileManager {
     func fetchRoot() async {
         
         if let persistedRootFolder: Folder = try? await CanvasService.shared.load(.getCourseRootFolder(courseId: courseID))?.first {
-            print(persistedRootFolder.parentId)
             await fetchContent(in: persistedRootFolder)
         } else if let rootFolder: Folder = try? await CanvasService.shared.syncWithAPI(.getCourseRootFolder(courseId: courseID)).first {
             await fetchContent(in: rootFolder)
