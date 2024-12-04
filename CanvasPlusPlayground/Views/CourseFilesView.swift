@@ -48,19 +48,6 @@ struct CourseFilesView: View {
             }
             .navigationTitle("Files")
             
-            /*List(fileManager.files, id: \.id) { file in
-                if let url = file.url, let url = URL(string: url)  {
-                    NavigationLink(destination: CoursePDFView(url: url)) {
-                        Text(file.displayName ?? "Couldn't find file name.")
-                    }
-                } else {
-                    Text("File not available")
-                }
-            }
-            .task {
-                await fileManager.fetchRoot()
-            }
-            .navigationTitle("Files")*/
         }
     }
 }
