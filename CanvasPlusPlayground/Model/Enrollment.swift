@@ -10,6 +10,7 @@ import SwiftData
 
 @Model
 final class Enrollment: Cacheable {
+    typealias ID = String
     typealias ServerID = Int
 
     @Attribute(.unique)
