@@ -22,19 +22,16 @@ struct CourseFilesView: View {
         NavigationStack {
             
             List {
-                ForEach(fileManager.files, id: \.id) { file in
-                    if let url = file.url, let url = URL(string: url)  {
-                        NavigationLink(destination: CoursePDFView(url: url)) {
-                            Text(file.displayName ?? "Couldn't find file name.")
-                        }
-                    } else {
-                        Text("File not available")
+                Section("Files") {
+                    ForEach(fileManager.displayedFiles, id: \.id) { file in
+                        FileRow(for: file)
                     }
                 }
+            
                 
-                ForEach(fileManager.folders, id: \.id) { subFolder in
-                    NavigationLink(destination: CourseFilesView(course: course, folder: subFolder)) {
-                        Text(subFolder.name ?? "Couldn't find folder name.")
+                Section("Folders") {
+                    ForEach(fileManager.displayedFolders, id: \.id) { subFolder in
+                        FolderRow(for: subFolder)
                     }
                 }
                 
@@ -47,7 +44,25 @@ struct CourseFilesView: View {
                 }
             }
             .navigationTitle("Files")
-            
+
+        }
+    }
+    
+    @ViewBuilder
+    func FileRow(for file: File) -> some View {
+        if let url = file.url, let url = URL(string: url)  {
+            NavigationLink(destination: CoursePDFView(url: url)) {
+                Label(file.displayName ?? "Couldn't find file name.", systemImage: "document")
+            }
+        } else {
+            Label("File not available.", systemImage: "document")
+        }
+    }
+    
+    @ViewBuilder
+    func FolderRow(for subFolder: Folder) -> some View {
+        NavigationLink(destination: CourseFilesView(course: course, folder: subFolder)) {
+            Label(subFolder.name ?? "Couldn't find folder name.", systemImage: "folder")
         }
     }
 }

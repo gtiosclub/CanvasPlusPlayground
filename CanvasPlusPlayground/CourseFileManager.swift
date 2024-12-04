@@ -12,6 +12,17 @@ class CourseFileManager {
     private let courseID: String
     var files = [File]()
     var folders = [Folder]()
+    
+    var displayedFiles: [File] {
+        files.sorted {
+            $0.displayName ?? "" < $1.displayName ?? ""
+        }
+    }
+    var displayedFolders: [Folder] {
+        folders.sorted {
+            $0.name ?? "" < $1.name ?? ""
+        }
+    }
 
     init(courseID: String) {
         self.courseID = courseID
