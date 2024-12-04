@@ -10,6 +10,7 @@ import Foundation
 
 @Model
 final class Announcement: Cacheable {
+    typealias ID = String
     typealias ServerID = Int
     
     @Attribute(.unique) let id: String
