@@ -135,28 +135,186 @@
 		9B350F062C9652A8003FC60D /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				B7926D172CE962C200BFFBE1 /* ColorPickerWithoutLabel.swift */,
-				B7926D152CE95CE900BFFBE1 /* RGBColors.swift */,
-				B7A26EE82CCB62A00084704A /* NavigationModel.swift */,
-				9B350F072C9652C6003FC60D /* NSAttributedString+HTML.swift */,
-				3DAE84FF2C9A0E4F008C22E7 /* PDFViewHelper.swift */,
-				A3FFD03B2CDED67C006BAB51 /* String+Int.swift */,
-				A3E59D352CF271C000AF91BD /* Predicate+Extensions.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		A3E7F3872C954DDF00DC4300 /* Services */ = {
+		A324BA502D07963D005F53FA /* Features */ = {
 			isa = PBXGroup;
 			children = (
-				A3E7F3882C954E0500DC4300 /* CanvasRequest.swift */,
-				A300E2A12D0000DF00AA7D07 /* CanvasRequest+Service.swift */,
-				A3E7F38A2C9555B200DC4300 /* CanvasService.swift */,
-				A3269E8D2CD5533F006F7D14 /* CanvasRepository.swift */,
+				A324BA5F2D0798A1005F53FA /* Grades */,
+				A324BA5E2D079899005F53FA /* Calendar */,
+				A324BA5C2D0797D1005F53FA /* Tabs */,
+				A324BA5B2D0797B6005F53FA /* People */,
+				A324BA5A2D0797A2005F53FA /* Assignments */,
+				A324BA592D079781005F53FA /* Onboarding */,
+				A324BA532D079685005F53FA /* Files */,
+				A324BA522D079666005F53FA /* Courses */,
+				A324BA512D079646005F53FA /* Announcements */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		A324BA512D079646005F53FA /* Announcements */ = {
+			isa = PBXGroup;
+			children = (
+				9B92A4242C93856100C21CFC /* CourseAnnouncementManager.swift */,
+				9B6663E22C9853BC0060990E /* AsyncAttributedText.swift */,
+				9B9C2E052C93F94C00E4B16B /* CourseAnnouncementDetailView.swift */,
+				9B9C2E032C93F6CD00E4B16B /* CourseAnnouncementsView.swift */,
+			);
+			path = Announcements;
+			sourceTree = "<group>";
+		};
+		A324BA522D079666005F53FA /* Courses */ = {
+			isa = PBXGroup;
+			children = (
+				B76454F52C8DF61B002DF00E /* CourseListView.swift */,
+				B76454F62C8DF61B002DF00E /* CourseView.swift */,
+				B76454FC2C8DF61B002DF00E /* CourseManager.swift */,
+				B7A26EE82CCB62A00084704A /* NavigationModel.swift */,
+			);
+			path = Courses;
+			sourceTree = "<group>";
+		};
+		A324BA532D079685005F53FA /* Files */ = {
+			isa = PBXGroup;
+			children = (
+				B76454FB2C8DF61B002DF00E /* CourseFileManager.swift */,
+				B76454F42C8DF61B002DF00E /* CourseFilesView.swift */,
+				3DAE84FD2C9A0CE8008C22E7 /* CoursePDFView.swift */,
+			);
+			path = Files;
+			sourceTree = "<group>";
+		};
+		A324BA542D0796B8005F53FA /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				A324BA582D079730005F53FA /* Storage */,
+				A324BA572D0796F6005F53FA /* Network */,
+				A324BA562D0796C3005F53FA /* Components */,
+				A324BA552D0796BE005F53FA /* Utilities */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		A324BA552D0796BE005F53FA /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				A3FFD03B2CDED67C006BAB51 /* String+Int.swift */,
+				B7926D152CE95CE900BFFBE1 /* RGBColors.swift */,
+				A3E59D352CF271C000AF91BD /* Predicate+Extensions.swift */,
+				9B350F072C9652C6003FC60D /* NSAttributedString+HTML.swift */,
 				A3FFD0392CDEC2AC006BAB51 /* LookupCondition.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		A324BA562D0796C3005F53FA /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				B7926D172CE962C200BFFBE1 /* ColorPickerWithoutLabel.swift */,
+				3DAE84FF2C9A0E4F008C22E7 /* PDFViewHelper.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		A324BA572D0796F6005F53FA /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				A300E2A12D0000DF00AA7D07 /* CanvasRequest+Service.swift */,
+				A3E7F3882C954E0500DC4300 /* CanvasRequest.swift */,
+				A3E7F38A2C9555B200DC4300 /* CanvasService.swift */,
 				A3FFD03D2CE0065A006BAB51 /* NetworkError.swift */,
 			);
-			path = Services;
+			path = Network;
+			sourceTree = "<group>";
+		};
+		A324BA582D079730005F53FA /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				A3269E8D2CD5533F006F7D14 /* CanvasRepository.swift */,
+				A3269E8F2CD57F75006F7D14 /* Cacheable.swift */,
+				B76454F02C8DF61B002DF00E /* StorageKeys.swift */,
+			);
+			path = Storage;
+			sourceTree = "<group>";
+		};
+		A324BA592D079781005F53FA /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				B7AD550B2CD4257400FB09BB /* IntelligenceOnboardingView.swift */,
+				B76454F72C8DF61B002DF00E /* SetupView.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		A324BA5A2D0797A2005F53FA /* Assignments */ = {
+			isa = PBXGroup;
+			children = (
+				192EC04B2C963EE600AF8528 /* CourseAssignmentView.swift */,
+				9B69FA4A2CC2CC7F006101F3 /* AggregatedAssignmentsView.swift */,
+				9B69FA4E2CC2CCCF006101F3 /* AggregatedAssignmentsViewCell.swift */,
+				192EC0472C963ACB00AF8528 /* CourseAssignmentManager.swift */,
+				9B69FA4C2CC2CCB1006101F3 /* AggregatedAssignmentsViewModel.swift */,
+			);
+			path = Assignments;
+			sourceTree = "<group>";
+		};
+		A324BA5B2D0797B6005F53FA /* People */ = {
+			isa = PBXGroup;
+			children = (
+				B53D95A12CA0A22A00647EE9 /* PeopleView.swift */,
+				B533C0BD2CADDDE700A74AF6 /* PeopleCommonView.swift */,
+				B53D959F2CA0952F00647EE9 /* PeopleManager.swift */,
+			);
+			path = People;
+			sourceTree = "<group>";
+		};
+		A324BA5C2D0797D1005F53FA /* Tabs */ = {
+			isa = PBXGroup;
+			children = (
+				A3E7F38E2C96C1CE00DC4300 /* CourseTabsView.swift */,
+				A3E7F3902C99317100DC4300 /* CourseTabsManager.swift */,
+			);
+			path = Tabs;
+			sourceTree = "<group>";
+		};
+		A324BA5D2D079816005F53FA /* Persistable */ = {
+			isa = PBXGroup;
+			children = (
+				B76454ED2C8DF61B002DF00E /* Course.swift */,
+				B76454EE2C8DF61B002DF00E /* Enrollment.swift */,
+				B76454EF2C8DF61B002DF00E /* File.swift */,
+				9B92A4222C93853C00C21CFC /* Announcement.swift */,
+				A306ED102CEAC09E00556D1E /* Folder.swift */,
+			);
+			path = Persistable;
+			sourceTree = "<group>";
+		};
+		A324BA5E2D079899005F53FA /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				95BA93472C9CE20D00137A91 /* CalendarView.swift */,
+			);
+			path = Calendar;
+			sourceTree = "<group>";
+		};
+		A324BA5F2D0798A1005F53FA /* Grades */ = {
+			isa = PBXGroup;
+			children = (
+				7F8535732C98DE3C0023E384 /* CourseGradeView.swift */,
+			);
+			path = Grades;
+			sourceTree = "<group>";
+		};
+		A324BA602D079927005F53FA /* Plain */ = {
+			isa = PBXGroup;
+			children = (
+				192EC0492C963B9000AF8528 /* Assignment.swift */,
+				A3E7F3922C99338B00DC4300 /* Tab.swift */,
+			);
+			path = Plain;
 			sourceTree = "<group>";
 		};
 		B764545B2C8BBC7F002DF00E = {
@@ -175,21 +333,13 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		B76454F12C8DF61B002DF00E /* Model */ = {
+		B76454F12C8DF61B002DF00E /* Schema */ = {
 			isa = PBXGroup;
 			children = (
-				B7AD54EE2CD41D5200FB09BB /* Intelligence */,
-				B76454ED2C8DF61B002DF00E /* Course.swift */,
-				B76454EE2C8DF61B002DF00E /* Enrollment.swift */,
-				B76454EF2C8DF61B002DF00E /* File.swift */,
-				192EC0492C963B9000AF8528 /* Assignment.swift */,
-				B76454F02C8DF61B002DF00E /* StorageKeys.swift */,
-				9B92A4222C93853C00C21CFC /* Announcement.swift */,
-				A3E7F3922C99338B00DC4300 /* Tab.swift */,
-				A3269E8F2CD57F75006F7D14 /* Cacheable.swift */,
-				A306ED102CEAC09E00556D1E /* Folder.swift */,
+				A324BA602D079927005F53FA /* Plain */,
+				A324BA5D2D079816005F53FA /* Persistable */,
 			);
-			path = Model;
+			path = Schema;
 			sourceTree = "<group>";
 		};
 		B76454F32C8DF61B002DF00E /* Preview Content */ = {
@@ -200,47 +350,17 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		B76454F82C8DF61B002DF00E /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				B7AD550B2CD4257400FB09BB /* IntelligenceOnboardingView.swift */,
-				3DAE84FD2C9A0CE8008C22E7 /* CoursePDFView.swift */,
-				B76454F42C8DF61B002DF00E /* CourseFilesView.swift */,
-				9B6663E22C9853BC0060990E /* AsyncAttributedText.swift */,
-				192EC04B2C963EE600AF8528 /* CourseAssignmentView.swift */,
-				95BA93472C9CE20D00137A91 /* CalendarView.swift */,
-				A3E7F38E2C96C1CE00DC4300 /* CourseTabsView.swift */,
-				B76454F52C8DF61B002DF00E /* CourseListView.swift */,
-				B76454F62C8DF61B002DF00E /* CourseView.swift */,
-				B53D95A12CA0A22A00647EE9 /* PeopleView.swift */,
-				B533C0BD2CADDDE700A74AF6 /* PeopleCommonView.swift */,
-				9B9C2E032C93F6CD00E4B16B /* CourseAnnouncementsView.swift */,
-				9B9C2E052C93F94C00E4B16B /* CourseAnnouncementDetailView.swift */,
-				B76454F72C8DF61B002DF00E /* SetupView.swift */,
-				7F8535732C98DE3C0023E384 /* CourseGradeView.swift */,
-				9B69FA4A2CC2CC7F006101F3 /* AggregatedAssignmentsView.swift */,
-				9B69FA4E2CC2CCCF006101F3 /* AggregatedAssignmentsViewCell.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
 		B76454FD2C8DF61B002DF00E /* CanvasPlusPlayground */ = {
 			isa = PBXGroup;
 			children = (
+				A324BA542D0796B8005F53FA /* Common */,
+				A324BA502D07963D005F53FA /* Features */,
 				9B350F062C9652A8003FC60D /* Helpers */,
-				A3E7F3872C954DDF00DC4300 /* Services */,
-				B76454F12C8DF61B002DF00E /* Model */,
+				B76454F12C8DF61B002DF00E /* Schema */,
 				B76454F32C8DF61B002DF00E /* Preview Content */,
-				B76454F82C8DF61B002DF00E /* Views */,
+				B7AD54EE2CD41D5200FB09BB /* Intelligence */,
 				B76454F92C8DF61B002DF00E /* Assets.xcassets */,
 				B76454FA2C8DF61B002DF00E /* CanvasPlusPlaygroundApp.swift */,
-				9B92A4242C93856100C21CFC /* CourseAnnouncementManager.swift */,
-				B76454FB2C8DF61B002DF00E /* CourseFileManager.swift */,
-				B53D959F2CA0952F00647EE9 /* PeopleManager.swift */,
-				192EC0472C963ACB00AF8528 /* CourseAssignmentManager.swift */,
-				A3E7F3902C99317100DC4300 /* CourseTabsManager.swift */,
-				B76454FC2C8DF61B002DF00E /* CourseManager.swift */,
-				9B69FA4C2CC2CCB1006101F3 /* AggregatedAssignmentsViewModel.swift */,
 			);
 			path = CanvasPlusPlayground;
 			sourceTree = "<group>";
