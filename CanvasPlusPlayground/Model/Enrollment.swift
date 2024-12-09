@@ -62,6 +62,11 @@ final class Enrollment: Cacheable {
     // MARK: Cacheable
     var parentId: String
 
+    // MARK: Custom Properties
+    var displayRole: String? {
+        role?.replacingOccurrences(of: "Enrollment", with: "")
+    }
+
     enum CodingKeys: String, CodingKey {
         case id
         case courseID = "course_id"
@@ -281,6 +286,7 @@ struct User: Codable, Equatable, Hashable {
     let name: String?
     let sortableName: String?
     let shortName: String?
+    var role: String?
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -288,7 +294,7 @@ struct User: Codable, Equatable, Hashable {
         case sortableName = "sortable_name"
         case shortName = "short_name"
     }
-    
+
     static func == (lhs: User, rhs: User) -> Bool {
         lhs.id == rhs.id
     }
