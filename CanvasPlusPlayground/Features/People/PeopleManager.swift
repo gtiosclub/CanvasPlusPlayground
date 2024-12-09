@@ -17,13 +17,13 @@ class PeopleManager {
     var users: [User] {
         let usersAndRoles: [(User, String?)] = enrollments.compactMap {
             guard let user = $0.user else { return nil }
-            return (user, $0.role)
+            return (user, $0.displayRole)
         }
 
         let mergedUsers = Set(
             usersAndRoles.map {
                 var user = $0.0
-                user.setRole($0.1)
+                user.role = $0.1
                 return user
             }
         )
