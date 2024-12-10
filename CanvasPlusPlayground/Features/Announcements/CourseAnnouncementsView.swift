@@ -21,20 +21,10 @@ struct CourseAnnouncementsView: View {
             List(announcementManager.announcements, id:\.id) { announcement in
                 NavigationLink {
                     CourseAnnouncementDetailView(announcement: announcement)
-                        .onAppear {
-                            announcement.isRead = true
-                        }
                 } label: {
-                    HStack {
-                        Text(announcement.title ?? "")
-                        Spacer()
-                        if !(announcement.isRead ?? false) {
-                            Circle()
-                                .fill(.tint)
-                                .frame(width: 10, height: 10)
-                        }
-                    }
+                    AnnouncementRow(announcement: announcement)
                 }
+                .tint(course.rgbColors?.color)
             }
             .overlay {
                 if (announcementManager.announcements.count == 0) {
@@ -52,3 +42,56 @@ struct CourseAnnouncementsView: View {
     }
 }
 
+private struct AnnouncementRow: View {
+    let announcement: Announcement
+
+    var body: some View {
+        VStack(alignment: .leading) {
+            header
+            detail
+        }
+    }
+
+    private var header: some View {
+        HStack {
+            if !(announcement.isRead ?? false) {
+                Circle()
+                    .fill(.tint)
+                    .frame(width: unreadIndicatorWidth, height: unreadIndicatorWidth)
+            } else {
+                Spacer().frame(width: unreadIndicatorWidth)
+            }
+
+            Text(announcement.title ?? "")
+
+            Spacer()
+
+            if let createdAt = announcement.createdAt {
+                Text(createdAt.formatted(.relative(presentation: .named)))
+                    .foregroundStyle(.secondary)
+            }
+        }
+    }
+
+    private var detail: some View {
+        HStack {
+            Spacer().frame(width: unreadIndicatorWidth)
+
+            Group {
+                if let summary = announcement.summary {
+                    Text(Image(systemName: "wand.and.sparkles")) + Text(summary)
+                } else {
+                    AsyncAttributedText(
+                        htmlText: announcement.message ?? "",
+                        textOnly: true
+                    )
+                }
+            }
+            .lineLimit(2)
+            .foregroundStyle(.secondary)
+            .controlSize(.small)
+        }
+    }
+
+    private let unreadIndicatorWidth: CGFloat = 10
+}

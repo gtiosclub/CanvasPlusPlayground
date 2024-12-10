@@ -9,12 +9,17 @@ import SwiftUI
 
 struct AsyncAttributedText: View {
     let htmlText: String
+    var textOnly: Bool = false
     @State var announcementText: NSAttributedString? = nil
 
     var body: some View {
         Group {
             if let announcementText {
-                Text(AttributedString(announcementText))
+                if textOnly {
+                    Text(announcementText.string.trimmingCharacters(in: .newlines))
+                } else {
+                    Text(AttributedString(announcementText))
+                }
             } else {
                 ProgressView()
             }

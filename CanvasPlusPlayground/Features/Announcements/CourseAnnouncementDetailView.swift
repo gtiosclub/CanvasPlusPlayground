@@ -70,6 +70,9 @@ struct CourseAnnouncementDetailView: View {
             }
         }
         .formStyle(.grouped)
+        .onAppear {
+            announcement.isRead = true
+        }
     }
 
     private var summarySection: some View {
