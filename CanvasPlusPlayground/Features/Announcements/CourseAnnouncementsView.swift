@@ -22,7 +22,7 @@ struct CourseAnnouncementsView: View {
                 NavigationLink {
                     CourseAnnouncementDetailView(announcement: announcement)
                 } label: {
-                    AnnouncementRow(announcement: announcement)
+                    AnnouncementRow(course: course, announcement: announcement)
                 }
                 .tint(course.rgbColors?.color)
             }
@@ -42,6 +42,7 @@ struct CourseAnnouncementsView: View {
 }
 
 private struct AnnouncementRow: View {
+    let course: Course
     let announcement: Announcement
 
     var body: some View {
@@ -83,7 +84,12 @@ private struct AnnouncementRow: View {
 
             Group {
                 if let summary = announcement.summary {
-                    Text(Image(systemName: "wand.and.sparkles")) + Text(summary)
+                    Text(Image(systemName: "wand.and.sparkles"))
+                        .foregroundStyle(
+                            course.rgbColors?.color ?? .accentColor
+                        )
+                    +
+                    Text(summary)
                 } else {
                     AsyncAttributedText(
                         announcement: announcement,
@@ -110,7 +116,7 @@ extension HorizontalAlignment {
         }
     }
 
-    static let announcementRowAlignment = HorizontalAlignment(
+    fileprivate static let announcementRowAlignment = HorizontalAlignment(
         AnnouncementRowAlignment.self
     )
 }
