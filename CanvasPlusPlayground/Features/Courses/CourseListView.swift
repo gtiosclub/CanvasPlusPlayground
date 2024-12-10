@@ -145,6 +145,15 @@ struct CourseListView: View {
                     CanvasService.shared.clearStorage()
                 }
             }
+            
+            ToolbarItem(placement: .cancellationAction) {
+                Button("Delete all files.", systemImage: "folder.badge.minus") {
+                    guard let _ = try? CourseFileService.clearAllFiles() else {
+                        print("Clearing failed")
+                        return
+                    }
+                }
+            }
         }
     }
 

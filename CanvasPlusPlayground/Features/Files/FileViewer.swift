@@ -38,9 +38,9 @@ struct FileViewer: View {
                     CoursePDFView(source: .data(content)) // TODO: Modify PDF viewer to take data
                 }
             } else if content != nil {
-                ContentUnavailableView("Preview not supported for this file.", image: "x.fill")
+                ContentUnavailableView("Preview not supported for this file.", systemImage: "xmark.rectangle.fill")
             } else {
-                ContentUnavailableView("Unable to download file.", image: "x.fill")
+                ContentUnavailableView("Unable to download file.", systemImage: "xmark.rectangle.fill")
             }
         }.task {
             do {
@@ -49,7 +49,8 @@ struct FileViewer: View {
                     course: course,
                     foldersPath: courseFileVM.traversedFolderIDs,
                     localCopyReceived: { self.content = $0 },
-                    remoteFileReceived: { self.content = $0 })
+                    remoteFileReceived: { self.content = $0 }
+                )
             } catch {
                 print("Error fetching file content: \(error)")
             }
