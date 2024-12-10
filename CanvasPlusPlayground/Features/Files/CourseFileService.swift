@@ -23,11 +23,13 @@ struct CourseFileService {
         file: File,
         content: Data
     ) throws -> URL {
-        guard FileType.isSupported(file) else {
+        weak var file = file
+        
+        guard let file, FileType.isSupported(file) else {
             throw FileError.unsuppportedFileType
         }
         
-        var pathURL = self.pathWithFolders(foldersPath: folderIds, courseId: courseId, fileId: file.id)
+        let pathURL = self.pathWithFolders(foldersPath: folderIds, courseId: courseId, fileId: file.id)
                 
         try fileManager.createDirectory(
             at: pathURL,
@@ -53,11 +55,11 @@ struct CourseFileService {
         if let urlStr = file.url, let url = URL(string: urlStr)  {
             print("File doesn't exist! Downloading ...")
             
-            self.downloadFile(from: url) { localURL in
+            self.downloadFile(from: url) { [weak file] localURL in
                 if let localURL, let content = try? Data(contentsOf: localURL) {
                     remoteFileReceived(content)
                     
-                    if let url = try? self.saveCourseFile(courseId: course.id, folderIds: foldersPath, file: file, content: content) {
+                    if let file, let url = try? self.saveCourseFile(courseId: course.id, folderIds: foldersPath, file: file, content: content) {
                         print("File successfully saved at \(url.path())")
                     } else {
                         print("Failed to save file at \(url.path())")

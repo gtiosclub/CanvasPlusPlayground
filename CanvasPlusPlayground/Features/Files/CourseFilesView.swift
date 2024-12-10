@@ -64,8 +64,8 @@ struct CourseFilesView: View {
     
     @ViewBuilder
     func FileRow(for file: File) -> some View {
-        if let url = file.url, let url = URL(string: url)  {
-            NavigationLink(destination: CoursePDFView(url: url)) {
+        if file.url != nil  {
+            NavigationLink(destination: destination(for: file)) {
                 Label(file.displayName ?? "Couldn't find file name.", systemImage: "document")
             }
         } else {

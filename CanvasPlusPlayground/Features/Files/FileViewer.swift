@@ -35,12 +35,12 @@ struct FileViewer: View {
                 case .docx:
                     EmptyView()
                 case .pdf:
-                    EmptyView() // TODO: Modify PDF viewer to take data
+                    CoursePDFView(source: .data(content)) // TODO: Modify PDF viewer to take data
                 }
-            } else if let content {
-                ContentUnavailableView("Preview not supported for this file.", image: "doc.badge.xmark")
+            } else if content != nil {
+                ContentUnavailableView("Preview not supported for this file.", image: "x.fill")
             } else {
-                ContentUnavailableView("Unable to download file.", image: "doc.fill.badge.exclamationmark")
+                ContentUnavailableView("Unable to download file.", image: "x.fill")
             }
         }.task {
             do {
