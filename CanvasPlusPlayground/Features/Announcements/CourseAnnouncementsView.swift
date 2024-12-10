@@ -28,7 +28,7 @@ struct CourseAnnouncementsView: View {
             }
             .overlay {
                 if (announcementManager.announcements.count == 0) {
-                    ContentUnavailableView("No announcements available within last 14 days", systemImage: "exclamationmark.bubble.fill")
+                    ContentUnavailableView("No announcements available", systemImage: "exclamationmark.bubble.fill")
                 } else {
                     EmptyView()
                 }
@@ -45,7 +45,7 @@ private struct AnnouncementRow: View {
     let announcement: Announcement
 
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .announcementRowAlignment) {
             header
             detail
         }
@@ -53,15 +53,20 @@ private struct AnnouncementRow: View {
 
     private var header: some View {
         HStack {
-            if !(announcement.isRead ?? false) {
-                Circle()
-                    .fill(.tint)
-                    .frame(width: unreadIndicatorWidth, height: unreadIndicatorWidth)
-            } else {
-                Spacer().frame(width: unreadIndicatorWidth)
+            Group {
+                if !(announcement.isRead ?? false) {
+                    Circle()
+                        .fill(.tint)
+                } else {
+                    Spacer().frame(width: unreadIndicatorWidth)
+                }
             }
+            .frame(width: unreadIndicatorWidth, height: unreadIndicatorWidth)
 
             Text(announcement.title ?? "")
+                .alignmentGuide(.announcementRowAlignment) { context in
+                    context[.leading]
+                }
 
             Spacer()
 
@@ -89,8 +94,23 @@ private struct AnnouncementRow: View {
             .lineLimit(2)
             .foregroundStyle(.secondary)
             .controlSize(.small)
+            .alignmentGuide(.announcementRowAlignment) { context in
+                context[.leading]
+            }
         }
     }
 
     private let unreadIndicatorWidth: CGFloat = 10
+}
+
+extension HorizontalAlignment {
+    private struct AnnouncementRowAlignment: AlignmentID {
+        static func defaultValue(in context: ViewDimensions) -> CGFloat {
+            context[HorizontalAlignment.center]
+        }
+    }
+
+    static let announcementRowAlignment = HorizontalAlignment(
+        AnnouncementRowAlignment.self
+    )
 }
