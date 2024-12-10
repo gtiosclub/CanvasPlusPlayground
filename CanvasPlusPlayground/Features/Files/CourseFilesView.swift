@@ -20,11 +20,11 @@ struct CourseFilesView: View {
 
     var body: some View {
         NavigationStack {
-            
             List {
                 Section("Files") {
                     ForEach(fileManager.displayedFiles, id: \.id) { file in
                         FileRow(for: file)
+                            .listItemTint(course.rgbColors?.color)
                     }
                 }
             
@@ -32,6 +32,7 @@ struct CourseFilesView: View {
                 Section("Folders") {
                     ForEach(fileManager.displayedFolders, id: \.id) { subFolder in
                         FolderRow(for: subFolder)
+                            .listItemTint(course.rgbColors?.color)
                     }
                 }
                 
@@ -43,8 +44,7 @@ struct CourseFilesView: View {
                     await fileManager.fetchRoot()
                 }
             }
-            .navigationTitle("Files")
-
+            .navigationTitle(folder?.name ?? "Files for \(course.name ?? "??")")
         }
     }
     
