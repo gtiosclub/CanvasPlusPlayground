@@ -66,7 +66,7 @@ struct CourseAnnouncementDetailView: View {
             }
 
             Section("Announcement Message") {
-                AsyncAttributedText(htmlText: announcement.message ?? "NULL_MESSAGE")
+                AsyncAttributedText(announcement: announcement)
             }
         }
         .formStyle(.grouped)

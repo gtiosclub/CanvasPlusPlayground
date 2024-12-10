@@ -32,7 +32,6 @@ struct CourseAnnouncementsView: View {
                 } else {
                     EmptyView()
                 }
-
             }
             .task {
                 await announcementManager.fetchAnnouncements()
@@ -82,7 +81,7 @@ private struct AnnouncementRow: View {
                     Text(Image(systemName: "wand.and.sparkles")) + Text(summary)
                 } else {
                     AsyncAttributedText(
-                        htmlText: announcement.message ?? "",
+                        announcement: announcement,
                         textOnly: true
                     )
                 }
