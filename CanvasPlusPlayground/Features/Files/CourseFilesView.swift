@@ -12,10 +12,15 @@ struct CourseFilesView: View {
     @State var folder: Folder?
     @State private var filesVM: CourseFileViewModel
 
-    init(course: Course, folder: Folder? = nil) {
+    init(course: Course, folder: Folder? = nil, prevFilesVM: CourseFileViewModel? = nil) {
         self.course = course
         self.folder = folder
-        _filesVM = .init(initialValue: CourseFileViewModel(courseID: course.id))
+        
+        if let prevFilesVM {
+            _filesVM = .init(initialValue: CourseFileViewModel(courseID: course.id, traversedFolderIDs: prevFilesVM.traversedFolderIDs))
+        } else {
+            _filesVM = .init(initialValue: CourseFileViewModel(courseID: course.id, traversedFolderIDs: []))
+        }
     }
 
     var body: some View {

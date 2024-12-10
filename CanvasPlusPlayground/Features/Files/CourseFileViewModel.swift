@@ -13,7 +13,7 @@ class CourseFileViewModel {
     
     var files = [File]()
     var folders = [Folder]()
-    var traversedFolderIDs: [String] = []
+    var traversedFolderIDs: [String]
     
     var displayedFiles: [File] {
         files.sorted {
@@ -26,8 +26,9 @@ class CourseFileViewModel {
         }
     }
 
-    init(courseID: String) {
+    init(courseID: String, traversedFolderIDs: [String]) {
         self.courseID = courseID
+        self.traversedFolderIDs = traversedFolderIDs
     }
 
     func fetchRoot() async -> Folder? {
