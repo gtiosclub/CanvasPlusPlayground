@@ -25,6 +25,9 @@
 		9B9C2E062C93F94C00E4B16B /* CourseAnnouncementDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9C2E052C93F94C00E4B16B /* CourseAnnouncementDetailView.swift */; };
 		A300E2A22D0000DF00AA7D07 /* CanvasRequest+Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = A300E2A12D0000DF00AA7D07 /* CanvasRequest+Service.swift */; };
 		A306ED112CEAC09E00556D1E /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A306ED102CEAC09E00556D1E /* Folder.swift */; };
+		A324BA622D079EC5005F53FA /* LatexReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A324BA612D079EC5005F53FA /* LatexReader.swift */; };
+		A324BA642D07AF0B005F53FA /* CourseFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A324BA632D07AF0B005F53FA /* CourseFileService.swift */; };
+		A324BA662D07AFD5005F53FA /* FileType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A324BA652D07AFD5005F53FA /* FileType.swift */; };
 		A3269E8E2CD5533F006F7D14 /* CanvasRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3269E8D2CD5533F006F7D14 /* CanvasRepository.swift */; };
 		A3269E902CD57F75006F7D14 /* Cacheable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3269E8F2CD57F75006F7D14 /* Cacheable.swift */; };
 		A3E59D362CF271C000AF91BD /* Predicate+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E59D352CF271C000AF91BD /* Predicate+Extensions.swift */; };
@@ -48,7 +51,7 @@
 		B76455042C8DF61B002DF00E /* CourseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454F62C8DF61B002DF00E /* CourseView.swift */; };
 		B76455052C8DF61B002DF00E /* SetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454F72C8DF61B002DF00E /* SetupView.swift */; };
 		B76455062C8DF61B002DF00E /* CanvasPlusPlaygroundApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454FA2C8DF61B002DF00E /* CanvasPlusPlaygroundApp.swift */; };
-		B76455072C8DF61B002DF00E /* CourseFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454FB2C8DF61B002DF00E /* CourseFileManager.swift */; };
+		B76455072C8DF61B002DF00E /* CourseFileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454FB2C8DF61B002DF00E /* CourseFileViewModel.swift */; };
 		B76455082C8DF61B002DF00E /* CourseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454FC2C8DF61B002DF00E /* CourseManager.swift */; };
 		B76455092C8DF61B002DF00E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B76454F22C8DF61B002DF00E /* Preview Assets.xcassets */; };
 		B764550A2C8DF61B002DF00E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B76454F92C8DF61B002DF00E /* Assets.xcassets */; };
@@ -82,6 +85,9 @@
 		9B9C2E052C93F94C00E4B16B /* CourseAnnouncementDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAnnouncementDetailView.swift; sourceTree = "<group>"; };
 		A300E2A12D0000DF00AA7D07 /* CanvasRequest+Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CanvasRequest+Service.swift"; sourceTree = "<group>"; };
 		A306ED102CEAC09E00556D1E /* Folder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Folder.swift; sourceTree = "<group>"; };
+		A324BA612D079EC5005F53FA /* LatexReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatexReader.swift; sourceTree = "<group>"; };
+		A324BA632D07AF0B005F53FA /* CourseFileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseFileService.swift; sourceTree = "<group>"; };
+		A324BA652D07AFD5005F53FA /* FileType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileType.swift; sourceTree = "<group>"; };
 		A3269E8D2CD5533F006F7D14 /* CanvasRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasRepository.swift; sourceTree = "<group>"; };
 		A3269E8F2CD57F75006F7D14 /* Cacheable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cacheable.swift; sourceTree = "<group>"; };
 		A3E59D352CF271C000AF91BD /* Predicate+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Predicate+Extensions.swift"; sourceTree = "<group>"; };
@@ -108,7 +114,7 @@
 		B76454F72C8DF61B002DF00E /* SetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupView.swift; sourceTree = "<group>"; };
 		B76454F92C8DF61B002DF00E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B76454FA2C8DF61B002DF00E /* CanvasPlusPlaygroundApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasPlusPlaygroundApp.swift; sourceTree = "<group>"; };
-		B76454FB2C8DF61B002DF00E /* CourseFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseFileManager.swift; sourceTree = "<group>"; };
+		B76454FB2C8DF61B002DF00E /* CourseFileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseFileViewModel.swift; sourceTree = "<group>"; };
 		B76454FC2C8DF61B002DF00E /* CourseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseManager.swift; sourceTree = "<group>"; };
 		B7926D152CE95CE900BFFBE1 /* RGBColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RGBColors.swift; sourceTree = "<group>"; };
 		B7926D172CE962C200BFFBE1 /* ColorPickerWithoutLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerWithoutLabel.swift; sourceTree = "<group>"; };
@@ -180,9 +186,11 @@
 		A324BA532D079685005F53FA /* Files */ = {
 			isa = PBXGroup;
 			children = (
-				B76454FB2C8DF61B002DF00E /* CourseFileManager.swift */,
+				B76454FB2C8DF61B002DF00E /* CourseFileViewModel.swift */,
 				B76454F42C8DF61B002DF00E /* CourseFilesView.swift */,
 				3DAE84FD2C9A0CE8008C22E7 /* CoursePDFView.swift */,
+				A324BA632D07AF0B005F53FA /* CourseFileService.swift */,
+				A324BA652D07AFD5005F53FA /* FileType.swift */,
 			);
 			path = Files;
 			sourceTree = "<group>";
@@ -215,6 +223,7 @@
 			children = (
 				B7926D172CE962C200BFFBE1 /* ColorPickerWithoutLabel.swift */,
 				3DAE84FF2C9A0E4F008C22E7 /* PDFViewHelper.swift */,
+				A324BA612D079EC5005F53FA /* LatexReader.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -454,7 +463,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				9B92A4232C93853C00C21CFC /* Announcement.swift in Sources */,
+				A324BA622D079EC5005F53FA /* LatexReader.swift in Sources */,
 				B76454FE2C8DF61B002DF00E /* Course.swift in Sources */,
+				A324BA642D07AF0B005F53FA /* CourseFileService.swift in Sources */,
 				95BA93482C9CE20D00137A91 /* CalendarView.swift in Sources */,
 				B76454FF2C8DF61B002DF00E /* Enrollment.swift in Sources */,
 				B76455002C8DF61B002DF00E /* File.swift in Sources */,
@@ -464,6 +475,7 @@
 				B7926D162CE95CED00BFFBE1 /* RGBColors.swift in Sources */,
 				3DAE84FE2C9A0CE8008C22E7 /* CoursePDFView.swift in Sources */,
 				9B69FA4F2CC2CCCF006101F3 /* AggregatedAssignmentsViewCell.swift in Sources */,
+				A324BA662D07AFD5005F53FA /* FileType.swift in Sources */,
 				192EC0482C963ACB00AF8528 /* CourseAssignmentManager.swift in Sources */,
 				B76455012C8DF61B002DF00E /* StorageKeys.swift in Sources */,
 				A3FFD03A2CDEC2AC006BAB51 /* LookupCondition.swift in Sources */,
@@ -492,7 +504,7 @@
 				A3E7F38F2C96C1CE00DC4300 /* CourseTabsView.swift in Sources */,
 				B76455062C8DF61B002DF00E /* CanvasPlusPlaygroundApp.swift in Sources */,
 				9B69FA4B2CC2CC7F006101F3 /* AggregatedAssignmentsView.swift in Sources */,
-				B76455072C8DF61B002DF00E /* CourseFileManager.swift in Sources */,
+				B76455072C8DF61B002DF00E /* CourseFileViewModel.swift in Sources */,
 				A3269E902CD57F75006F7D14 /* Cacheable.swift in Sources */,
 				3DAE85002C9A0E4F008C22E7 /* PDFViewHelper.swift in Sources */,
 				B533C0BE2CADDDE700A74AF6 /* PeopleCommonView.swift in Sources */,

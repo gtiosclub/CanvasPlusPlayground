@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CourseFilesView: View {
     let course: Course
-    let folder: Folder?
+    @State var folder: Folder?
     @State private var fileManager: CourseFileManager
 
     init(course: Course, folder: Folder? = nil) {
@@ -40,10 +40,19 @@ struct CourseFilesView: View {
                 if let folder {
                     await fileManager.fetchContent(in: folder)
                 } else {
-                    await fileManager.fetchRoot()
+                    self.folder = await fileManager.fetchRoot()
                 }
             }
             .navigationTitle("Files")
+            .onAppear {
+                if let folderId = folder?.id {
+                    fileManager.traversedFolderIDs.append(folderId)
+                }
+            }
+            .onDisappear {
+                print("Back to \(folder?.name ?? "non-folder")")
+                if !fileManager.traversedFolderIDs.isEmpty { fileManager.traversedFolderIDs.removeLast() }
+            }
 
         }
     }

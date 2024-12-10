@@ -13,6 +13,8 @@ class CourseFileManager {
     var files = [File]()
     var folders = [Folder]()
     
+    var traversedFolderIDs: [String] = []
+    
     var displayedFiles: [File] {
         files.sorted {
             $0.displayName ?? "" < $1.displayName ?? ""
@@ -28,19 +30,24 @@ class CourseFileManager {
         self.courseID = courseID
     }
 
-    func fetchRoot() async {
+    func fetchRoot() async -> Folder? {
         
         if let persistedRootFolder: Folder = try? await CanvasService.shared.load(.getCourseRootFolder(courseId: courseID))?.first {
             await fetchContent(in: persistedRootFolder)
+            return persistedRootFolder
         } else if let rootFolder: Folder = try? await CanvasService.shared.syncWithAPI(.getCourseRootFolder(courseId: courseID)).first {
             await fetchContent(in: rootFolder)
-        } else {
-            print("Failed to fetch root folder.")
+            return rootFolder
         }
+        
+        print("Failed to fetch root folder.")
+        return nil
         
     }
     
     func fetchContent(in folder: Folder) async {
+        
+        traversedFolderIDs.append(folder.id)
         
         async let foldersInRootFolder: [Folder] = CanvasService.shared.loadAndSync(.getFoldersInFolder(folderId: folder.id), onCacheReceive: { folders in
             self.folders = folders ?? []
