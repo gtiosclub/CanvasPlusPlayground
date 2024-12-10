@@ -80,9 +80,7 @@ private struct ColorPickerSheet: UIViewRepresentable {
         func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
             isPresented = false
             didPresent = false
-            DispatchQueue.main.async {
-                self.onDisappear()
-            }
+            self.onDisappear()
         }
         func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
             isPresented = false

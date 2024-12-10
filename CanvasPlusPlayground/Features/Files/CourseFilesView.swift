@@ -46,6 +46,7 @@ struct CourseFilesView: View {
             }
             .navigationTitle(folder?.name ?? "Files for \(course.name ?? "??")")
         }
+        .tint(course.rgbColors?.color)
     }
     
     @ViewBuilder
