@@ -61,6 +61,7 @@
 		B7AD54F52CD41D7900FB09BB /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AD54EF2CD41D7900FB09BB /* Data.swift */; };
 		B7AD54F62CD41D7900FB09BB /* DeviceStat.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AD54F02CD41D7900FB09BB /* DeviceStat.swift */; };
 		B7AD550C2CD4257B00FB09BB /* IntelligenceOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AD550B2CD4257400FB09BB /* IntelligenceOnboardingView.swift */; };
+		B7D95D772D07C3D3002AD955 /* ICSParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D95D762D07C3D3002AD955 /* ICSParser.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -118,6 +119,7 @@
 		B7AD54F12CD41D7900FB09BB /* LLMEvaluator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLMEvaluator.swift; sourceTree = "<group>"; };
 		B7AD54F22CD41D7900FB09BB /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		B7AD550B2CD4257400FB09BB /* IntelligenceOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntelligenceOnboardingView.swift; sourceTree = "<group>"; };
+		B7D95D762D07C3D3002AD955 /* ICSParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICSParser.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -296,6 +298,7 @@
 			isa = PBXGroup;
 			children = (
 				95BA93472C9CE20D00137A91 /* CalendarView.swift */,
+				B7D95D762D07C3D3002AD955 /* ICSParser.swift */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -465,6 +468,7 @@
 				3DAE84FE2C9A0CE8008C22E7 /* CoursePDFView.swift in Sources */,
 				9B69FA4F2CC2CCCF006101F3 /* AggregatedAssignmentsViewCell.swift in Sources */,
 				192EC0482C963ACB00AF8528 /* CourseAssignmentManager.swift in Sources */,
+				B7D95D772D07C3D3002AD955 /* ICSParser.swift in Sources */,
 				B76455012C8DF61B002DF00E /* StorageKeys.swift in Sources */,
 				A3FFD03A2CDEC2AC006BAB51 /* LookupCondition.swift in Sources */,
 				A3E7F3932C99338B00DC4300 /* Tab.swift in Sources */,
