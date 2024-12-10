@@ -8,11 +8,11 @@
 import SwiftUI
 
 @Observable
-class CourseFileManager {
+class CourseFileViewModel {
     private let courseID: String
+    
     var files = [File]()
     var folders = [Folder]()
-    
     var traversedFolderIDs: [String] = []
     
     var displayedFiles: [File] {

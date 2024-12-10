@@ -56,6 +56,12 @@ struct CourseFileService {
             self.downloadFile(from: url) { localURL in
                 if let localURL, let content = try? Data(contentsOf: localURL) {
                     remoteFileReceived(content)
+                    
+                    if let url = try? self.saveCourseFile(courseId: course.id, folderIds: foldersPath, file: file, content: content) {
+                        print("File successfully saved at \(url.path())")
+                    } else {
+                        print("Failed to save file at \(url.path())")
+                    }
                 } else {
                     print("Error fetching file content from remote.")
                 }
@@ -64,6 +70,7 @@ struct CourseFileService {
             remoteFileReceived(nil)
         }
         
+        // Provide local copy meanwhile
         if fileManager.fileExists(atPath: fileLoc.path()), let data = try? Data(contentsOf: fileLoc) {
             localCopyReceived(data)
         }

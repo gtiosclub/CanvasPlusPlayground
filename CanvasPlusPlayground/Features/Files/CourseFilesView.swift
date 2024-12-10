@@ -10,12 +10,12 @@ import SwiftUI
 struct CourseFilesView: View {
     let course: Course
     @State var folder: Folder?
-    @State private var fileManager: CourseFileManager
+    @State private var filesVM: CourseFileViewModel
 
     init(course: Course, folder: Folder? = nil) {
         self.course = course
         self.folder = folder
-        _fileManager = .init(initialValue: CourseFileManager(courseID: course.id))
+        _filesVM = .init(initialValue: CourseFileViewModel(courseID: course.id))
     }
 
     var body: some View {
@@ -23,14 +23,14 @@ struct CourseFilesView: View {
             
             List {
                 Section("Files") {
-                    ForEach(fileManager.displayedFiles, id: \.id) { file in
+                    ForEach(filesVM.displayedFiles, id: \.id) { file in
                         FileRow(for: file)
                     }
                 }
             
                 
                 Section("Folders") {
-                    ForEach(fileManager.displayedFolders, id: \.id) { subFolder in
+                    ForEach(filesVM.displayedFolders, id: \.id) { subFolder in
                         FolderRow(for: subFolder)
                     }
                 }
@@ -38,20 +38,20 @@ struct CourseFilesView: View {
             }
             .task {
                 if let folder {
-                    await fileManager.fetchContent(in: folder)
+                    await filesVM.fetchContent(in: folder)
                 } else {
-                    self.folder = await fileManager.fetchRoot()
+                    self.folder = await filesVM.fetchRoot()
                 }
             }
             .navigationTitle("Files")
             .onAppear {
                 if let folderId = folder?.id {
-                    fileManager.traversedFolderIDs.append(folderId)
+                    filesVM.traversedFolderIDs.append(folderId)
                 }
             }
             .onDisappear {
                 print("Back to \(folder?.name ?? "non-folder")")
-                if !fileManager.traversedFolderIDs.isEmpty { fileManager.traversedFolderIDs.removeLast() }
+                if !filesVM.traversedFolderIDs.isEmpty { filesVM.traversedFolderIDs.removeLast() }
             }
 
         }
@@ -66,6 +66,11 @@ struct CourseFilesView: View {
         } else {
             Label("File not available.", systemImage: "document")
         }
+    }
+    
+    @ViewBuilder
+    func destination(for file: File) -> some View {
+        FileViewer(course: course, file: file, courseFileVM: filesVM)
     }
     
     @ViewBuilder
