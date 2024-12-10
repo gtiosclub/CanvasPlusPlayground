@@ -187,6 +187,7 @@
 				A324BA632D07AF0B005F53FA /* CourseFileService.swift */,
 				A324BA652D07AFD5005F53FA /* FileType.swift */,
 				A324BA672D07C2E9005F53FA /* FileViewer.swift */,
+
 			);
 			path = Files;
 			sourceTree = "<group>";

@@ -66,6 +66,7 @@ struct CourseFilesView: View {
     func FileRow(for file: File) -> some View {
         if file.url != nil  {
             NavigationLink(destination: destination(for: file)) {
+
                 Label(file.displayName ?? "Couldn't find file name.", systemImage: "document")
             }
         } else {

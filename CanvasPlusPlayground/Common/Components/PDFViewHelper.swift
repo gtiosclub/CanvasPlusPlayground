@@ -56,7 +56,7 @@ struct BridgedPDFView: PlatformViewRepresentable {
                 }
             }
         }
-        
+
         pdfView.autoScales = true
         return pdfView
     }
@@ -65,3 +65,4 @@ struct BridgedPDFView: PlatformViewRepresentable {
 enum PDFSource {
     case url(URL), data(Data)
 }
+

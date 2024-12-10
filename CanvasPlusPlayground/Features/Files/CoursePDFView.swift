@@ -13,6 +13,7 @@ struct CoursePDFView: View {
     var body: some View {
         VStack {
             BridgedPDFView(pdfSource: source)
+
         }
     }
 }
