@@ -138,13 +138,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		9B350F062C9652A8003FC60D /* Helpers */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Helpers;
-			sourceTree = "<group>";
-		};
 		A324BA502D07963D005F53FA /* Features */ = {
 			isa = PBXGroup;
 			children = (
@@ -252,7 +245,6 @@
 		A324BA592D079781005F53FA /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
-				B7AD550B2CD4257400FB09BB /* IntelligenceOnboardingView.swift */,
 				B76454F72C8DF61B002DF00E /* SetupView.swift */,
 			);
 			path = Onboarding;
@@ -364,7 +356,6 @@
 			children = (
 				A324BA542D0796B8005F53FA /* Common */,
 				A324BA502D07963D005F53FA /* Features */,
-				9B350F062C9652A8003FC60D /* Helpers */,
 				B76454F12C8DF61B002DF00E /* Schema */,
 				B76454F32C8DF61B002DF00E /* Preview Content */,
 				B7AD54EE2CD41D5200FB09BB /* Intelligence */,
@@ -381,6 +372,7 @@
 				B7AD54F02CD41D7900FB09BB /* DeviceStat.swift */,
 				B7AD54F12CD41D7900FB09BB /* LLMEvaluator.swift */,
 				B7AD54F22CD41D7900FB09BB /* Models.swift */,
+				B7AD550B2CD4257400FB09BB /* IntelligenceOnboardingView.swift */,
 			);
 			path = Intelligence;
 			sourceTree = "<group>";
