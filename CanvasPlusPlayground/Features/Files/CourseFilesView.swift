@@ -15,6 +15,5 @@ struct CourseFilesView: View {
             FoldersPageView(course: course)
         }
     }
-
 }
 
