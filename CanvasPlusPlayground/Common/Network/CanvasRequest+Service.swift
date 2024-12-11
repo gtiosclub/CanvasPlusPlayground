@@ -23,7 +23,7 @@ extension CanvasRequest {
     /// The keypath to compare `self.id` to when retrieving cached results of request.
     func writableIdKeypath<M: Cacheable & AnyObject>() -> ReferenceWritableKeyPath<M, String>? {
         switch self {
-        case .getCourse, .setCourseNickname:
+        case .getCourse:
             return nil
         case .getCourseRootFolder, .getAllCourseFiles, .getAllCourseFolders, .getFilesInFolder, .getFoldersInFolder, .getTabs, .getAnnouncements, .getAssignments, .getPeople, .getCourses:
             return \M.parentId
@@ -34,7 +34,7 @@ extension CanvasRequest {
     func readableIdKeyPath<M: Cacheable & AnyObject>() -> KeyPath<M, String> {
         switch self {
         // Requests that must be identified by the return model's id
-        case .getCourse, .setCourseNickname:
+        case .getCourse:
             return \M.id
         // Requests that must be identified by the return model's parentId
         case .getCourseRootFolder, .getAllCourseFiles, .getAllCourseFolders, .getFilesInFolder, .getFoldersInFolder, .getTabs, .getAnnouncements, .getAssignments, .getPeople, .getCourses:

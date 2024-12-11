@@ -185,7 +185,7 @@ private struct CourseListCell: View {
 
     var body: some View {
         HStack {
-            Label(course.name ?? "", systemImage: "book.pages")
+            Label(course.nickname ?? course.name ?? "MISSING NAME", systemImage: "book.pages")
                 .frame(alignment: .leading)
                 .multilineTextAlignment(.leading)
         }
@@ -240,11 +240,8 @@ private struct CourseListCell: View {
                         showRenameTextField = false
                     }
                     .onDisappear {
-                        course.name = renameCourseFieldText
-                        Task {
-                            await courseManager.renameCourse(forCourse: course, newName: renameCourseFieldText)
-                            renameCourseFieldText = ""
-                        }
+                        course.nickname = renameCourseFieldText
+                        renameCourseFieldText = ""
                     }
             
             .padding(15)
@@ -262,14 +259,11 @@ private struct CourseListCell: View {
                 TextField("New name", text: $renameCourseFieldText)
                 Button("OK") {
                     showRenameTextField = false
-                    course.name = renameCourseFieldText
-                    Task {
-                        await courseManager.renameCourse(forCourse: course, newName: renameCourseFieldText)
-                        renameCourseFieldText = ""
-                    }
+                    course.nickname = renameCourseFieldText
+                    renameCourseFieldText = ""
                 }
         } message: {
-            Text("Rename \(course.name ?? "MISSING NAME")")
+            Text("Rename \(course.name ?? "MISSING NAME")?")
         }
         #endif
     }

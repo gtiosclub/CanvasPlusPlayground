@@ -44,7 +44,7 @@ struct CourseView: View {
             }
         }
         .tint(course.rgbColors?.color)
-        .navigationTitle(course.name ?? "Unknown Course")
+        .navigationTitle(course.nickname ?? course.name ?? "Unknown Course")
         #if os(iOS)
         .listStyle(.insetGrouped)
         #else
