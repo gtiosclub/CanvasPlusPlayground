@@ -37,31 +37,28 @@ struct CoursePDFView: View {
 
     func runModel() {
         if let pdf = PDFDocument(url: url) {
+            let rag = RAGSystem()
             let pageCount = pdf.pageCount
-            var documentContent = String()
 
             for i in 0 ..< pageCount {
                 guard let page = pdf.page(at: i) else { continue }
                 guard let pageContent = page.string else { continue }
-                documentContent.append(pageContent)
+
+                rag
+                    .addDocument(
+                        .init(id: UUID().uuidString, content: pageContent)
+                    )
             }
 
-            let rag = RAGSystem()
-            rag.addDocument(.init(id: "id", content: documentContent))
             let relevantDocs = rag.searchRelevantDocuments(for: query)
             let context = relevantDocs.map { $0.content }.joined(separator: " ")
-
-            // print(context)
-
             let prompt = """
-            \(query)
+            Context: \(context)
             
-            The following is the syllabus document of a college course. Answer the above question using the following information:
+            Query: \(query)
             
-            \(context)
+            Based on the given context, answer the above query to the point and precisely. Do not mention anything else other than directly answering the question.
             """
-
-            print(prompt)
 
             if let modelName = intelligenceManager.currentModelName {
                 Task {
