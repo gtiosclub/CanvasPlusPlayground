@@ -269,7 +269,7 @@ private struct CourseListCell: View {
                     }
                 }
         } message: {
-            Text("")
+            Text("Rename \(course.name ?? "MISSING NAME")")
         }
         #endif
     }
