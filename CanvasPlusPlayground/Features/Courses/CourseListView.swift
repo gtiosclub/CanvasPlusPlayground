@@ -234,7 +234,7 @@ private struct CourseListCell: View {
                 }
         }
         .popover(isPresented: $showRenameTextField) {
-            HStack {
+            
                 TextField("New name", text: $renameCourseFieldText)
                     .onSubmit {
                         showRenameTextField = false
@@ -246,8 +246,8 @@ private struct CourseListCell: View {
                             renameCourseFieldText = ""
                         }
                     }
-            }
-            .padding(5)
+            
+            .padding(15)
             
         }
         
@@ -257,6 +257,19 @@ private struct CourseListCell: View {
             selection: $resolvedCourseColor
         ) {
             course.rgbColors = .init(color: resolvedCourseColor)
+        }
+        .alert("Rename Course?", isPresented: $showRenameTextField) {
+                TextField("New name", text: $renameCourseFieldText)
+                Button("OK") {
+                    showRenameTextField = false
+                    Task {
+                        course.name = renameCourseFieldText
+                        await courseManager.renameCourse(forCourse: course, newName: renameCourseFieldText)
+                        renameCourseFieldText = ""
+                    }
+                }
+        } message: {
+            Text("")
         }
         #endif
     }
