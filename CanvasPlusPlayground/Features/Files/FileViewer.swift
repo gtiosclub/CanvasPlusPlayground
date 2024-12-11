@@ -12,17 +12,11 @@ struct FileViewer: View {
     let file: File
     let fileService = CourseFileService()
 
-    @State var courseFileVM: CourseFileViewModel
+    @Environment(CourseFileViewModel.self) var courseFileVM
     @State var content: Data?
     
     var fileType: FileType? {
         FileType.fromFile(file)
-    }
-    
-    init(course: Course, file: File, courseFileVM: CourseFileViewModel) {
-        self.course = course
-        self.file = file
-        self.courseFileVM = courseFileVM
     }
     
     

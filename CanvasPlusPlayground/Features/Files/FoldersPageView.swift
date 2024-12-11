@@ -57,7 +57,8 @@ struct FoldersPageView: View {
     }
     
     func destination(for file: File) -> some View {
-        FileViewer(course: course, file: file, courseFileVM: filesVM)
+        FileViewer(course: course, file: file)
+            .environment(filesVM)
     }
     
     @ViewBuilder
