@@ -236,13 +236,15 @@ private struct CourseListCell: View {
         .popover(isPresented: $showRenameTextField) {
             HStack {
                 TextField("New name", text: $renameCourseFieldText)
-                Button("Submit") {
-                    Task {
-                        await courseManager.renameCourse(forCourse: course, newName: renameCourseFieldText)
+                    .onSubmit {
+                        showRenameTextField = false
                     }
-                    showRenameTextField = false
-                    renameCourseFieldText = ""
-                }
+                    .onDisappear {
+                        Task {
+                            await courseManager.renameCourse(forCourse: course, newName: renameCourseFieldText)
+                            renameCourseFieldText = ""
+                        }
+                    }
             }
             .padding(5)
             
