@@ -139,10 +139,19 @@ struct CourseListView: View {
                     showAuthorization.toggle()
                 }
             }
-
+            
             ToolbarItem(placement: .cancellationAction) {
                 Button("Clear cache", systemImage: "opticaldiscdrive") {
                     CanvasService.shared.clearStorage()
+                }
+            }
+            
+            ToolbarItem(placement: .cancellationAction) {
+                Button("Delete all files.", systemImage: "folder.badge.minus") {
+                    guard let _ = try? CourseFileService.clearAllFiles() else {
+                        print("Clearing failed")
+                        return
+                    }
                 }
             }
         }

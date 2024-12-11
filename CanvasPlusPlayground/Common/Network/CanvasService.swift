@@ -154,9 +154,7 @@ struct CanvasService {
                 latest[i] = matchedCached
             }
         }
-        
-        await repository.flush()
-        
+                
         return latest
     }
     
