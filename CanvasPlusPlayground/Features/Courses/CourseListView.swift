@@ -220,7 +220,7 @@ private struct CourseListCell: View {
                 }
             }
             
-            Button("Change Course Name", systemImage: "character.cursor.ibeam") {
+            Button("Add Course Nickname", systemImage: "character.cursor.ibeam") {
                 withAnimation {
                     showRenameTextField = true
                 }
