@@ -241,6 +241,7 @@ private struct CourseListCell: View {
                     }
                     .onDisappear {
                         Task {
+                            course.name = renameCourseFieldText
                             await courseManager.renameCourse(forCourse: course, newName: renameCourseFieldText)
                             renameCourseFieldText = ""
                         }

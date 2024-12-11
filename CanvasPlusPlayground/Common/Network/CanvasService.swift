@@ -227,7 +227,13 @@ struct CanvasService {
         guard let url = request.url else { throw NetworkError.invalidURL(msg: request.path) }
 
         var urlRequest = URLRequest(url: url)
-        urlRequest.httpMethod = "GET"
+        switch request {
+        case .setCourseNickname:
+            urlRequest.httpMethod = "PUT"
+        default:
+            urlRequest.httpMethod = "GET"
+        }
+        
         
         do {
             let (data, response) = try await URLSession.shared.data(for: urlRequest)
