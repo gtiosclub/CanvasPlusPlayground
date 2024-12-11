@@ -220,7 +220,7 @@ private struct CourseListCell: View {
                 }
             }
             
-            Button("Change Course Name") {
+            Button("Change Course Name", systemImage: "character.cursor.ibeam") {
                 withAnimation {
                     showRenameTextField = true
                 }
@@ -240,8 +240,8 @@ private struct CourseListCell: View {
                         showRenameTextField = false
                     }
                     .onDisappear {
+                        course.name = renameCourseFieldText
                         Task {
-                            course.name = renameCourseFieldText
                             await courseManager.renameCourse(forCourse: course, newName: renameCourseFieldText)
                             renameCourseFieldText = ""
                         }
@@ -262,8 +262,8 @@ private struct CourseListCell: View {
                 TextField("New name", text: $renameCourseFieldText)
                 Button("OK") {
                     showRenameTextField = false
+                    course.name = renameCourseFieldText
                     Task {
-                        course.name = renameCourseFieldText
                         await courseManager.renameCourse(forCourse: course, newName: renameCourseFieldText)
                         renameCourseFieldText = ""
                     }
