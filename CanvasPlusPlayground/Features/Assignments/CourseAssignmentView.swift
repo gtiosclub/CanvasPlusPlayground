@@ -30,6 +30,6 @@ struct CourseAssignmentsView: View {
         .task {
             await assignmentManager.fetchAssignments()
         }
-        .navigationTitle(course.nickname ?? course.name ?? "")
+        .navigationTitle(course.displayName)
     }
 }

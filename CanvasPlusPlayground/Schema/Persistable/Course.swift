@@ -193,6 +193,11 @@ final class Course: Cacheable {
     var isFavorite: Bool?
     var nickname: String?
     
+    
+    var displayName: String {
+        nickname ?? name ?? "Unknown Name"
+    }
+    
     enum CodingKeys: String, CodingKey {
         case id
         case parentId = "parent_id"

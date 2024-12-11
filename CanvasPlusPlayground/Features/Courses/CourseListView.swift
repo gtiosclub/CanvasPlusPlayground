@@ -185,7 +185,7 @@ private struct CourseListCell: View {
 
     var body: some View {
         HStack {
-            Label(course.nickname ?? course.name ?? "MISSING NAME", systemImage: "book.pages")
+            Label(course.displayName, systemImage: "book.pages")
                 .frame(alignment: .leading)
                 .multilineTextAlignment(.leading)
         }
@@ -220,17 +220,29 @@ private struct CourseListCell: View {
                 }
             }
             
-            Button("Add Course Nickname", systemImage: "character.cursor.ibeam") {
+            Button("Rename \(course.name ?? "")...", systemImage: "character.cursor.ibeam") {
                 withAnimation {
                     showRenameTextField = true
                 }
             }
-            
-            Button("Remove Course Nickname", systemImage: "delete.left.fill") {
-                withAnimation {
-                    course.nickname = nil
+        
+        }
+        .alert("Rename Course?", isPresented: $showRenameTextField) {
+            TextField(course.name ?? "MISSING NAME", text: $renameCourseFieldText)
+                Button("OK") {
+                    if renameCourseFieldText == "" {
+                        course.nickname = nil
+                    } else {
+                        course.nickname = renameCourseFieldText
+                        renameCourseFieldText = ""
+                    }
                 }
+            Button("Dismiss", role: .cancel) {
+                renameCourseFieldText = ""
             }
+        
+        } message: {
+            Text("Rename \(course.name ?? "MISSING NAME")?")
         }
         #if os(macOS)
         .popover(isPresented: $showColorPicker) {
@@ -239,41 +251,12 @@ private struct CourseListCell: View {
                     course.rgbColors = .init(color: resolvedCourseColor)
                 }
         }
-        .popover(isPresented: $showRenameTextField) {
-            
-                TextField("New name", text: $renameCourseFieldText)
-                    .onSubmit {
-                        showRenameTextField = false
-                    }
-                    .onDisappear {
-                        course.nickname = renameCourseFieldText
-                        renameCourseFieldText = ""
-                    }
-            
-            .padding(15)
-            
-        }
-        
         #elseif os(iOS)
         .colorPickerSheet(
             isPresented: $showColorPicker,
             selection: $resolvedCourseColor
         ) {
             course.rgbColors = .init(color: resolvedCourseColor)
-        }
-        .alert("Rename Course?", isPresented: $showRenameTextField) {
-                TextField("New name", text: $renameCourseFieldText)
-                Button("OK") {
-                    showRenameTextField = false
-                    course.nickname = renameCourseFieldText
-                    renameCourseFieldText = ""
-                }
-            Button("Dismiss", role: .cancel) {
-                renameCourseFieldText = ""
-            }
-        
-        } message: {
-            Text("Rename \(course.name ?? "MISSING NAME")?")
         }
         #endif
     }
