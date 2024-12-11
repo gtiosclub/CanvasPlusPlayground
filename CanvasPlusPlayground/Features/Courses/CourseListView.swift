@@ -225,6 +225,12 @@ private struct CourseListCell: View {
                     showRenameTextField = true
                 }
             }
+            
+            Button("Remove Course Nickname") {
+                withAnimation {
+                    course.nickname = nil
+                }
+            }
         }
         #if os(macOS)
         .popover(isPresented: $showColorPicker) {
