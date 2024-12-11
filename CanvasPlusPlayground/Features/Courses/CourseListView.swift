@@ -226,7 +226,7 @@ private struct CourseListCell: View {
                 }
             }
             
-            Button("Remove Course Nickname") {
+            Button("Remove Course Nickname", systemImage: "delete.left.fill") {
                 withAnimation {
                     course.nickname = nil
                 }
@@ -268,6 +268,10 @@ private struct CourseListCell: View {
                     course.nickname = renameCourseFieldText
                     renameCourseFieldText = ""
                 }
+            Button("Dismiss", role: .cancel) {
+                renameCourseFieldText = ""
+            }
+        
         } message: {
             Text("Rename \(course.name ?? "MISSING NAME")?")
         }
