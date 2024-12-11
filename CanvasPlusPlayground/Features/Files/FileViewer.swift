@@ -35,7 +35,7 @@ struct FileViewer: View {
                 case .docx:
                     EmptyView()
                 case .pdf:
-                    CoursePDFView(source: .data(content)) // TODO: Modify PDF viewer to take data
+                    CoursePDFView(source: .data(content))
                 }
             } else if content != nil {
                 ContentUnavailableView("Preview not supported for this file.", systemImage: "xmark.rectangle.fill")
@@ -44,12 +44,11 @@ struct FileViewer: View {
             }
         }.task {
             do {
-                try fileService.courseFile(
+                self.content = try await fileService.courseFile(
                     for: file,
                     course: course,
                     foldersPath: courseFileVM.traversedFolderIDs,
-                    localCopyReceived: { self.content = $0 },
-                    remoteFileReceived: { self.content = $0 }
+                    localCopyReceived: { self.content = $0 }
                 )
             } catch {
                 print("Error fetching file content: \(error)")

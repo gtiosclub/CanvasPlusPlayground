@@ -140,7 +140,6 @@ struct CourseListView: View {
                 }
             }
             
-#if DEBUG
             ToolbarItem(placement: .cancellationAction) {
                 Button("Clear cache", systemImage: "opticaldiscdrive") {
                     CanvasService.shared.clearStorage()
@@ -155,7 +154,6 @@ struct CourseListView: View {
                     }
                 }
             }
-#endif
         }
     }
 

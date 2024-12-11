@@ -12,15 +12,11 @@ struct FoldersPageView: View {
     @State var folder: Folder?
     @State private var filesVM: CourseFileViewModel
 
-    init(course: Course, folder: Folder? = nil, prevFilesVM: CourseFileViewModel? = nil) {
+    init(course: Course, folder: Folder? = nil, traversedFolderIDs: [String] = []) {
         self.course = course
         self.folder = folder
         
-        if let prevFilesVM {
-            _filesVM = .init(initialValue: CourseFileViewModel(courseID: course.id, traversedFolderIDs: prevFilesVM.traversedFolderIDs))
-        } else {
-            _filesVM = .init(initialValue: CourseFileViewModel(courseID: course.id, traversedFolderIDs: []))
-        }
+        _filesVM = .init(initialValue: CourseFileViewModel(courseID: course.id, traversedFolderIDs: traversedFolderIDs))
     }
     
     var body: some View {
@@ -60,14 +56,13 @@ struct FoldersPageView: View {
         }
     }
     
-    @ViewBuilder
     func destination(for file: File) -> some View {
         FileViewer(course: course, file: file, courseFileVM: filesVM)
     }
     
     @ViewBuilder
     func FolderRow(for subFolder: Folder) -> some View {
-        NavigationLink(destination: FoldersPageView(course: course, folder: subFolder, prevFilesVM: filesVM)) {
+        NavigationLink(destination: FoldersPageView(course: course, folder: subFolder, traversedFolderIDs: filesVM.traversedFolderIDs)) {
             Label(subFolder.name ?? "Couldn't find folder name.", systemImage: "folder")
         }
     }

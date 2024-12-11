@@ -26,7 +26,7 @@ struct CourseFileService {
         weak var file = file
         
         guard let file, let type = FileType.fromFile(file) else {
-            throw FileError.unsuppportedFileType
+            throw FileError.unsupportedFileType
         }
         
         let fileURL = self.pathWithFolders(foldersPath: folderIds, courseId: courseId, fileId: file.id, type: type)
@@ -53,37 +53,34 @@ struct CourseFileService {
         for file: File,
         course: Course,
         foldersPath: [String],
-        localCopyReceived: (Data?) -> Void,
-        remoteFileReceived: @escaping (Data?) -> Void
-    ) throws {
+        localCopyReceived: (Data?) -> Void
+    ) async throws -> Data {
         let fileLoc = pathWithFolders(foldersPath: foldersPath, courseId: course.id, fileId: file.id, type: FileType.fromFile(file))
-        
-        // Start downloading remote version
-        if let urlStr = file.url, let url = URL(string: urlStr)  {
-            print("File doesn't exist! Downloading ...")
-            
-            self.downloadFile(from: url) { [weak file] localURL in
-                if let localURL, let content = try? Data(contentsOf: localURL) {
-                    remoteFileReceived(content)
-                    
-                    if let file, let url = try? self.saveCourseFile(courseId: course.id, folderIds: foldersPath, file: file, content: content) {
-                        print("File successfully saved at \(url.path())")
-                    } else {
-                        print("Failed to save file.")
-                    }
-                } else {
-                    print("Error fetching file content from remote.")
-                }
-            }
-        } else {
-            remoteFileReceived(nil)
-        }
         
         // Provide local copy meanwhile
         if Self.fileManager.fileExists(atPath: fileLoc.path()), let data = try? Data(contentsOf: fileLoc) {
             localCopyReceived(data)
         }
         
+        // Start downloading remote version
+        if let urlStr = file.url, let url = URL(string: urlStr)  {
+            print("File doesn't exist! Downloading ...")
+            
+            weak var file = file
+            let tempFileLoc = try await self.downloadFile(from: url)
+            
+            let content = try Data(contentsOf: tempFileLoc)
+            
+            if let file, let url = try? self.saveCourseFile(courseId: course.id, folderIds: foldersPath, file: file, content: content) {
+                print("File successfully saved at \(url.path())")
+            } else {
+                print("Failed to save file.")
+            }
+            return content
+            
+        } else {
+            throw URLError(.badURL)
+        }
     }
     
     static func clearAllFiles() throws {
@@ -107,25 +104,16 @@ struct CourseFileService {
     // MARK: Helpers
     
     private func downloadFile(
-        from remoteURL: URL,
-        completion: @escaping (URL?) -> Void
-    ) {
-        let task = URLSession.shared.downloadTask(with: remoteURL) { tempUrl, _, error in
-            if let error {
-                completion(nil)
-                print("Error downloading file: \(error)")
-                return
-            }
-            
-            guard let tempUrl else {
-                completion(nil)
-                print("Temp URL for file is nil.")
-                return
-            }
-            
-            completion(tempUrl)
+        from remoteURL: URL
+    ) async throws -> URL {
+        let (tempUrl, response) = try await URLSession.shared.download(from: remoteURL)
+        
+        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+            print("Error downloading file: \(response)")
+            throw URLError(.badServerResponse)
         }
-        task.resume()
+        
+        return tempUrl
     }
     
     private func pathWithFolders(foldersPath: [String], courseId: String, fileId: String, type: FileType?) -> URL {
@@ -143,11 +131,11 @@ struct CourseFileService {
 
 
 enum FileError: Error {
-    case unsuppportedFileType, fileWriteFailed
+    case unsupportedFileType, fileWriteFailed
     
     var message: String {
         switch self {
-        case .unsuppportedFileType:
+        case .unsupportedFileType:
             return "Unsupported file type"
         case .fileWriteFailed:
             return "File save failed"
