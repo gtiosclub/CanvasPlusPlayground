@@ -45,4 +45,13 @@ class CourseManager {
             print("Failed to fetch enrollments. \(error)")
         }
     }
+    
+    func renameCourse(forCourse course: Course, newName name: String) async {
+        course.name = name
+        do {
+            let response = try await CanvasService.shared.fetchResponse(.setCourseNickname(newName: name, courseId: course.id))
+        } catch {
+            print("Error renaming course: \(error)")
+        }
+    }
 }

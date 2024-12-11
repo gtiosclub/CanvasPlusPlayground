@@ -179,6 +179,9 @@ private struct CourseListCell: View {
 
     @State private var showColorPicker = false
     @State private var resolvedCourseColor: Color = .accentColor
+    
+    @State private var showRenameTextField = false
+    @State private var renameCourseFieldText: String = ""
 
     var body: some View {
         HStack {
@@ -216,6 +219,12 @@ private struct CourseListCell: View {
                     course.isFavorite = !wrappedCourseIsFavorite
                 }
             }
+            
+            Button("Change Course Name") {
+                withAnimation {
+                    showRenameTextField = true
+                }
+            }
         }
         #if os(macOS)
         .popover(isPresented: $showColorPicker) {
@@ -224,6 +233,21 @@ private struct CourseListCell: View {
                     course.rgbColors = .init(color: resolvedCourseColor)
                 }
         }
+        .popover(isPresented: $showRenameTextField) {
+            HStack {
+                TextField("New name", text: $renameCourseFieldText)
+                Button("Submit") {
+                    Task {
+                        await courseManager.renameCourse(forCourse: course, newName: renameCourseFieldText)
+                    }
+                    showRenameTextField = false
+                    renameCourseFieldText = ""
+                }
+            }
+            .padding(5)
+            
+        }
+        
         #elseif os(iOS)
         .colorPickerSheet(
             isPresented: $showColorPicker,

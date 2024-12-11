@@ -27,6 +27,8 @@ enum CanvasRequest: Hashable {
     
     case getPeople(courseId: String, perPage: String = "100")
     
+    case setCourseNickname(newName: String, courseId: String)
+    
     var path: String {
         switch self {
             
@@ -57,6 +59,9 @@ enum CanvasRequest: Hashable {
             
         case let .getPeople(courseId, _):
             "courses/\(courseId)/enrollments"
+        
+        case let .setCourseNickname(_, courseId):
+            "users/self/course_nicknames/\(courseId)"
         }
     }
     
@@ -80,6 +85,10 @@ enum CanvasRequest: Hashable {
             [
                 ("per_page", perPage)
             ]
+        case let .setCourseNickname(newName, _):
+            [
+                ("nickname", newName)
+            ]
         default:
             []
         }
@@ -102,6 +111,8 @@ enum CanvasRequest: Hashable {
             return folderId
         case .getCourses:
             return "courses_\(StorageKeys.accessTokenValue)" // In case user changes
+        case .setCourseNickname(newName: _, courseId: let courseId):
+            return courseId
         }
     }
     
@@ -144,6 +155,8 @@ enum CanvasRequest: Hashable {
             [Assignment].self
         case .getPeople:
             [Enrollment].self
+        case .setCourseNickname:
+            Course.self
         }
     }
 }
