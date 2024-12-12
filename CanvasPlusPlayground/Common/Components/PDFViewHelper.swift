@@ -15,7 +15,7 @@ typealias PlatformViewRepresentable = UIViewRepresentable
 #endif
 
 struct BridgedPDFView: PlatformViewRepresentable {
-    let pdfURL: URL
+    let pdfSource: PDFSource
 
     #if os(macOS)
     func makeNSView(context: Context) -> some NSView {
@@ -39,13 +39,30 @@ struct BridgedPDFView: PlatformViewRepresentable {
 
     func makeView(context: Context) -> PDFView {
         let pdfView = PDFView()
-        Task {
-            let document = PDFDocument(url: self.pdfURL)
-            await MainActor.run {
-                pdfView.document = document
+
+        switch pdfSource {
+        case .url(let url):
+            Task {
+                let document = PDFDocument(url: url)
+                await MainActor.run {
+                    pdfView.document = document
+                }
+            }
+        case .data(let data):
+            Task {
+                let document = PDFDocument(data: data)
+                await MainActor.run {
+                    pdfView.document = document
+                }
             }
         }
+
         pdfView.autoScales = true
         return pdfView
     }
 }
+
+enum PDFSource {
+    case url(URL), data(Data)
+}
+

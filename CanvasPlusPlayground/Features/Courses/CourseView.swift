@@ -49,6 +49,5 @@ struct CourseView: View {
         .listStyle(.insetGrouped)
         #else
         .listStyle(.sidebar)
-        #endif
     }
 }

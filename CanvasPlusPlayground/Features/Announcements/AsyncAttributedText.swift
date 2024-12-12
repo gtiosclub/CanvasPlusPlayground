@@ -8,19 +8,30 @@
 import SwiftUI
 
 struct AsyncAttributedText: View {
-    let htmlText: String
-    @State var announcementText: NSAttributedString? = nil
+    let announcement: Announcement
+    /// Shows only the text, without HTML formatting
+    var textOnly: Bool = false
+
+    @State var announcementAttributedText: NSAttributedString? = nil
 
     var body: some View {
         Group {
-            if let announcementText {
-                Text(AttributedString(announcementText))
+            if textOnly, let announcementText = announcement.announcementText {
+                Text(announcementText)
+            } else if let announcementAttributedText {
+                Text(AttributedString(announcementAttributedText))
             } else {
-                ProgressView()
+                ProgressView().controlSize(.small)
             }
         }
         .task {
-            announcementText = await NSAttributedString.html(withBody: htmlText)
+            if !textOnly || announcement.announcementText == nil {
+                announcementAttributedText = await NSAttributedString
+                    .html(withBody: announcement.message ?? "")
+
+                announcement.announcementText = announcementAttributedText?.string
+                    .trimmingCharacters(in: .newlines)
+            }
         }
     }
 
