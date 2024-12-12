@@ -6,12 +6,16 @@
 //
 
 import Foundation
+import AppKit
 
 struct CourseFileService {
     
     private static let fileManager: FileManager = .default
     private static var documentsURL: URL {
         fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+    }
+    private static var coursesURL: URL {
+        documentsURL
             .appendingPathComponent(StorageKeys.accessTokenValue)
             .appendingPathComponent("courses")
     }
@@ -71,11 +75,16 @@ struct CourseFileService {
             
             let content = try Data(contentsOf: tempFileLoc)
             
-            if let file, let url = try? self.saveCourseFile(courseId: course.id, folderIds: foldersPath, file: file, content: content) {
+            do {
+                guard let file else {
+                    throw FileError.fileWasNil
+                }
+                let url = try self.saveCourseFile(courseId: course.id, folderIds: foldersPath, file: file, content: content)
                 print("File successfully saved at \(url.path())")
-            } else {
-                print("Failed to save file.")
+            } catch {
+                print("Failed to save file. \(error)")
             }
+            
             return content
             
         } else {
@@ -83,8 +92,10 @@ struct CourseFileService {
         }
     }
     
+    // MARK: Global
+    
     static func clearAllFiles() throws {
-        let documentURLs = documentsURL
+        let documentURLs = coursesURL
 
         do {
             let fileURLs = try fileManager.contentsOfDirectory(at: documentURLs, includingPropertiesForKeys: nil)
@@ -99,6 +110,11 @@ struct CourseFileService {
         } catch {
             print("Error deleting files: \(error.localizedDescription)")
         }
+    }
+    
+    /// Opens finder tab at specific directory URL
+    static func showInFinder(fileURL: URL = documentsURL) {
+        NSWorkspace.shared.open(fileURL)
     }
     
     // MARK: Helpers
@@ -117,7 +133,7 @@ struct CourseFileService {
     }
     
     private func pathWithFolders(foldersPath: [String], courseId: String, fileId: String, type: FileType?) -> URL {
-        var pathURL = Self.documentsURL
+        var pathURL = Self.coursesURL
             .appendingPathComponent(courseId)
             .appendingPathComponent("files")
         for folderId in foldersPath {
@@ -131,7 +147,7 @@ struct CourseFileService {
 
 
 enum FileError: Error {
-    case unsupportedFileType, fileWriteFailed
+    case unsupportedFileType, fileWriteFailed, fileWasNil
     
     var message: String {
         switch self {
@@ -139,6 +155,12 @@ enum FileError: Error {
             return "Unsupported file type"
         case .fileWriteFailed:
             return "File save failed"
+        case .fileWasNil:
+            return "File was nil"
         }
+    }
+    
+    var description: String {
+        message
     }
 }

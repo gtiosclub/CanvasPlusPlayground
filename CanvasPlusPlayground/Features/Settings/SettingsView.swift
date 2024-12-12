@@ -61,6 +61,10 @@ struct SettingsView: View {
                         return
                     }
                 }
+                
+                Button("Show files in Finder", systemImage: "folder.badge.person.crop") {
+                    CourseFileService.showInFinder()
+                }
             }
             .foregroundStyle(.red)
         } header: {
