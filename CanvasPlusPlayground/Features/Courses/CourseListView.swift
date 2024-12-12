@@ -221,9 +221,9 @@ private struct CourseListCell: View {
             }
             
             Button("Rename \(course.name ?? "")...", systemImage: "character.cursor.ibeam") {
-                withAnimation {
-                    showRenameTextField = true
-                }
+                renameCourseFieldText = course.nickname ?? ""
+                showRenameTextField = true
+                
             }
         
         }
