@@ -90,19 +90,16 @@ struct PeopleView: View {
 
     private var displayedUsers: [User] {
         var result = peopleManager.users
-        if !searchText.isEmpty {
-            result = result.filter {
-                $0.name?.localizedCaseInsensitiveContains(searchText) ?? true
-            }
-        }
 
-        selectedTokens.forEach { token in
-            result = result.filter {
-                $0.role?.contains(token.text) ?? true
-            }
-        }
+        return peopleManager.users.filter { user in
+            let matchesSearchText = searchText.isEmpty || user.name?.localizedCaseInsensitiveContains(searchText) ?? true
 
-        return result
+            let matchesSelectedTokens = selectedTokens.allSatisfy { token in
+                user.role?.contains(token.text) ?? false
+            }
+
+            return matchesSearchText && matchesSelectedTokens
+        }
     }
 }
 
