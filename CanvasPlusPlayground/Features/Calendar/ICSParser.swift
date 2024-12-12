@@ -8,6 +8,20 @@
 
 import Foundation
 
+struct CanvasCalendarEventGroup: Identifiable {
+    let id: String = UUID().uuidString
+    let date: Date
+    let events: [CanvasCalendarEvent]
+
+    var displayDate: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeZone = .current
+
+        return dateFormatter.string(from: date)
+    }
+}
+
 struct CanvasCalendarEvent: Identifiable {
     let id: String
     let summary: String
@@ -25,19 +39,15 @@ struct ICSParser {
         return dateFormatter
     }
 
-    private static var groupingDateFormatter: DateFormatter {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .medium
-        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
-        return dateFormatter
-    }
+    static func parseEvents(from icsURL: URL?) async -> [CanvasCalendarEventGroup] {
+        guard let icsURL else { return [] }
 
-    static func parseEvents(from icsURL: URL?) async -> [String: [CanvasCalendarEvent]] {
-        guard let icsURL else { return [:] }
+        guard let content = try? await fetchICSContentsFromURL(icsURL) else {
+            print("Error fetching ICS contents")
+            return []
+        }
 
-        let content = await fetchICSContentsFromURL(icsURL)
-
-        var events = [String: [CanvasCalendarEvent]]()
+        var events = [CanvasCalendarEvent]()
         let lines = content.components(separatedBy: .newlines)
         var currentEvent: [String: String] = [:]
 
@@ -62,8 +72,7 @@ struct ICSParser {
                         location: location
                     )
 
-                    let groupingDate = groupingDateFormatter.string(from: startDate)
-                    events[groupingDate, default: []].append(event)
+                    events.append(event)
                 }
             } else {
                 let components = line.components(separatedBy: ":")
@@ -75,15 +84,41 @@ struct ICSParser {
             }
         }
 
-        return events
-    }
+        let groupedEvents = Dictionary(grouping: events) { event in
+            let date = Calendar.current.dateComponents(
+                [.day, .year, .month],
+                from: event.startDate
+            )
 
-    static private func fetchICSContentsFromURL(_ url: URL) async -> String {
-        guard let data = try? await URLSession.shared.data(from: url).0 else {
-            return ""
+            return date
         }
 
-        return String(decoding: data, as: UTF8.self)
+        return groupedEvents
+            .compactMap { dateComponents, events in
+                guard let date = Calendar.current.date(from: dateComponents) else {
+                    return nil
+                }
+
+                return CanvasCalendarEventGroup(
+                    date: date,
+                    events: events
+                )
+            }
+            .sorted { $0.date > $1.date }
+    }
+
+    static private func fetchICSContentsFromURL(_ url: URL) async throws -> String {
+        do {
+            let (data, response) = try await URLSession.shared.data(from: url)
+
+            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                throw NetworkError.fetchFailed(msg: response.description)
+            }
+
+            return String(decoding: data, as: UTF8.self)
+        } catch {
+            throw NetworkError.fetchFailed(msg: error.localizedDescription)
+        }
     }
 }
 

@@ -10,7 +10,7 @@ import SwiftUI
 struct CalendarView: View {
     let icsURL: URL?
 
-    @State private var events = [String: [CanvasCalendarEvent]]()
+    @State private var events = [CanvasCalendarEventGroup]()
 
     init(course: Course) {
         self.icsURL = URL(string: course.calendar?.ics ?? "")
@@ -19,9 +19,9 @@ struct CalendarView: View {
     var body: some View {
         VStack {
             List {
-                ForEach(events.keys.sorted(), id: \.self) { key in
-                    Section(key) {
-                        ForEach(events[key]!) { event in
+                ForEach(events) { eventGroup in
+                    Section(eventGroup.displayDate) {
+                        ForEach(eventGroup.events) { event in
                             EventRow(event: event)
                         }
                     }
