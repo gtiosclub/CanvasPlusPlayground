@@ -45,6 +45,9 @@ private struct AnnouncementRow: View {
     let course: Course
     let announcement: Announcement
 
+    // MARK: Drawing Constants
+    private let unreadIndicatorWidth: CGFloat = 10
+
     var body: some View {
         VStack(alignment: .announcementRowAlignment) {
             header
@@ -105,8 +108,6 @@ private struct AnnouncementRow: View {
             }
         }
     }
-
-    private let unreadIndicatorWidth: CGFloat = 10
 }
 
 extension HorizontalAlignment {
