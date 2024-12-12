@@ -15,6 +15,7 @@ struct CourseListView: View {
     @EnvironmentObject private var intelligenceManager: IntelligenceManager
     @EnvironmentObject private var llmEvaluator: LLMEvaluator
 
+    @State private var showSettings: Bool = false
     @State private var showAuthorization: Bool = false
     @State private var columnVisibility = NavigationSplitViewVisibility.all
 
@@ -67,12 +68,10 @@ struct CourseListView: View {
             NavigationStack {
                 SetupView()
             }
-            .onDisappear {
-                Task {
-                    await courseManager.getCourses()
-                }
-            }
             .interactiveDismissDisabled()
+        }
+        .sheet(isPresented: $showSettings) {
+            SettingsView()
         }
         .environment(navigationModel)
         .sheet(isPresented: $navigationModel.showInstallIntelligenceSheet, content: {
@@ -136,23 +135,8 @@ struct CourseListView: View {
         .listStyle(.sidebar)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
-                Button("Change Access Token", systemImage: "gear") {
-                    showAuthorization.toggle()
-                }
-            }
-            
-            ToolbarItem(placement: .cancellationAction) {
-                Button("Clear cache", systemImage: "opticaldiscdrive") {
-                    CanvasService.shared.clearStorage()
-                }
-            }
-            
-            ToolbarItem(placement: .cancellationAction) {
-                Button("Delete all files.", systemImage: "folder.badge.minus") {
-                    guard let _ = try? CourseFileService.clearAllFiles() else {
-                        print("Clearing failed")
-                        return
-                    }
+                Button("Settings", systemImage: "gear") {
+                    showSettings.toggle()
                 }
             }
         }
