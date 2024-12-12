@@ -191,7 +191,13 @@ final class Course: Cacheable {
     // We cannot use `Color` directly because it needs to conform to `PersistentModel`
     var rgbColors: RGBColors?
     var isFavorite: Bool?
-
+    var nickname: String?
+    
+    
+    var displayName: String {
+        nickname ?? name ?? "Unknown Name"
+    }
+    
     enum CodingKeys: String, CodingKey {
         case id
         case parentId = "parent_id"

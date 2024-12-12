@@ -23,7 +23,7 @@ struct PeopleCommonView: View {
 
             Section {
                 ForEach(commonCourses, id: \.id) { course in
-                    Text(course.name ?? "")
+                    Text(course.displayName)
                 }
             } footer: {
                 if fetchingCommonCourses {

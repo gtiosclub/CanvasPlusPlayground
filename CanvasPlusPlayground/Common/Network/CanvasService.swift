@@ -225,6 +225,7 @@ struct CanvasService {
         guard let url = request.url else { throw NetworkError.invalidURL(msg: request.path) }
 
         var urlRequest = URLRequest(url: url)
+        
         urlRequest.httpMethod = "GET"
         
         do {

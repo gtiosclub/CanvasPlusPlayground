@@ -44,7 +44,11 @@ struct CourseView: View {
             }
         }
         .tint(course.rgbColors?.color)
-        .navigationTitle(course.name ?? "Unknown Course")
+        .navigationTitle(course.displayName)
+        #if os(iOS)
+        .listStyle(.insetGrouped)
+        #else
         .listStyle(.sidebar)
+        #endif
     }
 }
