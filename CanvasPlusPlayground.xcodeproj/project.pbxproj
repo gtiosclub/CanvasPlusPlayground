@@ -66,6 +66,7 @@
 		B7AD54F62CD41D7900FB09BB /* DeviceStat.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AD54F02CD41D7900FB09BB /* DeviceStat.swift */; };
 		B7AD550C2CD4257B00FB09BB /* IntelligenceOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AD550B2CD4257400FB09BB /* IntelligenceOnboardingView.swift */; };
 		B7D95D772D07C3D3002AD955 /* ICSParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D95D762D07C3D3002AD955 /* ICSParser.swift */; };
+		B7D95DB72D0A8D78002AD955 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D95DB62D0A8D75002AD955 /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -128,6 +129,7 @@
 		B7AD54F22CD41D7900FB09BB /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		B7AD550B2CD4257400FB09BB /* IntelligenceOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntelligenceOnboardingView.swift; sourceTree = "<group>"; };
 		B7D95D762D07C3D3002AD955 /* ICSParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICSParser.swift; sourceTree = "<group>"; };
+		B7D95DB62D0A8D75002AD955 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +147,7 @@
 		A324BA502D07963D005F53FA /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				B7D95DB52D0A8D6A002AD955 /* Settings */,
 				A324BA5F2D0798A1005F53FA /* Grades */,
 				A324BA5E2D079899005F53FA /* Calendar */,
 				A324BA5C2D0797D1005F53FA /* Tabs */,
@@ -383,6 +386,14 @@
 			path = Intelligence;
 			sourceTree = "<group>";
 		};
+		B7D95DB52D0A8D6A002AD955 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				B7D95DB62D0A8D75002AD955 /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -478,6 +489,7 @@
 				B7D95D772D07C3D3002AD955 /* ICSParser.swift in Sources */,
 				B76455012C8DF61B002DF00E /* StorageKeys.swift in Sources */,
 				A3FFD03A2CDEC2AC006BAB51 /* LookupCondition.swift in Sources */,
+				B7D95DB72D0A8D78002AD955 /* SettingsView.swift in Sources */,
 				A3E7F3932C99338B00DC4300 /* Tab.swift in Sources */,
 				9B69FA4D2CC2CCB1006101F3 /* AggregatedAssignmentsViewModel.swift in Sources */,
 				B76455022C8DF61B002DF00E /* CourseFilesView.swift in Sources */,

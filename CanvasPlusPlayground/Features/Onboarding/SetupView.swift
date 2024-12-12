@@ -35,13 +35,6 @@ struct SetupView: View {
                     TextField("Access Token", text: $tempAccessKey)
                         .textFieldStyle(.roundedBorder)
                         .autocorrectionDisabled()
-
-                    Button("Done") {
-                        StorageKeys.accessTokenValue = tempAccessKey
-                        dismiss()
-                    }
-                    .disabled(tempAccessKey.isEmpty)
-                    .buttonStyle(.borderedProminent)
                 }
                 .padding(.horizontal)
 
@@ -56,6 +49,12 @@ struct SetupView: View {
         .onAppear {
             tempAccessKey = StorageKeys.accessTokenValue
         }
+        .onDisappear {
+            Task {
+                StorageKeys.accessTokenValue = tempAccessKey
+                await courseManager.getCourses()
+            }
+        }
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
                 Button("Done") {
@@ -64,5 +63,6 @@ struct SetupView: View {
                 .disabled(tempAccessKey.isEmpty)
             }
         }
+        .interactiveDismissDisabled(tempAccessKey.isEmpty)
     }
 }
