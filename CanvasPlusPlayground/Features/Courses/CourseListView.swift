@@ -107,7 +107,6 @@ struct CourseListView: View {
                 }
             }
 
-
             Section("Favorites") {
                 NavigationLink {
                     AggregatedAssignmentsView()
@@ -117,22 +116,24 @@ struct CourseListView: View {
                 .disabled(courseManager.userFavCourses.isEmpty)
 
                 ForEach(courseManager.userFavCourses, id: \.id) { course in
-                    CourseListCell(course: course)
-                        .tint(course.rgbColors?.color)
+                    NavigationLink(value: course.id) {
+                        CourseListCell(course: course)
+                    }
+                    .tint(course.rgbColors?.color)
                 }
             }
 
             Section("Courses") {
                 ForEach(courseManager.userOtherCourses, id: \.id) { course in
-                    CourseListCell(course: course)
-                        .tint(course.rgbColors?.color)
+                    NavigationLink(value: course.id) {
+                        CourseListCell(course: course)
+                    }
+                    .tint(course.rgbColors?.color)
                 }
             }
         }
         .navigationTitle("Courses")
-        #if os(iOS)
-        .listStyle(.insetGrouped)
-        #endif
+        .listStyle(.sidebar)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
                 Button("Change Access Token", systemImage: "gear") {
@@ -161,22 +162,25 @@ struct CourseListView: View {
     private var detailView: some View {
         if let selectedCourse,
            let selectedCoursePage {
-            switch selectedCoursePage {
-            case .files:
-                CourseFilesView(course: selectedCourse)
-            case .announcements:
-                CourseAnnouncementsView(course: selectedCourse)
-            case .assignments:
-                CourseAssignmentsView(course: selectedCourse)
-            case .calendar:
-                CalendarView(course: selectedCourse)
-            case .grades:
-                CourseGradeView(course: selectedCourse)
-            case .people:
-                PeopleView(courseID: selectedCourse.id)
-            case .tabs:
-                CourseTabsView(course: selectedCourse)
+            Group {
+                switch selectedCoursePage {
+                case .files:
+                    CourseFilesView(course: selectedCourse)
+                case .announcements:
+                    CourseAnnouncementsView(course: selectedCourse)
+                case .assignments:
+                    CourseAssignmentsView(course: selectedCourse)
+                case .calendar:
+                    CalendarView(course: selectedCourse)
+                case .grades:
+                    CourseGradeView(course: selectedCourse)
+                case .people:
+                    PeopleView(courseID: selectedCourse.id)
+                case .tabs:
+                    CourseTabsView(course: selectedCourse)
+                }
             }
+            .tint(selectedCourse.rgbColors?.color)
         }
     }
 }

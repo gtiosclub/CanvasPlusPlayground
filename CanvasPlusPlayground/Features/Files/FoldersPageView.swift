@@ -24,6 +24,7 @@ struct FoldersPageView: View {
             Section("Files") {
                 ForEach(filesVM.displayedFiles, id: \.id) { file in
                     FileRow(for: file)
+                        .listItemTint(course.rgbColors?.color)
                 }
             }
         
@@ -31,6 +32,7 @@ struct FoldersPageView: View {
             Section("Folders") {
                 ForEach(filesVM.displayedFolders, id: \.id) { subFolder in
                     FolderRow(for: subFolder)
+                        .listItemTint(course.rgbColors?.color)
                 }
             }
             

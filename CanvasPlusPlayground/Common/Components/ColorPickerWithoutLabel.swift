@@ -33,12 +33,15 @@ public struct ColorPickerWithoutLabel: UIViewRepresentable {
 
 extension View {
     @available(iOS 14.0, *)
-    public func colorPickerSheet(isPresented: Binding<Bool>, selection: Binding<Color>, supportsAlpha: Bool = true, title: String? = nil, onDisappear: (() -> Void)? = { }) -> some View {
+    public func colorPickerSheet(isPresented: Binding<Bool>, selection: Binding<Color>, supportsAlpha: Bool = true, title: String? = nil, onDisappear: @escaping (() -> Void) = { }) -> some View {
         self.background(
-            ColorPickerSheet(isPresented: isPresented, selection: selection, supportsAlpha: supportsAlpha, title: title)
-                .onDisappear {
-                    DispatchQueue.main.async { onDisappear?() }
-                }
+            ColorPickerSheet(
+                isPresented: isPresented,
+                selection: selection,
+                supportsAlpha: supportsAlpha,
+                title: title,
+                onDisappear: onDisappear
+            )
         )
     }
 }
@@ -49,19 +52,26 @@ private struct ColorPickerSheet: UIViewRepresentable {
     @Binding var selection: Color
     var supportsAlpha: Bool
     var title: String?
-    
+    let onDisappear: () -> Void
+
     func makeCoordinator() -> Coordinator {
-        Coordinator(selection: $selection, isPresented: $isPresented)
+        Coordinator(
+            selection: $selection,
+            isPresented: $isPresented,
+            onDisappear: onDisappear
+        )
     }
     
     class Coordinator: NSObject, UIColorPickerViewControllerDelegate, UIAdaptivePresentationControllerDelegate {
         @Binding var selection: Color
         @Binding var isPresented: Bool
+        let onDisappear: () -> Void
         var didPresent = false
-        
-        init(selection: Binding<Color>, isPresented: Binding<Bool>) {
+
+        init(selection: Binding<Color>, isPresented: Binding<Bool>, onDisappear: @escaping (() -> Void)) {
             self._selection = selection
             self._isPresented = isPresented
+            self.onDisappear = onDisappear
         }
         
         func colorPickerViewControllerDidSelectColor(_ viewController: UIColorPickerViewController) {
@@ -70,6 +80,7 @@ private struct ColorPickerSheet: UIViewRepresentable {
         func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
             isPresented = false
             didPresent = false
+            self.onDisappear()
         }
         func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
             isPresented = false
