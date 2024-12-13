@@ -58,7 +58,6 @@ struct CourseListView: View {
                 showAuthorization = true
             } else {
                 await courseManager.getCourses()
-                await courseManager.getEnrollments()
             }
         }
         .refreshable {
