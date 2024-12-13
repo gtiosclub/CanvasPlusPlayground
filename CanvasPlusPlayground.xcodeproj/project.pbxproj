@@ -25,6 +25,7 @@
 		9B9C2E062C93F94C00E4B16B /* CourseAnnouncementDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9C2E052C93F94C00E4B16B /* CourseAnnouncementDetailView.swift */; };
 		A300E2A22D0000DF00AA7D07 /* CanvasRequest+Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = A300E2A12D0000DF00AA7D07 /* CanvasRequest+Service.swift */; };
 		A306ED112CEAC09E00556D1E /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A306ED102CEAC09E00556D1E /* Folder.swift */; };
+		A31A81E72D0CCB69003C37EB /* GradesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A31A81E62D0CCB69003C37EB /* GradesViewModel.swift */; };
 		A324BA642D07AF0B005F53FA /* CourseFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A324BA632D07AF0B005F53FA /* CourseFileService.swift */; };
 		A324BA662D07AFD5005F53FA /* FileType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A324BA652D07AFD5005F53FA /* FileType.swift */; };
 		A324BA682D07C2E9005F53FA /* FileViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A324BA672D07C2E9005F53FA /* FileViewer.swift */; };
@@ -88,6 +89,7 @@
 		9B9C2E052C93F94C00E4B16B /* CourseAnnouncementDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAnnouncementDetailView.swift; sourceTree = "<group>"; };
 		A300E2A12D0000DF00AA7D07 /* CanvasRequest+Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CanvasRequest+Service.swift"; sourceTree = "<group>"; };
 		A306ED102CEAC09E00556D1E /* Folder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Folder.swift; sourceTree = "<group>"; };
+		A31A81E62D0CCB69003C37EB /* GradesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradesViewModel.swift; sourceTree = "<group>"; };
 		A324BA632D07AF0B005F53FA /* CourseFileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseFileService.swift; sourceTree = "<group>"; };
 		A324BA652D07AFD5005F53FA /* FileType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileType.swift; sourceTree = "<group>"; };
 		A324BA672D07C2E9005F53FA /* FileViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileViewer.swift; sourceTree = "<group>"; };
@@ -314,6 +316,7 @@
 			isa = PBXGroup;
 			children = (
 				7F8535732C98DE3C0023E384 /* CourseGradeView.swift */,
+				A31A81E62D0CCB69003C37EB /* GradesViewModel.swift */,
 			);
 			path = Grades;
 			sourceTree = "<group>";
@@ -521,6 +524,7 @@
 				3DAE85002C9A0E4F008C22E7 /* PDFViewHelper.swift in Sources */,
 				B533C0BE2CADDDE700A74AF6 /* PeopleCommonView.swift in Sources */,
 				B7926D182CE962C200BFFBE1 /* ColorPickerWithoutLabel.swift in Sources */,
+				A31A81E72D0CCB69003C37EB /* GradesViewModel.swift in Sources */,
 				A3E7F38B2C9555B200DC4300 /* CanvasService.swift in Sources */,
 				B76455082C8DF61B002DF00E /* CourseManager.swift in Sources */,
 				9B9C2E062C93F94C00E4B16B /* CourseAnnouncementDetailView.swift in Sources */,
