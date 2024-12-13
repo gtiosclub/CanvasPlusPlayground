@@ -56,9 +56,10 @@ struct SettingsView: View {
                 }
 
                 Button("Delete all files", systemImage: "folder.badge.minus") {
-                    guard let _ = try? CourseFileService.clearAllFiles() else {
-                        print("Clearing failed")
-                        return
+                    do {
+                        try CourseFileService.clearAllFiles()
+                    } catch {
+                        print("Couldn't clear files: \(error)")
                     }
                 }
                 
