@@ -6,7 +6,9 @@
 //
 
 import Foundation
+#if os(macOS)
 import AppKit
+#endif
 
 struct CourseFileService {
     
@@ -134,7 +136,9 @@ struct CourseFileService {
     
     /// Opens finder tab at specific directory URL
     static func showInFinder(fileURL: URL = rootURL ?? .currentDirectory()) {
+        #if os(macOS)
         NSWorkspace.shared.open(fileURL)
+        #endif
     }
     
     // MARK: Helpers
