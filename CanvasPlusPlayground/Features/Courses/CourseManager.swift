@@ -24,14 +24,20 @@ class CourseManager {
             let courses: [Course] = try await CanvasService.shared.loadAndSync(
                 .getCourses(enrollmentState: "active"),
                 onCacheReceive: { cachedCourses in
-                   guard let cachedCourses else { return }
-                   self.courses = cachedCourses
+                    guard let cachedCourses else { return }
+                    setCourses(cachedCourses)
                 }
             )
 
-            self.courses = courses
+            setCourses(courses)
         } catch {
             print("Failed to fetch files. \(error)")
+        }
+    }
+    
+    func setCourses(_ courses: [Course]) {
+        DispatchQueue.main.sync {
+            self.courses = courses
         }
     }
 }
