@@ -48,7 +48,9 @@ class CourseFileViewModel {
     
     func fetchContent(in folder: Folder) async {
         
-        traversedFolderIDs.append(folder.id)
+        if !traversedFolderIDs.contains(folder.id) {
+            traversedFolderIDs.append(folder.id)
+        }
         
         async let foldersInRootFolder: [Folder] = CanvasService.shared.loadAndSync(.getFoldersInFolder(folderId: folder.id), onCacheReceive: { folders in
             self.folders = folders ?? []
