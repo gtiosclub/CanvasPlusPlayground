@@ -36,7 +36,9 @@ struct CoursePDFView: View {
     }
 
     func runModel() {
-        if let pdf = PDFDocument(url: url) {
+        guard case .data(let data) = source else { return }
+
+        if let pdf = PDFDocument(data: data) {
             let rag = RAGSystem()
             let pageCount = pdf.pageCount
 
@@ -44,14 +46,21 @@ struct CoursePDFView: View {
                 guard let page = pdf.page(at: i) else { continue }
                 guard let pageContent = page.string else { continue }
 
-                rag
-                    .addDocument(
-                        .init(id: UUID().uuidString, content: pageContent)
-                    )
+                let paragraphs = pageContent.components(separatedBy: .newlines)
+
+                paragraphs.forEach {
+                    rag
+                        .addDocument(
+                            .init(id: UUID().uuidString, content: $0)
+                        )
+                }
             }
 
-            let relevantDocs = rag.searchRelevantDocuments(for: query)
+            let relevantDocs = rag.searchRelevantDocuments(for: query, limit: 10)
             let context = relevantDocs.map { $0.content }.joined(separator: " ")
+
+            print("Context: \(context)")
+
             let prompt = """
             Context: \(context)
             
