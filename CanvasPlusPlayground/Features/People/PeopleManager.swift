@@ -55,13 +55,23 @@ class PeopleManager {
             return
         }
         
-        self.enrollments = enrollments
+        setEnrollments(enrollments)
     }
     
     private func addEnrollments(_ enrollments: [Enrollment]) {
-        self.enrollments = Set(self.enrollments + enrollments).sorted {
-            guard let name1 = $0.user?.name, let name2 = $1.user?.name else { return false }
-            return (name1) < (name2)
+        DispatchQueue.global().sync {
+            let enrollments = Set(self.enrollments + enrollments).sorted {
+                guard let name1 = $0.user?.name, let name2 = $1.user?.name else { return false }
+                return (name1) < (name2)
+            }
+            
+            setEnrollments(enrollments)
+        }
+    }
+    
+    private func setEnrollments(_ enrollments: [Enrollment]) {
+        DispatchQueue.main.sync {
+            self.enrollments = enrollments
         }
     }
     
