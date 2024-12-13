@@ -46,17 +46,13 @@ struct CoursePDFView: View {
                 guard let page = pdf.page(at: i) else { continue }
                 guard let pageContent = page.string else { continue }
 
-                let paragraphs = pageContent.components(separatedBy: .newlines)
-
-                paragraphs.forEach {
-                    rag
-                        .addDocument(
-                            .init(id: UUID().uuidString, content: $0)
-                        )
-                }
+                rag
+                    .addDocument(
+                        .init(id: UUID().uuidString, content: pageContent)
+                    )
             }
 
-            let relevantDocs = rag.searchRelevantDocuments(for: query, limit: 10)
+            let relevantDocs = rag.searchRelevantDocuments(for: query)
             let context = relevantDocs.map { $0.content }.joined(separator: " ")
 
             print("Context: \(context)")
