@@ -36,7 +36,7 @@ class PeopleManager {
         guard let courseID else { return }
 
         let enrollments: [Enrollment]? = try? await CanvasService.shared.loadAndSync(
-            .getPeople(courseId: courseID),
+            .getEnrollments(courseId: courseID),
             descriptor: .init(sortBy: [
                 SortDescriptor(\.user?.name, order: .forward)
             ]),
@@ -86,7 +86,7 @@ class PeopleManager {
             for course in courses {                
                 var didAlreadyAddCourse = false
                 let courseID = course.id
-                let request = CanvasRequest.getPeople(courseId: courseID)
+                let request = CanvasRequest.getEnrollments(courseId: courseID)
                 
                 func processEnrollments(_ enrollments: [Enrollment]) {
                     guard !didAlreadyAddCourse else { return }
