@@ -24,7 +24,7 @@ assignees: ""
 - [ ] Task 1 ...
 - [ ] Task 2 ...
 
-When beginning work on a task, click on the `...` button to the right of thre task and click on `Convert to Issue` to create a child issue linked to this parent issue.
+When beginning work on a task, click on the `...` button to the right of the task and click on `Convert to Issue` to create a child issue linked to this parent issue.
 
 ## Implementation Plan (optional)
 
