@@ -18,7 +18,7 @@ class GradesViewModel {
     }
     
     func getEnrollments() async {
-        let request = CanvasRequest.getCourses(enrollmentState: "active")
+        let request = CanvasRequest.getPeople(courseId: courseId)
         
         do {
             if let enrollments: [Enrollment] = try? await CanvasService.shared.load(request), findEnrollment(enrollments: enrollments) {
