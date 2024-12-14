@@ -1,14 +1,14 @@
 ---
-name: Feature Request
-about: Ticket for a new feature
-title: "[Feature]: "
-labels: new feature
+name: App Improvements
+about: Ticket for a project enhancement
+title: "[Improvement]: "
+labels: enhancement
 assignees: ""
 ---
 
 ## Description
 
-(Feature Owner) Clearly describe the feature.
+(Improvement Owner) Clearly describe the improvement being made.
 
 ## Relevant Resources
 
