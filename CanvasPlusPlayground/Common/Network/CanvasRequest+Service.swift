@@ -25,7 +25,7 @@ extension CanvasRequest {
         switch self {
         case .getCourse:
             return nil
-        case .getCourseRootFolder, .getAllCourseFiles, .getAllCourseFolders, .getFilesInFolder, .getFoldersInFolder, .getTabs, .getAnnouncements, .getAssignments, .getEnrollments, .getCourses:
+        default:
             return \M.parentId
         }
     }
@@ -37,7 +37,7 @@ extension CanvasRequest {
         case .getCourse:
             return \M.id
         // Requests that must be identified by the return model's parentId
-        case .getCourseRootFolder, .getAllCourseFiles, .getAllCourseFolders, .getFilesInFolder, .getFoldersInFolder, .getTabs, .getAnnouncements, .getAssignments, .getEnrollments, .getCourses:
+        default:
             return \M.parentId
         }
     }

@@ -27,6 +27,8 @@ enum CanvasRequest: Hashable {
     
     case getEnrollments(courseId: String, perPage: String = "100")
     
+    case getQuizzes(courseId: String, searchTerm: String? = nil)
+    
     var path: String {
         switch self {
             
@@ -57,13 +59,16 @@ enum CanvasRequest: Hashable {
             
         case let .getEnrollments(courseId, _):
             "courses/\(courseId)/enrollments"
+            
+        case let .getQuizzes(courseId, _):
+            "courses/\(courseId)/quizzes"
         }
     }
     
-    var queryParameters: [(name: String, value: String)] {
-        var params = [(name: "access_token", value: StorageKeys.accessTokenValue)]
+    var queryParameters: [(name: String, value: String?)] {
+        var params: [(String, String?)] = [(name: "access_token", value: StorageKeys.accessTokenValue)]
         
-        let additional: [(String, String)] = switch self {
+        let additional: [(String, String?)] = switch self {
         case let .getCourses(enrollment_state, perPage):
             [
                 ("enrollment_state", enrollment_state),
@@ -80,6 +85,10 @@ enum CanvasRequest: Hashable {
             [
                 ("per_page", perPage)
             ]
+        case let .getQuizzes(_, searchTerm):
+            [
+                ("search_term", searchTerm)
+            ]
         default:
             []
         }
@@ -94,7 +103,7 @@ enum CanvasRequest: Hashable {
         switch self {
         case let .getCourse(id):
             return id
-        case let .getTabs(courseId), let .getAnnouncements(courseId, _, _, _), let .getAssignments(courseId), let .getEnrollments(courseId, _), let .getAllCourseFiles(courseId),  let .getAllCourseFolders(courseId):
+        case let .getTabs(courseId), let .getAnnouncements(courseId, _, _, _), let .getAssignments(courseId), let .getEnrollments(courseId, _), let .getAllCourseFiles(courseId),  let .getAllCourseFolders(courseId), let .getQuizzes(courseId, _):
             return courseId
         case let.getCourseRootFolder(courseId):
             return "\(courseId)_root"
@@ -144,6 +153,8 @@ enum CanvasRequest: Hashable {
             [Assignment].self
         case .getEnrollments:
             [Enrollment].self
+        case .getQuizzes:
+            [Quiz].self
         }
     }
 }
