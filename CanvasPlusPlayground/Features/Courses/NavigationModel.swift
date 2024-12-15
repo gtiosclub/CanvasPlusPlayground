@@ -10,7 +10,7 @@ import SwiftUI
 @Observable
 class NavigationModel {
     enum CoursePage: String {
-        case assignments, files, announcements, grades, calendar, people, tabs
+        case assignments, files, announcements, grades, calendar, people, tabs, quizzes
     }
 
     var selectedCourseID: Course.ID? {

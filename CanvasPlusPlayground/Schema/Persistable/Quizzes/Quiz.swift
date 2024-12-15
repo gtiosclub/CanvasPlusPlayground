@@ -15,7 +15,7 @@ class Quiz {
     @Attribute(.unique) let id: String
     var parentId: String
     
-    var title: String
+    var title: String?
     var htmlUrl: String?
     var mobileUrl: String?
     var previewUrl: String?
@@ -25,17 +25,17 @@ class Quiz {
     var timeLimit: Int?
     var shuffleAnswers: Bool?
     var hideResultsRaw: String?
-    var showCorrectAnswers: Bool
-    var showCorrectAnswersLastAttempt: String
+    var showCorrectAnswers: Bool?
+    var showCorrectAnswersLastAttempt: Bool?
     var showCorrectAnswersAt: Date?
     var hideCorrectAnswersAt: Date?
     var oneTimeResults: Bool?
     var scoringPolicyRaw: String?
-    var allowedAttempts: Int
+    var allowedAttempts: Int?
     var oneQuestionAtATime: Bool?
     var questionCount: Int?
     var pointsPossible: Int?
-    var cantGoBack: Bool
+    var cantGoBack: Bool?
     var accessCode: String?
     var ipFilter: String?
     var dueAt: Date?
@@ -49,10 +49,10 @@ class Quiz {
     var speedGraderURL: String?
     var quizExtensionsURL: String?
     var permissions: QuizPermissions?
-    var allDates: Set<AssignmentDate>
+    var allDates: [AssignmentDate]
     var versionNumber: Int?
     var questionTypesRaw: [String]
-    var anonymousSubmissions: Bool
+    var anonymousSubmissions: Bool?
     
     var quizType: QuizType {
         get { QuizType(rawValue: quizTypeRaw) ?? .assignment }
@@ -81,18 +81,18 @@ class Quiz {
         self.id =  String(describing: id)
         self.parentId = try container.decodeIfPresent(String.self, forKey: .parentId) ?? ""
         
-        self.title = try container.decode(String.self, forKey: .title)
-        self.htmlUrl = try container.decode(String.self, forKey: .htmlUrl)
+        self.title = try container.decodeIfPresent(String.self, forKey: .title)
+        self.htmlUrl = try container.decodeIfPresent(String.self, forKey: .htmlUrl)
         self.mobileUrl = try container.decodeIfPresent(String.self, forKey: .mobileUrl)
         self.previewUrl = try container.decodeIfPresent(String.self, forKey: .previewUrl)
         self.quizDescription = try container.decodeIfPresent(String.self, forKey: .quizDescription)
-        self.quizTypeRaw = try container.decode(String.self, forKey: .quizTypeRaw)
+        self.quizTypeRaw = try container.decodeIfPresent(String.self, forKey: .quizTypeRaw) ?? QuizType.unknown.rawValue
         self.assignmentGroupId = try container.decodeIfPresent(Int.self, forKey: .assignmentGroupId)
         self.timeLimit = try container.decodeIfPresent(Int.self, forKey: .timeLimit)
         self.shuffleAnswers = try container.decodeIfPresent(Bool.self, forKey: .shuffleAnswers)
         self.hideResultsRaw = try container.decodeIfPresent(String.self, forKey: .hideResultsRaw)
-        self.showCorrectAnswers = try container.decode(Bool.self, forKey: .showCorrectAnswers)
-        self.showCorrectAnswersLastAttempt = try container.decode(String.self, forKey: .showCorrectAnswersLastAttempt)
+        self.showCorrectAnswers = try container.decodeIfPresent(Bool.self, forKey: .showCorrectAnswers)
+        self.showCorrectAnswersLastAttempt = try container.decodeIfPresent(Bool.self, forKey: .showCorrectAnswersLastAttempt)
         self.showCorrectAnswersAt = try container.decodeIfPresent(Date.self, forKey: .showCorrectAnswersAt)
         self.hideCorrectAnswersAt = try container.decodeIfPresent(Date.self, forKey: .hideCorrectAnswersAt)
         self.oneTimeResults = try container.decodeIfPresent(Bool.self, forKey: .oneTimeResults)
@@ -101,7 +101,7 @@ class Quiz {
         self.oneQuestionAtATime = try container.decodeIfPresent(Bool.self, forKey: .oneQuestionAtATime)
         self.questionCount = try container.decodeIfPresent(Int.self, forKey: .questionCount)
         self.pointsPossible = try container.decodeIfPresent(Int.self, forKey: .pointsPossible)
-        self.cantGoBack = try container.decode(Bool.self, forKey: .cantGoBack)
+        self.cantGoBack = try container.decodeIfPresent(Bool.self, forKey: .cantGoBack)
         self.accessCode = try container.decodeIfPresent(String.self, forKey: .accessCode)
         self.ipFilter = try container.decodeIfPresent(String.self, forKey: .ipFilter)
         self.dueAt = try container.decodeIfPresent(Date.self, forKey: .dueAt)
@@ -115,10 +115,10 @@ class Quiz {
         self.speedGraderURL = try container.decodeIfPresent(String.self, forKey: .speedGraderURL)
         self.quizExtensionsURL = try container.decodeIfPresent(String.self, forKey: .quizExtensionsURL)
         self.permissions = try container.decodeIfPresent(QuizPermissions.self, forKey: .permissions)
-        self.allDates = try container.decode(Set<AssignmentDate>.self, forKey: .allDates)
+        self.allDates = try container.decodeIfPresent([AssignmentDate].self, forKey: .allDates) ?? []
         self.versionNumber = try container.decodeIfPresent(Int.self, forKey: .versionNumber)
-        self.questionTypesRaw = try container.decode([String].self, forKey: .questionTypesRaw)
-        self.anonymousSubmissions = try container.decode(Bool.self, forKey: .anonymousSubmissions)
+        self.questionTypesRaw = try container.decodeIfPresent([String].self, forKey: .questionTypesRaw) ?? []
+        self.anonymousSubmissions = try container.decodeIfPresent(Bool.self, forKey: .anonymousSubmissions)
     }
 }
 

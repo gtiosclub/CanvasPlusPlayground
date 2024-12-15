@@ -1,0 +1,50 @@
+//
+//  QuizViewModel.swift
+//  CanvasPlusPlayground
+//
+//  Created by Abdulaziz Albahar on 12/15/24.
+//
+
+import Foundation
+
+@Observable
+class QuizzesViewModel {
+    let courseId: String
+    var quizzes = Set<Quiz>()
+    
+    var sectionsToQuizzes: Dictionary<QuizType, [Quiz]> {
+        Dictionary(grouping: quizzes, by: { $0.quizType })
+    }
+    var sections: [QuizType] {
+        Array(self.sectionsToQuizzes.keys)
+            .sorted { $0.title < $1.title }
+    }
+    
+    init(courseId: String) {
+        self.courseId = courseId
+    }
+    
+    func fetchQuizzes() async {
+        let request = CanvasRequest.getQuizzes(courseId: courseId)
+        
+        do {
+            let quizzes: [Quiz] = try await CanvasService.shared.loadAndSync(request, onCacheReceive: {
+                guard let quizzes = $0 else { return }
+                addQuizzes(quizzes)
+            })
+            
+            addQuizzes(quizzes)
+        } catch {
+            print("Quiz fetch failed with error: \n\(error)")
+        }
+        
+    }
+    
+    func addQuizzes(_ newQuizzes: [Quiz]) {
+        Task { @MainActor in
+            self.quizzes.formUnion(newQuizzes)
+        }
+    }
+    
+    
+}

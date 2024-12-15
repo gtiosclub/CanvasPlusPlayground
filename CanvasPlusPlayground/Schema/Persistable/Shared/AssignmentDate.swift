@@ -8,8 +8,8 @@
 import Foundation
 
 struct AssignmentDate: Codable, Hashable {
-    var id: Int
-    var base: Bool
+    var id: Int?
+    var base: Bool?
     var title: String?
     var dueAt: Date?
     var unlockAt: Date?

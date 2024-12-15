@@ -161,6 +161,8 @@ struct CourseListView: View {
                     PeopleView(courseID: selectedCourse.id)
                 case .tabs:
                     CourseTabsView(course: selectedCourse)
+                case .quizzes:
+                    CourseQuizzesView(courseId: selectedCourse.id)
                 }
             }
             .tint(selectedCourse.rgbColors?.color)
