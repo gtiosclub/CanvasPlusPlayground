@@ -18,3 +18,14 @@ extension Int {
         "\(self)"
     }
 }
+
+
+extension Double {
+    var truncatingTrailingZeros: String {
+        String(format: "%g", self)
+    }
+    
+    var toInt: Int {
+        Int(self)
+    }
+}

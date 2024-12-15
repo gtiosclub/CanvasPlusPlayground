@@ -15,7 +15,7 @@ class QuizzesViewModel {
     var sectionsToQuizzes: Dictionary<QuizType, [Quiz]> {
         let unsorted = Dictionary(grouping: quizzes, by: { $0.quizType })
         
-        return unsorted.mapValues { $0.sorted { $0.title ?? "" < $1.title ?? "" } }
+        return unsorted.mapValues { $0.sorted { ($0.dueAt) < $1.dueAt } }
     }
     var sections: [QuizType] {
         Array(self.sectionsToQuizzes.keys)
@@ -30,12 +30,19 @@ class QuizzesViewModel {
         let request = CanvasRequest.getQuizzes(courseId: courseId)
         
         do {
-            let quizzes: [Quiz] = try await CanvasService.shared.loadAndSync(request, onCacheReceive: {
-                guard let quizzes = $0 else { return }
-                addQuizzes(quizzes)
-            })
+            let _: [Quiz] = try await CanvasService.shared.loadAndSync(
+                request,
+                onCacheReceive: {
+                    guard let quizzes = $0 else { return }
+                    addQuizzes(quizzes)
+                },
+                onNewBatch: {
+                    print($0.map(\.title))
+                    addQuizzes($0)
+                }
+            )
             
-            addQuizzes(quizzes)
+            
         } catch {
             print("Quiz fetch failed with error: \n\(error)")
         }

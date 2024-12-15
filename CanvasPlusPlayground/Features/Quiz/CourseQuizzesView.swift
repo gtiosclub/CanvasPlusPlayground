@@ -30,7 +30,39 @@ struct CourseQuizzesView: View {
         Section(quizType.title) {
             let quizzes = quizzesVM.sectionsToQuizzes[quizType] ?? []
             ForEach(quizzes) {
-                Text($0.title ?? "No Title")
+                quizCell(for: $0)
+            }
+        }
+    }
+    
+    @ViewBuilder
+    func quizCell(for quiz: Quiz) -> some View {
+        HStack {
+            VStack {
+                Text(quiz.title ?? "No Title")
+                    .bold()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                HStack {
+                    if let pointsPossible = quiz.pointsPossible?.truncatingTrailingZeros {
+                        Text("\(pointsPossible) pts")
+                            
+                    } else { Text("No pts")}
+                    
+                    Text("\(quiz.questionCount?.toInt ?? 0) Questions")
+                }
+                .font(.caption)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            
+            Spacer()
+            
+            if quiz.lockedForUser == true {
+                Text("Closed")
+            } else if quiz.dueAt == .distantFuture {
+                Text("No Due Date")
+            } else {
+                Text("Due at \(quiz.dueAt.formatted(Date.FormatStyle()))")
             }
         }
     }

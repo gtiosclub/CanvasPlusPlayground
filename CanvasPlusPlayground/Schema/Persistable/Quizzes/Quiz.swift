@@ -22,7 +22,7 @@ class Quiz {
     var quizDescription: String? // known as 'description'
     var quizTypeRaw: String
     var assignmentGroupId: Int?
-    var timeLimit: Int?
+    var timeLimit: Double?
     var shuffleAnswers: Bool?
     var hideResultsRaw: String?
     var showCorrectAnswers: Bool?
@@ -33,12 +33,12 @@ class Quiz {
     var scoringPolicyRaw: String?
     var allowedAttempts: Int?
     var oneQuestionAtATime: Bool?
-    var questionCount: Int?
-    var pointsPossible: Int?
+    var questionCount: Double?
+    var pointsPossible: Double?
     var cantGoBack: Bool?
     var accessCode: String?
     var ipFilter: String?
-    var dueAt: Date?
+    var dueAtRaw: Date?
     var lockAt: Date?
     var unlockAt: Date?
     var published: Bool?
@@ -64,10 +64,12 @@ class Quiz {
         set { hideResultsRaw = newValue?.rawValue }
     }
     
-    public var scoringPolicy: ScoringPolicy? {
+    var scoringPolicy: ScoringPolicy? {
         get { return scoringPolicyRaw.flatMap { ScoringPolicy(rawValue: $0) } }
         set { scoringPolicyRaw = newValue?.rawValue }
     }
+    
+    var dueAt: Date { dueAtRaw ?? .distantFuture }
     
     required init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -83,7 +85,7 @@ class Quiz {
         self.quizDescription = try container.decodeIfPresent(String.self, forKey: .quizDescription)
         self.quizTypeRaw = try container.decodeIfPresent(String.self, forKey: .quizTypeRaw) ?? QuizType.unknown.rawValue
         self.assignmentGroupId = try container.decodeIfPresent(Int.self, forKey: .assignmentGroupId)
-        self.timeLimit = try container.decodeIfPresent(Int.self, forKey: .timeLimit)
+        self.timeLimit = try container.decodeIfPresent(Double.self, forKey: .timeLimit)
         self.shuffleAnswers = try container.decodeIfPresent(Bool.self, forKey: .shuffleAnswers)
         self.hideResultsRaw = try container.decodeIfPresent(String.self, forKey: .hideResultsRaw)
         self.showCorrectAnswers = try container.decodeIfPresent(Bool.self, forKey: .showCorrectAnswers)
@@ -94,12 +96,12 @@ class Quiz {
         self.scoringPolicyRaw = try container.decodeIfPresent(String.self, forKey: .scoringPolicyRaw)
         self.allowedAttempts = try container.decodeIfPresent(Int.self, forKey: .allowedAttempts) ?? 0
         self.oneQuestionAtATime = try container.decodeIfPresent(Bool.self, forKey: .oneQuestionAtATime)
-        self.questionCount = try container.decodeIfPresent(Int.self, forKey: .questionCount)
-        self.pointsPossible = try container.decodeIfPresent(Int.self, forKey: .pointsPossible)
+        self.questionCount = try container.decodeIfPresent(Double.self, forKey: .questionCount)
+        self.pointsPossible = try container.decodeIfPresent(Double.self, forKey: .pointsPossible)
         self.cantGoBack = try container.decodeIfPresent(Bool.self, forKey: .cantGoBack)
         self.accessCode = try container.decodeIfPresent(String.self, forKey: .accessCode)
         self.ipFilter = try container.decodeIfPresent(String.self, forKey: .ipFilter)
-        self.dueAt = try container.decodeIfPresent(Date.self, forKey: .dueAt)
+        self.dueAtRaw = try container.decodeIfPresent(Date.self, forKey: .dueAt)
         self.lockAt = try container.decodeIfPresent(Date.self, forKey: .lockAt)
         self.unlockAt = try container.decodeIfPresent(Date.self, forKey: .unlockAt)
         self.published = try container.decodeIfPresent(Bool.self, forKey: .published)
@@ -195,7 +197,7 @@ extension Quiz: Cacheable {
         try container.encode(cantGoBack, forKey: .cantGoBack)
         try container.encodeIfPresent(accessCode, forKey: .accessCode)
         try container.encodeIfPresent(ipFilter, forKey: .ipFilter)
-        try container.encodeIfPresent(dueAt, forKey: .dueAt)
+        try container.encodeIfPresent(dueAtRaw, forKey: .dueAt)
         try container.encodeIfPresent(lockAt, forKey: .lockAt)
         try container.encodeIfPresent(unlockAt, forKey: .unlockAt)
         try container.encodeIfPresent(published, forKey: .published)
@@ -236,7 +238,7 @@ extension Quiz: Cacheable {
         self.cantGoBack = other.cantGoBack
         self.accessCode = other.accessCode
         self.ipFilter = other.ipFilter
-        self.dueAt = other.dueAt
+        self.dueAtRaw = other.dueAtRaw
         self.lockAt = other.lockAt
         self.unlockAt = other.unlockAt
         self.published = other.published
