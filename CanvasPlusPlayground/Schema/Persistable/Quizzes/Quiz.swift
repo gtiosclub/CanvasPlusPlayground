@@ -51,7 +51,7 @@ class Quiz {
     var permissions: QuizPermissions?
     var allDates: [AssignmentDate]
     var versionNumber: Int?
-    var questionTypesRaw: [String]
+    var questionTypes: [QuizQuestionType]
     var anonymousSubmissions: Bool?
     
     var quizType: QuizType {
@@ -62,11 +62,6 @@ class Quiz {
     var hideResults: QuizHideResults? {
         get { return hideResultsRaw.flatMap { QuizHideResults(rawValue: $0) } }
         set { hideResultsRaw = newValue?.rawValue }
-    }
-    
-    public var questionTypes: [QuizQuestionType] {
-        get { return questionTypesRaw.compactMap { QuizQuestionType(rawValue: $0) } }
-        set { questionTypesRaw = newValue.map { $0.rawValue } }
     }
     
     public var scoringPolicy: ScoringPolicy? {
@@ -117,7 +112,7 @@ class Quiz {
         self.permissions = try container.decodeIfPresent(QuizPermissions.self, forKey: .permissions)
         self.allDates = try container.decodeIfPresent([AssignmentDate].self, forKey: .allDates) ?? []
         self.versionNumber = try container.decodeIfPresent(Int.self, forKey: .versionNumber)
-        self.questionTypesRaw = try container.decodeIfPresent([String].self, forKey: .questionTypesRaw) ?? []
+        self.questionTypes = try container.decodeIfPresent([QuizQuestionType].self, forKey: .questionTypes) ?? []
         self.anonymousSubmissions = try container.decodeIfPresent(Bool.self, forKey: .anonymousSubmissions)
     }
 }
@@ -167,7 +162,7 @@ extension Quiz: Cacheable {
         case permissions = "permissions"
         case allDates = "all_dates"
         case versionNumber = "version_number"
-        case questionTypesRaw = "question_types"
+        case questionTypes = "question_types"
         case anonymousSubmissions = "anonymous_submissions"
     }
     
@@ -213,7 +208,7 @@ extension Quiz: Cacheable {
         try container.encodeIfPresent(permissions, forKey: .permissions)
         try container.encodeIfPresent(allDates, forKey: .allDates)
         try container.encodeIfPresent(versionNumber, forKey: .versionNumber)
-        try container.encode(questionTypesRaw, forKey: .questionTypesRaw)
+        try container.encode(questionTypes, forKey: .questionTypes)
         try container.encode(anonymousSubmissions, forKey: .anonymousSubmissions)
     }
     
@@ -254,7 +249,7 @@ extension Quiz: Cacheable {
         self.permissions = other.permissions
         self.allDates = other.allDates
         self.versionNumber = other.versionNumber
-        self.questionTypesRaw = other.questionTypesRaw
+        self.questionTypes = other.questionTypes
         self.anonymousSubmissions = other.anonymousSubmissions    }
 }
 
