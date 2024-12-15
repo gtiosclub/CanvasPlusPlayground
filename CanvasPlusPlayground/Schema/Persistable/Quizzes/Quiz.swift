@@ -10,10 +10,9 @@ import SwiftData
 
 
 @Model
-class Quiz: Cacheable {
-    typealias ServerID = Int
+class Quiz {
     
-    @Attribute(.unique) var id: String
+    @Attribute(.unique) let id: String
     var parentId: String
     
     var title: String
@@ -74,6 +73,189 @@ class Quiz: Cacheable {
         get { return scoringPolicyRaw.flatMap { ScoringPolicy(rawValue: $0) } }
         set { scoringPolicyRaw = newValue?.rawValue }
     }
+    
+    required init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        let id = try container.decode(ServerID.self, forKey: .id)
+        self.id =  String(describing: id)
+        self.parentId = try container.decodeIfPresent(String.self, forKey: .parentId) ?? ""
+        
+        self.title = try container.decode(String.self, forKey: .title)
+        self.htmlUrl = try container.decode(String.self, forKey: .htmlUrl)
+        self.mobileUrl = try container.decodeIfPresent(String.self, forKey: .mobileUrl)
+        self.previewUrl = try container.decodeIfPresent(String.self, forKey: .previewUrl)
+        self.quizDescription = try container.decodeIfPresent(String.self, forKey: .quizDescription)
+        self.quizTypeRaw = try container.decode(String.self, forKey: .quizTypeRaw)
+        self.assignmentGroupId = try container.decodeIfPresent(Int.self, forKey: .assignmentGroupId)
+        self.timeLimit = try container.decodeIfPresent(Int.self, forKey: .timeLimit)
+        self.shuffleAnswers = try container.decodeIfPresent(Bool.self, forKey: .shuffleAnswers)
+        self.hideResultsRaw = try container.decodeIfPresent(String.self, forKey: .hideResultsRaw)
+        self.showCorrectAnswers = try container.decode(Bool.self, forKey: .showCorrectAnswers)
+        self.showCorrectAnswersLastAttempt = try container.decode(String.self, forKey: .showCorrectAnswersLastAttempt)
+        self.showCorrectAnswersAt = try container.decodeIfPresent(Date.self, forKey: .showCorrectAnswersAt)
+        self.hideCorrectAnswersAt = try container.decodeIfPresent(Date.self, forKey: .hideCorrectAnswersAt)
+        self.oneTimeResults = try container.decodeIfPresent(Bool.self, forKey: .oneTimeResults)
+        self.scoringPolicyRaw = try container.decodeIfPresent(String.self, forKey: .scoringPolicyRaw)
+        self.allowedAttempts = try container.decodeIfPresent(Int.self, forKey: .allowedAttempts) ?? 0
+        self.oneQuestionAtATime = try container.decodeIfPresent(Bool.self, forKey: .oneQuestionAtATime)
+        self.questionCount = try container.decodeIfPresent(Int.self, forKey: .questionCount)
+        self.pointsPossible = try container.decodeIfPresent(Int.self, forKey: .pointsPossible)
+        self.cantGoBack = try container.decode(Bool.self, forKey: .cantGoBack)
+        self.accessCode = try container.decodeIfPresent(String.self, forKey: .accessCode)
+        self.ipFilter = try container.decodeIfPresent(String.self, forKey: .ipFilter)
+        self.dueAt = try container.decodeIfPresent(Date.self, forKey: .dueAt)
+        self.lockAt = try container.decodeIfPresent(Date.self, forKey: .lockAt)
+        self.unlockAt = try container.decodeIfPresent(Date.self, forKey: .unlockAt)
+        self.published = try container.decodeIfPresent(Bool.self, forKey: .published)
+        self.unpublishable = try container.decodeIfPresent(Bool.self, forKey: .unpublishable)
+        self.lockedForUser = try container.decodeIfPresent(Bool.self, forKey: .lockedForUser)
+        self.lockInfo = try container.decodeIfPresent(LockInfo.self, forKey: .lockInfo)
+        self.lockExplanaation = try container.decodeIfPresent(String.self, forKey: .lockExplanaation)
+        self.speedGraderURL = try container.decodeIfPresent(String.self, forKey: .speedGraderURL)
+        self.quizExtensionsURL = try container.decodeIfPresent(String.self, forKey: .quizExtensionsURL)
+        self.permissions = try container.decodeIfPresent(QuizPermissions.self, forKey: .permissions)
+        self.allDates = try container.decode(Set<AssignmentDate>.self, forKey: .allDates)
+        self.versionNumber = try container.decodeIfPresent(Int.self, forKey: .versionNumber)
+        self.questionTypesRaw = try container.decode([String].self, forKey: .questionTypesRaw)
+        self.anonymousSubmissions = try container.decode(Bool.self, forKey: .anonymousSubmissions)
+    }
+}
+
+// MARK: Cacheable
+
+extension Quiz: Cacheable {
+    typealias ServerID = Int
+        
+    enum CodingKeys: String, CodingKey {
+        case id
+        case parentId = "parent_id"
+                
+        case title
+        case htmlUrl = "html_url"
+        case mobileUrl = "mobile_url"
+        case previewUrl = "preview_url"
+        case quizDescription = "description" // known as 'description'
+        case quizTypeRaw = "quiz_type"
+        case assignmentGroupId = "assignment_group_id"
+        case timeLimit = "time_limit"
+        case shuffleAnswers = "shuffle_answers"
+        case hideResultsRaw = "hide_results"
+        case showCorrectAnswers = "show_correct_answers"
+        case showCorrectAnswersLastAttempt = "show_correct_answers_last_attempt"
+        case showCorrectAnswersAt = "show_correct_answers_at"
+        case hideCorrectAnswersAt = "hide_correct_answers_at"
+        case oneTimeResults = "one_time_results"
+        case scoringPolicyRaw = "scoring_policy"
+        case allowedAttempts = "allowed_attempts"
+        case oneQuestionAtATime = "one_question_at_a_time"
+        case questionCount = "question_count"
+        case pointsPossible = "points_possible"
+        case cantGoBack = "cant_go_back"
+        case accessCode = "access_code"
+        case ipFilter = "ip_filter"
+        case dueAt = "due_at"
+        case lockAt = "lock_at"
+        case unlockAt = "unlock_at"
+        case published
+        case unpublishable
+        case lockedForUser = "locked_for_user"
+        case lockInfo = "lock_info"
+        case lockExplanaation = "lock_explanation"
+        case speedGraderURL = "speedgrader_url"
+        case quizExtensionsURL = "quiz_extensions_url"
+        case permissions = "permissions"
+        case allDates = "all_dates"
+        case versionNumber = "version_number"
+        case questionTypesRaw = "question_types"
+        case anonymousSubmissions = "anonymous_submissions"
+    }
+    
+    func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        try container.encode(id, forKey: .id)
+        try container.encode(parentId, forKey: .parentId)
+        
+        try container.encode(title, forKey: .title)
+        try container.encodeIfPresent(htmlUrl, forKey: .htmlUrl)
+        try container.encodeIfPresent(mobileUrl, forKey: .mobileUrl)
+        try container.encodeIfPresent(previewUrl, forKey: .previewUrl)
+        try container.encodeIfPresent(quizDescription, forKey: .quizDescription)
+        try container.encode(quizTypeRaw, forKey: .quizTypeRaw)
+        try container.encodeIfPresent(assignmentGroupId, forKey: .assignmentGroupId)
+        try container.encodeIfPresent(timeLimit, forKey: .timeLimit)
+        try container.encodeIfPresent(shuffleAnswers, forKey: .shuffleAnswers)
+        try container.encodeIfPresent(hideResultsRaw, forKey: .hideResultsRaw)
+        try container.encode(showCorrectAnswers, forKey: .showCorrectAnswers)
+        try container.encode(showCorrectAnswersLastAttempt, forKey: .showCorrectAnswersLastAttempt)
+        try container.encodeIfPresent(showCorrectAnswersAt, forKey: .showCorrectAnswersAt)
+        try container.encodeIfPresent(hideCorrectAnswersAt, forKey: .hideCorrectAnswersAt)
+        try container.encodeIfPresent(oneTimeResults, forKey: .oneTimeResults)
+        try container.encodeIfPresent(scoringPolicyRaw, forKey: .scoringPolicyRaw)
+        try container.encode(allowedAttempts, forKey: .allowedAttempts)
+        try container.encodeIfPresent(oneQuestionAtATime, forKey: .oneQuestionAtATime)
+        try container.encodeIfPresent(questionCount, forKey: .questionCount)
+        try container.encodeIfPresent(pointsPossible, forKey: .pointsPossible)
+        try container.encode(cantGoBack, forKey: .cantGoBack)
+        try container.encodeIfPresent(accessCode, forKey: .accessCode)
+        try container.encodeIfPresent(ipFilter, forKey: .ipFilter)
+        try container.encodeIfPresent(dueAt, forKey: .dueAt)
+        try container.encodeIfPresent(lockAt, forKey: .lockAt)
+        try container.encodeIfPresent(unlockAt, forKey: .unlockAt)
+        try container.encodeIfPresent(published, forKey: .published)
+        try container.encodeIfPresent(unpublishable, forKey: .unpublishable)
+        try container.encodeIfPresent(lockedForUser, forKey: .lockedForUser)
+        try container.encodeIfPresent(lockInfo, forKey: .lockInfo)
+        try container.encodeIfPresent(lockExplanaation, forKey: .lockExplanaation)
+        try container.encodeIfPresent(speedGraderURL, forKey: .speedGraderURL)
+        try container.encodeIfPresent(quizExtensionsURL, forKey: .quizExtensionsURL)
+        try container.encodeIfPresent(permissions, forKey: .permissions)
+        try container.encodeIfPresent(allDates, forKey: .allDates)
+        try container.encodeIfPresent(versionNumber, forKey: .versionNumber)
+        try container.encode(questionTypesRaw, forKey: .questionTypesRaw)
+        try container.encode(anonymousSubmissions, forKey: .anonymousSubmissions)
+    }
+    
+    func merge(with other: Quiz) {
+        self.title = other.title
+        self.htmlUrl = other.htmlUrl
+        self.mobileUrl = other.mobileUrl
+        self.previewUrl = other.previewUrl
+        self.quizDescription = other.quizDescription
+        self.quizTypeRaw = other.quizTypeRaw
+        self.assignmentGroupId = other.assignmentGroupId
+        self.timeLimit = other.timeLimit
+        self.shuffleAnswers = other.shuffleAnswers
+        self.hideResultsRaw = other.hideResultsRaw
+        self.showCorrectAnswers = other.showCorrectAnswers
+        self.showCorrectAnswersLastAttempt = other.showCorrectAnswersLastAttempt
+        self.showCorrectAnswersAt = other.showCorrectAnswersAt
+        self.hideCorrectAnswersAt = other.hideCorrectAnswersAt
+        self.oneTimeResults = other.oneTimeResults
+        self.scoringPolicyRaw = other.scoringPolicyRaw
+        self.allowedAttempts = other.allowedAttempts
+        self.oneQuestionAtATime = other.oneQuestionAtATime
+        self.questionCount = other.questionCount
+        self.pointsPossible = other.pointsPossible
+        self.cantGoBack = other.cantGoBack
+        self.accessCode = other.accessCode
+        self.ipFilter = other.ipFilter
+        self.dueAt = other.dueAt
+        self.lockAt = other.lockAt
+        self.unlockAt = other.unlockAt
+        self.published = other.published
+        self.unpublishable = other.unpublishable
+        self.lockedForUser = other.lockedForUser
+        self.lockInfo = other.lockInfo
+        self.lockExplanaation = other.lockExplanaation
+        self.speedGraderURL = other.speedGraderURL
+        self.quizExtensionsURL = other.quizExtensionsURL
+        self.permissions = other.permissions
+        self.allDates = other.allDates
+        self.versionNumber = other.versionNumber
+        self.questionTypesRaw = other.questionTypesRaw
+        self.anonymousSubmissions = other.anonymousSubmissions    }
 }
 
 

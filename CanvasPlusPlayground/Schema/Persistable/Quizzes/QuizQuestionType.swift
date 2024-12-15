@@ -7,7 +7,7 @@
 
 
 public enum QuizQuestionType: String, Codable, CaseIterable {
-    case calculated_question, essay_question, file_upload_question, fill_in_multiple_blanks_question,
-        matching_question, multiple_answers_question, multiple_choice_question, multiple_dropdowns_question,
-        numerical_question, short_answer_question, text_only_question, true_false_question
+    case calculatedQuestion = "calculated_question", essayQuestion = "essay_question", fileUploadQuestion = "file_upload_question", fillInMultipleBlanksQuestion = "fill_in_multiple_blanks_question",
+        matchingQuestion = "matching_question", multipleAnswersQuestion = "multiple_answers_question", multipleChoiceQuestion = "multiple_choice_question", multipleDropdownsQuestion = "multiple_dropdowns_question",
+        numericalQuestion = "numerical_question", shortAnswerQuestion = "short_answer_question", textOnlyQuestion = "text_only_question", trueFalseQuestion = "trueFalseQuestion"
 }

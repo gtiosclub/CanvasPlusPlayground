@@ -7,6 +7,6 @@
 
 import Foundation
 
-enum QuizType: String, Codable {
+enum QuizType: String, Codable, CaseIterable {
     case practiceQuiz = "practice_quiz", assignment = "assignment", gradedSurvey = "graded_survey", survey = "survey", quizzesNext = "quizzes.next", unknown = "unknown"
 }

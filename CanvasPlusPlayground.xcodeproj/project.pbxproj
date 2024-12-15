@@ -182,13 +182,13 @@
 			path = Quizzes;
 			sourceTree = "<group>";
 		};
-		A3049B572D0E5A61002F3166 /* Shared Objects */ = {
+		A3049B572D0E5A61002F3166 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
 				A3049B582D0E5A96002F3166 /* LockInfo.swift */,
 				A3049B5C2D0E5D5A002F3166 /* AssignmentDate.swift */,
 			);
-			path = "Shared Objects";
+			path = Shared;
 			sourceTree = "<group>";
 		};
 		A324BA502D07963D005F53FA /* Features */ = {
@@ -340,7 +340,7 @@
 		A324BA5D2D079816005F53FA /* Persistable */ = {
 			isa = PBXGroup;
 			children = (
-				A3049B572D0E5A61002F3166 /* Shared Objects */,
+				A3049B572D0E5A61002F3166 /* Shared */,
 				A3049B542D0E5386002F3166 /* Quizzes */,
 				B76454ED2C8DF61B002DF00E /* Course.swift */,
 				B76454EE2C8DF61B002DF00E /* Enrollment.swift */,
