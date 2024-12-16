@@ -15,13 +15,15 @@ struct CourseQuizzesView: View {
     }
     
     var body: some View {
-        List {
-            ForEach(quizzesVM.sections) { section in
-                quizSection(for: section)
+        NavigationStack {
+            List {
+                ForEach(quizzesVM.sections) { section in
+                    quizSection(for: section)
+                }
             }
-        }
-        .task {
-            await quizzesVM.fetchQuizzes()
+            .task {
+                await quizzesVM.fetchQuizzes()
+            }
         }
     }
     
