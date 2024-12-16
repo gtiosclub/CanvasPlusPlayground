@@ -61,7 +61,7 @@ enum CanvasRequest: Hashable {
             "courses/\(courseId)/enrollments"
             
         case let .getQuizzes(courseId, _):
-            "courses/\(courseId)/quizzes"
+            "courses/\(courseId)/all_quizzes"
         }
     }
     
