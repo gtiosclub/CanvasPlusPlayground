@@ -43,7 +43,6 @@ class QuizzesViewModel {
                     addQuizzes(quizzes)
                 },
                 onNewBatch: {
-                    print($0.map(\.title))
                     addQuizzes($0)
                 }
             )
