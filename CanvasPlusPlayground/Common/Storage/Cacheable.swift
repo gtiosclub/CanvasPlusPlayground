@@ -15,6 +15,7 @@ protocol Cacheable: Codable, PersistentModel {
     
     
     func merge(with other: Self)
+    func parentIdFor(request: CanvasRequest) -> ParentKeyPath<Self, String>
 }
 
 
@@ -30,5 +31,19 @@ extension Cacheable {
     
     static func == (lhs: Self, rhs: Self) -> Bool {
         return lhs.id == rhs.id
+    }
+}
+
+struct ParentKeyPath<K, V> {
+    var writableKeyPath: ReferenceWritableKeyPath<K, V>?
+    var readableKeyPath: KeyPath<K, V>
+    
+    init(writableKeyPath: ReferenceWritableKeyPath<K, V>) {
+        self.writableKeyPath = writableKeyPath
+        self.readableKeyPath = writableKeyPath
+    }
+    
+    init (readableKeyPath: KeyPath<K, V>) {
+        self.readableKeyPath = readableKeyPath
     }
 }
