@@ -65,10 +65,11 @@ enum CanvasRequest: Hashable {
         }
     }
     
-    var queryParameters: [(name: String, value: String?)] {
-        var params: [(String, String?)] = [(name: "access_token", value: StorageKeys.accessTokenValue)]
+    typealias QueryParam = (name: String, value: String?)
+    var queryParameters: [QueryParam] {
+        var params: [QueryParam] = [(name: "access_token", value: StorageKeys.accessTokenValue)]
         
-        let additional: [(String, String?)] = switch self {
+        let additional: [QueryParam] = switch self {
         case let .getCourses(enrollment_state, perPage):
             [
                 ("enrollment_state", enrollment_state),
