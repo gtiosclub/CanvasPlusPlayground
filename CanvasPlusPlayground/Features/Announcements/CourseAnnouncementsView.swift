@@ -94,9 +94,13 @@ private struct AnnouncementRow: View {
                     +
                     Text(summary)
                 } else {
-                    AsyncAttributedText(
-                        announcement: announcement,
-                        textOnly: true
+                    Text(
+                        announcement.message?
+                            .stripHTML()
+                            .trimmingCharacters(
+                                in: .whitespacesAndNewlines
+                            )
+                        ?? ""
                     )
                 }
             }
