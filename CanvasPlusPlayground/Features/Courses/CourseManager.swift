@@ -19,30 +19,25 @@ class CourseManager {
         courses.filter { !($0.isFavorite ?? false) }.sorted { $0.name ?? "" < $1.name ?? "" }
     }
     
-    var enrollments = [Enrollment]()
-
     func getCourses() async {
         do {
             let courses: [Course] = try await CanvasService.shared.loadAndSync(
                 .getCourses(enrollmentState: "active"),
                 onCacheReceive: { cachedCourses in
-                   guard let cachedCourses else { return }
-                   self.courses = cachedCourses
+                    guard let cachedCourses else { return }
+                    setCourses(cachedCourses)
                 }
             )
 
-            self.courses = courses
+            setCourses(courses)
         } catch {
             print("Failed to fetch files. \(error)")
         }
     }
     
-    func getEnrollments() async {
-        do {
-            let enrollments: [Enrollment] = try await CanvasService.shared.fetch(.getCourses(enrollmentState: "active"))
-            self.enrollments = enrollments
-        } catch {
-            print("Failed to fetch enrollments. \(error)")
+    func setCourses(_ courses: [Course]) {
+        DispatchQueue.main.sync {
+            self.courses = courses
         }
     }
 }

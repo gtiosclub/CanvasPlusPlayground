@@ -36,7 +36,7 @@ class PeopleManager {
         guard let courseID else { return }
 
         let enrollments: [Enrollment]? = try? await CanvasService.shared.loadAndSync(
-            .getPeople(courseId: courseID),
+            .getEnrollments(courseId: courseID),
             descriptor: .init(sortBy: [
                 SortDescriptor(\.user?.name, order: .forward)
             ]),
@@ -55,13 +55,23 @@ class PeopleManager {
             return
         }
         
-        self.enrollments = enrollments
+        setEnrollments(enrollments)
     }
     
     private func addEnrollments(_ enrollments: [Enrollment]) {
-        self.enrollments = Set(self.enrollments + enrollments).sorted {
-            guard let name1 = $0.user?.name, let name2 = $1.user?.name else { return false }
-            return (name1) < (name2)
+        DispatchQueue.global().sync {
+            let enrollments = Set(self.enrollments + enrollments).sorted {
+                guard let name1 = $0.user?.name, let name2 = $1.user?.name else { return false }
+                return (name1) < (name2)
+            }
+            
+            setEnrollments(enrollments)
+        }
+    }
+    
+    private func setEnrollments(_ enrollments: [Enrollment]) {
+        DispatchQueue.main.sync {
+            self.enrollments = enrollments
         }
     }
     
@@ -76,7 +86,7 @@ class PeopleManager {
             for course in courses {                
                 var didAlreadyAddCourse = false
                 let courseID = course.id
-                let request = CanvasRequest.getPeople(courseId: courseID)
+                let request = CanvasRequest.getEnrollments(courseId: courseID)
                 
                 func processEnrollments(_ enrollments: [Enrollment]) {
                     guard !didAlreadyAddCourse else { return }

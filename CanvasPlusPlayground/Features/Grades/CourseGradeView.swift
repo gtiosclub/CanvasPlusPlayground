@@ -8,14 +8,18 @@
 import SwiftUI
 
 struct CourseGradeView: View {
-    @Environment(CourseManager.self) var courseManager
-    @State private var enrollment: Enrollment?
+    @State private var gradesVM: GradesViewModel
+    
+    var enrollment: Enrollment? {
+        gradesVM.enrollment
+    }
     
     let course: Course
     
     
     init(course: Course) {
         self.course = course
+        self._gradesVM = State(initialValue: GradesViewModel(courseId: course.id))
     }
     
     var body: some View {
@@ -25,14 +29,8 @@ struct CourseGradeView: View {
             display("Final Score", value: enrollment?.grades?.finalScore)
             display("Final Grade", value: enrollment?.grades?.finalGrade)
         }
-        .onAppear {
-            for enroll in courseManager.enrollments {
-                let idLHS = self.course.id
-                let idRHS = String(describing: enroll.courseID)
-                if idLHS == idRHS  {
-                    self.enrollment = enroll
-                }
-            }
+        .task {
+            await gradesVM.getEnrollments()
         }
         .navigationTitle("Grades")
     }

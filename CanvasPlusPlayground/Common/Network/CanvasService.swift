@@ -70,6 +70,7 @@ struct CanvasService {
         return try await repository.count(descriptor: cacheDescriptor)
     }
     
+    @discardableResult
     func syncWithAPI<T: Cacheable>(
         _ request: CanvasRequest,
         descriptor: FetchDescriptor<T> = FetchDescriptor<T>(),
