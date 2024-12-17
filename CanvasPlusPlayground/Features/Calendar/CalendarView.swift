@@ -12,6 +12,8 @@ struct CalendarView: View {
 
     @State private var events = [CanvasCalendarEventGroup]()
 
+    @State private var isLoadingCalendar = false
+
     init(course: Course) {
         self.icsURL = URL(string: course.calendar?.ics ?? "")
     }
@@ -30,7 +32,7 @@ struct CalendarView: View {
             .listStyle(.inset)
         }
         .task {
-            events = await ICSParser.parseEvents(from: icsURL)
+            await loadCalendar()
         }
         .overlay {
             if events.isEmpty {
@@ -46,7 +48,14 @@ struct CalendarView: View {
                 }
             }
         }
+        .statusToolbarItem("Calendar", isVisible: isLoadingCalendar)
         .navigationTitle("Calendar")
+    }
+
+    private func loadCalendar() async {
+        isLoadingCalendar = true
+        events = await ICSParser.parseEvents(from: icsURL)
+        isLoadingCalendar = false
     }
 }
 

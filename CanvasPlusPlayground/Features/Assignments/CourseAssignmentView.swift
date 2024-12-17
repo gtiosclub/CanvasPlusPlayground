@@ -11,6 +11,8 @@ struct CourseAssignmentsView: View {
     let course: Course
     @State private var assignmentManager: CourseAssignmentManager
 
+    @State private var isLoadingAssignments = false
+
     init(course: Course) {
         self.course = course
         _assignmentManager = .init(initialValue: CourseAssignmentManager(courseID: course.id))
@@ -28,8 +30,15 @@ struct CourseAssignmentsView: View {
             }
         }
         .task {
-            await assignmentManager.fetchAssignments()
+            await loadAssignments()
         }
+        .statusToolbarItem("Assignments", isVisible: isLoadingAssignments)
         .navigationTitle(course.displayName)
+    }
+
+    private func loadAssignments() async {
+        isLoadingAssignments = true
+        await assignmentManager.fetchAssignments()
+        isLoadingAssignments = false
     }
 }

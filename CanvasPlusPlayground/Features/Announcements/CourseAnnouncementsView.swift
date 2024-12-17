@@ -10,7 +10,9 @@ import SwiftUI
 struct CourseAnnouncementsView: View {
     let course: Course
     @State private var announcementManager: CourseAnnouncementManager
-    
+
+    @State private var isLoadingAnnouncements: Bool = false
+
     init(course: Course) {
         self.course = course
         self.announcementManager = CourseAnnouncementManager(course: course)
@@ -34,10 +36,23 @@ struct CourseAnnouncementsView: View {
                 }
             }
             .task {
-                await announcementManager.fetchAnnouncements()
+                await loadAnnouncements()
             }
+            .refreshable {
+                await loadAnnouncements()
+            }
+            .statusToolbarItem(
+                "Announcements",
+                isVisible: isLoadingAnnouncements
+            )
             .navigationTitle("Announcements")
         }
+    }
+
+    private func loadAnnouncements() async {
+        isLoadingAnnouncements = true
+        await announcementManager.fetchAnnouncements()
+        isLoadingAnnouncements = false
     }
 }
 

@@ -9,7 +9,9 @@ import SwiftUI
 
 struct CourseQuizzesView: View {
     @State var quizzesVM: QuizzesViewModel
-    
+
+    @State private var isLoadingQuizzes = false
+
     init(courseId: String) {
         self.quizzesVM = QuizzesViewModel(courseId: courseId)
     }
@@ -22,8 +24,9 @@ struct CourseQuizzesView: View {
                 }
             }
             .task {
-                await quizzesVM.fetchQuizzes()
+                await loadQuizzes()
             }
+            .statusToolbarItem("Quizzes", isVisible: isLoadingQuizzes)
         }
     }
     
@@ -67,5 +70,11 @@ struct CourseQuizzesView: View {
                 Text("Due at \(quiz.dueAt.formatted(Date.FormatStyle()))")
             }
         }
+    }
+
+    private func loadQuizzes() async {
+        isLoadingQuizzes = true
+        await quizzesVM.fetchQuizzes()
+        isLoadingQuizzes = false
     }
 }

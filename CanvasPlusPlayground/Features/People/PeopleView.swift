@@ -19,6 +19,8 @@ struct PeopleView: View {
     @State private var searchText: String = ""
     @State private var selectedTokens = [Token]()
 
+    @State private var isLoadingPeople = false
+
     private var suggestedTokens: [Token] {
         Set(peopleManager.users.compactMap(\.role)).map { Token(text: $0) }
             .sorted { $0.text < $1.text }
@@ -36,10 +38,10 @@ struct PeopleView: View {
             mainBody
         }
         .task {
-            await peopleManager.fetchPeople()
+            await loadPeople()
         }
         .refreshable {
-            await peopleManager.fetchPeople()
+            await loadPeople()
         }
     }
     
@@ -58,6 +60,7 @@ struct PeopleView: View {
         .navigationDestination(for: User.self) { user in
             PeopleCommonView(user: user).environment(peopleManager)
         }
+        .statusToolbarItem("People", isVisible: isLoadingPeople)
         #if os(iOS)
         .searchable(
             text: $searchText,
@@ -100,6 +103,12 @@ struct PeopleView: View {
 
             return matchesSearchText && matchesSelectedTokens
         }
+    }
+
+    private func loadPeople() async {
+        isLoadingPeople = true
+        await peopleManager.fetchPeople()
+        isLoadingPeople = false
     }
 }
 
