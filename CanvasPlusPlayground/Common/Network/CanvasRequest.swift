@@ -25,7 +25,9 @@ enum CanvasRequest: Hashable {
   
     case getAssignments(courseId: String)
     
-    case getPeople(courseId: String, perPage: String = "100")
+    case getEnrollments(courseId: String, perPage: String = "100")
+    
+    case getQuizzes(courseId: String, searchTerm: String? = nil)
     
     var path: String {
         switch self {
@@ -55,15 +57,19 @@ enum CanvasRequest: Hashable {
         case let .getAssignments(courseId):
             "courses/\(courseId)/assignments"
             
-        case let .getPeople(courseId, _):
+        case let .getEnrollments(courseId, _):
             "courses/\(courseId)/enrollments"
+            
+        case let .getQuizzes(courseId, _):
+            "courses/\(courseId)/all_quizzes"
         }
     }
     
-    var queryParameters: [(name: String, value: String)] {
-        var params = [(name: "access_token", value: StorageKeys.accessTokenValue)]
+    typealias QueryParam = (name: String, value: String?)
+    var queryParameters: [QueryParam] {
+        var params: [QueryParam] = [(name: "access_token", value: StorageKeys.accessTokenValue)]
         
-        let additional: [(String, String)] = switch self {
+        let additional: [QueryParam] = switch self {
         case let .getCourses(enrollment_state, perPage):
             [
                 ("enrollment_state", enrollment_state),
@@ -76,9 +82,13 @@ enum CanvasRequest: Hashable {
                 ("end_date", endDate.ISO8601Format()),
                 ("per_page", perPage)
             ]
-        case let .getPeople(_, perPage):
+        case let .getEnrollments(_, perPage):
             [
                 ("per_page", perPage)
+            ]
+        case let .getQuizzes(_, searchTerm):
+            [
+                ("search_term", searchTerm)
             ]
         default:
             []
@@ -94,7 +104,7 @@ enum CanvasRequest: Hashable {
         switch self {
         case let .getCourse(id):
             return id
-        case let .getTabs(courseId), let .getAnnouncements(courseId, _, _, _), let .getAssignments(courseId), let .getPeople(courseId, _), let .getAllCourseFiles(courseId),  let .getAllCourseFolders(courseId):
+        case let .getTabs(courseId), let .getAnnouncements(courseId, _, _, _), let .getAssignments(courseId), let .getEnrollments(courseId, _), let .getAllCourseFiles(courseId),  let .getAllCourseFolders(courseId), let .getQuizzes(courseId, _):
             return courseId
         case let.getCourseRootFolder(courseId):
             return "\(courseId)_root"
@@ -111,7 +121,7 @@ enum CanvasRequest: Hashable {
     
     var isPaginated: Bool {
         switch self {
-        case .getCourses, .getAnnouncements, .getPeople, .getAllCourseFiles, .getAllCourseFolders, .getFilesInFolder, .getFoldersInFolder:
+        case .getCourses, .getAnnouncements, .getEnrollments, .getAllCourseFiles, .getAllCourseFolders, .getFilesInFolder, .getFoldersInFolder:
             true
         default:
             false
@@ -142,8 +152,10 @@ enum CanvasRequest: Hashable {
             [Announcement].self
         case .getAssignments:
             [Assignment].self
-        case .getPeople:
+        case .getEnrollments:
             [Enrollment].self
+        case .getQuizzes:
+            [Quiz].self
         }
     }
 }

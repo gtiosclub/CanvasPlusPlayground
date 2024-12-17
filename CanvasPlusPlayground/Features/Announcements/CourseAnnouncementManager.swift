@@ -24,7 +24,7 @@ import Foundation
             onCacheReceive: { (cached: [Announcement]?) in
                 guard let cached else { return }
                 
-                self.announcements = cached
+                setAnnouncements(cached)
             }
         )
         
@@ -33,7 +33,11 @@ import Foundation
             return
         }
         
-        self.announcements = announcements.reversed()
-        
+        setAnnouncements(announcements.reversed()) 
     }
+    
+    func setAnnouncements(_ announcements: [Announcement]) {
+        self.announcements = announcements
+    }
+    
 }

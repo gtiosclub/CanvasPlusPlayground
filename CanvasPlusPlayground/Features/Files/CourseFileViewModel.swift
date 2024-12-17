@@ -61,11 +61,14 @@ class CourseFileViewModel {
         
         let (folders, files) = await ((try? foldersInRootFolder), (try? filesInRootFolder))
         
-        if let folders {
-            self.folders = folders
+        Task { @MainActor in
+            if let folders {
+                self.folders = folders
+            }
+            if let files {
+                self.files = files
+            }
         }
-        if let files {
-            self.files = files
-        }
+        
     }
 }
