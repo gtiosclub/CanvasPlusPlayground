@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct CourseListView: View {
+    @Environment(ProfileManager.self) var profileManager
     @Environment(CourseManager.self) var courseManager
 
     @State private var navigationModel = NavigationModel()
@@ -174,6 +175,7 @@ struct CourseListView: View {
     private func loadCourses() async {
         isLoadingCourses = true
         await courseManager.getCourses()
+        await profileManager.getCurrentUserAndProfile()
         isLoadingCourses = false
     }
 }

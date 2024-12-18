@@ -80,6 +80,9 @@
 		B7D95DB72D0A8D78002AD955 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D95DB62D0A8D75002AD955 /* SettingsView.swift */; };
 		B7F950322D118EAF004BB470 /* String+StripHTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F950312D118EAA004BB470 /* String+StripHTML.swift */; };
 		B7F950342D11A00F004BB470 /* StatusToolbarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F950332D11A00F004BB470 /* StatusToolbarItem.swift */; };
+		B7F950372D127869004BB470 /* ProfileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F950362D127861004BB470 /* ProfileManager.swift */; };
+		B7F950392D1279A1004BB470 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F950382D1279A1004BB470 /* User.swift */; };
+		B7F9503B2D127AD0004BB470 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F9503A2D127AD0004BB470 /* Profile.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -156,6 +159,9 @@
 		B7D95DB62D0A8D75002AD955 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		B7F950312D118EAA004BB470 /* String+StripHTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+StripHTML.swift"; sourceTree = "<group>"; };
 		B7F950332D11A00F004BB470 /* StatusToolbarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusToolbarItem.swift; sourceTree = "<group>"; };
+		B7F950362D127861004BB470 /* ProfileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileManager.swift; sourceTree = "<group>"; };
+		B7F950382D1279A1004BB470 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		B7F9503A2D127AD0004BB470 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -204,6 +210,7 @@
 		A324BA502D07963D005F53FA /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				B7F950352D12785D004BB470 /* Profile */,
 				A3049B642D0F3E26002F3166 /* Quiz */,
 				B7D95DB52D0A8D6A002AD955 /* Settings */,
 				A324BA5F2D0798A1005F53FA /* Grades */,
@@ -384,6 +391,8 @@
 		A324BA602D079927005F53FA /* Plain */ = {
 			isa = PBXGroup;
 			children = (
+				B7F9503A2D127AD0004BB470 /* Profile.swift */,
+				B7F950382D1279A1004BB470 /* User.swift */,
 				192EC0492C963B9000AF8528 /* Assignment.swift */,
 				A3E7F3922C99338B00DC4300 /* Tab.swift */,
 			);
@@ -455,6 +464,14 @@
 				B7D95DB62D0A8D75002AD955 /* SettingsView.swift */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		B7F950352D12785D004BB470 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				B7F950362D127861004BB470 /* ProfileManager.swift */,
+			);
+			path = Profile;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -550,9 +567,11 @@
 				3DAE84FE2C9A0CE8008C22E7 /* CoursePDFView.swift in Sources */,
 				A3049B632D0E6154002F3166 /* ScoringPolicy.swift in Sources */,
 				9B69FA4F2CC2CCCF006101F3 /* AggregatedAssignmentsViewCell.swift in Sources */,
+				B7F950372D127869004BB470 /* ProfileManager.swift in Sources */,
 				A324BA662D07AFD5005F53FA /* FileType.swift in Sources */,
 				192EC0482C963ACB00AF8528 /* CourseAssignmentManager.swift in Sources */,
 				B7D95D772D07C3D3002AD955 /* ICSParser.swift in Sources */,
+				B7F9503B2D127AD0004BB470 /* Profile.swift in Sources */,
 				B76455012C8DF61B002DF00E /* StorageKeys.swift in Sources */,
 				A3FFD03A2CDEC2AC006BAB51 /* LookupCondition.swift in Sources */,
 				B7D95DB72D0A8D78002AD955 /* SettingsView.swift in Sources */,
@@ -582,6 +601,7 @@
 				192EC04C2C963EE600AF8528 /* CourseAssignmentView.swift in Sources */,
 				A3FFD03C2CDED67C006BAB51 /* String+Numbers.swift in Sources */,
 				B53D95A02CA0953900647EE9 /* PeopleManager.swift in Sources */,
+				B7F950392D1279A1004BB470 /* User.swift in Sources */,
 				A3049B662D0F3E32002F3166 /* CourseQuizzesView.swift in Sources */,
 				A3E7F3892C954E0500DC4300 /* CanvasRequest.swift in Sources */,
 				A3E7F3912C99317100DC4300 /* CourseTabsManager.swift in Sources */,

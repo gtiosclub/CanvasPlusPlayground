@@ -28,7 +28,12 @@ enum CanvasRequest: Hashable {
     case getEnrollments(courseId: String, perPage: String = "100")
     
     case getQuizzes(courseId: String, searchTerm: String? = nil)
-    
+
+    /// Pass in `nil` as `userID` to fetch the current user.
+    case getUser(userID: String? = nil)
+    /// Pass in `nil` as `userID` to fetch the current user's profile.
+    case getUserProfile(userID: String? = nil)
+
     var path: String {
         switch self {
             
@@ -62,6 +67,10 @@ enum CanvasRequest: Hashable {
             
         case let .getQuizzes(courseId, _):
             "courses/\(courseId)/all_quizzes"
+        case let .getUser(userID):
+            "users/\(userID ?? "self")"
+        case let .getUserProfile(userID):
+            "users/\(userID ?? "self")/profile"
         }
     }
     
@@ -112,6 +121,10 @@ enum CanvasRequest: Hashable {
             return folderId
         case .getCourses:
             return "courses_\(StorageKeys.accessTokenValue)" // In case user changes
+        case .getUser(let userID):
+            return "user_\(userID ?? StorageKeys.accessTokenValue)"
+        case .getUserProfile(let userID):
+            return "profile_\(userID ?? StorageKeys.accessTokenValue)"
         }
     }
     
@@ -156,6 +169,10 @@ enum CanvasRequest: Hashable {
             [Enrollment].self
         case .getQuizzes:
             [Quiz].self
+        case .getUser:
+            User.self
+        case .getUserProfile:
+            Profile.self
         }
     }
 }
