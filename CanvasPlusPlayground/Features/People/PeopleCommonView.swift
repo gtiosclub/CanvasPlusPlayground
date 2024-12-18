@@ -19,12 +19,6 @@ struct PeopleCommonView: View {
         Form {
             Section {
                 statusLabel
-            }
-
-            Section {
-                ForEach(commonCourses, id: \.id) { course in
-                    Text(course.displayName)
-                }
             } footer: {
                 if fetchingCommonCourses {
                     HStack {
@@ -37,6 +31,12 @@ struct PeopleCommonView: View {
                     }
                     .foregroundStyle(.secondary)
                     .font(.caption)
+                }
+            }
+
+            Section {
+                ForEach(commonCourses, id: \.id) { course in
+                    Text(course.displayName)
                 }
             }
         }
