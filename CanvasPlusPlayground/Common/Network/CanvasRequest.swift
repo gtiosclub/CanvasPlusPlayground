@@ -99,6 +99,10 @@ enum CanvasRequest: Hashable {
             [
                 ("search_term", searchTerm)
             ]
+        case let .getAssignments(courseId):
+            [
+                ("include[]", "submission")
+            ]
         default:
             []
         }

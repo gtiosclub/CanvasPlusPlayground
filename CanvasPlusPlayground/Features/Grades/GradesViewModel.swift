@@ -9,8 +9,32 @@ import Foundation
 
 @Observable
 class GradesViewModel {
-    var enrollment: Enrollment?
-    
+    private var enrollment: Enrollment?
+
+    var currentScore: String {
+        enrollment?.grades?.currentScore?.truncatingTrailingZeros ?? "--"
+    }
+
+    var currentGrade: String {
+        enrollment?.grades?.currentGrade ?? "--"
+    }
+
+    var finalScore: String {
+        enrollment?.grades?.finalScore?.truncatingTrailingZeros ?? "--"
+    }
+
+    var finalGrade: String {
+        enrollment?.grades?.finalGrade ?? "--"
+    }
+
+    var canvasURL: URL? {
+        if let urlString = enrollment?.grades?.htmlURL {
+            return URL(string: urlString)
+        }
+
+        return nil
+    }
+
     let courseId: String
     
     init(courseId: String) {

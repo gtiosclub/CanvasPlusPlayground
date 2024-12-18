@@ -83,6 +83,7 @@
 		B7F950372D127869004BB470 /* ProfileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F950362D127861004BB470 /* ProfileManager.swift */; };
 		B7F950392D1279A1004BB470 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F950382D1279A1004BB470 /* User.swift */; };
 		B7F9503B2D127AD0004BB470 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F9503A2D127AD0004BB470 /* Profile.swift */; };
+		B7F9503D2D12ADAE004BB470 /* Submission.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F9503C2D12ADAE004BB470 /* Submission.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -162,6 +163,7 @@
 		B7F950362D127861004BB470 /* ProfileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileManager.swift; sourceTree = "<group>"; };
 		B7F950382D1279A1004BB470 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		B7F9503A2D127AD0004BB470 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		B7F9503C2D12ADAE004BB470 /* Submission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Submission.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -394,6 +396,7 @@
 				B7F9503A2D127AD0004BB470 /* Profile.swift */,
 				B7F950382D1279A1004BB470 /* User.swift */,
 				192EC0492C963B9000AF8528 /* Assignment.swift */,
+				B7F9503C2D12ADAE004BB470 /* Submission.swift */,
 				A3E7F3922C99338B00DC4300 /* Tab.swift */,
 			);
 			path = Plain;
@@ -591,6 +594,7 @@
 				B7AD54F32CD41D7900FB09BB /* LLMEvaluator.swift in Sources */,
 				B7AD54F42CD41D7900FB09BB /* Models.swift in Sources */,
 				B7AD54F52CD41D7900FB09BB /* Data.swift in Sources */,
+				B7F9503D2D12ADAE004BB470 /* Submission.swift in Sources */,
 				B7AD54F62CD41D7900FB09BB /* DeviceStat.swift in Sources */,
 				A324BA682D07C2E9005F53FA /* FileViewer.swift in Sources */,
 				A300E2A22D0000DF00AA7D07 /* CanvasRequest+Service.swift in Sources */,

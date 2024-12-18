@@ -11,38 +11,60 @@ struct CourseGradeView: View {
     @Environment(ProfileManager.self) private var profileManager
     @State private var gradesVM: GradesViewModel
     
-    var enrollment: Enrollment? {
-        gradesVM.enrollment
-    }
-    
     let course: Course
-    
-    
+
     init(course: Course) {
         self.course = course
         self._gradesVM = State(initialValue: GradesViewModel(courseId: course.id))
     }
     
     var body: some View {
-        List {
-            display("Current Score", value: enrollment?.grades?.currentScore)
-            display("Current grade", value: enrollment?.grades?.currentGrade)
-            display("Final Score", value: enrollment?.grades?.finalScore)
-            display("Final Grade", value: enrollment?.grades?.finalGrade)
+        Form {
+            Section {
+                GradeRow("Current Score", value: gradesVM.currentScore)
+                GradeRow("Current Grade", value: gradesVM.currentGrade)
+                GradeRow("Final Score", value: gradesVM.finalScore)
+                GradeRow("Final Grade", value: gradesVM.finalGrade)
+            } header: {
+                Text("Grades")
+            } footer: {
+                if let url = gradesVM.canvasURL {
+                    Link("View on Canvas", destination: url)
+                        .font(.footnote)
+                }
+            }
+
+            Section("Assignments") {
+                CourseAssignmentsView(course: course, showGrades: true)
+            }
         }
+        .formStyle(.grouped)
         .task {
-            await gradesVM
-                .getEnrollments(currentUserID: profileManager.currentUser?.id)
+            await loadGrades()
+        }
+        .onChange(of: profileManager.currentUser) { _, _ in
+            Task {
+                await loadGrades()
+            }
         }
         .navigationTitle("Grades")
     }
     
-    func display(_ label: String, value: Any?) -> Text {
-        if let value = value {
-            return Text("\(label): \(value)")
-        } else {
-            return Text("\(label) unavailable")
+    private func GradeRow(_ label: String, value: String) -> some View {
+        HStack {
+            Text(label)
+
+            Spacer()
+
+            Text(value)
         }
+        .contentTransition(.numericText())
+        .animation(.default, value: value)
+    }
+
+    private func loadGrades() async {
+        await gradesVM
+            .getEnrollments(currentUserID: profileManager.currentUser?.id)
     }
 }
 
