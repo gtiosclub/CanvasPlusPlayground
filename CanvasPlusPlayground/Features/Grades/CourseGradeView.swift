@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct CourseGradeView: View {
+    @Environment(ProfileManager.self) private var profileManager
     @State private var gradesVM: GradesViewModel
     
     var enrollment: Enrollment? {
@@ -30,7 +31,8 @@ struct CourseGradeView: View {
             display("Final Grade", value: enrollment?.grades?.finalGrade)
         }
         .task {
-            await gradesVM.getEnrollments()
+            await gradesVM
+                .getEnrollments(currentUserID: profileManager.currentUser?.id)
         }
         .navigationTitle("Grades")
     }

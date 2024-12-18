@@ -17,38 +17,50 @@ class GradesViewModel {
         self.courseId = courseId
     }
     
-    func getEnrollments() async {
+    func getEnrollments(currentUserID: Int?) async {
+        guard let currentUserID else {
+            print("GradesViewModel: Current UserID is nil.")
+            return
+        }
+
         let request = CanvasRequest.getEnrollments(courseId: courseId)
         
         do {
-            if let enrollments: [Enrollment] = try? await CanvasService.shared.load(request), findEnrollment(enrollments: enrollments) {
-                return
-            }
-            
-            if self.enrollment == nil {
-                try await CanvasService.shared.syncWithAPI(request, onNewBatch: { (enrollments: [Enrollment]) in
-                    findEnrollment(enrollments: enrollments)
+            let enrollments: [Enrollment]? = try await CanvasService.shared.loadAndSync(request,
+                onCacheReceive: { enrollmentsCache in
+                    guard let enrollmentsCache else { return }
+
+                    findEnrollment(
+                        enrollments: enrollmentsCache,
+                        currentUserID: currentUserID
+                    )
+                },
+                onNewBatch: { enrollmentsBatch in
+                    findEnrollment(
+                        enrollments: enrollmentsBatch,
+                        currentUserID: currentUserID
+                    )
                 })
+
+            if let enrollments {
+                findEnrollment(
+                    enrollments: enrollments,
+                    currentUserID: currentUserID
+                )
             }
-            
         } catch {
             print("Failed to fetch enrollments. \(error)")
         }
     }
     
     /// Searches for the users enrollment and sets it if found
-    @discardableResult
-    func findEnrollment(enrollments: [Enrollment]) -> Bool {
-        for enrollment in enrollments {
-            if enrollment.courseID?.asString == courseId {
-                DispatchQueue.main.sync {
-                    self.enrollment = enrollment
-                }
-                return true
-            }
+    func findEnrollment(enrollments: [Enrollment], currentUserID: Int) {
+        let newEnrollment = enrollments
+            .first { $0.userID == currentUserID }
+
+        if newEnrollment != nil {
+            self.enrollment = newEnrollment
         }
-        
-        return false
     }
 
 }
