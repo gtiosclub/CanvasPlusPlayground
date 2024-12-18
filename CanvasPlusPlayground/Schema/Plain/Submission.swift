@@ -34,7 +34,7 @@ struct Submission: Codable {
     let latePolicyStatus: String?
     let pointsDeducted: Double?
     let secondsLate: Int?
-    let workflowState: String?
+    let workflowState: WorkflowState?
     let extraAttempts: Int?
     let anonymousID: String?
     let postedAt: String?
@@ -73,6 +73,13 @@ struct Submission: Codable {
         case postedAt = "posted_at"
         case readStatus = "read_status"
         case redoRequest = "redo_request"
+    }
+
+    enum WorkflowState: String, Codable {
+        case submitted
+        case unsubmitted
+        case graded
+        case pendingReview = "pending_review"
     }
 }
 

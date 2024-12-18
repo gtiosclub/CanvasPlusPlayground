@@ -28,9 +28,9 @@ struct CourseAssignmentsView: View {
                         .font(.headline)
                     Group {
                         if let submission = assignment.submission {
-                            Text("Submitted")
-                        } else {
-                            Text("Not Submitted")
+                            Text(
+                                submission.workflowState?.rawValue.capitalized ?? "Unknown Status"
+                            )
                         }
                     }
                     .font(.subheadline)

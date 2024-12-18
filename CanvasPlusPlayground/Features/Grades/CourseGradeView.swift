@@ -28,10 +28,15 @@ struct CourseGradeView: View {
             } header: {
                 Text("Grades")
             } footer: {
-                if let url = gradesVM.canvasURL {
-                    Link("View on Canvas", destination: url)
-                        .font(.footnote)
+                Group {
+                    if let url = gradesVM.canvasURL {
+                        Link("View on Canvas", destination: url)
+                    } else {
+                        Text("Loading grades...")
+                            .foregroundStyle(.secondary)
+                    }
                 }
+                .font(.footnote)
             }
 
             Section("Assignments") {
