@@ -137,6 +137,7 @@ struct Assignment: Codable {
     let anonymizeStudents: Bool?
     let requireLockdownBrowser: Bool?
     let restrictQuantitativeData: Bool?
+    let submission: Submission?
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -202,5 +203,6 @@ struct Assignment: Codable {
         case anonymizeStudents = "anonymize_students"
         case requireLockdownBrowser = "require_lockdown_browser"
         case restrictQuantitativeData = "restrict_quantitative_data"
+        case submission
     }
 }

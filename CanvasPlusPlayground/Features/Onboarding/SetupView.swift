@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct SetupView: View {
+    @Environment(ProfileManager.self) var profileManager
     @Environment(CourseManager.self) var courseManager
     @Environment(\.dismiss) var dismiss
 
@@ -53,6 +54,7 @@ struct SetupView: View {
             Task {
                 StorageKeys.accessTokenValue = tempAccessKey
                 await courseManager.getCourses()
+                await profileManager.getCurrentUserAndProfile()
             }
         }
         .toolbar {
