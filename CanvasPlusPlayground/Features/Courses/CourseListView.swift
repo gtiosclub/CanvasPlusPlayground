@@ -18,6 +18,7 @@ struct CourseListView: View {
     @State private var showSettings: Bool = false
     @State private var showAuthorization: Bool = false
     @State private var columnVisibility = NavigationSplitViewVisibility.all
+    @State private var isLoadingCourses = true
 
     @SceneStorage("CourseListView.selectedCourse")
     private var selectedCourseID: Course.ID?
@@ -57,11 +58,11 @@ struct CourseListView: View {
             if StorageKeys.needsAuthorization {
                 showAuthorization = true
             } else {
-                await courseManager.getCourses()
+                await loadCourses()
             }
         }
         .refreshable {
-            await courseManager.getCourses()
+            await loadCourses()
         }
         .sheet(isPresented: $showAuthorization) {
             NavigationStack {
@@ -132,6 +133,7 @@ struct CourseListView: View {
         }
         .navigationTitle("Courses")
         .listStyle(.sidebar)
+        .statusToolbarItem("Courses", isVisible: isLoadingCourses)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
                 Button("Settings", systemImage: "gear") {
@@ -167,6 +169,12 @@ struct CourseListView: View {
             }
             .tint(selectedCourse.rgbColors?.color)
         }
+    }
+
+    private func loadCourses() async {
+        isLoadingCourses = true
+        await courseManager.getCourses()
+        isLoadingCourses = false
     }
 }
 

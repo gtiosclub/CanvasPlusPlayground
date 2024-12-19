@@ -9,8 +9,32 @@ import SwiftUI
 
 @Observable
 class NavigationModel {
-    enum CoursePage: String {
-        case assignments, files, announcements, grades, calendar, people, tabs, quizzes
+    enum CoursePage: String, CaseIterable {
+        case assignments
+        case files
+        case announcements
+        case grades
+        case calendar
+        case people
+        case tabs
+        case quizzes
+
+        var title: String {
+            rawValue.capitalized
+        }
+
+        var systemImageIcon: String {
+            switch self {
+            case .files: "folder"
+            case .assignments: "circle.inset.filled"
+            case .calendar: "calendar"
+            case .tabs: "tray.2"
+            case .announcements: "bubble"
+            case .grades: "graduationcap.fill"
+            case .people: "person.crop.circle.fill"
+            case .quizzes: "questionmark.circle.fill"
+            }
+        }
     }
 
     var selectedCourseID: Course.ID? {
