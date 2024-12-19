@@ -83,7 +83,9 @@ class GradesViewModel {
             .first { $0.userID == currentUserID }
 
         if newEnrollment != nil {
-            self.enrollment = newEnrollment
+            DispatchQueue.main.async {
+                self.enrollment = newEnrollment
+            }
         }
     }
 
