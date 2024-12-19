@@ -12,7 +12,7 @@ struct FoldersPageView: View {
     @State var folder: Folder?
     @State private var filesVM: CourseFileViewModel
 
-    @State private var isLoadingContents = false
+    @State private var isLoadingContents = true
 
     init(course: Course, folder: Folder? = nil, traversedFolderIDs: [String] = []) {
         self.course = course

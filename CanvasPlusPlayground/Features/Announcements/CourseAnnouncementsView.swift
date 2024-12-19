@@ -11,7 +11,7 @@ struct CourseAnnouncementsView: View {
     let course: Course
     @State private var announcementManager: CourseAnnouncementManager
 
-    @State private var isLoadingAnnouncements: Bool = false
+    @State private var isLoadingAnnouncements: Bool = true
 
     init(course: Course) {
         self.course = course

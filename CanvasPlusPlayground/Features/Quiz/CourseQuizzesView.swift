@@ -10,7 +10,7 @@ import SwiftUI
 struct CourseQuizzesView: View {
     @State var quizzesVM: QuizzesViewModel
 
-    @State private var isLoadingQuizzes = false
+    @State private var isLoadingQuizzes = true
 
     init(courseId: String) {
         self.quizzesVM = QuizzesViewModel(courseId: courseId)

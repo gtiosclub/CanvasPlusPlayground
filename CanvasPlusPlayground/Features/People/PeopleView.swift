@@ -19,7 +19,7 @@ struct PeopleView: View {
     @State private var searchText: String = ""
     @State private var selectedTokens = [Token]()
 
-    @State private var isLoadingPeople = false
+    @State private var isLoadingPeople = true
 
     private var suggestedTokens: [Token] {
         Set(peopleManager.users.compactMap(\.role)).map { Token(text: $0) }

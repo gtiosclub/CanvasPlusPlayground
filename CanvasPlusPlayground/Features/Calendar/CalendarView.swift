@@ -12,7 +12,7 @@ struct CalendarView: View {
 
     @State private var events = [CanvasCalendarEventGroup]()
 
-    @State private var isLoadingCalendar = false
+    @State private var isLoadingCalendar = true
 
     init(course: Course) {
         self.icsURL = URL(string: course.calendar?.ics ?? "")

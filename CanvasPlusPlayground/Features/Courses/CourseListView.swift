@@ -18,7 +18,7 @@ struct CourseListView: View {
     @State private var showSettings: Bool = false
     @State private var showAuthorization: Bool = false
     @State private var columnVisibility = NavigationSplitViewVisibility.all
-    @State private var isLoadingCourses = false
+    @State private var isLoadingCourses = true
 
     @SceneStorage("CourseListView.selectedCourse")
     private var selectedCourseID: Course.ID?

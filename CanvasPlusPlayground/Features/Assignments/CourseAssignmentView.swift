@@ -11,7 +11,7 @@ struct CourseAssignmentsView: View {
     let course: Course
     @State private var assignmentManager: CourseAssignmentManager
 
-    @State private var isLoadingAssignments = false
+    @State private var isLoadingAssignments = true
 
     init(course: Course) {
         self.course = course
