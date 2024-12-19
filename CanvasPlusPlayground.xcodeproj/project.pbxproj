@@ -93,12 +93,14 @@
 		B7AD550C2CD4257B00FB09BB /* IntelligenceOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AD550B2CD4257400FB09BB /* IntelligenceOnboardingView.swift */; };
 		B7D95D772D07C3D3002AD955 /* ICSParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D95D762D07C3D3002AD955 /* ICSParser.swift */; };
 		B7D95DB72D0A8D78002AD955 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D95DB62D0A8D75002AD955 /* SettingsView.swift */; };
+		B7E59A0B2D1CFF8C001836FE /* GetAssignmentGroupsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E59A0A2D1CFF8C001836FE /* GetAssignmentGroupsRequest.swift */; };
 		B7F950322D118EAF004BB470 /* String+StripHTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F950312D118EAA004BB470 /* String+StripHTML.swift */; };
 		B7F950342D11A00F004BB470 /* StatusToolbarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F950332D11A00F004BB470 /* StatusToolbarItem.swift */; };
 		B7F950372D127869004BB470 /* ProfileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F950362D127861004BB470 /* ProfileManager.swift */; };
 		B7F950392D1279A1004BB470 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F950382D1279A1004BB470 /* User.swift */; };
 		B7F9503B2D127AD0004BB470 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F9503A2D127AD0004BB470 /* Profile.swift */; };
 		B7F9503D2D12ADAE004BB470 /* Submission.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F9503C2D12ADAE004BB470 /* Submission.swift */; };
+		B7F9503F2D133435004BB470 /* AssignmentGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F9503E2D133435004BB470 /* AssignmentGroup.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -188,12 +190,14 @@
 		B7AD550B2CD4257400FB09BB /* IntelligenceOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntelligenceOnboardingView.swift; sourceTree = "<group>"; };
 		B7D95D762D07C3D3002AD955 /* ICSParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICSParser.swift; sourceTree = "<group>"; };
 		B7D95DB62D0A8D75002AD955 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		B7E59A0A2D1CFF8C001836FE /* GetAssignmentGroupsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAssignmentGroupsRequest.swift; sourceTree = "<group>"; };
 		B7F950312D118EAA004BB470 /* String+StripHTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+StripHTML.swift"; sourceTree = "<group>"; };
 		B7F950332D11A00F004BB470 /* StatusToolbarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusToolbarItem.swift; sourceTree = "<group>"; };
 		B7F950362D127861004BB470 /* ProfileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileManager.swift; sourceTree = "<group>"; };
 		B7F950382D1279A1004BB470 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		B7F9503A2D127AD0004BB470 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		B7F9503C2D12ADAE004BB470 /* Submission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Submission.swift; sourceTree = "<group>"; };
+		B7F9503E2D133435004BB470 /* AssignmentGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentGroup.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -250,6 +254,7 @@
 				A3049B7E2D160C03002F3166 /* GetTabsRequest.swift */,
 				A3049B802D160F6B002F3166 /* GetAnnouncementsRequest.swift */,
 				A3049B822D161432002F3166 /* GetAssignmentsRequest.swift */,
+				B7E59A0A2D1CFF8C001836FE /* GetAssignmentGroupsRequest.swift */,
 				A3049B842D161455002F3166 /* GetEnrollmentsRequest.swift */,
 				A3049B862D16146D002F3166 /* GetQuizzesRequest.swift */,
 				A3D1614E2D1784E3004055FB /* GetUserRequest.swift */,
@@ -446,6 +451,7 @@
 		A324BA602D079927005F53FA /* Plain */ = {
 			isa = PBXGroup;
 			children = (
+				B7F9503E2D133435004BB470 /* AssignmentGroup.swift */,
 				B7F9503A2D127AD0004BB470 /* Profile.swift */,
 				B7F950382D1279A1004BB470 /* User.swift */,
 				192EC0492C963B9000AF8528 /* Assignment.swift */,
@@ -630,6 +636,7 @@
 				192EC0482C963ACB00AF8528 /* CourseAssignmentManager.swift in Sources */,
 				B7D95D772D07C3D3002AD955 /* ICSParser.swift in Sources */,
 				B7F9503B2D127AD0004BB470 /* Profile.swift in Sources */,
+				B7E59A0B2D1CFF8C001836FE /* GetAssignmentGroupsRequest.swift in Sources */,
 				B76455012C8DF61B002DF00E /* StorageKeys.swift in Sources */,
 				A3FFD03A2CDEC2AC006BAB51 /* LookupCondition.swift in Sources */,
 				B7D95DB72D0A8D78002AD955 /* SettingsView.swift in Sources */,
@@ -644,6 +651,7 @@
 				A3FFD03E2CE0065A006BAB51 /* NetworkError.swift in Sources */,
 				B53D95A22CA0A22A00647EE9 /* PeopleView.swift in Sources */,
 				A3049B752D15DC1C002F3166 /* GetCoursesRequest.swift in Sources */,
+				B7F9503F2D133435004BB470 /* AssignmentGroup.swift in Sources */,
 				B76455042C8DF61B002DF00E /* CourseView.swift in Sources */,
 				A3049B682D0F3ECA002F3166 /* QuizzesViewModel.swift in Sources */,
 				9B92A4252C93856100C21CFC /* CourseAnnouncementManager.swift in Sources */,

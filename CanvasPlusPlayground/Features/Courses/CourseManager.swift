@@ -22,7 +22,7 @@ class CourseManager {
     func getCourses() async {
         do {
             let courses: [Course] = try await CanvasService.shared.loadAndSync(
-                CanvasRequest.getCourses(enrollmentState: "active"),
+                CanvasRequest.getCourses(enrollmentState: "completed"),
                 onCacheReceive: { cachedCourses in
                     guard let cachedCourses else { return }
                     setCourses(cachedCourses)
