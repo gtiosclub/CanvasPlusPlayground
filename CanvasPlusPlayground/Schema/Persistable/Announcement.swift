@@ -20,7 +20,6 @@ final class Announcement: Cacheable {
 
     // MARK: Custom Properties
     var isRead: Bool?
-    var announcementText: String?
     var summary: String?
 
     weak var course: Course?
