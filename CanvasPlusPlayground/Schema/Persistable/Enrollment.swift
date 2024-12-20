@@ -263,15 +263,6 @@ final class Enrollment: Cacheable {
         currentPeriodUnpostedCurrentGrade = other.currentPeriodUnpostedCurrentGrade
         currentPeriodUnpostedFinalGrade = other.currentPeriodUnpostedFinalGrade
     }
-    
-    func parentIdFor(request: CanvasRequest) -> ParentKeyPath<Enrollment, String> {
-        switch request {
-        case .getEnrollments:
-            ParentKeyPath(writableKeyPath: \.parentId)
-        default:
-            preconditionFailure("Model \(Self.self) doesn't match request \(request)")
-        }
-    }
 }
 
 struct Grades: Codable, Equatable, Hashable {

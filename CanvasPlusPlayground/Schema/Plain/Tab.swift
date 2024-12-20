@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Tab: Codable {
+class Tab: Codable {
     let id: String?
     let htmlURL: String?
     let fullURL: String?
@@ -16,6 +16,9 @@ struct Tab: Codable {
     let label: String?
     let type: String?
     let url: String?
+    
+    // MARK: Custom
+    var courseId: String?
     
     enum CodingKeys: String, CodingKey {
         case id

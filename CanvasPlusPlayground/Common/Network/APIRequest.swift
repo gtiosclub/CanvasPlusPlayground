@@ -11,13 +11,16 @@ protocol APIRequest {
     associatedtype Subject: Codable
     associatedtype QueryResult = Subject
     
-    typealias QueryParameter = (name: String, value: String?)
+    typealias QueryParameter = (name: String, value: Any?)
     
     var path: String { get }
     var queryParameters: [QueryParameter] { get }
     
-    var requestId: String? { get }
-    var requestIdKey: KeyPath<Subject, String>? { get }
+    associatedtype KeyType
+        
+    var requestId: KeyType { get }
+    var requestIdKey: ParentKeyPath<Subject, KeyType> { get }
+    var customPredicate: Predicate<Subject> { get }
 }
 
 extension APIRequest {
@@ -25,12 +28,13 @@ extension APIRequest {
         URL(string: "https://gatech.instructure.com/api/v1")!
     }
     
-    var combinedQueryParams: [QueryParameter] {
+    var combinedQueryParams: [(String, String)] {
         ([(name: "access_token", value: StorageKeys.accessTokenValue)] + queryParameters).compactMap {
             let (key, val) = $0
-            if val == nil {
+            guard let val else {
                 return nil
-            } else { return $0 }
+            }
+            return (key, "\(val)")
         }
     }
     
@@ -38,7 +42,7 @@ extension APIRequest {
         baseURL
             .appendingPathComponent(path)
             .appending(queryItems: combinedQueryParams.map { name, val in
-                URLQueryItem(name: name, value: val)
+                URLQueryItem(name: name, value: "\(val)")
             })
     }
 }
@@ -51,40 +55,4 @@ extension APIRequest {
 
 protocol ArrayAPIRequest: APIRequest {
     associatedtype QueryResult = [Subject]
-}
-
-struct GetCoursesRequest: ArrayAPIRequest {
-    typealias Subject = Course
-    
-    var path: String { "courses" }
-    var queryParameters: [QueryParameter] {
-        [
-            ("enrollment_state", enrollmentState),
-            ("per_page", perPage)
-        ]
-    }
-    
-    // MARK: Query Params
-    let enrollmentType: String? = "enrolled"
-    let enrollmentState: String? = "active"
-    let perPage: String? = "50"
-    
-    // MARK:
-    var requestId: String? { "courses_\(StorageKeys.accessTokenValue)" }
-    var requestIdKey: KeyPath<Course, String>? { \.parentId }
-}
-
-
-struct GetCourseRequest: APIRequest {
-    typealias Subject = Course
-    
-    let courseId: String
-    
-    var path: String { "courses/\(courseId)" }
-    var queryParameters: [QueryParameter] {
-        []
-    }
-    
-    var requestId: String? { courseId }
-    var requestIdKey: KeyPath<Course, String>? { \.id }
 }

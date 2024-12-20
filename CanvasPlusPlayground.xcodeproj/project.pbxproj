@@ -35,6 +35,16 @@
 		A3049B662D0F3E32002F3166 /* CourseQuizzesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3049B652D0F3E32002F3166 /* CourseQuizzesView.swift */; };
 		A3049B682D0F3ECA002F3166 /* QuizzesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3049B672D0F3ECA002F3166 /* QuizzesViewModel.swift */; };
 		A3049B722D125509002F3166 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3049B712D125509002F3166 /* APIRequest.swift */; };
+		A3049B752D15DC1C002F3166 /* GetCoursesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3049B742D15DC1C002F3166 /* GetCoursesRequest.swift */; };
+		A3049B772D15DC36002F3166 /* GetCourseRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3049B762D15DC36002F3166 /* GetCourseRequest.swift */; };
+		A3049B792D15E162002F3166 /* GetCourseRootFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3049B782D15E162002F3166 /* GetCourseRootFolder.swift */; };
+		A3049B7B2D15E2B7002F3166 /* GetFilesInFolderRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3049B7A2D15E2B7002F3166 /* GetFilesInFolderRequest.swift */; };
+		A3049B7D2D160299002F3166 /* GetFoldersInFolderRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3049B7C2D160299002F3166 /* GetFoldersInFolderRequest.swift */; };
+		A3049B7F2D160C03002F3166 /* GetTabsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3049B7E2D160C03002F3166 /* GetTabsRequest.swift */; };
+		A3049B812D160F6B002F3166 /* GetAnnouncementsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3049B802D160F6B002F3166 /* GetAnnouncementsRequest.swift */; };
+		A3049B832D161432002F3166 /* GetAssignmentsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3049B822D161432002F3166 /* GetAssignmentsRequest.swift */; };
+		A3049B852D161455002F3166 /* GetEnrollmentsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3049B842D161455002F3166 /* GetEnrollmentsRequest.swift */; };
+		A3049B872D16146D002F3166 /* GetQuizzesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3049B862D16146D002F3166 /* GetQuizzesRequest.swift */; };
 		A306ED112CEAC09E00556D1E /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A306ED102CEAC09E00556D1E /* Folder.swift */; };
 		A31A81E72D0CCB69003C37EB /* GradesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A31A81E62D0CCB69003C37EB /* GradesViewModel.swift */; };
 		A324BA642D07AF0B005F53FA /* CourseFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A324BA632D07AF0B005F53FA /* CourseFileService.swift */; };
@@ -110,6 +120,16 @@
 		A3049B652D0F3E32002F3166 /* CourseQuizzesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseQuizzesView.swift; sourceTree = "<group>"; };
 		A3049B672D0F3ECA002F3166 /* QuizzesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizzesViewModel.swift; sourceTree = "<group>"; };
 		A3049B712D125509002F3166 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
+		A3049B742D15DC1C002F3166 /* GetCoursesRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetCoursesRequest.swift; sourceTree = "<group>"; };
+		A3049B762D15DC36002F3166 /* GetCourseRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetCourseRequest.swift; sourceTree = "<group>"; };
+		A3049B782D15E162002F3166 /* GetCourseRootFolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetCourseRootFolder.swift; sourceTree = "<group>"; };
+		A3049B7A2D15E2B7002F3166 /* GetFilesInFolderRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetFilesInFolderRequest.swift; sourceTree = "<group>"; };
+		A3049B7C2D160299002F3166 /* GetFoldersInFolderRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetFoldersInFolderRequest.swift; sourceTree = "<group>"; };
+		A3049B7E2D160C03002F3166 /* GetTabsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetTabsRequest.swift; sourceTree = "<group>"; };
+		A3049B802D160F6B002F3166 /* GetAnnouncementsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAnnouncementsRequest.swift; sourceTree = "<group>"; };
+		A3049B822D161432002F3166 /* GetAssignmentsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAssignmentsRequest.swift; sourceTree = "<group>"; };
+		A3049B842D161455002F3166 /* GetEnrollmentsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetEnrollmentsRequest.swift; sourceTree = "<group>"; };
+		A3049B862D16146D002F3166 /* GetQuizzesRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetQuizzesRequest.swift; sourceTree = "<group>"; };
 		A306ED102CEAC09E00556D1E /* Folder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Folder.swift; sourceTree = "<group>"; };
 		A31A81E62D0CCB69003C37EB /* GradesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradesViewModel.swift; sourceTree = "<group>"; };
 		A324BA632D07AF0B005F53FA /* CourseFileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseFileService.swift; sourceTree = "<group>"; };
@@ -197,6 +217,23 @@
 				A3049B672D0F3ECA002F3166 /* QuizzesViewModel.swift */,
 			);
 			path = Quiz;
+			sourceTree = "<group>";
+		};
+		A3049B732D15DBEE002F3166 /* API Requests */ = {
+			isa = PBXGroup;
+			children = (
+				A3049B762D15DC36002F3166 /* GetCourseRequest.swift */,
+				A3049B742D15DC1C002F3166 /* GetCoursesRequest.swift */,
+				A3049B782D15E162002F3166 /* GetCourseRootFolder.swift */,
+				A3049B7A2D15E2B7002F3166 /* GetFilesInFolderRequest.swift */,
+				A3049B7C2D160299002F3166 /* GetFoldersInFolderRequest.swift */,
+				A3049B7E2D160C03002F3166 /* GetTabsRequest.swift */,
+				A3049B802D160F6B002F3166 /* GetAnnouncementsRequest.swift */,
+				A3049B822D161432002F3166 /* GetAssignmentsRequest.swift */,
+				A3049B842D161455002F3166 /* GetEnrollmentsRequest.swift */,
+				A3049B862D16146D002F3166 /* GetQuizzesRequest.swift */,
+			);
+			path = "API Requests";
 			sourceTree = "<group>";
 		};
 		A324BA502D07963D005F53FA /* Features */ = {
@@ -288,9 +325,10 @@
 		A324BA572D0796F6005F53FA /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				A3049B712D125509002F3166 /* APIRequest.swift */,
+				A3049B732D15DBEE002F3166 /* API Requests */,
 				A300E2A12D0000DF00AA7D07 /* CanvasRequest+Service.swift */,
 				A3E7F3882C954E0500DC4300 /* CanvasRequest.swift */,
-				A3049B712D125509002F3166 /* APIRequest.swift */,
 				A3E7F38A2C9555B200DC4300 /* CanvasService.swift */,
 				A3FFD03D2CE0065A006BAB51 /* NetworkError.swift */,
 			);
@@ -538,6 +576,7 @@
 				B76454FF2C8DF61B002DF00E /* Enrollment.swift in Sources */,
 				A3049B5F2D0E6044002F3166 /* QuizHideResults.swift in Sources */,
 				B76455002C8DF61B002DF00E /* File.swift in Sources */,
+				A3049B7B2D15E2B7002F3166 /* GetFilesInFolderRequest.swift in Sources */,
 				A324BA6A2D0817AB005F53FA /* FoldersPageView.swift in Sources */,
 				B7A26EE92CCB62A30084704A /* NavigationModel.swift in Sources */,
 				192EC04A2C963B9000AF8528 /* Assignment.swift in Sources */,
@@ -555,6 +594,7 @@
 				B7D95DB72D0A8D78002AD955 /* SettingsView.swift in Sources */,
 				A3049B592D0E5A96002F3166 /* LockInfo.swift in Sources */,
 				A3E7F3932C99338B00DC4300 /* Tab.swift in Sources */,
+				A3049B7D2D160299002F3166 /* GetFoldersInFolderRequest.swift in Sources */,
 				9B69FA4D2CC2CCB1006101F3 /* AggregatedAssignmentsViewModel.swift in Sources */,
 				B76455022C8DF61B002DF00E /* CourseFilesView.swift in Sources */,
 				B76455032C8DF61B002DF00E /* CourseListView.swift in Sources */,
@@ -562,14 +602,19 @@
 				A3049B5B2D0E5C18002F3166 /* QuizPermissions.swift in Sources */,
 				A3FFD03E2CE0065A006BAB51 /* NetworkError.swift in Sources */,
 				B53D95A22CA0A22A00647EE9 /* PeopleView.swift in Sources */,
+				A3049B752D15DC1C002F3166 /* GetCoursesRequest.swift in Sources */,
 				B76455042C8DF61B002DF00E /* CourseView.swift in Sources */,
 				A3049B682D0F3ECA002F3166 /* QuizzesViewModel.swift in Sources */,
 				9B92A4252C93856100C21CFC /* CourseAnnouncementManager.swift in Sources */,
 				B76455052C8DF61B002DF00E /* SetupView.swift in Sources */,
+				A3049B772D15DC36002F3166 /* GetCourseRequest.swift in Sources */,
 				B7AD54F32CD41D7900FB09BB /* LLMEvaluator.swift in Sources */,
 				B7AD54F42CD41D7900FB09BB /* Models.swift in Sources */,
 				B7AD54F52CD41D7900FB09BB /* Data.swift in Sources */,
+				A3049B852D161455002F3166 /* GetEnrollmentsRequest.swift in Sources */,
+				A3049B832D161432002F3166 /* GetAssignmentsRequest.swift in Sources */,
 				B7AD54F62CD41D7900FB09BB /* DeviceStat.swift in Sources */,
+				A3049B812D160F6B002F3166 /* GetAnnouncementsRequest.swift in Sources */,
 				A324BA682D07C2E9005F53FA /* FileViewer.swift in Sources */,
 				A300E2A22D0000DF00AA7D07 /* CanvasRequest+Service.swift in Sources */,
 				9B350F082C9652C6003FC60D /* NSAttributedString+HTML.swift in Sources */,
@@ -587,6 +632,7 @@
 				9B69FA4B2CC2CC7F006101F3 /* AggregatedAssignmentsView.swift in Sources */,
 				B76455072C8DF61B002DF00E /* CourseFileViewModel.swift in Sources */,
 				A3049B532D0E5241002F3166 /* Quiz.swift in Sources */,
+				A3049B872D16146D002F3166 /* GetQuizzesRequest.swift in Sources */,
 				A3269E902CD57F75006F7D14 /* Cacheable.swift in Sources */,
 				A3049B5D2D0E5D5A002F3166 /* AssignmentDate.swift in Sources */,
 				3DAE85002C9A0E4F008C22E7 /* PDFViewHelper.swift in Sources */,
@@ -598,7 +644,9 @@
 				9B9C2E062C93F94C00E4B16B /* CourseAnnouncementDetailView.swift in Sources */,
 				9B6663E32C9853BC0060990E /* AsyncAttributedText.swift in Sources */,
 				B7AD550C2CD4257B00FB09BB /* IntelligenceOnboardingView.swift in Sources */,
+				A3049B792D15E162002F3166 /* GetCourseRootFolder.swift in Sources */,
 				7F8535742C98DE3C0023E384 /* CourseGradeView.swift in Sources */,
+				A3049B7F2D160C03002F3166 /* GetTabsRequest.swift in Sources */,
 				A306ED112CEAC09E00556D1E /* Folder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

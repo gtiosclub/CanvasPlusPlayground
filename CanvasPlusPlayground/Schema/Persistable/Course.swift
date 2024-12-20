@@ -425,17 +425,6 @@ final class Course: Cacheable {
         self.blueprintRestrictionsByObjectType = other.blueprintRestrictionsByObjectType
         self.template = other.template
     }
-    
-    func parentIdFor(request: CanvasRequest) -> ParentKeyPath<Course, String> {
-        switch request {
-        case .getCourse:
-            ParentKeyPath(readableKeyPath: \Course.id)
-        case .getCourses:
-            ParentKeyPath(writableKeyPath: \Course.parentId)
-        default:
-            preconditionFailure("Model \(Self.self) doesn't match request \(request)")
-        }
-    }
 }
 
 struct Permissions: Codable, Equatable, Hashable {
