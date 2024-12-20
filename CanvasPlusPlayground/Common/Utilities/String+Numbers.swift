@@ -28,4 +28,8 @@ extension Double {
     var toInt: Int {
         Int(self)
     }
+
+    func rounded(toPlaces places: Int) -> String {
+        String(format: "%.\(places)f", self)
+    }
 }

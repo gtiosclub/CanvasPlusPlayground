@@ -101,6 +101,8 @@
 		B7F9503B2D127AD0004BB470 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F9503A2D127AD0004BB470 /* Profile.swift */; };
 		B7F9503D2D12ADAE004BB470 /* Submission.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F9503C2D12ADAE004BB470 /* Submission.swift */; };
 		B7F9503F2D133435004BB470 /* AssignmentGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F9503E2D133435004BB470 /* AssignmentGroup.swift */; };
+		B7F950412D149290004BB470 /* CourseGradeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F950402D14928C004BB470 /* CourseGradeCalculator.swift */; };
+		B7F950432D149C5E004BB470 /* GradeCalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F950422D149C5E004BB470 /* GradeCalculatorView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -198,6 +200,8 @@
 		B7F9503A2D127AD0004BB470 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		B7F9503C2D12ADAE004BB470 /* Submission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Submission.swift; sourceTree = "<group>"; };
 		B7F9503E2D133435004BB470 /* AssignmentGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentGroup.swift; sourceTree = "<group>"; };
+		B7F950402D14928C004BB470 /* CourseGradeCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseGradeCalculator.swift; sourceTree = "<group>"; };
+		B7F950422D149C5E004BB470 /* GradeCalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradeCalculatorView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -442,6 +446,7 @@
 		A324BA5F2D0798A1005F53FA /* Grades */ = {
 			isa = PBXGroup;
 			children = (
+				B7F950442D149C6E004BB470 /* GradeCalculator */,
 				7F8535732C98DE3C0023E384 /* CourseGradeView.swift */,
 				A31A81E62D0CCB69003C37EB /* GradesViewModel.swift */,
 			);
@@ -534,6 +539,15 @@
 				B7F950362D127861004BB470 /* ProfileManager.swift */,
 			);
 			path = Profile;
+			sourceTree = "<group>";
+		};
+		B7F950442D149C6E004BB470 /* GradeCalculator */ = {
+			isa = PBXGroup;
+			children = (
+				B7F950422D149C5E004BB470 /* GradeCalculatorView.swift */,
+				B7F950402D14928C004BB470 /* CourseGradeCalculator.swift */,
+			);
+			path = GradeCalculator;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -652,6 +666,7 @@
 				B53D95A22CA0A22A00647EE9 /* PeopleView.swift in Sources */,
 				A3049B752D15DC1C002F3166 /* GetCoursesRequest.swift in Sources */,
 				B7F9503F2D133435004BB470 /* AssignmentGroup.swift in Sources */,
+				B7F950432D149C5E004BB470 /* GradeCalculatorView.swift in Sources */,
 				B76455042C8DF61B002DF00E /* CourseView.swift in Sources */,
 				A3049B682D0F3ECA002F3166 /* QuizzesViewModel.swift in Sources */,
 				9B92A4252C93856100C21CFC /* CourseAnnouncementManager.swift in Sources */,
@@ -659,6 +674,7 @@
 				A3049B772D15DC36002F3166 /* GetCourseRequest.swift in Sources */,
 				B7AD54F32CD41D7900FB09BB /* LLMEvaluator.swift in Sources */,
 				B7AD54F42CD41D7900FB09BB /* Models.swift in Sources */,
+				B7F950412D149290004BB470 /* CourseGradeCalculator.swift in Sources */,
 				B7AD54F52CD41D7900FB09BB /* Data.swift in Sources */,
 				A3049B852D161455002F3166 /* GetEnrollmentsRequest.swift in Sources */,
 				A3D161472D169C0A004055FB /* APIRequest+Network.swift in Sources */,
