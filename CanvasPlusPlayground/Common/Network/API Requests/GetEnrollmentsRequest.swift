@@ -53,17 +53,45 @@ struct GetEnrollmentsRequest: ArrayAPIRequest {
     var requestIdKey: ParentKeyPath<Enrollment, Int?> { .createWritable(\.courseID) }
     var customPredicate: Predicate<Enrollment> {
         let requestUserId = self.userId?.asInt ?? -1
-        return #Predicate<Enrollment> { enrollment in
-            (self.type.isEmpty || self.type.contains(enrollment.type)) &&
-            (self.role.isEmpty || self.role.contains(enrollment.role)) &&
-            (self.state.isEmpty || self.state.contains(enrollment.enrollmentState)) &&
-            (self.userId == nil || enrollment.userID == requestUserId) &&
-            (self.gradingPeriodId == nil || enrollment.currentGradingPeriodID == self.gradingPeriodId) &&
-            (self.enrollmentTermId == nil || self.courseEnrollmentTermId == self.enrollmentTermId) &&
-            (self.sisAccountId.isEmpty || self.sisAccountId.contains(enrollment.sisAccountID)) &&
-            (self.sisCourseId.isEmpty || self.sisCourseId.contains(enrollment.sisCourseID)) &&
-            (self.sisSectionId.isEmpty || self.sisSectionId.contains(enrollment.sisSectionID)) &&
-            (self.sisUserId.isEmpty || self.sisUserId.contains(enrollment.sisUserID))
+        // TODO: fix predicate here
+        return .true
+        /*
+        // Break down the predicate into smaller parts
+        let typePredicate = (self.type.isEmpty ? .true : Predicate<Enrollment> { enrollment in
+            self.type.contains(enrollment.type) as! any StandardPredicateExpression<Bool>
+        })
+
+        let rolePredicate = (self.role.isEmpty ? .true : Predicate<Enrollment> { enrollment in
+            self.role.contains(enrollment.role)  as! any StandardPredicateExpression<Bool>
+        })
+
+        let statePredicate = (self.state.isEmpty ? .true : Predicate<Enrollment> { enrollment in
+            self.state.contains(enrollment.enrollmentState) as! any StandardPredicateExpression<Bool>
+        })
+
+        let userIdPredicate = self.userId == nil ? .true : Predicate<Enrollment> { enrollment in
+            enrollment.userID == requestUserId as! any StandardPredicateExpression<Bool>
         }
+
+        let gradingPeriodPredicate = self.gradingPeriodId == nil ? .true : Predicate<Enrollment> { enrollment in
+            enrollment.currentGradingPeriodID == self.gradingPeriodId
+        }
+
+        let termPredicate = self.enrollmentTermId == nil ? .true : Predicate<Enrollment> { enrollment in
+            self.courseEnrollmentTermId == self.enrollmentTermId
+        }
+        
+        return Predicate<Enrollment> { enrollment in
+
+            // Combine predicates into one using logical operators
+            return #Predicate<Enrollment> { enrollment in
+                typePredicate.evaluate(enrollment) &&
+                rolePredicate.evaluate(enrollment) &&
+                statePredicate.evaluate(enrollment) &&
+                userIdPredicate.evaluate(enrollment) &&
+                gradingPeriodPredicate.evaluate(enrollment) &&
+                termPredicate.evaluate(enrollment)
+            }.evaluate(enrollment)
+        }*/
     }
 }

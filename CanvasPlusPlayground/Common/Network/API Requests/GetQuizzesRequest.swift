@@ -29,7 +29,7 @@ struct GetQuizzesRequest: ArrayAPIRequest {
     var customPredicate: Predicate<Quiz> {
         let searchTerm = searchTerm ?? ""
         return #Predicate<Quiz> { quiz in
-            quiz.title?.contains(searchTerm) ?? true
+            quiz.title.contains(searchTerm)
         }
     }
 }

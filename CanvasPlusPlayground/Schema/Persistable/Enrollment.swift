@@ -28,7 +28,7 @@ final class Enrollment: Cacheable {
     var sisImportID: Int?
     var rootAccountID: Int?
     var type: String?
-    var userID: Int?
+    var userID: Int
     var associatedUserID: Int?
     var role: String?
     var roleID: Int?
@@ -134,7 +134,7 @@ final class Enrollment: Cacheable {
         self.sisImportID = try container.decodeIfPresent(Int.self, forKey: .sisImportID)
         self.rootAccountID = try container.decodeIfPresent(Int.self, forKey: .rootAccountID)
         self.type = try container.decodeIfPresent(String.self, forKey: .type)
-        self.userID = try container.decodeIfPresent(Int.self, forKey: .userID)
+        self.userID = try container.decodeIfPresent(Int.self, forKey: .userID) ?? -1
         self.associatedUserID = try container.decodeIfPresent(Int.self, forKey: .associatedUserID)
         self.role = try container.decodeIfPresent(String.self, forKey: .role)
         self.roleID = try container.decodeIfPresent(Int.self, forKey: .roleID)
