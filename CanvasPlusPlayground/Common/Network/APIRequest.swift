@@ -25,10 +25,19 @@ extension APIRequest {
         URL(string: "https://gatech.instructure.com/api/v1")!
     }
     
+    var combinedQueryParams: [QueryParameter] {
+        ([(name: "access_token", value: StorageKeys.accessTokenValue)] + queryParameters).compactMap {
+            let (key, val) = $0
+            if val == nil {
+                return nil
+            } else { return $0 }
+        }
+    }
+    
     var url: URL {
         baseURL
             .appendingPathComponent(path)
-            .appending(queryItems: ([(name: "access_token", value: StorageKeys.accessTokenValue)] + queryParameters).map { name, val in
+            .appending(queryItems: combinedQueryParams.map { name, val in
                 URLQueryItem(name: name, value: val)
             })
     }
@@ -55,9 +64,12 @@ struct GetCoursesRequest: ArrayAPIRequest {
         ]
     }
     
-    let enrollmentState: String = "active"
-    let perPage: String = "50"
+    // MARK: Query Params
+    let enrollmentType: String? = "enrolled"
+    let enrollmentState: String? = "active"
+    let perPage: String? = "50"
     
+    // MARK:
     var requestId: String? { "courses_\(StorageKeys.accessTokenValue)" }
     var requestIdKey: KeyPath<Course, String>? { \.parentId }
 }
