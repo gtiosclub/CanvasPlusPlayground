@@ -24,7 +24,8 @@ enum CanvasRequest: Hashable {
     case getAnnouncements(courseId: String, startDate: Date = .distantPast, endDate: Date = .now, perPage: String = "100")
   
     case getAssignments(courseId: String)
-    
+    case getAssignmentGroups(courseId: String)
+
     case getEnrollments(courseId: String, perPage: String = "100")
     
     case getQuizzes(courseId: String, searchTerm: String? = nil)
@@ -61,7 +62,10 @@ enum CanvasRequest: Hashable {
             
         case let .getAssignments(courseId):
             "courses/\(courseId)/assignments"
-            
+
+        case let .getAssignmentGroups(courseId):
+            "courses/\(courseId)/assignment_groups"
+
         case let .getEnrollments(courseId, _):
             "courses/\(courseId)/enrollments"
             
@@ -99,8 +103,13 @@ enum CanvasRequest: Hashable {
             [
                 ("search_term", searchTerm)
             ]
-        case let .getAssignments(courseId):
+        case .getAssignments:
             [
+                ("include[]", "submission")
+            ]
+        case .getAssignmentGroups:
+            [
+                ("include[]", "assignments"),
                 ("include[]", "submission")
             ]
         default:
@@ -117,7 +126,7 @@ enum CanvasRequest: Hashable {
         switch self {
         case let .getCourse(id):
             return id
-        case let .getTabs(courseId), let .getAnnouncements(courseId, _, _, _), let .getAssignments(courseId), let .getEnrollments(courseId, _), let .getAllCourseFiles(courseId),  let .getAllCourseFolders(courseId), let .getQuizzes(courseId, _):
+        case let .getTabs(courseId), let .getAnnouncements(courseId, _, _, _), let .getAssignments(courseId), let .getAssignmentGroups(courseId), let .getEnrollments(courseId, _), let .getAllCourseFiles(courseId),  let .getAllCourseFolders(courseId), let .getQuizzes(courseId,_):
             return courseId
         case let.getCourseRootFolder(courseId):
             return "\(courseId)_root"
@@ -169,6 +178,8 @@ enum CanvasRequest: Hashable {
             [Announcement].self
         case .getAssignments:
             [Assignment].self
+        case .getAssignmentGroups:
+            [AssignmentGroup].self
         case .getEnrollments:
             [Enrollment].self
         case .getQuizzes:
