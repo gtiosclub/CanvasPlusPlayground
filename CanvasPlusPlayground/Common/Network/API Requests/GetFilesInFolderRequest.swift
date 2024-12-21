@@ -27,8 +27,8 @@ struct GetFilesInFolderRequest: ArrayAPIRequest {
     }
     
     // MARK: Query Params
-    let contentTypes: [String]
-    let excludeContentTypes: [String]
+    let contentTypes: [String?]
+    let excludeContentTypes: [String?]
     let searchTerm: String?
     let include: [String]
     let only: [String]
@@ -40,9 +40,24 @@ struct GetFilesInFolderRequest: ArrayAPIRequest {
     var requestId: Int? { folderId.asInt }
     var requestIdKey: ParentKeyPath<File, Int?> { .createWritable(\.folderId) }
     var customPredicate: Predicate<File> {
-        // TODO: match query params
-        #Predicate<File> { file in
-            true
+        
+        let contentTypePred = contentTypes.isEmpty ? .true : #Predicate<File> { file in
+            contentTypes.contains(file.contentType)
         }
+        
+        let excludeContentTypesPred = excludeContentTypes.isEmpty ? .true : #Predicate<File> { file in
+            !excludeContentTypes.contains(file.contentType)
+        }
+        
+        let searchTerm = searchTerm ?? ""
+        let searchPred = #Predicate<File> { file in
+            file.displayName.localizedStandardContains(searchTerm)
+        }
+        
+        return #Predicate<File> { file in
+            contentTypePred.evaluate(file)
+            && excludeContentTypesPred.evaluate(file)
+            && searchPred.evaluate(file)
+        }        
     }
 }

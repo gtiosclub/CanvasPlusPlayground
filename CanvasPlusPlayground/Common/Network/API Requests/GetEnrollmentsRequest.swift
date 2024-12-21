@@ -53,45 +53,86 @@ struct GetEnrollmentsRequest: ArrayAPIRequest {
     var requestIdKey: ParentKeyPath<Enrollment, Int?> { .createWritable(\.courseID) }
     var customPredicate: Predicate<Enrollment> {
         let requestUserId = self.userId?.asInt ?? -1
-        // TODO: fix predicate here
-        return .true
-        /*
+        
         // Break down the predicate into smaller parts
-        let typePredicate = (self.type.isEmpty ? .true : Predicate<Enrollment> { enrollment in
-            self.type.contains(enrollment.type) as! any StandardPredicateExpression<Bool>
+        let typePredicate = self.type.isEmpty ? .true : Predicate<Enrollment>({ enrollment in
+            PredicateExpressions.build_contains(
+                PredicateExpressions.build_KeyPath(
+                    root: PredicateExpressions.build_Arg(self),
+                    keyPath: \.type
+                ),
+                PredicateExpressions.build_KeyPath(
+                    root: PredicateExpressions.build_Arg(enrollment),
+                    keyPath: \.type
+                )
+            ) as! any StandardPredicateExpression<Bool>
         })
 
-        let rolePredicate = (self.role.isEmpty ? .true : Predicate<Enrollment> { enrollment in
-            self.role.contains(enrollment.role)  as! any StandardPredicateExpression<Bool>
+        let rolePredicate = self.role.isEmpty ? .true : Predicate<Enrollment>({ enrollment in
+            PredicateExpressions.build_contains(
+                PredicateExpressions.build_KeyPath(
+                    root: PredicateExpressions.build_Arg(self),
+                    keyPath: \.role
+                ),
+                PredicateExpressions.build_KeyPath(
+                    root: PredicateExpressions.build_Arg(enrollment),
+                    keyPath: \.role
+                )
+            ) as! any StandardPredicateExpression<Bool>
         })
 
-        let statePredicate = (self.state.isEmpty ? .true : Predicate<Enrollment> { enrollment in
-            self.state.contains(enrollment.enrollmentState) as! any StandardPredicateExpression<Bool>
+        let statePredicate = self.state.isEmpty ? .true : Predicate<Enrollment>({ enrollment in
+            PredicateExpressions.build_contains(
+                PredicateExpressions.build_KeyPath(
+                    root: PredicateExpressions.build_Arg(self),
+                    keyPath: \.state
+                ),
+                PredicateExpressions.build_KeyPath(
+                    root: PredicateExpressions.build_Arg(enrollment),
+                    keyPath: \.enrollmentState
+                )
+            ) as! any StandardPredicateExpression<Bool>
         })
 
-        let userIdPredicate = self.userId == nil ? .true : Predicate<Enrollment> { enrollment in
-            enrollment.userID == requestUserId as! any StandardPredicateExpression<Bool>
+        let userIdPredicate = self.userId == nil ? .true : #Predicate<Enrollment> { enrollment in
+            enrollment.userID == requestUserId
         }
 
-        let gradingPeriodPredicate = self.gradingPeriodId == nil ? .true : Predicate<Enrollment> { enrollment in
-            enrollment.currentGradingPeriodID == self.gradingPeriodId
-        }
+        let gradingPeriodPredicate = self.gradingPeriodId == nil ? .true : Predicate<Enrollment>({ enrollment in
+            PredicateExpressions.build_Equal(
+                lhs: PredicateExpressions.build_KeyPath(
+                    root: PredicateExpressions.build_Arg(enrollment),
+                    keyPath: \.currentGradingPeriodID
+                ),
+                rhs: PredicateExpressions.build_KeyPath(
+                    root: PredicateExpressions.build_Arg(self),
+                    keyPath: \.gradingPeriodId
+                )
+            ) as! any StandardPredicateExpression<Bool>
+        })
 
-        let termPredicate = self.enrollmentTermId == nil ? .true : Predicate<Enrollment> { enrollment in
-            self.courseEnrollmentTermId == self.enrollmentTermId
+        let termPredicate = self.enrollmentTermId == nil ? .true : Predicate<Enrollment>({ enrollment in
+            PredicateExpressions.build_Equal(
+                lhs: PredicateExpressions.build_KeyPath(
+                    root: PredicateExpressions.build_Arg(self),
+                    keyPath: \.courseEnrollmentTermId
+                ),
+                rhs: PredicateExpressions.build_KeyPath(
+                    root: PredicateExpressions.build_Arg(self),
+                    keyPath: \.enrollmentTermId
+                )
+            ) as! any StandardPredicateExpression<Bool>
+        })
+        
+
+        return #Predicate<Enrollment> { enrollment in
+            typePredicate.evaluate(enrollment) &&
+            rolePredicate.evaluate(enrollment) &&
+            statePredicate.evaluate(enrollment) &&
+            userIdPredicate.evaluate(enrollment) &&
+            gradingPeriodPredicate.evaluate(enrollment) &&
+            termPredicate.evaluate(enrollment)
         }
         
-        return Predicate<Enrollment> { enrollment in
-
-            // Combine predicates into one using logical operators
-            return #Predicate<Enrollment> { enrollment in
-                typePredicate.evaluate(enrollment) &&
-                rolePredicate.evaluate(enrollment) &&
-                statePredicate.evaluate(enrollment) &&
-                userIdPredicate.evaluate(enrollment) &&
-                gradingPeriodPredicate.evaluate(enrollment) &&
-                termPredicate.evaluate(enrollment)
-            }.evaluate(enrollment)
-        }*/
     }
 }

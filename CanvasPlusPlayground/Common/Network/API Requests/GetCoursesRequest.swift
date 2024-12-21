@@ -32,16 +32,59 @@ struct GetCoursesRequest: ArrayAPIRequest {
     let enrollmentState: String?
     let excludeBlueprintCourses: Bool?
     let include: [String]
-    let state: [String]
+    let state: [String?]
     let perPage: Int
 
     // MARK: request Id
     var requestId: String { "courses_\(StorageKeys.accessTokenValue)" }
     var requestIdKey: ParentKeyPath<Course, String> { .createWritable(\.parentId) }
     var customPredicate: Predicate<Course> {
-        // TODO: match query params
-        #Predicate<Course> { course in
-            true
+        
+        let enrollmentTypePred: Predicate<Course>
+        if let enrollmentType {
+            enrollmentTypePred = #Predicate<Course> { course in
+                course.enrollmentTypesRaw.localizedStandardContains(enrollmentType)
+            }
+        } else { enrollmentTypePred = Predicate<Course>.true }
+        
+        let enrollmentRolePred: Predicate<Course>
+        if let enrollmentRole {
+            enrollmentRolePred = #Predicate<Course> { course in
+                course.enrollmentRolesRaw.localizedStandardContains(enrollmentRole)
+            }
+        } else { enrollmentRolePred = .true }
+        
+        let enrollmentRoleIdPred: Predicate<Course>
+        if let enrollmentRoleId = enrollmentRoleId?.asString {
+            enrollmentRoleIdPred = #Predicate<Course> { course in
+                course.enrollmentRoleIdsRaw.localizedStandardContains(enrollmentRoleId)
+            }
+        } else { enrollmentRoleIdPred = .true }
+        
+        let enrollmentStatePred: Predicate<Course>
+        if let enrollmentState {
+            enrollmentStatePred = #Predicate<Course> { course in
+                course.enrollmentStatesRaw.localizedStandardContains(enrollmentState)
+            }
+        } else { enrollmentStatePred = .true }
+        
+        let excludeBluePrintPred = excludeBlueprintCourses == nil ? .true : #Predicate<Course> { course in
+            !(course.blueprint == true)
         }
+        
+        let statePred = state.isEmpty ? .true : #Predicate<Course> { course in
+            state.contains(course.workflowState)
+        }
+        
+        return #Predicate<Course> { course in
+            enrollmentTypePred.evaluate(course)
+            && enrollmentRolePred.evaluate(course)
+            && enrollmentRoleIdPred.evaluate(course)
+            && enrollmentStatePred.evaluate(course)
+            && excludeBluePrintPred.evaluate(course)
+            && excludeBluePrintPred.evaluate(course)
+            && statePred.evaluate(course)
+        }
+        
     }
 }

@@ -108,7 +108,7 @@ struct Assignment: Codable {
     let secureParams: String?
     let ltiContextId: String?
     let courseId: Int?
-    let name: String?
+    let name: String
     let submissionTypes: [String]?
     let hasSubmittedSubmissions: Bool?
     let dueDateRequired: Bool?

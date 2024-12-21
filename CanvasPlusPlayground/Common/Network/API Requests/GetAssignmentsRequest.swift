@@ -34,7 +34,7 @@ struct GetAssignmentsRequest: ArrayAPIRequest {
     let overrideAssignmentDates: Bool?
     let needsGradingCountBySection: Bool?
     let bucket: String?
-    let assignmentIds: [String]
+    let assignmentIds: [String?]
     let orderBy: String?
     let postToSis: Bool?
     let newQuizzes: Bool?
@@ -44,9 +44,28 @@ struct GetAssignmentsRequest: ArrayAPIRequest {
     var requestId: Int? { courseId.asInt }
     var requestIdKey: ParentKeyPath<Assignment, Int?> { .createReadable(\.courseId) }
     var customPredicate: Predicate<Assignment> {
-        #Predicate<Assignment> { assignment in
-            true
+        let searchTerm = searchTerm ?? ""
+        let searchPred = #Predicate<Assignment> { assignment in
+            assignment.name.contains(searchTerm)
         }
+        
+        let ids = assignmentIds.compactMap(\.?.asInt)
+        let assignmentIdsPred = assignmentIds.isEmpty ? .true :  #Predicate<Assignment> { assignment in
+            ids.contains(assignment.id)
+        }
+        
+        let postToSisPred: Predicate<Assignment>
+        if let postToSis {
+            postToSisPred = #Predicate<Assignment> { assignment in
+                assignment.postToSis == postToSis
+            }
+        } else { postToSisPred = .true }
+        
+        return #Predicate<Assignment> { assignment in
+            searchPred.evaluate(assignment) && assignmentIdsPred.evaluate(assignment) && postToSisPred.evaluate(assignment)
+        }
+         
+        // TODO: add remaining filters (bucket, assignmentIds)
     }
     
 }
