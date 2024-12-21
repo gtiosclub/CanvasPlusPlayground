@@ -30,16 +30,4 @@ struct GetTabsRequest: ArrayAPIRequest {
         self.include = include
         self.perPage = perPage
     }
-    
-    var requestId: String? { courseId }
-    // TODO: create parent id for tab
-    var requestIdKey: ParentKeyPath<Tab, String?> { .createWritable(\.courseId) }
-    var idPredicate: Predicate<Tab> {
-        #Predicate<Tab> { tab in
-            tab.courseId == requestId
-        }
-    }
-    var customPredicate: Predicate<Tab> {
-        .true
-    }
 }

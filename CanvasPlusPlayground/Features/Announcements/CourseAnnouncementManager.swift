@@ -32,7 +32,7 @@ import Foundation
             return
         }
         
-        setAnnouncements(announcements.reversed()) 
+        setAnnouncements(announcements) 
     }
     
     func setAnnouncements(_ announcements: [Announcement]) {

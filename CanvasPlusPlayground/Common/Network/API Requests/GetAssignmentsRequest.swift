@@ -54,6 +54,7 @@ struct GetAssignmentsRequest: ArrayAPIRequest {
         self.perPage = perPage
     }
     
+    /* Assignment isn't cacheable, reimplement when it is
     // MARK: Request Id
     var requestId: Int? { courseId.asInt }
     var requestIdKey: ParentKeyPath<Assignment, Int?> { .createReadable(\.courseId) }
@@ -85,6 +86,6 @@ struct GetAssignmentsRequest: ArrayAPIRequest {
         }
          
         // TODO: add remaining filters (bucket, assignmentIds)
-    }
+    }*/
     
 }

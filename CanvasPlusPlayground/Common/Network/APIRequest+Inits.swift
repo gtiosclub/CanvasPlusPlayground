@@ -32,7 +32,7 @@ struct CanvasRequest {
         GetTabsRequest(courseId: courseId)
     }
     
-    static func getAnnouncements(courseId: String, startDate: Date = .distantPast, endDate: Date = .now, perPage: Int = 50) -> GetAnnouncementsRequest {
+    static func getAnnouncements(courseId: String, startDate: Date = .distantPast, endDate: Date = .now, perPage: Int = 15) -> GetAnnouncementsRequest {
         GetAnnouncementsRequest(courseId: courseId, startDate: startDate, endDate: endDate, perPage: perPage)
     }
     
