@@ -14,12 +14,12 @@ enum QuizType: String, Codable, CaseIterable, Identifiable {
     
     var title: String {
         switch self {
-        case .practiceQuiz: return "Practice Quizzes"
-        case .assignment: return "Assignment Quizzes"
-        case .gradedSurvey: return "Graded Surveys"
-        case .survey: return "Surveys"
-        case .quizzesNext: return "New Quizzes"
-        case .unknown: return "Unknown"
+        case .practiceQuiz: "Practice Quizzes"
+        case .assignment: "Assignment Quizzes"
+        case .gradedSurvey: "Graded Surveys"
+        case .survey: "Surveys"
+        case .quizzesNext: "New Quizzes"
+        case .unknown: "Unknown"
         }
     }
 }

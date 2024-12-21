@@ -14,33 +14,9 @@ struct CourseView: View {
     var body: some View {
         @Bindable var navigationModel = navigationModel
 
-        List(selection: $navigationModel.selectedCoursePage) {
-            NavigationLink(value: NavigationModel.CoursePage.files) {
-                Label("Files", systemImage: "folder")
-            }
-
-            NavigationLink(value: NavigationModel.CoursePage.assignments) {
-                Label("Assignments", systemImage: "circle.inset.filled")
-            }
-
-            NavigationLink(value: NavigationModel.CoursePage.calendar) {
-                Label("Calendar", systemImage: "calendar")
-            }
-
-            NavigationLink(value: NavigationModel.CoursePage.tabs) {
-                Label("Tabs", systemImage: "tray.2")
-            }
-
-            NavigationLink(value: NavigationModel.CoursePage.announcements) {
-                Label("Announcements", systemImage: "bubble")
-            }
-
-            NavigationLink(value: NavigationModel.CoursePage.grades) {
-                Label("Grades", systemImage: "graduationcap.fill")
-            }
-
-            NavigationLink(value: NavigationModel.CoursePage.people) {
-                Label("People", systemImage: "person.crop.circle.fill")
+        List(NavigationModel.CoursePage.allCases, id: \.self, selection: $navigationModel.selectedCoursePage) { page in
+            NavigationLink(value: page) {
+                Label(page.title, systemImage: page.systemImageIcon)
             }
             NavigationLink(value: NavigationModel.CoursePage.quizzes) {
                 Label("Quizzes", systemImage: "person.crop.circle.fill")

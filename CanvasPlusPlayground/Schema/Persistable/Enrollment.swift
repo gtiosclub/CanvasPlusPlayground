@@ -280,26 +280,3 @@ struct Grades: Codable, Equatable, Hashable {
         case finalGrade = "final_grade"
     }
 }
-
-struct User: Codable, Equatable, Hashable {
-    let id: Int?
-    let name: String?
-    let sortableName: String?
-    let shortName: String?
-    var role: String?
-
-    enum CodingKeys: String, CodingKey {
-        case id
-        case name
-        case sortableName = "sortable_name"
-        case shortName = "short_name"
-    }
-
-    static func == (lhs: User, rhs: User) -> Bool {
-        lhs.id == rhs.id
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-}

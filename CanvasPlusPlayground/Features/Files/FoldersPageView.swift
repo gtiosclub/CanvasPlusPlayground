@@ -12,6 +12,8 @@ struct FoldersPageView: View {
     @State var folder: Folder?
     @State private var filesVM: CourseFileViewModel
 
+    @State private var isLoadingContents = true
+
     init(course: Course, folder: Folder? = nil, traversedFolderIDs: [String] = []) {
         self.course = course
         self.folder = folder
@@ -38,12 +40,12 @@ struct FoldersPageView: View {
             
         }
         .task {
-            if let folder {
-                await filesVM.fetchContent(in: folder)
-            } else {
-                self.folder = await filesVM.fetchRoot()
-            }
+            await loadContents()
         }
+        .statusToolbarItem(
+            folder?.name ?? "Files",
+            isVisible: isLoadingContents
+        )
         .navigationTitle("Files")
     }
     
@@ -68,5 +70,15 @@ struct FoldersPageView: View {
         NavigationLink(destination: FoldersPageView(course: course, folder: subFolder, traversedFolderIDs: filesVM.traversedFolderIDs)) {
             Label(subFolder.name ?? "Couldn't find folder name.", systemImage: "folder")
         }
+    }
+
+    private func loadContents() async {
+        isLoadingContents = true
+        if let folder {
+            await filesVM.fetchContent(in: folder)
+        } else {
+            self.folder = await filesVM.fetchRoot()
+        }
+        isLoadingContents = false
     }
 }

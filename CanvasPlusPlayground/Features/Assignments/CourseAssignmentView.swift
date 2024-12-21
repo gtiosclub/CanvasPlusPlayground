@@ -9,27 +9,52 @@ import SwiftUI
 
 struct CourseAssignmentsView: View {
     let course: Course
+    let showGrades: Bool
     @State private var assignmentManager: CourseAssignmentManager
 
-    init(course: Course) {
+    @State private var isLoadingAssignments = true
+
+    init(course: Course, showGrades: Bool = false) {
         self.course = course
+        self.showGrades = showGrades
         _assignmentManager = .init(initialValue: CourseAssignmentManager(courseID: course.id))
     }
 
     var body: some View {
         List(assignmentManager.assignments, id: \.id) { assignment in
-            VStack(alignment: .leading) {
-                Text(assignment.name ?? "")
-                    .font(.headline)
-                if let submitted = assignment.hasSubmittedSubmissions {
-                    Text(submitted ? "Submitted" : "Not submitted")
-                        .font(.subheadline)
+            HStack {
+                VStack(alignment: .leading) {
+                    Text(assignment.name ?? "")
+                        .font(.headline)
+                    Group {
+                        if let submission = assignment.submission {
+                            Text(
+                                submission.workflowState?.rawValue.capitalized ?? "Unknown Status"
+                            )
+                        }
+                    }
+                    .font(.subheadline)
+                }
+
+                if showGrades, let submission = assignment.submission {
+                    Spacer()
+
+                    Text(submission.score?.truncatingTrailingZeros ?? "--") +
+                    Text("/") +
+                    Text(assignment.pointsPossible?.truncatingTrailingZeros ?? "--")
                 }
             }
         }
         .task {
-            await assignmentManager.fetchAssignments()
+            await loadAssignments()
         }
+        .statusToolbarItem("Assignments", isVisible: isLoadingAssignments)
         .navigationTitle(course.displayName)
+    }
+
+    private func loadAssignments() async {
+        isLoadingAssignments = true
+        await assignmentManager.fetchAssignments()
+        isLoadingAssignments = false
     }
 }

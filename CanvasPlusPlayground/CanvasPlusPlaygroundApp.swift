@@ -9,6 +9,7 @@ import SwiftUI
 
 @main
 struct CanvasPlusPlaygroundApp: App {
+    @State private var profileManager = ProfileManager()
     @State private var courseManager = CourseManager()
     @StateObject private var intelligenceManager = IntelligenceManager()
     @StateObject private var llmEvaluator = LLMEvaluator()
@@ -16,6 +17,7 @@ struct CanvasPlusPlaygroundApp: App {
     var body: some Scene {
         WindowGroup {
             CourseListView()
+                .environment(ProfileManager())
                 .environment(CourseManager())
                 .environmentObject(IntelligenceManager())
                 .environmentObject(LLMEvaluator())
