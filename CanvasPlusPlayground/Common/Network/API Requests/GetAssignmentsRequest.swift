@@ -57,6 +57,11 @@ struct GetAssignmentsRequest: ArrayAPIRequest {
     // MARK: Request Id
     var requestId: Int? { courseId.asInt }
     var requestIdKey: ParentKeyPath<Assignment, Int?> { .createReadable(\.courseId) }
+    var idPredicate: Predicate<Assignment> {
+        #Predicate<Assignment> { assignment in
+            assignment.courseId == requestId
+        }
+    }
     var customPredicate: Predicate<Assignment> {
         let searchTerm = searchTerm ?? ""
         let searchPred = #Predicate<Assignment> { assignment in

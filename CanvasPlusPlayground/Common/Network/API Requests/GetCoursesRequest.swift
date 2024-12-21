@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct GetCoursesRequest: ArrayAPIRequest {
+struct GetCoursesRequest: ArrayAPIRequest, CacheableAPIRequest {
     typealias Subject = Course
     
     var path: String { "courses" }
@@ -49,6 +49,11 @@ struct GetCoursesRequest: ArrayAPIRequest {
     // MARK: request Id
     var requestId: String { "courses_\(StorageKeys.accessTokenValue)" }
     var requestIdKey: ParentKeyPath<Course, String> { .createWritable(\.parentId) }
+    var idPredicate: Predicate<Course> {
+        #Predicate<Course> { course in
+            course.parentId == requestId
+        }
+    }
     var customPredicate: Predicate<Course> {
         
         let enrollmentTypePred: Predicate<Course>

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct GetAnnouncementsRequest: ArrayAPIRequest {
+struct GetAnnouncementsRequest: ArrayAPIRequest, CacheableAPIRequest {
     typealias Subject = Announcement
     
     let courseId: String
@@ -48,6 +48,11 @@ struct GetAnnouncementsRequest: ArrayAPIRequest {
     
     var requestId: String { courseId }
     var requestIdKey: ParentKeyPath<Announcement, String> { .createWritable(\.parentId) }
+    var idPredicate: Predicate<Announcement> {
+        #Predicate<Announcement> { announcement in
+            announcement.parentId == requestId
+        }
+    }
     var customPredicate: Predicate<Announcement> {
         let contextCodePred = contextCodes.isEmpty ? .true : #Predicate<Announcement> { announcement in
             contextCodes.contains(announcement.parentId)

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct GetQuizzesRequest: ArrayAPIRequest {
+struct GetQuizzesRequest: ArrayAPIRequest, CacheableAPIRequest {
     typealias Subject = Quiz
     
     let courseId: String
@@ -32,6 +32,11 @@ struct GetQuizzesRequest: ArrayAPIRequest {
     
     var requestId: String { courseId }
     var requestIdKey: ParentKeyPath<Quiz, String> { .createWritable(\.parentId) }
+    var idPredicate: Predicate<Quiz> {
+        #Predicate<Quiz> { quiz in
+            quiz.parentId == requestId
+        }
+    }
     var customPredicate: Predicate<Quiz> {
         let searchTerm = searchTerm ?? ""
         return #Predicate<Quiz> { quiz in

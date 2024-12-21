@@ -9,17 +9,18 @@ import Foundation
 
 protocol APIRequest {
     associatedtype Subject: Codable
-    associatedtype QueryResult = Subject
+    associatedtype QueryResult: Codable = Subject
     
     typealias QueryParameter = (name: String, value: Any?)
     
     var path: String { get }
     var queryParameters: [QueryParameter] { get }
     
-    associatedtype KeyType
+    associatedtype KeyType: Equatable
         
     var requestId: KeyType { get }
     var requestIdKey: ParentKeyPath<Subject, KeyType> { get }
+    var idPredicate: Predicate<Subject> { get }
     var customPredicate: Predicate<Subject> { get }
 }
 
@@ -45,6 +46,21 @@ extension APIRequest {
                 URLQueryItem(name: name, value: "\(val)")
             })
     }
+    
+    var SubjectType: Subject.Type {
+        Subject.self
+    }
+    
+    var QueryResultType: QueryResult.Type {
+        QueryResult.self
+    }
+    
+    func storageMatchCriteria(_ models: [Subject]) -> [Subject] {
+        let path = self.requestIdKey.readableKeyPath
+        return models.filter {
+            $0[keyPath: path] == requestId
+        }
+    }
 }
 
 extension APIRequest {
@@ -56,3 +72,5 @@ extension APIRequest {
 protocol ArrayAPIRequest: APIRequest {
     associatedtype QueryResult = [Subject]
 }
+
+protocol CacheableAPIRequest: APIRequest where Subject: Cacheable {}

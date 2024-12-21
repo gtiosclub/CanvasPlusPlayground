@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct GetFilesInFolderRequest: ArrayAPIRequest {
+struct GetFilesInFolderRequest: ArrayAPIRequest, CacheableAPIRequest {
     typealias Subject = File
     
     let folderId: String
@@ -51,6 +51,11 @@ struct GetFilesInFolderRequest: ArrayAPIRequest {
     // MARK: request Id
     var requestId: Int? { folderId.asInt }
     var requestIdKey: ParentKeyPath<File, Int?> { .createWritable(\.folderId) }
+    var idPredicate: Predicate<File> {
+        #Predicate<File> { file in
+            file.folderId == requestId
+        }
+    }
     var customPredicate: Predicate<File> {
         
         let contentTypePred = contentTypes.isEmpty ? .true : #Predicate<File> { file in

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct GetEnrollmentsRequest: ArrayAPIRequest {
+struct GetEnrollmentsRequest: ArrayAPIRequest, CacheableAPIRequest {
     typealias Subject = Enrollment
     
     let courseId: String
@@ -69,6 +69,11 @@ struct GetEnrollmentsRequest: ArrayAPIRequest {
     // MARK: Persistence
     var requestId: Int? { courseId.asInt }
     var requestIdKey: ParentKeyPath<Enrollment, Int?> { .createWritable(\.courseID) }
+    var idPredicate: Predicate<Enrollment> {
+        #Predicate<Enrollment> { enrollment in
+            enrollment.courseID == requestId
+        }
+    }
     var customPredicate: Predicate<Enrollment> {
         let requestUserId = self.userId?.asInt ?? -1
         

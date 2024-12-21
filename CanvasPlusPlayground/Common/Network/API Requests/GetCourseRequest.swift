@@ -6,7 +6,7 @@
 //
 import Foundation
 
-struct GetCourseRequest: APIRequest {
+struct GetCourseRequest: CacheableAPIRequest {
     typealias Subject = Course
     
     let courseId: String
@@ -19,8 +19,8 @@ struct GetCourseRequest: APIRequest {
         + include.map { ("include[]", $0) }
     }
     
-    let include: [String] = []
-    let teacherLimit: Int? = nil
+    let include: [String]
+    let teacherLimit: Int?
     
     init(courseId: String, include: [String] = [], teacherLimit: Int? = nil) {
         self.courseId = courseId
@@ -30,6 +30,11 @@ struct GetCourseRequest: APIRequest {
     
     var requestId: String { courseId }
     var requestIdKey: ParentKeyPath<Course, String> { .createReadable(\.id) }
+    var idPredicate: Predicate<Course> {
+        #Predicate<Course> { course in
+            course.id == courseId
+        }
+    }
     var customPredicate: Predicate<Course> {
         .true
     }

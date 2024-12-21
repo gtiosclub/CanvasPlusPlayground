@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct GetCourseRootFolderRequest: APIRequest {
+struct GetCourseRootFolderRequest: CacheableAPIRequest {
     typealias Subject = Folder
     
     let courseId: String
@@ -20,6 +20,11 @@ struct GetCourseRootFolderRequest: APIRequest {
     // MARK: request Id
     var requestId: String { "\(courseId)_root_folder" }
     var requestIdKey: ParentKeyPath<Folder, String> { .createWritable(\.parentId) }
+    var idPredicate: Predicate<Folder> {
+        #Predicate<Folder> { folder in
+            folder.parentId == requestId
+        }
+    }
     var customPredicate: Predicate<Folder> {
         .true
     }
