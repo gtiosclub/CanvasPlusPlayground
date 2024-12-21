@@ -56,7 +56,7 @@
 		A3D161492D169C23004055FB /* APIRequest+Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D161482D169C23004055FB /* APIRequest+Storage.swift */; };
 		A3D1614D2D16ACB8004055FB /* APIRequest+Sync.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D1614C2D16ACB8004055FB /* APIRequest+Sync.swift */; };
 		A3E59D362CF271C000AF91BD /* Predicate+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E59D352CF271C000AF91BD /* Predicate+Extensions.swift */; };
-		A3E7F3892C954E0500DC4300 /* APIRequest+Inits.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E7F3882C954E0500DC4300 /* APIRequest+Inits.swift */; };
+		A3E7F3892C954E0500DC4300 /* CanvasRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E7F3882C954E0500DC4300 /* CanvasRequest.swift */; };
 		A3E7F38B2C9555B200DC4300 /* CanvasService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E7F38A2C9555B200DC4300 /* CanvasService.swift */; };
 		A3E7F38F2C96C1CE00DC4300 /* CourseTabsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E7F38E2C96C1CE00DC4300 /* CourseTabsView.swift */; };
 		A3E7F3912C99317100DC4300 /* CourseTabsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E7F3902C99317100DC4300 /* CourseTabsManager.swift */; };
@@ -143,7 +143,7 @@
 		A3D161482D169C23004055FB /* APIRequest+Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIRequest+Storage.swift"; sourceTree = "<group>"; };
 		A3D1614C2D16ACB8004055FB /* APIRequest+Sync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIRequest+Sync.swift"; sourceTree = "<group>"; };
 		A3E59D352CF271C000AF91BD /* Predicate+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Predicate+Extensions.swift"; sourceTree = "<group>"; };
-		A3E7F3882C954E0500DC4300 /* APIRequest+Inits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIRequest+Inits.swift"; sourceTree = "<group>"; };
+		A3E7F3882C954E0500DC4300 /* CanvasRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasRequest.swift; sourceTree = "<group>"; };
 		A3E7F38A2C9555B200DC4300 /* CanvasService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasService.swift; sourceTree = "<group>"; };
 		A3E7F38E2C96C1CE00DC4300 /* CourseTabsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseTabsView.swift; sourceTree = "<group>"; };
 		A3E7F3902C99317100DC4300 /* CourseTabsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseTabsManager.swift; sourceTree = "<group>"; };
@@ -330,7 +330,7 @@
 			isa = PBXGroup;
 			children = (
 				A3049B712D125509002F3166 /* APIRequest.swift */,
-				A3E7F3882C954E0500DC4300 /* APIRequest+Inits.swift */,
+				A3E7F3882C954E0500DC4300 /* CanvasRequest.swift */,
 				A3D161462D169C0A004055FB /* APIRequest+Network.swift */,
 				A3D161482D169C23004055FB /* APIRequest+Storage.swift */,
 				A3D1614C2D16ACB8004055FB /* APIRequest+Sync.swift */,
@@ -632,7 +632,7 @@
 				A3FFD03C2CDED67C006BAB51 /* String+Numbers.swift in Sources */,
 				B53D95A02CA0953900647EE9 /* PeopleManager.swift in Sources */,
 				A3049B662D0F3E32002F3166 /* CourseQuizzesView.swift in Sources */,
-				A3E7F3892C954E0500DC4300 /* APIRequest+Inits.swift in Sources */,
+				A3E7F3892C954E0500DC4300 /* CanvasRequest.swift in Sources */,
 				A3E7F3912C99317100DC4300 /* CourseTabsManager.swift in Sources */,
 				A3E7F38F2C96C1CE00DC4300 /* CourseTabsView.swift in Sources */,
 				B76455062C8DF61B002DF00E /* CanvasPlusPlaygroundApp.swift in Sources */,
