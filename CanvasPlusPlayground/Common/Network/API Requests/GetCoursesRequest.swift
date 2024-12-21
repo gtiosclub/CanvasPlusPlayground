@@ -34,6 +34,17 @@ struct GetCoursesRequest: ArrayAPIRequest {
     let include: [String]
     let state: [String?]
     let perPage: Int
+    
+    init(enrollmentType: String? = nil, enrollmentRole: String? = nil, enrollmentRoleId: Int? = nil, enrollmentState: String? = nil, excludeBlueprintCourses: Bool? = nil, include: [String] = [], state: [String?] = [], perPage: Int = 50) {
+        self.enrollmentType = enrollmentType
+        self.enrollmentRole = enrollmentRole
+        self.enrollmentRoleId = enrollmentRoleId
+        self.enrollmentState = enrollmentState
+        self.excludeBlueprintCourses = excludeBlueprintCourses
+        self.include = include
+        self.state = state
+        self.perPage = perPage
+    }
 
     // MARK: request Id
     var requestId: String { "courses_\(StorageKeys.accessTokenValue)" }

@@ -48,6 +48,24 @@ struct GetEnrollmentsRequest: ArrayAPIRequest {
     let createdForSisId: [Bool?]
     let perPage: Int
     
+    init(courseId: String, courseEnrollmentTermId: Int? = nil, type: [String?] = [], role: [String?] = [], state: [String?] = [], include: [String?] = [], userId: String? = nil, gradingPeriodId: Int? = nil, enrollmentTermId: Int? = nil, sisAccountId: [String?] = [], sisCourseId: [String?] = [], sisSectionId: [String?] = [], sisUserId: [String?] = [], createdForSisId: [Bool?] = [], perPage: Int = 50) {
+        self.courseId = courseId
+        self.courseEnrollmentTermId = courseEnrollmentTermId
+        self.type = type
+        self.role = role
+        self.state = state
+        self.include = include
+        self.userId = userId
+        self.gradingPeriodId = gradingPeriodId
+        self.enrollmentTermId = enrollmentTermId
+        self.sisAccountId = sisAccountId
+        self.sisCourseId = sisCourseId
+        self.sisSectionId = sisSectionId
+        self.sisUserId = sisUserId
+        self.createdForSisId = createdForSisId
+        self.perPage = perPage
+    }
+    
     // MARK: Persistence
     var requestId: Int? { courseId.asInt }
     var requestIdKey: ParentKeyPath<Enrollment, Int?> { .createWritable(\.courseID) }

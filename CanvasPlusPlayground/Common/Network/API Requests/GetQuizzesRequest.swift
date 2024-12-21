@@ -24,6 +24,12 @@ struct GetQuizzesRequest: ArrayAPIRequest {
     let searchTerm: String?
     let perPage: Int
     
+    init(courseId: String, searchTerm: String? = nil, perPage: Int = 50) {
+        self.courseId = courseId
+        self.searchTerm = searchTerm
+        self.perPage = perPage
+    }
+    
     var requestId: String { courseId }
     var requestIdKey: ParentKeyPath<Quiz, String> { .createWritable(\.parentId) }
     var customPredicate: Predicate<Quiz> {

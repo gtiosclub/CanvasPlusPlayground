@@ -23,7 +23,13 @@ struct GetTabsRequest: ArrayAPIRequest {
     
     // MARK: Query Params
     let include: [String]
-    let perPage: Int = 50
+    let perPage: Int
+    
+    init(courseId: String, include: [String] = [], perPage: Int = 50) {
+        self.courseId = courseId
+        self.include = include
+        self.perPage = perPage
+    }
     
     var requestId: String? { courseId }
     // TODO: create parent id for tab

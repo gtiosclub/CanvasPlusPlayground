@@ -36,6 +36,16 @@ struct GetAnnouncementsRequest: ArrayAPIRequest {
     let include: [String]
     let perPage: Int
     
+    init(courseId: String, contextCodes: [String] = [], startDate: Date? = nil, endDate: Date? = nil, latestOnly: Bool? = nil, include: [String] = [], perPage: Int = 50) {
+        self.courseId = courseId
+        self.contextCodes = contextCodes
+        self.startDate = startDate
+        self.endDate = endDate
+        self.latestOnly = latestOnly
+        self.include = include
+        self.perPage = perPage
+    }
+    
     var requestId: String { courseId }
     var requestIdKey: ParentKeyPath<Announcement, String> { .createWritable(\.parentId) }
     var customPredicate: Predicate<Announcement> {

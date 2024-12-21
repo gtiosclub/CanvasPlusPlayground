@@ -10,25 +10,48 @@ import Foundation
 enum CanvasRequest: Hashable {
     static let baseURL = URL(string: "https://gatech.instructure.com/api/v1")
     
-    case getCourses(enrollmentState: String, perPage: String = "50")
+    case getCourses(enrollmentState: String, perPage: Int = 50)
     case getCourse(id: String)
     
     case getCourseRootFolder(courseId: String)
-    case getAllCourseFiles(courseId: String)
-    case getAllCourseFolders(courseId: String)
     case getFilesInFolder(folderId: String)
     case getFoldersInFolder(folderId: String)
     
     case getTabs(courseId: String)
 
-    case getAnnouncements(courseId: String, startDate: Date = .distantPast, endDate: Date = .now, perPage: String = "100")
+    case getAnnouncements(courseId: String, startDate: Date = .distantPast, endDate: Date = .now, perPage: Int = 100)
   
     case getAssignments(courseId: String)
     
-    case getEnrollments(courseId: String, perPage: String = "100")
+    case getEnrollments(courseId: String, perPage: Int = 100)
     
     case getQuizzes(courseId: String, searchTerm: String? = nil)
     
+    var details: any APIRequest {
+        switch self {
+        case .getCourses(let enrollmentState, let perPage):
+            GetCoursesRequest()
+        case .getCourse(let id):
+            GetCourseRequest(courseId: id)
+        case .getCourseRootFolder(let courseId):
+            GetCourseRootFolderRequest(courseId: courseId)
+        case .getFilesInFolder(let folderId):
+            GetFilesInFolderRequest(folderId: folderId)
+        case .getFoldersInFolder(let folderId):
+            GetFoldersInFolderRequest(folderId: folderId)
+        case .getTabs(let courseId):
+            GetTabsRequest(courseId: courseId)
+        case .getAnnouncements(let courseId, let startDate, let endDate, let perPage):
+            GetAnnouncementsRequest(courseId: courseId, startDate: startDate, endDate: endDate, perPage: perPage)
+        case .getAssignments(let courseId):
+            GetAssignmentsRequest(courseId: courseId)
+        case .getEnrollments(let courseId, let perPage):
+            GetEnrollmentsRequest(courseId: courseId, perPage: perPage)
+        case .getQuizzes(let courseId, let searchTerm):
+            GetQuizzesRequest(courseId: courseId, searchTerm: searchTerm)
+        }
+    }
+    /*
     var path: String {
         switch self {
             
@@ -63,9 +86,9 @@ enum CanvasRequest: Hashable {
         case let .getQuizzes(courseId, _):
             "courses/\(courseId)/all_quizzes"
         }
-    }
+    }*/
     
-    var queryParameters: [(name: String, value: String?)] {
+    /*var queryParameters: [(name: String, value: String?)] {
         var params: [(String, String?)] = [(name: "access_token", value: StorageKeys.accessTokenValue)]
         
         let additional: [(String, String?)] = switch self {
@@ -96,9 +119,9 @@ enum CanvasRequest: Hashable {
         params.append(contentsOf: additional)
         
         return params
-    }
+    }*/
     
-    /// The id that most uniquely identifies the request (if any), e.g. getCourses -> nil, getCourse -> courseId, getAnnouncements -> courseId, getAnnouncement -> announcementId
+    /*/// The id that most uniquely identifies the request (if any), e.g. getCourses -> nil, getCourse -> courseId, getAnnouncements -> courseId, getAnnouncement -> announcementId
     var id: String {
         switch self {
         case let .getCourse(id):
@@ -112,21 +135,13 @@ enum CanvasRequest: Hashable {
         case .getCourses:
             return "courses_\(StorageKeys.accessTokenValue)" // In case user changes
         }
-    }
+    }*/
     
     var yieldsCollection: Bool {
-        self.associatedModel is any Collection.Type
+        //self.associatedModel is any Collection.Type
+        details.yieldsCollection
     }
-    
-    var isPaginated: Bool {
-        switch self {
-        case .getCourses, .getAnnouncements, .getEnrollments, .getAllCourseFiles, .getAllCourseFolders, .getFilesInFolder, .getFoldersInFolder:
-            true
-        default:
-            false
-        }
-    }
-    
+    /*
     var associatedModel: Codable.Type {
         return switch self {
         case .getCourses:
@@ -156,15 +171,15 @@ enum CanvasRequest: Hashable {
         case .getQuizzes:
             [Quiz].self
         }
-    }
+    }*/
 }
 
 extension CanvasRequest {
-    var url: URL? {
+    /*var url: URL? {
         Self.baseURL?
             .appendingPathComponent(path)
             .appending(queryItems: queryParameters.map { name, val in
                 URLQueryItem(name: name, value: val)
             })
-    }
+    }*/
 }

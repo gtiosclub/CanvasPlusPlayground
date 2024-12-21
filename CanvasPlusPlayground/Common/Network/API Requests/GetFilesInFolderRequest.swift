@@ -36,6 +36,18 @@ struct GetFilesInFolderRequest: ArrayAPIRequest {
     let order: String?
     let perPage: Int
     
+    init(folderId: String, contentTypes: [String?] = [], excludeContentTypes: [String?] = [], searchTerm: String? = nil, include: [String] = [], only: [String] = [], sort: String? = nil, order: String? = nil, perPage: Int = 50) {
+        self.folderId = folderId
+        self.contentTypes = contentTypes
+        self.excludeContentTypes = excludeContentTypes
+        self.searchTerm = searchTerm
+        self.include = include
+        self.only = only
+        self.sort = sort
+        self.order = order
+        self.perPage = perPage
+    }
+    
     // MARK: request Id
     var requestId: Int? { folderId.asInt }
     var requestIdKey: ParentKeyPath<File, Int?> { .createWritable(\.folderId) }

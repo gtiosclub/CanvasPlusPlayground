@@ -40,6 +40,20 @@ struct GetAssignmentsRequest: ArrayAPIRequest {
     let newQuizzes: Bool?
     let perPage: Int
     
+    init(courseId: String, include: [String] = [], searchTerm: String? = nil, overrideAssignmentDates: Bool? = nil, needsGradingCountBySection: Bool? = nil, bucket: String? = nil, assignmentIds: [String?] = [], orderBy: String? = nil, postToSis: Bool? = nil, newQuizzes: Bool? = nil, perPage: Int = 50) {
+        self.courseId = courseId
+        self.include = include
+        self.searchTerm = searchTerm
+        self.overrideAssignmentDates = overrideAssignmentDates
+        self.needsGradingCountBySection = needsGradingCountBySection
+        self.bucket = bucket
+        self.assignmentIds = assignmentIds
+        self.orderBy = orderBy
+        self.postToSis = postToSis
+        self.newQuizzes = newQuizzes
+        self.perPage = perPage
+    }
+    
     // MARK: Request Id
     var requestId: Int? { courseId.asInt }
     var requestIdKey: ParentKeyPath<Assignment, Int?> { .createReadable(\.courseId) }
