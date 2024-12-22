@@ -18,7 +18,7 @@ class QuizzesViewModel {
         return unsorted.mapValues {
             $0.sorted {
                 if $0.dueAt == $1.dueAt {
-                    $0.title ?? "" < $1.title ?? ""
+                    $0.title < $1.title
                 } else { ($0.dueAt) < $1.dueAt }
             }
         }

@@ -83,7 +83,7 @@ class PeopleManager {
             for course in courses {                
                 var didAlreadyAddCourse = false
                 let courseID = course.id
-                let request = CanvasRequest.getEnrollments(courseId: courseID)
+                let request = CanvasRequest.getEnrollments(courseId: courseID, userId: userID)
                 
                 func processEnrollments(_ enrollments: [Enrollment]) {
                     guard !didAlreadyAddCourse else { return }

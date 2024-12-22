@@ -40,8 +40,8 @@ struct CanvasRequest {
         GetAssignmentsRequest(courseId: courseId)
     }
     
-    static func getEnrollments(courseId: String, perPage: Int = 50) -> GetEnrollmentsRequest {
-        GetEnrollmentsRequest(courseId: courseId, perPage: perPage)
+    static func getEnrollments(courseId: String, userId: Int? = nil, perPage: Int = 50) -> GetEnrollmentsRequest {
+        GetEnrollmentsRequest(courseId: courseId, userId: userId?.asString, perPage: perPage)
     }
     
     static func getQuizzes(courseId: String, searchTerm: String? = nil) -> GetQuizzesRequest {

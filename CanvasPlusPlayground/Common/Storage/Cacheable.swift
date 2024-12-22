@@ -21,7 +21,7 @@ protocol Cacheable: Codable, PersistentModel {
 extension Cacheable {
     
     func update<V>(keypath: ReferenceWritableKeyPath<Self, V>, value: V) async {
-        await CanvasService.shared.repository.update(model: self, keypath: keypath, value: value)
+        await CanvasService.shared.repository?.update(model: self, keypath: keypath, value: value)
     }
     
     func hash(into hasher: inout Hasher) {

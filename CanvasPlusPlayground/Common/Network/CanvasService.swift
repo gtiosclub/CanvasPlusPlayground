@@ -8,31 +8,21 @@
 import Foundation
 import SwiftData
 
-struct CanvasService {
+class CanvasService {
     static var shared = CanvasService()
     
-    let repository: CanvasRepository
+    var repository: CanvasRepository?
     
-    init()  {
-        var repo: CanvasRepository?
-        let semaphore = DispatchSemaphore(value: 0)
-
-        Task.detached {
-            let initializedRepo = CanvasRepository()
-            repo = initializedRepo
-            semaphore.signal()
+    func activate() {
+        Task.detached { [weak self] in
+            let repo = CanvasRepository()
+            self?.repository = repo
         }
-
-        semaphore.wait()
-
-        guard let repo else {
-            preconditionFailure("Error initializing CanvasRepository.")
-        }
-        self.repository = repo
     }
     
     /// Only loads from storage, doesn't make a network call
     func load<Request: CacheableAPIRequest>(_ request: Request) async throws -> [Request.Subject]? {
+        guard let repository else { return nil }
                 
         // Get cached data for this type then filter to only get models related to `request`
         let cached: [Request.Subject]? = try await request.load(from: repository)
@@ -42,6 +32,8 @@ struct CanvasService {
     
     /// Number of occurences of models related to request
     func loadCount<Request: CacheableAPIRequest>(_ request: Request) async throws -> Int {
+        guard let repository else { return 0 }
+        
         return try await request.loadCount(from: repository)
     }
     
@@ -50,7 +42,9 @@ struct CanvasService {
         _ request: Request,
         onNewBatch: ([Request.Subject]) -> Void = { _ in }
     ) async throws -> [Request.Subject] {
-        // Call syncWithAPI for cacheable requests
+        guard let repository else { return [] }
+        
+        // Call for cacheable requests
         let result = try await request.syncWithAPI(to: repository, onNewBatch: onNewBatch)
         print("Synced: \(result)")
         return result
@@ -70,6 +64,7 @@ struct CanvasService {
         onCacheReceive: ([Request.Subject]?) -> Void = { _ in },
         onNewBatch: ([Request.Subject]) -> Void = { _ in }
     ) async throws -> [Request.Subject] {
+        guard let repository else { return [] }
         
         let cached: [Request.Subject]? = try await request.load(from: repository)
         onCacheReceive(cached) // Share cached version with caller.
@@ -92,7 +87,7 @@ struct CanvasService {
     // MARK: Repository actions
     
     func clearStorage() {
-        repository.modelContainer.deleteAllData()
+        repository?.modelContainer.deleteAllData()
     }
     
     private func filterByDescriptor<T>(
