@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct GetFoldersInFolderRequest: ArrayAPIRequest, CacheableAPIRequest {
+struct GetFoldersInFolderRequest: CacheableArrayAPIRequest {
     typealias Subject = Folder
     
     let folderId: String

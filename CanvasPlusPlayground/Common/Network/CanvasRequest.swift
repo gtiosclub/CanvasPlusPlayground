@@ -47,4 +47,12 @@ struct CanvasRequest {
     static func getQuizzes(courseId: String, searchTerm: String? = nil) -> GetQuizzesRequest {
         GetQuizzesRequest(courseId: courseId, searchTerm: searchTerm)
     }
+    
+    static func getUser(id: String? = nil) -> GetUserRequest {
+        GetUserRequest(userId: id)
+    }
+    
+    static func getUserProfile(userId: String? = nil) -> GetUserProfileRequest {
+        GetUserProfileRequest(userId: userId)
+    }
 }

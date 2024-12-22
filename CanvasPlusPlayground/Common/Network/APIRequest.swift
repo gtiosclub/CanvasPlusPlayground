@@ -53,3 +53,5 @@ protocol CacheableAPIRequest: APIRequest where Subject: Cacheable {
     var idPredicate: Predicate<Subject> { get }
     var customPredicate: Predicate<Subject> { get }
 }
+
+protocol CacheableArrayAPIRequest: CacheableAPIRequest where QueryResult == [Subject] {}

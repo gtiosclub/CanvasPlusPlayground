@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct GetEnrollmentsRequest: ArrayAPIRequest, CacheableAPIRequest {
+struct GetEnrollmentsRequest: CacheableArrayAPIRequest {
     typealias Subject = Enrollment
     
     let courseId: String

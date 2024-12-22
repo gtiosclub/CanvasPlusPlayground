@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct GetQuizzesRequest: ArrayAPIRequest, CacheableAPIRequest {
+struct GetQuizzesRequest: CacheableArrayAPIRequest {
     typealias Subject = Quiz
     
     let courseId: String

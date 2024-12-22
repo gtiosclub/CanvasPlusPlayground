@@ -18,9 +18,6 @@ struct CourseView: View {
             NavigationLink(value: page) {
                 Label(page.title, systemImage: page.systemImageIcon)
             }
-            NavigationLink(value: NavigationModel.CoursePage.quizzes) {
-                Label("Quizzes", systemImage: "person.crop.circle.fill")
-            }
         }
         .tint(course.rgbColors?.color)
         .navigationTitle(course.displayName)

@@ -85,6 +85,10 @@ struct CanvasService {
         return try await request.fetchResponse()
     }
     
+    func fetch<Request: APIRequest>(_ request: Request) async throws -> [Request.Subject] {
+        return try await request.fetch()
+    }
+    
     // MARK: Repository actions
     
     func clearStorage() {
