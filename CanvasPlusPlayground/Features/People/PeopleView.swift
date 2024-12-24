@@ -92,7 +92,6 @@ struct PeopleView: View {
     }
 
     private var displayedUsers: [User] {
-        var result = peopleManager.users
 
         return peopleManager.users.filter { user in
             let matchesSearchText = searchText.isEmpty || user.name?.localizedCaseInsensitiveContains(searchText) ?? true

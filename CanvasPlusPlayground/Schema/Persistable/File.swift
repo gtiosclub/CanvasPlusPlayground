@@ -56,8 +56,8 @@ class File: Cacheable {
     
     var uuid: String?
     var folderId: Int?
-    var displayName: String?
-    var filename: String?
+    var displayName: String
+    var filename: String
     var uploadStatus: String?
     var contentType: String?
     var url: String?
@@ -89,8 +89,8 @@ class File: Cacheable {
         // Decode remaining properties
         self.uuid = try container.decodeIfPresent(String.self, forKey: .uuid)
         self.folderId = try container.decodeIfPresent(Int.self, forKey: .folderID)
-        self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
-        self.filename = try container.decodeIfPresent(String.self, forKey: .filename)
+        self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName) ?? ""
+        self.filename = try container.decodeIfPresent(String.self, forKey: .filename) ?? ""
         self.uploadStatus = try container.decodeIfPresent(String.self, forKey: .uploadStatus)
         self.contentType = try container.decodeIfPresent(String.self, forKey: .contentType)
         self.url = try container.decodeIfPresent(String.self, forKey: .url)

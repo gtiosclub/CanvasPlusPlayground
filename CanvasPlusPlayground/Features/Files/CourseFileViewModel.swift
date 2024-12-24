@@ -17,7 +17,7 @@ class CourseFileViewModel {
     
     var displayedFiles: [File] {
         files.sorted {
-            $0.displayName ?? "" < $1.displayName ?? ""
+            $0.displayName < $1.displayName
         }
     }
     var displayedFolders: [Folder] {
@@ -32,11 +32,11 @@ class CourseFileViewModel {
     }
 
     func fetchRoot() async -> Folder? {
-        
-        if let persistedRootFolder: Folder = try? await CanvasService.shared.load(.getCourseRootFolder(courseId: courseID))?.first {
+        let request = CanvasRequest.getCourseRootFolder(courseId: courseID)
+        if let persistedRootFolder: Folder = try? await CanvasService.shared.load(request)?.first {
             await fetchContent(in: persistedRootFolder)
             return persistedRootFolder
-        } else if let rootFolder: Folder = try? await CanvasService.shared.syncWithAPI(.getCourseRootFolder(courseId: courseID)).first {
+        } else if let rootFolder: Folder = try? await CanvasService.shared.syncWithAPI(request).first {
             await fetchContent(in: rootFolder)
             return rootFolder
         }
@@ -52,10 +52,10 @@ class CourseFileViewModel {
             traversedFolderIDs.append(folder.id)
         }
         
-        async let foldersInRootFolder: [Folder] = CanvasService.shared.loadAndSync(.getFoldersInFolder(folderId: folder.id), onCacheReceive: { folders in
+        async let foldersInRootFolder: [Folder] = CanvasService.shared.loadAndSync(CanvasRequest.getFoldersInFolder(folderId: folder.id), onCacheReceive: { folders in
             self.folders = folders ?? []
         })
-        async let filesInRootFolder: [File] = CanvasService.shared.loadAndSync(.getFilesInFolder(folderId: folder.id), onCacheReceive: { files in
+        async let filesInRootFolder: [File] = CanvasService.shared.loadAndSync(CanvasRequest.getFilesInFolder(folderId: folder.id), onCacheReceive: { files in
             self.files = files ?? []
         })
         

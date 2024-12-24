@@ -36,10 +36,7 @@ class PeopleManager {
         guard let courseID else { return }
 
         let enrollments: [Enrollment]? = try? await CanvasService.shared.loadAndSync(
-            .getEnrollments(courseId: courseID),
-            descriptor: .init(sortBy: [
-                SortDescriptor(\.user?.name, order: .forward)
-            ]),
+            CanvasRequest.getEnrollments(courseId: courseID),
             onCacheReceive: { (cached: [Enrollment]?) in
                 guard let cached else { return }
                 
@@ -86,7 +83,7 @@ class PeopleManager {
             for course in courses {                
                 var didAlreadyAddCourse = false
                 let courseID = course.id
-                let request = CanvasRequest.getEnrollments(courseId: courseID)
+                let request = CanvasRequest.getEnrollments(courseId: courseID, userId: userID)
                 
                 func processEnrollments(_ enrollments: [Enrollment]) {
                     guard !didAlreadyAddCourse else { return }
@@ -104,21 +101,6 @@ class PeopleManager {
                 
                 group.addTask {
                     // Get the enrollments of course
-
-                    // If request was already made, retrieve from cache
-                    guard !CanvasService.shared.isRequestCompleted(request) else {
-                        // Check that no loading error occurred
-                        guard let enrollments = try? await CanvasService.shared.load(request) as [Enrollment]? else {
-                            // TODO: indicate storage error here
-                            print("Couldn't load enrollment count for course \(course.name ?? "n/a")")
-                            return
-                        }
-                        
-                        processEnrollments(enrollments)
-                        
-                        return
-                    }
-                    
                     guard let _: [Enrollment] = try? await CanvasService.shared.loadAndSync(request, onCacheReceive: { cached in
                         guard let cached else { return }
 
@@ -130,8 +112,6 @@ class PeopleManager {
                         print("Couldn't fetch enrollment count for course \(course.name ?? "n/a")")
                         return
                     }
-
-                    CanvasService.shared.markRequestAsCompleted(request)
                 }
             }
         }

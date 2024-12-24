@@ -132,10 +132,6 @@ final class Course: Cacheable {
     @Attribute(.unique) let id: String
     var parentId: String
     
-    // MARK: Relationships
-    //@Relationship(deleteRule: .nullify, inverse: \Announcement.course) var announcements: [Announcement]?
-    /*@Relationship()*/ var enrollments: [CourseEnrollment]?
-    
     // MARK: Other
     var sisCourseID: String?
     var uuid: String?
@@ -186,6 +182,14 @@ final class Course: Cacheable {
     var blueprintRestrictions: [String: Bool]?
     var blueprintRestrictionsByObjectType: [String: [String: Bool]]?
     var template: Bool?
+    
+    // Enrollment info
+    var enrollments: [CourseEnrollment] = []
+    var enrollmentTypesRaw: String = ""
+    var enrollmentRolesRaw: String = ""
+    var enrollmentRoleIdsRaw: String = ""
+    var enrollmentUserIdsRaw: String = ""
+    var enrollmentStatesRaw: String = ""
 
     // MARK: Custom Properties
     // We cannot use `Color` directly because it needs to conform to `PersistentModel`
@@ -280,7 +284,7 @@ final class Course: Cacheable {
         self.startAt = try container.decodeIfPresent(String.self, forKey: .startAt)
         self.endAt = try container.decodeIfPresent(String.self, forKey: .endAt)
         self.locale = try container.decodeIfPresent(String.self, forKey: .locale)
-        self.enrollments = try container.decodeIfPresent([CourseEnrollment].self, forKey: .enrollments)
+        self.enrollments = try container.decodeIfPresent([CourseEnrollment].self, forKey: .enrollments) ?? []
         self.totalStudents = try container.decodeIfPresent(Int.self, forKey: .totalStudents)
         self.calendar = try container.decodeIfPresent(CalendarLink.self, forKey: .calendar)
         self.defaultView = try container.decodeIfPresent(String.self, forKey: .defaultView)
@@ -312,6 +316,9 @@ final class Course: Cacheable {
         self.blueprintRestrictions = try container.decodeIfPresent([String: Bool].self, forKey: .blueprintRestrictions)
         self.blueprintRestrictionsByObjectType = try container.decodeIfPresent([String: [String: Bool]].self, forKey: .blueprintRestrictionsByObjectType)
         self.template = try container.decodeIfPresent(Bool.self, forKey: .template)
+        
+        // Extra setup
+        self.setEnrollments(enrollments)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -374,7 +381,7 @@ final class Course: Cacheable {
    }
     
     func merge(with other: Course) {
-        self.enrollments = other.enrollments
+        self.setEnrollments(other.enrollments)
         self.sisCourseID = other.sisCourseID
         self.uuid = other.uuid
         self.integrationID = other.integrationID
@@ -425,7 +432,15 @@ final class Course: Cacheable {
         self.blueprintRestrictionsByObjectType = other.blueprintRestrictionsByObjectType
         self.template = other.template
     }
-
+    
+    private func setEnrollments(_ enrollments: [CourseEnrollment]) {
+        self.enrollments = enrollments
+        self.enrollmentTypesRaw = enrollments.compactMap(\.type).joined(separator: ",")
+        self.enrollmentRolesRaw = enrollments.compactMap(\.role).joined(separator: ",")
+        self.enrollmentRoleIdsRaw = enrollments.compactMap(\.roleId?.asString).joined(separator: ",")
+        self.enrollmentStatesRaw = enrollments.compactMap(\.enrollmentState).joined(separator: ",")
+        self.enrollmentUserIdsRaw = enrollments.compactMap(\.userId?.asString).joined(separator: ",")
+    }
 }
 
 struct Permissions: Codable, Equatable, Hashable {

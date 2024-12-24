@@ -17,6 +17,9 @@ struct Tab: Codable {
     let type: String?
     let url: String?
     
+    // MARK: Custom
+    var courseId: String?
+    
     enum CodingKeys: String, CodingKey {
         case id
         case htmlURL = "html_url"

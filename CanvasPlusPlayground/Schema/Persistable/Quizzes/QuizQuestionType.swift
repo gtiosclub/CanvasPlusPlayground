@@ -7,6 +7,7 @@
 
 
 public enum QuizQuestionType: String, Codable, CaseIterable {
+
     case calculatedQuestion = "calculated_question",
          essayQuestion = "essay_question",
          fileUploadQuestion = "file_upload_question",

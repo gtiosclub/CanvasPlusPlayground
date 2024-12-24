@@ -24,7 +24,7 @@ struct CourseAssignmentsView: View {
         List(assignmentManager.assignments, id: \.id) { assignment in
             HStack {
                 VStack(alignment: .leading) {
-                    Text(assignment.name ?? "")
+                    Text(assignment.name)
                         .font(.headline)
                     Group {
                         if let submission = assignment.submission {

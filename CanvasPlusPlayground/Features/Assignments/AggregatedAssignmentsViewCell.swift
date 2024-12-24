@@ -13,7 +13,7 @@ struct AggregatedAssignmentsListCell: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text(assignment.name ?? "Missing name")
+            Text(assignment.name)
             
             Text("\(course.displayName)")
                 .font(.subheadline)

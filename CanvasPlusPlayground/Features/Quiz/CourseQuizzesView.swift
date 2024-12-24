@@ -44,7 +44,7 @@ struct CourseQuizzesView: View {
     func quizCell(for quiz: Quiz) -> some View {
         HStack {
             VStack {
-                Text(quiz.title ?? "No Title")
+                Text(quiz.title)
                     .bold()
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
@@ -71,6 +71,7 @@ struct CourseQuizzesView: View {
             }
         }
     }
+
 
     private func loadQuizzes() async {
         isLoadingQuizzes = true

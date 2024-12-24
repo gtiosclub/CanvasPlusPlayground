@@ -20,7 +20,7 @@ enum FileType {
     
     /// Checks the filename for file format, returns nil if File format isn't supported or format was uninferable.
     static func fromFile(_ file: File) -> FileType? {
-        let fileExtension = URL(fileURLWithPath: file.filename ?? "").pathExtension.lowercased()
+        let fileExtension = URL(fileURLWithPath: file.filename).pathExtension.lowercased()
         
         switch fileExtension {
         case "latex": return .latex

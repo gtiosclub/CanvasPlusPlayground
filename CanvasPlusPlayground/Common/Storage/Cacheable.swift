@@ -21,7 +21,7 @@ protocol Cacheable: Codable, PersistentModel {
 extension Cacheable {
     
     func update<V>(keypath: ReferenceWritableKeyPath<Self, V>, value: V) async {
-        await CanvasService.shared.repository.update(model: self, keypath: keypath, value: value)
+        await CanvasService.shared.repository?.update(model: self, keypath: keypath, value: value)
     }
     
     func hash(into hasher: inout Hasher) {
@@ -30,5 +30,18 @@ extension Cacheable {
     
     static func == (lhs: Self, rhs: Self) -> Bool {
         return lhs.id == rhs.id
+    }
+}
+
+struct ParentKeyPath<K, V> {
+    var writableKeyPath: ReferenceWritableKeyPath<K, V>?
+    var readableKeyPath: KeyPath<K, V>
+    
+    static func createWritable(_ keyPath: ReferenceWritableKeyPath<K, V>) -> Self {
+        ParentKeyPath(writableKeyPath: keyPath, readableKeyPath: keyPath)
+    }
+    
+    static func createReadable(_ keyPath: KeyPath<K, V>) -> Self {
+        ParentKeyPath(readableKeyPath: keyPath)
     }
 }

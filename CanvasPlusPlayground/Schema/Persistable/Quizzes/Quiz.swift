@@ -15,7 +15,7 @@ class Quiz {
     @Attribute(.unique) let id: String
     var parentId: String
     
-    var title: String?
+    var title: String
     var htmlUrl: String?
     var mobileUrl: String?
     var previewUrl: String?
@@ -78,7 +78,7 @@ class Quiz {
         self.id =  String(describing: id)
         self.parentId = try container.decodeIfPresent(String.self, forKey: .parentId) ?? ""
         
-        self.title = try container.decodeIfPresent(String.self, forKey: .title)
+        self.title = try container.decodeIfPresent(String.self, forKey: .title) ?? ""
         self.htmlUrl = try container.decodeIfPresent(String.self, forKey: .htmlUrl)
         self.mobileUrl = try container.decodeIfPresent(String.self, forKey: .mobileUrl)
         self.previewUrl = try container.decodeIfPresent(String.self, forKey: .previewUrl)
