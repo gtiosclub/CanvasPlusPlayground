@@ -1,5 +1,5 @@
 //
-//  Submission.swift
+//  SubmissionAPI.swift
 //  CanvasPlusPlayground
 //
 //  Created by Rahul on 12/18/24.
@@ -8,72 +8,45 @@
 
 import Foundation
 
-struct Submission: Codable {
-    let assignmentID: Int?
+struct SubmissionAPI: APIResponse {
+    typealias Model = NoOpCacheable
+    
+    // API docs: "the submission id in these URLs is the id of the student in the course, there is no separate submission id exposed in these APIs."
+    var id: String {
+        "\(assignment_id)_\(user_id)"
+    }
+    
+    let assignment_id: Int
     let assignment: String?
     let course: String?
     let attempt: Int?
     let body: String?
     let grade: String?
-    let gradeMatchesCurrentSubmission: Bool?
-    let htmlURL: URL?
-    let previewURL: URL?
+    let grade_matches_current_submission: Bool?
+    let html_url: URL?
+    let preview_url: URL?
     let score: Double?
-    let submissionComments: String?
-    let submissionType: String?
-    let submittedAt: String?
+    let submission_comments: String?
+    let submission_type: String?
+    let submitted_at: String?
     let url: String?
-    let userID: Int?
-    let graderID: Int?
-    let gradedAt: String?
+    let user_id: Int
+    let grader_id: Int?
+    let graded_at: String?
     let user: String?
     let late: Bool?
-    let assignmentVisible: Bool?
+    let assignment_visible: Bool?
     let excused: Bool?
     let missing: Bool?
-    let latePolicyStatus: String?
-    let pointsDeducted: Double?
-    let secondsLate: Int?
-    let workflowState: WorkflowState?
-    let extraAttempts: Int?
-    let anonymousID: String?
-    let postedAt: String?
-    let readStatus: String?
-    let redoRequest: Bool?
-    
-    enum CodingKeys: String, CodingKey {
-        case assignmentID = "assignment_id"
-        case assignment
-        case course
-        case attempt
-        case body
-        case grade
-        case gradeMatchesCurrentSubmission = "grade_matches_current_submission"
-        case htmlURL = "html_url"
-        case previewURL = "preview_url"
-        case score
-        case submissionComments = "submission_comments"
-        case submissionType = "submission_type"
-        case submittedAt = "submitted_at"
-        case url
-        case userID = "user_id"
-        case graderID = "grader_id"
-        case gradedAt = "graded_at"
-        case user
-        case late
-        case assignmentVisible = "assignment_visible"
-        case excused
-        case missing
-        case latePolicyStatus = "late_policy_status"
-        case pointsDeducted = "points_deducted"
-        case secondsLate = "seconds_late"
-        case workflowState = "workflow_state"
-        case extraAttempts = "extra_attempts"
-        case anonymousID = "anonymous_id"
-        case postedAt = "posted_at"
-        case readStatus = "read_status"
-        case redoRequest = "redo_request"
-    }
+    let late_policy_status: String?
+    let points_deducted: Double?
+    let seconds_late: Int?
+    let workflow_state: WorkflowState?
+    let extra_attempts: Int?
+    let anonymous_id: String?
+    let posted_at: String?
+    let read_status: String?
+    let redo_request: Bool?
 
     enum WorkflowState: String, Codable {
         case submitted

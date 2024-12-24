@@ -1,5 +1,5 @@
 //
-//  User.swift
+//  UserAPI.swift
 //  CanvasPlusPlayground
 //
 //  Created by Rahul on 12/18/24.
@@ -7,7 +7,9 @@
 
 import Foundation
 
-struct User: Codable, Equatable, Hashable {
+struct UserAPI: APIResponse {
+    typealias Model = NoOpCacheable
+    
     let id: Int?
     let name: String?
     let sortableName: String?
@@ -49,14 +51,6 @@ struct User: Codable, Equatable, Hashable {
         case timeZone = "time_zone"
         case bio
         case pronouns
-    }
-
-    static func == (lhs: User, rhs: User) -> Bool {
-        lhs.id == rhs.id
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
     }
 }
 

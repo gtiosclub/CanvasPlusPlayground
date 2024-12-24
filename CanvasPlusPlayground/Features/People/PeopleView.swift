@@ -57,7 +57,7 @@ struct PeopleView: View {
             }
         }
         .navigationTitle("People")
-        .navigationDestination(for: User.self) { user in
+        .navigationDestination(for: UserAPI.self) { user in
             PeopleCommonView(user: user).environment(peopleManager)
         }
         .statusToolbarItem("People", isVisible: isLoadingPeople)
@@ -91,7 +91,7 @@ struct PeopleView: View {
         }
     }
 
-    private var displayedUsers: [User] {
+    private var displayedUsers: [UserAPI] {
 
         return peopleManager.users.filter { user in
             let matchesSearchText = searchText.isEmpty || user.name?.localizedCaseInsensitiveContains(searchText) ?? true

@@ -8,7 +8,7 @@
 import Foundation
 
 struct GetCourseRootFolderRequest: CacheableAPIRequest {
-    typealias Subject = Folder
+    typealias Subject = FolderAPI
     
     let courseId: String
     

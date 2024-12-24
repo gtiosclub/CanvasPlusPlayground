@@ -21,11 +21,11 @@ class CanvasService {
     }
     
     /// Only loads from storage, doesn't make a network call
-    func load<Request: CacheableAPIRequest>(_ request: Request) async throws -> [Request.Subject]? {
+    func load<Request: CacheableAPIRequest>(_ request: Request) async throws -> [Request.PersistedModel]? {
         guard let repository else { return nil }
                 
         // Get cached data for this type then filter to only get models related to `request`
-        let cached: [Request.Subject]? = try await request.load(from: repository)
+        let cached: [Request.PersistedModel]? = try await request.load(from: repository)
         
         return cached
     }
@@ -40,8 +40,8 @@ class CanvasService {
     @discardableResult
     func syncWithAPI<Request: CacheableAPIRequest>(
         _ request: Request,
-        onNewBatch: ([Request.Subject]) -> Void = { _ in }
-    ) async throws -> [Request.Subject] {
+        onNewBatch: ([Request.PersistedModel]) -> Void = { _ in }
+    ) async throws -> [Request.PersistedModel] {
         guard let repository else { return [] }
         
         // Call for cacheable requests
@@ -61,12 +61,12 @@ class CanvasService {
      **/
     func loadAndSync<Request: CacheableAPIRequest>(
         _ request: Request,
-        onCacheReceive: ([Request.Subject]?) -> Void = { _ in },
-        onNewBatch: ([Request.Subject]) -> Void = { _ in }
-    ) async throws -> [Request.Subject] {
+        onCacheReceive: ([Request.PersistedModel]?) -> Void = { _ in },
+        onNewBatch: ([Request.PersistedModel]) -> Void = { _ in }
+    ) async throws -> [Request.PersistedModel] {
         guard let repository else { return [] }
         
-        let cached: [Request.Subject]? = try await request.load(from: repository)
+        let cached: [Request.PersistedModel]? = try await request.load(from: repository)
         onCacheReceive(cached) // Share cached version with caller.
             
         let latest = try await request.syncWithAPI(to: repository, onNewBatch: onNewBatch)

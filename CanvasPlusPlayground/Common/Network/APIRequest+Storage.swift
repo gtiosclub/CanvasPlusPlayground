@@ -8,12 +8,11 @@
 import Foundation
 import SwiftData
 
-extension CacheableAPIRequest {
-    
-    fileprivate var loadDescriptor: FetchDescriptor<Subject> {
+extension CacheableAPIRequest {    
+    fileprivate var loadDescriptor: FetchDescriptor<PersistedModel> {
         // Join custom predicate with id-filtering predicate
 
-        var cacheDescriptor = FetchDescriptor<Subject>()
+        var cacheDescriptor = FetchDescriptor<PersistedModel>()
         let customPred = self.customPredicate
         let idPred = self.idPredicate
         cacheDescriptor.predicate = #Predicate {
@@ -23,10 +22,10 @@ extension CacheableAPIRequest {
     }
     
     /// Only loads from storage, doesn't make a network call
-    func load(from repository: CanvasRepository) async throws -> [Subject]? {
+    func load(from repository: CanvasRepository) async throws -> [PersistedModel]? {
                 
         // Get cached data for this type then filter to only get models related to `request`
-        let cached: [Subject]? = try await repository.get(descriptor: loadDescriptor)
+        let cached: [PersistedModel]? = try await repository.get(descriptor: loadDescriptor)
         
         return cached
     }

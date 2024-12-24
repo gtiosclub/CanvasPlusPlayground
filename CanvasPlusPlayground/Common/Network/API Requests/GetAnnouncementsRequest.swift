@@ -8,7 +8,7 @@
 import Foundation
 
 struct GetAnnouncementsRequest: CacheableArrayAPIRequest {
-    typealias Subject = Announcement
+    typealias Subject = AnnouncementAPI
     
     let courseId: String
     

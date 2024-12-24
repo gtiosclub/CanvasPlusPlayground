@@ -9,7 +9,7 @@ import Foundation
 
 /// Pass in `nil` as `userID` to fetch the current user.
 struct GetUserProfileRequest: APIRequest {
-    typealias Subject = Profile
+    typealias Subject = ProfileAPI
     
     let userId: String?
     var queryParameters: [QueryParameter] {

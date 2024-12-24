@@ -8,7 +8,7 @@
 import Foundation
 
 struct GetQuizzesRequest: CacheableArrayAPIRequest {
-    typealias Subject = Quiz
+    typealias Subject = QuizAPI
     
     let courseId: String
     var queryParameters: [QueryParameter] {

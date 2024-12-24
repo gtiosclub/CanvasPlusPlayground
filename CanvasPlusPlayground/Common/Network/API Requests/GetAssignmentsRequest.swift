@@ -8,7 +8,7 @@
 import Foundation
 
 struct GetAssignmentsRequest: ArrayAPIRequest {
-    typealias Subject = Assignment
+    typealias Subject = AssignmentAPI
     
     let courseId: String
     

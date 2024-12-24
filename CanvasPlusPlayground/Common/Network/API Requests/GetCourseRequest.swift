@@ -7,7 +7,7 @@
 import Foundation
 
 struct GetCourseRequest: CacheableAPIRequest {
-    typealias Subject = Course
+    typealias Subject = CourseAPI
     
     let courseId: String
     

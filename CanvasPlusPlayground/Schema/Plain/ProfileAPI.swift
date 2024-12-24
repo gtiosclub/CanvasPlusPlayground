@@ -1,5 +1,5 @@
 //
-//  Profile.swift
+//  ProfileAPI.swift
 //  CanvasPlusPlayground
 //
 //  Created by Rahul on 12/18/24.
@@ -7,7 +7,9 @@
 
 import Foundation
 
-struct Profile: Codable {
+struct ProfileAPI: APIResponse {
+    typealias Model = NoOpCacheable
+    
     let id: Int?
     let name: String?
     let shortName: String?
