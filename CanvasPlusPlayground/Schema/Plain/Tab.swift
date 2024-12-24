@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Tab: Codable {
+struct Tab: Codable {
     let id: String?
     let htmlURL: String?
     let fullURL: String?
