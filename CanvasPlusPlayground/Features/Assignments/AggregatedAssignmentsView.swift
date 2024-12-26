@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AggregatedAssignmentsView: View {
     @Environment(CourseManager.self) var courseManager
-    @State var courseAssignments: [(Assignment, Course)] = []
+    @State var courseAssignments: [(AssignmentAPI, Course)] = []
     
     var body: some View {
         List {
@@ -27,7 +27,7 @@ struct AggregatedAssignmentsView: View {
                 let assignments = await CourseAssignmentManager.getAssignmentsForCourse(courseID: course.id)
                 
                 for assignment in assignments {
-                    if !(assignment.hasSubmittedSubmissions ?? false) {
+                    if !(assignment.has_submitted_submissions ?? false) {
                         self.courseAssignments.append((assignment, course))
                     }
                     

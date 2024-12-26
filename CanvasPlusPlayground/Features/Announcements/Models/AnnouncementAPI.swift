@@ -10,7 +10,12 @@ import Foundation
 struct AnnouncementAPI: APIResponse {
     typealias Model = Announcement
     
+    let id: Int
+    var title: String?
+    var created_at: Date?
+    var message: String?
+    
     func createModel() -> Announcement {
-        <#code#>
+        Announcement(api: self)
     }
 }

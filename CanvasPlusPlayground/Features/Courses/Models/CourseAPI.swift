@@ -20,17 +20,17 @@ struct CourseAPI: APIResponse {
     /** Teacher assigned course color for K5 in hex format. */
     let course_color: String?
     let workflow_state: CourseWorkflowState?
-    let account_id: String?
+    let account_id: Int?
     // let root_account_id: String?
     // let enrollment_term_id: String?
     // let grading_standard_id: String?
     let start_at: Date?
     let end_at: Date?
     let locale: String?
-    var enrollments: [EnrollmentAPI]?
+    var enrollments: [Enrollment]?
     var grading_periods: [APIGradingPeriod]?
     // let total_students: Int? // include[]=total_students
-    // let calendar: ?
+    let calendar: CalendarLink?
     let default_view: CourseDefaultView?
     let syllabus_body: String? // include[]=syllabus_body
     // let needs_grading_count: Int? // include[]=needs_grading_count
@@ -90,6 +90,15 @@ struct CourseAPI: APIResponse {
         let id: ID
         let name: String
         let start_at: Date?
+    }
+    
+    struct Enrollment: Codable, Equatable {
+        let type: String?
+        let role: String?
+        let role_id: Int?
+        let user_id: Int?
+        let enrollment_state: EnrollmentState?
+        let limit_privileges_to_course_section: Bool?
     }
 }
 

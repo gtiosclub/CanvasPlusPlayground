@@ -31,10 +31,10 @@ struct GetQuizzesRequest: CacheableArrayAPIRequest {
     }
     
     var requestId: String { courseId }
-    var requestIdKey: ParentKeyPath<Quiz, String> { .createWritable(\.parentId) }
+    var requestIdKey: ParentKeyPath<Quiz, String> { .createWritable(\.courseID) }
     var idPredicate: Predicate<Quiz> {
         #Predicate<Quiz> { quiz in
-            quiz.parentId == requestId
+            quiz.courseID == requestId
         }
     }
     var customPredicate: Predicate<Quiz> {

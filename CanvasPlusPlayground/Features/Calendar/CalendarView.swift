@@ -15,7 +15,7 @@ struct CalendarView: View {
     @State private var isLoadingCalendar = true
 
     init(course: Course) {
-        self.icsURL = URL(string: course.calendar?.ics ?? "")
+        self.icsURL = URL(string: course.calendarIcs ?? "")
     }
 
     var body: some View {

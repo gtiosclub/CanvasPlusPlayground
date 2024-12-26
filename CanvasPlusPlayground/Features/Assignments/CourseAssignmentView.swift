@@ -29,7 +29,7 @@ struct CourseAssignmentsView: View {
                     Group {
                         if let submission = assignment.submission {
                             Text(
-                                submission.workflowState?.rawValue.capitalized ?? "Unknown Status"
+                                submission.workflow_state?.rawValue.capitalized ?? "Unknown Status"
                             )
                         }
                     }
@@ -41,7 +41,7 @@ struct CourseAssignmentsView: View {
 
                     Text(submission.score?.truncatingTrailingZeros ?? "--") +
                     Text("/") +
-                    Text(assignment.pointsPossible?.truncatingTrailingZeros ?? "--")
+                    Text(assignment.points_possible?.truncatingTrailingZeros ?? "--")
                 }
             }
         }

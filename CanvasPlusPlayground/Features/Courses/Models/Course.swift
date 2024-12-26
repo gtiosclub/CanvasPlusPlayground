@@ -137,10 +137,21 @@ final class Course: Cacheable {
     var bannerImageDownloadURL: URL?
     var canCreateAnnouncement: Bool
     var canCreateDiscussionTopic: Bool
+    //var contextColor: ContextColor?
     var courseCode: String?
     /** Teacher assigned course color for K5 in hex format. */
     var courseColor: String?
     var defaultViewRaw: String?
+    var calendarIcs: String?
+    
+    // MARK: Enrollment info
+    var enrollments: [CourseAPI.Enrollment]
+    var enrollmentTypesRaw: String
+    var enrollmentRolesRaw: String // (var roles)
+    var enrollmentRoleIds: String
+    var enrollmentUserIds: String
+    var enrollmentStatesRaw: String
+    
     //var grades: [Grade]?
     var gradingPeriods: [APIGradingPeriod]?
     var hideFinalGrades: Bool
@@ -156,16 +167,14 @@ final class Course: Cacheable {
     var syllabusBody: String?
     var termName: String?
     var settings: APICourseSettings?
-    //var gradingSchemeRaw: []?
+    var gradingScheme: [APIGradingSchemeEntry]
     //var roles: String? (see enrollmentRolesRaw)
+    var tabs: [TabAPI]
     
-    // MARK: Enrollment info
-    var enrollments: [EnrollmentAPI]
-    var enrollmentTypesRaw: String
-    var enrollmentRolesRaw: String
-    var enrollmentRoleIds: String
-    var enrollmentUserIds: String
-    var enrollmentStatesRaw: String
+    var defaultView: CourseDefaultView? {
+        get { return CourseDefaultView(rawValue: defaultViewRaw ?? "") }
+        set { defaultViewRaw = newValue?.rawValue }
+    }
 
     // MARK: Custom Properties
     // We cannot use `Color` directly because it needs to conform to `PersistentModel`
@@ -183,7 +192,7 @@ final class Course: Cacheable {
         self.id =  String(describing: courseAPI.id)
         self.parentId = ""
         
-        self.name = name
+        self.name = courseAPI.name
         self.isFavorite = courseAPI.is_favorite ?? false
         self.courseCode = courseAPI.course_code
         self.courseColor = courseAPI.course_color
@@ -191,6 +200,13 @@ final class Course: Cacheable {
         self.imageDownloadURL = URL(string: courseAPI.image_download_url ?? "")
         self.syllabusBody = courseAPI.syllabus_body
         self.defaultViewRaw = courseAPI.default_view?.rawValue
+//        self.enrollments.forEach {
+//            if $0.id == nil {
+//              CanvasService.shared.repository?.delete()
+//            }
+//        }
+        
+        self.calendarIcs = courseAPI.calendar?.ics
         
         self.gradingPeriods = courseAPI.grading_periods
 //        if let apiGradingPeriods = item.grading_periods {
@@ -214,17 +230,36 @@ final class Course: Cacheable {
         self.accessRestrictedByDate = courseAPI.access_restricted_by_date ?? false
         
         // Extra enrollments setup
+        let enrollments = courseAPI.enrollments ?? []
         self.enrollments = enrollments
+        self.enrollmentTypesRaw = enrollments.compactMap(\.type).joined(separator: ",")
+        self.enrollmentRolesRaw = enrollments.compactMap(\.role).joined(separator: ",")
+        self.enrollmentRoleIds = enrollments.compactMap(\.role_id?.asString).joined(separator: ",")
+        self.enrollmentStatesRaw = enrollments.compactMap(\.enrollment_state?.rawValue).joined(separator: ",")
+        self.enrollmentUserIds = enrollments.compactMap(\.user_id?.asString).joined(separator: ",")
+//        if let apiEnrollments = item.enrollments {
+//            let enrollmentModels: [Enrollment] = apiEnrollments.map { apiItem in
+//                /// This enrollment contains the grade fields necessary to calculate grades on the dashboard.
+//                /// This is a special enrollment that has no courseID nor enrollmentID and contains no Grade objects.
+//                let e: Enrollment = context.insert()
+//                e.update(fromApiModel: apiItem, course: model, in: context)
+//                return e
+//            }
+//            model.enrollments = Set(enrollmentModels)
+//        }
         
 //        if let contextColor: ContextColor = context.fetch(scope: .where(#keyPath(ContextColor.canvasContextID), equals: model.canvasContextID)).first {
 //            model.contextColor = contextColor
 //        }
     
+        self.canCreateAnnouncement = false
+        self.canCreateDiscussionTopic = false
         if let permissions = courseAPI.permissions {
             self.canCreateAnnouncement = permissions.create_announcement
             self.canCreateDiscussionTopic = permissions.create_discussion_topic
         }
         
+        self.sections = []
         if let sections = courseAPI.sections {
             self.sections = sections.map {
                 APICourseSection.create(from: $0, courseID: courseAPI.id)
@@ -245,16 +280,34 @@ final class Course: Cacheable {
 //        } else if let settings: CourseSettings = context.fetch(scope: .where(#keyPath(CourseSettings.courseID), equals: model.id)).first {
 //            model.settings = settings
 //        }
-//        self.gradingSchemeRaw
         
-        //self.roles = courseAPI.enrollments.map(\.role)
+        self.gradingScheme = courseAPI.grading_scheme?.compactMap {
+            APIGradingSchemeEntry(courseGradingScheme: $0)
+        } ?? []
         
-        self.enrollmentTypesRaw = enrollments.compactMap(\.type).joined(separator: ",")
-        self.enrollmentRolesRaw = enrollments.compactMap(\.role).joined(separator: ",")
-        self.enrollmentRoleIds = enrollments.compactMap(\.roleID?.asString).joined(separator: ",")
-        self.enrollmentStatesRaw = enrollments.compactMap(\.enrollmentState).joined(separator: ",")
-        self.enrollmentUserIds = enrollments.compactMap(\.userID.asString).joined(separator: ",")
         
+//        model.roles = item.enrollments.roles
+        
+        
+        self.tabs = courseAPI.tabs ?? []
+//        if let apiTabs = item.tabs {
+//            let courseContext = Context.course(item.id.value)
+//
+//            let contextPredicate = NSPredicate(
+//                format: "%K == %@", #keyPath(Tab.contextRaw),
+//                courseContext.canvasContextID
+//            )
+//
+//            context.delete(context.fetch(contextPredicate) as [Tab])
+//
+//            // not adding tabs to Course, just saving them
+//            apiTabs.forEach { apiTab in
+//                let tab: Tab = context.insert()
+//                tab.save(apiTab, in: context, context: courseContext)
+//            }
+//        }
+//
+//        
     }
         
     func merge(with other: Course) {

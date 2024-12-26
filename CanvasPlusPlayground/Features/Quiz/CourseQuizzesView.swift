@@ -54,7 +54,7 @@ struct CourseQuizzesView: View {
                             
                     } else { Text("No pts")}
                     
-                    Text("\(quiz.questionCount?.toInt ?? 0) Questions")
+                    Text("\(quiz.questionCount ?? 0) Questions")
                 }
                 .font(.caption)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -67,7 +67,7 @@ struct CourseQuizzesView: View {
             } else if quiz.dueAt == .distantFuture {
                 Text("No Due Date")
             } else {
-                Text("Due at \(quiz.dueAt.formatted(Date.FormatStyle()))")
+                Text("Due at \(quiz.dueAt?.formatted(Date.FormatStyle()) ?? "Unknown")")
             }
         }
     }

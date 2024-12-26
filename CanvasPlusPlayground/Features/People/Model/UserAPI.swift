@@ -12,46 +12,24 @@ struct UserAPI: APIResponse {
     
     let id: Int?
     let name: String?
-    let sortableName: String?
-    let lastName: String?
-    let firstName: String?
-    let shortName: String?
-    let sisUserID: String?
-    let sisImportID: Int?
-    let integrationID: String?
-    let loginID: String?
-    let avatarURL: URL?
-    let avatarState: String?
+    let sortable_name: String?
+    let last_name: String?
+    let first_name: String?
+    let short_name: String?
+    let sis_user_id: String?
+    let sis_import_id: Int?
+    let integration_id: String?
+    let login_id: String?
+    let avatar_url: URL?
+    let avatar_state: String?
     let enrollments: [String]?
     let email: String?
     let locale: String?
-    let lastLogin: String?
-    let timeZone: String?
+    let last_login: String?
+    let time_zone: String?
     let bio: String?
     let pronouns: String?
     var role: String?
-
-    enum CodingKeys: String, CodingKey {
-        case id
-        case name
-        case sortableName = "sortable_name"
-        case lastName = "last_name"
-        case firstName = "first_name"
-        case shortName = "short_name"
-        case sisUserID = "sis_user_id"
-        case sisImportID = "sis_import_id"
-        case integrationID = "integration_id"
-        case loginID = "login_id"
-        case avatarURL = "avatar_url"
-        case avatarState = "avatar_state"
-        case enrollments
-        case email
-        case locale
-        case lastLogin = "last_login"
-        case timeZone = "time_zone"
-        case bio
-        case pronouns
-    }
 }
 
 /*

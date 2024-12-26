@@ -29,6 +29,6 @@ class ProfileManager {
         }
 
         print("Current user: \(currentUser?.name ?? "")")
-        print("Current user profile: \(currentProfile?.primaryEmail ?? "")")
+        print("Current user profile: \(currentProfile?.primary_email ?? "")")
     }
 }

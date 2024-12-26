@@ -19,7 +19,7 @@ class QuizzesViewModel {
             $0.sorted {
                 if $0.dueAt == $1.dueAt {
                     $0.title < $1.title
-                } else { ($0.dueAt) < $1.dueAt }
+                } else { ($0.dueAt ?? .now) < $1.dueAt ?? .now }
             }
         }
     }

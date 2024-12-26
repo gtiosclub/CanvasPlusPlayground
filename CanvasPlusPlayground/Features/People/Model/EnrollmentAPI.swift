@@ -27,7 +27,7 @@ struct EnrollmentAPI: APIResponse {
     let user_id: Int
     let associated_user_id: Int?
     let role: String
-    let role_id: String
+    let role_id: Int
     // let created_at: Date
     // let updated_at: Date
     let start_at: Date?
@@ -38,11 +38,11 @@ struct EnrollmentAPI: APIResponse {
     // let html_url: String
     let grades: Grades?
     let user: UserAPI?
-//    let computed_current_score: Double?
-//    let computed_final_score: Double?
-//    let computed_current_grade: String?
-//    let computed_current_letter_grade: String?
-//    let computed_final_grade: String?
+    let computed_current_score: Double?
+    let computed_final_score: Double?
+    let computed_current_grade: String?
+    let computed_current_letter_grade: String?
+    let computed_final_grade: String?
     // let unposted_current_grade: String?
     // let unposted_final_grade: String?
     // let unposted_current_score: String?
@@ -62,10 +62,9 @@ struct EnrollmentAPI: APIResponse {
     // let current_period_unposted_final_grade: String?
 
     let observed_user: UserAPI?
-   
     
     func createModel() -> Enrollment {
-        <#code#>
+        Enrollment(from: self)
     }
 }
 
