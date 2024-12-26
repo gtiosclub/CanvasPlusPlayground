@@ -31,8 +31,11 @@ struct CourseGradeView: View {
                 Group {
                     if let url = gradesVM.canvasURL {
                         Link("View on Canvas", destination: url)
-                    } else {
+                    } else if gradesVM.isLoading {
                         Text("Loading grades...")
+                            .foregroundStyle(.secondary)
+                    } else {
+                        Text("Unable to load grades") // TODO: Display a relevant error message
                             .foregroundStyle(.secondary)
                     }
                 }

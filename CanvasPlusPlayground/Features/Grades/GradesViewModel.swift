@@ -36,7 +36,9 @@ class GradesViewModel {
     }
 
     let courseId: String
-    
+
+    var isLoading = true
+
     init(courseId: String) {
         self.courseId = courseId
     }
@@ -46,6 +48,8 @@ class GradesViewModel {
             print("GradesViewModel: Current UserID is nil.")
             return
         }
+
+        isLoading = true
 
         let request = CanvasRequest.getEnrollments(
             courseId: courseId,
@@ -78,6 +82,8 @@ class GradesViewModel {
         } catch {
             print("Failed to fetch enrollments. \(error)")
         }
+
+        isLoading = false
     }
     
     /// Sets user enrollment if found.
