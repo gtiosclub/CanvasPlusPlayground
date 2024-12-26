@@ -77,7 +77,14 @@ extension CacheableAPIRequest {
             return fetched
         }()
         
-        // User storage version of model
+        for (id, cachedModel) in cacheLookup {
+            // Remove association of request with cachedModel if it's not included in request result
+            if !(latest.contains { $0.id == id }) {
+                await repository.delete(cachedModel)
+            }
+        }
+        
+        // Use storage version of model
         for (i, latestModel) in latest.enumerated() {
             if let matchedCached = cacheLookup[latestModel.id] {
                 latest[i] = matchedCached
