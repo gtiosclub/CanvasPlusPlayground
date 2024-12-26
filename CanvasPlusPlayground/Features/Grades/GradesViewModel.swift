@@ -36,7 +36,9 @@ class GradesViewModel {
     }
 
     let courseId: String
-    
+
+    var isLoading = true
+
     init(courseId: String) {
         self.courseId = courseId
     }
@@ -47,27 +49,32 @@ class GradesViewModel {
             return
         }
 
-        let request = CanvasRequest.getEnrollments(courseId: courseId)
-        
+        isLoading = true
+
+        let request = CanvasRequest.getEnrollments(
+            courseId: courseId,
+            userId: currentUserID
+        )
+
         do {
             let enrollments: [Enrollment]? = try await CanvasService.shared.loadAndSync(request,
                 onCacheReceive: { enrollmentsCache in
                     guard let enrollmentsCache else { return }
 
-                    findEnrollment(
+                    setEnrollment(
                         enrollments: enrollmentsCache,
                         currentUserID: currentUserID
                     )
                 },
                 onNewBatch: { enrollmentsBatch in
-                    findEnrollment(
+                    setEnrollment(
                         enrollments: enrollmentsBatch,
                         currentUserID: currentUserID
                     )
                 })
 
             if let enrollments {
-                findEnrollment(
+                setEnrollment(
                     enrollments: enrollments,
                     currentUserID: currentUserID
                 )
@@ -75,17 +82,20 @@ class GradesViewModel {
         } catch {
             print("Failed to fetch enrollments. \(error)")
         }
+
+        isLoading = false
     }
     
-    /// Searches for the users enrollment and sets it if found
-    func findEnrollment(enrollments: [Enrollment], currentUserID: Int) {
-        let newEnrollment = enrollments
-            .first { $0.userID == currentUserID }
+    /// Sets user enrollment if found.
+    private func setEnrollment(enrollments: [Enrollment], currentUserID: Int) {
+        guard enrollments.count == 1,
+                let first = enrollments.first,
+                first.userID == currentUserID else {
+            return
+        }
 
-        if newEnrollment != nil {
-            DispatchQueue.main.async {
-                self.enrollment = newEnrollment
-            }
+        DispatchQueue.main.async {
+            self.enrollment = first
         }
     }
 

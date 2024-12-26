@@ -73,7 +73,7 @@ import Foundation
  "restrict_quantitative_data":false}
  */
 
-struct Assignment: Codable {
+struct Assignment: Codable, Identifiable {
     let id: Int
     let description: String?
     let dueAt: String?
