@@ -412,7 +412,7 @@
 		A324BA5B2D0797B6005F53FA /* People */ = {
 			isa = PBXGroup;
 			children = (
-				A373DC192D1A425300215019 /* Model */,
+				A373DC192D1A425300215019 /* Models */,
 				B53D95A12CA0A22A00647EE9 /* PeopleView.swift */,
 				B533C0BD2CADDDE700A74AF6 /* PeopleCommonView.swift */,
 				B53D959F2CA0952F00647EE9 /* PeopleManager.swift */,
@@ -467,14 +467,14 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		A373DC192D1A425300215019 /* Model */ = {
+		A373DC192D1A425300215019 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				B76454EE2C8DF61B002DF00E /* Enrollment.swift */,
 				A3CF88DA2D192194000ACDF3 /* EnrollmentAPI.swift */,
 				B7F950382D1279A1004BB470 /* UserAPI.swift */,
 			);
-			path = Model;
+			path = Models;
 			sourceTree = "<group>";
 		};
 		A373DC1C2D1D2B1600215019 /* Models */ = {
