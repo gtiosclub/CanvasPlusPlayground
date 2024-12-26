@@ -71,7 +71,7 @@ private struct AssignmentRow: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
-                Text(assignment.name ?? "")
+                Text(assignment.name)
                     .font(.headline)
                 Group {
                     if let submission = assignment.submission {

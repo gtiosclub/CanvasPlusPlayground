@@ -40,7 +40,10 @@ struct CanvasRequest {
         GetAssignmentsRequest(courseId: courseId)
     }
 
-    static func getAssignmentGroups(courseId: String, include includeItems: [String] = ["assignments"]) -> GetAssignmentGroupsRequest {
+    static func getAssignmentGroups(
+        courseId: String,
+        include includeItems: [String] = ["assignments", "submission"]
+    ) -> GetAssignmentGroupsRequest {
         GetAssignmentGroupsRequest(courseId: courseId, include: includeItems)
     }
 
