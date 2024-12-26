@@ -121,7 +121,7 @@ struct AssignmentAPI: APIResponse {
     let can_duplicate: Bool?
     let original_course_id: Int?
     let original_assignment_id: Int?
-    let original_lti_resource_link_id: Int?
+    let original_lti_resource_link_id: String?
     let original_assignment_name: String?
     let original_quiz_id: Int?
     let workflow_state: String?

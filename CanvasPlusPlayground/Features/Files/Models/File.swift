@@ -81,7 +81,7 @@ class File: Cacheable {
         self.folderId = api.folder_id
         self.displayName = api.display_name
         self.filename = api.filename
-        self.contentType = api.contentType
+        self.contentType = api.content_type
         self.url = api.url
         self.size = api.size
         self.createdAt = api.created_at
