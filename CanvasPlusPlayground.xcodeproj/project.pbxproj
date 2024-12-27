@@ -450,13 +450,6 @@
 			path = Grades;
 			sourceTree = "<group>";
 		};
-		A324BA602D079927005F53FA /* Plain */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Plain;
-			sourceTree = "<group>";
-		};
 		A373DC182D1A40EC00215019 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -540,14 +533,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		B76454F12C8DF61B002DF00E /* Schema */ = {
-			isa = PBXGroup;
-			children = (
-				A324BA602D079927005F53FA /* Plain */,
-			);
-			path = Schema;
-			sourceTree = "<group>";
-		};
 		B76454F32C8DF61B002DF00E /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
@@ -561,7 +546,6 @@
 			children = (
 				A324BA542D0796B8005F53FA /* Common */,
 				A324BA502D07963D005F53FA /* Features */,
-				B76454F12C8DF61B002DF00E /* Schema */,
 				B76454F32C8DF61B002DF00E /* Preview Content */,
 				B7AD54EE2CD41D5200FB09BB /* Intelligence */,
 				B76454F92C8DF61B002DF00E /* Assets.xcassets */,
