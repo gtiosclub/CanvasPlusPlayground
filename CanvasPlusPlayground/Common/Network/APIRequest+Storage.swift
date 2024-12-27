@@ -8,11 +8,12 @@
 import Foundation
 import SwiftData
 
-extension CacheableAPIRequest {    
+extension CacheableAPIRequest {
     fileprivate var loadDescriptor: FetchDescriptor<PersistedModel> {
         // Join custom predicate with id-filtering predicate
 
         var cacheDescriptor = FetchDescriptor<PersistedModel>()
+
         let customPred = self.customPredicate
         let idPred = self.idPredicate
         cacheDescriptor.predicate = #Predicate {

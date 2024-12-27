@@ -104,7 +104,8 @@ struct GetEnrollmentsRequest: CacheableArrayAPIRequest {
             ) as! any StandardPredicateExpression<Bool>
         })
 
-        let statePredicate = self.role.isEmpty ? .true : Predicate<Enrollment>({ enrollment in
+
+        let statePredicate = self.state.isEmpty ? .true : Predicate<Enrollment>({ enrollment in
             PredicateExpressions.build_contains(
                 PredicateExpressions.build_KeyPath(
                     root: PredicateExpressions.build_Arg(self),
