@@ -74,4 +74,6 @@ class NavigationModel {
     }
     var selectedCoursePage: CoursePage?
     var showInstallIntelligenceSheet = false
+    var showSettingsSheet = false
+    var showAuthorizationSheet = false
 }

@@ -1,0 +1,105 @@
+//
+//  ContentView.swift
+//  CanvasPlusPlayground
+//
+//  Created by Rahul on 9/6/24.
+//
+
+import SwiftUI
+
+struct HomeView: View {
+    typealias NavigationPage = NavigationModel.NavigationPage
+
+    @Environment(ProfileManager.self) var profileManager
+    @Environment(CourseManager.self) var courseManager
+
+    @State private var navigationModel = NavigationModel()
+
+    @EnvironmentObject private var intelligenceManager: IntelligenceManager
+    @EnvironmentObject private var llmEvaluator: LLMEvaluator
+
+    @State private var columnVisibility = NavigationSplitViewVisibility.all
+
+    @SceneStorage("CourseListView.selectedNavigationPage")
+    private var selectedNavigationPage: NavigationPage?
+
+    @SceneStorage("CourseListView.selectedCoursePage")
+    private var selectedCoursePage: NavigationModel.CoursePage?
+
+    private var selectedCourse: Course? {
+        guard let selectedNavigationPage, case .course(let id) = selectedNavigationPage else {
+            return nil
+        }
+
+        return courseManager.courses.first(where: { $0.id == id })
+    }
+
+    var body: some View {
+        @Bindable var courseManager = courseManager
+        
+        NavigationSplitView(columnVisibility: $columnVisibility) {
+            Sidebar()
+        } content: {
+            contentView
+        } detail: {
+            if let selectedCourse, let selectedCoursePage {
+                CourseDetailView(
+                    course: selectedCourse,
+                    coursePage: selectedCoursePage
+                )
+            }
+        }
+        .task {
+            navigationModel.selectedNavigationPage = selectedNavigationPage
+            navigationModel.selectedCoursePage = selectedCoursePage
+        }
+        .onChange(of: navigationModel.selectedNavigationPage) { _, new in
+            selectedNavigationPage = new
+        }
+        .onChange(of: navigationModel.selectedCoursePage) { _, new in
+            selectedCoursePage = new
+        }
+        .sheet(isPresented: $navigationModel.showAuthorizationSheet) {
+            NavigationStack {
+                SetupView()
+            }
+            .interactiveDismissDisabled()
+        }
+        .sheet(isPresented: $navigationModel.showSettingsSheet) {
+            SettingsView()
+        }
+        .sheet(isPresented: $navigationModel.showInstallIntelligenceSheet, content: {
+            NavigationStack {
+                IntelligenceOnboardingView()
+            }
+            .environmentObject(llmEvaluator)
+            .environmentObject(intelligenceManager)
+            .interactiveDismissDisabled()
+        })
+        .environment(navigationModel)
+    }
+
+    @ViewBuilder
+    private var contentView: some View {
+        if let selectedCourse {
+            CourseView(course: selectedCourse)
+        } else if let selectedNavigationPage {
+            switch selectedNavigationPage {
+            case .announcements: Text("All Announcements")
+            case .toDoList: AggregatedAssignmentsView()
+            case .pinned: Text("Pinned Items")
+            default: EmptyView()
+            }
+        } else {
+            ContentUnavailableView("Select a course", systemImage: "folder")
+        }
+    }
+}
+
+#Preview {
+    HomeView()
+        .environment(CourseManager())
+        .environment(ProfileManager())
+        .environmentObject(LLMEvaluator())
+        .environmentObject(IntelligenceManager())
+}
