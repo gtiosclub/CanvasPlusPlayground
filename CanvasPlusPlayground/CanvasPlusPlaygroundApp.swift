@@ -16,7 +16,7 @@ struct CanvasPlusPlaygroundApp: App {
 
     var body: some Scene {
         WindowGroup {
-            CourseListView()
+            HomeView()
                 .environment(ProfileManager())
                 .environment(CourseManager())
                 .environmentObject(IntelligenceManager())

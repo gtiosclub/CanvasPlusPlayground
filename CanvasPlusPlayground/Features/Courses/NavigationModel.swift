@@ -9,6 +9,36 @@ import SwiftUI
 
 @Observable
 class NavigationModel {
+    enum NavigationPage: Hashable, RawRepresentable {
+        init?(rawValue: String) {
+            if rawValue.hasPrefix("course") {
+                guard let id = rawValue.split(separator: "/").last else { return nil }
+                self = .course(id: String(id))
+            } else {
+                switch rawValue {
+                case "announcements": self = .announcements
+                case "todoList": self = .toDoList
+                case "pinned": self = .pinned
+                default: return nil
+                }
+            }
+        }
+
+        case course(id: Course.ID)
+        case announcements
+        case toDoList
+        case pinned
+
+        var rawValue: String {
+            switch self {
+            case .course(id: let id): "course/\(id)"
+            case .announcements: "announcements"
+            case .toDoList: "todoList"
+            case .pinned: "pinned"
+            }
+        }
+    }
+
     enum CoursePage: String, CaseIterable {
         case assignments
         case files
@@ -37,7 +67,7 @@ class NavigationModel {
         }
     }
 
-    var selectedCourseID: Course.ID? {
+    var selectedNavigationPage: NavigationPage? {
         didSet {
             selectedCoursePage = nil
         }

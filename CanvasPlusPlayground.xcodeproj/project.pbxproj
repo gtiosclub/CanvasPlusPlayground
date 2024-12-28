@@ -90,7 +90,7 @@
 		B76455002C8DF61B002DF00E /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454EF2C8DF61B002DF00E /* File.swift */; };
 		B76455012C8DF61B002DF00E /* StorageKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454F02C8DF61B002DF00E /* StorageKeys.swift */; };
 		B76455022C8DF61B002DF00E /* CourseFilesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454F42C8DF61B002DF00E /* CourseFilesView.swift */; };
-		B76455032C8DF61B002DF00E /* CourseListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454F52C8DF61B002DF00E /* CourseListView.swift */; };
+		B76455032C8DF61B002DF00E /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454F52C8DF61B002DF00E /* HomeView.swift */; };
 		B76455042C8DF61B002DF00E /* CourseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454F62C8DF61B002DF00E /* CourseView.swift */; };
 		B76455052C8DF61B002DF00E /* SetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454F72C8DF61B002DF00E /* SetupView.swift */; };
 		B76455062C8DF61B002DF00E /* CanvasPlusPlaygroundApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454FA2C8DF61B002DF00E /* CanvasPlusPlaygroundApp.swift */; };
@@ -203,7 +203,7 @@
 		B76454F02C8DF61B002DF00E /* StorageKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageKeys.swift; sourceTree = "<group>"; };
 		B76454F22C8DF61B002DF00E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		B76454F42C8DF61B002DF00E /* CourseFilesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseFilesView.swift; sourceTree = "<group>"; };
-		B76454F52C8DF61B002DF00E /* CourseListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseListView.swift; sourceTree = "<group>"; };
+		B76454F52C8DF61B002DF00E /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		B76454F62C8DF61B002DF00E /* CourseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseView.swift; sourceTree = "<group>"; };
 		B76454F72C8DF61B002DF00E /* SetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupView.swift; sourceTree = "<group>"; };
 		B76454F92C8DF61B002DF00E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -304,7 +304,7 @@
 			isa = PBXGroup;
 			children = (
 				A373DC182D1A40EC00215019 /* Models */,
-				B76454F52C8DF61B002DF00E /* CourseListView.swift */,
+				B76454F52C8DF61B002DF00E /* HomeView.swift */,
 				B76454F62C8DF61B002DF00E /* CourseView.swift */,
 				B76454FC2C8DF61B002DF00E /* CourseManager.swift */,
 				B7A26EE82CCB62A00084704A /* NavigationModel.swift */,
@@ -701,7 +701,7 @@
 				A3049B7D2D160299002F3166 /* GetFoldersInFolderRequest.swift in Sources */,
 				9B69FA4D2CC2CCB1006101F3 /* AggregatedAssignmentsViewModel.swift in Sources */,
 				B76455022C8DF61B002DF00E /* CourseFilesView.swift in Sources */,
-				B76455032C8DF61B002DF00E /* CourseListView.swift in Sources */,
+				B76455032C8DF61B002DF00E /* HomeView.swift in Sources */,
 				A3269E8E2CD5533F006F7D14 /* CanvasRepository.swift in Sources */,
 				A3049B5B2D0E5C18002F3166 /* QuizPermissions.swift in Sources */,
 				A3FFD03E2CE0065A006BAB51 /* NetworkError.swift in Sources */,

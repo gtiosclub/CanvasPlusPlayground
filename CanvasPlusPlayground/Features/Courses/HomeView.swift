@@ -7,7 +7,9 @@
 
 import SwiftUI
 
-struct CourseListView: View {
+struct HomeView: View {
+    typealias NavigationPage = NavigationModel.NavigationPage
+
     @Environment(ProfileManager.self) var profileManager
     @Environment(CourseManager.self) var courseManager
 
@@ -21,14 +23,18 @@ struct CourseListView: View {
     @State private var columnVisibility = NavigationSplitViewVisibility.all
     @State private var isLoadingCourses = true
 
-    @SceneStorage("CourseListView.selectedCourse")
-    private var selectedCourseID: Course.ID?
+    @SceneStorage("CourseListView.selectedNavigationPage")
+    private var selectedNavigationPage: NavigationPage?
 
     @SceneStorage("CourseListView.selectedCoursePage")
     private var selectedCoursePage: NavigationModel.CoursePage?
 
     private var selectedCourse: Course? {
-        courseManager.courses.first(where: { $0.id == selectedCourseID })
+        guard let selectedNavigationPage, case .course(let id) = selectedNavigationPage else {
+            return nil
+        }
+
+        return courseManager.courses.first(where: { $0.id == id })
     }
 
     var body: some View {
@@ -37,20 +43,16 @@ struct CourseListView: View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
             mainBody
         } content: {
-            if let selectedCourse {
-                CourseView(course: selectedCourse)
-            } else {
-                ContentUnavailableView("Select a course.", systemImage: "folder")
-            }
+            contentView
         } detail: {
             detailView
         }
         .task {
-            navigationModel.selectedCourseID = selectedCourseID
+            navigationModel.selectedNavigationPage = selectedNavigationPage
             navigationModel.selectedCoursePage = selectedCoursePage
         }
-        .onChange(of: navigationModel.selectedCourseID) { _, new in
-            selectedCourseID = new
+        .onChange(of: navigationModel.selectedNavigationPage) { _, new in
+            selectedNavigationPage = new
         }
         .onChange(of: navigationModel.selectedCoursePage) { _, new in
             selectedCoursePage = new
@@ -65,12 +67,12 @@ struct CourseListView: View {
         .refreshable {
             await loadCourses()
         }
-        .sheet(isPresented: $showAuthorization) {
-            NavigationStack {
-                SetupView()
-            }
-            .interactiveDismissDisabled()
-        }
+//        .sheet(isPresented: $showAuthorization) {
+//            NavigationStack {
+//                SetupView()
+//            }
+//            .interactiveDismissDisabled()
+//        }
         .sheet(isPresented: $showSettings) {
             SettingsView()
         }
@@ -86,37 +88,16 @@ struct CourseListView: View {
     }
 
     private var mainBody: some View {
-        List(selection: $navigationModel.selectedCourseID) {
+        List(selection: $navigationModel.selectedNavigationPage) {
             Section {
-                Button {
-                    navigationModel.showInstallIntelligenceSheet = true
-                } label: {
-                    Label("Install Models", systemImage: "square.and.arrow.down")
-                }
-                .foregroundStyle(.blue)
-            } header: {
-                Label("Intelligence", systemImage: "wand.and.stars")
-            } footer: {
-                if intelligenceManager.installedModels.isEmpty {
-                    Text("Install models to use the intelligence features.")
-                } else {
-                    let count = intelligenceManager.installedModels.count
-                    Text(
-                        "You have \(count) installed \(count == 1 ? "model" : "models"). (\(intelligenceManager.installedModels.joined(separator: ", ")))"
-                    )
-                }
+                pinnedTiles
             }
 
             Section("Favorites") {
-                NavigationLink {
-                    AggregatedAssignmentsView()
-                } label: {
-                    Text("Your assigments")
-                }
-                .disabled(courseManager.userFavCourses.isEmpty)
-
                 ForEach(courseManager.userFavCourses, id: \.id) { course in
-                    NavigationLink(value: course.id) {
+                    NavigationLink(
+                        value: NavigationPage.course(id: course.id)
+                    ) {
                         CourseListCell(course: course)
                     }
                     .tint(course.rgbColors?.color)
@@ -125,14 +106,17 @@ struct CourseListView: View {
 
             Section("Courses") {
                 ForEach(courseManager.userOtherCourses, id: \.id) { course in
-                    NavigationLink(value: course.id) {
+                    NavigationLink(value: NavigationPage.course(id: course.id)) {
                         CourseListCell(course: course)
                     }
                     .tint(course.rgbColors?.color)
                 }
             }
         }
-        .navigationTitle("Courses")
+        .navigationTitle("Home")
+        #if os(macOS)
+        .navigationSplitViewColumnWidth(min: 275, ideal: 275)
+        #endif
         .listStyle(.sidebar)
         .statusToolbarItem("Courses", isVisible: isLoadingCourses)
         .toolbar {
@@ -141,6 +125,22 @@ struct CourseListView: View {
                     showSettings.toggle()
                 }
             }
+        }
+    }
+
+    @ViewBuilder
+    private var contentView: some View {
+        if let selectedCourse {
+            CourseView(course: selectedCourse)
+        } else if let selectedNavigationPage {
+            switch selectedNavigationPage {
+            case .announcements: Text("All Announcements")
+            case .toDoList: AggregatedAssignmentsView()
+            case .pinned: Text("Pinned Items")
+            default: EmptyView()
+            }
+        } else {
+            ContentUnavailableView("Select a course", systemImage: "folder")
         }
     }
 
@@ -172,11 +172,126 @@ struct CourseListView: View {
         }
     }
 
+    private var pinnedTiles: some View {
+        #if os(macOS)
+        let columns = Array(
+            repeating: GridItem(.adaptive(minimum: 90)),
+            count: 2
+        )
+        #else
+        let columns = Array(
+            repeating: GridItem(.adaptive(minimum: 150)),
+            count: 2
+        )
+        #endif
+
+        return LazyVGrid(
+            columns: columns,
+            spacing: 4
+        ) {
+            HomeViewTile(
+                "Announcements",
+                systemIcon: "bell.circle.fill",
+                color: .blue,
+                page: .announcements
+            ) {
+                navigationModel.selectedNavigationPage = .announcements
+            }
+
+            HomeViewTile(
+                "To-Do",
+                systemIcon: "list.bullet.circle.fill",
+                color: .red,
+                page: .toDoList
+            ) {
+                navigationModel.selectedNavigationPage = .toDoList
+            }
+
+            HomeViewTile(
+                "Pinned",
+                systemIcon: "pin.circle.fill",
+                color: .orange,
+                page: .pinned
+            ) {
+                navigationModel.selectedNavigationPage = .pinned
+            }
+        }
+        .listRowInsets(EdgeInsets())
+        .listRowBackground(Color.clear)
+        .buttonStyle(.plain)
+    }
+
     private func loadCourses() async {
         isLoadingCourses = true
         await courseManager.getCourses()
         await profileManager.getCurrentUserAndProfile()
         isLoadingCourses = false
+    }
+}
+
+private struct HomeViewTile: View {
+    @Environment(NavigationModel.self) private var navigationModel
+
+    let title: String
+    let systemIcon: String
+    let color: Color
+    let page: NavigationModel.NavigationPage
+    let action: () -> Void
+
+    init(
+        _ title: String,
+        systemIcon: String,
+        color: Color,
+        page: NavigationModel.NavigationPage,
+        action: @escaping () -> Void
+    ) {
+        self.title = title
+        self.systemIcon = systemIcon
+        self.color = color
+        self.page = page
+        self.action = action
+    }
+
+    var isSelected: Bool {
+        navigationModel.selectedNavigationPage == page
+    }
+
+    var body: some View {
+        Button(action: action) {
+            label
+        }
+        .buttonStyle(.plain)
+    }
+
+    private var label: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Image(systemName: systemIcon)
+                    .font(.title)
+                    .tint(isSelected ? .white : color)
+                    .foregroundStyle(.tint)
+                Spacer()
+            }
+            Text(title)
+                .foregroundStyle(isSelected ? .white : .primary)
+                .lineLimit(1)
+        }
+        .padding(8)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+            #if os(iOS)
+                .fill(isSelected ? color : Color(uiColor: .secondarySystemGroupedBackground))
+            #else
+                .fill(isSelected ? color : .gray.opacity(0.2))
+            #endif
+        )
+        #if os(iOS)
+        .padding(2)
+        .frame(minWidth: 150)
+        #else
+        .frame(minWidth: 90)
+        #endif
+        .tint(color)
     }
 }
 
@@ -275,8 +390,9 @@ private struct CourseListCell: View {
 }
 
 #Preview {
-    CourseListView()
+    HomeView()
         .environment(CourseManager())
+        .environment(ProfileManager())
         .environmentObject(LLMEvaluator())
         .environmentObject(IntelligenceManager())
 }
