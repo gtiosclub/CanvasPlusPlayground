@@ -74,6 +74,8 @@ class NavigationModel {
     }
     var selectedCoursePage: CoursePage?
     var showInstallIntelligenceSheet = false
-    var showSettingsSheet = false
     var showAuthorizationSheet = false
+    #if os(iOS)
+    var showSettingsSheet = false
+    #endif
 }

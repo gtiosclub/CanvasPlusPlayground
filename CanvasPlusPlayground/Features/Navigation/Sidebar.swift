@@ -50,6 +50,7 @@ struct Sidebar: View {
         #endif
         .listStyle(.sidebar)
         .statusToolbarItem("Courses", isVisible: isLoadingCourses)
+        #if os(iOS)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
                 Button("Settings", systemImage: "gear") {
@@ -57,6 +58,7 @@ struct Sidebar: View {
                 }
             }
         }
+        #endif
         .task {
             if StorageKeys.needsAuthorization {
                 navigationModel.showAuthorizationSheet = true

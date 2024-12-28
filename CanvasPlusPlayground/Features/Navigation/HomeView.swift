@@ -65,9 +65,11 @@ struct HomeView: View {
             }
             .interactiveDismissDisabled()
         }
+        #if os(iOS)
         .sheet(isPresented: $navigationModel.showSettingsSheet) {
             SettingsView()
         }
+        #endif
         .sheet(isPresented: $navigationModel.showInstallIntelligenceSheet, content: {
             NavigationStack {
                 IntelligenceOnboardingView()

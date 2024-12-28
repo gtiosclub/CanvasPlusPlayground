@@ -17,11 +17,20 @@ struct CanvasPlusPlaygroundApp: App {
     var body: some Scene {
         WindowGroup {
             HomeView()
-                .environment(ProfileManager())
-                .environment(CourseManager())
-                .environmentObject(IntelligenceManager())
-                .environmentObject(LLMEvaluator())
+                .environment(profileManager)
+                .environment(courseManager)
+                .environmentObject(intelligenceManager)
+                .environmentObject(llmEvaluator)
         }
+
+        #if os(macOS)
+        Settings {
+            SettingsView()
+                .environment(profileManager)
+                .environment(courseManager)
+                .frame(width: 300, height: 300)
+        }
+        #endif
     }
 
     init() {

@@ -30,11 +30,13 @@ struct SettingsView: View {
             #endif
         }
         .formStyle(.grouped)
+        #if os(iOS)
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
                 Button("Done") { dismiss() }
             }
         }
+        #endif
         .navigationTitle("Settings")
     }
 
