@@ -12,8 +12,7 @@ struct HomeView: View {
 
     @Environment(ProfileManager.self) var profileManager
     @Environment(CourseManager.self) var courseManager
-
-    @State private var navigationModel = NavigationModel()
+    @Environment(NavigationModel.self) var navigationModel
 
     @EnvironmentObject private var intelligenceManager: IntelligenceManager
     @EnvironmentObject private var llmEvaluator: LLMEvaluator
@@ -36,7 +35,8 @@ struct HomeView: View {
 
     var body: some View {
         @Bindable var courseManager = courseManager
-        
+        @Bindable var navigationModel = navigationModel
+
         NavigationSplitView(columnVisibility: $columnVisibility) {
             Sidebar()
         } content: {
@@ -70,14 +70,6 @@ struct HomeView: View {
             SettingsView()
         }
         #endif
-        .sheet(isPresented: $navigationModel.showInstallIntelligenceSheet, content: {
-            NavigationStack {
-                IntelligenceOnboardingView()
-            }
-            .environmentObject(llmEvaluator)
-            .environmentObject(intelligenceManager)
-            .interactiveDismissDisabled()
-        })
         .environment(navigationModel)
     }
 
