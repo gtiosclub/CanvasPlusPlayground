@@ -74,4 +74,3 @@ struct PeopleCommonView: View {
         fetchingCommonCourses = false
     }
 }
-

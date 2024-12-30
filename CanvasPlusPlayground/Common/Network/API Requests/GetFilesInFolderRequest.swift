@@ -9,9 +9,9 @@ import Foundation
 
 struct GetFilesInFolderRequest: CacheableArrayAPIRequest {
     typealias Subject = File
-    
+
     let folderId: String
-    
+
     var path: String { "folders/\(folderId)/files" }
     var queryParameters: [QueryParameter] {
         [
@@ -25,7 +25,7 @@ struct GetFilesInFolderRequest: CacheableArrayAPIRequest {
         + include.map {("include[]", $0)}
         + only.map {("only[]", $0)}
     }
-    
+
     // MARK: Query Params
     let contentTypes: [String?]
     let excludeContentTypes: [String?]
@@ -35,8 +35,18 @@ struct GetFilesInFolderRequest: CacheableArrayAPIRequest {
     let sort: String?
     let order: String?
     let perPage: Int
-    
-    init(folderId: String, contentTypes: [String?] = [], excludeContentTypes: [String?] = [], searchTerm: String? = nil, include: [String] = [], only: [String] = [], sort: String? = nil, order: String? = nil, perPage: Int = 50) {
+
+    init(
+        folderId: String,
+        contentTypes: [String?] = [],
+        excludeContentTypes: [String?] = [],
+        searchTerm: String? = nil,
+        include: [String] = [],
+        only: [String] = [],
+        sort: String? = nil,
+        order: String? = nil,
+        perPage: Int = 50
+    ) {
         self.folderId = folderId
         self.contentTypes = contentTypes
         self.excludeContentTypes = excludeContentTypes
@@ -47,7 +57,7 @@ struct GetFilesInFolderRequest: CacheableArrayAPIRequest {
         self.order = order
         self.perPage = perPage
     }
-    
+
     // MARK: request Id
     var requestId: Int? { folderId.asInt }
     var requestIdKey: ParentKeyPath<File, Int?> { .createWritable(\.folderId) }
@@ -57,24 +67,24 @@ struct GetFilesInFolderRequest: CacheableArrayAPIRequest {
         }
     }
     var customPredicate: Predicate<File> {
-        
+
         let contentTypePred = contentTypes.isEmpty ? .true : #Predicate<File> { file in
             contentTypes.contains(file.contentType)
         }
-        
+
         let excludeContentTypesPred = excludeContentTypes.isEmpty ? .true : #Predicate<File> { file in
             !excludeContentTypes.contains(file.contentType)
         }
-        
+
         let searchTerm = searchTerm ?? ""
         let searchPred = #Predicate<File> { file in
             file.displayName.localizedStandardContains(searchTerm)
         }
-        
+
         return #Predicate<File> { file in
             contentTypePred.evaluate(file)
             && excludeContentTypesPred.evaluate(file)
             && searchPred.evaluate(file)
-        }        
+        }
     }
 }

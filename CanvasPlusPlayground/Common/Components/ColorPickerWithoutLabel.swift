@@ -13,19 +13,18 @@ import SwiftUI
 public struct ColorPickerWithoutLabel: UIViewRepresentable {
     @Binding var selection: Color
     var supportsAlpha: Bool = true
-    
+
     public init(selection: Binding<Color>, supportsAlpha: Bool = true) {
         self._selection = selection
         self.supportsAlpha = supportsAlpha
     }
-    
-    
+
     public func makeUIView(context: Context) -> UIColorWell {
         let well = UIColorWell()
         well.supportsAlpha = supportsAlpha
         return well
     }
-    
+
     public func updateUIView(_ uiView: UIColorWell, context: Context) {
         uiView.selectedColor = UIColor(selection)
     }
@@ -33,7 +32,13 @@ public struct ColorPickerWithoutLabel: UIViewRepresentable {
 
 extension View {
     @available(iOS 14.0, *)
-    public func colorPickerSheet(isPresented: Binding<Bool>, selection: Binding<Color>, supportsAlpha: Bool = true, title: String? = nil, onDisappear: @escaping (() -> Void) = { }) -> some View {
+    public func colorPickerSheet(
+        isPresented: Binding<Bool>,
+        selection: Binding<Color>,
+        supportsAlpha: Bool = true,
+        title: String? = nil,
+        onDisappear: @escaping (() -> Void) = { }
+    ) -> some View {
         self.background(
             ColorPickerSheet(
                 isPresented: isPresented,
@@ -61,7 +66,7 @@ private struct ColorPickerSheet: UIViewRepresentable {
             onDisappear: onDisappear
         )
     }
-    
+
     class Coordinator: NSObject, UIColorPickerViewControllerDelegate, UIAdaptivePresentationControllerDelegate {
         @Binding var selection: Color
         @Binding var isPresented: Bool
@@ -73,7 +78,7 @@ private struct ColorPickerSheet: UIViewRepresentable {
             self._isPresented = isPresented
             self.onDisappear = onDisappear
         }
-        
+
         func colorPickerViewControllerDidSelectColor(_ viewController: UIColorPickerViewController) {
             selection = Color(viewController.selectedColor)
         }
@@ -97,13 +102,13 @@ private struct ColorPickerSheet: UIViewRepresentable {
         }
         return top
     }
-    
+
     func makeUIView(context: Context) -> UIView {
         let view = UIView()
         view.isHidden = true
         return view
     }
-    
+
     func updateUIView(_ uiView: UIView, context: Context) {
         if isPresented && !context.coordinator.didPresent {
             let modal = UIColorPickerViewController()

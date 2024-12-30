@@ -17,7 +17,7 @@ class LLMEvaluator: ObservableObject {
     var progress = 0.0
 
     var modelConfiguration = ModelConfiguration.defaultModel
-    
+
     func switchModel(_ model: ModelConfiguration) async {
         progress = 0.0 // reset progress
         loadState = .idle
@@ -45,15 +45,13 @@ class LLMEvaluator: ObservableObject {
     /// just return the loaded model
     private func load(modelName: String) async throws -> ModelContainer {
         let model = getModelByName(modelName)
-        
+
         switch loadState {
         case .idle:
             // limit the buffer cache
             MLX.GPU.set(cacheLimit: 20 * 1024 * 1024)
 
-            let modelContainer = try await MLXLLM.loadModelContainer(configuration: model!)
-            {
-                [modelConfiguration] progress in
+            let modelContainer = try await MLXLLM.loadModelContainer(configuration: model!) { [modelConfiguration] progress in
                 Task { @MainActor in
                     self.modelInfo =
                         "Downloading \(modelConfiguration.name): \(Int(progress.fractionCompleted * 100))%"
@@ -129,7 +127,7 @@ class LLMEvaluator: ObservableObject {
         running = false
         return output
     }
-    
+
     func getModelByName(_ name: String) -> ModelConfiguration? {
         if let model = ModelConfiguration.availableModels.first(where: { $0.name == name }) {
             return model

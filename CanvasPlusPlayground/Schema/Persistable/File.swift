@@ -53,7 +53,7 @@ class File: Cacheable {
     // MARK: - Attributes
     @Attribute(.unique) var id: String
     var parentId: String
-    
+
     var uuid: String?
     var folderId: Int?
     var displayName: String
@@ -80,12 +80,12 @@ class File: Cacheable {
     // MARK: - Decodable
     required init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        
+
         let id = try container.decode(ServerID.self, forKey: .id)
         self.id =  String(describing: id)
-        
+
         self.parentId = try container.decodeIfPresent(String.self, forKey: .parentId) ?? ""
-        
+
         // Decode remaining properties
         self.uuid = try container.decodeIfPresent(String.self, forKey: .uuid)
         self.folderId = try container.decodeIfPresent(Int.self, forKey: .folderID)
@@ -114,11 +114,11 @@ class File: Cacheable {
     // MARK: - Encodable
     func encode(to encoder: any Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        
+
         try container.encode(id, forKey: .id)
-        
+
         try container.encodeIfPresent(parentId, forKey: .parentId)
-        
+
         try container.encodeIfPresent(uuid, forKey: .uuid)
         try container.encodeIfPresent(folderId, forKey: .folderID)
         try container.encodeIfPresent(displayName, forKey: .displayName)
@@ -173,7 +173,7 @@ class File: Cacheable {
     enum CodingKeys: String, CodingKey {
         case id
         case parentId
-        
+
         case uuid
         case folderID = "folder_id"
         case displayName = "display_name"

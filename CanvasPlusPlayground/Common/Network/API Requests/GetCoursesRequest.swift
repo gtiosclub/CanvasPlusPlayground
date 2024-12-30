@@ -9,7 +9,7 @@ import Foundation
 
 struct GetCoursesRequest: CacheableArrayAPIRequest {
     typealias Subject = Course
-    
+
     var path: String { "courses" }
     var queryParameters: [QueryParameter] {
         [
@@ -24,7 +24,7 @@ struct GetCoursesRequest: CacheableArrayAPIRequest {
         + include.map { ("include[]", $0) }
         + state.map { ("state[]", $0) }
     }
-    
+
     // MARK: Query Params
     let enrollmentType: String?
     let enrollmentRole: String?
@@ -34,8 +34,17 @@ struct GetCoursesRequest: CacheableArrayAPIRequest {
     let include: [String]
     let state: [String?]
     let perPage: Int
-    
-    init(enrollmentType: String? = nil, enrollmentRole: String? = nil, enrollmentRoleId: Int? = nil, enrollmentState: String? = nil, excludeBlueprintCourses: Bool? = nil, include: [String] = [], state: [String?] = [], perPage: Int = 50) {
+
+    init(
+        enrollmentType: String? = nil,
+        enrollmentRole: String? = nil,
+        enrollmentRoleId: Int? = nil,
+        enrollmentState: String? = nil,
+        excludeBlueprintCourses: Bool? = nil,
+        include: [String] = [],
+        state: [String?] = [],
+        perPage: Int = 50
+    ) {
         self.enrollmentType = enrollmentType
         self.enrollmentRole = enrollmentRole
         self.enrollmentRoleId = enrollmentRoleId
@@ -55,43 +64,43 @@ struct GetCoursesRequest: CacheableArrayAPIRequest {
         }
     }
     var customPredicate: Predicate<Course> {
-        
+
         let enrollmentTypePred: Predicate<Course>
         if let enrollmentType {
             enrollmentTypePred = #Predicate<Course> { course in
                 course.enrollmentTypesRaw.localizedStandardContains(enrollmentType)
             }
         } else { enrollmentTypePred = Predicate<Course>.true }
-        
+
         let enrollmentRolePred: Predicate<Course>
         if let enrollmentRole {
             enrollmentRolePred = #Predicate<Course> { course in
                 course.enrollmentRolesRaw.localizedStandardContains(enrollmentRole)
             }
         } else { enrollmentRolePred = .true }
-        
+
         let enrollmentRoleIdPred: Predicate<Course>
         if let enrollmentRoleId = enrollmentRoleId?.asString {
             enrollmentRoleIdPred = #Predicate<Course> { course in
                 course.enrollmentRoleIdsRaw.localizedStandardContains(enrollmentRoleId)
             }
         } else { enrollmentRoleIdPred = .true }
-        
+
         let enrollmentStatePred: Predicate<Course>
         if let enrollmentState {
             enrollmentStatePred = #Predicate<Course> { course in
                 course.enrollmentStatesRaw.localizedStandardContains(enrollmentState)
             }
         } else { enrollmentStatePred = .true }
-        
+
         let excludeBluePrintPred = excludeBlueprintCourses == nil ? .true : #Predicate<Course> { course in
             !(course.blueprint == true)
         }
-        
+
         let statePred = state.isEmpty ? .true : #Predicate<Course> { course in
             state.contains(course.workflowState)
         }
-        
+
         return #Predicate<Course> { course in
             enrollmentTypePred.evaluate(course)
             && enrollmentRolePred.evaluate(course)
@@ -101,6 +110,6 @@ struct GetCoursesRequest: CacheableArrayAPIRequest {
             && excludeBluePrintPred.evaluate(course)
             && statePred.evaluate(course)
         }
-        
+
     }
 }

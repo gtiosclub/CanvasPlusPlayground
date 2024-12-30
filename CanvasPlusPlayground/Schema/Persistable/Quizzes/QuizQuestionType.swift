@@ -5,7 +5,6 @@
 //  Created by Abdulaziz Albahar on 12/14/24.
 //
 
-
 public enum QuizQuestionType: String, Codable, CaseIterable {
 
     case calculatedQuestion = "calculated_question",

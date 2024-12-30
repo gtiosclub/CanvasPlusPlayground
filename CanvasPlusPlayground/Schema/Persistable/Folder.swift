@@ -37,10 +37,10 @@ import SwiftData
 @Model
 class Folder: Cacheable {
     typealias ServerID = Int
-    
+
     @Attribute(.unique) var id: String
     var parentId: String
-    
+
     var name: String?
     var fullName: String?
     var contextId: Int?
@@ -61,15 +61,15 @@ class Folder: Cacheable {
     var hiddenForUser: Bool?
     var forSubmissions: Bool?
     var canUpload: Bool?
-    
+
     required init(from decoder: any Decoder)  throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        
+
         let id = try container.decode(ServerID.self, forKey: .id)
         self.id =  String(describing: id)
-        
+
         self.parentId = try container.decodeIfPresent(String.self, forKey: .parentId) ?? ""
-        
+
         self.name = try container.decodeIfPresent(String.self, forKey: .name)
         self.fullName = try container.decodeIfPresent(String.self, forKey: .fullName)
         self.contextId = try container.decodeIfPresent(Int.self, forKey: .contextId)
@@ -91,14 +91,14 @@ class Folder: Cacheable {
         self.forSubmissions = try container.decodeIfPresent(Bool.self, forKey: .forSubmissions)
         self.canUpload = try container.decodeIfPresent(Bool.self, forKey: .canUpload)
     }
-    
+
     func encode(to encoder: any Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        
+
         try container.encode(id, forKey: .id)
-        
+
         try container.encodeIfPresent(parentId, forKey: .parentId)
-        
+
         try container.encodeIfPresent(name, forKey: .name)
         try container.encodeIfPresent(fullName, forKey: .fullName)
         try container.encodeIfPresent(contextId, forKey: .contextId)
@@ -120,7 +120,7 @@ class Folder: Cacheable {
         try container.encodeIfPresent(forSubmissions, forKey: .forSubmissions)
         try container.encodeIfPresent(canUpload, forKey: .canUpload)
     }
-    
+
     func merge(with other: Folder) {
         self.name = other.name
         self.fullName = other.fullName
@@ -143,11 +143,11 @@ class Folder: Cacheable {
         self.forSubmissions = other.forSubmissions
         self.canUpload = other.canUpload
     }
-    
+
     enum CodingKeys: String, CodingKey {
         case id
         case parentId = "parent_id"
-                
+
         case name
         case fullName = "full_name"
         case contextId = "context_id"
@@ -169,6 +169,5 @@ class Folder: Cacheable {
         case forSubmissions = "for_submissions"
         case canUpload = "can_upload"
     }
-    
-    
+
 }

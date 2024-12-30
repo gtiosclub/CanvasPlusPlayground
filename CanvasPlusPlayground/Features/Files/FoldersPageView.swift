@@ -17,27 +17,26 @@ struct FoldersPageView: View {
     init(course: Course, folder: Folder? = nil, traversedFolderIDs: [String] = []) {
         self.course = course
         self.folder = folder
-        
+
         _filesVM = .init(initialValue: CourseFileViewModel(courseID: course.id, traversedFolderIDs: traversedFolderIDs))
     }
-    
+
     var body: some View {
         List {
             Section("Files") {
                 ForEach(filesVM.displayedFiles, id: \.id) { file in
-                    FileRow(for: file)
+                    fileRow(for: file)
                         .listItemTint(course.rgbColors?.color)
                 }
             }
-        
-            
+
             Section("Folders") {
                 ForEach(filesVM.displayedFolders, id: \.id) { subFolder in
-                    FolderRow(for: subFolder)
+                    folderRow(for: subFolder)
                         .listItemTint(course.rgbColors?.color)
                 }
             }
-            
+
         }
         .task {
             await loadContents()
@@ -48,10 +47,10 @@ struct FoldersPageView: View {
         )
         .navigationTitle("Files")
     }
-    
+
     @ViewBuilder
-    func FileRow(for file: File) -> some View {
-        if file.url != nil  {
+    func fileRow(for file: File) -> some View {
+        if file.url != nil {
             NavigationLink(destination: destination(for: file)) {
                 Label(file.displayName, systemImage: "document")
             }
@@ -59,14 +58,14 @@ struct FoldersPageView: View {
             Label("File not available.", systemImage: "document")
         }
     }
-    
+
     func destination(for file: File) -> some View {
         FileViewer(course: course, file: file)
             .environment(filesVM)
     }
-    
+
     @ViewBuilder
-    func FolderRow(for subFolder: Folder) -> some View {
+    func folderRow(for subFolder: Folder) -> some View {
         NavigationLink(destination: FoldersPageView(course: course, folder: subFolder, traversedFolderIDs: filesVM.traversedFolderIDs)) {
             Label(subFolder.name ?? "Couldn't find folder name.", systemImage: "folder")
         }

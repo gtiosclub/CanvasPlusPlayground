@@ -14,11 +14,11 @@ struct RGBColors: Codable {
     var alpha: Double
 
     init(color: Color) {
-        let (r, g, b, a) = color.rgba
-        self.red = r
-        self.green = g
-        self.blue = b
-        self.alpha = a
+        let (red, green, blue, alpha) = color.rgba
+        self.red = red
+        self.green = green
+        self.blue = blue
+        self.alpha = alpha
     }
 
     var color: Color {
@@ -27,12 +27,11 @@ struct RGBColors: Codable {
         }
 
         set {
-            let (r, g, b, a) = newValue.rgba
-            print("rgb: \(r), \(g), \(b), \(a)")
-            self.red = r
-            self.green = g
-            self.blue = b
-            self.alpha = a
+            let (red, green, blue, alpha) = newValue.rgba
+            self.red = red
+            self.green = green
+            self.blue = blue
+            self.alpha = alpha
         }
     }
 }
@@ -59,9 +58,9 @@ extension Color {
         #else
         let color = asNative
         #endif
-        var t = (CGFloat(), CGFloat(), CGFloat(), CGFloat())
-        color.getRed(&t.0, green: &t.1, blue: &t.2, alpha: &t.3)
-        return t
+        var res = (CGFloat(), CGFloat(), CGFloat(), CGFloat())
+        color.getRed(&res.0, green: &res.1, blue: &res.2, alpha: &res.3)
+        return res
     }
 
     var hsva: (hue: CGFloat, saturation: CGFloat, value: CGFloat, alpha: CGFloat) {
@@ -70,8 +69,8 @@ extension Color {
         #else
         let color = asNative
         #endif
-        var t = (CGFloat(), CGFloat(), CGFloat(), CGFloat())
-        color.getHue(&t.0, saturation: &t.1, brightness: &t.2, alpha: &t.3)
-        return t
+        var res = (CGFloat(), CGFloat(), CGFloat(), CGFloat())
+        color.getHue(&res.0, saturation: &res.1, brightness: &res.2, alpha: &res.3)
+        return res
     }
 }

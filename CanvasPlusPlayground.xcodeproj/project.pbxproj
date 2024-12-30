@@ -544,6 +544,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				B7E59A202D217BCB001836FE /* PBXTargetDependency */,
 			);
 			name = CanvasPlusPlayground;
 			packageProductDependencies = (
@@ -580,6 +581,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				B785BE632CF592710094BF94 /* XCRemoteSwiftPackageReference "mlx-swift-examples" */,
+				B7E59A1C2D21551D001836FE /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */,
 			);
 			productRefGroup = B76454652C8BBC7F002DF00E /* Products */;
 			projectDirPath = "";
@@ -700,6 +702,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B7E59A202D217BCB001836FE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = B7E59A1F2D217BCB001836FE /* SwiftLintBuildToolPlugin */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		B76454702C8BBC81002DF00E /* Debug */ = {
@@ -831,6 +840,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"CanvasPlusPlayground/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -866,6 +876,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"CanvasPlusPlayground/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -923,6 +934,14 @@
 				minimumVersion = 1.18.1;
 			};
 		};
+		B7E59A1C2D21551D001836FE /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SimplyDanny/SwiftLintPlugins";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.57.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -930,6 +949,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B785BE632CF592710094BF94 /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
 			productName = LLM;
+		};
+		B7E59A1F2D217BCB001836FE /* SwiftLintBuildToolPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B7E59A1C2D21551D001836FE /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */;
+			productName = "plugin:SwiftLintBuildToolPlugin";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

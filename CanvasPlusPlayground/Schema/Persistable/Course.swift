@@ -122,16 +122,15 @@
 import Foundation
 import SwiftData
 
-
 @Model
 final class Course: Cacheable {
     typealias ID = String
     typealias ServerID = Int
-    
+
     // MARK: IDs
     @Attribute(.unique) let id: String
     var parentId: String
-    
+
     // MARK: Other
     var sisCourseID: String?
     var uuid: String?
@@ -182,7 +181,7 @@ final class Course: Cacheable {
     var blueprintRestrictions: [String: Bool]?
     var blueprintRestrictionsByObjectType: [String: [String: Bool]]?
     var template: Bool?
-    
+
     // Enrollment info
     var enrollments: [CourseEnrollment] = []
     var enrollmentTypesRaw: String = ""
@@ -196,16 +195,15 @@ final class Course: Cacheable {
     var rgbColors: RGBColors?
     var isFavorite: Bool?
     var nickname: String?
-    
-    
+
     var displayName: String {
         nickname ?? name ?? "Unknown Name"
     }
-    
+
     enum CodingKeys: String, CodingKey {
         case id
         case parentId = "parent_id"
-                
+
         case sisCourseID = "sis_course_id"
         case uuid
         case integrationID = "integration_id"
@@ -257,15 +255,16 @@ final class Course: Cacheable {
         case blueprintRestrictionsByObjectType = "blueprint_restrictions_by_object_type"
         case template
     }
-    
+
+    // swiftlint:disable:next function_body_length
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        
+
         let id = try container.decode(ServerID.self, forKey: .id)
         self.id =  String(describing: id)
-        
+
         self.parentId = try container.decodeIfPresent(String.self, forKey: .parentId) ?? ""
-        
+
         self.sisCourseID = try container.decodeIfPresent(String.self, forKey: .sisCourseID)
         self.uuid = try container.decodeIfPresent(String.self, forKey: .uuid)
         self.integrationID = try container.decodeIfPresent(String.self, forKey: .integrationID)
@@ -314,20 +313,22 @@ final class Course: Cacheable {
         self.timeZone = try container.decodeIfPresent(String.self, forKey: .timeZone)
         self.blueprint = try container.decodeIfPresent(Bool.self, forKey: .blueprint)
         self.blueprintRestrictions = try container.decodeIfPresent([String: Bool].self, forKey: .blueprintRestrictions)
-        self.blueprintRestrictionsByObjectType = try container.decodeIfPresent([String: [String: Bool]].self, forKey: .blueprintRestrictionsByObjectType)
+        self.blueprintRestrictionsByObjectType = try container
+            .decodeIfPresent([String: [String: Bool]].self, forKey: .blueprintRestrictionsByObjectType)
         self.template = try container.decodeIfPresent(Bool.self, forKey: .template)
-        
+
         // Extra setup
         self.setEnrollments(enrollments)
     }
-    
+
+    // swiftlint:disable:next function_body_length
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        
+
         try container.encode(id, forKey: .id)
-        
+
         try container.encodeIfPresent(parentId, forKey: .parentId)
-        
+
         try container.encodeIfPresent(sisCourseID, forKey: .sisCourseID)
         try container.encodeIfPresent(uuid, forKey: .uuid)
         try container.encodeIfPresent(integrationID, forKey: .integrationID)
@@ -379,7 +380,7 @@ final class Course: Cacheable {
         try container.encodeIfPresent(blueprintRestrictionsByObjectType, forKey: .blueprintRestrictionsByObjectType)
         try container.encodeIfPresent(template, forKey: .template)
    }
-    
+
     func merge(with other: Course) {
         self.setEnrollments(other.enrollments)
         self.sisCourseID = other.sisCourseID
@@ -432,7 +433,7 @@ final class Course: Cacheable {
         self.blueprintRestrictionsByObjectType = other.blueprintRestrictionsByObjectType
         self.template = other.template
     }
-    
+
     private func setEnrollments(_ enrollments: [CourseEnrollment]) {
         self.enrollments = enrollments
         self.enrollmentTypesRaw = enrollments.compactMap(\.type).joined(separator: ",")
@@ -446,7 +447,7 @@ final class Course: Cacheable {
 struct Permissions: Codable, Equatable, Hashable {
     let createDiscussionTopic: Bool
     let createAnnouncement: Bool
-    
+
     enum CodingKeys: String, CodingKey {
         case createDiscussionTopic = "create_discussion_topic"
         case createAnnouncement = "create_announcement"
@@ -464,7 +465,7 @@ struct CourseEnrollment: Codable, Equatable, Hashable {
     let userId: Int?
     let enrollmentState: String?
     let limitPrivelegesToCourseSection: Bool?
-    
+
     enum CodingKeys: String, CodingKey {
         case type
         case role

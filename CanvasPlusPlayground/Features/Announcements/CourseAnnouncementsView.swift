@@ -17,7 +17,7 @@ struct CourseAnnouncementsView: View {
         self.course = course
         self.announcementManager = CourseAnnouncementManager(course: course)
     }
-    
+
     var body: some View {
         NavigationStack {
             List(announcementManager.announcements, id:\.id) { announcement in
@@ -29,7 +29,7 @@ struct CourseAnnouncementsView: View {
                 .tint(course.rgbColors?.color)
             }
             .overlay {
-                if (announcementManager.announcements.count == 0) {
+                if (announcementManager.announcements.isEmpty) {
                     ContentUnavailableView("No announcements available", systemImage: "exclamationmark.bubble.fill")
                 } else {
                     EmptyView()

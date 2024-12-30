@@ -99,11 +99,13 @@ struct CourseAnnouncementDetailView: View {
         print("title: \(title)")
         print("message: \(message)")
 
+        // swiftlint:disable line_length
         let prompt = """
         Summarize the following announcement in a college course. Keep the summary to under three sentences. The title of the announcement is \(title). Only provide the summary text as a response and do not say anything else. Remove all surrouding text other than the summary. Give me only the text without any HTML tags, etc. This is the message:
-        
+
         \(message)
         """
+        // swiftlint:enable line_length
 
         if let modelName = intelligenceManager.currentModelName {
             loadingSummary = true

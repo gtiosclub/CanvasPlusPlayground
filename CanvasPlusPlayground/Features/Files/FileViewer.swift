@@ -14,12 +14,11 @@ struct FileViewer: View {
 
     @Environment(CourseFileViewModel.self) var courseFileVM
     @State var content: Data?
-    
+
     var fileType: FileType? {
         FileType.fromFile(file)
     }
-    
-    
+
     var body: some View {
         VStack {
             if let content, let fileType {

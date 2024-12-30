@@ -9,9 +9,14 @@ import Foundation
 
 enum QuizType: String, Codable, CaseIterable, Identifiable {
     var id: String { self.rawValue }
-    
-    case practiceQuiz = "practice_quiz", assignment = "assignment", gradedSurvey = "graded_survey", survey = "survey", quizzesNext = "quizzes.next", unknown = "unknown"
-    
+
+    case practiceQuiz = "practice_quiz"
+    case assignment = "assignment"
+    case gradedSurvey = "graded_survey"
+    case survey = "survey"
+    case quizzesNext = "quizzes.next"
+    case unknown = "unknown"
+
     var title: String {
         switch self {
         case .practiceQuiz: "Practice Quizzes"
