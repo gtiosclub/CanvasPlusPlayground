@@ -59,6 +59,7 @@
 		A373DC232D1D454000215019 /* APIGradingSchemeEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC222D1D454000215019 /* APIGradingSchemeEntry.swift */; };
 		A373DC252D1D4BEC00215019 /* APIQuizSubmission.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC242D1D4BEC00215019 /* APIQuizSubmission.swift */; };
 		A373DC272D1D4C4A00215019 /* QuizSubmissionWorkflowState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC262D1D4C4A00215019 /* QuizSubmissionWorkflowState.swift */; };
+		A373DC2B2D23EB3D00215019 /* Submission.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC2A2D23EB3D00215019 /* Submission.swift */; };
 		A3CF88D12D18E61B000ACDF3 /* APIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CF88D02D18E61B000ACDF3 /* APIResponse.swift */; };
 		A3CF88D32D18E6BB000ACDF3 /* ParentKeyPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CF88D22D18E6BB000ACDF3 /* ParentKeyPath.swift */; };
 		A3CF88D92D192177000ACDF3 /* CourseAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CF88D82D192177000ACDF3 /* CourseAPI.swift */; };
@@ -169,6 +170,7 @@
 		A373DC222D1D454000215019 /* APIGradingSchemeEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIGradingSchemeEntry.swift; sourceTree = "<group>"; };
 		A373DC242D1D4BEC00215019 /* APIQuizSubmission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIQuizSubmission.swift; sourceTree = "<group>"; };
 		A373DC262D1D4C4A00215019 /* QuizSubmissionWorkflowState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizSubmissionWorkflowState.swift; sourceTree = "<group>"; };
+		A373DC2A2D23EB3D00215019 /* Submission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Submission.swift; sourceTree = "<group>"; };
 		A3CF88D02D18E61B000ACDF3 /* APIResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIResponse.swift; sourceTree = "<group>"; };
 		A3CF88D22D18E6BB000ACDF3 /* ParentKeyPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentKeyPath.swift; sourceTree = "<group>"; };
 		A3CF88D82D192177000ACDF3 /* CourseAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAPI.swift; sourceTree = "<group>"; };
@@ -504,6 +506,7 @@
 				192EC0492C963B9000AF8528 /* AssignmentAPI.swift */,
 				A3049B5C2D0E5D5A002F3166 /* APIAssignmentDate.swift */,
 				B7F9503C2D12ADAE004BB470 /* SubmissionAPI.swift */,
+				A373DC2A2D23EB3D00215019 /* Submission.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -705,6 +708,7 @@
 				B76455042C8DF61B002DF00E /* CourseView.swift in Sources */,
 				A3049B682D0F3ECA002F3166 /* QuizzesViewModel.swift in Sources */,
 				A3CF88D12D18E61B000ACDF3 /* APIResponse.swift in Sources */,
+				A373DC2B2D23EB3D00215019 /* Submission.swift in Sources */,
 				9B92A4252C93856100C21CFC /* CourseAnnouncementManager.swift in Sources */,
 				B76455052C8DF61B002DF00E /* SetupView.swift in Sources */,
 				A3049B772D15DC36002F3166 /* GetCourseRequest.swift in Sources */,

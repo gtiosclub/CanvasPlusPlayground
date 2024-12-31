@@ -9,7 +9,7 @@
 import Foundation
 
 struct SubmissionAPI: APIResponse {
-    typealias Model = NoOpCacheable
+    typealias Model = Submission
     
     // API docs: "the submission id in these URLs is the id of the student in the course, there is no separate submission id exposed in these APIs."
     var id: String {
@@ -53,6 +53,10 @@ struct SubmissionAPI: APIResponse {
         case unsubmitted
         case graded
         case pendingReview = "pending_review"
+    }
+    
+    func createModel() -> Submission {
+        Submission(from: self)
     }
 }
 
