@@ -27,3 +27,10 @@ This project uses [`swiftlint`](https://github.com/realm/SwiftLint), a Swift Pac
 1. Install swiftlint via your Terminal: `brew install swiftlint`.
 2. Run `swiftlint --fix` within your project directory.
 
+To make your life easier, you can have Xcode automatically reformat after a particular column length, and trim trailing whitespaces:
+
+1. Open Xcode preferences (Cmd+",")
+2. Go to Text Editing > Editing
+3. Turn on "Automatically reformat when completing code", "Automatically trim trailing whitespaces", and "Including whitespace-only lines"
+
+
