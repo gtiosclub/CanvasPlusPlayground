@@ -14,7 +14,7 @@ struct CourseListCell: View {
 
     @State private var showColorPicker = false
     @State private var resolvedCourseColor: Color = .accentColor
-    
+
     @State private var showRenameTextField = false
     @State private var renameCourseFieldText: String = ""
 
@@ -54,13 +54,13 @@ struct CourseListCell: View {
                     course.isFavorite = !wrappedCourseIsFavorite
                 }
             }
-            
+
             Button("Rename \(course.name ?? "")...", systemImage: "character.cursor.ibeam") {
                 renameCourseFieldText = course.nickname ?? ""
                 showRenameTextField = true
-                
+
             }
-        
+
         }
         .alert("Rename Course?", isPresented: $showRenameTextField) {
             TextField(course.name ?? "MISSING NAME", text: $renameCourseFieldText)
@@ -75,7 +75,7 @@ struct CourseListCell: View {
             Button("Dismiss", role: .cancel) {
                 renameCourseFieldText = ""
             }
-        
+
         } message: {
             Text("Rename \(course.name ?? "MISSING NAME")?")
         }
