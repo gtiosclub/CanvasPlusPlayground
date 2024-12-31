@@ -30,7 +30,7 @@ struct PeopleView: View {
         self.courseID = courseID
         self.peopleManager = PeopleManager(courseID: courseID)
     }
-    
+
     var body: some View {
         @Bindable var peopleManager = peopleManager
 
@@ -44,7 +44,7 @@ struct PeopleView: View {
             await loadPeople()
         }
     }
-    
+
     private var mainBody: some View {
         List(displayedUsers, id: \.id) { user in
             NavigationLink(value: user) {

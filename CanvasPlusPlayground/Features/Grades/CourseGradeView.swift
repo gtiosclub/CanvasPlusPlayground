@@ -10,21 +10,21 @@ import SwiftUI
 struct CourseGradeView: View {
     @Environment(ProfileManager.self) private var profileManager
     @State private var gradesVM: GradesViewModel
-    
+
     let course: Course
 
     init(course: Course) {
         self.course = course
         self._gradesVM = State(initialValue: GradesViewModel(courseId: course.id))
     }
-    
+
     var body: some View {
         Form {
             Section {
-                GradeRow("Current Score", value: gradesVM.currentScore)
-                GradeRow("Current Grade", value: gradesVM.currentGrade)
-                GradeRow("Final Score", value: gradesVM.finalScore)
-                GradeRow("Final Grade", value: gradesVM.finalGrade)
+                gradeRow("Current Score", value: gradesVM.currentScore)
+                gradeRow("Current Grade", value: gradesVM.currentGrade)
+                gradeRow("Final Score", value: gradesVM.finalScore)
+                gradeRow("Final Grade", value: gradesVM.finalGrade)
             } header: {
                 Text("Grades")
             } footer: {
@@ -54,8 +54,8 @@ struct CourseGradeView: View {
         }
         .navigationTitle("Grades")
     }
-    
-    private func GradeRow(_ label: String, value: String) -> some View {
+
+    private func gradeRow(_ label: String, value: String) -> some View {
         HStack {
             Text(label)
 
@@ -72,4 +72,3 @@ struct CourseGradeView: View {
             .getEnrollments(currentUserID: profileManager.currentUser?.id)
     }
 }
-

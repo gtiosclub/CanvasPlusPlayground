@@ -10,11 +10,11 @@ import SwiftUI
 @Observable
 class CourseFileViewModel {
     private let courseID: String
-    
+
     var files = [File]()
     var folders = [Folder]()
     var traversedFolderIDs: [String]
-    
+
     var displayedFiles: [File] {
         files.sorted {
             $0.displayName < $1.displayName
@@ -40,27 +40,31 @@ class CourseFileViewModel {
             await fetchContent(in: rootFolder)
             return rootFolder
         }
-        
+
         print("Failed to fetch root folder.")
         return nil
-        
+
     }
-    
+
     func fetchContent(in folder: Folder) async {
-        
+
         if !traversedFolderIDs.contains(folder.id) {
             traversedFolderIDs.append(folder.id)
         }
-        
-        async let foldersInRootFolder: [Folder] = CanvasService.shared.loadAndSync(CanvasRequest.getFoldersInFolder(folderId: folder.id), onCacheReceive: { folders in
+
+        async let foldersInRootFolder: [Folder] = CanvasService.shared.loadAndSync(
+            CanvasRequest.getFoldersInFolder(folderId: folder.id),
+            onCacheReceive: { folders in
             self.folders = folders ?? []
         })
-        async let filesInRootFolder: [File] = CanvasService.shared.loadAndSync(CanvasRequest.getFilesInFolder(folderId: folder.id), onCacheReceive: { files in
+        async let filesInRootFolder: [File] = CanvasService.shared.loadAndSync(
+            CanvasRequest.getFilesInFolder(folderId: folder.id),
+            onCacheReceive: { files in
             self.files = files ?? []
         })
-        
+
         let (folders, files) = await ((try? foldersInRootFolder), (try? filesInRootFolder))
-        
+
         Task { @MainActor in
             if let folders {
                 self.folders = folders
@@ -69,6 +73,6 @@ class CourseFileViewModel {
                 self.files = files
             }
         }
-        
+
     }
 }

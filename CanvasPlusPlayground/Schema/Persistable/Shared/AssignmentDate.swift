@@ -14,7 +14,7 @@ struct AssignmentDate: Codable, Hashable {
     var dueAt: Date?
     var unlockAt: Date?
     var lockAt: Date?
-    
+
     enum CodingKeys: String, CodingKey {
         case id
         case base

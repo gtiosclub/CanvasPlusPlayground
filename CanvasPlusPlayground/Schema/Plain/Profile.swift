@@ -25,7 +25,7 @@ struct Profile: Codable {
     let locale: String?
     let k5User: Bool?
     let useClassicFontInK5: Bool?
-    
+
     enum CodingKeys: String, CodingKey {
         case id
         case name

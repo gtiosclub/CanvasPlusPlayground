@@ -9,10 +9,10 @@ import Foundation
 
 struct GetEnrollmentsRequest: CacheableArrayAPIRequest {
     typealias Subject = Enrollment
-    
+
     let courseId: String
     let courseEnrollmentTermId: Int?
-    
+
     var path: String { "courses/\(courseId)/enrollments" }
     var queryParameters: [QueryParameter] {
         var params = [
@@ -32,7 +32,7 @@ struct GetEnrollmentsRequest: CacheableArrayAPIRequest {
         params += createdForSisId.map { ("created_for_sis_id[]", $0) }
         return params
     }
-    
+
     // MARK: Query Params
     let type: [String?]
     let role: [String?]
@@ -47,8 +47,24 @@ struct GetEnrollmentsRequest: CacheableArrayAPIRequest {
     let sisUserId: [String?]
     let createdForSisId: [Bool?]
     let perPage: Int
-    
-    init(courseId: String, courseEnrollmentTermId: Int? = nil, type: [String?] = [], role: [String?] = [], state: [String?] = [], include: [String?] = [], userId: String? = nil, gradingPeriodId: Int? = nil, enrollmentTermId: Int? = nil, sisAccountId: [String?] = [], sisCourseId: [String?] = [], sisSectionId: [String?] = [], sisUserId: [String?] = [], createdForSisId: [Bool?] = [], perPage: Int = 50) {
+
+    init(
+        courseId: String,
+        courseEnrollmentTermId: Int? = nil,
+        type: [String?] = [],
+        role: [String?] = [],
+        state: [String?] = [],
+        include: [String?] = [],
+        userId: String? = nil,
+        gradingPeriodId: Int? = nil,
+        enrollmentTermId: Int? = nil,
+        sisAccountId: [String?] = [],
+        sisCourseId: [String?] = [],
+        sisSectionId: [String?] = [],
+        sisUserId: [String?] = [],
+        createdForSisId: [Bool?] = [],
+        perPage: Int = 50
+    ) {
         self.courseId = courseId
         self.courseEnrollmentTermId = courseEnrollmentTermId
         self.type = type
@@ -65,7 +81,7 @@ struct GetEnrollmentsRequest: CacheableArrayAPIRequest {
         self.createdForSisId = createdForSisId
         self.perPage = perPage
     }
-    
+
     // MARK: Persistence
     var requestId: Int? { courseId.asInt }
     var requestIdKey: ParentKeyPath<Enrollment, Int?> { .createWritable(\.courseID) }
@@ -76,7 +92,7 @@ struct GetEnrollmentsRequest: CacheableArrayAPIRequest {
     }
     var customPredicate: Predicate<Enrollment> {
         let requestUserId = self.userId?.asInt ?? -1
-        
+
         // Break down the predicate into smaller parts
         let typePredicate = self.type.isEmpty ? .true : Predicate<Enrollment>({ enrollment in
             PredicateExpressions.build_contains(
@@ -134,7 +150,7 @@ struct GetEnrollmentsRequest: CacheableArrayAPIRequest {
             ) as! any StandardPredicateExpression<Bool>
         })
 
-        let termPredicate = self.enrollmentTermId == nil ? .true : Predicate<Enrollment>({ enrollment in
+        let termPredicate = self.enrollmentTermId == nil ? .true : Predicate<Enrollment>({ _ in
             PredicateExpressions.build_Equal(
                 lhs: PredicateExpressions.build_KeyPath(
                     root: PredicateExpressions.build_Arg(self),
@@ -146,7 +162,6 @@ struct GetEnrollmentsRequest: CacheableArrayAPIRequest {
                 )
             ) as! any StandardPredicateExpression<Bool>
         })
-        
 
         return #Predicate<Enrollment> { enrollment in
             typePredicate.evaluate(enrollment) &&
@@ -156,6 +171,6 @@ struct GetEnrollmentsRequest: CacheableArrayAPIRequest {
             gradingPeriodPredicate.evaluate(enrollment) &&
             termPredicate.evaluate(enrollment)
         }
-        
+
     }
 }

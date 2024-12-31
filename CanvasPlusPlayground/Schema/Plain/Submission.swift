@@ -5,7 +5,6 @@
 //  Created by Rahul on 12/18/24.
 //
 
-
 import Foundation
 
 struct Submission: Codable {
@@ -40,7 +39,7 @@ struct Submission: Codable {
     let postedAt: String?
     let readStatus: String?
     let redoRequest: Bool?
-    
+
     enum CodingKeys: String, CodingKey {
         case assignmentID = "assignment_id"
         case assignment

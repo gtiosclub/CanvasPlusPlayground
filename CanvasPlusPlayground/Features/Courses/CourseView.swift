@@ -10,7 +10,7 @@ import SwiftUI
 struct CourseView: View {
     @Environment(NavigationModel.self) private var navigationModel
     let course: Course
-    
+
     var body: some View {
         @Bindable var navigationModel = navigationModel
 

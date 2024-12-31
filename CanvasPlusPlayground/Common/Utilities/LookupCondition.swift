@@ -11,26 +11,26 @@ import Foundation
 enum LookupCondition<M: Cacheable, V: Equatable> {
     case equals(keypath: KeyPath<M, V>, value: V)
     case contains(keypath: KeyPath<M, [V]>, value: V)
-    
+
     func expression() -> Predicate<M> {
         return Predicate<M> { model in
-            
+
             switch self {
-                
+
             case let .equals(keypath, value):
                 PredicateExpressions.build_Equal(
                     lhs: PredicateExpressions.KeyPath(root: model, keyPath: keypath),
                     rhs: PredicateExpressions.Value(value)
                 ) as! any StandardPredicateExpression<Bool>
-            
+
             case let .contains(keypath, value):
                 PredicateExpressions.build_contains(
                     PredicateExpressions.KeyPath(root: model, keyPath: keypath),
                     PredicateExpressions.Value(value)
                 ) as! any StandardPredicateExpression<Bool>
-                
+
             }
-            
+
         }
 
     }

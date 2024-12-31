@@ -65,4 +65,3 @@ struct BridgedPDFView: PlatformViewRepresentable {
 enum PDFSource {
     case url(URL), data(Data)
 }
-

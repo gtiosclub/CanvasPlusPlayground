@@ -34,10 +34,10 @@ struct WebView: PlatformRepresentable {
         loadRequest(webView)
     }
     #endif
-    
+
     private func loadRequest(_ webView: WKWebView) {
         var request = URLRequest(url: url)
-        
+
         // TODO: pass auth token, not accessToken
         request.setValue("Bearer \(StorageKeys.accessTokenValue)", forHTTPHeaderField: "Authorization")
         webView.load(request)
@@ -46,24 +46,24 @@ struct WebView: PlatformRepresentable {
 
 struct CourseTabsView: View {
     let course: Course
-    let base_url: String
+    let baseURL: String
     @State var tabsManager: CourseTabsManager
-    
+
     @State private var selectedURL: URL?
     @State private var showWebView = false
 
     init(course: Course) {
         self.course = course
         self.tabsManager = CourseTabsManager(course: course)
-        self.base_url = "https://gatech.instructure.com/courses/\(String(course.id))"
+        self.baseURL = "https://gatech.instructure.com/courses/\(String(course.id))"
     }
-    
+
     var body: some View {
         List(tabsManager.tabLabels, id: \.self) { label in
             Button(label) {
-                let lower_case_label = label.lowercased()
-                let urlString = (lower_case_label == "home") ? base_url : "\(base_url)/\(lower_case_label)"
-                
+                let lowerCaseLabel = label.lowercased()
+                let urlString = (lowerCaseLabel == "home") ? baseURL : "\(baseURL)/\(lowerCaseLabel)"
+
                 if let url = URL(string: urlString) {
                     selectedURL = url
                     showWebView = true
@@ -75,7 +75,7 @@ struct CourseTabsView: View {
             await tabsManager.fetchTabs()
         }
         .sheet(isPresented: $showWebView) {
-            
+
             NavigationStack {
                 Group {
                     if let url = selectedURL {
@@ -92,4 +92,3 @@ struct CourseTabsView: View {
         }
     }
 }
-

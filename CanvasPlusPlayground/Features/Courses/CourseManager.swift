@@ -18,7 +18,7 @@ class CourseManager {
     var userOtherCourses: [Course] {
         courses.filter { !($0.isFavorite ?? false) }.sorted { $0.name ?? "" < $1.name ?? "" }
     }
-    
+
     func getCourses() async {
         do {
             let courses: [Course] = try await CanvasService.shared.loadAndSync(
@@ -34,7 +34,7 @@ class CourseManager {
             print("Failed to fetch files. \(error)")
         }
     }
-    
+
     func setCourses(_ courses: [Course]) {
         DispatchQueue.main.sync {
             self.courses = courses

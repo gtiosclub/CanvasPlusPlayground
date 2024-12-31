@@ -7,14 +7,13 @@
 
 import Foundation
 
-
-extension APIRequest {    
+extension APIRequest {
     // MARK: Helpers
     private func decodeData(arg: (Data, URLResponse)) throws -> QueryResult {
         let (data, _) = arg
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
-        
+
         return try decoder.decode(QueryResult.self, from: data)
     }
 
@@ -23,12 +22,12 @@ extension APIRequest {
 // MARK: Network Requests
 
 extension APIRequest {
-    
+
     /// To fetch data from the Canvas API in batches!
     func fetch(
         onNewPage: ([Subject]) async -> Void = { _ in}
     ) async throws -> [Subject] {
-        
+
         // If the request is to be paginated and fetched type T is a collection -> fetch batch by batch
         let fetched = try await fetchBatch(oneNewBatch: { batch in
             if let batch = try decodeData(arg: batch) as? [Subject] {
@@ -43,7 +42,7 @@ extension APIRequest {
                 return [batch]
             } else { throw NetworkError.failedToDecode(msg: "Batch decoding failed inside fetch()") }
         }
-                
+
         let result = fetched.reduce([], +)
         return result
     }
@@ -55,41 +54,40 @@ extension APIRequest where QueryResult == Subject {
     func fetch(
         onNewPage: ([Subject]) async -> Void = { _ in}
     ) async throws -> [Subject] {
-        
+
         // API fetch
         let result = try await fetchResponse()
-        
+
         let decoded = try decodeData(arg: result)
-        
+
         await onNewPage([decoded])
         return [decoded]
     }
 }
-
 
 extension APIRequest {
     func fetchResponse() async throws -> (data: Data, response: URLResponse) {
         let url = self.url
 
         var urlRequest = URLRequest(url: url)
-        
+
         urlRequest.httpMethod = "GET"
-        
+
         do {
             let (data, response) = try await URLSession.shared.data(for: urlRequest)
 
             guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
                 throw NetworkError.fetchFailed(msg: response.description)
             }
-            
+
             return (data, response)
         } catch {
             throw NetworkError.fetchFailed(msg: error.localizedDescription)
         }
     }
-    
+
     func fetchBatch(
-        oneNewBatch: (((data: Data, url: URLResponse)) async throws -> ())
+        oneNewBatch: (((data: Data, url: URLResponse)) async throws -> Void)
     ) async throws -> [(data: Data, url: URLResponse)] {
         /*
          var currUrl =
@@ -101,7 +99,7 @@ extension APIRequest {
          */
 
         var returnData: [(data: Data, url: URLResponse)] = []
-        var currURL: URL? = self.url;
+        var currURL: URL? = self.url
         var count = 1
         while let url = currURL {
             var request = URLRequest(url: url)
@@ -114,7 +112,7 @@ extension APIRequest {
                 throw NetworkError.fetchFailed(msg: response.description)
             }
             returnData.append((data, response))
-            
+
             try await oneNewBatch((data, response))
 
             guard let linkValue = httpResponse.allHeaderFields["Link"] as? String else {
@@ -122,9 +120,9 @@ extension APIRequest {
                 break
             }
 
-            let r = /<([^>]+)>; rel="next"/
+            let regEx = /<([^>]+)>; rel="next"/
 
-            guard let match = try r.firstMatch(in: linkValue) else {
+            guard let match = try regEx.firstMatch(in: linkValue) else {
                 print("No matching regex")
                 break
             }
@@ -138,8 +136,7 @@ extension APIRequest {
 
             count += 1
         }
-        
+
         return returnData
     }
 }
-

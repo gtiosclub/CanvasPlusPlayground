@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-fileprivate struct StatusToolbarItemToolbarItem: ViewModifier {
+private struct StatusToolbarItemToolbarItem: ViewModifier {
     let contentName: String
     let isVisible: Bool
 

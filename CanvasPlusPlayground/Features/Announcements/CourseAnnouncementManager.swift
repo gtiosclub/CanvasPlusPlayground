@@ -11,32 +11,32 @@ import Foundation
     let course: Course
     var courseId: String { course.id }
     var announcements: [Announcement]
-    
+
     init(course: Course) {
         self.course = course
         self.announcements = []
     }
-    
+
     func fetchAnnouncements() async {
         let announcements: [Announcement]? = try? await CanvasService.shared.loadAndSync(
             CanvasRequest.getAnnouncements(courseId: courseId),
             onCacheReceive: { (cached: [Announcement]?) in
                 guard let cached else { return }
-                
+
                 setAnnouncements(cached)
             }
         )
-        
+
         guard let announcements else {
             print("Failed to fetch announcements.")
             return
         }
-        
+
         setAnnouncements(announcements)
     }
-    
+
     func setAnnouncements(_ announcements: [Announcement]) {
         self.announcements = announcements
     }
-    
+
 }

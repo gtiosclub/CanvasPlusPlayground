@@ -12,7 +12,7 @@ struct LockInfo: Codable {
     let unlockAt: Date?
     let lockAt: Date?
     let manuallyLocked: Bool?
-    
+
     enum CodingKeys: String, CodingKey {
         case assetString = "asset_string"
         case unlockAt = "unlock_at"
