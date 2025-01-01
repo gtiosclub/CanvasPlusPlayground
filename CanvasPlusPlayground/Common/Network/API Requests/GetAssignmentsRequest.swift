@@ -11,7 +11,7 @@ struct GetAssignmentsRequest: ArrayAPIRequest {
     typealias Subject = AssignmentAPI
     
     let courseId: String
-    
+
     var path: String { "courses/\(courseId)/assignments" }
     var queryParameters: [QueryParameter] {
         [
@@ -27,7 +27,7 @@ struct GetAssignmentsRequest: ArrayAPIRequest {
         + include.map { ("include[]", $0) }
         + assignmentIds.map { ("assignment_ids[]", $0) }
     }
-    
+
     // MARK: Query Params
     let include: [String]
     let searchTerm: String?
@@ -39,8 +39,20 @@ struct GetAssignmentsRequest: ArrayAPIRequest {
     let postToSis: Bool?
     let newQuizzes: Bool?
     let perPage: Int
-    
-    init(courseId: String, include: [String] = [], searchTerm: String? = nil, overrideAssignmentDates: Bool? = nil, needsGradingCountBySection: Bool? = nil, bucket: String? = nil, assignmentIds: [String?] = [], orderBy: String? = nil, postToSis: Bool? = nil, newQuizzes: Bool? = nil, perPage: Int = 50) {
+
+    init(
+        courseId: String,
+        include: [String] = [],
+        searchTerm: String? = nil,
+        overrideAssignmentDates: Bool? = nil,
+        needsGradingCountBySection: Bool? = nil,
+        bucket: String? = nil,
+        assignmentIds: [String?] = [],
+        orderBy: String? = nil,
+        postToSis: Bool? = nil,
+        newQuizzes: Bool? = nil,
+        perPage: Int = 50
+    ) {
         self.courseId = courseId
         self.include = include
         self.searchTerm = searchTerm
@@ -53,7 +65,7 @@ struct GetAssignmentsRequest: ArrayAPIRequest {
         self.newQuizzes = newQuizzes
         self.perPage = perPage
     }
-    
+
     /* Assignment isn't cacheable, reimplement when it is
     // MARK: Request Id
     var requestId: Int? { courseId.asInt }
@@ -87,5 +99,5 @@ struct GetAssignmentsRequest: ArrayAPIRequest {
          
         // TODO: add remaining filters (bucket, assignmentIds)
     }*/
-    
+
 }

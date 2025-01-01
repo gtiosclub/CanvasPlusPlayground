@@ -15,7 +15,7 @@ struct QuizPermissions: Codable {
     let readStatistics: Bool?
     let reviewGrades: Bool?
     let update: Bool?
-    
+
     enum CodingKeys: String, CodingKey {
         case read
         case submit

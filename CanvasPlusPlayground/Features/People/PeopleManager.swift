@@ -31,7 +31,7 @@ class PeopleManager {
         self.courseID = courseID
         self.enrollments = []
     }
-    
+
     func fetchPeople() async {
         guard let courseID else { return }
 
@@ -39,39 +39,39 @@ class PeopleManager {
             CanvasRequest.getEnrollments(courseId: courseID),
             onCacheReceive: { (cached: [Enrollment]?) in
                 guard let cached else { return }
-                
+
                 addEnrollments(cached)
             },
             onNewBatch: { enrollmentsBatch in
                 addEnrollments(enrollmentsBatch)
             }
         )
-        
+
         guard let enrollments else {
             print("Enrollments is nil, fetch failed.")
             return
         }
-        
+
         setEnrollments(enrollments)
     }
-    
+
     private func addEnrollments(_ enrollments: [Enrollment]) {
         DispatchQueue.global().sync {
             let enrollments = Set(self.enrollments + enrollments).sorted {
                 guard let name1 = $0.user?.name, let name2 = $1.user?.name else { return false }
                 return (name1) < (name2)
             }
-            
+
             setEnrollments(enrollments)
         }
     }
-    
+
     private func setEnrollments(_ enrollments: [Enrollment]) {
         DispatchQueue.main.sync {
             self.enrollments = enrollments
         }
     }
-    
+
     func fetchAllClassesWith(
         userID: Int,
         activeCourses courses: [Course],
@@ -80,11 +80,11 @@ class PeopleManager {
         let commonCoursesQueue = DispatchQueue(label: "com.CanvasPlus.commonCoursesQueue")
 
         await withTaskGroup(of: Void.self) { group in
-            for course in courses {                
+            for course in courses {
                 var didAlreadyAddCourse = false
                 let courseID = course.id
                 let request = CanvasRequest.getEnrollments(courseId: courseID, userId: userID)
-                
+
                 func processEnrollments(_ enrollments: [Enrollment]) {
                     guard !didAlreadyAddCourse else { return }
 
@@ -98,9 +98,10 @@ class PeopleManager {
                         }
                     }
                 }
-                
+
                 group.addTask {
                     // Get the enrollments of course
+                    // swiftlint:disable:next unused_optional_binding
                     guard let _: [Enrollment] = try? await CanvasService.shared.loadAndSync(request, onCacheReceive: { cached in
                         guard let cached else { return }
 

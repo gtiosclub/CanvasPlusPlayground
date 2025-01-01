@@ -17,19 +17,19 @@ struct GetQuizzesRequest: CacheableArrayAPIRequest {
             ("per_page", perPage)
         ]
     }
-    
+
     var path: String { "courses/\(courseId)/all_quizzes" }
-    
+
     // MARK: Query Params
     let searchTerm: String?
     let perPage: Int
-    
+
     init(courseId: String, searchTerm: String? = nil, perPage: Int = 50) {
         self.courseId = courseId
         self.searchTerm = searchTerm
         self.perPage = perPage
     }
-    
+
     var requestId: String { courseId }
     var requestIdKey: ParentKeyPath<Quiz, String> { .createWritable(\.courseID) }
     var idPredicate: Predicate<Quiz> {

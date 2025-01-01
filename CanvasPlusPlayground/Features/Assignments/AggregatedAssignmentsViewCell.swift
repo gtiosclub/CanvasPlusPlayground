@@ -10,14 +10,14 @@ import SwiftUI
 struct AggregatedAssignmentsListCell: View {
     let assignment: AssignmentAPI
     let course: Course
-    
+
     var body: some View {
         VStack(alignment: .leading) {
             Text(assignment.name)
-            
+
             Text("\(course.displayName)")
                 .font(.subheadline)
-            
+
         }
     }
 }

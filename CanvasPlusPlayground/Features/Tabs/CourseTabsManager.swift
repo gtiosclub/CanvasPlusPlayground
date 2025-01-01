@@ -15,11 +15,11 @@ class CourseTabsManager {
     var tabLabels: [String] {
         tabs.map(\.label).compactMap { $0 }
     }
-    
+
     init(course: Course) {
         self.course = course
     }
-    
+
     func fetchTabs() async {
         let courseId = course.id
         guard let (data, _) = try? await CanvasService.shared.fetchResponse(CanvasRequest.getTabs(courseId: courseId)) else {

@@ -22,18 +22,18 @@ struct AggregatedAssignmentsView: View {
         }
         .navigationTitle("Your Assignments")
         .task {
-            
+
             for course in courseManager.userFavCourses {
                 let assignments = await CourseAssignmentManager.getAssignmentsForCourse(courseID: course.id)
-                
+
                 for assignment in assignments {
                     if !(assignment.has_submitted_submissions ?? false) {
                         self.courseAssignments.append((assignment, course))
                     }
-                    
+
                 }
             }
         }
     }
-    
+
 }

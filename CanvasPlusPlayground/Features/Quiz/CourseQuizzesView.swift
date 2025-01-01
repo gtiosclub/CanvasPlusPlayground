@@ -15,7 +15,7 @@ struct CourseQuizzesView: View {
     init(courseId: String) {
         self.quizzesVM = QuizzesViewModel(courseId: courseId)
     }
-    
+
     var body: some View {
         NavigationStack {
             List {
@@ -29,7 +29,7 @@ struct CourseQuizzesView: View {
             .statusToolbarItem("Quizzes", isVisible: isLoadingQuizzes)
         }
     }
-    
+
     @ViewBuilder
     func quizSection(for quizType: QuizType) -> some View {
         Section(quizType.title) {
@@ -39,7 +39,7 @@ struct CourseQuizzesView: View {
             }
         }
     }
-    
+
     @ViewBuilder
     func quizCell(for quiz: Quiz) -> some View {
         HStack {
@@ -47,11 +47,11 @@ struct CourseQuizzesView: View {
                 Text(quiz.title)
                     .bold()
                     .frame(maxWidth: .infinity, alignment: .leading)
-                
+
                 HStack {
                     if let pointsPossible = quiz.pointsPossible?.truncatingTrailingZeros {
                         Text("\(pointsPossible) pts")
-                            
+
                     } else { Text("No pts")}
                     
                     Text("\(quiz.questionCount ?? 0) Questions")
@@ -59,9 +59,9 @@ struct CourseQuizzesView: View {
                 .font(.caption)
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
-            
+
             Spacer()
-            
+
             if quiz.lockedForUser == true {
                 Text("Closed")
             } else if quiz.dueAt == .distantFuture {
@@ -71,7 +71,6 @@ struct CourseQuizzesView: View {
             }
         }
     }
-
 
     private func loadQuizzes() async {
         isLoadingQuizzes = true

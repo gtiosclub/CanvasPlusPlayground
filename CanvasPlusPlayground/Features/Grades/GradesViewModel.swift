@@ -36,11 +36,11 @@ class GradesViewModel {
     }
 
     let courseId: String
-    
+
     init(courseId: String) {
         self.courseId = courseId
     }
-    
+
     func getEnrollments(currentUserID: Int?) async {
         guard let currentUserID else {
             print("GradesViewModel: Current UserID is nil.")
@@ -48,7 +48,7 @@ class GradesViewModel {
         }
 
         let request = CanvasRequest.getEnrollments(courseId: courseId)
-        
+
         do {
             let enrollments: [Enrollment]? = try await CanvasService.shared.loadAndSync(request,
                 onCacheReceive: { enrollmentsCache in
@@ -76,7 +76,7 @@ class GradesViewModel {
             print("Failed to fetch enrollments. \(error)")
         }
     }
-    
+
     /// Searches for the users enrollment and sets it if found
     func findEnrollment(enrollments: [Enrollment], currentUserID: Int) {
         let newEnrollment = enrollments

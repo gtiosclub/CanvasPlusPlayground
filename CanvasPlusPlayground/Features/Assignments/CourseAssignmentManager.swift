@@ -17,11 +17,13 @@ class CourseAssignmentManager {
     }
 
     func fetchAssignments() async {
-        guard let courseID = courseID, let (data, _) = try? await CanvasService.shared.fetchResponse(CanvasRequest.getAssignments(courseId: courseID)) else {
+        guard let courseID = courseID, let (data, _) = try? await CanvasService.shared.fetchResponse(
+            CanvasRequest.getAssignments(courseId: courseID)
+        ) else {
             print("Failed to fetch assignments.")
             return
         }
-        
+
         do {
             self.assignments = try JSONDecoder().decode([AssignmentAPI].self, from: data)
         } catch {

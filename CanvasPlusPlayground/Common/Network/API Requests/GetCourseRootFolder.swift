@@ -11,12 +11,12 @@ struct GetCourseRootFolderRequest: CacheableAPIRequest {
     typealias Subject = FolderAPI
     
     let courseId: String
-    
+
     var path: String { "courses/\(courseId)/folders/root" }
     var queryParameters: [QueryParameter] {
         []
     }
-    
+
     // MARK: request Id
     var requestId: String? { "\(courseId)_root_folder" }
     var requestIdKey: ParentKeyPath<Folder, String?> { .createWritable(\.tag) }

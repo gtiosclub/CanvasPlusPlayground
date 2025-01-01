@@ -47,7 +47,7 @@ struct IntelligenceOnboardingView: View {
         }
         .fontDesign(.rounded)
         .padding()
-        .onChange(of: llmEvaluator.progress) { oldValue, newValue in
+        .onChange(of: llmEvaluator.progress) { _, newValue in
             if newValue == 1.0 {
                 completeInstallation()
             }

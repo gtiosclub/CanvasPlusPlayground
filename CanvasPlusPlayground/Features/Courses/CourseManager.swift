@@ -18,7 +18,7 @@ class CourseManager {
     var userOtherCourses: [Course] {
         courses.filter { !($0.isFavorite) }.sorted { $0.name ?? "" < $1.name ?? "" }
     }
-    
+
     func getCourses() async {
         print("Fetching courses")
         do {
@@ -36,7 +36,7 @@ class CourseManager {
             print("Failed to fetch courses. \(error)")
         }
     }
-    
+
     func setCourses(_ courses: [Course]) {
         DispatchQueue.main.sync {
             self.courses = courses

@@ -62,7 +62,7 @@ struct SettingsView: View {
                         print("Couldn't clear files: \(error)")
                     }
                 }
-                
+
                 Button("Show files in Finder", systemImage: "folder.badge.person.crop") {
                     CourseFileService.showInFinder()
                 }

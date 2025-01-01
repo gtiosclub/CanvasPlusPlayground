@@ -15,6 +15,6 @@ struct GetUserProfileRequest: APIRequest {
     var queryParameters: [QueryParameter] {
         []
     }
-    
+
     var path: String { "users/\(userId ?? "self")/profile" }
 }

@@ -8,13 +8,12 @@
 import Foundation
 import SwiftData
 
-
 @Model
 class Quiz {
-    
+
     @Attribute(.unique) let id: String
     var parentId: String
-    
+
     var title: String
     var htmlUrl: String?
     var mobileUrl: String?
@@ -53,31 +52,31 @@ class Quiz {
     var versionNumber: Int?
     var questionTypes: [QuizQuestionType]
     var anonymousSubmissions: Bool?
-    
+
     var quizType: QuizType {
         get { QuizType(rawValue: quizTypeRaw) ?? .assignment }
         set { quizTypeRaw = newValue.rawValue }
     }
-    
+
     var hideResults: QuizHideResults? {
         get { return hideResultsRaw.flatMap { QuizHideResults(rawValue: $0) } }
         set { hideResultsRaw = newValue?.rawValue }
     }
-    
+
     var scoringPolicy: ScoringPolicy? {
         get { return scoringPolicyRaw.flatMap { ScoringPolicy(rawValue: $0) } }
         set { scoringPolicyRaw = newValue?.rawValue }
     }
-    
+
     var dueAt: Date { dueAtRaw ?? .distantFuture }
-    
+
     required init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        
+
         let id = try container.decode(ServerID.self, forKey: .id)
         self.id =  String(describing: id)
         self.parentId = try container.decodeIfPresent(String.self, forKey: .parentId) ?? ""
-        
+
         self.title = try container.decodeIfPresent(String.self, forKey: .title) ?? ""
         self.htmlUrl = try container.decodeIfPresent(String.self, forKey: .htmlUrl)
         self.mobileUrl = try container.decodeIfPresent(String.self, forKey: .mobileUrl)
@@ -123,11 +122,11 @@ class Quiz {
 
 extension Quiz: Cacheable {
     typealias ServerID = Int
-        
+
     enum CodingKeys: String, CodingKey {
         case id
         case parentId = "parent_id"
-                
+
         case title
         case htmlUrl = "html_url"
         case mobileUrl = "mobile_url"
@@ -167,13 +166,13 @@ extension Quiz: Cacheable {
         case questionTypes = "question_types"
         case anonymousSubmissions = "anonymous_submissions"
     }
-    
+
     func encode(to encoder: any Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        
+
         try container.encode(id, forKey: .id)
         try container.encode(parentId, forKey: .parentId)
-        
+
         try container.encode(title, forKey: .title)
         try container.encodeIfPresent(htmlUrl, forKey: .htmlUrl)
         try container.encodeIfPresent(mobileUrl, forKey: .mobileUrl)
@@ -213,7 +212,7 @@ extension Quiz: Cacheable {
         try container.encode(questionTypes, forKey: .questionTypes)
         try container.encode(anonymousSubmissions, forKey: .anonymousSubmissions)
     }
-    
+
     func merge(with other: Quiz) {
         self.title = other.title
         self.htmlUrl = other.htmlUrl
@@ -255,7 +254,7 @@ extension Quiz: Cacheable {
         self.anonymousSubmissions = other.anonymousSubmissions    }
 }
 
-
+// swiftlint:disable line_length
 /*
  Quiz {
      id (integer, optional): the ID of the quiz,
@@ -310,3 +309,4 @@ extension Quiz: Cacheable {
 
 
  */
+// swiftlint:enable line_length

@@ -23,7 +23,7 @@ extension NSAttributedString {
                 let lang = bundle.preferredLocalizations.first
                 ?? bundle.developmentLocalization
                 ?? "en"
-                
+
                 let attributedString = (try? NSAttributedString(
                     data: """
                     <!doctype html>
@@ -35,15 +35,15 @@ extension NSAttributedString {
                                 font: -apple-system-body;
                                 color: \(Color.secondary.hexString);
                             }
-                    
+
                             h1, h2, h3, h4, h5, h6 {
                                 color: \(Color.primary.hexString);
                             }
-                    
+
                             a {
                                 color: \(Color.green.hexString);
                             }
-                    
+
                             li:last-child {
                                 margin-bottom: 1em;
                             }
@@ -56,11 +56,11 @@ extension NSAttributedString {
                     """.data(using: .utf8)!,
                     options: [
                         .documentType: NSAttributedString.DocumentType.html,
-                        .characterEncoding: String.Encoding.utf8.rawValue,
+                        .characterEncoding: String.Encoding.utf8.rawValue
                     ],
                     documentAttributes: nil
                 )) ?? NSAttributedString(string: body)
-                
+
                 // Return the result to the continuation
                 continuation.resume(returning: attributedString)
             }

@@ -33,7 +33,7 @@ struct CourseListView: View {
 
     var body: some View {
         @Bindable var courseManager = courseManager
-        
+
         NavigationSplitView(columnVisibility: $columnVisibility) {
             mainBody
         } content: {
@@ -84,7 +84,7 @@ struct CourseListView: View {
             .interactiveDismissDisabled()
         })
     }
-    
+
     private var mainBody: some View {
         List(selection: $navigationModel.selectedCourseID) {
             Section {
@@ -187,7 +187,7 @@ private struct CourseListCell: View {
 
     @State private var showColorPicker = false
     @State private var resolvedCourseColor: Color = .accentColor
-    
+
     @State private var showRenameTextField = false
     @State private var renameCourseFieldText: String = ""
 
@@ -227,13 +227,13 @@ private struct CourseListCell: View {
                     course.isFavorite = !wrappedCourseIsFavorite
                 }
             }
-            
+
             Button("Rename \(course.name ?? "")...", systemImage: "character.cursor.ibeam") {
                 renameCourseFieldText = course.nickname ?? ""
                 showRenameTextField = true
-                
+
             }
-        
+
         }
         .alert("Rename Course?", isPresented: $showRenameTextField) {
             TextField(course.name ?? "MISSING NAME", text: $renameCourseFieldText)
@@ -248,7 +248,7 @@ private struct CourseListCell: View {
             Button("Dismiss", role: .cancel) {
                 renameCourseFieldText = ""
             }
-        
+
         } message: {
             Text("Rename \(course.name ?? "MISSING NAME")?")
         }

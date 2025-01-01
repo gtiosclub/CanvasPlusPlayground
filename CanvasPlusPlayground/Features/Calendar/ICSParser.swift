@@ -5,7 +5,6 @@
 //  Created by Rahul on 12/9/24.
 //
 
-
 import Foundation
 
 struct CanvasCalendarEventGroup: Identifiable {
@@ -39,7 +38,9 @@ struct ICSParser {
         return dateFormatter
     }
 
-    static func parseEvents(from icsURL: URL?) async -> [CanvasCalendarEventGroup] {
+    static func parseEvents(
+        from icsURL: URL?
+    ) async -> [CanvasCalendarEventGroup] {
         guard let icsURL else { return [] }
 
         guard let content = try? await fetchICSContentsFromURL(icsURL) else {
@@ -121,4 +122,3 @@ struct ICSParser {
         }
     }
 }
-

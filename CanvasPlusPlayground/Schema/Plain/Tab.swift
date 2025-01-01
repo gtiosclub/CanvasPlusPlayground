@@ -7,6 +7,7 @@
 
 import Foundation
 
+// swiftlint:disable:next type_name
 struct Tab: Codable {
     let id: String?
     let htmlURL: String?
@@ -16,10 +17,10 @@ struct Tab: Codable {
     let label: String?
     let type: String?
     let url: String?
-    
+
     // MARK: Custom
     var courseId: String?
-    
+
     enum CodingKeys: String, CodingKey {
         case id
         case htmlURL = "html_url"

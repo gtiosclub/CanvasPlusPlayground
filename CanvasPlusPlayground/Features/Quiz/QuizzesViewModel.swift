@@ -11,10 +11,10 @@ import Foundation
 class QuizzesViewModel {
     let courseId: String
     var quizzes = Set<Quiz>()
-    
-    var sectionsToQuizzes: Dictionary<QuizType, [Quiz]> {
+
+    var sectionsToQuizzes: [QuizType: [Quiz]] {
         let unsorted = Dictionary(grouping: quizzes, by: { $0.quizType })
-        
+
         return unsorted.mapValues {
             $0.sorted {
                 if $0.dueAt == $1.dueAt {
@@ -27,14 +27,14 @@ class QuizzesViewModel {
         Array(self.sectionsToQuizzes.keys)
             .sorted { $0.title < $1.title }
     }
-    
+
     init(courseId: String) {
         self.courseId = courseId
     }
-    
+
     func fetchQuizzes() async {
         let request = CanvasRequest.getQuizzes(courseId: courseId)
-        
+
         do {
             let _: [Quiz] = try await CanvasService.shared.loadAndSync(
                 request,
@@ -46,19 +46,17 @@ class QuizzesViewModel {
                     addQuizzes($0)
                 }
             )
-            
-            
+
         } catch {
             print("Quiz fetch failed with error: \n\(error)")
         }
-        
+
     }
-    
+
     func addQuizzes(_ newQuizzes: [Quiz]) {
         Task { @MainActor in
             self.quizzes.formUnion(newQuizzes)
         }
     }
-    
-    
+
 }

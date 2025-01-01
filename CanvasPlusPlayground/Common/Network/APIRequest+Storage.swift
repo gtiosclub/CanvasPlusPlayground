@@ -21,7 +21,7 @@ extension CacheableAPIRequest {
         }
         return cacheDescriptor
     }
-    
+
     /// Only loads from storage, doesn't make a network call
     func load(from repository: CanvasRepository) async throws -> [PersistedModel]? {
                 
@@ -30,7 +30,7 @@ extension CacheableAPIRequest {
         
         return cached
     }
-    
+
     /// Number of occurences of models related to request
     func loadCount(from repository: CanvasRepository) async throws -> Int {
         return try await repository.count(descriptor: loadDescriptor)

@@ -10,9 +10,9 @@ import Foundation
 protocol APIRequest {
     associatedtype Subject: APIResponse
     associatedtype QueryResult: Codable = Subject
-    
+
     typealias QueryParameter = (name: String, value: Any?)
-    
+
     var path: String { get }
     var queryParameters: [QueryParameter] { get }
     var method: RequestMethod { get }
@@ -22,7 +22,7 @@ extension APIRequest {
     var baseURL: URL {
         URL(string: "https://gatech.instructure.com/api/v1")!
     }
-    
+
     var combinedQueryParams: [(String, String)] {
         ([(name: "access_token", value: StorageKeys.accessTokenValue)] + queryParameters).compactMap {
             let (key, val) = $0
@@ -32,7 +32,7 @@ extension APIRequest {
             return (key, "\(val)")
         }
     }
-    
+
     var url: URL {
         baseURL
             .appendingPathComponent(path)
@@ -52,7 +52,7 @@ protocol CacheableAPIRequest: APIRequest where Subject.Model: Cacheable {
     typealias PersistedModel = Subject.Model
 
     associatedtype KeyType: Equatable
-        
+
     var requestId: KeyType { get }
     var requestIdKey: ParentKeyPath<Subject.Model, KeyType> { get }
     var idPredicate: Predicate<Subject.Model> { get }

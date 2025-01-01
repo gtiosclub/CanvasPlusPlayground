@@ -7,6 +7,7 @@
 
 import Foundation
 
+// swiftlint:disable line_length
 /*
  {"id":20960000000853302,
  "description":"\u003clink rel=\"stylesheet\" href=\"https://instructure-uploads.s3.amazonaws.com/account_20960000000000001/attachments/47206723/dp_app.css\"\u003e\u003cp\u003eSee edX Edge for details on what to submit here.\u003c/p\u003e\u003cscript src=\"https://instructure-uploads.s3.amazonaws.com/account_20960000000000001/attachments/47206721/dp_app.js\"\u003e\u003c/script\u003e",
@@ -72,6 +73,7 @@ import Foundation
  "require_lockdown_browser":false,
  "restrict_quantitative_data":false}
  */
+// swiftlint:enable line_length
 
 struct Assignment: Codable {
     let id: Int

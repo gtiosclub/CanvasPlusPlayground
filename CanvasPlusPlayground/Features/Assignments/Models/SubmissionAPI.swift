@@ -5,7 +5,6 @@
 //  Created by Rahul on 12/18/24.
 //
 
-
 import Foundation
 
 struct SubmissionAPI: APIResponse {
