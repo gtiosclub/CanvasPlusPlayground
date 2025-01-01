@@ -75,7 +75,8 @@ import Foundation
 
 struct AssignmentAPI: APIResponse {
     typealias Model = NoOpCacheable
-    
+
+    // swiftlint:disable identifier_name
     let id: Int
     let description: String?
     let due_at: String?
@@ -140,4 +141,5 @@ struct AssignmentAPI: APIResponse {
     let require_lockdown_browser: Bool?
     let restrict_quantitative_data: Bool?
     let submission: SubmissionAPI?
+    // swiftlint:enable identifier_name
 }

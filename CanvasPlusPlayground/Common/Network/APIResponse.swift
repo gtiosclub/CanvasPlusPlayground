@@ -9,7 +9,7 @@ import Foundation
 
 protocol APIResponse: Codable, Identifiable, Hashable {
     associatedtype Model: BaseCacheable
-    
+
     func createModel() -> Model
 }
 

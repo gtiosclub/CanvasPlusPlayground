@@ -37,9 +37,9 @@ import SwiftData
 @Model
 class Folder: Cacheable {
     typealias ServerID = Int
-    
+
     @Attribute(.unique) var id: String
-    
+
     var name: String?
     var fullName: String?
     var contextId: Int?
@@ -60,10 +60,10 @@ class Folder: Cacheable {
     var hiddenForUser: Bool?
     var forSubmissions: Bool?
     var canUpload: Bool?
-    
+
     // MARK: Custom
     var tag: String?
-    
+
     init(api: FolderAPI) {
         self.id = api.id.asString
         self.name = api.name
@@ -110,5 +110,5 @@ class Folder: Cacheable {
         self.forSubmissions = other.forSubmissions
         self.canUpload = other.canUpload
     }
-    
+
 }

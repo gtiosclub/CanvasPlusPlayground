@@ -28,9 +28,9 @@ extension CacheableAPIRequest {
         using cache: [PersistedModel],
         onNewBatch: ([PersistedModel]) -> Void
     ) async throws -> [PersistedModel] {
-        
-        let cacheLookup = Dictionary(uniqueKeysWithValues: cache.map { ($0.id, $0) } )
-        
+
+        let cacheLookup = Dictionary(uniqueKeysWithValues: cache.map { ($0.id, $0) })
+
         let updateStorage: ([PersistedModel]) async -> [PersistedModel] = { newModels in
             // New batch received
 
@@ -58,14 +58,14 @@ extension CacheableAPIRequest {
 
         // Fetch newest version from API, then filter as desired by caller.
         var latest: [PersistedModel] = try await {
-            
+
             // Adjust `fetch` generic parameter based on whether request is for a collection.
             let fetched: [PersistedModel]
             if QueryResult.self is any Collection.Type {
                 fetched = try await fetch(onNewPage: { batch in
                     let batchAsModel = batch.map { $0.createModel() }
                     let transformed = await updateStorage(batchAsModel)
-                    
+
                     onNewBatch(transformed)
                 }).map { $0.createModel() }
             } else {
@@ -100,7 +100,7 @@ extension CacheableAPIRequest {
         onCacheReceive: ([PersistedModel]?) -> Void = { _ in },
         onNewBatch: ([PersistedModel]) -> Void = { _ in }
     ) async throws -> [PersistedModel] {
-        
+
         let cached: [PersistedModel]? = try await load(from: repository)
         onCacheReceive(cached) // Share cached version with caller.
 

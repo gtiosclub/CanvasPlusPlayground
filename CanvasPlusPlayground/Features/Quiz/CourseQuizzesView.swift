@@ -53,7 +53,7 @@ struct CourseQuizzesView: View {
                         Text("\(pointsPossible) pts")
 
                     } else { Text("No pts")}
-                    
+
                     Text("\(quiz.questionCount ?? 0) Questions")
                 }
                 .font(.caption)

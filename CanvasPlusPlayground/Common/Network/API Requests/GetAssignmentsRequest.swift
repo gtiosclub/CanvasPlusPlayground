@@ -9,7 +9,7 @@ import Foundation
 
 struct GetAssignmentsRequest: ArrayAPIRequest {
     typealias Subject = AssignmentAPI
-    
+
     let courseId: String
 
     var path: String { "courses/\(courseId)/assignments" }

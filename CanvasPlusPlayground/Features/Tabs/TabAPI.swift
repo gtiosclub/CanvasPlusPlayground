@@ -9,7 +9,8 @@ import Foundation
 
 struct TabAPI: APIResponse {
     typealias Model = NoOpCacheable
-    
+
+    // swiftlint:disable identifier_name
     let id: String?
     let html_url: String?
     let full_url: String?
@@ -18,7 +19,8 @@ struct TabAPI: APIResponse {
     let label: String?
     let type: String?
     let url: String?
-    
+    // swiftlint:enable identifier_name
+
     // MARK: Custom for Model
-    //var courseId: String?
+    // var courseId: String?
 }

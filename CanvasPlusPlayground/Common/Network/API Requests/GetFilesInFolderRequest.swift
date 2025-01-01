@@ -9,7 +9,7 @@ import Foundation
 
 struct GetFilesInFolderRequest: CacheableArrayAPIRequest {
     typealias Subject = FileAPI
-    
+
     let folderId: String
 
     var path: String { "folders/\(folderId)/files" }

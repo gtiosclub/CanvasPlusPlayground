@@ -10,9 +10,10 @@ import Foundation
 // https://github.com/instructure/canvas-ios/blob/master/Core/Core/Quizzes/APIQuiz.swift
 struct QuizAPI: APIResponse {
     typealias Model = Quiz
-    
+
     let id: Int
-    
+
+    // swiftlint:disable identifier_name
     let access_code: String?
     let all_dates: [APIAssignmentDate]?
     /** Nil when `quiz_type` is `quizzes.next`. */
@@ -26,7 +27,7 @@ struct QuizAPI: APIResponse {
     let hide_correct_answers_at: Date?
     let hide_results: QuizHideResults?
     let html_url: URL
-    //let id: ID
+    // let id: ID
     let ip_filter: String?
     let lock_at: Date?
     let lock_explanation: String?
@@ -62,7 +63,8 @@ struct QuizAPI: APIResponse {
     // let quiz_extensions_url: URL?
     // let speedgrader_url: URL?
     // let version_number: Int
-    
+    // swiftlint:enable identifier_name
+
     func createModel() -> Quiz {
         Quiz(api: self)
     }

@@ -11,7 +11,7 @@ import Foundation
 class CourseTabsManager {
     let course: Course
     var tabs = [TabAPI]()
-    
+
     var tabLabels: [String] {
         tabs.map(\.label).compactMap { $0 }
     }
@@ -26,7 +26,7 @@ class CourseTabsManager {
             print("Unable to fetch tabs.")
             return
         }
-        
+
         if let tabs = try? JSONDecoder().decode([TabAPI].self, from: data) {
             self.tabs = tabs
         } else { print("Unable to decode tab.") }

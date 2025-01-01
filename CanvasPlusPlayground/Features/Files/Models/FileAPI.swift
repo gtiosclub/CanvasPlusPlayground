@@ -7,10 +7,11 @@
 
 import Foundation
 
-//https://github.com/instructure/canvas-ios/blob/49a3e347116d623638c66b7adbcc946294faa212/Core/Core/Files/Model/API/APIFile.swift#L175
+// https://github.com/instructure/canvas-ios/blob/49a3e347116d623638c66b7adbcc946294faa212/Core/Core/Files/Model/API/APIFile.swift#L175
 struct FileAPI: APIResponse {
     typealias Model = File
-    
+
+    // swiftlint:disable identifier_name
     let id: Int
     let uuid: String
     let folder_id: Int
@@ -18,7 +19,7 @@ struct FileAPI: APIResponse {
     let filename: String
     let content_type: String
     var url: String?
-    //var url: APIURL?
+    // var url: APIURL?
     // file size in bytes
     let size: Int?
     let created_at: Date
@@ -45,11 +46,11 @@ struct FileAPI: APIResponse {
     let avatar: APIFileToken?
     var usage_rights: APIUsageRights?
     let visibility_level: String?
-    
+
     func createModel() -> File {
         File(api: self)
     }
-    
+
     enum CodingKeys: String, CodingKey {
         case id
         case uuid
@@ -107,3 +108,5 @@ enum UseJustification: String, Codable, CaseIterable {
         }
     }
 }
+
+// swiftlint:enable identifier_name

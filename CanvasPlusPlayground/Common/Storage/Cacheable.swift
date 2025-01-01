@@ -15,10 +15,9 @@ class NoOpCacheable: BaseCacheable {}
 protocol Cacheable: BaseCacheable, PersistentModel {
     associatedtype ServerID: Hashable
     var id: String { get }
-    
+
     func merge(with other: Self)
 }
-
 
 extension Cacheable {
 
@@ -34,5 +33,3 @@ extension Cacheable {
         return lhs.id == rhs.id
     }
 }
-
-

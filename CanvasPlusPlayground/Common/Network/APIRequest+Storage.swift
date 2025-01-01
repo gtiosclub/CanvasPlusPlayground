@@ -24,10 +24,10 @@ extension CacheableAPIRequest {
 
     /// Only loads from storage, doesn't make a network call
     func load(from repository: CanvasRepository) async throws -> [PersistedModel]? {
-                
+
         // Get cached data for this type then filter to only get models related to `request`
         let cached: [PersistedModel]? = try await repository.get(descriptor: loadDescriptor)
-        
+
         return cached
     }
 

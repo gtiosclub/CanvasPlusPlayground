@@ -8,13 +8,12 @@
 import Foundation
 import SwiftData
 
-
 @Model
 class Quiz {
-    
+
     @Attribute(.unique) let id: String
     var courseID: String
-    
+
     var accessCode: String?
     var allDates: Set<APIAssignmentDate>
     var allowedAttempts: Int
@@ -32,7 +31,7 @@ class Quiz {
     var lockedForUser: Bool
     var mobileURL: URL?
     var oneQuestionAtATime: Bool
-    //var order: String?
+    // var order: String?
     var orderDate: Date?
     var pointsPossible: Double?
     var published: Bool
@@ -53,7 +52,7 @@ class Quiz {
     var unlockAt: Date?
     var unpublishable: Bool
     var anonymousSubmissions: Bool
-    
+
     var hideResults: QuizHideResults? {
         get { return hideResultsRaw.flatMap { QuizHideResults(rawValue: $0) } }
         set { hideResultsRaw = newValue?.rawValue }
@@ -73,14 +72,14 @@ class Quiz {
         get { return scoringPolicyRaw.flatMap { ScoringPolicy(rawValue: $0) } }
         set { scoringPolicyRaw = newValue?.rawValue }
     }
-    
+
     init(api: QuizAPI) {
         self.id = api.id.asString
         self.courseID = ""
         self.accessCode = api.access_code
-        
+
         if let dates = api.all_dates { self.allDates = Set(dates) } else { self.allDates = [] }
-        
+
         self.allowedAttempts = api.allowed_attempts ?? 0
         self.assignmentID = api.assignment_id?.asString
         self.cantGoBack = api.cant_go_back ?? false
@@ -113,9 +112,9 @@ class Quiz {
         self.unpublishable = api.unpublishable == true
         let orderDate = (api.quiz_type == .assignment ? api.due_at : api.lock_at) ?? Date.distantFuture
         self.orderDate = orderDate
-        //self.order = ISO8601DateFormatter.string(from: orderDate, timeZone: TimeZone(abbreviation: "UTC")!, formatOptions: .withInternetDateTime)
+        // self.order = ISO8601DateFormatter.string(from: orderDate, timeZone: TimeZone(abbreviation: "UTC")!, formatOptions: .withInternetDateTime)
         self.anonymousSubmissions = api.anonymous_submissions ?? false
-        
+
         self.questionTypesRaw = api.question_types?.map(\.rawValue) ?? []
         self.hideResultsRaw = api.hide_results?.rawValue
         self.quizTypeRaw = api.quiz_type.rawValue
@@ -127,7 +126,7 @@ class Quiz {
 
 extension Quiz: Cacheable {
     typealias ServerID = Int
-    
+
     func merge(with other: Quiz) {
         self.accessCode = other.accessCode
         self.allDates = other.allDates
@@ -169,7 +168,6 @@ extension Quiz: Cacheable {
         self.anonymousSubmissions = other.anonymousSubmissions
     }
 }
-
 
 /*
  Quiz {

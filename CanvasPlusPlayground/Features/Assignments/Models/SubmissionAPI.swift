@@ -9,12 +9,13 @@ import Foundation
 
 struct SubmissionAPI: APIResponse {
     typealias Model = Submission
-    
+
     // API docs: "the submission id in these URLs is the id of the student in the course, there is no separate submission id exposed in these APIs."
     var id: String {
         "\(assignment_id)_\(user_id)"
     }
-    
+
+    // swiftlint:disable identifier_name
     let assignment_id: Int
     let assignment: String?
     let course: String?
@@ -53,11 +54,13 @@ struct SubmissionAPI: APIResponse {
         case graded
         case pendingReview = "pending_review"
     }
-    
+
     func createModel() -> Submission {
         Submission(from: self)
     }
 }
+
+// swiftlint:enable identifier_name
 
 /*
 {

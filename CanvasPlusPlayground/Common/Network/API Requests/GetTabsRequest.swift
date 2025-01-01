@@ -9,7 +9,7 @@ import Foundation
 
 struct GetTabsRequest: ArrayAPIRequest {
     typealias Subject = TabAPI
-    
+
     let courseId: String
 
     var path: String { "courses/\(courseId)/tabs" }

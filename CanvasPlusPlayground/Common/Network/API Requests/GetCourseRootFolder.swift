@@ -9,7 +9,7 @@ import Foundation
 
 struct GetCourseRootFolderRequest: CacheableAPIRequest {
     typealias Subject = FolderAPI
-    
+
     let courseId: String
 
     var path: String { "courses/\(courseId)/folders/root" }

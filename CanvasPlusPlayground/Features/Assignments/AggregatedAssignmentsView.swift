@@ -10,7 +10,7 @@ import SwiftUI
 struct AggregatedAssignmentsView: View {
     @Environment(CourseManager.self) var courseManager
     @State var courseAssignments: [(AssignmentAPI, Course)] = []
-    
+
     var body: some View {
         List {
             ForEach(courseAssignments, id:\.0.id) { assignment, course in

@@ -12,7 +12,7 @@ import Foundation
 final class Announcement: Cacheable {
     typealias ID = String
     typealias ServerID = Int
-    
+
     @Attribute(.unique) let id: String
     var courseID: String?
 
@@ -30,7 +30,7 @@ final class Announcement: Cacheable {
         self.createdAt = api.created_at
         self.message = api.message
     }
-    
+
     func merge(with other: Announcement) {
         self.title = other.title
         self.message = other.message

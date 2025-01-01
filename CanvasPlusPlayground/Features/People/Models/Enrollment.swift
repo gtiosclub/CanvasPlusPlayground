@@ -59,7 +59,6 @@ final class Enrollment: Cacheable {
 //    var currentPeriodUnpostedCurrentGrade: String?
 //    var currentPeriodUnpostedFinalGrade: String?
 
-
     // MARK: Custom Properties
     var displayRole: String? {
         role?.replacingOccurrences(of: "Enrollment", with: "")
@@ -79,7 +78,7 @@ final class Enrollment: Cacheable {
         self.endAt = enrollmentAPI.end_at
         self.lastActivityAt = enrollmentAPI.last_activity_at
         self.grades = enrollmentAPI.grades
-        self.user = enrollmentAPI.user        
+        self.user = enrollmentAPI.user
     }
 
     func merge(with other: Enrollment) {

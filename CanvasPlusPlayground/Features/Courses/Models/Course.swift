@@ -122,28 +122,27 @@
 import Foundation
 import SwiftData
 
-
 @Model
 final class Course: Cacheable {
     typealias ID = String
     typealias ServerID = Int
-    
+
     // MARK: IDs
     @Attribute(.unique) let id: String
     var parentId: String
-    
+
     // MARK: Other
     var accessRestrictedByDate: Bool
     var bannerImageDownloadURL: URL?
     var canCreateAnnouncement: Bool
     var canCreateDiscussionTopic: Bool
-    //var contextColor: ContextColor?
+    // var contextColor: ContextColor?
     var courseCode: String?
     /** Teacher assigned course color for K5 in hex format. */
     var courseColor: String?
     var defaultViewRaw: String?
     var calendarIcs: String?
-    
+
     // MARK: Enrollment info
     var enrollments: [CourseAPI.Enrollment]
     var enrollmentTypesRaw: String
@@ -151,8 +150,8 @@ final class Course: Cacheable {
     var enrollmentRoleIds: String
     var enrollmentUserIds: String
     var enrollmentStatesRaw: String
-    
-    //var grades: [Grade]?
+
+    // var grades: [Grade]?
     var gradingPeriods: [APIGradingPeriod]?
     var hideFinalGrades: Bool
     var imageDownloadURL: URL?
@@ -168,9 +167,9 @@ final class Course: Cacheable {
     var termName: String?
     var settings: APICourseSettings?
     var gradingScheme: [APIGradingSchemeEntry]
-    //var roles: String? (see enrollmentRolesRaw)
+    // var roles: String? (see enrollmentRolesRaw)
     var tabs: [TabAPI]
-    
+
     var defaultView: CourseDefaultView? {
         get { return CourseDefaultView(rawValue: defaultViewRaw ?? "") }
         set { defaultViewRaw = newValue?.rawValue }
@@ -179,19 +178,18 @@ final class Course: Cacheable {
     // MARK: Custom Properties
     // We cannot use `Color` directly because it needs to conform to `PersistentModel`
     var rgbColors: RGBColors?
-    //var isFavorite: Bool?
+    // var isFavorite: Bool?
     var nickname: String?
-    
-    
+
     var displayName: String {
         nickname ?? name ?? "Unknown Name"
     }
-    
+
     init(_ courseAPI: CourseAPI) {
-        
+
         self.id =  String(describing: courseAPI.id)
         self.parentId = ""
-        
+
         self.name = courseAPI.name
         self.isFavorite = courseAPI.is_favorite ?? false
         self.courseCode = courseAPI.course_code
@@ -205,9 +203,9 @@ final class Course: Cacheable {
 //              CanvasService.shared.repository?.delete()
 //            }
 //        }
-        
+
         self.calendarIcs = courseAPI.calendar?.ics
-        
+
         self.gradingPeriods = courseAPI.grading_periods
 //        if let apiGradingPeriods = item.grading_periods {
 //            let gradingPeriods: [GradingPeriod] = apiGradingPeriods.map { apiGradingPeriod in
@@ -216,7 +214,7 @@ final class Course: Cacheable {
 //            }
 //            model.gradingPeriods = Set(gradingPeriods)
 //        }
-        
+
         self.hideFinalGrades = courseAPI.hide_final_grades ?? false
         self.isCourseDeleted = courseAPI.workflow_state == .deleted
         self.isPastEnrollment = (
@@ -228,7 +226,7 @@ final class Course: Cacheable {
         self.isPublished = courseAPI.workflow_state == .available || courseAPI.workflow_state == .completed
         self.termName = courseAPI.term?.name
         self.accessRestrictedByDate = courseAPI.access_restricted_by_date ?? false
-        
+
         // Extra enrollments setup
         let enrollments = courseAPI.enrollments ?? []
         self.enrollments = enrollments
@@ -247,48 +245,46 @@ final class Course: Cacheable {
 //            }
 //            model.enrollments = Set(enrollmentModels)
 //        }
-        
+
 //        if let contextColor: ContextColor = context.fetch(scope: .where(#keyPath(ContextColor.canvasContextID), equals: model.canvasContextID)).first {
 //            model.contextColor = contextColor
 //        }
-    
+
         self.canCreateAnnouncement = false
         self.canCreateDiscussionTopic = false
         if let permissions = courseAPI.permissions {
             self.canCreateAnnouncement = permissions.create_announcement
             self.canCreateDiscussionTopic = permissions.create_discussion_topic
         }
-        
+
         self.sections = []
         if let sections = courseAPI.sections {
             self.sections = sections.map {
                 APICourseSection.create(from: $0, courseID: courseAPI.id)
             }
         }
-        
+
 //        if let dashboardCard: DashboardCard = context.fetch(scope: .where(#keyPath(DashboardCard.id), equals: model.id)).first {
 //            dashboardCard.course = model
 //        }
-        
+
 //        for group: Group in context.fetch(scope: .where(#keyPath(Group.courseID), equals: model.id)) {
 //            group.course = model
 //        }
-        
+
         self.settings = courseAPI.settings
 //        if let apiSettings = item.settings {
 //            CourseSettings.save(apiSettings, courseID: item.id.value, in: context)
 //        } else if let settings: CourseSettings = context.fetch(scope: .where(#keyPath(CourseSettings.courseID), equals: model.id)).first {
 //            model.settings = settings
 //        }
-        
+
         self.gradingScheme = courseAPI.grading_scheme?.compactMap {
             APIGradingSchemeEntry(courseGradingScheme: $0)
         } ?? []
-        
-        
+
 //        model.roles = item.enrollments.roles
-        
-        
+
         self.tabs = courseAPI.tabs ?? []
 //        if let apiTabs = item.tabs {
 //            let courseContext = Context.course(item.id.value)
@@ -309,7 +305,7 @@ final class Course: Cacheable {
 //
 //        
     }
-        
+
     func merge(with other: Course) {
         self.accessRestrictedByDate = other.accessRestrictedByDate
         self.bannerImageDownloadURL = other.bannerImageDownloadURL
@@ -337,9 +333,8 @@ final class Course: Cacheable {
         self.enrollmentRoleIds = other.enrollmentRoleIds
         self.enrollmentUserIds = other.enrollmentUserIds
         self.enrollmentStatesRaw = other.enrollmentStatesRaw
-        
+
         self.rgbColors = other.rgbColors
         self.nickname = other.nickname
     }
 }
-

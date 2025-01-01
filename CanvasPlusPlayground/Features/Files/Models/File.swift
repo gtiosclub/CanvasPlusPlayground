@@ -52,7 +52,7 @@ class File: Cacheable {
 
     // MARK: - Attributes
     @Attribute(.unique) var id: String
-    
+
     var uuid: String?
     var folderId: Int? // parent
     var displayName: String
@@ -76,7 +76,7 @@ class File: Cacheable {
 
     init(api: FileAPI) {
         self.id = api.id.asString
-        
+
         self.uuid = api.uuid
         self.folderId = api.folder_id
         self.displayName = api.display_name
@@ -99,7 +99,7 @@ class File: Cacheable {
         self.lockedForUser = api.locked_for_user
         self.visibilityLevel = api.visibility_level
     }
-    
+
     // MARK: - Merge
     func merge(with other: File) {
         self.uuid = other.uuid

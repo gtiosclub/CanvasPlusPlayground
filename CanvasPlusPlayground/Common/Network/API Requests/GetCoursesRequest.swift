@@ -9,7 +9,7 @@ import Foundation
 
 struct GetCoursesRequest: CacheableArrayAPIRequest {
     typealias Subject = CourseAPI
-    
+
     var path: String { "courses" }
     var queryParameters: [QueryParameter] {
         [
@@ -92,15 +92,15 @@ struct GetCoursesRequest: CacheableArrayAPIRequest {
                 course.enrollmentStatesRaw.localizedStandardContains(enrollmentState)
             }
         } else { enrollmentStatePred = .true }
-        
+
 //        let excludeBluePrintPred = excludeBlueprintCourses == nil ? .true : #Predicate<Course> { course in
 //            !(course.blueprint == true)
 //        }
-        
+
 //        let statePred = state.isEmpty ? .true : #Predicate<Course> { course in
 //            state.contains(course.workflowState)
 //        }
-        
+
         return #Predicate<Course> { course in
             enrollmentTypePred.evaluate(course)
             && enrollmentRolePred.evaluate(course)

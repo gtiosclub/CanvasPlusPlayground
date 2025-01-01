@@ -9,7 +9,8 @@ import Foundation
 
 struct FolderAPI: APIResponse {
     typealias Model = Folder
-    
+
+    // swiftlint:disable identifier_name
     var id: Int
     var name: String?
     var full_name: String?
@@ -31,7 +32,8 @@ struct FolderAPI: APIResponse {
     var hidden_for_user: Bool?
     var for_submissions: Bool?
     var can_upload: Bool?
-    
+    // swiftlint:enable identifier_name
+
     func createModel() -> Folder {
         Folder(api: self)
     }

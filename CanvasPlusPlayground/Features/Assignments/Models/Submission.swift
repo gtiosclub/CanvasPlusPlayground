@@ -11,9 +11,9 @@ import SwiftData
 @Model
 class Submission: Cacheable {
     typealias ServerID = Int
-    
+
     let id: String
-    
+
     var assignmentId: Int
     var assignment: String?
     var course: String?
@@ -21,8 +21,8 @@ class Submission: Cacheable {
     var body: String?
     var grade: String?
     var gradeMatchesCurrentSubmission: Bool?
-    var html_url: URL?
-    var preview_url: URL?
+    var htmlUrl: URL?
+    var previewUrl: URL?
     var score: Double?
     var submissionComments: String?
     var submissionType: String?
@@ -45,7 +45,7 @@ class Submission: Cacheable {
     var postedAt: String?
     var readStatus: String?
     var redoRequest: Bool?
-    
+
     init(from submissionAPI: SubmissionAPI) {
         self.id = submissionAPI.id
         self.assignmentId = submissionAPI.assignment_id
@@ -55,8 +55,8 @@ class Submission: Cacheable {
         self.body = submissionAPI.body
         self.grade = submissionAPI.grade
         self.gradeMatchesCurrentSubmission = submissionAPI.grade_matches_current_submission
-        self.html_url = submissionAPI.html_url
-        self.preview_url = submissionAPI.preview_url
+        self.htmlUrl = submissionAPI.html_url
+        self.previewUrl = submissionAPI.preview_url
         self.score = submissionAPI.score
         self.submissionComments = submissionAPI.submission_comments
         self.submissionType = submissionAPI.submission_type
@@ -80,7 +80,7 @@ class Submission: Cacheable {
         self.readStatus = submissionAPI.read_status
         self.redoRequest = submissionAPI.redo_request
     }
-    
+
     func merge(with other: Submission) {
         self.assignmentId = other.assignmentId
         self.assignment = other.assignment
@@ -89,8 +89,8 @@ class Submission: Cacheable {
         self.body = other.body
         self.grade = other.grade
         self.gradeMatchesCurrentSubmission = other.gradeMatchesCurrentSubmission
-        self.html_url = other.html_url
-        self.preview_url = other.preview_url
+        self.htmlUrl = other.htmlUrl
+        self.previewUrl = other.previewUrl
         self.score = other.score
         self.submissionComments = other.submissionComments
         self.submissionType = other.submissionType

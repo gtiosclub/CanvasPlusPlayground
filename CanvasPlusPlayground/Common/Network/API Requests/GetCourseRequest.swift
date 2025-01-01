@@ -8,7 +8,7 @@ import Foundation
 
 struct GetCourseRequest: CacheableAPIRequest {
     typealias Subject = CourseAPI
-    
+
     let courseId: String
 
     var path: String { "courses/\(courseId)" }

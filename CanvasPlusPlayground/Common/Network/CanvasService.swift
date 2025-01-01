@@ -26,7 +26,7 @@ class CanvasService {
 
         // Get cached data for this type then filter to only get models related to `request`
         let cached: [Request.PersistedModel]? = try await request.load(from: repository)
-        
+
         return cached
     }
 
@@ -65,7 +65,7 @@ class CanvasService {
         onNewBatch: ([Request.PersistedModel]) -> Void = { _ in }
     ) async throws -> [Request.PersistedModel] {
         guard let repository else { return [] }
-        
+
         let cached: [Request.PersistedModel]? = try await request.load(from: repository)
         onCacheReceive(cached) // Share cached version with caller.
 

@@ -30,7 +30,7 @@ class CourseAssignmentManager {
             print(error)
         }
     }
-    
+
     static func getAssignmentsForCourse(courseID: String) async -> [AssignmentAPI] {
             let manager = CourseAssignmentManager(courseID: courseID)
             await manager.fetchAssignments()

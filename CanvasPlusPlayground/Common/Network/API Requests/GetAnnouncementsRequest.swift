@@ -9,7 +9,7 @@ import Foundation
 
 struct GetAnnouncementsRequest: CacheableArrayAPIRequest {
     typealias Subject = AnnouncementAPI
-    
+
     let courseId: String
 
     var path: String { "announcements" }
@@ -53,7 +53,7 @@ struct GetAnnouncementsRequest: CacheableArrayAPIRequest {
         self.include = include
         self.perPage = perPage
     }
-    
+
     var requestId: String? { courseId }
     var requestIdKey: ParentKeyPath<Announcement, String?> { .createWritable(\.courseID) }
     var idPredicate: Predicate<Announcement> {

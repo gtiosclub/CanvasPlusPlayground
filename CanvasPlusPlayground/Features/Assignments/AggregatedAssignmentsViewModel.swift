@@ -11,8 +11,7 @@ import SwiftUI
 public class AggregatedAssignmentsViewModel: ObservableObject {
     let courses: [Course]
     @Published var assignments: [(AssignmentAPI, Course)] = []
-    
-    
+
     init(courses: [Course]) {
         self.courses = courses
     }

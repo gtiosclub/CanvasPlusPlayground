@@ -9,7 +9,8 @@ import Foundation
 
 struct CourseAPI: APIResponse {
     typealias Model = Course
-    
+
+    // swiftlint:disable identifier_name
     let id: Int
     // let sis_course_id: String?
     // let uuid: String?
@@ -72,7 +73,7 @@ struct CourseAPI: APIResponse {
     func createModel() -> Course {
         Course(self)
     }
-    
+
     struct Term: Codable, Equatable {
         let id: ID
         let name: String
@@ -91,7 +92,7 @@ struct CourseAPI: APIResponse {
         let name: String
         let start_at: Date?
     }
-    
+
     struct Enrollment: Codable, Equatable {
         let type: String?
         let role: String?
@@ -134,3 +135,5 @@ struct APICourseSettings: Codable, Equatable {
     let syllabus_course_summary: Bool?
     let restrict_quantitative_data: Bool?
 }
+
+// swiftlint:enable identifier_name

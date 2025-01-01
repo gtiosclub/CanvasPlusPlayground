@@ -9,7 +9,8 @@ import Foundation
 
 struct UserAPI: APIResponse {
     typealias Model = NoOpCacheable
-    
+
+    // swiftlint:disable identifier_name
     let id: Int?
     let name: String?
     let sortable_name: String?
@@ -30,6 +31,7 @@ struct UserAPI: APIResponse {
     let bio: String?
     let pronouns: String?
     var role: String?
+    // swiftlint:enable identifier_name
 }
 
 /*

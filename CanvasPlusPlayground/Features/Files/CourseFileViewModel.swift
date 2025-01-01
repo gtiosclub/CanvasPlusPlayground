@@ -62,10 +62,10 @@ class CourseFileViewModel {
             onCacheReceive: { files in
             self.files = files ?? []
         })
-        
+
         do {
             let (folders, files) = await ((try foldersInRootFolder), (try filesInRootFolder))
-            
+
             Task { @MainActor in
                 self.folders = folders
                 self.files = files
@@ -73,7 +73,6 @@ class CourseFileViewModel {
         } catch {
             print(error)
         }
-        
-        
+
     }
 }

@@ -23,13 +23,13 @@ struct CourseAssignmentsView: View {
     var body: some View {
         List(assignmentManager.assignments, id: \.id) { assignment in
             let submission = assignment.submission?.createModel()
-            
+
             HStack {
                 VStack(alignment: .leading) {
                     Text(assignment.name)
                         .font(.headline)
                     Group {
-                        if let submission  {
+                        if let submission {
                             Text(
                                 submission.workflowState?.rawValue.capitalized ?? "Unknown Status"
                             )

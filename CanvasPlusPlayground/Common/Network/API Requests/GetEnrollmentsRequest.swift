@@ -9,7 +9,7 @@ import Foundation
 
 struct GetEnrollmentsRequest: CacheableArrayAPIRequest {
     typealias Subject = EnrollmentAPI
-    
+
     let courseId: String
     let courseEnrollmentTermId: Int?
 
@@ -120,7 +120,6 @@ struct GetEnrollmentsRequest: CacheableArrayAPIRequest {
             ) as! any StandardPredicateExpression<Bool>
         })
 
-
         let statePredicate = self.state.isEmpty ? .true : Predicate<Enrollment>({ enrollment in
             PredicateExpressions.build_contains(
                 PredicateExpressions.build_KeyPath(
@@ -169,7 +168,7 @@ struct GetEnrollmentsRequest: CacheableArrayAPIRequest {
             rolePredicate.evaluate(enrollment) &&
             statePredicate.evaluate(enrollment) &&
             userIdPredicate.evaluate(enrollment) &&
-            //gradingPeriodPredicate.evaluate(enrollment) &&
+            // gradingPeriodPredicate.evaluate(enrollment) &&
             termPredicate.evaluate(enrollment)
         }
 

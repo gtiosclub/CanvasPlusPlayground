@@ -9,7 +9,8 @@ import Foundation
 
 struct EnrollmentAPI: APIResponse {
     typealias Model = Enrollment
-    
+
+    // swiftlint:disable identifier_name
     let id: Int
     let course_id: Int?
     // let sis_course_id: String?
@@ -62,7 +63,7 @@ struct EnrollmentAPI: APIResponse {
     // let current_period_unposted_final_grade: String?
 
     let observed_user: UserAPI?
-    
+
     func createModel() -> Enrollment {
         Enrollment(from: self)
     }
@@ -86,3 +87,5 @@ public struct Grades: Codable, Equatable, Hashable {
 public enum EnrollmentState: String, Codable, CaseIterable {
     case active, inactive, invited, completed, creation_pending, rejected, deleted
 }
+
+// swiftlint:enable identifier_name

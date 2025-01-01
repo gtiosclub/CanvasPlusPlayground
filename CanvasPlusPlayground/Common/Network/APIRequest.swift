@@ -40,7 +40,7 @@ extension APIRequest {
                 URLQueryItem(name: name, value: "\(val)")
             })
     }
-    
+
     var method: RequestMethod { .GET }
 }
 
