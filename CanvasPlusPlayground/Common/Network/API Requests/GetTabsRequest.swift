@@ -8,7 +8,7 @@
 import Foundation
 
 struct GetTabsRequest: ArrayAPIRequest {
-    typealias Subject = Tab
+    typealias Subject = TabAPI
 
     let courseId: String
 

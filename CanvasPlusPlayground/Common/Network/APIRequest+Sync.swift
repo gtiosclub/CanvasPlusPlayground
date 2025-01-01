@@ -11,8 +11,8 @@ extension CacheableAPIRequest {
     @discardableResult
     func syncWithAPI(
         to repository: CanvasRepository,
-        onNewBatch: ([Subject]) -> Void = { _ in }
-    ) async throws -> [Subject] {
+        onNewBatch: ([PersistedModel]) -> Void = { _ in }
+    ) async throws -> [PersistedModel] {
         let cached = try await load(from: repository) ?? []
 
         return try await syncWithAPI(
@@ -25,13 +25,13 @@ extension CacheableAPIRequest {
     // TODO: use predicate filters whenever
     private func syncWithAPI(
         to repository: CanvasRepository,
-        using cache: [Subject],
-        onNewBatch: ([Subject]) -> Void
-    ) async throws -> [Subject] {
+        using cache: [PersistedModel],
+        onNewBatch: ([PersistedModel]) -> Void
+    ) async throws -> [PersistedModel] {
 
         let cacheLookup = Dictionary(uniqueKeysWithValues: cache.map { ($0.id, $0) })
 
-        let updateStorage: ([Subject]) async -> [Subject] = { newModels in
+        let updateStorage: ([PersistedModel]) async -> [PersistedModel] = { newModels in
             // New batch received
 
             var latest = newModels
@@ -57,18 +57,20 @@ extension CacheableAPIRequest {
         }
 
         // Fetch newest version from API, then filter as desired by caller.
-        var latest: [Subject] = try await {
+        var latest: [PersistedModel] = try await {
 
             // Adjust `fetch` generic parameter based on whether request is for a collection.
-            let fetched: [Subject]
+            let fetched: [PersistedModel]
             if QueryResult.self is any Collection.Type {
                 fetched = try await fetch(onNewPage: { batch in
-                    let transformed = await updateStorage(batch)
+                    let batchAsModel = batch.map { $0.createModel() }
+                    let transformed = await updateStorage(batchAsModel)
 
                     onNewBatch(transformed)
-                })
+                }).map { $0.createModel() }
             } else {
-                fetched = await updateStorage( try await fetch() )
+                let responseAsModel = try await fetch().map { $0.createModel() }
+                fetched = await updateStorage(responseAsModel)
             }
 
             return fetched
@@ -95,11 +97,11 @@ extension CacheableAPIRequest {
      **/
     func loadAndSync(
         to repository: CanvasRepository,
-        onCacheReceive: ([Subject]?) -> Void = { _ in },
-        onNewBatch: ([Subject]) -> Void = { _ in }
-    ) async throws -> [Subject] {
+        onCacheReceive: ([PersistedModel]?) -> Void = { _ in },
+        onNewBatch: ([PersistedModel]) -> Void = { _ in }
+    ) async throws -> [PersistedModel] {
 
-        let cached: [Subject]? = try await load(from: repository)
+        let cached: [PersistedModel]? = try await load(from: repository)
         onCacheReceive(cached) // Share cached version with caller.
 
         let latest = try await syncWithAPI(to: repository, using: cached ?? [], onNewBatch: onNewBatch)

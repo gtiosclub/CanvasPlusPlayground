@@ -8,7 +8,7 @@
 import Foundation
 
 struct GetEnrollmentsRequest: CacheableArrayAPIRequest {
-    typealias Subject = Enrollment
+    typealias Subject = EnrollmentAPI
 
     let courseId: String
     let courseEnrollmentTermId: Int?
@@ -128,7 +128,7 @@ struct GetEnrollmentsRequest: CacheableArrayAPIRequest {
                 ),
                 PredicateExpressions.build_KeyPath(
                     root: PredicateExpressions.build_Arg(enrollment),
-                    keyPath: \.enrollmentState
+                    keyPath: \.state?.rawValue
                 )
             ) as! any StandardPredicateExpression<Bool>
         })
@@ -137,7 +137,7 @@ struct GetEnrollmentsRequest: CacheableArrayAPIRequest {
             enrollment.userID == requestUserId
         }
 
-        let gradingPeriodPredicate = self.gradingPeriodId == nil ? .true : Predicate<Enrollment>({ enrollment in
+        /*let gradingPeriodPredicate = self.gradingPeriodId == nil ? .true : Predicate<Enrollment>({ enrollment in
             PredicateExpressions.build_Equal(
                 lhs: PredicateExpressions.build_KeyPath(
                     root: PredicateExpressions.build_Arg(enrollment),
@@ -148,7 +148,7 @@ struct GetEnrollmentsRequest: CacheableArrayAPIRequest {
                     keyPath: \.gradingPeriodId
                 )
             ) as! any StandardPredicateExpression<Bool>
-        })
+        })*/
 
         let termPredicate = self.enrollmentTermId == nil ? .true : Predicate<Enrollment>({ _ in
             PredicateExpressions.build_Equal(
@@ -168,7 +168,7 @@ struct GetEnrollmentsRequest: CacheableArrayAPIRequest {
             rolePredicate.evaluate(enrollment) &&
             statePredicate.evaluate(enrollment) &&
             userIdPredicate.evaluate(enrollment) &&
-            gradingPeriodPredicate.evaluate(enrollment) &&
+            // gradingPeriodPredicate.evaluate(enrollment) &&
             termPredicate.evaluate(enrollment)
         }
 

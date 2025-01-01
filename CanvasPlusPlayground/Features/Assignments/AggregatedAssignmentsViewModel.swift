@@ -10,7 +10,7 @@ import SwiftUI
 
 public class AggregatedAssignmentsViewModel: ObservableObject {
     let courses: [Course]
-    @Published var assignments: [(Assignment, Course)] = []
+    @Published var assignments: [(AssignmentAPI, Course)] = []
 
     init(courses: [Course]) {
         self.courses = courses
@@ -21,7 +21,7 @@ public class AggregatedAssignmentsViewModel: ObservableObject {
             let newAssignments = await CourseAssignmentManager.getAssignmentsForCourse(courseID: course.id)
 
             for assignment in newAssignments {
-                if (!(assignment.hasSubmittedSubmissions ?? false)) { // we only want to show assignments w/o submissions
+                if (!(assignment.has_submitted_submissions ?? false)) { // we only want to show assignments w/o submissions
                     self.assignments.append((assignment, course))
                 }
             }

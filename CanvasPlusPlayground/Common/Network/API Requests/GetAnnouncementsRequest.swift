@@ -8,7 +8,7 @@
 import Foundation
 
 struct GetAnnouncementsRequest: CacheableArrayAPIRequest {
-    typealias Subject = Announcement
+    typealias Subject = AnnouncementAPI
 
     let courseId: String
 
@@ -54,16 +54,17 @@ struct GetAnnouncementsRequest: CacheableArrayAPIRequest {
         self.perPage = perPage
     }
 
-    var requestId: String { courseId }
-    var requestIdKey: ParentKeyPath<Announcement, String> { .createWritable(\.parentId) }
+    var requestId: String? { courseId }
+    var requestIdKey: ParentKeyPath<Announcement, String?> { .createWritable(\.courseID) }
     var idPredicate: Predicate<Announcement> {
         #Predicate<Announcement> { announcement in
-            announcement.parentId == requestId
+            announcement.courseID == requestId
         }
     }
     var customPredicate: Predicate<Announcement> {
+        let contextCodes = contextCodes as [String?]
         let contextCodePred = contextCodes.isEmpty ? .true : #Predicate<Announcement> { announcement in
-            contextCodes.contains(announcement.parentId)
+            contextCodes.contains(announcement.courseID)
         }
 
         let startDatePredicate: Predicate<Announcement>

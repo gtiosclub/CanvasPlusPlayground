@@ -8,7 +8,7 @@
 import Foundation
 
 struct GetCoursesRequest: CacheableArrayAPIRequest {
-    typealias Subject = Course
+    typealias Subject = CourseAPI
 
     var path: String { "courses" }
     var queryParameters: [QueryParameter] {
@@ -82,7 +82,7 @@ struct GetCoursesRequest: CacheableArrayAPIRequest {
         let enrollmentRoleIdPred: Predicate<Course>
         if let enrollmentRoleId = enrollmentRoleId?.asString {
             enrollmentRoleIdPred = #Predicate<Course> { course in
-                course.enrollmentRoleIdsRaw.localizedStandardContains(enrollmentRoleId)
+                course.enrollmentRoleIds.localizedStandardContains(enrollmentRoleId)
             }
         } else { enrollmentRoleIdPred = .true }
 
@@ -93,22 +93,21 @@ struct GetCoursesRequest: CacheableArrayAPIRequest {
             }
         } else { enrollmentStatePred = .true }
 
-        let excludeBluePrintPred = excludeBlueprintCourses == nil ? .true : #Predicate<Course> { course in
-            !(course.blueprint == true)
-        }
+//        let excludeBluePrintPred = excludeBlueprintCourses == nil ? .true : #Predicate<Course> { course in
+//            !(course.blueprint == true)
+//        }
 
-        let statePred = state.isEmpty ? .true : #Predicate<Course> { course in
-            state.contains(course.workflowState)
-        }
+//        let statePred = state.isEmpty ? .true : #Predicate<Course> { course in
+//            state.contains(course.workflowState)
+//        }
 
         return #Predicate<Course> { course in
             enrollmentTypePred.evaluate(course)
             && enrollmentRolePred.evaluate(course)
             && enrollmentRoleIdPred.evaluate(course)
             && enrollmentStatePred.evaluate(course)
-            && excludeBluePrintPred.evaluate(course)
-            && excludeBluePrintPred.evaluate(course)
-            && statePred.evaluate(course)
+//            && excludeBluePrintPred.evaluate(course)
+//            && statePred.evaluate(course)
         }
 
     }

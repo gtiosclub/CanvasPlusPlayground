@@ -12,23 +12,23 @@ class GradesViewModel {
     private var enrollment: Enrollment?
 
     var currentScore: String {
-        enrollment?.grades?.currentScore?.truncatingTrailingZeros ?? "--"
+        enrollment?.grades?.current_score?.truncatingTrailingZeros ?? "--"
     }
 
     var currentGrade: String {
-        enrollment?.grades?.currentGrade ?? "--"
+        enrollment?.grades?.current_grade ?? "--"
     }
 
     var finalScore: String {
-        enrollment?.grades?.finalScore?.truncatingTrailingZeros ?? "--"
+        enrollment?.grades?.final_score?.truncatingTrailingZeros ?? "--"
     }
 
     var finalGrade: String {
-        enrollment?.grades?.finalGrade ?? "--"
+        enrollment?.grades?.final_grade ?? "--"
     }
 
     var canvasURL: URL? {
-        if let urlString = enrollment?.grades?.htmlURL {
+        if let urlString = enrollment?.grades?.html_url {
             return URL(string: urlString)
         }
 

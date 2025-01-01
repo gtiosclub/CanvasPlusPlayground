@@ -8,7 +8,7 @@
 import Foundation
 
 struct GetCourseRootFolderRequest: CacheableAPIRequest {
-    typealias Subject = Folder
+    typealias Subject = FolderAPI
 
     let courseId: String
 
@@ -18,11 +18,11 @@ struct GetCourseRootFolderRequest: CacheableAPIRequest {
     }
 
     // MARK: request Id
-    var requestId: String { "\(courseId)_root_folder" }
-    var requestIdKey: ParentKeyPath<Folder, String> { .createWritable(\.parentId) }
+    var requestId: String? { "\(courseId)_root_folder" }
+    var requestIdKey: ParentKeyPath<Folder, String?> { .createWritable(\.tag) }
     var idPredicate: Predicate<Folder> {
         #Predicate<Folder> { folder in
-            folder.parentId == requestId
+            folder.tag == requestId
         }
     }
     var customPredicate: Predicate<Folder> {

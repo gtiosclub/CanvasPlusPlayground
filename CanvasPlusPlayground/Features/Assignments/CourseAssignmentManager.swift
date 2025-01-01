@@ -10,7 +10,7 @@ import SwiftUI
 @Observable
 class CourseAssignmentManager {
     private let courseID: String?
-    var assignments = [Assignment]()
+    var assignments = [AssignmentAPI]()
 
     init(courseID: String?) {
         self.courseID = courseID
@@ -25,13 +25,13 @@ class CourseAssignmentManager {
         }
 
         do {
-            self.assignments = try JSONDecoder().decode([Assignment].self, from: data)
+            self.assignments = try JSONDecoder().decode([AssignmentAPI].self, from: data)
         } catch {
             print(error)
         }
     }
 
-    static func getAssignmentsForCourse(courseID: String) async -> [Assignment] {
+    static func getAssignmentsForCourse(courseID: String) async -> [AssignmentAPI] {
             let manager = CourseAssignmentManager(courseID: courseID)
             await manager.fetchAssignments()
             return manager.assignments

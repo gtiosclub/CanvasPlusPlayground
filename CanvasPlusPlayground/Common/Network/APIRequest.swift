@@ -8,13 +8,14 @@
 import Foundation
 
 protocol APIRequest {
-    associatedtype Subject: Codable
+    associatedtype Subject: APIResponse
     associatedtype QueryResult: Codable = Subject
 
     typealias QueryParameter = (name: String, value: Any?)
 
     var path: String { get }
     var queryParameters: [QueryParameter] { get }
+    var method: RequestMethod { get }
 }
 
 extension APIRequest {
@@ -39,19 +40,23 @@ extension APIRequest {
                 URLQueryItem(name: name, value: "\(val)")
             })
     }
+
+    var method: RequestMethod { .GET }
 }
 
 protocol ArrayAPIRequest: APIRequest {
     associatedtype QueryResult = [Subject]
 }
 
-protocol CacheableAPIRequest: APIRequest where Subject: Cacheable {
+protocol CacheableAPIRequest: APIRequest where Subject.Model: Cacheable {
+    typealias PersistedModel = Subject.Model
+
     associatedtype KeyType: Equatable
 
     var requestId: KeyType { get }
-    var requestIdKey: ParentKeyPath<Subject, KeyType> { get }
-    var idPredicate: Predicate<Subject> { get }
-    var customPredicate: Predicate<Subject> { get }
+    var requestIdKey: ParentKeyPath<Subject.Model, KeyType> { get }
+    var idPredicate: Predicate<Subject.Model> { get }
+    var customPredicate: Predicate<Subject.Model> { get }
 }
 
 protocol CacheableArrayAPIRequest: CacheableAPIRequest where QueryResult == [Subject] {}

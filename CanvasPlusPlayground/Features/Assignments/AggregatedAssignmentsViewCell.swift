@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AggregatedAssignmentsListCell: View {
-    let assignment: Assignment
+    let assignment: AssignmentAPI
     let course: Course
 
     var body: some View {

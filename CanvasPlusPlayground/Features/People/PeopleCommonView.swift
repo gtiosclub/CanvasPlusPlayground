@@ -10,7 +10,7 @@ import SwiftUI
 struct PeopleCommonView: View {
     @Environment(PeopleManager.self) var peopleManager
     @Environment(CourseManager.self) var courseManager
-    let user: User
+    let user: UserAPI
 
     @State private var commonCourses: [Course] = []
     @State private var fetchingCommonCourses: Bool = false

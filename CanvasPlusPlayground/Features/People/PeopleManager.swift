@@ -14,7 +14,7 @@ class PeopleManager {
 
     private var enrollments = [Enrollment]()
 
-    var users: [User] {
+    var users: [UserAPI] {
         Set(
             enrollments
                 .compactMap {

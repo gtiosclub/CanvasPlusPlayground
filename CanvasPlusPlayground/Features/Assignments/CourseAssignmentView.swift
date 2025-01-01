@@ -22,12 +22,14 @@ struct CourseAssignmentsView: View {
 
     var body: some View {
         List(assignmentManager.assignments, id: \.id) { assignment in
+            let submission = assignment.submission?.createModel()
+
             HStack {
                 VStack(alignment: .leading) {
                     Text(assignment.name)
                         .font(.headline)
                     Group {
-                        if let submission = assignment.submission {
+                        if let submission {
                             Text(
                                 submission.workflowState?.rawValue.capitalized ?? "Unknown Status"
                             )
@@ -36,12 +38,12 @@ struct CourseAssignmentsView: View {
                     .font(.subheadline)
                 }
 
-                if showGrades, let submission = assignment.submission {
+                if showGrades, let submission {
                     Spacer()
 
                     Text(submission.score?.truncatingTrailingZeros ?? "--") +
                     Text("/") +
-                    Text(assignment.pointsPossible?.truncatingTrailingZeros ?? "--")
+                    Text(assignment.points_possible?.truncatingTrailingZeros ?? "--")
                 }
             }
         }
