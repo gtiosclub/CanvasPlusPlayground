@@ -11,17 +11,31 @@ import SwiftUI
 struct CanvasPlusPlaygroundApp: App {
     @State private var profileManager = ProfileManager()
     @State private var courseManager = CourseManager()
+    @State private var navigationModel = NavigationModel()
     @StateObject private var intelligenceManager = IntelligenceManager()
     @StateObject private var llmEvaluator = LLMEvaluator()
 
     var body: some Scene {
         WindowGroup {
-            CourseListView()
-                .environment(ProfileManager())
-                .environment(CourseManager())
-                .environmentObject(IntelligenceManager())
-                .environmentObject(LLMEvaluator())
+            HomeView()
+                .environment(profileManager)
+                .environment(courseManager)
+                .environment(navigationModel)
+                .environmentObject(intelligenceManager)
+                .environmentObject(llmEvaluator)
         }
+
+        #if os(macOS)
+        Settings {
+            SettingsView()
+                .environment(profileManager)
+                .environment(courseManager)
+                .environment(navigationModel)
+                .environmentObject(intelligenceManager)
+                .environmentObject(llmEvaluator)
+                .frame(width: 400, height: 500)
+        }
+        #endif
     }
 
     init() {

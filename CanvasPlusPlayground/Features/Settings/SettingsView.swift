@@ -8,10 +8,16 @@
 import SwiftUI
 
 struct SettingsView: View {
+    @Environment(NavigationModel.self) private var navigationModel
+    @EnvironmentObject private var llmEvaluator: LLMEvaluator
+    @EnvironmentObject private var intelligenceManager: IntelligenceManager
     @Environment(\.dismiss) private var dismiss
+
     @State private var showChangeAccessToken: Bool = false
 
     var body: some View {
+        @Bindable var navigationModel = navigationModel
+
         NavigationStack {
             mainBody
         }
@@ -20,21 +26,32 @@ struct SettingsView: View {
                 SetupView()
             }
         }
+        .sheet(isPresented: $navigationModel.showInstallIntelligenceSheet, content: {
+            NavigationStack {
+                IntelligenceOnboardingView()
+            }
+            .environmentObject(llmEvaluator)
+            .environmentObject(intelligenceManager)
+            .interactiveDismissDisabled()
+        })
     }
 
     private var mainBody: some View {
         Form {
             loginSettings
+            intelligenceSettings
             #if DEBUG
             debugSettings
             #endif
         }
         .formStyle(.grouped)
+        #if os(iOS)
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
                 Button("Done") { dismiss() }
             }
         }
+        #endif
         .navigationTitle("Settings")
     }
 
@@ -46,6 +63,35 @@ struct SettingsView: View {
         } header: {
             Label("Login", systemImage: "lock.fill")
         }
+    }
+
+    private var intelligenceSettings: some View {
+        Section {
+            Button {
+                navigationModel.showInstallIntelligenceSheet = true
+            } label: {
+                Label("Download & Install Models", systemImage: "square.and.arrow.down")
+            }
+            .foregroundStyle(.blue)
+        } header: {
+            Label("Intelligence", systemImage: "wand.and.stars")
+        } footer: {
+            #if targetEnvironment(simulator)
+            Text("Intelligence features are not supported on simulator")
+            #else
+            if intelligenceManager.installedModels.isEmpty {
+                Text("Install models to use the intelligence features.")
+            } else {
+                let count = intelligenceManager.installedModels.count
+                Text(
+                    "You have \(count) installed \(count == 1 ? "model" : "models")"
+                )
+            }
+            #endif
+        }
+        #if targetEnvironment(simulator)
+        .disabled(true)
+        #endif
     }
 
     private var debugSettings: some View {
