@@ -13,16 +13,26 @@ class ModuleItem: Cacheable {
     typealias ServerID = Int
 
     var id: String
+    /// The id of the module this item appears in
     var moduleID: Int
+    /// The position (order) of the item in its module
     var position: Int
     var title: String
+    /// 0-based indent level; used to show hierarchy
     var indent: Int
+    /// The module type along with properties concerning that type, for one of 'File', 'Page', 'Discussion', 'Assignment', 'Quiz', 'SubHeader', 'ExternalUrl', 'ExternalTool'
     var type: ModuleItemType
+    /// User-interactable link to the item in Canvas. (e.g. https://canvas.example.edu/courses/222/modules/items/768)
     var htmlURL: URL?
+    /// Link to Canvas API Object, if applicable (e.g. https://canvas.example.edu/api/v1/courses/222/assignments/987)
     var url: URL?
+    /// Criteria for this module item to be marked complete
     var completionRequirement: CompletionRequirement?
+    /// (Present only if requested through `include[]=content_details`) If applicable, returns additional details specific to the associated object
     var contentDetails: APIModuleItem.ContentDetails?
+    /// Whether this module item is published. This field is present only if the caller has permission to view unpublished items.
     var published: Bool?
+    /// Whether the quiz (if applicable) is delivered  through an external LTI tool. It might be proctored, etc.
     var quizLti: Bool?
 
     // MARK: Custom
