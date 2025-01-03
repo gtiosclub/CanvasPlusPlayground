@@ -60,4 +60,12 @@ struct CanvasRequest {
     static func getUserProfile(userId: String? = nil) -> GetUserProfileRequest {
         GetUserProfileRequest(userId: userId)
     }
+
+    static func getModules(courseId: String) -> GetModulesRequest {
+        GetModulesRequest(
+            courseId: courseId,
+            searchTerm: nil,
+            include: [], perPage: 25
+        )
+    }
 }

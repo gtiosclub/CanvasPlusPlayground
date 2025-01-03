@@ -12,9 +12,8 @@ import SwiftUI
 actor CanvasRepository {
 
     init() {
-        self.modelContainer = try! ModelContainer(for:
-            Course.self, Announcement.self, Enrollment.self, File.self, Folder.self, Quiz.self
-        ) // TODO: Add cacheable models here
+        self.modelContainer = try! ModelContainer(for: Course.self, Announcement.self, Enrollment.self, File.self, Folder.self, Quiz.self, Module.self, ModuleItem.self, Submission.self)
+        // TODO: Add cacheable models here
         let context = ModelContext(modelContainer)
         context.autosaveEnabled = true
         self.modelExecutor = DefaultSerialModelExecutor(modelContext: context)
