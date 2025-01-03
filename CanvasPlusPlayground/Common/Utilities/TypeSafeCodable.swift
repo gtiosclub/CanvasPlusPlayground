@@ -10,8 +10,10 @@ import Foundation
 typealias CodableEquatable = Codable & Equatable
 
 /** COPIED FROM https://github.com/instructure/canvas-ios/blob/49a3e347116d623638c66b7adbcc946294faa212/Core/Core/API/TypeSafeCodable.swift#L25
- The purpose of this entity is to allow two different data types to be coded/decoded to/from a single entity. Useful if a JSON property has different data types based on the context.
- Example: `APIPlannable`'s `submissions` property can be either a `Bool` or a custom structure depending on if the plannable is an announcement or an assignment.
+ The purpose of this entity is to allow two different data types to be coded/decoded to/from a single entity.
+ Useful if a JSON property has different data types based on the context.
+ Example: `APIPlannable`'s `submissions` property can be either a `Bool`
+ or a custom structure depending on if the plannable is an announcement or an assignment.
  */
 struct TypeSafeCodable<T1: CodableEquatable, T2: CodableEquatable>: CodableEquatable {
     public let value1: T1?

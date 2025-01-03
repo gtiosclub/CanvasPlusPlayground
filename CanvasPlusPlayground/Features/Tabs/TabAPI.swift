@@ -7,6 +7,8 @@
 
 import Foundation
 
+// https://github.com/instructure/canvas-ios/blob/49a3e347116d623638c66b7adbcc946294faa212/Core/Core/Contexts/APITab.swift
+// https://canvas.instructure.com/doc/api/tabs.html
 struct TabAPI: APIResponse {
     typealias Model = NoOpCacheable
 

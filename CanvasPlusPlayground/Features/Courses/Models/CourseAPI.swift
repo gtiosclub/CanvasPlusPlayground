@@ -7,6 +7,7 @@
 
 import Foundation
 
+// https://canvas.instructure.com/doc/api/courses.html
 struct CourseAPI: APIResponse {
     typealias Model = Course
 
