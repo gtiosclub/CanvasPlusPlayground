@@ -97,6 +97,6 @@ struct CourseListCell: View {
     }
 
     private var wrappedCourseIsFavorite: Bool {
-        course.isFavorite ?? false
+        course.isFavorite
     }
 }

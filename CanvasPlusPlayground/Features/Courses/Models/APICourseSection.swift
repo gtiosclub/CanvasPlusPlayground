@@ -7,6 +7,7 @@
 
 import Foundation
 
+//https://canvas.instructure.com/doc/api/sections.html
 struct APICourseSection: Codable, Equatable {
     // swiftlint:disable identifier_name
     let id: Int

@@ -8,6 +8,7 @@
 import Foundation
 
 // https://github.com/instructure/canvas-ios/blob/master/Core/Core/Quizzes/APIQuiz.swift
+// https://canvas.instructure.com/doc/api/quizzes.html
 struct QuizAPI: APIResponse {
     typealias Model = Quiz
 

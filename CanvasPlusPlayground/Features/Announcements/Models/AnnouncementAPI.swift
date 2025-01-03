@@ -7,6 +7,7 @@
 
 import Foundation
 
+// https://canvas.instructure.com/doc/api/announcements.html
 struct AnnouncementAPI: APIResponse {
     typealias Model = Announcement
 
