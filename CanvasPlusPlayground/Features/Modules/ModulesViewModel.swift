@@ -15,8 +15,8 @@ struct ModuleBlock: Identifiable {
 
 @Observable
 class ModulesViewModel {
-    private var _modules = [Module]()
-    private var _moduleItems = [ModuleItem]()
+    private var _modules = Set<Module>()
+    private var _moduleItems = Set<ModuleItem>()
 
     private let courseID: String
 
@@ -35,16 +35,25 @@ class ModulesViewModel {
                     }
                 return ModuleBlock(module: module, items: items)
             }
+        // TODO: handle unassigned items
+    }
+
+    func prerequisites(for module: Module) -> [Module] {
+        _modules
+            .filter {
+                module.prerequisiteModuleIds.map(\.asString).contains($0.id)
+            }
     }
 
     func fetchModules() async {
         do {
-            self._modules = try await CanvasService.shared
+            let modules = try await CanvasService.shared
                 .loadAndSync(
                     CanvasRequest.getModules(courseId: courseID),
                     onCacheReceive: setModules(_:),
                     onNewBatch: setModules(_:)
                 ) as [Module]
+            self._modules = Set(modules)
 
             await withTaskGroup(of: Void.self) { group in
                 for module in self._modules {
@@ -60,19 +69,22 @@ class ModulesViewModel {
 
     }
 
-    func fetchModuleItems(for moduleId: String) async {
+    @discardableResult
+    private func fetchModuleItems(for moduleId: String) async -> [ModuleItem] {
         do {
             let request = CanvasRequest.getModuleItems(courseId: courseID, moduleId: moduleId)
-            try await CanvasService.shared
+
+            return try await CanvasService.shared
                 .loadAndSync(
                     request,
                     onCacheReceive: setModuleItems(_:),
                     onNewBatch: setModuleItems(_:)
                 )
-
         } catch {
             print("Error fetching module items: \(error)")
         }
+
+        return []
     }
 
     private func setModules(_ modules: [Module]?) {
@@ -81,7 +93,7 @@ class ModulesViewModel {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
 
-            self._modules = Array(Set(modules + _modules))
+            self._modules = Set(modules + _modules)
         }
     }
 
@@ -91,7 +103,7 @@ class ModulesViewModel {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
 
-            self._moduleItems = Array(Set(moduleItems + _moduleItems))
+            self._moduleItems = Set(moduleItems + _moduleItems)
         }
     }
 

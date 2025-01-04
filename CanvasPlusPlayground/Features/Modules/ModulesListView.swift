@@ -23,7 +23,6 @@ struct ModulesListView: View {
                     ModuleSection(moduleBlock: block)
                 }
             }
-            .listStyle(.bordered)
             .task {
                 isLoadingModules = true
                 await modulesVM.fetchModules()
@@ -31,12 +30,15 @@ struct ModulesListView: View {
             }
             .statusToolbarItem("Modules", isVisible: isLoadingModules)
         }
+        .environment(modulesVM)
     }
 }
 
 struct ModuleSection: View {
     @Bindable var module: Module
     var moduleItems: [ModuleItem]
+
+    @Environment(ModulesViewModel.self) var modulesVM
 
     init(moduleBlock: ModuleBlock) {
         self.module = moduleBlock.module
@@ -63,11 +65,14 @@ struct ModuleSection: View {
 
             Spacer()
 
-            Text("Prerequisites: \(module.prerequisiteModuleIds)")
+            Text("Prerequisites: \(prerequisites)")
         }
-        .padding([.vertical, .horizontal], 10)
         .font(.title)
         .bold()
+    }
+
+    var prerequisites: String {
+        modulesVM.prerequisites(for: module).map(\.name).joined(separator: ", ")
     }
 }
 

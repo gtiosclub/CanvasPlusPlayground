@@ -39,7 +39,7 @@ struct GetQuizzesRequest: CacheableArrayAPIRequest {
     }
     var customPredicate: Predicate<Quiz> {
         let searchTerm = searchTerm ?? ""
-        return #Predicate<Quiz> { quiz in
+        return self.searchTerm == nil ? .true : #Predicate<Quiz> { quiz in
             quiz.title.contains(searchTerm)
         }
     }

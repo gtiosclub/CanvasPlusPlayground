@@ -42,7 +42,7 @@ struct GetModuleItemsRequest: CacheableArrayAPIRequest {
     }
     var customPredicate: Predicate<ModuleItem> {
         let searchTerm = searchTerm ?? ""
-        let searchPred = #Predicate<ModuleItem> { moduleItem in
+        let searchPred = self.searchTerm == nil ? .true : #Predicate<ModuleItem> { moduleItem in
             moduleItem.title.localizedStandardContains(searchTerm)
         }
 
