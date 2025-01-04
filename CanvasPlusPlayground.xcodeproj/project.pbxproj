@@ -678,7 +678,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1610;
-				LastUpgradeCheck = 1610;
+				LastUpgradeCheck = 1620;
 				TargetAttributes = {
 					B76454632C8BBC7F002DF00E = {
 						CreatedOnToolsVersion = 16.1;
@@ -788,7 +788,6 @@
 				A3049B832D161432002F3166 /* GetAssignmentsRequest.swift in Sources */,
 				B7F9503D2D12ADAE004BB470 /* SubmissionAPI.swift in Sources */,
 				B7E59A102D2002A5001836FE /* Sidebar.swift in Sources */,
-				B7F9503D2D12ADAE004BB470 /* SubmissionAPI.swift in Sources */,
 				B7AD54F62CD41D7900FB09BB /* DeviceStat.swift in Sources */,
 				A3049B812D160F6B002F3166 /* GetAnnouncementsRequest.swift in Sources */,
 				A373DC332D2819F700215019 /* APIModuleItem.swift in Sources */,

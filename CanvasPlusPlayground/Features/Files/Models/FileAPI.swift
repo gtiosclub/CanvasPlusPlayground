@@ -8,6 +8,7 @@
 import Foundation
 
 // https://github.com/instructure/canvas-ios/blob/49a3e347116d623638c66b7adbcc946294faa212/Core/Core/Files/Model/API/APIFile.swift#L175
+// https://canvas.instructure.com/doc/api/files.html
 struct FileAPI: APIResponse {
     typealias Model = File
 
