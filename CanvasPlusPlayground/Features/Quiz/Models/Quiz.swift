@@ -36,7 +36,7 @@ class Quiz {
     var pointsPossible: Double?
     var published: Bool
     var questionCount: Int?
-    var questionTypes: [QuizQuestionType]
+    var questionTypesRaw: [String]
     var quizTypeOrder: Int
     var quizTypeRaw: String
     var requireLockdownBrowser: Bool
@@ -56,6 +56,11 @@ class Quiz {
     var hideResults: QuizHideResults? {
         get { return hideResultsRaw.flatMap { QuizHideResults(rawValue: $0) } }
         set { hideResultsRaw = newValue?.rawValue }
+    }
+
+    var questionTypes: [QuizQuestionType] {
+        get { return questionTypesRaw.compactMap { QuizQuestionType(rawValue: $0) } }
+        set { questionTypesRaw = newValue.map { $0.rawValue } }
     }
 
     var quizType: QuizType {
@@ -110,7 +115,7 @@ class Quiz {
         // self.order = ISO8601DateFormatter.string(from: orderDate, timeZone: TimeZone(abbreviation: "UTC")!, formatOptions: .withInternetDateTime)
         self.anonymousSubmissions = api.anonymous_submissions ?? false
 
-        self.questionTypes = api.question_types ?? []
+        self.questionTypesRaw = api.question_types?.map(\.rawValue) ?? []
         self.hideResultsRaw = api.hide_results?.rawValue
         self.quizTypeRaw = api.quiz_type.rawValue
         self.scoringPolicyRaw = api.scoring_policy?.rawValue
@@ -145,7 +150,7 @@ extension Quiz: Cacheable {
         self.pointsPossible = other.pointsPossible
         self.published = other.published
         self.questionCount = other.questionCount
-        self.questionTypes = other.questionTypes
+        self.questionTypesRaw = other.questionTypesRaw
         self.quizTypeOrder = other.quizTypeOrder
         self.quizTypeRaw = other.quizTypeRaw
         self.requireLockdownBrowser = other.requireLockdownBrowser
