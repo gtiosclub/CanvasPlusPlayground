@@ -37,7 +37,7 @@ struct GetModuleItemsRequest: CacheableArrayAPIRequest {
     }
     var idPredicate: Predicate<ModuleItem> {
         #Predicate {
-            $0.parentId == self.requestId
+            $0.parentId == requestId
         }
     }
     var customPredicate: Predicate<ModuleItem> {
