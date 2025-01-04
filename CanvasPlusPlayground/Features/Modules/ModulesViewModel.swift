@@ -90,20 +90,22 @@ class ModulesViewModel {
     private func setModules(_ modules: [Module]?) {
         guard let modules else { return }
 
+        let newModules = Set(modules + _modules)
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
 
-            self._modules = Set(modules + _modules)
+            self._modules = newModules
         }
     }
 
     private func setModuleItems(_ moduleItems: [ModuleItem]?) {
         guard let moduleItems else { return }
 
+        let newItems = Set(moduleItems + _moduleItems)
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
 
-            self._moduleItems = Set(moduleItems + _moduleItems)
+            self._moduleItems = newItems
         }
     }
 
