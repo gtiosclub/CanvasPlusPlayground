@@ -53,20 +53,17 @@ class ModulesViewModel {
                     onCacheReceive: setModules(_:),
                     onNewBatch: setModules(_:)
                 ) as [Module]
-            self._modules = Set(modules)
-
-            await withTaskGroup(of: Void.self) { group in
-                for module in self._modules {
-                    group.addTask {
-                        await self.fetchModuleItems(for: module.id)
-                    }
-                }
-            }
-
         } catch {
             print("Error fetching modules: \(error)")
         }
 
+        await withTaskGroup(of: Void.self) { group in
+            for module in self._modules {
+                group.addTask {
+                    await self.fetchModuleItems(for: module.id)
+                }
+            }
+        }
     }
 
     @discardableResult
