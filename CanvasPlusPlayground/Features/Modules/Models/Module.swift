@@ -23,7 +23,7 @@ class Module: Cacheable {
     /// Whether the items of this module must be unlocked in order - item A of position 1 in this module must be completed before item B of position 2.
     var requiresSequentialProgress: Bool
     /// IDs of modules that must be completed before this one is unlocked
-    var prerequisiteModuleIds: [Int]
+    var prerequisiteModuleIdsWrapped: [ModuleID]
     /// The number of items in the module
     var itemsCount: Int
     /// The contents (items) of this module. Only present if requested via `include[]=items` AND if module is not deemed too large by Canvas.
@@ -34,6 +34,8 @@ class Module: Cacheable {
     var completedAt: Date?
     /// (Optional) Whether this module is published. This field is present only if the caller has permission to view unpublished modules.
     var published: Bool?
+
+    var prerequisiteModuleIds: [Int] { prerequisiteModuleIdsWrapped.map(\.id) }
 
     // MARK: Custom
     var courseID: String?
@@ -46,7 +48,7 @@ class Module: Cacheable {
         self.name = moduleApi.name
         self.unlockAt = moduleApi.unlock_at
         self.requiresSequentialProgress = moduleApi.require_sequential_progress ?? false
-        self.prerequisiteModuleIds = moduleApi.prerequisite_module_ids
+        self.prerequisiteModuleIdsWrapped = moduleApi.prerequisite_module_ids.map { ModuleID(id: $0) }
         self.itemsCount = moduleApi.items_count ?? 0
         self.items = moduleApi.items
         self.state = moduleApi.state
@@ -60,11 +62,15 @@ class Module: Cacheable {
         self.name = other.name
         self.unlockAt = other.unlockAt ?? self.unlockAt
         self.requiresSequentialProgress = other.requiresSequentialProgress
-        self.prerequisiteModuleIds = other.prerequisiteModuleIds
+        self.prerequisiteModuleIdsWrapped = other.prerequisiteModuleIdsWrapped
         self.itemsCount = other.itemsCount
         self.items = other.items ?? self.items
         self.state = other.state ?? self.state
         self.completedAt = other.completedAt ?? self.completedAt
         self.published = other.published ?? self.published
+    }
+
+    struct ModuleID: Hashable, Identifiable, Codable {
+        let id: Int
     }
 }
