@@ -9,6 +9,7 @@ import Foundation
 
 extension CacheableAPIRequest {
     @discardableResult
+    @MainActor
     func syncWithAPI(
         to repository: CanvasRepository,
         onNewBatch: ([PersistedModel]) -> Void = { _ in }
@@ -22,7 +23,7 @@ extension CacheableAPIRequest {
         )
     }
 
-    // TODO: use predicate filters whenever
+    @MainActor
     private func syncWithAPI(
         to repository: CanvasRepository,
         using cache: [PersistedModel],
@@ -49,7 +50,7 @@ extension CacheableAPIRequest {
             if let writeKeyPath {
                 // Store the request / parent id in each model so that we can recall all models when repeating a request
                 for model in latest {
-                    await model.update(keypath: writeKeyPath, value: self.requestId)
+                    model[keyPath: writeKeyPath] = self.requestId
                 }
             }
 

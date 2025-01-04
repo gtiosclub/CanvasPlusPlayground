@@ -13,14 +13,13 @@ class CanvasService {
 
     var repository: CanvasRepository?
 
-    func activate() {
-        Task.detached { [weak self] in
-            let repo = CanvasRepository()
-            self?.repository = repo
-        }
+    @MainActor func activate() {
+        let repo = CanvasRepository()
+        self.repository = repo
     }
 
     /// Only loads from storage, doesn't make a network call
+    @MainActor
     func load<Request: CacheableAPIRequest>(_ request: Request) async throws -> [Request.PersistedModel]? {
         guard let repository else { return nil }
 
@@ -31,6 +30,7 @@ class CanvasService {
     }
 
     /// Number of occurences of models related to request
+    @MainActor
     func loadCount<Request: CacheableAPIRequest>(_ request: Request) async throws -> Int {
         guard let repository else { return 0 }
 
@@ -38,6 +38,7 @@ class CanvasService {
     }
 
     @discardableResult
+    @MainActor
     func syncWithAPI<Request: CacheableAPIRequest>(
         _ request: Request,
         onNewBatch: ([Request.PersistedModel]) -> Void = { _ in }
@@ -60,6 +61,7 @@ class CanvasService {
      - Returns: An array of models concerning the desired query.
      **/
     @discardableResult
+    @MainActor
     func loadAndSync<Request: CacheableAPIRequest>(
         _ request: Request,
         onCacheReceive: ([Request.PersistedModel]?) -> Void = { _ in },

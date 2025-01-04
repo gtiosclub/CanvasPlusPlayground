@@ -67,9 +67,7 @@ class PeopleManager {
     }
 
     private func setEnrollments(_ enrollments: [Enrollment]) {
-        DispatchQueue.main.sync {
-            self.enrollments = enrollments
-        }
+        self.enrollments = enrollments
     }
 
     func fetchAllClassesWith(

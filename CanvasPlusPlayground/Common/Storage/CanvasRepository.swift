@@ -8,15 +8,15 @@
 import SwiftData
 import SwiftUI
 
-@ModelActor
-actor CanvasRepository {
-
+@MainActor
+class CanvasRepository {
+    let modelContainer: ModelContainer
+    let modelContext: ModelContext
     init() {
         self.modelContainer = try! ModelContainer(for: Course.self, Announcement.self, Enrollment.self, File.self, Folder.self, Quiz.self, Module.self, ModuleItem.self, Submission.self)
         // TODO: Add cacheable models here
-        let context = ModelContext(modelContainer)
-        context.autosaveEnabled = true
-        self.modelExecutor = DefaultSerialModelExecutor(modelContext: context)
+        self.modelContext = ModelContext(modelContainer)
+        modelContext.autosaveEnabled = true
     }
 
     func insert<T>(_ item: T) where T : Cacheable {
@@ -54,10 +54,6 @@ actor CanvasRepository {
         } catch {
             print("Trouble saving to cache")
         }
-    }
-
-    func update<T, V>(model: T, keypath: ReferenceWritableKeyPath<T, V>, value: V) where T : Cacheable {
-        model[keyPath: keypath] = value
     }
 
     func merge<T>(other: T, into model: T) where T : Cacheable {
