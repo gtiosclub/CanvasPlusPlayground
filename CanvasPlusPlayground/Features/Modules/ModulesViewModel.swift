@@ -7,6 +7,12 @@
 
 import Foundation
 
+struct ModuleBlock: Identifiable {
+    var id: ObjectIdentifier { module.id }
+    let module: Module
+    let items: [ModuleItem]
+}
+
 @Observable
 class ModulesViewModel {
     private var _modules = [Module]()
@@ -14,11 +20,11 @@ class ModulesViewModel {
 
     private let courseID: String
 
-    init(_courseID: String) {
-        self.courseID = _courseID
+    init(courseID: String) {
+        self.courseID = courseID
     }
 
-    var modules: [ModuleBlock] {
+    var moduleBlocks: [ModuleBlock] {
         _modules
             .sorted { $0.position < $1.position }
             .map { module in
@@ -29,11 +35,6 @@ class ModulesViewModel {
                     }
                 return ModuleBlock(module: module, items: items)
             }
-    }
-
-    struct ModuleBlock {
-        let module: Module
-        let items: [ModuleItem]
     }
 
     func fetchModules() async {

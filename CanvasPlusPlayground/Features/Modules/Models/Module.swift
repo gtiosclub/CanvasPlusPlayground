@@ -37,6 +37,7 @@ class Module: Cacheable {
 
     // MARK: Custom
     var courseID: String?
+    var isExpanded: Bool = true
 
     init(from moduleApi: APIModule) {
         self.id = String(moduleApi.id)
