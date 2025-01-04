@@ -638,7 +638,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1610;
-				LastUpgradeCheck = 1610;
+				LastUpgradeCheck = 1620;
 				TargetAttributes = {
 					B76454632C8BBC7F002DF00E = {
 						CreatedOnToolsVersion = 16.1;
@@ -745,13 +745,11 @@
 				A3049B832D161432002F3166 /* GetAssignmentsRequest.swift in Sources */,
 				B7F9503D2D12ADAE004BB470 /* SubmissionAPI.swift in Sources */,
 				B7E59A102D2002A5001836FE /* Sidebar.swift in Sources */,
-				B7F9503D2D12ADAE004BB470 /* Submission.swift in Sources */,
 				B7AD54F62CD41D7900FB09BB /* DeviceStat.swift in Sources */,
 				A3049B812D160F6B002F3166 /* GetAnnouncementsRequest.swift in Sources */,
 				A373DC162D1A3C8700215019 /* RequestMethod.swift in Sources */,
 				A324BA682D07C2E9005F53FA /* FileViewer.swift in Sources */,
 				B7E59A162D200775001836FE /* CourseDetailView.swift in Sources */,
-				A300E2A22D0000DF00AA7D07 /* CanvasRequest+Service.swift in Sources */,
 				9B350F082C9652C6003FC60D /* NSAttributedString+HTML.swift in Sources */,
 				A3D1614D2D16ACB8004055FB /* APIRequest+Sync.swift in Sources */,
 				A3049B562D0E541D002F3166 /* QuizType.swift in Sources */,
