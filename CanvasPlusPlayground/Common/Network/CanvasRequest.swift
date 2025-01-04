@@ -61,11 +61,22 @@ struct CanvasRequest {
         GetUserProfileRequest(userId: userId)
     }
 
-    static func getModules(courseId: String) -> GetModulesRequest {
+    static func getModules(courseId: String, searchTerm: String? = nil, include: [GetModulesRequest.Include] = [], perPage: Int = 25) -> GetModulesRequest {
         GetModulesRequest(
             courseId: courseId,
-            searchTerm: nil,
-            include: [], perPage: 25
+            searchTerm: searchTerm,
+            include: include,
+            perPage: perPage
+        )
+    }
+
+    static func getModuleItems(courseId: String, moduleId: String, searchTerm: String? = nil, include: [GetModuleItemsRequest.Include] = [], perPage: Int = 25) -> GetModuleItemsRequest {
+        GetModuleItemsRequest(
+            courseId: courseId,
+            moduleId: moduleId,
+            include: include,
+            searchTerm: searchTerm,
+            perPage: perPage
         )
     }
 }

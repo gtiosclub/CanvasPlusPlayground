@@ -36,7 +36,7 @@ class ModuleItem: Cacheable {
     var quizLti: Bool?
 
     // MARK: Custom
-    var courseID: String?
+    var parentId: String?
 
     init(from itemAPI: APIModuleItem) {
         self.id = String(itemAPI.id)

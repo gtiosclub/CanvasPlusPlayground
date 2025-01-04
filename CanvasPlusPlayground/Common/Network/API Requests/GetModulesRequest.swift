@@ -15,7 +15,8 @@ struct GetModulesRequest: CacheableArrayAPIRequest {
     var path: String { "courses/\(courseId)/modules" }
     var queryParameters: [QueryParameter] {
         [
-            ("search_term", searchTerm)
+            ("search_term", searchTerm),
+            ("per_page", perPage)
         ]
         + include.map { ("include[]", $0) }
     }
