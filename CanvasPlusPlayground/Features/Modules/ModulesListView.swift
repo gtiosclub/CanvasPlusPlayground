@@ -33,6 +33,8 @@ struct ModulesListView: View {
 }
 
 private struct ModuleSection: View {
+    typealias ModuleBlock = ModulesViewModel.ModuleBlock
+
     @Bindable var module: Module
     var moduleItems: [ModuleItem]
 
