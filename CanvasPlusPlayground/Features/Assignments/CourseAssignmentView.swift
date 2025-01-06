@@ -13,6 +13,7 @@ struct CourseAssignmentsView: View {
     @State private var assignmentManager: CourseAssignmentManager
 
     @State private var isLoadingAssignments = true
+    @State private var showGradeCalculator: Bool = false
 
     init(course: Course, showGrades: Bool = false) {
         self.course = course
@@ -21,29 +22,20 @@ struct CourseAssignmentsView: View {
     }
 
     var body: some View {
-        List(assignmentManager.assignments, id: \.id) { assignment in
-            let submission = assignment.submission?.createModel()
-
-            HStack {
-                VStack(alignment: .leading) {
-                    Text(assignment.name)
-                        .font(.headline)
-                    Group {
-                        if let submission {
-                            Text(
-                                submission.workflowState?.rawValue.capitalized ?? "Unknown Status"
-                            )
-                        }
-                    }
-                    .font(.subheadline)
+        List(assignmentManager.assignmentGroups) { assignmentGroup in
+            Section {
+                ForEach(assignmentGroup.assignments ?? []) { assignment in
+                    AssignmentRow(assignment: assignment, showGrades: showGrades)
                 }
+            } header: {
+                HStack {
+                    Text(assignmentGroup.name ?? "")
 
-                if showGrades, let submission {
                     Spacer()
 
-                    Text(submission.score?.truncatingTrailingZeros ?? "--") +
-                    Text("/") +
-                    Text(assignment.points_possible?.truncatingTrailingZeros ?? "--")
+                    if let groupWeight = assignmentGroup.group_weight {
+                        Text("\(groupWeight)%")
+                    }
                 }
             }
         }
@@ -52,11 +44,54 @@ struct CourseAssignmentsView: View {
         }
         .statusToolbarItem("Assignments", isVisible: isLoadingAssignments)
         .navigationTitle(course.displayName)
+        .sheet(isPresented: $showGradeCalculator) {
+            NavigationStack {
+                GradeCalculatorView(
+                    assignmentGroups: assignmentManager.assignmentGroups
+                )
+            }
+        }
+        .toolbar {
+            Button("Calculate Grades") { showGradeCalculator = true }
+                .disabled(assignmentManager.assignmentGroups.isEmpty)
+        }
     }
 
     private func loadAssignments() async {
         isLoadingAssignments = true
-        await assignmentManager.fetchAssignments()
+        await assignmentManager.fetchAssignmentGroups()
         isLoadingAssignments = false
+    }
+}
+
+private struct AssignmentRow: View {
+    let assignment: AssignmentAPI
+    let showGrades: Bool
+
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading) {
+                Text(assignment.name)
+                    .font(.headline)
+                Group {
+                    if let submission = assignment.submission {
+                        Text(
+                            submission.workflow_state?.rawValue.capitalized ?? "Unknown Status"
+                        )
+                    }
+                }
+                .font(.subheadline)
+            }
+
+            if showGrades, let submission = assignment.submission {
+                Spacer()
+
+                Text(submission.score?.truncatingTrailingZeros ?? "--") +
+                Text("/") +
+                Text(
+                    assignment.points_possible?.truncatingTrailingZeros ?? "--"
+                )
+            }
+        }
     }
 }

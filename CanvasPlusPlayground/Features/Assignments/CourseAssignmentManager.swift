@@ -10,30 +10,39 @@ import SwiftUI
 @Observable
 class CourseAssignmentManager {
     private let courseID: String?
-    var assignments = [AssignmentAPI]()
+    var assignmentGroups: [AssignmentGroupAPI] = []
 
     init(courseID: String?) {
         self.courseID = courseID
     }
 
-    func fetchAssignments() async {
+    func fetchAssignmentGroups() async {
         guard let courseID = courseID, let (data, _) = try? await CanvasService.shared.fetchResponse(
-            CanvasRequest.getAssignments(courseId: courseID)
+            CanvasRequest.getAssignmentGroups(courseId: courseID)
         ) else {
-            print("Failed to fetch assignments.")
+            print("Failed to fetch assignment groups.")
             return
         }
 
-        do {
-            self.assignments = try JSONDecoder().decode([AssignmentAPI].self, from: data)
-        } catch {
-            print(error)
-        }
+        self.assignmentGroups = (try? JSONDecoder().decode([AssignmentGroupAPI].self, from: data)) ?? []
     }
 
     static func getAssignmentsForCourse(courseID: String) async -> [AssignmentAPI] {
-            let manager = CourseAssignmentManager(courseID: courseID)
-            await manager.fetchAssignments()
-            return manager.assignments
+        await CourseAssignmentManager.fetchAssignments(courseID: courseID)
+    }
+
+    private static func fetchAssignments(courseID: String) async -> [AssignmentAPI] {
+        guard let (data, _) = try? await CanvasService.shared.fetchResponse(CanvasRequest.getAssignments(courseId: courseID)) else {
+            print("Failed to fetch assignments.")
+            return []
+        }
+
+        do {
+            return try JSONDecoder().decode([AssignmentAPI].self, from: data)
+        } catch {
+            print(error)
+        }
+
+        return []
     }
 }

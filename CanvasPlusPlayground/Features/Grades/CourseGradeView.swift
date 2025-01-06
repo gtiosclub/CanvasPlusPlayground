@@ -21,18 +21,21 @@ struct CourseGradeView: View {
     var body: some View {
         Form {
             Section {
-                gradeRow("Current Score", value: gradesVM.currentScore)
-                gradeRow("Current Grade", value: gradesVM.currentGrade)
-                gradeRow("Final Score", value: gradesVM.finalScore)
-                gradeRow("Final Grade", value: gradesVM.finalGrade)
+                GradeRow("Current Score", value: gradesVM.currentScore)
+                GradeRow("Current Grade", value: gradesVM.currentGrade)
+                GradeRow("Final Score", value: gradesVM.finalScore)
+                GradeRow("Final Grade", value: gradesVM.finalGrade)
             } header: {
                 Text("Grades")
             } footer: {
                 Group {
                     if let url = gradesVM.canvasURL {
                         Link("View on Canvas", destination: url)
-                    } else {
+                    } else if gradesVM.isLoading {
                         Text("Loading grades...")
+                            .foregroundStyle(.secondary)
+                    } else {
+                        Text("Unable to load grades") // TODO: Display a relevant error message
                             .foregroundStyle(.secondary)
                     }
                 }
@@ -55,7 +58,22 @@ struct CourseGradeView: View {
         .navigationTitle("Grades")
     }
 
-    private func gradeRow(_ label: String, value: String) -> some View {
+    private func loadGrades() async {
+        await gradesVM
+            .getEnrollments(currentUserID: profileManager.currentUser?.id)
+    }
+}
+
+private struct GradeRow: View {
+    let label: String
+    let value: String
+
+    init(_ label: String, value: String) {
+        self.label = label
+        self.value = value
+    }
+
+    var body: some View {
         HStack {
             Text(label)
 
@@ -65,10 +83,5 @@ struct CourseGradeView: View {
         }
         .contentTransition(.numericText())
         .animation(.default, value: value)
-    }
-
-    private func loadGrades() async {
-        await gradesVM
-            .getEnrollments(currentUserID: profileManager.currentUser?.id)
     }
 }

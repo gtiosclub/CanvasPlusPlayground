@@ -73,17 +73,31 @@ struct EnrollmentAPI: APIResponse {
 
 // https://canvas.instructure.com/doc/api/enrollments.html#Grade
 public struct Grades: Codable, Equatable, Hashable {
-    let html_url: String
-    let current_grade: String?
-    let final_grade: String?
-    let current_score: Double?
-    let final_score: Double?
-    let override_grade: String?
-    let override_score: Double?
-    let unposted_current_grade: String?
-    let unposted_current_score: Double?
-    // let unposted_final_grade: String?
-    // let unposted_final_score: Double?
+    let htmlURL: String
+    let currentGrade: String?
+    let finalGrade: String?
+    let currentScore: Double?
+    let finalScore: Double?
+    let overrideGrade: String?
+    let overrideScore: Double?
+    let unpostedCurrentGrade: String?
+    let unpostedCurrentScore: Double?
+    // let unpostedFinalGrade: String?
+    // let unpostedFinalScore: Double?
+
+    enum CodingKeys: String, CodingKey {
+        case htmlURL = "html_url"
+        case currentGrade = "current_grade"
+        case finalGrade = "final_grade"
+        case currentScore = "current_score"
+        case finalScore = "final_score"
+        case overrideGrade = "override_grade"
+        case overrideScore = "override_score"
+        case unpostedCurrentGrade = "unposted_current_grade"
+        case unpostedCurrentScore = "unposted_current_score"
+        // case unpostedFinalGrade = "unposted_final_grade"
+        // case unpostedFinalScore = "unposted_final_score"
+    }
 }
 
 public enum EnrollmentState: String, Codable, CaseIterable {
