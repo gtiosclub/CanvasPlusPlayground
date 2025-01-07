@@ -47,19 +47,27 @@ class ModulesViewModel {
 
     func fetchModules() async {
         do {
-            let modules = try await CanvasService.shared
+            try await CanvasService.shared
                 .loadAndSync(
                     CanvasRequest.getModules(courseId: courseID),
-                    onCacheReceive: setModules(_:),
-                    onNewBatch: setModules(_:)
-                ) as [Module]
+                    onCacheReceive: {
+                        print("Cache: " + ($0 ?? []).description)
+                        setModules($0)
+                    },
+                    onNewBatch: {
+                        setModules($0)
+                    }
+                )
         } catch {
-            print("Error fetching modules: \(error)")
+            print("Error fetching modules: \(type(of: error))")
         }
 
         await withTaskGroup(of: Void.self) { group in
+            print("Iterating over modules: \(_modules.map(\.name))")
             for module in self._modules {
+                print("Adding \(module.name) task.")
                 group.addTask {
+                    print("Executing \(module.name) task.")
                     await self.fetchModuleItems(for: module.id)
                 }
             }
@@ -78,7 +86,7 @@ class ModulesViewModel {
                     onNewBatch: setModuleItems(_:)
                 )
         } catch {
-            print("Error fetching module items: \(error)")
+            print("Error fetching module items: \(type(of: error))")
         }
 
         return []
@@ -87,12 +95,13 @@ class ModulesViewModel {
     private func setModules(_ modules: [Module]?) {
         guard let modules else { return }
 
-        DispatchQueue.main.async { [weak self] in
-            guard let self else { return }
+        //await MainActor.run { [weak self] in
+           // guard let self else { return }
 
             let newModules = Set(modules + _modules)
             self._modules = newModules
-        }
+            print("Modules have been added: " + modules.map(\.name).description)
+        //}
     }
 
     private func setModuleItems(_ moduleItems: [ModuleItem]?) {
