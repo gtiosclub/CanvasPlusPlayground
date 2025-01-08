@@ -59,6 +59,7 @@ class CanvasService {
         - onNewBatch: if the request involves pagination, this closure will be executed upon arrival of each batch
      - Returns: An array of models concerning the desired query.
      **/
+    @discardableResult
     func loadAndSync<Request: CacheableAPIRequest>(
         _ request: Request,
         onCacheReceive: ([Request.PersistedModel]?) -> Void = { _ in },

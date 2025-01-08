@@ -52,6 +52,9 @@
 		A324BA6A2D0817AB005F53FA /* FoldersPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A324BA692D0817AB005F53FA /* FoldersPageView.swift */; };
 		A3269E8E2CD5533F006F7D14 /* CanvasRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3269E8D2CD5533F006F7D14 /* CanvasRepository.swift */; };
 		A3269E902CD57F75006F7D14 /* Cacheable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3269E8F2CD57F75006F7D14 /* Cacheable.swift */; };
+		A351913F2D283556001E415F /* ModulesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A351913E2D283556001E415F /* ModulesListView.swift */; };
+		A35191412D283589001E415F /* ModulesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35191402D283589001E415F /* ModulesViewModel.swift */; };
+		A35191432D28ED48001E415F /* GetModuleItemsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35191422D28ED48001E415F /* GetModuleItemsRequest.swift */; };
 		A373DC0D2D19F65700215019 /* APIGradingPeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC0C2D19F65700215019 /* APIGradingPeriod.swift */; };
 		A373DC0F2D19F71600215019 /* TypeSafeCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC0E2D19F71600215019 /* TypeSafeCodable.swift */; };
 		A373DC142D19FA2A00215019 /* APICourseSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC132D19FA2A00215019 /* APICourseSection.swift */; };
@@ -60,6 +63,11 @@
 		A373DC252D1D4BEC00215019 /* APIQuizSubmission.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC242D1D4BEC00215019 /* APIQuizSubmission.swift */; };
 		A373DC272D1D4C4A00215019 /* QuizSubmissionWorkflowState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC262D1D4C4A00215019 /* QuizSubmissionWorkflowState.swift */; };
 		A373DC2B2D23EB3D00215019 /* Submission.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC2A2D23EB3D00215019 /* Submission.swift */; };
+		A373DC2D2D28172E00215019 /* GetModulesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC2C2D28172E00215019 /* GetModulesRequest.swift */; };
+		A373DC312D28176100215019 /* APIModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC302D28176100215019 /* APIModule.swift */; };
+		A373DC332D2819F700215019 /* APIModuleItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC322D2819F700215019 /* APIModuleItem.swift */; };
+		A373DC352D2824D700215019 /* Module.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC342D2824D700215019 /* Module.swift */; };
+		A373DC372D28285300215019 /* ModuleItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC362D28285300215019 /* ModuleItem.swift */; };
 		A3CF88D12D18E61B000ACDF3 /* APIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CF88D02D18E61B000ACDF3 /* APIResponse.swift */; };
 		A3CF88D32D18E6BB000ACDF3 /* ParentKeyPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CF88D22D18E6BB000ACDF3 /* ParentKeyPath.swift */; };
 		A3CF88D92D192177000ACDF3 /* CourseAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CF88D82D192177000ACDF3 /* CourseAPI.swift */; };
@@ -167,6 +175,9 @@
 		A324BA692D0817AB005F53FA /* FoldersPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoldersPageView.swift; sourceTree = "<group>"; };
 		A3269E8D2CD5533F006F7D14 /* CanvasRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasRepository.swift; sourceTree = "<group>"; };
 		A3269E8F2CD57F75006F7D14 /* Cacheable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cacheable.swift; sourceTree = "<group>"; };
+		A351913E2D283556001E415F /* ModulesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModulesListView.swift; sourceTree = "<group>"; };
+		A35191402D283589001E415F /* ModulesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModulesViewModel.swift; sourceTree = "<group>"; };
+		A35191422D28ED48001E415F /* GetModuleItemsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetModuleItemsRequest.swift; sourceTree = "<group>"; };
 		A373DC0C2D19F65700215019 /* APIGradingPeriod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIGradingPeriod.swift; sourceTree = "<group>"; };
 		A373DC0E2D19F71600215019 /* TypeSafeCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeSafeCodable.swift; sourceTree = "<group>"; };
 		A373DC132D19FA2A00215019 /* APICourseSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICourseSection.swift; sourceTree = "<group>"; };
@@ -175,6 +186,11 @@
 		A373DC242D1D4BEC00215019 /* APIQuizSubmission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIQuizSubmission.swift; sourceTree = "<group>"; };
 		A373DC262D1D4C4A00215019 /* QuizSubmissionWorkflowState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizSubmissionWorkflowState.swift; sourceTree = "<group>"; };
 		A373DC2A2D23EB3D00215019 /* Submission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Submission.swift; sourceTree = "<group>"; };
+		A373DC2C2D28172E00215019 /* GetModulesRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetModulesRequest.swift; sourceTree = "<group>"; };
+		A373DC302D28176100215019 /* APIModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIModule.swift; sourceTree = "<group>"; };
+		A373DC322D2819F700215019 /* APIModuleItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIModuleItem.swift; sourceTree = "<group>"; };
+		A373DC342D2824D700215019 /* Module.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Module.swift; sourceTree = "<group>"; };
+		A373DC362D28285300215019 /* ModuleItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleItem.swift; sourceTree = "<group>"; };
 		A3CF88D02D18E61B000ACDF3 /* APIResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIResponse.swift; sourceTree = "<group>"; };
 		A3CF88D22D18E6BB000ACDF3 /* ParentKeyPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentKeyPath.swift; sourceTree = "<group>"; };
 		A3CF88D82D192177000ACDF3 /* CourseAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAPI.swift; sourceTree = "<group>"; };
@@ -273,6 +289,8 @@
 				A3049B862D16146D002F3166 /* GetQuizzesRequest.swift */,
 				A3D1614E2D1784E3004055FB /* GetUserRequest.swift */,
 				A3D161502D178615004055FB /* GetUserProfileRequest.swift */,
+				A373DC2C2D28172E00215019 /* GetModulesRequest.swift */,
+				A35191422D28ED48001E415F /* GetModuleItemsRequest.swift */,
 			);
 			path = "API Requests";
 			sourceTree = "<group>";
@@ -280,6 +298,7 @@
 		A324BA502D07963D005F53FA /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				A373DC2E2D28174700215019 /* Modules */,
 				B7E59A0E2D200281001836FE /* Navigation */,
 				B7F950352D12785D004BB470 /* Profile */,
 				A3049B642D0F3E26002F3166 /* Quiz */,
@@ -527,6 +546,27 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		A373DC2E2D28174700215019 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				A373DC2F2D28175000215019 /* Models */,
+				A351913E2D283556001E415F /* ModulesListView.swift */,
+				A35191402D283589001E415F /* ModulesViewModel.swift */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		A373DC2F2D28175000215019 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A373DC302D28176100215019 /* APIModule.swift */,
+				A373DC322D2819F700215019 /* APIModuleItem.swift */,
+				A373DC342D2824D700215019 /* Module.swift */,
+				A373DC362D28285300215019 /* ModuleItem.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		B764545B2C8BBC7F002DF00E = {
 			isa = PBXGroup;
 			children = (
@@ -727,13 +767,16 @@
 				A3FFD03E2CE0065A006BAB51 /* NetworkError.swift in Sources */,
 				B7E59A142D2004A4001836FE /* CourseListCell.swift in Sources */,
 				B53D95A22CA0A22A00647EE9 /* PeopleView.swift in Sources */,
+				A373DC312D28176100215019 /* APIModule.swift in Sources */,
 				A3049B752D15DC1C002F3166 /* GetCoursesRequest.swift in Sources */,
 				B76455042C8DF61B002DF00E /* CourseView.swift in Sources */,
 				A3049B682D0F3ECA002F3166 /* QuizzesViewModel.swift in Sources */,
 				A3CF88D12D18E61B000ACDF3 /* APIResponse.swift in Sources */,
+				A373DC352D2824D700215019 /* Module.swift in Sources */,
 				A373DC2B2D23EB3D00215019 /* Submission.swift in Sources */,
 				B7E59A122D20046B001836FE /* SidebarTile.swift in Sources */,
 				9B92A4252C93856100C21CFC /* CourseAnnouncementManager.swift in Sources */,
+				A35191432D28ED48001E415F /* GetModuleItemsRequest.swift in Sources */,
 				B76455052C8DF61B002DF00E /* SetupView.swift in Sources */,
 				A3049B772D15DC36002F3166 /* GetCourseRequest.swift in Sources */,
 				B7AD54F32CD41D7900FB09BB /* LLMEvaluator.swift in Sources */,
@@ -747,6 +790,7 @@
 				B7E59A102D2002A5001836FE /* Sidebar.swift in Sources */,
 				B7AD54F62CD41D7900FB09BB /* DeviceStat.swift in Sources */,
 				A3049B812D160F6B002F3166 /* GetAnnouncementsRequest.swift in Sources */,
+				A373DC332D2819F700215019 /* APIModuleItem.swift in Sources */,
 				A373DC162D1A3C8700215019 /* RequestMethod.swift in Sources */,
 				A324BA682D07C2E9005F53FA /* FileViewer.swift in Sources */,
 				B7E59A162D200775001836FE /* CourseDetailView.swift in Sources */,
@@ -761,13 +805,16 @@
 				B7F950392D1279A1004BB470 /* UserAPI.swift in Sources */,
 				A3049B662D0F3E32002F3166 /* CourseQuizzesView.swift in Sources */,
 				A3E7F3892C954E0500DC4300 /* CanvasRequest.swift in Sources */,
+				A35191412D283589001E415F /* ModulesViewModel.swift in Sources */,
 				A3E7F3912C99317100DC4300 /* CourseTabsManager.swift in Sources */,
 				A3E7F38F2C96C1CE00DC4300 /* CourseTabsView.swift in Sources */,
 				B76455062C8DF61B002DF00E /* CanvasPlusPlaygroundApp.swift in Sources */,
 				B7F950342D11A00F004BB470 /* StatusToolbarItem.swift in Sources */,
 				9B69FA4B2CC2CC7F006101F3 /* AggregatedAssignmentsView.swift in Sources */,
 				A3CF88E32D1921CB000ACDF3 /* FolderAPI.swift in Sources */,
+				A373DC2D2D28172E00215019 /* GetModulesRequest.swift in Sources */,
 				B76455072C8DF61B002DF00E /* CourseFileViewModel.swift in Sources */,
+				A351913F2D283556001E415F /* ModulesListView.swift in Sources */,
 				A3CF88DF2D1921B5000ACDF3 /* FileAPI.swift in Sources */,
 				A3CF88DD2D1921A7000ACDF3 /* QuizAPI.swift in Sources */,
 				A3049B532D0E5241002F3166 /* Quiz.swift in Sources */,
@@ -792,6 +839,7 @@
 				A3049B792D15E162002F3166 /* GetCourseRootFolder.swift in Sources */,
 				7F8535742C98DE3C0023E384 /* CourseGradeView.swift in Sources */,
 				A3049B7F2D160C03002F3166 /* GetTabsRequest.swift in Sources */,
+				A373DC372D28285300215019 /* ModuleItem.swift in Sources */,
 				A306ED112CEAC09E00556D1E /* Folder.swift in Sources */,
 				A373DC272D1D4C4A00215019 /* QuizSubmissionWorkflowState.swift in Sources */,
 			);
