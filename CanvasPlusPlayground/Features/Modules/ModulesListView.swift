@@ -18,10 +18,8 @@ struct ModulesListView: View {
 
     var body: some View {
         NavigationStack {
-            List {
-                ForEach(modulesVM.moduleBlocks) { block in
-                    ModuleSection(moduleBlock: block)
-                }
+            List(modulesVM.moduleBlocks) {block in
+                ModuleSection(moduleBlock: block)
             }
             .task {
                 isLoadingModules = true
@@ -34,7 +32,9 @@ struct ModulesListView: View {
     }
 }
 
-struct ModuleSection: View {
+private struct ModuleSection: View {
+    typealias ModuleBlock = ModulesViewModel.ModuleBlock
+
     @Bindable var module: Module
     var moduleItems: [ModuleItem]
 
@@ -67,7 +67,7 @@ struct ModuleSection: View {
 
             Text("Prerequisites: \(prerequisites)")
         }
-        .font(.title)
+        .font(.title3)
         .bold()
     }
 
@@ -76,7 +76,7 @@ struct ModuleSection: View {
     }
 }
 
-struct ModuleItemCell: View {
+private struct ModuleItemCell: View {
     @Bindable var item: ModuleItem
     var indent: CGFloat {
         CGFloat(item.indent*10)

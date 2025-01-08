@@ -7,12 +7,6 @@
 
 import Foundation
 
-struct ModuleBlock: Identifiable {
-    var id: ObjectIdentifier { module.id }
-    let module: Module
-    let items: [ModuleItem]
-}
-
 @Observable
 class ModulesViewModel {
     private var _modules = Set<Module>()
@@ -22,6 +16,12 @@ class ModulesViewModel {
 
     init(courseID: String) {
         self.courseID = courseID
+    }
+
+    struct ModuleBlock: Identifiable {
+        var id: ObjectIdentifier { module.id }
+        let module: Module
+        let items: [ModuleItem]
     }
 
     var moduleBlocks: [ModuleBlock] {

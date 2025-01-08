@@ -7,10 +7,9 @@
 
 import Foundation
 
+// swiftlint:disable identifier_name
 struct APIModuleItem: APIResponse {
     typealias Model = ModuleItem
-
-    // swiftlint:disable identifier_name
 
     let id: Int
     /// The id of the module this item appears in
