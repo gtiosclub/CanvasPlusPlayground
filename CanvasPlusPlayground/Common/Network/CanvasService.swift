@@ -13,7 +13,7 @@ class CanvasService {
 
     var repository: CanvasRepository?
 
-    @MainActor func activate() {
+    @MainActor func setupStorage() {
         let repo = CanvasRepository()
         self.repository = repo
     }

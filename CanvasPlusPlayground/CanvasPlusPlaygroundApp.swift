@@ -24,7 +24,7 @@ struct CanvasPlusPlaygroundApp: App {
                 .environmentObject(intelligenceManager)
                 .environmentObject(llmEvaluator)
                 .task {
-                    CanvasService.shared.activate()
+                    CanvasService.shared.setupStorage()
                     await courseManager.getCourses()
                 }
         }
