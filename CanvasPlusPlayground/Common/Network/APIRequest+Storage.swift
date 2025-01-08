@@ -27,7 +27,7 @@ extension CacheableAPIRequest {
     func load(from repository: CanvasRepository) async throws -> [PersistedModel]? {
 
         // Get cached data for this type then filter to only get models related to `request`
-        let cached: [PersistedModel]? = try await repository.get(descriptor: loadDescriptor)
+        let cached: [PersistedModel]? = try repository.get(descriptor: loadDescriptor)
 
         return cached
     }
@@ -35,6 +35,6 @@ extension CacheableAPIRequest {
     /// Number of occurences of models related to request
     @MainActor
     func loadCount(from repository: CanvasRepository) async throws -> Int {
-        return try await repository.count(descriptor: loadDescriptor)
+        return try repository.count(descriptor: loadDescriptor)
     }
 }

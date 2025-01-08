@@ -39,10 +39,10 @@ extension CacheableAPIRequest {
             // Merge fetched model into cached model OR cache fetched model as new.
             for (index, latestModel) in latest.enumerated() {
                 if let matchedCached = cacheLookup[latestModel.id] {
-                    await repository.merge(other: latestModel, into: matchedCached)
+                    repository.merge(other: latestModel, into: matchedCached)
                     latest[index] = matchedCached
                 } else {
-                    await repository.insert(latestModel)
+                    repository.insert(latestModel)
                 }
             }
 
