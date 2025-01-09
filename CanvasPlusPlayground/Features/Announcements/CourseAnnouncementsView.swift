@@ -57,6 +57,8 @@ struct CourseAnnouncementsView: View {
 }
 
 private struct AnnouncementRow: View {
+    @Environment(PinnedItemsManager.self) private var pinnedItemsManager
+
     let course: Course
     let announcement: Announcement
 
@@ -72,6 +74,16 @@ private struct AnnouncementRow: View {
 
     private var header: some View {
         HStack {
+            Button("Pin", systemImage: "pin") {
+                pinnedItemsManager.pinnedItems.append(
+                    PinnedItem.init(
+                        id: announcement.id,
+                        courseID: course.id,
+                        type: .announcement
+                    )
+                )
+            }
+
             Group {
                 if !(announcement.isRead ?? false) {
                     Circle()
