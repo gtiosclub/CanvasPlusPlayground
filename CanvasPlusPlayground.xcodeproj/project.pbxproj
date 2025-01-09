@@ -120,6 +120,7 @@
 		B7C0A3C52D2F4C19003E5A36 /* GetAssignmentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0A3C42D2F4C11003E5A36 /* GetAssignmentRequest.swift */; };
 		B7C0A3C72D2F4E82003E5A36 /* GetFileRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0A3C62D2F4E82003E5A36 /* GetFileRequest.swift */; };
 		B7C0A3C92D2F87EC003E5A36 /* AsyncView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0A3C82D2F87E9003E5A36 /* AsyncView.swift */; };
+		B7C0A3CB2D2F919F003E5A36 /* PinButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0A3CA2D2F919F003E5A36 /* PinButton.swift */; };
 		B7D95D772D07C3D3002AD955 /* ICSParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D95D762D07C3D3002AD955 /* ICSParser.swift */; };
 		B7D95DB72D0A8D78002AD955 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D95DB62D0A8D75002AD955 /* SettingsView.swift */; };
 		B7E59A102D2002A5001836FE /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E59A0F2D2002A3001836FE /* Sidebar.swift */; };
@@ -248,6 +249,7 @@
 		B7C0A3C42D2F4C11003E5A36 /* GetAssignmentRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAssignmentRequest.swift; sourceTree = "<group>"; };
 		B7C0A3C62D2F4E82003E5A36 /* GetFileRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetFileRequest.swift; sourceTree = "<group>"; };
 		B7C0A3C82D2F87E9003E5A36 /* AsyncView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncView.swift; sourceTree = "<group>"; };
+		B7C0A3CA2D2F919F003E5A36 /* PinButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinButton.swift; sourceTree = "<group>"; };
 		B7D95D762D07C3D3002AD955 /* ICSParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICSParser.swift; sourceTree = "<group>"; };
 		B7D95DB62D0A8D75002AD955 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		B7E59A0F2D2002A3001836FE /* Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.swift; sourceTree = "<group>"; };
@@ -633,6 +635,7 @@
 		B7C5532A2D2D5AEB009CF4F0 /* Pinned Items */ = {
 			isa = PBXGroup;
 			children = (
+				B7C0A3CA2D2F919F003E5A36 /* PinButton.swift */,
 				B7C0A3BE2D2F224C003E5A36 /* PinnedItemsView.swift */,
 				B7C0A3BC2D2F1F25003E5A36 /* PinnedItemsManager.swift */,
 			);
@@ -827,6 +830,7 @@
 				192EC04C2C963EE600AF8528 /* CourseAssignmentView.swift in Sources */,
 				A3FFD03C2CDED67C006BAB51 /* String+Numbers.swift in Sources */,
 				B53D95A02CA0953900647EE9 /* PeopleManager.swift in Sources */,
+				B7C0A3CB2D2F919F003E5A36 /* PinButton.swift in Sources */,
 				B7F950392D1279A1004BB470 /* UserAPI.swift in Sources */,
 				A3049B662D0F3E32002F3166 /* CourseQuizzesView.swift in Sources */,
 				A3E7F3892C954E0500DC4300 /* CanvasRequest.swift in Sources */,

@@ -23,8 +23,8 @@ struct AsyncView<T, Content: View, Placeholder: View>: View {
     }
 
     let asyncFunction: () async -> T?
-    let content: (T) -> Content
-    let placeholder: () -> Placeholder
+    @ViewBuilder let content: (T) -> Content
+    @ViewBuilder let placeholder: () -> Placeholder
 
     @State var viewState: LoadingState = .loading
 

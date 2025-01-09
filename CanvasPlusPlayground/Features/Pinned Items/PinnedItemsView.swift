@@ -15,10 +15,39 @@ struct PinnedItemsView: View {
             AsyncView {
                 await item.itemData()
             } content: { itemData in
-                Text("Got Data: \(itemData)")
+                switch itemData {
+                case .announcement(let announcement):
+                    PinnedAnnouncementCard(announcement: announcement)
+                default: Text("Got \(itemData)")
+                }
             } placeholder: {
                 Text("Loading...")
             }
+        }
+        #if os(macOS)
+        .navigationSplitViewColumnWidth(min: 350, ideal: 400)
+        #endif
+    }
+}
+
+struct PinnedAnnouncementCard: View {
+    let announcement: Announcement
+
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text(announcement.title ?? "")
+                .font(.headline)
+                .bold()
+            Text(
+                announcement.message?
+                    .stripHTML()
+                    .trimmingCharacters(
+                        in: .whitespacesAndNewlines
+                    )
+                ?? ""
+            )
+            .font(.body)
+            .lineLimit(2)
         }
     }
 }

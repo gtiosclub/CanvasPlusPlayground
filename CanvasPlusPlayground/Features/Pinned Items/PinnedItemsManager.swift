@@ -55,7 +55,7 @@ enum PinnedItemData {
 
 @Observable
 class PinnedItemsManager {
-    var pinnedItems: [PinnedItem] {
+    private(set) var pinnedItems: [PinnedItem] {
         get {
             access(keyPath: \.pinnedItems)
 
@@ -72,5 +72,43 @@ class PinnedItemsManager {
                 UserDefaults.standard.set(data, forKey: "pinnedItems")
             }
         }
+    }
+
+    func togglePinnedItem(
+        itemID: String,
+        courseID: String,
+        type: PinnedItem.PinnedItemType
+    ) {
+        if pinnedItems.contains(where: {
+            $0.id == itemID && $0.courseID == courseID && $0.type == type
+        }) {
+            removePinnedItem(itemID: itemID, courseID: courseID, type: type)
+        } else {
+            addPinnedItem(itemID: itemID, courseID: courseID, type: type)
+        }
+    }
+
+    func addPinnedItem(
+        itemID: String,
+        courseID: String,
+        type: PinnedItem.PinnedItemType
+    ) {
+        pinnedItems.append(
+            PinnedItem(id: itemID, courseID: courseID, type: type)
+        )
+    }
+
+    func removePinnedItem(
+        itemID: String,
+        courseID: String,
+        type: PinnedItem.PinnedItemType
+    ) {
+        let index = pinnedItems.firstIndex {
+            $0.id == itemID && $0.courseID == courseID && $0.type == type
+        }
+
+        guard let index else { return }
+
+        pinnedItems.remove(at: index)
     }
 }
