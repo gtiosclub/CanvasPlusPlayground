@@ -55,24 +55,15 @@ enum PinnedItemData {
 
 @Observable
 class PinnedItemsManager {
-    private(set) var pinnedItems: [PinnedItem] {
-        get {
-            access(keyPath: \.pinnedItems)
-
-            if let data = UserDefaults.standard.data(forKey: "pinnedItems") {
-                return (try? JSONDecoder().decode([PinnedItem].self, from: data)) ?? []
-            }
-
-            return []
-        }
-        set {
-            access(keyPath: \.pinnedItems)
-
-            if let data = try? JSONEncoder().encode(newValue) {
-                UserDefaults.standard.set(data, forKey: "pinnedItems")
-            }
-        }
+    private(set) var pinnedItems: [PinnedItem] = [] {
+        didSet { savePinnedItems() }
     }
+
+    init() {
+        getPinnedItems()
+    }
+
+    // MARK: - User Intents
 
     func togglePinnedItem(
         itemID: String,
@@ -110,5 +101,23 @@ class PinnedItemsManager {
         guard let index else { return }
 
         pinnedItems.remove(at: index)
+    }
+
+    // MARK: - Private
+
+    func savePinnedItems() {
+        if let data = try? JSONEncoder().encode(pinnedItems) {
+            UserDefaults.standard.set(data, forKey: "pinnedItems")
+        }
+    }
+
+    func getPinnedItems() {
+        var result: [PinnedItem] = []
+
+        if let data = UserDefaults.standard.data(forKey: "pinnedItems") {
+            result = (try? JSONDecoder().decode([PinnedItem].self, from: data)) ?? []
+        }
+
+        pinnedItems = result
     }
 }
