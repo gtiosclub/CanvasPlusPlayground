@@ -75,6 +75,13 @@ private struct AnnouncementRow: View {
                 type: .announcement
             )
         }
+        .swipeActions(edge: .leading) {
+            PinButton(
+                itemID: announcement.id,
+                courseID: course.id,
+                type: .announcement
+            )
+        }
     }
 
     private var header: some View {

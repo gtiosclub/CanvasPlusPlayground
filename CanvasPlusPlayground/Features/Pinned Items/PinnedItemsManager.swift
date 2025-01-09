@@ -7,54 +7,10 @@
 
 import SwiftUI
 
-struct PinnedItem: Identifiable, Codable {
-    let id: String
-    let courseID: String
-    let type: PinnedItemType
-
-    enum PinnedItemType: String, Codable {
-        case announcement, assignment, file
-    }
-
-    func itemData() async -> PinnedItemData? {
-        do {
-            switch type {
-            case .announcement:
-                let announcements = try await CanvasService.shared.loadAndSync(
-                    CanvasRequest.getAnnouncements(courseId: courseID)
-                )
-                if let announcement = announcements.first(where: { $0.id == id }) {
-                    return .announcement(announcement)
-                }
-            case .assignment:
-                if let assignment = try await CanvasService.shared.fetch(
-                    CanvasRequest.getAssignment(id: id, courseId: courseID)
-                ).first {
-                    return .assignment(assignment)
-                }
-            case .file:
-                if let file = try await CanvasService.shared.loadAndSync(
-                    CanvasRequest.getFile(fileId: id)
-                ).first {
-                    return .file(file)
-                }
-            }
-        } catch {
-            print("Error fetching \(type): \(error.localizedDescription)")
-        }
-
-        return nil
-    }
-}
-
-enum PinnedItemData {
-    case announcement(Announcement)
-    case assignment(AssignmentAPI)
-    case file(File)
-}
-
 @Observable
 class PinnedItemsManager {
+    static let pinnedItemsKey: String = "pinnedItems"
+
     private(set) var pinnedItems: [PinnedItem] = [] {
         didSet { savePinnedItems() }
     }
@@ -107,17 +63,24 @@ class PinnedItemsManager {
 
     func savePinnedItems() {
         if let data = try? JSONEncoder().encode(pinnedItems) {
-            UserDefaults.standard.set(data, forKey: "pinnedItems")
+            UserDefaults.standard.set(data, forKey: Self.pinnedItemsKey)
         }
     }
 
     func getPinnedItems() {
         var result: [PinnedItem] = []
 
-        if let data = UserDefaults.standard.data(forKey: "pinnedItems") {
+        if let data = UserDefaults.standard.data(forKey: Self.pinnedItemsKey) {
             result = (try? JSONDecoder().decode([PinnedItem].self, from: data)) ?? []
         }
 
         pinnedItems = result
     }
+
+    // MARK: - Debug
+    #if DEBUG
+    func clearAllPinnedItems() {
+        pinnedItems.removeAll()
+    }
+    #endif
 }

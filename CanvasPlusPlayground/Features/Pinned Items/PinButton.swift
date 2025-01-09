@@ -23,13 +23,13 @@ struct PinButton: View {
     var body: some View {
         Button(
             isItemPinned ? "Unpin" : "Pin",
-            systemImage: isItemPinned ? "unpin" : "pin"
+            systemImage: isItemPinned ? "pin.slash" : "pin"
         ) {
             pinnedItemsManager
                 .togglePinnedItem(
                     itemID: itemID,
                     courseID: courseID,
-                    type: .announcement
+                    type: type
                 )
         }
         .tint(.orange)
