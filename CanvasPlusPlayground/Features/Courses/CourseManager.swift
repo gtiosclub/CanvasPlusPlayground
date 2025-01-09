@@ -38,8 +38,6 @@ class CourseManager {
     }
 
     func setCourses(_ courses: [Course]) {
-        DispatchQueue.main.sync {
-            self.courses = courses
-        }
+        self.courses = courses
     }
 }

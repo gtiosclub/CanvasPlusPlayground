@@ -9,6 +9,7 @@ import Foundation
 
 extension CacheableAPIRequest {
     @discardableResult
+    @MainActor
     func syncWithAPI(
         to repository: CanvasRepository,
         onNewBatch: ([PersistedModel]) -> Void = { _ in }
@@ -22,7 +23,7 @@ extension CacheableAPIRequest {
         )
     }
 
-    // TODO: use predicate filters whenever
+    @MainActor
     private func syncWithAPI(
         to repository: CanvasRepository,
         using cache: [PersistedModel],
@@ -38,10 +39,10 @@ extension CacheableAPIRequest {
             // Merge fetched model into cached model OR cache fetched model as new.
             for (index, latestModel) in latest.enumerated() {
                 if let matchedCached = cacheLookup[latestModel.id] {
-                    await repository.merge(other: latestModel, into: matchedCached)
+                    repository.merge(other: latestModel, into: matchedCached)
                     latest[index] = matchedCached
                 } else {
-                    await repository.insert(latestModel)
+                    repository.insert(latestModel)
                 }
             }
 
@@ -49,7 +50,7 @@ extension CacheableAPIRequest {
             if let writeKeyPath {
                 // Store the request / parent id in each model so that we can recall all models when repeating a request
                 for model in latest {
-                    await model.update(keypath: writeKeyPath, value: self.requestId)
+                    model[keyPath: writeKeyPath] = self.requestId
                 }
             }
 

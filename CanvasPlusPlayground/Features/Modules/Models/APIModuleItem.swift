@@ -11,7 +11,6 @@ import Foundation
 struct APIModuleItem: APIResponse {
     typealias Model = ModuleItem
 
-
     let id: Int
     /// The id of the module this item appears in
     let module_id: Int

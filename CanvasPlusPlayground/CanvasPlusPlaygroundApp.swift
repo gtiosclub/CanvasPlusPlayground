@@ -23,6 +23,10 @@ struct CanvasPlusPlaygroundApp: App {
                 .environment(navigationModel)
                 .environmentObject(intelligenceManager)
                 .environmentObject(llmEvaluator)
+                .task {
+                    CanvasService.shared.setupStorage()
+                    await courseManager.getCourses()
+                }
         }
 
         #if os(macOS)
@@ -40,6 +44,5 @@ struct CanvasPlusPlaygroundApp: App {
 
     init() {
         print(URL.applicationSupportDirectory.path(percentEncoded: false))
-        CanvasService.shared.activate()
     }
 }

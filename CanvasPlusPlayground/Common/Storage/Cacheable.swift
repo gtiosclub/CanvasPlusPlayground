@@ -21,10 +21,6 @@ protocol Cacheable: BaseCacheable, PersistentModel {
 
 extension Cacheable {
 
-    func update<V>(keypath: ReferenceWritableKeyPath<Self, V>, value: V) async {
-        await CanvasService.shared.repository?.update(model: self, keypath: keypath, value: value)
-    }
-
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
