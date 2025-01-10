@@ -85,6 +85,8 @@ extension CacheableAPIRequest {
             }
         }
 
+        try repository.modelContext.save()
+
         return latest
     }
 
