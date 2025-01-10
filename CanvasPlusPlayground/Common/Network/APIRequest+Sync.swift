@@ -61,14 +61,15 @@ extension CacheableAPIRequest {
         var latest: [PersistedModel] = try await {
 
             // Adjust `fetch` generic parameter based on whether request is for a collection.
-            let fetched: [PersistedModel]
+            var fetched: [PersistedModel] = []
             if QueryResult.self is any Collection.Type {
-                fetched = try await fetch(onNewPage: { batch in
+                _ = try await fetch(onNewPage: { batch in
                     let batchAsModel = batch.map { $0.createModel() }
                     let transformed = await updateStorage(batchAsModel)
 
+                    fetched += transformed
                     onNewBatch(transformed)
-                }).map { $0.createModel() }
+                })
             } else {
                 let responseAsModel = try await fetch().map { $0.createModel() }
                 fetched = await updateStorage(responseAsModel)
