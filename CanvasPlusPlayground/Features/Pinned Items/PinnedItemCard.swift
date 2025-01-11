@@ -25,7 +25,11 @@ struct PinnedItemCard: View {
                     file: file,
                     course: itemData.course
                 )
-            default: Text("Got \(itemData)")
+            case .assignment(let assignment):
+                PinnedAssignmentCard(
+                    assignment: assignment,
+                    course: itemData.course
+                )
             }
         } placeholder: {
             Text("Loading...")
@@ -81,6 +85,33 @@ private struct PinnedFileCard: View {
                     .foregroundStyle(course.rgbColors?.color ?? .accentColor)
 
                 Text(file.displayName)
+                    .font(.headline)
+                    .fontDesign(.rounded)
+                    .bold()
+            }
+
+            Spacer()
+        }
+        .cardBackground()
+    }
+}
+
+private struct PinnedAssignmentCard: View {
+    let assignment: AssignmentAPI
+    let course: Course
+
+    var body: some View {
+        HStack(spacing: 8) {
+            Image(systemName: "circle")
+                .foregroundStyle(course.rgbColors?.color ?? .accentColor)
+                .font(.title)
+
+            VStack(alignment: .leading, spacing: 8) {
+                Text(course.displayName.uppercased())
+                    .font(.caption)
+                    .foregroundStyle(course.rgbColors?.color ?? .accentColor)
+
+                Text(assignment.name)
                     .font(.headline)
                     .fontDesign(.rounded)
                     .bold()
