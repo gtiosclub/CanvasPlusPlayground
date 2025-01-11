@@ -204,7 +204,6 @@ final class Course: Cacheable {
         self.hideFinalGrades = other.hideFinalGrades
         self.imageDownloadURL = other.imageDownloadURL
         self.isCourseDeleted = other.isCourseDeleted
-        self.isFavorite = other.isFavorite
         self.isHomeroomCourse = other.isHomeroomCourse
         self.isPastEnrollment = other.isPastEnrollment
         self.isPublished = other.isPublished
@@ -220,7 +219,9 @@ final class Course: Cacheable {
         self.enrollmentUserIds = other.enrollmentUserIds
         self.enrollmentStatesRaw = other.enrollmentStatesRaw
 
-        self.rgbColors = other.rgbColors
-        self.nickname = other.nickname
+        // Note: These must NOT be merged.
+//        self.isFavorite = other.isFavorite
+//        self.rgbColors = other.rgbColors
+//        self.nickname = other.nickname
     }
 }
