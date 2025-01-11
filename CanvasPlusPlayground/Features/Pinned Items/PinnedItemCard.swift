@@ -30,10 +30,11 @@ struct PinnedItemCard: View {
         } placeholder: {
             Text("Loading...")
         }
+        .buttonStyle(.plain)
     }
 }
 
-struct PinnedAnnouncementCard: View {
+private struct PinnedAnnouncementCard: View {
     let announcement: Announcement
     let course: Course
 
@@ -64,7 +65,7 @@ struct PinnedAnnouncementCard: View {
     }
 }
 
-struct PinnedFileCard: View {
+private struct PinnedFileCard: View {
     let file: File
     let course: Course
 
@@ -84,6 +85,8 @@ struct PinnedFileCard: View {
                     .fontDesign(.rounded)
                     .bold()
             }
+
+            Spacer()
         }
         .cardBackground()
     }
@@ -93,6 +96,7 @@ extension View {
     fileprivate func cardBackground() -> some View {
         self
             .frame(width: 250)
+            .frame(maxHeight: .infinity)
             .padding(12)
             .background {
                 RoundedRectangle(cornerRadius: 16.0)

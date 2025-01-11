@@ -22,8 +22,10 @@ struct PinnedItemsView: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     LazyHGrid(
                         rows: .init(
-                            repeating: .init(.flexible(minimum: 100, maximum: 400)),
-                            count: min(3, items.count)
+                            repeating: .init(
+                                .flexible(maximum: 400)
+                            ),
+                            count: min(2, items.count)
                         )
                     ) {
                         ForEach(items) { item in
