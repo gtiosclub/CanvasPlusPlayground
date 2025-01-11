@@ -12,21 +12,37 @@ struct PinnedItem: Identifiable, Codable {
     let courseID: String
     let type: PinnedItemType
 
-    enum PinnedItemType: String, Codable {
+    enum PinnedItemType: Int, Codable {
         case announcement, assignment, file
         // TODO: Add more pinned item types
+
+        var displayName: String {
+            switch self {
+            case .announcement: "Announcements"
+            case .assignment: "Assignments"
+            case .file: "Files"
+            }
+        }
     }
 
     func itemData() async -> PinnedItemData? {
         do {
-            return try await fetchData()
+            async let modelData = try fetchData()
+            async let course = try CanvasService.shared.loadAndSync(
+                CanvasRequest.getCourse(id: courseID)
+            )
+
+            return .init(
+                modelData: try await modelData,
+                course: try await course.first
+            )
         } catch {
             print("Error fetching \(type): \(error.localizedDescription)")
             return nil
         }
     }
 
-    private func fetchData() async throws -> PinnedItemData? {
+    private func fetchData() async throws -> PinnedItemData.ModelData? {
         switch type {
         case .announcement:
             let announcements = try await CanvasService.shared.loadAndSync(
@@ -52,9 +68,21 @@ struct PinnedItem: Identifiable, Codable {
     }
 }
 
-enum PinnedItemData {
-    case announcement(Announcement)
-    case assignment(AssignmentAPI)
-    case file(File)
-    // TODO: Add more pinned item types
+struct PinnedItemData {
+    enum ModelData {
+        case announcement(Announcement)
+        case assignment(AssignmentAPI)
+        case file(File)
+        // TODO: Add more pinned item types
+    }
+
+    let modelData: ModelData
+    let course: Course
+
+    init?(modelData: ModelData?, course: Course?) {
+        guard let modelData, let course else { return nil }
+
+        self.modelData = modelData
+        self.course = course
+    }
 }

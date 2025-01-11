@@ -15,6 +15,10 @@ class PinnedItemsManager {
         didSet { savePinnedItems() }
     }
 
+    var pinnedItemsByType: [PinnedItem.PinnedItemType: [PinnedItem]] {
+        Dictionary(grouping: pinnedItems) { $0.type }
+    }
+
     init() {
         getPinnedItems()
     }
