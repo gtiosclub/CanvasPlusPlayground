@@ -65,13 +65,13 @@ class PinnedItemsManager {
 
     // MARK: - Private
 
-    func savePinnedItems() {
+    private func savePinnedItems() {
         if let data = try? JSONEncoder().encode(pinnedItems) {
             UserDefaults.standard.set(data, forKey: Self.pinnedItemsKey)
         }
     }
 
-    func getPinnedItems() {
+    private func getPinnedItems() {
         var result: [PinnedItem] = []
 
         if let data = UserDefaults.standard.data(forKey: Self.pinnedItemsKey) {
