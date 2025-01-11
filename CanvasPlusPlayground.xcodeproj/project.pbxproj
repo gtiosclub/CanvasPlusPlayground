@@ -122,6 +122,7 @@
 		B7C0A3C92D2F87EC003E5A36 /* AsyncView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0A3C82D2F87E9003E5A36 /* AsyncView.swift */; };
 		B7C0A3CB2D2F919F003E5A36 /* PinButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0A3CA2D2F919F003E5A36 /* PinButton.swift */; };
 		B7C0A3CD2D3023CA003E5A36 /* PinnedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0A3CC2D3023CA003E5A36 /* PinnedItem.swift */; };
+		B7C0A3CF2D31F339003E5A36 /* PinnedItemCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0A3CE2D31F339003E5A36 /* PinnedItemCard.swift */; };
 		B7D95D772D07C3D3002AD955 /* ICSParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D95D762D07C3D3002AD955 /* ICSParser.swift */; };
 		B7D95DB72D0A8D78002AD955 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D95DB62D0A8D75002AD955 /* SettingsView.swift */; };
 		B7E59A102D2002A5001836FE /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E59A0F2D2002A3001836FE /* Sidebar.swift */; };
@@ -252,6 +253,7 @@
 		B7C0A3C82D2F87E9003E5A36 /* AsyncView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncView.swift; sourceTree = "<group>"; };
 		B7C0A3CA2D2F919F003E5A36 /* PinButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinButton.swift; sourceTree = "<group>"; };
 		B7C0A3CC2D3023CA003E5A36 /* PinnedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedItem.swift; sourceTree = "<group>"; };
+		B7C0A3CE2D31F339003E5A36 /* PinnedItemCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedItemCard.swift; sourceTree = "<group>"; };
 		B7D95D762D07C3D3002AD955 /* ICSParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICSParser.swift; sourceTree = "<group>"; };
 		B7D95DB62D0A8D75002AD955 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		B7E59A0F2D2002A3001836FE /* Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.swift; sourceTree = "<group>"; };
@@ -637,9 +639,10 @@
 		B7C5532A2D2D5AEB009CF4F0 /* Pinned Items */ = {
 			isa = PBXGroup;
 			children = (
-				B7C0A3CC2D3023CA003E5A36 /* PinnedItem.swift */,
 				B7C0A3CA2D2F919F003E5A36 /* PinButton.swift */,
 				B7C0A3BE2D2F224C003E5A36 /* PinnedItemsView.swift */,
+				B7C0A3CE2D31F339003E5A36 /* PinnedItemCard.swift */,
+				B7C0A3CC2D3023CA003E5A36 /* PinnedItem.swift */,
 				B7C0A3BC2D2F1F25003E5A36 /* PinnedItemsManager.swift */,
 			);
 			path = "Pinned Items";
@@ -780,6 +783,7 @@
 				192EC0482C963ACB00AF8528 /* CourseAssignmentManager.swift in Sources */,
 				A373DC232D1D454000215019 /* APIGradingSchemeEntry.swift in Sources */,
 				A373DC252D1D4BEC00215019 /* APIQuizSubmission.swift in Sources */,
+				B7C0A3CF2D31F339003E5A36 /* PinnedItemCard.swift in Sources */,
 				B7D95D772D07C3D3002AD955 /* ICSParser.swift in Sources */,
 				A3CF88D32D18E6BB000ACDF3 /* ParentKeyPath.swift in Sources */,
 				B7F9503B2D127AD0004BB470 /* ProfileAPI.swift in Sources */,
