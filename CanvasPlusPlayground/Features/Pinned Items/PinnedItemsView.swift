@@ -32,6 +32,17 @@ struct PinnedItemsView: View {
         #if os(macOS)
         .navigationSplitViewColumnWidth(min: 350, ideal: 400)
         #endif
+        .overlay {
+            if sortedTypes.isEmpty {
+                ContentUnavailableView(
+                    "No Pinned Items",
+                    systemImage: "pin.fill",
+                    description: Text(
+                        "Pin files, assignments, announcements, and more from across all your courses for quick access."
+                    )
+                )
+            }
+        }
     }
 
     @ViewBuilder
