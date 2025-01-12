@@ -65,5 +65,7 @@ struct PinnedItemsView: View {
         .scrollTargetBehavior(.paging)
         .listRowSeparator(.hidden)
         .fixedSize(horizontal: false, vertical: true)
+        .listRowInsets(EdgeInsets())
+        .contentMargins(.horizontal, 24, for: .scrollContent)
     }
 }
