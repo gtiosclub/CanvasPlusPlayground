@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct SettingsView: View {
+    #if DEBUG
+    @Environment(PinnedItemsManager.self) private var pinnedItemManager
+    #endif
     @Environment(NavigationModel.self) private var navigationModel
     @EnvironmentObject private var llmEvaluator: LLMEvaluator
     @EnvironmentObject private var intelligenceManager: IntelligenceManager
@@ -94,10 +97,15 @@ struct SettingsView: View {
         #endif
     }
 
+    #if DEBUG
     private var debugSettings: some View {
         Section {
             Group {
-                Button("Clear cache", systemImage: "opticaldiscdrive") {
+                Button("Clear Pinned Items", systemImage: "trash") {
+                    pinnedItemManager.clearAllPinnedItems()
+                }
+
+                Button("Clear Cache", systemImage: "opticaldiscdrive") {
                     CanvasService.shared.clearStorage()
                 }
 
@@ -118,6 +126,7 @@ struct SettingsView: View {
             Label("Debug", systemImage: "ant")
         }
     }
+    #endif
 }
 
 #Preview {

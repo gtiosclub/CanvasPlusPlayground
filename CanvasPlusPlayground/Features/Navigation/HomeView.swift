@@ -81,7 +81,7 @@ struct HomeView: View {
             switch selectedNavigationPage {
             case .announcements: Text("All Announcements")
             case .toDoList: AggregatedAssignmentsView()
-            case .pinned: Text("Pinned Items")
+            case .pinned: PinnedItemsView()
             default: EmptyView()
             }
         } else {
