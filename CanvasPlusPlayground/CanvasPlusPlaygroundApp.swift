@@ -9,9 +9,15 @@ import SwiftUI
 
 @main
 struct CanvasPlusPlaygroundApp: App {
+    // Navigation
+    @State private var navigationModel = NavigationModel()
+
+    // App
     @State private var profileManager = ProfileManager()
     @State private var courseManager = CourseManager()
-    @State private var navigationModel = NavigationModel()
+    @State private var pinnedItemsManager = PinnedItemsManager()
+
+    // Intelligence
     @StateObject private var intelligenceManager = IntelligenceManager()
     @StateObject private var llmEvaluator = LLMEvaluator()
 
@@ -20,6 +26,7 @@ struct CanvasPlusPlaygroundApp: App {
             HomeView()
                 .environment(profileManager)
                 .environment(courseManager)
+                .environment(pinnedItemsManager)
                 .environment(navigationModel)
                 .environmentObject(intelligenceManager)
                 .environmentObject(llmEvaluator)
@@ -34,6 +41,7 @@ struct CanvasPlusPlaygroundApp: App {
             SettingsView()
                 .environment(profileManager)
                 .environment(courseManager)
+                .environment(pinnedItemsManager)
                 .environment(navigationModel)
                 .environmentObject(intelligenceManager)
                 .environmentObject(llmEvaluator)

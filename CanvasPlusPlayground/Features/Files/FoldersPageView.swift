@@ -54,6 +54,20 @@ struct FoldersPageView: View {
             NavigationLink(destination: destination(for: file)) {
                 Label(file.displayName, systemImage: "document")
             }
+            .contextMenu {
+                PinButton(
+                    itemID: file.id,
+                    courseID: course.id,
+                    type: .file
+                )
+            }
+            .swipeActions(edge: .leading) {
+                PinButton(
+                    itemID: file.id,
+                    courseID: course.id,
+                    type: .file
+                )
+            }
         } else {
             Label("File not available.", systemImage: "document")
         }

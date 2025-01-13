@@ -22,30 +22,21 @@ struct CourseAssignmentsView: View {
 
     var body: some View {
         List(assignmentManager.assignments, id: \.id) { assignment in
-            let submission = assignment.submission?.createModel()
-
-            HStack {
-                VStack(alignment: .leading) {
-                    Text(assignment.name)
-                        .font(.headline)
-                    Group {
-                        if let submission {
-                            Text(
-                                submission.workflowState?.rawValue.capitalized ?? "Unknown Status"
-                            )
-                        }
-                    }
-                    .font(.subheadline)
+            AssignmentRow(assignment: assignment, showGrades: showGrades)
+                .contextMenu {
+                    PinButton(
+                        itemID: assignment.id.asString,
+                        courseID: course.id,
+                        type: .assignment
+                    )
                 }
-
-                if showGrades, let submission {
-                    Spacer()
-
-                    Text(submission.score?.truncatingTrailingZeros ?? "--") +
-                    Text("/") +
-                    Text(assignment.points_possible?.truncatingTrailingZeros ?? "--")
+                .swipeActions(edge: .leading) {
+                    PinButton(
+                        itemID: assignment.id.asString,
+                        courseID: course.id,
+                        type: .assignment
+                    )
                 }
-            }
         }
         .task {
             await loadAssignments()
@@ -58,5 +49,37 @@ struct CourseAssignmentsView: View {
         isLoadingAssignments = true
         await assignmentManager.fetchAssignments()
         isLoadingAssignments = false
+    }
+}
+
+struct AssignmentRow: View {
+    let assignment: AssignmentAPI
+    let showGrades: Bool
+
+    var body: some View {
+        let submission = assignment.submission?.createModel()
+
+        HStack {
+            VStack(alignment: .leading) {
+                Text(assignment.name)
+                    .font(.headline)
+                Group {
+                    if let submission {
+                        Text(
+                            submission.workflowState?.rawValue.capitalized ?? "Unknown Status"
+                        )
+                    }
+                }
+                .font(.subheadline)
+            }
+
+            if showGrades, let submission {
+                Spacer()
+
+                Text(submission.score?.truncatingTrailingZeros ?? "--") +
+                Text("/") +
+                Text(assignment.points_possible?.truncatingTrailingZeros ?? "--")
+            }
+        }
     }
 }

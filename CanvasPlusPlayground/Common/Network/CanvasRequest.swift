@@ -20,6 +20,10 @@ struct CanvasRequest {
         GetCourseRootFolderRequest(courseId: courseId)
     }
 
+    static func getFile(fileId: String) -> GetFileRequest {
+        GetFileRequest(fileId: fileId)
+    }
+
     static func getFilesInFolder(folderId: String) -> GetFilesInFolderRequest {
         GetFilesInFolderRequest(folderId: folderId)
     }
@@ -39,6 +43,10 @@ struct CanvasRequest {
         perPage: Int = 15
     ) -> GetAnnouncementsRequest {
         GetAnnouncementsRequest(courseId: courseId, startDate: startDate, endDate: endDate, perPage: perPage)
+    }
+
+    static func getAssignment(id: String, courseId: String) -> GetAssignmentRequest {
+        GetAssignmentRequest(assignmentId: id, courseId: courseId)
     }
 
     static func getAssignments(courseId: String) -> GetAssignmentsRequest {
