@@ -42,7 +42,7 @@ struct GetFileRequest: CacheableAPIRequest {
 
     // MARK: Request ID
     var requestId: String { fileId }
-    var requestIdKey: ParentKeyPath<File, String> { .createWritable(\.id) }
+    var requestIdKey: ParentKeyPath<File, String> { .createReadable(\.id) }
     var idPredicate: Predicate<File> {
         #Predicate<File> { file in
             file.id == fileId
