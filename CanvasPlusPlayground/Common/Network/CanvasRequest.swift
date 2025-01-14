@@ -42,7 +42,12 @@ struct CanvasRequest {
         endDate: Date = .now,
         perPage: Int = 15
     ) -> GetAnnouncementsRequest {
-        GetAnnouncementsRequest(courseId: courseId, startDate: startDate, endDate: endDate, perPage: perPage)
+        GetAnnouncementsRequest(
+            courseId: courseId,
+            startDate: startDate,
+            endDate: endDate,
+            perPage: perPage
+        )
     }
 
     static func getAssignment(id: String, courseId: String) -> GetAssignmentRequest {
@@ -69,7 +74,12 @@ struct CanvasRequest {
         GetUserProfileRequest(userId: userId)
     }
 
-    static func getModules(courseId: String, searchTerm: String? = nil, include: [GetModulesRequest.Include] = [], perPage: Int = 25) -> GetModulesRequest {
+    static func getModules(
+        courseId: String,
+        searchTerm: String? = nil,
+        include: [GetModulesRequest.Include] = [],
+        perPage: Int = 25
+    ) -> GetModulesRequest {
         GetModulesRequest(
             courseId: courseId,
             searchTerm: searchTerm,
@@ -78,7 +88,13 @@ struct CanvasRequest {
         )
     }
 
-    static func getModuleItems(courseId: String, moduleId: String, searchTerm: String? = nil, include: [GetModuleItemsRequest.Include] = [], perPage: Int = 25) -> GetModuleItemsRequest {
+    static func getModuleItems(
+        courseId: String,
+        moduleId: String,
+        searchTerm: String? = nil,
+        include: [GetModuleItemsRequest.Include] = [],
+        perPage: Int = 25
+    ) -> GetModuleItemsRequest {
         GetModuleItemsRequest(
             courseId: courseId,
             moduleId: moduleId,

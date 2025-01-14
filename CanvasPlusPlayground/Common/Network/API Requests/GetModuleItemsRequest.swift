@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 struct GetModuleItemsRequest: CacheableArrayAPIRequest {
     typealias Subject = APIModuleItem
 

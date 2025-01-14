@@ -13,8 +13,18 @@ class CanvasRepository {
     let modelContainer: ModelContainer
     let modelContext: ModelContext
     init() {
-        self.modelContainer = try! ModelContainer(for: Course.self, Announcement.self, Enrollment.self, File.self, Folder.self, Quiz.self, Module.self, ModuleItem.self, Submission.self)
-        // TODO: Add cacheable models here
+        self.modelContainer = try! ModelContainer(
+            for: Course.self,
+            Announcement.self,
+            Enrollment.self,
+            File.self,
+            Folder.self,
+            Quiz.self,
+            Module.self,
+            ModuleItem.self,
+            Submission.self
+            // TODO: Add cacheable models here
+        )
         self.modelContext = ModelContext(modelContainer)
         modelContext.autosaveEnabled = true
     }

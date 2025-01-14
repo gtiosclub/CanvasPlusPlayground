@@ -85,6 +85,10 @@ struct ICSParser {
             }
         }
 
+        return groupEvents(events)
+    }
+
+    private static func groupEvents(_ events: [CanvasCalendarEvent]) -> [CanvasCalendarEventGroup] {
         let groupedEvents = Dictionary(grouping: events) { event in
             let date = Calendar.current.dateComponents(
                 [.day, .year, .month],
@@ -108,7 +112,7 @@ struct ICSParser {
             .sorted { $0.date > $1.date }
     }
 
-    static private func fetchICSContentsFromURL(_ url: URL) async throws -> String {
+    private static func fetchICSContentsFromURL(_ url: URL) async throws -> String {
         do {
             let (data, response) = try await URLSession.shared.data(from: url)
 

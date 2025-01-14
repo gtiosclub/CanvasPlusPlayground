@@ -20,7 +20,8 @@ class Module: Cacheable {
     var name: String
     /// The date this module will unlock.
     var unlockAt: Date?
-    /// Whether the items of this module must be unlocked in order - item A of position 1 in this module must be completed before item B of position 2.
+    /// Whether the items of this module must be unlocked in order - item A of position 1 in this module
+    /// must be completed before item B of position 2.
     var requiresSequentialProgress: Bool
     /// IDs of modules that must be completed before this one is unlocked
     var prerequisiteModuleIdsWrapped: [ModuleID]
@@ -28,9 +29,11 @@ class Module: Cacheable {
     var itemsCount: Int
     /// The contents (items) of this module. Only present if requested via `include[]=items` AND if module is not deemed too large by Canvas.
     var items: [APIModuleItem]?
-    /// The state of this Module for the calling user one of 'locked', 'unlocked', 'started', 'completed' (Optional; present only if the caller is a student or if the optional parameter 'student_id' is included)
+    /// The state of this Module for the calling user one of 'locked', 'unlocked', 'started', 'completed'
+    /// (Optional; present only if the caller is a student or if the optional parameter 'student_id' is included)
     var state: ModuleState?
-    /// The date the user completed this module (Optional; present only if the caller is a student or if the optional parameter 'student_id' is included)
+    /// The date the user completed this module
+    /// (Optional; present only if the caller is a student or if the optional parameter 'student_id' is included)
     var completedAt: Date?
     /// (Optional) Whether this module is published. This field is present only if the caller has permission to view unpublished modules.
     var published: Bool?
