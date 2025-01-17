@@ -20,7 +20,8 @@ class ModuleItem: Cacheable {
     var title: String
     /// 0-based indent level; used to show hierarchy
     var indent: Int
-    /// The module type along with properties concerning that type, for one of 'File', 'Page', 'Discussion', 'Assignment', 'Quiz', 'SubHeader', 'ExternalUrl', 'ExternalTool'
+    /// The module type along with properties concerning that type, for one of
+    /// 'File', 'Page', 'Discussion', 'Assignment', 'Quiz', 'SubHeader', 'ExternalUrl', 'ExternalTool'
     var type: ModuleItemType
     /// User-interactable link to the item in Canvas. (e.g. https://canvas.example.edu/courses/222/modules/items/768)
     var htmlURL: URL?

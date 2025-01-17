@@ -132,7 +132,12 @@ final class Course: Cacheable {
 //            model.enrollments = Set(enrollmentModels)
 //        }
 
-//        if let contextColor: ContextColor = context.fetch(scope: .where(#keyPath(ContextColor.canvasContextID), equals: model.canvasContextID)).first {
+//        if let contextColor: ContextColor = context.fetch(
+//            scope: .where(
+//                #keyPath(ContextColor.canvasContextID),
+//                equals: model.canvasContextID
+//            )
+//        ).first {
 //            model.contextColor = contextColor
 //        }
 

@@ -20,7 +20,8 @@ struct APIModule: APIResponse {
     let name: String
     /// The date this module will unlock.
     let unlock_at: Date?
-    /// Whether the items of this module must be unlocked in order - item A of position 1 in this module must be completed before item B of position 2.
+    /// Whether the items of this module must be unlocked in order - item A of position 1 in this module
+    /// must be completed before item B of position 2.
     let require_sequential_progress: Bool?
     /// IDs of modules that must be completed before this one is unlocked
     let prerequisite_module_ids: [Int]
@@ -30,9 +31,11 @@ struct APIModule: APIResponse {
     let items_url: URL?
     /// The contents (items) of this module. Only present if requested via `include[]=items` AND if module is not deemed too large by Canvas.
     let items: [APIModuleItem]?
-    /// The state of this Module for the calling user one of 'locked', 'unlocked', 'started', 'completed' (Optional; present only if the caller is a student or if the optional parameter 'student_id' is included)
+    /// The state of this Module for the calling user one of 'locked', 'unlocked', 'started', 'completed'
+    /// (Optional; present only if the caller is a student or if the optional parameter 'student_id' is included)
     let state: ModuleState?
-    /// The date the user completed this module (Optional; present only if the caller is a student or if the optional parameter 'student_id' is included)
+    /// The date the user completed this module
+    /// (Optional; present only if the caller is a student or if the optional parameter 'student_id' is included)
     let completed_at: Date?
     /// (Optional) Whether this module is published. This field is present only if the caller has permission to view unpublished modules.
     let published: Bool?
