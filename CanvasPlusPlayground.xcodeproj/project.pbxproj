@@ -186,6 +186,8 @@
 		A351913E2D283556001E415F /* ModulesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModulesListView.swift; sourceTree = "<group>"; };
 		A35191402D283589001E415F /* ModulesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModulesViewModel.swift; sourceTree = "<group>"; };
 		A35191422D28ED48001E415F /* GetModuleItemsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetModuleItemsRequest.swift; sourceTree = "<group>"; };
+		A352AD152D3A10F6007EE6FC /* CanvasPlusPlayground.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CanvasPlusPlayground.entitlements; sourceTree = "<group>"; };
+		A352AD162D3A12A1007EE6FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		A373DC0C2D19F65700215019 /* APIGradingPeriod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIGradingPeriod.swift; sourceTree = "<group>"; };
 		A373DC0E2D19F71600215019 /* TypeSafeCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeSafeCodable.swift; sourceTree = "<group>"; };
 		A373DC132D19FA2A00215019 /* APICourseSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICourseSection.swift; sourceTree = "<group>"; };
@@ -614,6 +616,8 @@
 		B76454FD2C8DF61B002DF00E /* CanvasPlusPlayground */ = {
 			isa = PBXGroup;
 			children = (
+				A352AD162D3A12A1007EE6FC /* Info.plist */,
+				A352AD152D3A10F6007EE6FC /* CanvasPlusPlayground.entitlements */,
 				A324BA542D0796B8005F53FA /* Common */,
 				A324BA502D07963D005F53FA /* Features */,
 				B76454F32C8DF61B002DF00E /* Preview Content */,
@@ -1019,13 +1023,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = CanvasPlusPlayground/CanvasPlusPlayground.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CanvasPlusPlayground/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = KJ7YS82G45;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CanvasPlusPlayground/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -1055,13 +1061,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = CanvasPlusPlayground/CanvasPlusPlayground.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CanvasPlusPlayground/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = KJ7YS82G45;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CanvasPlusPlayground/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
