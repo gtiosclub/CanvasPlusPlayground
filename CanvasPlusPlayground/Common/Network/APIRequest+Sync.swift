@@ -29,6 +29,7 @@ extension CacheableAPIRequest {
         using cache: [PersistedModel],
         onNewBatch: ([PersistedModel]) -> Void
     ) async throws -> [PersistedModel] {
+        try repository.modelContext.save() // To destroy unused models in memory
 
         let cacheLookup = Dictionary(uniqueKeysWithValues: cache.map { ($0.id, $0) })
 
