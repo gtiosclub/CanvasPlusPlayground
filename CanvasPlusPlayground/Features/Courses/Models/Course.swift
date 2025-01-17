@@ -14,14 +14,14 @@ final class Course: Cacheable {
     typealias ServerID = Int
 
     // MARK: IDs
-    @Attribute(.unique) let id: String
-    var parentId: String
+    let id: String = ""
+    var parentId: String = ""
 
     // MARK: Other
-    var accessRestrictedByDate: Bool
+    var accessRestrictedByDate: Bool = false
     var bannerImageDownloadURL: URL?
-    var canCreateAnnouncement: Bool
-    var canCreateDiscussionTopic: Bool
+    var canCreateAnnouncement: Bool = false
+    var canCreateDiscussionTopic: Bool = false
     // var contextColor: ContextColor?
     var courseCode: String?
     /** Teacher assigned course color for K5 in hex format. */
@@ -30,31 +30,31 @@ final class Course: Cacheable {
     var calendarIcs: String?
 
     // MARK: Enrollment info
-    var enrollments: [CourseAPI.Enrollment]
-    var enrollmentTypesRaw: String
-    var enrollmentRolesRaw: String // (var roles)
-    var enrollmentRoleIds: String
-    var enrollmentUserIds: String
-    var enrollmentStatesRaw: String
+    var enrollments: [CourseAPI.Enrollment] = []
+    var enrollmentTypesRaw: String = ""
+    var enrollmentRolesRaw: String = ""// (var roles)
+    var enrollmentRoleIds: String = ""
+    var enrollmentUserIds: String = ""
+    var enrollmentStatesRaw: String = ""
 
     // var grades: [Grade]?
     var gradingPeriods: [APIGradingPeriod]?
-    var hideFinalGrades: Bool
+    var hideFinalGrades: Bool = false
     var imageDownloadURL: URL?
-    var isCourseDeleted: Bool
-    var isFavorite: Bool
-    var isHomeroomCourse: Bool
+    var isCourseDeleted: Bool = false
+    var isFavorite: Bool = false
+    var isHomeroomCourse: Bool = false
     /** Use with caution! This property doesn't take section dates or the actual enrollment's concluded state into account. */
-    var isPastEnrollment: Bool
-    var isPublished: Bool
+    var isPastEnrollment: Bool = false
+    var isPublished: Bool = false
     var name: String?
-    var sections: [APICourseSection]
+    var sections: [APICourseSection] = []
     var syllabusBody: String?
     var termName: String?
     var settings: APICourseSettings?
-    var gradingScheme: [APIGradingSchemeEntry]
+    var gradingScheme: [APIGradingSchemeEntry] = []
     // var roles: String? (see enrollmentRolesRaw)
-    var tabs: [TabAPI]
+    var tabs: [TabAPI] = []
 
     var defaultView: CourseDefaultView? {
         get { return CourseDefaultView(rawValue: defaultViewRaw ?? "") }

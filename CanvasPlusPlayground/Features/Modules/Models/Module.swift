@@ -12,21 +12,21 @@ import SwiftData
 class Module: Cacheable {
     typealias ServerID = Int
 
-    var id: String
+    var id: String = ""
     /// The state of the module: `active` or `deleted`
     var workflowState: APIModule.WorkflowState?
     /// The position (order) of the module in this course.
-    var position: Int
-    var name: String
+    var position: Int = 0
+    var name: String = "Unknown Module"
     /// The date this module will unlock.
     var unlockAt: Date?
     /// Whether the items of this module must be unlocked in order - item A of position 1 in this module
     /// must be completed before item B of position 2.
-    var requiresSequentialProgress: Bool
+    var requiresSequentialProgress: Bool = false
     /// IDs of modules that must be completed before this one is unlocked
-    var prerequisiteModuleIdsWrapped: [ModuleID]
+    var prerequisiteModuleIdsWrapped: [ModuleID] = []
     /// The number of items in the module
-    var itemsCount: Int
+    var itemsCount: Int = 0
     /// The contents (items) of this module. Only present if requested via `include[]=items` AND if module is not deemed too large by Canvas.
     var items: [APIModuleItem]?
     /// The state of this Module for the calling user one of 'locked', 'unlocked', 'started', 'completed'

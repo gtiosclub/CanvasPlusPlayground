@@ -12,9 +12,9 @@ import SwiftData
 class Submission: Cacheable {
     typealias ServerID = Int
 
-    let id: String
+    let id: String = ""
 
-    var assignmentId: Int
+    var assignmentId: Int = -1
     var assignment: String?
     var course: String?
     var attempt: Int?
@@ -28,7 +28,7 @@ class Submission: Cacheable {
     var submissionType: String?
     var submittedAt: String?
     var url: String?
-    var userId: Int
+    var userId: Int = -1
     var graderId: Int?
     var gradedAt: String?
     var user: String?

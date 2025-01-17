@@ -11,47 +11,62 @@ import SwiftData
 @Model
 class Quiz {
 
-    @Attribute(.unique) let id: String
-    var courseID: String
+    let id: String = ""
+    var courseID: String = ""
 
     var accessCode: String?
-    var allDates: Set<APIAssignmentDate>
-    var allowedAttempts: Int
+
+    var allDatesRaw: [Data] = []
+    var allDates: Set<APIAssignmentDate> {
+        get {
+            Set(
+                allDatesRaw
+                .compactMap {
+                    try? JSONDecoder().decode(APIAssignmentDate.self, from: $0)
+                }
+            )
+        }
+        set {
+            allDatesRaw = newValue.compactMap { try? JSONEncoder().encode($0) }
+        }
+    }
+
+    var allowedAttempts: Int = 99
     var assignmentID: String?
-    var cantGoBack: Bool
+    var cantGoBack: Bool = false
     var details: String?
     var dueAt: Date?
-    var hasAccessCode: Bool
+    var hasAccessCode: Bool = false
     var hideCorrectAnswersAt: Date?
     var hideResultsRaw: String?
     var htmlURL: URL?
     var ipFilter: String?
     var lockAt: Date?
     var lockExplanation: String?
-    var lockedForUser: Bool
+    var lockedForUser: Bool = false
     var mobileURL: URL?
-    var oneQuestionAtATime: Bool
+    var oneQuestionAtATime: Bool = false
     // var order: String?
     var orderDate: Date?
     var pointsPossible: Double?
-    var published: Bool
+    var published: Bool = true
     var questionCount: Int?
-    var questionTypes: [QuizQuestionType]
-    var quizTypeOrder: Int
-    var quizTypeRaw: String
-    var requireLockdownBrowser: Bool
-    var requireLockdownBrowserForResults: Bool
+    var questionTypesRaw: [String] = []
+    var quizTypeOrder: Int = 0
+    var quizTypeRaw: String = ""
+    var requireLockdownBrowser: Bool = false
+    var requireLockdownBrowserForResults: Bool = false
     var scoringPolicyRaw: String?
-    var showCorrectAnswers: Bool
+    var showCorrectAnswers: Bool = false
     var showCorrectAnswersAt: Date?
-    var showCorrectAnswersLastAttempt: Bool
-    var shuffleAnswers: Bool
+    var showCorrectAnswersLastAttempt: Bool = false
+    var shuffleAnswers: Bool = false
     var submission: APIQuizSubmission?
     var timeLimit: Double? // minutes
-    var title: String
+    var title: String = "Unknown Quiz"
     var unlockAt: Date?
-    var unpublishable: Bool
-    var anonymousSubmissions: Bool
+    var unpublishable: Bool = false
+    var anonymousSubmissions: Bool = false
 
     var hideResults: QuizHideResults? {
         get { return hideResultsRaw.flatMap { QuizHideResults(rawValue: $0) } }
@@ -61,6 +76,14 @@ class Quiz {
     var quizType: QuizType {
         get { return QuizType(rawValue: quizTypeRaw) ?? .assignment }
         set { quizTypeRaw = newValue.rawValue }
+    }
+
+    var questionTypes: [QuizQuestionType] {
+        get {
+            return questionTypesRaw
+                .compactMap { QuizQuestionType(rawValue: $0) }
+        }
+        set { questionTypesRaw = newValue.map(\.rawValue) }
     }
 
     var scoringPolicy: ScoringPolicy? {

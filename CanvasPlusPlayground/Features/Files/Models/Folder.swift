@@ -38,7 +38,7 @@ import SwiftData
 class Folder: Cacheable {
     typealias ServerID = Int
 
-    @Attribute(.unique) var id: String
+    var id: String = ""
 
     var name: String?
     var fullName: String?

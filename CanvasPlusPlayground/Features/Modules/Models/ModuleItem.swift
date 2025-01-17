@@ -12,17 +12,17 @@ import SwiftData
 class ModuleItem: Cacheable {
     typealias ServerID = Int
 
-    var id: String
+    var id: String = ""
     /// The id of the module this item appears in
-    var moduleID: Int
+    var moduleID: Int = -1
     /// The position (order) of the item in its module
-    var position: Int
-    var title: String
+    var position: Int = 0
+    var title: String = "Unknown Module Item"
     /// 0-based indent level; used to show hierarchy
-    var indent: Int
+    var indent: Int = 0
     /// The module type along with properties concerning that type, for one of
     /// 'File', 'Page', 'Discussion', 'Assignment', 'Quiz', 'SubHeader', 'ExternalUrl', 'ExternalTool'
-    var type: ModuleItemType
+    var type: ModuleItemType = ModuleItemType.subHeader
     /// User-interactable link to the item in Canvas. (e.g. https://canvas.example.edu/courses/222/modules/items/768)
     var htmlURL: URL?
     /// Link to Canvas API Object, if applicable (e.g. https://canvas.example.edu/api/v1/courses/222/assignments/987)

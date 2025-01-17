@@ -13,7 +13,7 @@ final class Announcement: Cacheable {
     typealias ID = String
     typealias ServerID = Int
 
-    @Attribute(.unique) let id: String
+    let id: String = ""
     var courseID: String?
 
     var title: String?

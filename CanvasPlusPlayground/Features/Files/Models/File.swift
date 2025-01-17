@@ -51,12 +51,12 @@ class File: Cacheable {
     typealias ServerID = Int
 
     // MARK: - Attributes
-    @Attribute(.unique) var id: String
+    var id: String = ""
 
     var uuid: String?
     var folderId: Int? // parent
-    var displayName: String
-    var filename: String
+    var displayName: String = "Unknown file"
+    var filename: String = "Unknown file"
     var contentType: String?
     var url: String?
     var size: Int?
