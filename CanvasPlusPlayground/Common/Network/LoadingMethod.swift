@@ -8,5 +8,6 @@
 import Foundation
 
 enum LoadingMethod<R: APIRequest> {
+    /// page `order` must be > 1
     case page(order: Int), all(onNewPage: ([R.Subject.Model]) -> Void)
 }

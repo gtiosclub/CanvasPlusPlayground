@@ -16,6 +16,7 @@ protocol APIRequest {
     var path: String { get }
     var queryParameters: [QueryParameter] { get }
     var method: RequestMethod { get }
+    var perPage: Int { get }
 }
 
 extension APIRequest {
@@ -42,6 +43,8 @@ extension APIRequest {
     }
 
     var method: RequestMethod { .GET }
+
+    var perPage: Int { 50 }
 }
 
 protocol ArrayAPIRequest: APIRequest {
