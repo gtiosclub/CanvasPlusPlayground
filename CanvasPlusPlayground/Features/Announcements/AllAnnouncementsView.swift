@@ -31,10 +31,22 @@ struct AllAnnouncementsView: View {
         .navigationTitle("All Announcements")
         .statusToolbarItem("Announcements", isVisible: isLoadingAnnouncements)
         .task {
-            isLoadingAnnouncements = true
-            await announcementsManager
-                .fetchAnnouncements(courses: courseManager.courses)
-            isLoadingAnnouncements = false
+            await loadAnnouncements()
         }
+        .refreshable {
+            await loadAnnouncements()
+        }
+        .onChange(of: courseManager.courses) { _, _ in
+            Task {
+                await loadAnnouncements()
+            }
+        }
+    }
+
+    private func loadAnnouncements() async {
+        isLoadingAnnouncements = true
+        await announcementsManager
+            .fetchAnnouncements(courses: courseManager.courses)
+        isLoadingAnnouncements = false
     }
 }
