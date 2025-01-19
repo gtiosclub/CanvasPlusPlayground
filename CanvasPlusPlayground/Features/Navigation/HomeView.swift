@@ -79,7 +79,7 @@ struct HomeView: View {
             CourseView(course: selectedCourse)
         } else if let selectedNavigationPage {
             switch selectedNavigationPage {
-            case .announcements: Text("All Announcements")
+            case .announcements: AllAnnouncementsView()
             case .toDoList: AggregatedAssignmentsView()
             case .pinned: PinnedItemsView()
             default: EmptyView()

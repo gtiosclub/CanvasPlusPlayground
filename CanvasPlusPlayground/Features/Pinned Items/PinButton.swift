@@ -11,7 +11,7 @@ struct PinButton: View {
     @Environment(PinnedItemsManager.self) private var pinnedItemsManager
 
     let itemID: String
-    let courseID: String
+    let courseID: String?
     let type: PinnedItem.PinnedItemType
 
     var isItemPinned: Bool {

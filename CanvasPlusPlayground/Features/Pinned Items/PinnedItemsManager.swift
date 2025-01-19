@@ -27,9 +27,11 @@ class PinnedItemsManager {
 
     func togglePinnedItem(
         itemID: String,
-        courseID: String,
+        courseID: String?,
         type: PinnedItem.PinnedItemType
     ) {
+        guard let courseID else { return }
+
         if pinnedItems.contains(where: {
             $0.id == itemID && $0.courseID == courseID && $0.type == type
         }) {

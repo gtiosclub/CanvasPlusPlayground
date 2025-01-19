@@ -16,6 +16,7 @@ struct AnnouncementAPI: APIResponse {
     var title: String?
     var created_at: Date?
     var message: String?
+    var context_code: String?
     // swiftlint:enable identifier_name
 
     func createModel() -> Announcement {
