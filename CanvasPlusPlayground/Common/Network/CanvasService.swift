@@ -79,12 +79,12 @@ class CanvasService {
 
     // MARK: Network Requests
 
-    func fetchResponse<Request: APIRequest>(_ request: Request) async throws -> (data: Data, response: URLResponse) {
+    func fetchResponse<Request: APIRequest>(_ request: Request) async throws -> (data: Data, url: URLResponse) {
         return try await request.fetchResponse()
     }
 
-    func fetch<Request: APIRequest>(_ request: Request) async throws -> [Request.Subject] {
-        return try await request.fetch()
+    func fetch<Request: APIRequest>(_ request: Request, loadingMethod: LoadingMethod<Request> = .all(onNewPage: {_ in})) async throws -> [Request.Subject] {
+        return try await request.fetch(loadingMethod: loadingMethod)
     }
 
     // MARK: Repository actions
