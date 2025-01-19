@@ -11,6 +11,8 @@ import Foundation
     var announcements: [Announcement] = []
 
     func fetchAnnouncements(courses: [Course]) async {
+        guard !courses.isEmpty else { return }
+
         let courseIds = courses.map { $0.id }
 
         let announcements: [Announcement]? = try? await CanvasService.shared.loadAndSync(
