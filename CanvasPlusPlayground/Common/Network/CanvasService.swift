@@ -20,7 +20,7 @@ class CanvasService {
 
     /// Only loads from storage, doesn't make a network call
     @MainActor
-    func load<Request: CacheableAPIRequest>(_ request: Request, loadingMethod: LoadingMethod<Request>) async throws -> [Request.PersistedModel]? {
+    func load<Request: CacheableAPIRequest>(_ request: Request, loadingMethod: LoadingMethod<Request> = .all(onNewPage: { _ in})) async throws -> [Request.PersistedModel]? {
         guard let repository else { return nil }
 
         // Get cached data for this type then filter to only get models related to `request`
@@ -45,7 +45,7 @@ class CanvasService {
     func syncWithAPI<Request: CacheableAPIRequest>(
         _ request: Request,
         onNewBatch: ([Request.PersistedModel]) -> Void = { _ in },
-        loadingMethod: LoadingMethod<Request>
+        loadingMethod: LoadingMethod<Request> = .all(onNewPage: { _ in})
     ) async throws -> [Request.PersistedModel] {
         guard let repository else { return [] }
 
@@ -74,7 +74,7 @@ class CanvasService {
         _ request: Request,
         onCacheReceive: ([Request.PersistedModel]?) -> Void = { _ in },
         onNewBatch: ([Request.PersistedModel]) -> Void = { _ in },
-        loadingMethod: LoadingMethod<Request>
+        loadingMethod: LoadingMethod<Request> = .all(onNewPage: { _ in})
     ) async throws -> [Request.PersistedModel] {
         guard let repository else { return [] }
 

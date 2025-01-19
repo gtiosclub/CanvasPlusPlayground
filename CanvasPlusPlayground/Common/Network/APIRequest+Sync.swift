@@ -75,6 +75,7 @@ extension CacheableAPIRequest {
 
                             fetched += transformed
                             onNewPage(transformed)
+                            onNewBatch(transformed) // TODO: remove once loadingMethod is fully integrated
                         }
                     )
                 } else {
