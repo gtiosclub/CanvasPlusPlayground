@@ -12,7 +12,7 @@ import SwiftData
 class ModuleItem: Cacheable {
     typealias ServerID = Int
 
-    var id: String
+    @Attribute(.unique) var id: String
     /// The id of the module this item appears in
     var moduleID: Int
     /// The position (order) of the item in its module

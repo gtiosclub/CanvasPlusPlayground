@@ -12,7 +12,7 @@ import SwiftData
 class Submission: Cacheable {
     typealias ServerID = Int
 
-    let id: String
+    @Attribute(.unique) let id: String
 
     var assignmentId: Int
     var assignment: String?
