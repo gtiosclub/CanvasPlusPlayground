@@ -12,7 +12,7 @@ import SwiftData
 class Module: Cacheable {
     typealias ServerID = Int
 
-    var id: String
+    @Attribute(.unique) var id: String
     /// The state of the module: `active` or `deleted`
     var workflowState: APIModule.WorkflowState?
     /// The position (order) of the module in this course.
