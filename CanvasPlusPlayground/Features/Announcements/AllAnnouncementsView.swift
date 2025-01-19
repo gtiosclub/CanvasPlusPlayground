@@ -17,7 +17,9 @@ struct AllAnnouncementsView: View {
     var body: some View {
         List(selection: $selectedAnnouncement) {
             ForEach(announcementsManager.announcements) { announcement in
-                NavigationLink(value: announcement) {
+                NavigationLink {
+                    CourseAnnouncementDetailView(announcement: announcement)
+                } label: {
                     AnnouncementRow(
                         course: announcement.course,
                         announcement: announcement,
@@ -27,10 +29,6 @@ struct AllAnnouncementsView: View {
             }
         }
         .navigationTitle("All Announcements")
-        .navigationDestination(
-            item: $selectedAnnouncement,
-            destination: CourseAnnouncementDetailView.init
-        )
         .statusToolbarItem("Announcements", isVisible: isLoadingAnnouncements)
         .task {
             isLoadingAnnouncements = true

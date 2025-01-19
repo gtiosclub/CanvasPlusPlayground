@@ -18,6 +18,7 @@ struct HomeView: View {
     @EnvironmentObject private var llmEvaluator: LLMEvaluator
 
     @State private var columnVisibility = NavigationSplitViewVisibility.all
+    @State private var isLoadingCourses = false
 
     @SceneStorage("CourseListView.selectedNavigationPage")
     private var selectedNavigationPage: NavigationPage?
@@ -39,6 +40,10 @@ struct HomeView: View {
 
         NavigationSplitView(columnVisibility: $columnVisibility) {
             Sidebar()
+                .statusToolbarItem("Courses", isVisible: isLoadingCourses)
+                .refreshable {
+                    await loadCourses()
+                }
         } content: {
             contentView
         } detail: {
@@ -52,6 +57,13 @@ struct HomeView: View {
         .task {
             navigationModel.selectedNavigationPage = selectedNavigationPage
             navigationModel.selectedCoursePage = selectedCoursePage
+        }
+        .task {
+            if StorageKeys.needsAuthorization {
+                navigationModel.showAuthorizationSheet = true
+            } else {
+                await loadCourses()
+            }
         }
         .onChange(of: navigationModel.selectedNavigationPage) { _, new in
             selectedNavigationPage = new
@@ -87,6 +99,13 @@ struct HomeView: View {
         } else {
             ContentUnavailableView("Select a course", systemImage: "folder")
         }
+    }
+
+    private func loadCourses() async {
+        isLoadingCourses = true
+        await courseManager.getCourses()
+        await profileManager.getCurrentUserAndProfile()
+        isLoadingCourses = false
     }
 }
 

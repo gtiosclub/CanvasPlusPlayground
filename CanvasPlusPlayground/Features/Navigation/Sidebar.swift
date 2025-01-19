@@ -14,8 +14,6 @@ struct Sidebar: View {
     @Environment(CourseManager.self) private var courseManager
     @Environment(ProfileManager.self) private var profileManager
 
-    @State private var isLoadingCourses = false
-
     var body: some View {
         @Bindable var navigationModel = navigationModel
 
@@ -49,7 +47,6 @@ struct Sidebar: View {
         .navigationSplitViewColumnWidth(min: 275, ideal: 275)
         #endif
         .listStyle(.sidebar)
-        .statusToolbarItem("Courses", isVisible: isLoadingCourses)
         #if os(iOS)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
@@ -59,23 +56,6 @@ struct Sidebar: View {
             }
         }
         #endif
-        .task {
-            if StorageKeys.needsAuthorization {
-                navigationModel.showAuthorizationSheet = true
-            } else {
-                await loadCourses()
-            }
-        }
-        .refreshable {
-            await loadCourses()
-        }
-    }
-
-    private func loadCourses() async {
-        isLoadingCourses = true
-        await courseManager.getCourses()
-        await profileManager.getCurrentUserAndProfile()
-        isLoadingCourses = false
     }
 }
 
