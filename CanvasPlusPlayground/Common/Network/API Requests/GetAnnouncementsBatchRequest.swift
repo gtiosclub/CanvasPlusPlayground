@@ -42,6 +42,8 @@ struct GetAnnouncementsBatchRequest: CacheableArrayAPIRequest {
         include: [String] = [],
         perPage: Int = 50
     ) {
+        assert(!courseIds.isEmpty)
+
         self.contextCodes = courseIds.map { "course_\($0)" }
         self.startDate = startDate
         self.endDate = endDate
@@ -63,11 +65,6 @@ struct GetAnnouncementsBatchRequest: CacheableArrayAPIRequest {
         return contextCodePred
     }
     var customPredicate: Predicate<Announcement> {
-        let contextCodes = contextCodes as [String?]
-        let contextCodePred = contextCodes.isEmpty ? .true : #Predicate<Announcement> { announcement in
-            contextCodes.contains(announcement.contextCode)
-        }
-
         let startDatePredicate: Predicate<Announcement>
         if let startDate {
             startDatePredicate = #Predicate<Announcement> { announcement in
@@ -87,7 +84,7 @@ struct GetAnnouncementsBatchRequest: CacheableArrayAPIRequest {
         } else { endDatePredicate = .true }
 
         return #Predicate<Announcement> { announcement in
-            contextCodePred.evaluate(announcement) && startDatePredicate.evaluate(announcement) && endDatePredicate.evaluate(announcement)
+            startDatePredicate.evaluate(announcement) && endDatePredicate.evaluate(announcement)
         }
     }
 }
