@@ -33,7 +33,7 @@ extension CacheableAPIRequest {
         loadingMethod: LoadingMethod<Self>
     ) async throws -> [PersistedModel] {
 
-        let cacheLookup = Dictionary(uniqueKeysWithValues: cache.map { ($0.id, $0) })
+        let cacheLookup = Dictionary(uniqueKeysWithValues: Set(cache).map { ($0.id, $0) })
 
         let updateStorage: ([PersistedModel]) async -> [PersistedModel] = { newModels in
             // New batch received
