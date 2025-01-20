@@ -78,6 +78,30 @@ struct CanvasRequest {
         GetEnrollmentsRequest(courseId: courseId, userId: userId?.asString, perPage: perPage)
     }
 
+    static func getUsers(
+        courseId: String,
+        include: [GetCourseUsersRequest.Include] = [],
+        searchTerm: String? = nil,
+        sort: GetCourseUsersRequest.Sorter? = nil,
+        enrollmentType: [GetCourseUsersRequest.EnrollmentType] = [],
+        userId: String? = nil,
+        userIds: [String] = [],
+        enrollmentState: [GetCourseUsersRequest.EnrollmentState] = [],
+        perPage: Int = 50
+    ) -> GetCourseUsersRequest {
+        GetCourseUsersRequest(
+            courseId: courseId,
+            include: include,
+            searchTerm: searchTerm,
+            sort: sort,
+            enrollmentType: enrollmentType,
+            userId: userId,
+            userIds: userIds,
+            enrollmentState: enrollmentState,
+            perPage: perPage
+        )
+    }
+
     static func getQuizzes(courseId: String, searchTerm: String? = nil) -> GetQuizzesRequest {
         GetQuizzesRequest(courseId: courseId, searchTerm: searchTerm)
     }

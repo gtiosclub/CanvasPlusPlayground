@@ -56,6 +56,8 @@
 		A35191412D283589001E415F /* ModulesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35191402D283589001E415F /* ModulesViewModel.swift */; };
 		A35191432D28ED48001E415F /* GetModuleItemsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35191422D28ED48001E415F /* GetModuleItemsRequest.swift */; };
 		A352AD182D3DA423007EE6FC /* LoadingMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = A352AD172D3DA423007EE6FC /* LoadingMethod.swift */; };
+		A352AD1A2D3EF1C1007EE6FC /* GetCourseUsersRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A352AD192D3EF1C1007EE6FC /* GetCourseUsersRequest.swift */; };
+		A352AD1C2D3EF206007EE6FC /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = A352AD1B2D3EF206007EE6FC /* User.swift */; };
 		A373DC0D2D19F65700215019 /* APIGradingPeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC0C2D19F65700215019 /* APIGradingPeriod.swift */; };
 		A373DC0F2D19F71600215019 /* TypeSafeCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC0E2D19F71600215019 /* TypeSafeCodable.swift */; };
 		A373DC142D19FA2A00215019 /* APICourseSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC132D19FA2A00215019 /* APICourseSection.swift */; };
@@ -192,6 +194,8 @@
 		A35191402D283589001E415F /* ModulesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModulesViewModel.swift; sourceTree = "<group>"; };
 		A35191422D28ED48001E415F /* GetModuleItemsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetModuleItemsRequest.swift; sourceTree = "<group>"; };
 		A352AD172D3DA423007EE6FC /* LoadingMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingMethod.swift; sourceTree = "<group>"; };
+		A352AD192D3EF1C1007EE6FC /* GetCourseUsersRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetCourseUsersRequest.swift; sourceTree = "<group>"; };
+		A352AD1B2D3EF206007EE6FC /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		A373DC0C2D19F65700215019 /* APIGradingPeriod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIGradingPeriod.swift; sourceTree = "<group>"; };
 		A373DC0E2D19F71600215019 /* TypeSafeCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeSafeCodable.swift; sourceTree = "<group>"; };
 		A373DC132D19FA2A00215019 /* APICourseSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICourseSection.swift; sourceTree = "<group>"; };
@@ -320,6 +324,7 @@
 				A3D161502D178615004055FB /* GetUserProfileRequest.swift */,
 				A373DC2C2D28172E00215019 /* GetModulesRequest.swift */,
 				A35191422D28ED48001E415F /* GetModuleItemsRequest.swift */,
+				A352AD192D3EF1C1007EE6FC /* GetCourseUsersRequest.swift */,
 			);
 			path = "API Requests";
 			sourceTree = "<group>";
@@ -529,6 +534,7 @@
 				B76454EE2C8DF61B002DF00E /* Enrollment.swift */,
 				A3CF88DA2D192194000ACDF3 /* EnrollmentAPI.swift */,
 				B7F950382D1279A1004BB470 /* UserAPI.swift */,
+				A352AD1B2D3EF206007EE6FC /* User.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -804,6 +810,7 @@
 				B7D95D772D07C3D3002AD955 /* ICSParser.swift in Sources */,
 				A3CF88D32D18E6BB000ACDF3 /* ParentKeyPath.swift in Sources */,
 				B7F9503B2D127AD0004BB470 /* ProfileAPI.swift in Sources */,
+				A352AD1C2D3EF206007EE6FC /* User.swift in Sources */,
 				B76455012C8DF61B002DF00E /* StorageKeys.swift in Sources */,
 				A3FFD03A2CDEC2AC006BAB51 /* LookupCondition.swift in Sources */,
 				B7D95DB72D0A8D78002AD955 /* SettingsView.swift in Sources */,
@@ -860,6 +867,7 @@
 				A3049B662D0F3E32002F3166 /* CourseQuizzesView.swift in Sources */,
 				B7D7512B2D3D5D8000F7B8B8 /* AllAnnouncementsView.swift in Sources */,
 				A3E7F3892C954E0500DC4300 /* CanvasRequest.swift in Sources */,
+				A352AD1A2D3EF1C1007EE6FC /* GetCourseUsersRequest.swift in Sources */,
 				A35191412D283589001E415F /* ModulesViewModel.swift in Sources */,
 				A3E7F3912C99317100DC4300 /* CourseTabsManager.swift in Sources */,
 				A3E7F38F2C96C1CE00DC4300 /* CourseTabsView.swift in Sources */,

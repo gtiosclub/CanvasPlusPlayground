@@ -49,7 +49,7 @@ struct PeopleView: View {
         List(displayedUsers, id: \.id) { user in
             NavigationLink(value: user) {
                 HStack {
-                    Text(user.name ?? "")
+                    Text(user.name)
                     Spacer()
                     Text(user.role ?? "nil")
                         .foregroundStyle(.secondary)
@@ -94,7 +94,7 @@ struct PeopleView: View {
     private var displayedUsers: [UserAPI] {
 
         return peopleManager.users.filter { user in
-            let matchesSearchText = searchText.isEmpty || user.name?.localizedCaseInsensitiveContains(searchText) ?? true
+            let matchesSearchText = searchText.isEmpty || user.name.localizedCaseInsensitiveContains(searchText)
 
             let matchesSelectedTokens = selectedTokens.allSatisfy { token in
                 user.role?.contains(token.text) ?? false

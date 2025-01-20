@@ -14,27 +14,30 @@ class PeopleManager {
 
     private var enrollments = [Enrollment]()
 
-    var users: [UserAPI] {
-        Set(
-            enrollments
-                .compactMap {
-                    guard var user = $0.user else { return nil }
-                    user.role = $0.displayRole
-                    return user
-                }
-        ).sorted {
-            ($0.name ?? "") < ($1.name ?? "")
-        }
-    }
+    var users = [User]()
+//    {
+//        Set(
+//            enrollments
+//                .compactMap {
+//                    guard var user = $0.user else { return nil }
+//                    user.role = $0.displayRole
+//                    return user
+//                }1
+//        ).sorted {
+//            ($0.name) < ($1.name)
+//        }
+//    }
 
     init(courseID: String?) {
         self.courseID = courseID
-        self.enrollments = []
     }
 
     func fetchPeople() async {
         guard let courseID else { return }
 
+        let users: [User]? = try? await CanvasService.shared.loadAndSync(
+            CanvasRequest.getUsers(courseId: courseID)
+        )
         let enrollments: [Enrollment]? = try? await CanvasService.shared.loadAndSync(
             CanvasRequest.getEnrollments(courseId: courseID),
             onCacheReceive: { (cached: [Enrollment]?) in

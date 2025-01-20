@@ -61,7 +61,7 @@ struct PeopleCommonView: View {
     }
 
     private func getCommonCourses() async {
-        guard let id = user.id else { return }
+        let id = user.id
 
         fetchingCommonCourses = true
         await peopleManager
