@@ -38,5 +38,4 @@ import Foundation
     func setAnnouncements(_ announcements: [Announcement]) {
         self.announcements = announcements
     }
-
 }

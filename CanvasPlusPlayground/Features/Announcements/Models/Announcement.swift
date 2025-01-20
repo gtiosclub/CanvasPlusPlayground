@@ -19,6 +19,7 @@ final class Announcement: Cacheable {
     var title: String?
     var createdAt: Date?
     var message: String?
+    var contextCode: String?
 
     // MARK: Custom Properties
     var isRead: Bool?
@@ -29,11 +30,13 @@ final class Announcement: Cacheable {
         self.title = api.title
         self.createdAt = api.created_at
         self.message = api.message
+        self.contextCode = api.context_code
     }
 
     func merge(with other: Announcement) {
         self.title = other.title
         self.message = other.message
         self.createdAt = other.createdAt
+        self.contextCode = other.contextCode
     }
 }

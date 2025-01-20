@@ -36,6 +36,7 @@ struct CanvasRequest {
         GetTabsRequest(courseId: courseId)
     }
 
+    /// Fetches Announcements for one course
     static func getAnnouncements(
         courseId: String,
         startDate: Date = .distantPast,
@@ -44,6 +45,21 @@ struct CanvasRequest {
     ) -> GetAnnouncementsRequest {
         GetAnnouncementsRequest(
             courseId: courseId,
+            startDate: startDate,
+            endDate: endDate,
+            perPage: perPage
+        )
+    }
+
+    /// Fetches announcements for all courses with id's in `courseIds`
+    static func getAnnouncements(
+        courseIds: [String],
+        startDate: Date = .distantPast,
+        endDate: Date = .now,
+        perPage: Int = 15
+    ) -> GetAnnouncementsBatchRequest {
+        GetAnnouncementsBatchRequest(
+            courseIds: courseIds,
             startDate: startDate,
             endDate: endDate,
             perPage: perPage

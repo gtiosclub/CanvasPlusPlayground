@@ -73,6 +73,7 @@ struct CourseAnnouncementDetailView: View {
         .onAppear {
             announcement.isRead = true
         }
+        .id(announcement.id)
     }
 
     private var summarySection: some View {

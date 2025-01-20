@@ -124,6 +124,10 @@
 		B7C0A3CB2D2F919F003E5A36 /* PinButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0A3CA2D2F919F003E5A36 /* PinButton.swift */; };
 		B7C0A3CD2D3023CA003E5A36 /* PinnedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0A3CC2D3023CA003E5A36 /* PinnedItem.swift */; };
 		B7C0A3CF2D31F339003E5A36 /* PinnedItemCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0A3CE2D31F339003E5A36 /* PinnedItemCard.swift */; };
+		B7D7512B2D3D5D8000F7B8B8 /* AllAnnouncementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D7512A2D3D5D7700F7B8B8 /* AllAnnouncementsView.swift */; };
+		B7D7512D2D3D652300F7B8B8 /* GetAnnouncementsBatchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D7512C2D3D652300F7B8B8 /* GetAnnouncementsBatchRequest.swift */; };
+		B7D7512F2D3D660B00F7B8B8 /* AllAnnouncementsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D7512E2D3D660B00F7B8B8 /* AllAnnouncementsManager.swift */; };
+		B7D751312D3D688C00F7B8B8 /* AnnouncementRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D751302D3D688C00F7B8B8 /* AnnouncementRow.swift */; };
 		B7D95D772D07C3D3002AD955 /* ICSParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D95D762D07C3D3002AD955 /* ICSParser.swift */; };
 		B7D95DB72D0A8D78002AD955 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D95DB62D0A8D75002AD955 /* SettingsView.swift */; };
 		B7E59A102D2002A5001836FE /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E59A0F2D2002A3001836FE /* Sidebar.swift */; };
@@ -256,6 +260,10 @@
 		B7C0A3CA2D2F919F003E5A36 /* PinButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinButton.swift; sourceTree = "<group>"; };
 		B7C0A3CC2D3023CA003E5A36 /* PinnedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedItem.swift; sourceTree = "<group>"; };
 		B7C0A3CE2D31F339003E5A36 /* PinnedItemCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedItemCard.swift; sourceTree = "<group>"; };
+		B7D7512A2D3D5D7700F7B8B8 /* AllAnnouncementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllAnnouncementsView.swift; sourceTree = "<group>"; };
+		B7D7512C2D3D652300F7B8B8 /* GetAnnouncementsBatchRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAnnouncementsBatchRequest.swift; sourceTree = "<group>"; };
+		B7D7512E2D3D660B00F7B8B8 /* AllAnnouncementsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllAnnouncementsManager.swift; sourceTree = "<group>"; };
+		B7D751302D3D688C00F7B8B8 /* AnnouncementRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementRow.swift; sourceTree = "<group>"; };
 		B7D95D762D07C3D3002AD955 /* ICSParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICSParser.swift; sourceTree = "<group>"; };
 		B7D95DB62D0A8D75002AD955 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		B7E59A0F2D2002A3001836FE /* Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.swift; sourceTree = "<group>"; };
@@ -295,6 +303,7 @@
 		A3049B732D15DBEE002F3166 /* API Requests */ = {
 			isa = PBXGroup;
 			children = (
+				B7D7512C2D3D652300F7B8B8 /* GetAnnouncementsBatchRequest.swift */,
 				A3049B762D15DC36002F3166 /* GetCourseRequest.swift */,
 				A3049B742D15DC1C002F3166 /* GetCoursesRequest.swift */,
 				A3049B782D15E162002F3166 /* GetCourseRootFolder.swift */,
@@ -340,10 +349,13 @@
 		A324BA512D079646005F53FA /* Announcements */ = {
 			isa = PBXGroup;
 			children = (
+				B7D7512A2D3D5D7700F7B8B8 /* AllAnnouncementsView.swift */,
+				B7D7512E2D3D660B00F7B8B8 /* AllAnnouncementsManager.swift */,
 				9B92A4242C93856100C21CFC /* CourseAnnouncementManager.swift */,
 				9B6663E22C9853BC0060990E /* HTMLTextView.swift */,
 				9B9C2E052C93F94C00E4B16B /* CourseAnnouncementDetailView.swift */,
 				9B9C2E032C93F6CD00E4B16B /* CourseAnnouncementsView.swift */,
+				B7D751302D3D688C00F7B8B8 /* AnnouncementRow.swift */,
 				A373DC1F2D1D2B9D00215019 /* Models */,
 			);
 			path = Announcements;
@@ -770,6 +782,7 @@
 				A3049B7B2D15E2B7002F3166 /* GetFilesInFolderRequest.swift in Sources */,
 				A3CF88DB2D192194000ACDF3 /* EnrollmentAPI.swift in Sources */,
 				B7F950322D118EAF004BB470 /* String+StripHTML.swift in Sources */,
+				B7D7512D2D3D652300F7B8B8 /* GetAnnouncementsBatchRequest.swift in Sources */,
 				A324BA6A2D0817AB005F53FA /* FoldersPageView.swift in Sources */,
 				B7A26EE92CCB62A30084704A /* NavigationModel.swift in Sources */,
 				192EC04A2C963B9000AF8528 /* AssignmentAPI.swift in Sources */,
@@ -807,6 +820,7 @@
 				B7E59A142D2004A4001836FE /* CourseListCell.swift in Sources */,
 				B53D95A22CA0A22A00647EE9 /* PeopleView.swift in Sources */,
 				A373DC312D28176100215019 /* APIModule.swift in Sources */,
+				B7D7512F2D3D660B00F7B8B8 /* AllAnnouncementsManager.swift in Sources */,
 				A3049B752D15DC1C002F3166 /* GetCoursesRequest.swift in Sources */,
 				B76455042C8DF61B002DF00E /* CourseView.swift in Sources */,
 				A3049B682D0F3ECA002F3166 /* QuizzesViewModel.swift in Sources */,
@@ -844,6 +858,7 @@
 				B7C0A3CB2D2F919F003E5A36 /* PinButton.swift in Sources */,
 				B7F950392D1279A1004BB470 /* UserAPI.swift in Sources */,
 				A3049B662D0F3E32002F3166 /* CourseQuizzesView.swift in Sources */,
+				B7D7512B2D3D5D8000F7B8B8 /* AllAnnouncementsView.swift in Sources */,
 				A3E7F3892C954E0500DC4300 /* CanvasRequest.swift in Sources */,
 				A35191412D283589001E415F /* ModulesViewModel.swift in Sources */,
 				A3E7F3912C99317100DC4300 /* CourseTabsManager.swift in Sources */,
@@ -880,6 +895,7 @@
 				A3D161492D169C23004055FB /* APIRequest+Storage.swift in Sources */,
 				9B6663E32C9853BC0060990E /* HTMLTextView.swift in Sources */,
 				B7AD550C2CD4257B00FB09BB /* IntelligenceOnboardingView.swift in Sources */,
+				B7D751312D3D688C00F7B8B8 /* AnnouncementRow.swift in Sources */,
 				A3049B792D15E162002F3166 /* GetCourseRootFolder.swift in Sources */,
 				7F8535742C98DE3C0023E384 /* CourseGradeView.swift in Sources */,
 				A3049B7F2D160C03002F3166 /* GetTabsRequest.swift in Sources */,

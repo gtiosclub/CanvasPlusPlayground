@@ -9,6 +9,8 @@ import Foundation
 
 extension String {
     func stripHTML() -> String {
-        return replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression)
+        replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression)
+            .replacingOccurrences(of: "&nbsp;", with: "")
+            .replacingOccurrences(of: "&amp;", with: "&")
     }
 }
