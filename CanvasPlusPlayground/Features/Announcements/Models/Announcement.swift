@@ -24,7 +24,6 @@ final class Announcement: Cacheable {
     // MARK: Custom Properties
     var isRead: Bool?
     var summary: String?
-    var course: Course?
 
     init(api: AnnouncementAPI) {
         self.id = api.id.asString

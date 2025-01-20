@@ -8,7 +8,7 @@
 import Foundation
 
 @Observable class AllAnnouncementsManager {
-    var announcements: [Announcement] = []
+    var announcements: [(Announcement, Course?)] = []
 
     func fetchAnnouncements(courses: [Course]) async {
         guard !courses.isEmpty else { return }
@@ -38,17 +38,16 @@ import Foundation
     private func setAnnouncements(_ announcements: [Announcement], courses: [Course]) {
         DispatchQueue.main.async {
             self.announcements = announcements.map { announcement in
-                guard announcement.course == nil,
-                let contextCode = announcement.contextCode else {
-                    return announcement
+                guard let contextCode = announcement.contextCode else {
+                    return (announcement, nil)
                 }
 
-                announcement.course = courses.first(where: { course in
+                let course = courses.first(where: { course in
                     contextCode.contains(course.id)
                 })
 
-                return announcement
-            }.sorted { $0.createdAt ?? Date() > $1.createdAt ?? Date() }
+                return (announcement, course)
+            }.sorted { $0.0.createdAt ?? Date() > $1.0.createdAt ?? Date() }
         }
     }
 
@@ -56,8 +55,8 @@ import Foundation
         _ announcements: [Announcement],
         courses: [Course]
     ) {
-        let newAnnouncements = self.announcements + announcements.filter {
-            !self.announcements.contains($0)
+        let newAnnouncements = self.announcements.map(\.0) + announcements.filter {
+            !self.announcements.map(\.0).contains($0)
         }
 
         setAnnouncements(newAnnouncements, courses: courses)
