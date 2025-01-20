@@ -25,26 +25,37 @@ extension APIRequest {
 
     /// To fetch data from the Canvas API in batches!
     func fetch(
+        loadingMethod: LoadingMethod<Self>,
         onNewPage: ([Subject]) async -> Void = { _ in}
     ) async throws -> [Subject] {
 
-        // If the request is to be paginated and fetched type T is a collection -> fetch batch by batch
-        let fetched = try await fetchBatch(oneNewBatch: { batch in
-            if let batch = try decodeData(arg: batch) as? [Subject] {
-                await onNewPage(batch)
-            } else if let batch = try decodeData(arg: batch) as? Subject {
-                await onNewPage([batch])
-            }
-        }).map { batch in
-            if let batch = try decodeData(arg: batch) as? [Subject] {
-                return batch
-            } else if let batch = try decodeData(arg: batch) as? Subject {
-                return [batch]
-            } else { throw NetworkError.failedToDecode(msg: "Batch decoding failed inside fetch()") }
+        let fetched: [(data: Data, url: URLResponse)]
+
+        switch loadingMethod {
+        case .page(let order):
+            fetched = [try await fetchResponse(at: order)]
+        case .all:         // If the request is to be paginated
+            fetched = try await fetchPages(
+                onNewPage: { page in
+                    if let page = try decodeData(arg: page) as? [Subject] {
+                        await onNewPage(page)
+                    } else if let page = try decodeData(arg: page) as? Subject {
+                        await onNewPage([page])
+                    }
+                }
+            )
         }
 
-        let result = fetched.reduce([], +)
-        return result
+        let result = try fetched.map { page in
+            if let page = try decodeData(arg: page) as? [Subject] {
+                return page
+            } else if let page = try decodeData(arg: page) as? Subject {
+                return [page]
+            } else { throw NetworkError.failedToDecode(msg: "Page decoding failed inside fetch()") }
+        }
+
+        return result.reduce([], +)
+
     }
 }
 
@@ -52,6 +63,7 @@ extension APIRequest where QueryResult == Subject {
 
     /// To fetch data from the Canvas API, only!
     func fetch(
+        loadingMethod: LoadingMethod<Self>,
         onNewPage: ([Subject]) async -> Void = { _ in}
     ) async throws -> [Subject] {
 
@@ -66,8 +78,13 @@ extension APIRequest where QueryResult == Subject {
 }
 
 extension APIRequest {
-    func fetchResponse() async throws -> (data: Data, response: URLResponse) {
-        let url = self.url
+    func fetchResponse(at page: Int? = nil) async throws -> (data: Data, url: URLResponse) {
+        var url = self.url
+        if let page {
+            url = url.appending(queryItems: [
+                URLQueryItem(name: "page", value: "\(page)")
+            ])
+        }
 
         var urlRequest = URLRequest(url: url)
 
@@ -86,14 +103,14 @@ extension APIRequest {
         }
     }
 
-    func fetchBatch(
-        oneNewBatch: (((data: Data, url: URLResponse)) async throws -> Void)
+    func fetchPages(
+        onNewPage: (((data: Data, url: URLResponse)) async throws -> Void)
     ) async throws -> [(data: Data, url: URLResponse)] {
         /*
          var currUrl =
          1) while loop
             a) people, newUrl = fetch(currUrl)
-            b) onNewBatch(people)
+            b) onNewPage(people)
             c) currUrl = newUrl
             d) if (newUrl = nil) break
          */
@@ -113,7 +130,7 @@ extension APIRequest {
             }
             returnData.append((data, response))
 
-            try await oneNewBatch((data, response))
+            try await onNewPage((data, response))
 
             guard let linkValue = httpResponse.allHeaderFields["Link"] as? String else {
                 print("No link field data")
