@@ -84,7 +84,6 @@
 		A3D1614D2D16ACB8004055FB /* APIRequest+Sync.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D1614C2D16ACB8004055FB /* APIRequest+Sync.swift */; };
 		A3D1614F2D1784E3004055FB /* GetUserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D1614E2D1784E3004055FB /* GetUserRequest.swift */; };
 		A3D161512D178615004055FB /* GetUserProfileRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D161502D178615004055FB /* GetUserProfileRequest.swift */; };
-		A3E59D362CF271C000AF91BD /* Predicate+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E59D352CF271C000AF91BD /* Predicate+Extensions.swift */; };
 		A3E7F3892C954E0500DC4300 /* CanvasRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E7F3882C954E0500DC4300 /* CanvasRequest.swift */; };
 		A3E7F38B2C9555B200DC4300 /* CanvasService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E7F38A2C9555B200DC4300 /* CanvasService.swift */; };
 		A3E7F38F2C96C1CE00DC4300 /* CourseTabsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E7F38E2C96C1CE00DC4300 /* CourseTabsView.swift */; };
@@ -222,7 +221,6 @@
 		A3D1614C2D16ACB8004055FB /* APIRequest+Sync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIRequest+Sync.swift"; sourceTree = "<group>"; };
 		A3D1614E2D1784E3004055FB /* GetUserRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetUserRequest.swift; sourceTree = "<group>"; };
 		A3D161502D178615004055FB /* GetUserProfileRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetUserProfileRequest.swift; sourceTree = "<group>"; };
-		A3E59D352CF271C000AF91BD /* Predicate+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Predicate+Extensions.swift"; sourceTree = "<group>"; };
 		A3E7F3882C954E0500DC4300 /* CanvasRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasRequest.swift; sourceTree = "<group>"; };
 		A3E7F38A2C9555B200DC4300 /* CanvasService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasService.swift; sourceTree = "<group>"; };
 		A3E7F38E2C96C1CE00DC4300 /* CourseTabsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseTabsView.swift; sourceTree = "<group>"; };
@@ -410,7 +408,6 @@
 				B7F950312D118EAA004BB470 /* String+StripHTML.swift */,
 				A3FFD03B2CDED67C006BAB51 /* String+Numbers.swift */,
 				B7926D152CE95CE900BFFBE1 /* RGBColors.swift */,
-				A3E59D352CF271C000AF91BD /* Predicate+Extensions.swift */,
 				9B350F072C9652C6003FC60D /* NSAttributedString+HTML.swift */,
 				A3FFD0392CDEC2AC006BAB51 /* LookupCondition.swift */,
 			);
@@ -795,7 +792,6 @@
 				A3049B722D125509002F3166 /* APIRequest.swift in Sources */,
 				A373DC0D2D19F65700215019 /* APIGradingPeriod.swift in Sources */,
 				A352AD182D3DA423007EE6FC /* LoadingMethod.swift in Sources */,
-				A3E59D362CF271C000AF91BD /* Predicate+Extensions.swift in Sources */,
 				B7926D162CE95CED00BFFBE1 /* RGBColors.swift in Sources */,
 				3DAE84FE2C9A0CE8008C22E7 /* CoursePDFView.swift in Sources */,
 				A3049B632D0E6154002F3166 /* ScoringPolicy.swift in Sources */,

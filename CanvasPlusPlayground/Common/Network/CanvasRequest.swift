@@ -83,7 +83,7 @@ struct CanvasRequest {
         include: [GetCourseUsersRequest.Include] = [],
         searchTerm: String? = nil,
         sort: GetCourseUsersRequest.Sorter? = nil,
-        enrollmentType: [GetCourseUsersRequest.EnrollmentType] = [],
+        enrollmentType: [EnrollmentType] = [],
         userId: String? = nil,
         userIds: [String] = [],
         enrollmentState: [GetCourseUsersRequest.EnrollmentState] = [],

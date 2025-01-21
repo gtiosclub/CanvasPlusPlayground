@@ -23,8 +23,13 @@ class User: Cacheable {
     var pronouns: String?
     var role: String?
 
-    var enrollmentRoles: [String] {
-        Array(Set(enrollments.compactMap{ $0.role.replacingOccurrences(of: "Enrollment", with: "") })).sorted()
+    var enrollmentRoles: [EnrollmentType] {
+        Array(
+            Set(
+                enrollments.compactMap{ EnrollmentType(rawValue: $0.type) }
+            )
+        )
+        .sorted { $0.rawValue < $1.rawValue }
     }
     var enrollments: [EnrollmentAPI]
 
@@ -54,4 +59,39 @@ class User: Cacheable {
         self.enrollments = other.enrollments
     }
 
+}
+
+enum EnrollmentType: String, CaseIterable {
+    case teacher = "TeacherEnrollment", student = "StudentEnrollment", taEnrollment = "TaEnrollment",
+         observer = "ObserverEnrollment", designer = "DesignerEnrollment"
+
+    var displayName: String {
+        switch self {
+        case .teacher:
+            "Teacher"
+        case .student:
+            "Student"
+        case .taEnrollment:
+            "TA"
+        case .observer:
+            "Observer"
+        case .designer:
+            "Designer"
+        }
+    }
+
+    var asFilter: String {
+        switch self {
+        case .teacher:
+            "teacher"
+        case .student:
+            "student"
+        case .taEnrollment:
+            "ta"
+        case .observer:
+            "observer"
+        case .designer:
+            "designer"
+        }
+    }
 }

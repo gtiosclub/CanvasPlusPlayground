@@ -17,13 +17,13 @@ struct GetCourseUsersRequest: CacheableArrayAPIRequest {
         [
             ("search_term", searchTerm),
             ("sort", sort),
-            ("enrollment_type", enrollmentType),
             ("user_id", userId),
-            ("user_ids", userIds),
-            ("enrollment_state", enrollmentState),
             ("per_page", perPage)
         ]
         + include.map { ("include[]", $0) }
+        + enrollmentType.map { ("enrollment_type[]", $0.asFilter) }
+        + userIds.map { ("user_ids[]", $0) }
+        + enrollmentState.map { ("enrollment_state", $0) }
     }
 
     let include: [Include]
@@ -46,7 +46,7 @@ struct GetCourseUsersRequest: CacheableArrayAPIRequest {
     }
     var customPredicate: Predicate<User> {
         let searchTerm = searchTerm ?? ""
-        let searchPred = self.searchTerm == nil ? .true : #Predicate<User> { user in
+        let searchPred = searchTerm.isEmpty ? .true : #Predicate<User> { user in
             user.name.localizedStandardContains(searchTerm)
         }
 
@@ -77,10 +77,6 @@ extension GetCourseUsersRequest {
 
     enum Sorter: String {
         case username, lastLogin = "last_login", email, sisId = "sis_id"
-    }
-
-    enum EnrollmentType: String {
-        case teacher, student, studentView = "student_view", taUser = "ta", observer, designer
     }
 
     enum EnrollmentState: String {

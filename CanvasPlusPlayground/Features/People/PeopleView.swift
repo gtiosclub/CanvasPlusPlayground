@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct Token: Identifiable {
+struct Token: Identifiable, Equatable {
     let id = UUID()
-    let text: String
+    let text: EnrollmentType
 }
 
 struct PeopleView: View {
@@ -17,13 +17,15 @@ struct PeopleView: View {
 
     @State private var peopleManager: PeopleManager
     @State private var searchText: String = ""
+    @State private var page: Int = 1 // 1-indexed
     @State private var selectedTokens = [Token]()
 
     @State private var isLoadingPeople = true
 
     private var suggestedTokens: [Token] {
-        Set(peopleManager.users.compactMap(\.role)).map { Token(text: $0) }
-            .sorted { $0.text < $1.text }
+        EnrollmentType.allCases
+            .map { Token(text: $0) }
+            .sorted { $0.text.displayName < $1.text.displayName }
     }
 
     init(courseID: String?) {
@@ -46,13 +48,19 @@ struct PeopleView: View {
     }
 
     private var mainBody: some View {
-        List(displayedUsers, id: \.id) { user in
+        @Bindable var peopleManager = peopleManager
+
+        return List(displayedUsers, id: \.id) { user in
             NavigationLink(value: user) {
                 HStack {
                     Text(user.name)
                     Spacer()
-                    Text(user.role ?? "nil")
-                        .foregroundStyle(.secondary)
+                    Text(
+                        user.enrollmentRoles
+                            .map(\.displayName)
+                            .joined(separator: ", ")
+                    )
+                    .foregroundStyle(.secondary)
                 }
             }
         }
@@ -72,7 +80,7 @@ struct PeopleView: View {
                     ),
             prompt: "Search People..."
         ) { token in
-            Label(token.text, systemImage: "person.fill")
+            Label(token.text.displayName, systemImage: "person.fill")
         }
         #else
         .searchable(
@@ -81,7 +89,7 @@ struct PeopleView: View {
             suggestedTokens: .constant(suggestedTokens),
             prompt: "Search People..."
         ) { token in
-            Label(token.text, systemImage: "person.fill")
+            Label(token.text.displayName, systemImage: "person.fill")
         }
         #endif
         .overlay {
@@ -89,15 +97,21 @@ struct PeopleView: View {
                 ContentUnavailableView("No results for '\(searchText)'", systemImage: "magnifyingglass")
             }
         }
+        .onChange(of: searchText) { _, _ in
+            newSearchQuery()
+        }
+        .onChange(of: selectedTokens) { _, _ in
+            newSearchQuery()
+        }
     }
 
-    private var displayedUsers: [UserAPI] {
+    private var displayedUsers: [User] {
 
         return peopleManager.users.filter { user in
             let matchesSearchText = searchText.isEmpty || user.name.localizedCaseInsensitiveContains(searchText)
 
             let matchesSelectedTokens = selectedTokens.allSatisfy { token in
-                user.role?.contains(token.text) ?? false
+                user.enrollmentRoles.contains(token.text)
             }
 
             return matchesSearchText && matchesSelectedTokens
@@ -106,8 +120,19 @@ struct PeopleView: View {
 
     private func loadPeople() async {
         isLoadingPeople = true
-        await peopleManager.fetchPeople()
+        await peopleManager.fetchPeople(
+            at: page,
+            searchTerm: searchText.count >= 2 ? searchText : "",
+            roles: selectedTokens.map(\.text)
+        )
         isLoadingPeople = false
+    }
+
+    private func newSearchQuery() {
+        Task {
+            page = 1
+            await loadPeople()
+        }
     }
 }
 

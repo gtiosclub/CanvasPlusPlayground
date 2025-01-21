@@ -12,65 +12,53 @@ import SwiftData
 class PeopleManager {
     private let courseID: String?
 
-    private var enrollments = [Enrollment]()
-
     var users = [User]()
-//    {
-//        Set(
-//            enrollments
-//                .compactMap {
-//                    guard var user = $0.user else { return nil }
-//                    user.role = $0.displayRole
-//                    return user
-//                }1
-//        ).sorted {
-//            ($0.name) < ($1.name)
-//        }
-//    }
 
     init(courseID: String?) {
         self.courseID = courseID
     }
 
-    func fetchPeople() async {
+    func fetchPeople(at page: Int, searchTerm: String? = nil, roles: [EnrollmentType]) async {
         guard let courseID else { return }
 
-        let users: [User]? = try? await CanvasService.shared.loadAndSync(
-            CanvasRequest.getUsers(courseId: courseID)
-        )
-        let enrollments: [Enrollment]? = try? await CanvasService.shared.loadAndSync(
-            CanvasRequest.getEnrollments(courseId: courseID),
-            onCacheReceive: { (cached: [Enrollment]?) in
-                guard let cached else { return }
-
-                addEnrollments(cached)
-            },
-            onNewBatch: { enrollmentsBatch in
-                addEnrollments(enrollmentsBatch)
-            }
-        )
-
-        guard let enrollments else {
-            print("Enrollments is nil, fetch failed.")
-            return
+        // Implies new search query
+        if page == 1 {
+            users = []
         }
 
-        setEnrollments(enrollments)
-    }
+        let request = CanvasRequest.getUsers(
+            courseId: courseID,
+            include: [.enrollments],
+            searchTerm: searchTerm,
+            enrollmentType: roles
+        )
 
-    private func addEnrollments(_ enrollments: [Enrollment]) {
-        DispatchQueue.global().sync {
-            let enrollments = Set(self.enrollments + enrollments).sorted {
-                guard let name1 = $0.user?.name, let name2 = $1.user?.name else { return false }
-                return (name1) < (name2)
+        var users: [User] = []
+        do {
+            users = try await CanvasService.shared.syncWithAPI(
+                request,
+                loadingMethod: .page(order: page)
+            )
+        } catch {
+            print("Error fetching users: \(error)")
+
+            do {
+                users = (
+                    try await CanvasService.shared.load(request, loadingMethod: .page(order: 1)) ?? []
+                )
+            } catch {
+                print("Error loading users from storage: \(error)")
             }
 
-            setEnrollments(enrollments)
         }
+
+        addUsers(users)
     }
 
-    private func setEnrollments(_ enrollments: [Enrollment]) {
-        self.enrollments = enrollments
+    private func addUsers(_ users: [User]) {
+        DispatchQueue.main.async {
+            self.users.append(contentsOf: users)
+        }
     }
 
     func fetchAllClassesWith(
