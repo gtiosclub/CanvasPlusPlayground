@@ -65,7 +65,7 @@ struct PeopleView: View {
             }
         }
         .navigationTitle("People")
-        .navigationDestination(for: UserAPI.self) { user in
+        .navigationDestination(for: User.self) { user in
             PeopleCommonView(user: user).environment(peopleManager)
         }
         .statusToolbarItem("People", isVisible: isLoadingPeople)

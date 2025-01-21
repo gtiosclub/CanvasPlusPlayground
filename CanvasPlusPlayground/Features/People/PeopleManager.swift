@@ -23,7 +23,7 @@ class PeopleManager {
 
         // Implies new search query
         if page == 1 {
-            users = []
+            self.users = []
         }
 
         let request = CanvasRequest.getUsers(
@@ -62,7 +62,7 @@ class PeopleManager {
     }
 
     func fetchAllClassesWith(
-        userID: Int,
+        userID: String,
         activeCourses courses: [Course],
         receivedNewCourse: @escaping (Course) -> Void = { _ in }
     ) async {
@@ -77,7 +77,7 @@ class PeopleManager {
                 func processEnrollments(_ enrollments: [Enrollment]) {
                     guard !didAlreadyAddCourse else { return }
 
-                    let courseIsShared = enrollments.compactMap(\.user?.id).contains([userID])
+                    let courseIsShared = enrollments.compactMap(\.user?.id.asString).contains(userID)
                     if courseIsShared {
                         // Found a Common Course
 
