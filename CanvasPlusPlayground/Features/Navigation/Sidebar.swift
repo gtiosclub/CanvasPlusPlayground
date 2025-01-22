@@ -14,6 +14,8 @@ struct Sidebar: View {
     @Environment(CourseManager.self) private var courseManager
     @Environment(ProfileManager.self) private var profileManager
 
+    @State private var isHiddenSectionExpanded: Bool = false
+
     var body: some View {
         @Bindable var navigationModel = navigationModel
 
@@ -23,7 +25,7 @@ struct Sidebar: View {
             }
 
             Section("Favorites") {
-                ForEach(courseManager.userFavCourses, id: \.id) { course in
+                ForEach(courseManager.userFavCourses) { course in
                     NavigationLink(
                         value: NavigationPage.course(id: course.id)
                     ) {
@@ -33,12 +35,23 @@ struct Sidebar: View {
                 }
             }
 
-            Section("Courses") {
-                ForEach(courseManager.userOtherCourses, id: \.id) { course in
+            Section("My Courses") {
+                ForEach(courseManager.userOtherCourses) { course in
                     NavigationLink(value: NavigationPage.course(id: course.id)) {
                         CourseListCell(course: course)
                     }
                     .tint(course.rgbColors?.color)
+                }
+            }
+
+            if !courseManager.userHiddenCourses.isEmpty {
+                Section("Hidden", isExpanded: $isHiddenSectionExpanded) {
+                    ForEach(courseManager.userHiddenCourses) { course in
+                        NavigationLink(value: NavigationPage.course(id: course.id)) {
+                            CourseListCell(course: course)
+                        }
+                        .tint(course.rgbColors?.color)
+                    }
                 }
             }
         }

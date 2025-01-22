@@ -66,6 +66,7 @@ final class Course: Cacheable {
     var rgbColors: RGBColors?
     // var isFavorite: Bool?
     var nickname: String?
+    var isHidden: Bool?
 
     var displayName: String {
         nickname ?? name ?? "Unknown Name"

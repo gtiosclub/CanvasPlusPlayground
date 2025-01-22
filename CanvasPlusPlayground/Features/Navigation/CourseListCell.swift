@@ -37,6 +37,17 @@ struct CourseListCell: View {
                         : .none
                     )
             }
+            .tint(.orange)
+        }
+        .swipeActions(edge: .trailing) {
+            Button(
+                wrappedCourseIsHidden ? "Unhide Course" : "Hide Course",
+                systemImage: "eye"
+            ) {
+                course.isHidden = !wrappedCourseIsHidden
+            }
+            .symbolVariant(wrappedCourseIsHidden ? .none : .slash)
+            .tint(.gray)
         }
         .onAppear {
             resolvedCourseColor = course.rgbColors?.color ?? .accentColor
@@ -98,5 +109,9 @@ struct CourseListCell: View {
 
     private var wrappedCourseIsFavorite: Bool {
         course.isFavorite
+    }
+
+    private var wrappedCourseIsHidden: Bool {
+        course.isHidden ?? false
     }
 }

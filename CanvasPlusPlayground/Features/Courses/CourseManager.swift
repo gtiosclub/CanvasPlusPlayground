@@ -9,14 +9,31 @@ import SwiftUI
 
 @Observable
 class CourseManager {
-    var courses = [Course]()
+    var allCourses = [Course]()
+
+    var displayedCourses: [Course] {
+        allCourses
+            .filter { !($0.isHidden ?? false) }
+    }
 
     var userFavCourses: [Course] {
-        courses.filter { $0.isFavorite }.sorted { $0.name ?? "" < $1.name ?? "" }
+        allCourses
+            .filter { !($0.isHidden ?? false) }
+            .filter { $0.isFavorite }
+            .sorted { $0.name ?? "" < $1.name ?? "" }
     }
 
     var userOtherCourses: [Course] {
-        courses.filter { !($0.isFavorite) }.sorted { $0.name ?? "" < $1.name ?? "" }
+        allCourses
+            .filter { !($0.isHidden ?? false) }
+            .filter { !($0.isFavorite) }
+            .sorted { $0.name ?? "" < $1.name ?? "" }
+    }
+
+    var userHiddenCourses: [Course] {
+        allCourses
+            .filter { $0.isHidden ?? false }
+            .sorted { $0.name ?? "" < $1.name ?? "" }
     }
 
     func getCourses() async {
@@ -38,6 +55,6 @@ class CourseManager {
     }
 
     func setCourses(_ courses: [Course]) {
-        self.courses = courses
+        self.allCourses = courses
     }
 }
