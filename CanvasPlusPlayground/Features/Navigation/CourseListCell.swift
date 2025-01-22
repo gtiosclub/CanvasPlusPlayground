@@ -66,6 +66,14 @@ struct CourseListCell: View {
                 }
             }
 
+            Button(
+                wrappedCourseIsHidden ? "Unhide Course" : "Hide Course",
+                systemImage: "eye"
+            ) {
+                course.isHidden = !wrappedCourseIsHidden
+            }
+            .symbolVariant(wrappedCourseIsHidden ? .none : .slash)
+
             Button("Rename \(course.name ?? "")...", systemImage: "character.cursor.ibeam") {
                 renameCourseFieldText = course.nickname ?? ""
                 showRenameTextField = true
