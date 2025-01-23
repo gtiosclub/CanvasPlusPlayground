@@ -21,16 +21,12 @@ class PeopleManager {
     func fetchPeople(at page: Int, searchTerm: String? = nil, roles: [EnrollmentType]) async {
         guard let courseID else { return }
 
-        // Implies new search query
-        if page == 1 {
-            self.users = []
-        }
-
         let request = CanvasRequest.getUsers(
             courseId: courseID,
             include: [.enrollments],
             searchTerm: searchTerm,
-            enrollmentType: roles
+            enrollmentType: roles,
+            perPage: 50
         )
 
         var users: [User] = []
@@ -52,13 +48,17 @@ class PeopleManager {
 
         }
 
-        addUsers(users)
+        await addUsers(users)
     }
 
-    private func addUsers(_ users: [User]) {
-        DispatchQueue.main.async {
-            self.users.append(contentsOf: users)
+    @MainActor
+    private func addUsers(_ users: [User], page: Int = 1) {
+        // Implies new search query
+        if page == 1 {
+            self.users = []
         }
+
+        self.users.append(contentsOf: users)
     }
 
     func fetchAllClassesWith(

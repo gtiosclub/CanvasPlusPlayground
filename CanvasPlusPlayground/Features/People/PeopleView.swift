@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Token: Identifiable, Equatable {
+private struct Token: Identifiable, Equatable {
     let id = UUID()
     let text: EnrollmentType
 }
@@ -48,9 +48,8 @@ struct PeopleView: View {
     }
 
     private var mainBody: some View {
-        @Bindable var peopleManager = peopleManager
 
-        return List(displayedUsers, id: \.id) { user in
+        List(displayedUsers, id: \.id) { user in
             NavigationLink(value: user) {
                 HStack {
                     Text(user.name)
@@ -63,6 +62,13 @@ struct PeopleView: View {
                     .foregroundStyle(.secondary)
                 }
             }
+            .onAppear(perform: {
+                guard let userId = peopleManager.users.last?.id, userId == user.id else {
+                    return
+                }
+
+                loadNewPage()
+            })
         }
         .navigationTitle("People")
         .navigationDestination(for: User.self) { user in
@@ -131,6 +137,13 @@ struct PeopleView: View {
     private func newSearchQuery() {
         Task {
             page = 1
+            await loadPeople()
+        }
+    }
+
+    private func loadNewPage() {
+        Task {
+            page += 1
             await loadPeople()
         }
     }
