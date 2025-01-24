@@ -71,6 +71,8 @@
 		A373DC332D2819F700215019 /* APIModuleItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC322D2819F700215019 /* APIModuleItem.swift */; };
 		A373DC352D2824D700215019 /* Module.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC342D2824D700215019 /* Module.swift */; };
 		A373DC372D28285300215019 /* ModuleItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC362D28285300215019 /* ModuleItem.swift */; };
+		A3CA02592D43294B00A9752B /* SearchResultsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CA02582D43294B00A9752B /* SearchResultsListView.swift */; };
+		A3CA025B2D432A8700A9752B /* SearchResultListDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CA025A2D432A8700A9752B /* SearchResultListDatasource.swift */; };
 		A3CF88D12D18E61B000ACDF3 /* APIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CF88D02D18E61B000ACDF3 /* APIResponse.swift */; };
 		A3CF88D32D18E6BB000ACDF3 /* ParentKeyPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CF88D22D18E6BB000ACDF3 /* ParentKeyPath.swift */; };
 		A3CF88D92D192177000ACDF3 /* CourseAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CF88D82D192177000ACDF3 /* CourseAPI.swift */; };
@@ -208,6 +210,8 @@
 		A373DC322D2819F700215019 /* APIModuleItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIModuleItem.swift; sourceTree = "<group>"; };
 		A373DC342D2824D700215019 /* Module.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Module.swift; sourceTree = "<group>"; };
 		A373DC362D28285300215019 /* ModuleItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleItem.swift; sourceTree = "<group>"; };
+		A3CA02582D43294B00A9752B /* SearchResultsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsListView.swift; sourceTree = "<group>"; };
+		A3CA025A2D432A8700A9752B /* SearchResultListDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultListDatasource.swift; sourceTree = "<group>"; };
 		A3CF88D02D18E61B000ACDF3 /* APIResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIResponse.swift; sourceTree = "<group>"; };
 		A3CF88D22D18E6BB000ACDF3 /* ParentKeyPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentKeyPath.swift; sourceTree = "<group>"; };
 		A3CF88D82D192177000ACDF3 /* CourseAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAPI.swift; sourceTree = "<group>"; };
@@ -421,6 +425,7 @@
 				B7F950332D11A00F004BB470 /* StatusToolbarItem.swift */,
 				B7926D172CE962C200BFFBE1 /* ColorPickerWithoutLabel.swift */,
 				3DAE84FF2C9A0E4F008C22E7 /* PDFViewHelper.swift */,
+				A3CA025C2D432B8500A9752B /* Search Results */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -605,6 +610,15 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		A3CA025C2D432B8500A9752B /* Search Results */ = {
+			isa = PBXGroup;
+			children = (
+				A3CA02582D43294B00A9752B /* SearchResultsListView.swift */,
+				A3CA025A2D432A8700A9752B /* SearchResultListDatasource.swift */,
+			);
+			path = "Search Results";
+			sourceTree = "<group>";
+		};
 		B764545B2C8BBC7F002DF00E = {
 			isa = PBXGroup;
 			children = (
@@ -776,6 +790,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9B92A4232C93853C00C21CFC /* Announcement.swift in Sources */,
+				A3CA02592D43294B00A9752B /* SearchResultsListView.swift in Sources */,
 				B76454FE2C8DF61B002DF00E /* Course.swift in Sources */,
 				A324BA642D07AF0B005F53FA /* CourseFileService.swift in Sources */,
 				95BA93482C9CE20D00137A91 /* CalendarView.swift in Sources */,
@@ -854,6 +869,7 @@
 				A3D1614D2D16ACB8004055FB /* APIRequest+Sync.swift in Sources */,
 				A3049B562D0E541D002F3166 /* QuizType.swift in Sources */,
 				A3049B612D0E6110002F3166 /* QuizQuestionType.swift in Sources */,
+				A3CA025B2D432A8700A9752B /* SearchResultListDatasource.swift in Sources */,
 				9B9C2E042C93F6CD00E4B16B /* CourseAnnouncementsView.swift in Sources */,
 				192EC04C2C963EE600AF8528 /* CourseAssignmentView.swift in Sources */,
 				A3FFD03C2CDED67C006BAB51 /* String+Numbers.swift in Sources */,
