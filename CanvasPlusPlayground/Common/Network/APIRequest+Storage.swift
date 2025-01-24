@@ -30,6 +30,7 @@ extension CacheableAPIRequest {
         if case let .page(order) = loadingMethod {
             descriptor.fetchOffset = self.perPage * (order - 1)
             descriptor.fetchLimit = self.perPage
+            descriptor.sortBy = [SortDescriptor(\.id)] // default sort required for pagination
         }
 
         // Get cached data for this type then filter to only get models related to `request`
