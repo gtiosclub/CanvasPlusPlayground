@@ -55,7 +55,6 @@ class CanvasService {
             onNewBatch: onNewBatch,
             loadingMethod: loadingMethod
         )
-        print("Synced: \(result)")
         return result
     }
 
