@@ -15,7 +15,7 @@ extension CacheableAPIRequest {
         onNewBatch: ([PersistedModel]) -> Void = { _ in },
         loadingMethod: LoadingMethod<Self> = .all(onNewPage: { _ in })
     ) async throws -> [PersistedModel] {
-        let cached = try await load(from: repository, loadingMethod: loadingMethod) ?? []
+        let cached = try await load(from: repository, loadingMethod: .all(onNewPage: { _ in})) ?? []
 
         return try await syncWithAPI(
             to: repository,
