@@ -98,8 +98,6 @@ extension APIRequest {
             }
 
             return (data, response)
-        } catch {
-            throw NetworkError.fetchFailed(msg: error.localizedDescription)
         }
     }
 
