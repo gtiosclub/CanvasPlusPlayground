@@ -7,25 +7,24 @@
 
 import SwiftUI
 
-private struct Token: Identifiable, Equatable {
-    let id = UUID()
-    let text: EnrollmentType
-}
-
 struct PeopleView: View {
+    struct Token: Identifiable, Equatable {
+        let id = UUID()
+        let category: EnrollmentType
+    }
+
     let courseID: String?
 
     @State private var peopleManager: PeopleManager
+    @State private var selectedTokens: [Token] = []
     @State private var searchText: String = ""
-    @State private var page: Int = 1 // 1-indexed
-    @State private var selectedTokens = [Token]()
 
-    @State private var isLoadingPeople = true
+    @State private var currentSearchTask: Task<Void, Never>?
 
     private var suggestedTokens: [Token] {
         EnrollmentType.allCases
-            .map { Token(text: $0) }
-            .sorted { $0.text.displayName < $1.text.displayName }
+            .map { Token(category: $0) }
+            .sorted { $0.category.displayName < $1.category.displayName }
     }
 
     init(courseID: String?) {
@@ -34,47 +33,25 @@ struct PeopleView: View {
     }
 
     var body: some View {
-        @Bindable var peopleManager = peopleManager
-
         NavigationStack {
             mainBody
         }
-        .task {
-            await loadPeople()
-        }
         .refreshable {
-            await loadPeople()
+            currentSearchTask?.cancel()
+            await newQuery() // don't use `newQueryAsync` to allow the refresh animation to persist until query finished
         }
     }
 
     private var mainBody: some View {
-
-        List(displayedUsers, id: \.id) { user in
-            NavigationLink(value: user) {
-                HStack {
-                    Text(user.name)
-                    Spacer()
-                    Text(
-                        user.enrollmentRoles
-                            .map(\.displayName)
-                            .joined(separator: ", ")
-                    )
-                    .foregroundStyle(.secondary)
-                }
+        SearchResultsListView(dataSource: peopleManager) {
+            ForEach(peopleManager.displayedUsers, id: \.id) { user in
+                UserCell(for: user)
             }
-            .onAppear(perform: {
-                guard let userId = peopleManager.users.last?.id, userId == user.id else {
-                    return
-                }
-
-                loadNewPage()
-            })
         }
         .navigationTitle("People")
         .navigationDestination(for: User.self) { user in
             PeopleCommonView(user: user).environment(peopleManager)
         }
-        .statusToolbarItem("People", isVisible: isLoadingPeople)
         #if os(iOS)
         .searchable(
             text: $searchText,
@@ -86,7 +63,7 @@ struct PeopleView: View {
                     ),
             prompt: "Search People..."
         ) { token in
-            Label(token.text.displayName, systemImage: "person.fill")
+            Label(token.category.displayName, systemImage: "person.fill")
         }
         #else
         .searchable(
@@ -95,57 +72,71 @@ struct PeopleView: View {
             suggestedTokens: .constant(suggestedTokens),
             prompt: "Search People..."
         ) { token in
-            Label(token.text.displayName, systemImage: "person.fill")
+            Label(token.category.displayName, systemImage: "person.fill")
         }
         #endif
         .overlay {
-            if !searchText.isEmpty && displayedUsers.isEmpty {
-                ContentUnavailableView("No results for '\(searchText)'", systemImage: "magnifyingglass")
-            }
+            noResultsBanner
         }
         .onChange(of: searchText) { _, _ in
-            newSearchQuery()
+            newQueryAsync()
         }
         .onChange(of: selectedTokens) { _, _ in
-            newSearchQuery()
+            newQueryAsync()
         }
     }
 
-    private var displayedUsers: [User] {
-
-        return peopleManager.users.filter { user in
-            let matchesSearchText = searchText.isEmpty || user.name.localizedCaseInsensitiveContains(searchText)
-
-            let matchesSelectedTokens = selectedTokens.allSatisfy { token in
-                user.enrollmentRoles.contains(token.text)
+    @ViewBuilder
+    var noResultsBanner: some View {
+        if peopleManager.loadingState != .loading {
+            if !searchText.isEmpty && peopleManager.displayedUsers.isEmpty {
+                ContentUnavailableView("No results for '\(searchText)'", systemImage: "magnifyingglass")
+            } else if peopleManager.displayedUsers.isEmpty {
+                ContentUnavailableView("Failed to fetch people", systemImage: "exclamationmark.triangle.fill")
             }
-
-            return matchesSearchText && matchesSelectedTokens
         }
     }
 
-    private func loadPeople() async {
-        isLoadingPeople = true
-        await peopleManager.fetchPeople(
-            at: page,
-            searchTerm: searchText.count >= 2 ? searchText : "",
-            roles: selectedTokens.map(\.text)
-        )
-        isLoadingPeople = false
+    private func newQuery() async {
+        peopleManager.page = 1
+        peopleManager.queryMode = .live
+        peopleManager.searchText = searchText
+        peopleManager.selectedRoles = selectedTokens.map(\.category)
+        await peopleManager.fetchNextPage()
     }
 
-    private func newSearchQuery() {
-        Task {
-            page = 1
-            await loadPeople()
+    private func newQueryAsync() {
+        currentSearchTask?.cancel()
+        currentSearchTask = Task {
+            await newQuery()
         }
     }
+}
 
-    private func loadNewPage() {
-        Task {
-            page += 1
-            await loadPeople()
+private struct UserCell: View {
+    let user: User
+
+    static let height = 50 // Only works on MacOS
+
+    init(for user: User) {
+        self.user = user
+    }
+
+    var body: some View {
+        NavigationLink(value: user) {
+            HStack {
+                Text(user.name)
+                    .font(.headline)
+                Spacer()
+                Text(
+                    user.enrollmentRoles
+                        .map(\.displayName)
+                        .joined(separator: ", ")
+                )
+                .foregroundStyle(.secondary)
+            }
         }
+        .frame(height: 25)
     }
 }
 

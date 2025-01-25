@@ -9,58 +9,119 @@ import SwiftUI
 import SwiftData
 
 @Observable
-class PeopleManager {
+class PeopleManager: SearchResultListDatasource {
+
+    // MARK: SearchResultListDatasource
+
+    let label: String = "People"
+
+    var loadingState: LoadingState = .nextPageReady
+    var queryMode: PageMode = .live
+
+    func fetchNextPage() async {
+        await setLoadingState(.loading)
+        do {
+            try await fetchPeople()
+        } catch {
+            await setLoadingState(.error())
+        }
+    }
+
+    // MARK: People
     private let courseID: String?
 
-    var users = [User]()
+    var page: Int = 1 // 1-indexed
+    var searchText: String = ""
+    var selectedRoles: [EnrollmentType] = []
 
-    init(courseID: String?) {
+    var users = Set<User>()
+    var displayedUsers: [User] {
+        users.filter { user in
+            let matchesSearchText = searchText.isEmpty || user.name.localizedCaseInsensitiveContains(searchText)
+
+            let matchesSelectedTokens = selectedRoles.allSatisfy { role in
+                user.enrollmentRoles.contains(role)
+            }
+
+            return matchesSearchText && matchesSelectedTokens
+        }
+        .sorted { $0.sortableName < $1.sortableName }
+    }
+
+    init(
+        courseID: String?
+    ) {
         self.courseID = courseID
     }
 
-    func fetchPeople(at page: Int, searchTerm: String? = nil, roles: [EnrollmentType]) async {
+    func fetchPeople() async throws {
         guard let courseID else { return }
 
         let request = CanvasRequest.getUsers(
             courseId: courseID,
             include: [.enrollments],
-            searchTerm: searchTerm,
-            enrollmentType: roles,
-            perPage: 50
+            searchTerm: searchText.count >= 2 ? searchText : "",
+            enrollmentType: selectedRoles,
+            perPage: 60
         )
 
         var users: [User] = []
         do {
-            users = try await CanvasService.shared.syncWithAPI(
-                request,
-                loadingMethod: .page(order: page)
-            )
-        } catch {
-            print("Error fetching users: \(error)")
-
-            do {
-                users = (
-                    try await CanvasService.shared.load(request, loadingMethod: .page(order: 1)) ?? []
+            switch queryMode {
+            case .live:
+                users = try await CanvasService.shared.syncWithAPI(
+                    request,
+                    loadingMethod: .page(order: page)
                 )
-            } catch {
-                print("Error loading users from storage: \(error)")
+            case .offline:
+                users = (
+                    try await CanvasService.shared
+                        .load(
+                            request, loadingMethod: .page(order: page)
+                        ) ?? []
+                )
             }
 
+            await addNewUsers(users)
+        } catch {
+            // don't make offline query if request was cancelled
+            if let error = error as? URLError, error.code == .cancelled {
+                return
+            }
+            print("Error fetching users: \(error)")
+
+            if queryMode == .live && page == 1 {
+                await setQueryMode(.offline)
+                try await fetchPeople()
+            } else {
+                throw error
+            }
         }
 
-        await addUsers(users)
     }
 
     @MainActor
-    private func addUsers(_ users: [User], page: Int = 1) {
+    private func addNewUsers(_ newUsers: [User]) {
         // Implies new search query
         if page == 1 {
+            print("Users: \(self.users.map(\.name))")
             self.users = []
         }
 
-        self.users.append(contentsOf: users)
-    }
+        self.users.formUnion(newUsers)
 
+        // no users means no more pages
+        if newUsers.isEmpty {
+            setLoadingState(.idle)
+        } else {
+            setLoadingState(.nextPageReady)
+            page += 1
+        }
+    }
+}
+
+// MARK: Shared Classes Feature
+extension PeopleManager {
     func fetchAllClassesWith(
         userID: String,
         activeCourses courses: [Course],
@@ -98,7 +159,6 @@ class PeopleManager {
                     }, onNewBatch: { batchedResults in
                         processEnrollments(batchedResults)
                     }) else {
-                        // TODO: indicate network error here
                         print("Couldn't fetch enrollment count for course \(course.name ?? "n/a")")
                         return
                     }
@@ -106,4 +166,5 @@ class PeopleManager {
             }
         }
     }
+
 }
