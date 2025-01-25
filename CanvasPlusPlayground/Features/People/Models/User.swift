@@ -26,7 +26,7 @@ class User: Cacheable {
     var enrollmentRoles: [EnrollmentType] {
         Array(
             Set(
-                enrollments.compactMap{ EnrollmentType(rawValue: $0.type) }
+                enrollments.compactMap { EnrollmentType(rawValue: $0.type) }
             )
         )
         .sorted { $0.rawValue < $1.rawValue }
