@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-/// https://medium.engineering/how-to-do-pagination-in-swiftui-04511be7fbd1
+/// Inspired by https://medium.engineering/how-to-do-pagination-in-swiftui-04511be7fbd1
 struct SearchResultsListView<Content: View, DataSource: SearchResultListDatasource>: View {
     @State var dataSource: DataSource
     let itemsView: () -> Content
