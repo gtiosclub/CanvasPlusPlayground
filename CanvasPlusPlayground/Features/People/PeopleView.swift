@@ -90,7 +90,7 @@ struct PeopleView: View {
     var noResultsBanner: some View {
         if peopleManager.loadingState != .loading {
             if !searchText.isEmpty && peopleManager.displayedUsers.isEmpty {
-                ContentUnavailableView("No results for '\(searchText)'", systemImage: "magnifyingglass")
+                ContentUnavailableView.search(text: searchText)
             } else if peopleManager.displayedUsers.isEmpty {
                 ContentUnavailableView("Failed to fetch people", systemImage: "exclamationmark.triangle.fill")
             }
@@ -116,7 +116,7 @@ struct PeopleView: View {
 private struct UserCell: View {
     let user: User
 
-    static let height = 50 // Only works on MacOS
+    static let height: CGFloat = 25 // Only works on MacOS
 
     init(for user: User) {
         self.user = user
@@ -136,7 +136,7 @@ private struct UserCell: View {
                 .foregroundStyle(.secondary)
             }
         }
-        .frame(height: 25)
+        .frame(height: Self.height)
     }
 }
 

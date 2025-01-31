@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol SearchResultListDatasource : AnyObject {
+protocol SearchResultListDataSource : AnyObject {
     /// Label for source type (e.g. Grade for grades loading). Used in loading text.
     var label: String { get }
     /// Should start with .nextPageFound
@@ -28,7 +28,7 @@ enum PageMode {
     case offline, live
 }
 
-extension SearchResultListDatasource {
+extension SearchResultListDataSource {
     @MainActor
     func setLoadingState(_ state: LoadingState) {
         self.loadingState = state

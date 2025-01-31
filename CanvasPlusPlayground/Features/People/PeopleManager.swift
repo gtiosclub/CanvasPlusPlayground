@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 @Observable
-class PeopleManager: SearchResultListDatasource {
+class PeopleManager: SearchResultListDataSource {
 
     // MARK: SearchResultListDatasource
 
