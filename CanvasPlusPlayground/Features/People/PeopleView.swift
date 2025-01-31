@@ -7,23 +7,24 @@
 
 import SwiftUI
 
-struct Token: Identifiable {
-    let id = UUID()
-    let text: String
-}
-
 struct PeopleView: View {
+    struct Token: Identifiable, Equatable {
+        let id = UUID()
+        let category: EnrollmentType
+    }
+
     let courseID: String?
 
     @State private var peopleManager: PeopleManager
+    @State private var selectedTokens: [Token] = []
     @State private var searchText: String = ""
-    @State private var selectedTokens = [Token]()
 
-    @State private var isLoadingPeople = true
+    @State private var currentSearchTask: Task<Void, Never>?
 
     private var suggestedTokens: [Token] {
-        Set(peopleManager.users.compactMap(\.role)).map { Token(text: $0) }
-            .sorted { $0.text < $1.text }
+        EnrollmentType.allCases
+            .map { Token(category: $0) }
+            .sorted { $0.category.displayName < $1.category.displayName }
     }
 
     init(courseID: String?) {
@@ -32,35 +33,25 @@ struct PeopleView: View {
     }
 
     var body: some View {
-        @Bindable var peopleManager = peopleManager
-
         NavigationStack {
             mainBody
         }
-        .task {
-            await loadPeople()
-        }
         .refreshable {
-            await loadPeople()
+            currentSearchTask?.cancel()
+            await newQuery() // don't use `newQueryAsync` to allow the refresh animation to persist until query finished
         }
     }
 
     private var mainBody: some View {
-        List(displayedUsers, id: \.id) { user in
-            NavigationLink(value: user) {
-                HStack {
-                    Text(user.name ?? "")
-                    Spacer()
-                    Text(user.role ?? "nil")
-                        .foregroundStyle(.secondary)
-                }
+        SearchResultsListView(dataSource: peopleManager) {
+            ForEach(peopleManager.displayedUsers, id: \.id) { user in
+                UserCell(for: user)
             }
         }
         .navigationTitle("People")
-        .navigationDestination(for: UserAPI.self) { user in
+        .navigationDestination(for: User.self) { user in
             PeopleCommonView(user: user).environment(peopleManager)
         }
-        .statusToolbarItem("People", isVisible: isLoadingPeople)
         #if os(iOS)
         .searchable(
             text: $searchText,
@@ -72,7 +63,7 @@ struct PeopleView: View {
                     ),
             prompt: "Search People..."
         ) { token in
-            Label(token.text, systemImage: "person.fill")
+            Label(token.category.displayName, systemImage: "person.fill")
         }
         #else
         .searchable(
@@ -81,33 +72,71 @@ struct PeopleView: View {
             suggestedTokens: .constant(suggestedTokens),
             prompt: "Search People..."
         ) { token in
-            Label(token.text, systemImage: "person.fill")
+            Label(token.category.displayName, systemImage: "person.fill")
         }
         #endif
         .overlay {
-            if !searchText.isEmpty && displayedUsers.isEmpty {
-                ContentUnavailableView("No results for '\(searchText)'", systemImage: "magnifyingglass")
+            noResultsBanner
+        }
+        .onChange(of: searchText) { _, _ in
+            newQueryAsync()
+        }
+        .onChange(of: selectedTokens) { _, _ in
+            newQueryAsync()
+        }
+    }
+
+    @ViewBuilder
+    var noResultsBanner: some View {
+        if peopleManager.loadingState != .loading {
+            if !searchText.isEmpty && peopleManager.displayedUsers.isEmpty {
+                ContentUnavailableView.search(text: searchText)
+            } else if peopleManager.displayedUsers.isEmpty {
+                ContentUnavailableView("Failed to fetch people", systemImage: "exclamationmark.triangle.fill")
             }
         }
     }
 
-    private var displayedUsers: [UserAPI] {
-
-        return peopleManager.users.filter { user in
-            let matchesSearchText = searchText.isEmpty || user.name?.localizedCaseInsensitiveContains(searchText) ?? true
-
-            let matchesSelectedTokens = selectedTokens.allSatisfy { token in
-                user.role?.contains(token.text) ?? false
-            }
-
-            return matchesSearchText && matchesSelectedTokens
-        }
+    private func newQuery() async {
+        peopleManager.page = 1
+        peopleManager.queryMode = .live
+        peopleManager.searchText = searchText
+        peopleManager.selectedRoles = selectedTokens.map(\.category)
+        await peopleManager.fetchNextPage()
     }
 
-    private func loadPeople() async {
-        isLoadingPeople = true
-        await peopleManager.fetchPeople()
-        isLoadingPeople = false
+    private func newQueryAsync() {
+        currentSearchTask?.cancel()
+        currentSearchTask = Task {
+            await newQuery()
+        }
+    }
+}
+
+private struct UserCell: View {
+    let user: User
+
+    static let height: CGFloat = 25 // Only works on MacOS
+
+    init(for user: User) {
+        self.user = user
+    }
+
+    var body: some View {
+        NavigationLink(value: user) {
+            HStack {
+                Text(user.name)
+                    .font(.headline)
+                Spacer()
+                Text(
+                    user.enrollmentRoles
+                        .map(\.displayName)
+                        .joined(separator: ", ")
+                )
+                .foregroundStyle(.secondary)
+            }
+        }
+        .frame(height: Self.height)
     }
 }
 

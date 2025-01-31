@@ -9,69 +9,121 @@ import SwiftUI
 import SwiftData
 
 @Observable
-class PeopleManager {
+class PeopleManager: SearchResultListDataSource {
+
+    // MARK: SearchResultListDatasource
+
+    let label: String = "People"
+
+    var loadingState: LoadingState = .nextPageReady
+    var queryMode: PageMode = .live
+
+    func fetchNextPage() async {
+        await setLoadingState(.loading)
+        do {
+            try await fetchPeople()
+        } catch {
+            await setLoadingState(.error())
+        }
+    }
+
+    // MARK: People
     private let courseID: String?
 
-    private var enrollments = [Enrollment]()
+    var page: Int = 1 // 1-indexed
+    var searchText: String = ""
+    var selectedRoles: [EnrollmentType] = []
 
-    var users: [UserAPI] {
-        Set(
-            enrollments
-                .compactMap {
-                    guard var user = $0.user else { return nil }
-                    user.role = $0.displayRole
-                    return user
-                }
-        ).sorted {
-            ($0.name ?? "") < ($1.name ?? "")
+    var users = Set<User>()
+    var displayedUsers: [User] {
+        users.filter { user in
+            let matchesSearchText = searchText.isEmpty || user.name.localizedCaseInsensitiveContains(searchText)
+
+            let matchesSelectedTokens = selectedRoles.allSatisfy { role in
+                user.enrollmentRoles.contains(role)
+            }
+
+            return matchesSearchText && matchesSelectedTokens
         }
+        .sorted { $0.sortableName < $1.sortableName }
     }
 
-    init(courseID: String?) {
+    init(
+        courseID: String?
+    ) {
         self.courseID = courseID
-        self.enrollments = []
     }
 
-    func fetchPeople() async {
+    func fetchPeople() async throws {
         guard let courseID else { return }
 
-        let enrollments: [Enrollment]? = try? await CanvasService.shared.loadAndSync(
-            CanvasRequest.getEnrollments(courseId: courseID),
-            onCacheReceive: { (cached: [Enrollment]?) in
-                guard let cached else { return }
-
-                addEnrollments(cached)
-            },
-            onNewBatch: { enrollmentsBatch in
-                addEnrollments(enrollmentsBatch)
-            }
+        let request = CanvasRequest.getUsers(
+            courseId: courseID,
+            include: [.enrollments],
+            searchTerm: searchText.count >= 2 ? searchText : "",
+            enrollmentType: selectedRoles,
+            perPage: 60
         )
 
-        guard let enrollments else {
-            print("Enrollments is nil, fetch failed.")
-            return
-        }
-
-        setEnrollments(enrollments)
-    }
-
-    private func addEnrollments(_ enrollments: [Enrollment]) {
-        DispatchQueue.global().sync {
-            let enrollments = Set(self.enrollments + enrollments).sorted {
-                guard let name1 = $0.user?.name, let name2 = $1.user?.name else { return false }
-                return (name1) < (name2)
+        var users: [User] = []
+        do {
+            switch queryMode {
+            case .live:
+                users = try await CanvasService.shared.syncWithAPI(
+                    request,
+                    loadingMethod: .page(order: page)
+                )
+            case .offline:
+                users = (
+                    try await CanvasService.shared
+                        .load(
+                            request, loadingMethod: .page(order: page)
+                        ) ?? []
+                )
             }
 
-            setEnrollments(enrollments)
+            await addNewUsers(users)
+        } catch {
+            // don't make offline query if request was cancelled
+            if let error = error as? URLError, error.code == .cancelled {
+                return
+            }
+            print("Error fetching users: \(error)")
+
+            if queryMode == .live && page == 1 {
+                await setQueryMode(.offline)
+                try await fetchPeople()
+            } else {
+                throw error
+            }
+        }
+
+    }
+
+    @MainActor
+    private func addNewUsers(_ newUsers: [User]) {
+        // Implies new search query
+        if page == 1 {
+            print("Users: \(self.users.map(\.name))")
+            self.users = []
+        }
+
+        self.users.formUnion(newUsers)
+
+        // no users means no more pages
+        if newUsers.isEmpty {
+            setLoadingState(.idle)
+        } else {
+            setLoadingState(.nextPageReady)
+            page += 1
         }
     }
+}
 
-    private func setEnrollments(_ enrollments: [Enrollment]) {
-        self.enrollments = enrollments
-    }
-
+// MARK: Shared Classes Feature
+extension PeopleManager {
     func fetchAllClassesWith(
-        userID: Int,
+        userID: String,
         activeCourses courses: [Course],
         receivedNewCourse: @escaping (Course) -> Void = { _ in }
     ) async {
@@ -86,7 +138,7 @@ class PeopleManager {
                 func processEnrollments(_ enrollments: [Enrollment]) {
                     guard !didAlreadyAddCourse else { return }
 
-                    let courseIsShared = enrollments.compactMap(\.user?.id).contains([userID])
+                    let courseIsShared = enrollments.compactMap(\.user?.id.asString).contains(userID)
                     if courseIsShared {
                         // Found a Common Course
 
@@ -107,7 +159,6 @@ class PeopleManager {
                     }, onNewBatch: { batchedResults in
                         processEnrollments(batchedResults)
                     }) else {
-                        // TODO: indicate network error here
                         print("Couldn't fetch enrollment count for course \(course.name ?? "n/a")")
                         return
                     }
@@ -115,4 +166,5 @@ class PeopleManager {
             }
         }
     }
+
 }

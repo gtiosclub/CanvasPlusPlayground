@@ -10,22 +10,22 @@ import Foundation
 // https://github.com/instructure/canvas-ios/blob/49a3e347116d623638c66b7adbcc946294faa212/Core/Core/People/APIUser.swift
 // https://canvas.instructure.com/doc/api/users.html
 struct UserAPI: APIResponse {
-    typealias Model = NoOpCacheable
+    typealias Model = User
 
     // swiftlint:disable identifier_name
-    let id: Int?
-    let name: String?
-    let sortable_name: String?
+    let id: Int
+    let name: String
+    let sortable_name: String
     let last_name: String?
     let first_name: String?
-    let short_name: String?
+    let short_name: String
     let sis_user_id: String?
     let sis_import_id: Int?
     let integration_id: String?
     let login_id: String?
     let avatar_url: URL?
     let avatar_state: String?
-    let enrollments: [String]?
+    let enrollments: [EnrollmentAPI]?
     let email: String?
     let locale: String?
     let last_login: String?
@@ -34,6 +34,10 @@ struct UserAPI: APIResponse {
     let pronouns: String?
     var role: String?
     // swiftlint:enable identifier_name
+
+    func createModel() -> User {
+        User(from: self)
+    }
 }
 
 /*

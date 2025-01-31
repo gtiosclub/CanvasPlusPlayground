@@ -10,7 +10,7 @@ import SwiftUI
 struct PeopleCommonView: View {
     @Environment(PeopleManager.self) var peopleManager
     @Environment(CourseManager.self) var courseManager
-    let user: UserAPI
+    let user: User
 
     @State private var commonCourses: [Course] = []
     @State private var fetchingCommonCourses: Bool = false
@@ -61,7 +61,7 @@ struct PeopleCommonView: View {
     }
 
     private func getCommonCourses() async {
-        guard let id = user.id else { return }
+        let id = user.id
 
         fetchingCommonCourses = true
         await peopleManager
