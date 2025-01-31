@@ -18,42 +18,36 @@ struct CourseListCell: View {
     @State private var showRenameTextField = false
     @State private var renameCourseFieldText: String = ""
 
+    private var wrappedCourseIsFavorite: Bool {
+        course.isFavorite
+    }
+
+    private var wrappedCourseIsHidden: Bool {
+        course.isHidden ?? false
+    }
+
     var body: some View {
         HStack {
             Label(course.displayName, systemImage: "book.pages")
                 .frame(alignment: .leading)
                 .multilineTextAlignment(.leading)
         }
-        .swipeActions(edge: .leading) {
-            Button {
-                withAnimation {
-                    course.isFavorite = !wrappedCourseIsFavorite
-                }
-            } label: {
-                Image(systemName: "star")
-                    .symbolVariant(
-                        wrappedCourseIsFavorite
-                        ? .slash
-                        : .none
-                    )
-            }
-        }
         .onAppear {
             resolvedCourseColor = course.rgbColors?.color ?? .accentColor
+        }
+        .swipeActions(edge: .leading) {
+            favoriteButton
+        }
+        .swipeActions(edge: .trailing) {
+            hideCourseButton
         }
         .contextMenu {
             Button("Change Color", systemImage: "paintbrush.fill") {
                 showColorPicker = true
             }
 
-            Button(
-                wrappedCourseIsFavorite ? "Unfavorite Course" : "Favorite Course",
-                systemImage: wrappedCourseIsFavorite ? "star.slash.fill" : "star.fill"
-            ) {
-                withAnimation {
-                    course.isFavorite = !wrappedCourseIsFavorite
-                }
-            }
+            favoriteButton
+            hideCourseButton
 
             Button("Rename \(course.name ?? "")...", systemImage: "character.cursor.ibeam") {
                 renameCourseFieldText = course.nickname ?? ""
@@ -96,7 +90,29 @@ struct CourseListCell: View {
         #endif
     }
 
-    private var wrappedCourseIsFavorite: Bool {
-        course.isFavorite
+    private var hideCourseButton: some View {
+        Button(
+            wrappedCourseIsHidden ? "Unhide Course" : "Hide Course",
+            systemImage: "eye"
+        ) {
+            withAnimation {
+                course.isHidden = !wrappedCourseIsHidden
+            }
+        }
+        .symbolVariant(wrappedCourseIsHidden ? .none : .slash)
+        .tint(.gray)
+    }
+
+    private var favoriteButton: some View {
+        Button(
+            wrappedCourseIsFavorite ? "Unfavorite Course" : "Favorite Course",
+            systemImage: "star"
+        ) {
+            withAnimation {
+                course.isFavorite = !wrappedCourseIsFavorite
+            }
+        }
+        .symbolVariant(wrappedCourseIsFavorite ? .slash : .none)
+        .tint(.orange)
     }
 }
