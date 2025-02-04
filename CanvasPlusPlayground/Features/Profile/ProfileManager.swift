@@ -15,14 +15,20 @@ class ProfileManager {
     // MARK: - Methods
     func getCurrentUserAndProfile() async {
         do {
-            let user: User = try await CanvasService.shared.loadAndSync(CanvasRequest.getUser())[0]
+            let user: User = try await CanvasService.shared.loadAndSync(CanvasRequest.getUser(), onCacheReceive: { users in
+                currentUser = users?.first
+            })[0]
+
             currentUser = user
         } catch {
             print("Error fetching current user: \(error)")
         }
 
         do {
-            let profile: Profile = try await CanvasService.shared.loadAndSync(CanvasRequest.getUserProfile())[0]
+            let profile: Profile = try await CanvasService.shared.loadAndSync(CanvasRequest.getUserProfile(), onCacheReceive: { profiles in
+                currentProfile = profiles?.first
+            })[0]
+
             currentProfile = profile
         } catch {
             print("Error fetching current user profile: \(error)")

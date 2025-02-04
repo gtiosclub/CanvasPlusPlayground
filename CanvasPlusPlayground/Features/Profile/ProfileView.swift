@@ -16,6 +16,16 @@ struct ProfileView: View {
 
     @State private var profile: Profile? // needed to get email for curr user
 
+    init(
+        user: User,
+        profile: Profile? = nil,
+        showCommonCourses: Bool = true
+    ) {
+        self.user = user
+        self.showCommonCourses = showCommonCourses
+        self.profile = profile
+    }
+
     var body: some View {
         Form {
             Section {
@@ -31,7 +41,9 @@ struct ProfileView: View {
         }
         .formStyle(.grouped)
         .task {
-            profile = await profileManager.getProfile(for: user.id)
+            if profile == nil {
+                profile = await profileManager.getProfile(for: user.id)
+            }
         }
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
