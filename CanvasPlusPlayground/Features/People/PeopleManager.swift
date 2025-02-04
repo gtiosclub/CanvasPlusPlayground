@@ -122,7 +122,7 @@ class PeopleManager: SearchResultListDataSource {
 
 // MARK: Shared Classes Feature
 extension PeopleManager {
-    func fetchAllClassesWith(
+    static func fetchAllClassesWith(
         userID: String,
         activeCourses courses: [Course],
         receivedNewCourse: @escaping (Course) -> Void = { _ in }

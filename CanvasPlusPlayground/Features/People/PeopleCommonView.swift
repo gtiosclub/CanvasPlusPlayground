@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct PeopleCommonView: View {
-    @Environment(PeopleManager.self) var peopleManager
     @Environment(CourseManager.self) var courseManager
     let user: User
 
@@ -16,7 +15,7 @@ struct PeopleCommonView: View {
     @State private var fetchingCommonCourses: Bool = false
 
     var body: some View {
-        Form {
+        Group {
             Section {
                 statusLabel
             } footer: {
@@ -64,7 +63,7 @@ struct PeopleCommonView: View {
         let id = user.id
 
         fetchingCommonCourses = true
-        await peopleManager
+        await PeopleManager
             .fetchAllClassesWith(
                 userID: id,
                 activeCourses: courseManager.displayedCourses

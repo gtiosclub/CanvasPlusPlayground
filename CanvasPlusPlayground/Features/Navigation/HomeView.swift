@@ -80,11 +80,8 @@ struct HomeView: View {
         .sheet(isPresented: $navigationModel.showProfileSheet, content: {
             if let currentUser = profileManager.currentUser {
                 NavigationStack {
-                    ProfileView(user: currentUser)
+                    ProfileView(user: currentUser, showCommonCourses: false)
                 }
-                #if os(macOS)
-                .frame(width: 400, height: 400)
-                #endif
             }
         })
         #if os(iOS)

@@ -19,6 +19,8 @@ struct PeopleView: View {
     @State private var selectedTokens: [Token] = []
     @State private var searchText: String = ""
 
+    @State private var selectedUser: User?
+
     @State private var currentSearchTask: Task<Void, Never>?
 
     private var suggestedTokens: [Token] {
@@ -43,14 +45,18 @@ struct PeopleView: View {
     }
 
     private var mainBody: some View {
-        SearchResultsListView(dataSource: peopleManager) {
+        SearchResultsListView(
+            dataSource: peopleManager,
+            selection: $selectedUser
+        ) {
             ForEach(peopleManager.displayedUsers, id: \.id) { user in
                 UserCell(for: user)
+                    .tag(user)
             }
         }
         .navigationTitle("People")
-        .navigationDestination(for: User.self) { user in
-            PeopleCommonView(user: user).environment(peopleManager)
+        .sheet(item: $selectedUser) { user in
+            ProfileView(user: user)
         }
         #if os(iOS)
         .searchable(
@@ -121,20 +127,18 @@ private struct UserCell: View {
     }
 
     var body: some View {
-        NavigationLink(value: user) {
-            HStack {
-                ProfilePicture(user: user)
-                    .frame(width: 35, height: 35)
+        HStack {
+            ProfilePicture(user: user)
+                .frame(width: 35, height: 35)
 
-                VStack(alignment: .leading) {
-                    Text(user.name)
-                    Text(
-                        user.enrollmentRoles
-                            .map(\.displayName)
-                            .joined(separator: ", ")
-                    )
-                    .foregroundStyle(.secondary)
-                }
+            VStack(alignment: .leading) {
+                Text(user.name)
+                Text(
+                    user.enrollmentRoles
+                        .map(\.displayName)
+                        .joined(separator: ", ")
+                )
+                .foregroundStyle(.secondary)
             }
         }
     }

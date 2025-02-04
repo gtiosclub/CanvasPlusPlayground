@@ -12,6 +12,8 @@ struct ProfileView: View {
     @Environment(\.dismiss) private var dismiss
 
     let user: User
+    var showCommonCourses: Bool = true
+
     @State private var profile: Profile? // needed to get email for curr user
 
     var body: some View {
@@ -22,6 +24,10 @@ struct ProfileView: View {
             }
 
             details
+
+            if showCommonCourses {
+                PeopleCommonView(user: user)
+            }
         }
         .formStyle(.grouped)
         .task {
@@ -35,6 +41,9 @@ struct ProfileView: View {
             }
         }
         .animation(.default, value: profile)
+        #if os(macOS)
+        .frame(height: 500)
+        #endif
     }
 
     private var header: some View {
@@ -44,7 +53,7 @@ struct ProfileView: View {
                 ProfilePicture(user: user)
                     .frame(width: 100, height: 100)
 
-                VStack(alignment: .leading) {
+                VStack(alignment: .center) {
                     Text(user.name)
                         .font(.title)
                         .bold()
