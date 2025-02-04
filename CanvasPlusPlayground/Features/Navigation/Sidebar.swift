@@ -74,6 +74,7 @@ struct Sidebar: View {
                 Button("Profile", systemImage: "person.circle") {
                     navigationModel.showProfileSheet.toggle()
                 }
+                .disabled(profileManager.currentUser == nil)
             }
         }
     }
