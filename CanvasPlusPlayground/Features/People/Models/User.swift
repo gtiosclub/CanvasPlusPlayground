@@ -35,6 +35,7 @@ class User: Cacheable {
 
     // MARK: Custom
     var courseId: String?
+    var tag: String
 
     init(from userAPI: UserAPI) {
         self.id = String(userAPI.id)
@@ -46,6 +47,7 @@ class User: Cacheable {
         self.pronouns = userAPI.pronouns
         self.role = userAPI.role
         self.enrollments = userAPI.enrollments ?? []
+        self.tag = ""
     }
 
     func merge(with other: User) {

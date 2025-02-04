@@ -77,6 +77,7 @@ class NavigationModel {
     var selectedCoursePage: CoursePage?
     var showInstallIntelligenceSheet = false
     var showAuthorizationSheet = false
+    var showProfileSheet = false
     #if os(iOS)
     var showSettingsSheet = false
     #endif

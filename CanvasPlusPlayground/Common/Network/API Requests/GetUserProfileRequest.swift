@@ -7,14 +7,29 @@
 
 import Foundation
 
-/// Pass in `nil` as `userID` to fetch the current user.
-struct GetUserProfileRequest: APIRequest {
+struct GetUserProfileRequest: CacheableAPIRequest {
     typealias Subject = ProfileAPI
 
-    let userId: String?
+    let userId: String
     var queryParameters: [QueryParameter] {
         []
     }
 
-    var path: String { "users/\(userId ?? "self")/profile" }
+    /// Pass in `nil` as `userID` to fetch the current user profile.
+    init(userId: String? = nil) {
+        self.userId = userId ?? "self"
+    }
+
+    var path: String { "users/\(userId)/profile" }
+
+    var requestId: String { userId }
+    var requestIdKey: ParentKeyPath<Profile, String> { .createWritable(\.tag) }
+    var idPredicate: Predicate<Profile> {
+        #Predicate<Profile> { profile in
+            profile.tag == userId
+        }
+    }
+    var customPredicate: Predicate<Profile> {
+        .true
+    }
 }

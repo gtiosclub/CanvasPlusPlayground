@@ -116,8 +116,6 @@ struct PeopleView: View {
 private struct UserCell: View {
     let user: User
 
-    static let height: CGFloat = 25 // Only works on MacOS
-
     init(for user: User) {
         self.user = user
     }
@@ -125,18 +123,20 @@ private struct UserCell: View {
     var body: some View {
         NavigationLink(value: user) {
             HStack {
-                Text(user.name)
-                    .font(.headline)
-                Spacer()
-                Text(
-                    user.enrollmentRoles
-                        .map(\.displayName)
-                        .joined(separator: ", ")
-                )
-                .foregroundStyle(.secondary)
+                ProfilePicture(user: user)
+                    .frame(width: 35, height: 35)
+
+                VStack(alignment: .leading) {
+                    Text(user.name)
+                    Text(
+                        user.enrollmentRoles
+                            .map(\.displayName)
+                            .joined(separator: ", ")
+                    )
+                    .foregroundStyle(.secondary)
+                }
             }
         }
-        .frame(height: Self.height)
     }
 }
 

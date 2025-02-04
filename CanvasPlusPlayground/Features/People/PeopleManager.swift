@@ -59,7 +59,7 @@ class PeopleManager: SearchResultListDataSource {
 
         let request = CanvasRequest.getUsers(
             courseId: courseID,
-            include: [.enrollments],
+            include: [.enrollments, .avatarUrl, .bio, .pronouns],
             searchTerm: searchText.count >= 2 ? searchText : "",
             enrollmentType: selectedRoles,
             perPage: 60

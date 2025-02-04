@@ -41,8 +41,8 @@ class GradesViewModel {
         self.courseId = courseId
     }
 
-    func getEnrollments(currentUserID: Int?) async {
-        guard let currentUserID else {
+    func getEnrollments(currentUserID: String?) async {
+        guard let currentUserID = currentUserID?.asInt else {
             print("GradesViewModel: Current UserID is nil.")
             return
         }

@@ -77,6 +77,16 @@ struct HomeView: View {
             }
             .interactiveDismissDisabled()
         }
+        .sheet(isPresented: $navigationModel.showProfileSheet, content: {
+            if let currentUser = profileManager.currentUser {
+                NavigationStack {
+                    ProfileView(user: currentUser)
+                }
+                #if os(macOS)
+                .frame(width: 400, height: 400)
+                #endif
+            }
+        })
         #if os(iOS)
         .sheet(isPresented: $navigationModel.showSettingsSheet) {
             SettingsView()

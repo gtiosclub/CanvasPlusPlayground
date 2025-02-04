@@ -69,6 +69,13 @@ struct Sidebar: View {
             }
         }
         #endif
+        .toolbar {
+            ToolbarItem(placement: .secondaryAction) {
+                Button("Profile", systemImage: "person.circle") {
+                    navigationModel.showProfileSheet.toggle()
+                }
+            }
+        }
     }
 }
 

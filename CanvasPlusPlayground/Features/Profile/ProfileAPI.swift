@@ -8,10 +8,10 @@
 import Foundation
 
 struct ProfileAPI: APIResponse {
-    typealias Model = NoOpCacheable
+    typealias Model = Profile
 
     // swiftlint:disable identifier_name
-    let id: Int?
+    let id: Int
     let name: String?
     let short_name: String?
     let sortable_name: String?
@@ -30,4 +30,7 @@ struct ProfileAPI: APIResponse {
     let use_classic_font_in_k5: Bool?
     // swiftlint:enable identifier_name
 
+    func createModel() -> Profile {
+        Profile(from: self)
+    }
 }
