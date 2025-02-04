@@ -42,22 +42,22 @@ struct PeopleView: View {
             currentSearchTask?.cancel()
             await newQuery() // don't use `newQueryAsync` to allow the refresh animation to persist until query finished
         }
+        .sheet(item: $selectedUser) { user in
+            NavigationStack {
+                ProfileView(user: user)
+            }
+        }
     }
 
     private var mainBody: some View {
         SearchResultsListView(
-            dataSource: peopleManager,
-            selection: $selectedUser
+            dataSource: peopleManager
         ) {
             ForEach(peopleManager.displayedUsers, id: \.id) { user in
-                UserCell(for: user)
-                    .tag(user)
+                UserCell(user: user, selectedUser: $selectedUser)
             }
         }
         .navigationTitle("People")
-        .sheet(item: $selectedUser) { user in
-            ProfileView(user: user)
-        }
         #if os(iOS)
         .searchable(
             text: $searchText,
@@ -121,10 +121,7 @@ struct PeopleView: View {
 
 private struct UserCell: View {
     let user: User
-
-    init(for user: User) {
-        self.user = user
-    }
+    @Binding var selectedUser: User?
 
     var body: some View {
         HStack {
@@ -139,6 +136,14 @@ private struct UserCell: View {
                         .joined(separator: ", ")
                 )
                 .foregroundStyle(.secondary)
+            }
+
+            Spacer()
+
+            Button {
+                selectedUser = user
+            } label: {
+                Image(systemName: "info.circle")
             }
         }
     }
