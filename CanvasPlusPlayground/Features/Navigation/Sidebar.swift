@@ -70,7 +70,7 @@ struct Sidebar: View {
         }
         #endif
         .toolbar {
-            ToolbarItem(placement: .secondaryAction) {
+            ToolbarItem(placement: .confirmationAction) {
                 Button("Profile", systemImage: "person.circle") {
                     navigationModel.showProfileSheet.toggle()
                 }

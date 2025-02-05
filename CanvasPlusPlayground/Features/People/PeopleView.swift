@@ -15,6 +15,7 @@ struct PeopleView: View {
 
     let courseID: String?
 
+    @Namespace private var namespace
     @State private var peopleManager: PeopleManager
     @State private var selectedTokens: [Token] = []
     @State private var searchText: String = ""
@@ -43,9 +44,22 @@ struct PeopleView: View {
             await newQuery() // don't use `newQueryAsync` to allow the refresh animation to persist until query finished
         }
         .sheet(item: $selectedUser) { user in
+            #if os(iOS)
+            if #available(iOS 18.0, *) {
+                NavigationStack {
+                    ProfileView(user: user)
+                }
+                .navigationTransition(.zoom(sourceID: user.id, in: namespace))
+            } else {
+                NavigationStack {
+                    ProfileView(user: user)
+                }
+            }
+            #else
             NavigationStack {
                 ProfileView(user: user)
             }
+            #endif
         }
     }
 
@@ -54,7 +68,11 @@ struct PeopleView: View {
             dataSource: peopleManager
         ) {
             ForEach(peopleManager.displayedUsers, id: \.id) { user in
-                UserCell(user: user, selectedUser: $selectedUser)
+                UserCell(
+                    user: user,
+                    namespace: namespace,
+                    selectedUser: $selectedUser
+                )
             }
         }
         .navigationTitle("People")
@@ -121,12 +139,21 @@ struct PeopleView: View {
 
 private struct UserCell: View {
     let user: User
+    let namespace: Namespace.ID
     @Binding var selectedUser: User?
 
     var body: some View {
         HStack {
-            ProfilePicture(user: user)
-                .frame(width: 35, height: 35)
+            if #available(iOS 18.0, *) {
+                ProfilePicture(user: user)
+                    .frame(width: 35, height: 35)
+                    #if os(iOS)
+                    .matchedTransitionSource(id: user.id, in: namespace)
+                    #endif
+            } else {
+                ProfilePicture(user: user)
+                    .frame(width: 35, height: 35)
+            }
 
             VStack(alignment: .leading) {
                 Text(user.name)
