@@ -44,7 +44,7 @@ check_for_updates: true
 
 # rules that have both warning and error levels, can set just the warning level
 # implicitly
-line_length: 150
+line_length: 500
 # they can set both implicitly with an array
 type_body_length:
   - 300 # warning
@@ -53,6 +53,7 @@ type_body_length:
 file_length:
   warning: 500
   error: 1200
+function_body_length: 80
 # naming rules can set warnings/errors for min_length and max_length
 # additionally they can set excluded names
 type_name:

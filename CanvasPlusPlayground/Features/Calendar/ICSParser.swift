@@ -120,7 +120,12 @@ struct ICSParser {
                 throw NetworkError.fetchFailed(msg: response.description)
             }
 
-            return String(decoding: data, as: UTF8.self)
+            if let str = String(data: data, encoding: .utf8) {
+                return str
+            } else {
+                throw NetworkError
+                    .failedToDecode(msg: "Could not convert data to string")
+            }
         } catch {
             throw NetworkError.fetchFailed(msg: error.localizedDescription)
         }
