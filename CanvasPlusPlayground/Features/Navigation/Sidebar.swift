@@ -71,10 +71,18 @@ struct Sidebar: View {
         #endif
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
-                Button("Profile", systemImage: "person.circle") {
-                    navigationModel.showProfileSheet.toggle()
+                if let currentUser = profileManager.currentUser {
+                    Button {
+                        navigationModel.showProfileSheet.toggle()
+                    } label: {
+                        ProfilePicture(user: currentUser)
+                        #if os(macOS)
+                            .frame(width: 19, height: 19)
+                        #else
+                            .frame(width: 24, height: 24)
+                        #endif
+                    }
                 }
-                .disabled(profileManager.currentUser == nil)
             }
         }
     }

@@ -33,7 +33,7 @@ struct ProfilePicture: View {
             } else {
                 Image(systemName: "person.circle.fill")
                     .resizable()
-                    .foregroundColor(.gray)
+                    .foregroundStyle(.tint)
             }
         }
         .overlay {
