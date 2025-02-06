@@ -36,6 +36,7 @@ class User: Cacheable {
     // MARK: Custom
     var courseId: String?
     var tag: String
+    var avatarImageData: Data?
 
     init(from userAPI: UserAPI) {
         self.id = String(userAPI.id)
@@ -61,6 +62,11 @@ class User: Cacheable {
         self.enrollments = other.enrollments
     }
 
+    var hasAvatar: Bool {
+        guard let avatarURL else { return false }
+
+        return !avatarURL.absoluteString.hasSuffix("avatar-50.png")
+    }
 }
 
 enum EnrollmentType: String, CaseIterable {
