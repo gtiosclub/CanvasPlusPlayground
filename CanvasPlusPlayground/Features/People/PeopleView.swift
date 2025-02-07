@@ -74,9 +74,11 @@ struct PeopleView: View {
         ) { token in
             Label(token.category.displayName, systemImage: "person.fill")
         }
+        #if os(macOS)
         .toolbar {
             Button("Reload", systemImage: "arrow.clockwise.circle", action: peopleManager.reloadPeople)
         }
+        #endif
         #endif
         .overlay {
             noResultsBanner
