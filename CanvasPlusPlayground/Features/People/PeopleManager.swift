@@ -99,12 +99,14 @@ class PeopleManager: SearchResultListDataSource {
         }
 
     }
-    
-    func reloadPeople() {
-        guard let courseID = courseID else { return }
+    func resetState() {
         page = 1
         users = Set()
         loadingState = .loading
+        queryMode = .live
+    }
+    func reloadPeople() {
+        resetState()
         Task {
             try await fetchPeople()
         }
