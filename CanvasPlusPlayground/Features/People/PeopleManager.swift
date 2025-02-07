@@ -99,6 +99,16 @@ class PeopleManager: SearchResultListDataSource {
         }
 
     }
+    
+    func reloadPeople() {
+        guard let courseID = courseID else { return }
+        page = 1
+        users = Set()
+        loadingState = .loading
+        Task {
+            try await fetchPeople()
+        }
+    }
 
     @MainActor
     private func addNewUsers(_ newUsers: [User]) {

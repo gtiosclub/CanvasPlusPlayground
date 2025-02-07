@@ -78,6 +78,9 @@ struct PeopleView: View {
         .overlay {
             noResultsBanner
         }
+        .toolbar {
+            Button("Reload", systemImage: "arrow.clockwise.circle", action: peopleManager.reloadPeople)
+        }
         .onChange(of: searchText) { _, _ in
             newQueryAsync()
         }
