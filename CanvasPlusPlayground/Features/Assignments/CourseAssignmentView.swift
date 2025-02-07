@@ -21,6 +21,12 @@ struct CourseAssignmentsView: View {
     }
 
     var body: some View {
+        NavigationStack {
+            mainbody
+        }
+    }
+    
+    var mainbody: some View {
         List(assignmentManager.assignments, id: \.id) { assignment in
             AssignmentRow(assignment: assignment, showGrades: showGrades)
                 .contextMenu {
@@ -43,6 +49,9 @@ struct CourseAssignmentsView: View {
         }
         .statusToolbarItem("Assignments", isVisible: isLoadingAssignments)
         .navigationTitle(course.displayName)
+        .navigationDestination(for: AssignmentAPI.self) { assignment in 
+            AssignmentDetailView()
+        }
     }
 
     private func loadAssignments() async {
@@ -58,27 +67,29 @@ struct AssignmentRow: View {
 
     var body: some View {
         let submission = assignment.submission?.createModel()
-
-        HStack {
-            VStack(alignment: .leading) {
-                Text(assignment.name)
-                    .font(.headline)
-                Group {
-                    if let submission {
-                        Text(
-                            submission.workflowState?.rawValue.capitalized ?? "Unknown Status"
-                        )
+        
+        NavigationLink(value: assignment) {
+            HStack {
+                VStack(alignment: .leading) {
+                    Text(assignment.name)
+                        .font(.headline)
+                    Group {
+                        if let submission {
+                            Text(
+                                submission.workflowState?.rawValue.capitalized ?? "Unknown Status"
+                            )
+                        }
                     }
+                    .font(.subheadline)
                 }
-                .font(.subheadline)
-            }
 
-            if showGrades, let submission {
-                Spacer()
+                if showGrades, let submission {
+                    Spacer()
 
-                Text(submission.score?.truncatingTrailingZeros ?? "--") +
-                Text("/") +
-                Text(assignment.points_possible?.truncatingTrailingZeros ?? "--")
+                    Text(submission.score?.truncatingTrailingZeros ?? "--") +
+                    Text("/") +
+                    Text(assignment.points_possible?.truncatingTrailingZeros ?? "--")
+                }
             }
         }
     }
