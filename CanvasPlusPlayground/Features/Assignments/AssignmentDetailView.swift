@@ -8,11 +8,23 @@
 import SwiftUI
 
 struct AssignmentDetailView: View {
+    let assignment: AssignmentAPI
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Form {
+            Section {
+                Text("Assignment Name: \(assignment.name)")
+            }
+            Section {
+                Text("Due: \(assignment.dueDate?.formatted() ?? "NULL_DATE")")
+                Text("Points: \(assignment.points_possible ?? -1)")
+                Text("File Types: \(assignment.submission_types?.debugDescription ?? "NULL_FILE_TYPES")")
+                Text(assignment.description?.stripHTML() ?? "missing description")
+            }
+        }
+        .formStyle(.grouped)
     }
 }
 
 #Preview {
-    AssignmentDetailView()
+    AssignmentDetailView(assignment: AssignmentAPI.example)
 }

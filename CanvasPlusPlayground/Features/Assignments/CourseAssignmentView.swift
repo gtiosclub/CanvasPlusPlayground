@@ -25,7 +25,6 @@ struct CourseAssignmentsView: View {
             mainbody
         }
     }
-    
     var mainbody: some View {
         List(assignmentManager.assignments, id: \.id) { assignment in
             AssignmentRow(assignment: assignment, showGrades: showGrades)
@@ -50,7 +49,7 @@ struct CourseAssignmentsView: View {
         .statusToolbarItem("Assignments", isVisible: isLoadingAssignments)
         .navigationTitle(course.displayName)
         .navigationDestination(for: AssignmentAPI.self) { assignment in 
-            AssignmentDetailView()
+            AssignmentDetailView(assignment: assignment)
         }
     }
 
@@ -67,7 +66,6 @@ struct AssignmentRow: View {
 
     var body: some View {
         let submission = assignment.submission?.createModel()
-        
         NavigationLink(value: assignment) {
             HStack {
                 VStack(alignment: .leading) {
