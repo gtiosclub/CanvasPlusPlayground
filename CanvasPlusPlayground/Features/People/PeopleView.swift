@@ -74,12 +74,12 @@ struct PeopleView: View {
         ) { token in
             Label(token.category.displayName, systemImage: "person.fill")
         }
+        .toolbar {
+            Button("Reload", systemImage: "arrow.clockwise.circle", action: peopleManager.reloadPeople)
+        }
         #endif
         .overlay {
             noResultsBanner
-        }
-        .toolbar {
-            Button("Reload", systemImage: "arrow.clockwise.circle", action: peopleManager.reloadPeople)
         }
         .onChange(of: searchText) { _, _ in
             newQueryAsync()
