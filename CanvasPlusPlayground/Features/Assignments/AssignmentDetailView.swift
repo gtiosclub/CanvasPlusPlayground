@@ -17,8 +17,10 @@ struct AssignmentDetailView: View {
             Section {
                 Text("Due: \(assignment.dueDate?.formatted() ?? "NULL_DATE")")
                 Text("Points: \(assignment.points_possible ?? -1)")
-                Text("File Types: \(assignment.submission_types?.debugDescription ?? "NULL_FILE_TYPES")")
-                Text(assignment.description?.stripHTML() ?? "missing description")
+                Text("File Types: \(assignment.submission_types?.joined(separator: ", ") ?? "NULL_FILE_TYPES")")
+            }
+            Section{
+                HTMLTextView(htmlText: assignment.description ?? "")
             }
         }
         .formStyle(.grouped)
