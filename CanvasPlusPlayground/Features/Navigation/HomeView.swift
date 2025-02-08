@@ -13,7 +13,7 @@ struct HomeView: View {
     @Environment(ProfileManager.self) var profileManager
     @Environment(CourseManager.self) var courseManager
     @Environment(NavigationModel.self) var navigationModel
-
+    @Environment(QuickOpenManager.self) var quickOpenManager
     @EnvironmentObject private var intelligenceManager: IntelligenceManager
     @EnvironmentObject private var llmEvaluator: LLMEvaluator
 
@@ -83,6 +83,13 @@ struct HomeView: View {
         }
         #endif
         .environment(navigationModel)
+        #if os(macOS)
+        .overlay {
+            if quickOpenManager.isActive {
+                Text("hi")
+            }
+        }
+        #endif
     }
 
     @ViewBuilder

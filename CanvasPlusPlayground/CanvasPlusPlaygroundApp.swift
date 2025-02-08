@@ -16,7 +16,7 @@ struct CanvasPlusPlaygroundApp: App {
     @State private var profileManager = ProfileManager()
     @State private var courseManager = CourseManager()
     @State private var pinnedItemsManager = PinnedItemsManager()
-
+    @State private var quickOpenManager = QuickOpenManager()
     // Intelligence
     @StateObject private var intelligenceManager = IntelligenceManager()
     @StateObject private var llmEvaluator = LLMEvaluator()
@@ -28,12 +28,21 @@ struct CanvasPlusPlaygroundApp: App {
                 .environment(courseManager)
                 .environment(pinnedItemsManager)
                 .environment(navigationModel)
+                .environment(quickOpenManager)
                 .environmentObject(intelligenceManager)
                 .environmentObject(llmEvaluator)
                 .task {
                     CanvasService.shared.setupStorage()
                     await courseManager.getCourses()
                 }
+        }
+        .commands {
+            CommandGroup(after: .newItem) {
+                Button("Quick Open") {
+                    quickOpenManager.isActive.toggle()
+                }
+                .keyboardShortcut("O", modifiers: [.command, .shift])
+            }
         }
 
         #if os(macOS)
