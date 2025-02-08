@@ -12,14 +12,32 @@ struct AssignmentDetailView: View {
     var body: some View {
         Form {
             Section {
-                Text("Assignment Name: \(assignment.name)")
+                HStack {
+                    Text("Assignment Name")
+                    Spacer()
+                    Text(assignment.name)
+                }
+                
             }
             Section {
-                Text("Due: \(assignment.dueDate?.formatted() ?? "NULL_DATE")")
-                Text("Points: \(assignment.points_possible ?? -1)")
-                Text("File Types: \(assignment.submission_types?.joined(separator: ", ") ?? "NULL_FILE_TYPES")")
+                HStack {
+                    Text("Due")
+                    Spacer()
+                    Text(assignment.dueDate?.formatted() ?? "NULL_DATE")
+                }
+                HStack {
+                    Text("Points")
+                    Spacer()
+                    Text(String(format: "%.0f", assignment.points_possible ?? -1))
+                }
+                HStack {
+                    Text("File Types")
+                    Spacer()
+                    Text(assignment.submission_types?.joined(separator: ", ") ?? "NULL_FILE_TYPES")
+                }
+                
             }
-            Section{
+            Section {
                 HTMLTextView(htmlText: assignment.description ?? "")
             }
         }
