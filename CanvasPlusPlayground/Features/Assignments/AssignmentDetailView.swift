@@ -9,14 +9,11 @@ import SwiftUI
 
 struct AssignmentDetailView: View {
     let assignment: AssignmentAPI
-    
     init(assignment: AssignmentAPI) {
         self.assignment = assignment
-        print("Assignment:\n\(assignment.description)\n")
     }
     var body: some View {
         if (assignment.submissionTypes.contains("online_quiz")) {
-            
             WebView(url: URL(string:assignment.html_url ?? "google.com")!)
         } else {
             Form {
