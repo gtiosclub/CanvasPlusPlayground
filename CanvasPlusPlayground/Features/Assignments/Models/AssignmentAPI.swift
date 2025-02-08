@@ -87,5 +87,9 @@ struct AssignmentAPI: APIResponse {
     var dueDate: Date? {
         ISO8601DateFormatter().date(from: due_at ?? "2024-12-12T19:06:20Z")
     }
+    
+    var submissionTypes:[String] {
+        submission_types ?? []
+    }
     static let example: AssignmentAPI = AssignmentAPI(id: 5, name: "example", groupID: 5)
 }
