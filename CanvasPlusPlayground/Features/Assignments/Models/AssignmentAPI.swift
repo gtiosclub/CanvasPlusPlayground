@@ -83,11 +83,11 @@ struct AssignmentAPI: APIResponse {
         self.name = name
         self.assignment_group_id = groupID
     }
-    
+
     var dueDate: Date? {
         ISO8601DateFormatter().date(from: due_at ?? "2024-12-12T19:06:20Z")
     }
-    
+
     var submissionTypes:[String] {
         submission_types ?? []
     }

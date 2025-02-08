@@ -48,7 +48,7 @@ struct CourseAssignmentsView: View {
         }
         .statusToolbarItem("Assignments", isVisible: isLoadingAssignments)
         .navigationTitle(course.displayName)
-        .navigationDestination(for: AssignmentAPI.self) { assignment in 
+        .navigationDestination(for: AssignmentAPI.self) { assignment in
             AssignmentDetailView(assignment: assignment)
         }
     }
