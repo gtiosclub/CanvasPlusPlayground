@@ -31,7 +31,7 @@ struct ProfilePicture: View {
                     .clipShape(.circle)
                 #endif
             } else {
-                Image(systemName: "person.circle.fill")
+                Image(systemName: "person.circle")
                     .resizable()
                     .foregroundStyle(.tint)
             }

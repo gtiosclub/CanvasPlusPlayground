@@ -144,16 +144,19 @@ private struct UserCell: View {
 
     var body: some View {
         HStack {
-            if #available(iOS 18.0, *) {
-                ProfilePicture(user: user)
-                    .frame(width: 35, height: 35)
-                    #if os(iOS)
-                    .matchedTransitionSource(id: user.id, in: namespace)
-                    #endif
-            } else {
-                ProfilePicture(user: user)
-                    .frame(width: 35, height: 35)
+            Group {
+                if #available(iOS 18.0, *) {
+                    ProfilePicture(user: user)
+                        .frame(width: 35, height: 35)
+                        #if os(iOS)
+                        .matchedTransitionSource(id: user.id, in: namespace)
+                        #endif
+                } else {
+                    ProfilePicture(user: user)
+                        .frame(width: 35, height: 35)
+                }
             }
+            .symbolVariant(.fill)
 
             VStack(alignment: .leading) {
                 Text(user.name)

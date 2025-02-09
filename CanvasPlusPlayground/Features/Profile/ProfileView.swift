@@ -63,6 +63,7 @@ struct ProfileView: View {
             VStack {
                 ProfilePicture(user: user)
                     .frame(width: 100, height: 100)
+                    .symbolVariant(.fill)
 
                 VStack(alignment: .center) {
                     Text(user.name)
