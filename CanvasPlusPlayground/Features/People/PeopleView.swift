@@ -98,6 +98,16 @@ struct PeopleView: View {
         ) { token in
             Label(token.category.displayName, systemImage: "person.fill")
         }
+        .toolbar {
+            Button("Reload", systemImage: "arrow.clockwise.circle") {
+                currentSearchTask?.cancel()
+                peopleManager.users = Set()
+                peopleManager.loadingState = .loading
+                currentSearchTask = Task {
+                    newQueryAsync()
+                }
+            }
+        }
         #endif
         .overlay {
             noResultsBanner
