@@ -77,7 +77,7 @@ struct GetFilesInFolderRequest: CacheableArrayAPIRequest {
         }
 
         let searchTerm = searchTerm ?? ""
-        let searchPred = #Predicate<File> { file in
+        let searchPred = searchTerm.isEmpty ? .true : #Predicate<File> { file in
             file.displayName.localizedStandardContains(searchTerm)
         }
 
