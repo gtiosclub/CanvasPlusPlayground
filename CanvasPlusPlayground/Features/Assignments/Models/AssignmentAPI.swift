@@ -13,7 +13,7 @@ struct AssignmentAPI: APIResponse {
     typealias Model = NoOpCacheable
 
     // swiftlint:disable identifier_name
-    var id: Int
+    let id: Int
     var description: String?
     var due_at: String?
     var unlock_at: String?
@@ -77,6 +77,7 @@ struct AssignmentAPI: APIResponse {
     var require_lockdown_browser: Bool?
     var restrict_quantitative_data: Bool?
     var submission: SubmissionAPI?
+    var allowed_extensions: [String]?
     // swiftlint:enable identifier_name
     init(id: Int, name: String, groupID: Int) {
         self.id = id
