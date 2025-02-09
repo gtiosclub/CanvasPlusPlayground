@@ -70,10 +70,8 @@ struct AssignmentRow: View {
     var body: some View {
         NavigationLink(value: assignment) {
             HStack {
-                VStack(alignment: .leading) {
-                    Text(assignment.name)
-                        .font(.headline)
-                }
+                Text(assignment.name)
+                    .font(.headline)
             }
         }
     }

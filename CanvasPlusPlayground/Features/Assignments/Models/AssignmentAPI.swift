@@ -92,5 +92,9 @@ struct AssignmentAPI: APIResponse {
     var submissionTypes:[String] {
         submission_types ?? []
     }
+
+    var isOnlineQuiz: Bool {
+        submissionTypes.contains("online_quiz")
+    }
     static let example: AssignmentAPI = AssignmentAPI(id: 5, name: "example", groupID: 5)
 }
