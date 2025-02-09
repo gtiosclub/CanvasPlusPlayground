@@ -99,18 +99,6 @@ class PeopleManager: SearchResultListDataSource {
         }
 
     }
-    func resetState() {
-        page = 1
-        users = Set()
-        loadingState = .loading
-        queryMode = .live
-    }
-    func reloadPeople() {
-        resetState()
-        Task {
-            try await fetchPeople()
-        }
-    }
 
     @MainActor
     private func addNewUsers(_ newUsers: [User]) {

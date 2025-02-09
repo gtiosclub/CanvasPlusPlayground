@@ -75,7 +75,14 @@ struct PeopleView: View {
             Label(token.category.displayName, systemImage: "person.fill")
         }
         .toolbar {
-            Button("Reload", systemImage: "arrow.clockwise.circle", action: peopleManager.reloadPeople)
+            Button("Reload", systemImage: "arrow.clockwise.circle") {
+                currentSearchTask?.cancel()
+                peopleManager.users = Set()
+                peopleManager.loadingState = .loading
+                Task {
+                    await newQuery()
+                }
+            }
         }
         #endif
         .overlay {
