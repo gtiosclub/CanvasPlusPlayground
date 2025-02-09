@@ -59,7 +59,7 @@ class PeopleManager: SearchResultListDataSource {
 
         let request = CanvasRequest.getUsers(
             courseId: courseID,
-            include: [.enrollments],
+            include: [.enrollments, .avatarUrl, .bio, .pronouns],
             searchTerm: searchText.count >= 2 ? searchText : "",
             enrollmentType: selectedRoles,
             perPage: 60
@@ -122,7 +122,7 @@ class PeopleManager: SearchResultListDataSource {
 
 // MARK: Shared Classes Feature
 extension PeopleManager {
-    func fetchAllClassesWith(
+    static func fetchAllClassesWith(
         userID: String,
         activeCourses courses: [Course],
         receivedNewCourse: @escaping (Course) -> Void = { _ in }

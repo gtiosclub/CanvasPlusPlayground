@@ -20,7 +20,7 @@ struct GetCourseUsersRequest: CacheableArrayAPIRequest {
             ("user_id", userId),
             ("per_page", perPage)
         ]
-        + include.map { ("include[]", $0) }
+        + include.map { ("include[]", $0.rawValue) }
         + enrollmentType.map { ("enrollment_type[]", $0.asFilter) }
         + userIds.map { ("user_ids[]", $0) }
         + enrollmentState.map { ("enrollment_state", $0) }
@@ -70,9 +70,15 @@ struct GetCourseUsersRequest: CacheableArrayAPIRequest {
 
 extension GetCourseUsersRequest {
     enum Include: String {
-        case enrollments = "enrollments", locked, avatarUrl = "avatar_url", bio, testStudent = "test_student",
+        case enrollments = "enrollments",
+             locked,
+             avatarUrl = "avatar_url",
+             bio,
+             testStudent = "test_student",
              customLinks = "custom_links",
-             currentGradingPeriodScores = "current_grading_period_scores", uuid
+             currentGradingPeriodScores = "current_grading_period_scores",
+             uuid,
+             pronouns
     }
 
     enum Sorter: String {

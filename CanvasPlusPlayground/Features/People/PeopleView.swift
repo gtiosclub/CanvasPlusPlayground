@@ -15,9 +15,12 @@ struct PeopleView: View {
 
     let courseID: String?
 
+    @Namespace private var namespace
     @State private var peopleManager: PeopleManager
     @State private var selectedTokens: [Token] = []
     @State private var searchText: String = ""
+
+    @State private var selectedUser: User?
 
     @State private var currentSearchTask: Task<Void, Never>?
 
@@ -40,18 +43,39 @@ struct PeopleView: View {
             currentSearchTask?.cancel()
             await newQuery() // don't use `newQueryAsync` to allow the refresh animation to persist until query finished
         }
+        .sheet(item: $selectedUser) { user in
+            #if os(iOS)
+            if #available(iOS 18.0, *) {
+                NavigationStack {
+                    ProfileView(user: user)
+                }
+                .navigationTransition(.zoom(sourceID: user.id, in: namespace))
+            } else {
+                NavigationStack {
+                    ProfileView(user: user)
+                }
+            }
+            #else
+            NavigationStack {
+                ProfileView(user: user)
+            }
+            #endif
+        }
     }
 
     private var mainBody: some View {
-        SearchResultsListView(dataSource: peopleManager) {
+        SearchResultsListView(
+            dataSource: peopleManager
+        ) {
             ForEach(peopleManager.displayedUsers, id: \.id) { user in
-                UserCell(for: user)
+                UserCell(
+                    user: user,
+                    namespace: namespace,
+                    selectedUser: $selectedUser
+                )
             }
         }
         .navigationTitle("People")
-        .navigationDestination(for: User.self) { user in
-            PeopleCommonView(user: user).environment(peopleManager)
-        }
         #if os(iOS)
         .searchable(
             text: $searchText,
@@ -115,19 +139,27 @@ struct PeopleView: View {
 
 private struct UserCell: View {
     let user: User
-
-    static let height: CGFloat = 25 // Only works on MacOS
-
-    init(for user: User) {
-        self.user = user
-    }
+    let namespace: Namespace.ID
+    @Binding var selectedUser: User?
 
     var body: some View {
-        NavigationLink(value: user) {
-            HStack {
+        HStack {
+            Group {
+                if #available(iOS 18.0, *) {
+                    ProfilePicture(user: user)
+                        .frame(width: 35, height: 35)
+                        #if os(iOS)
+                        .matchedTransitionSource(id: user.id, in: namespace)
+                        #endif
+                } else {
+                    ProfilePicture(user: user)
+                        .frame(width: 35, height: 35)
+                }
+            }
+            .symbolVariant(.fill)
+
+            VStack(alignment: .leading) {
                 Text(user.name)
-                    .font(.headline)
-                Spacer()
                 Text(
                     user.enrollmentRoles
                         .map(\.displayName)
@@ -135,8 +167,15 @@ private struct UserCell: View {
                 )
                 .foregroundStyle(.secondary)
             }
+
+            Spacer()
+
+            Button {
+                selectedUser = user
+            } label: {
+                Image(systemName: "info.circle")
+            }
         }
-        .frame(height: Self.height)
     }
 }
 

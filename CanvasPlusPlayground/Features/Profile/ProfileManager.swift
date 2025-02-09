@@ -9,26 +9,44 @@ import SwiftUI
 
 @Observable
 class ProfileManager {
-    private(set) var currentUser: UserAPI?
-    private(set) var currentProfile: ProfileAPI?
+    private(set) var currentUser: User?
+    private(set) var currentProfile: Profile?
 
     // MARK: - Methods
     func getCurrentUserAndProfile() async {
         do {
-            let user: UserAPI = try await CanvasService.shared.fetch(CanvasRequest.getUser())[0]
+            let user: User = try await CanvasService.shared.loadAndSync(CanvasRequest.getUser(), onCacheReceive: { users in
+                currentUser = users?.first
+            })[0]
+
             currentUser = user
         } catch {
             print("Error fetching current user: \(error)")
         }
 
         do {
-            let profile: ProfileAPI = try await CanvasService.shared.fetch(CanvasRequest.getUserProfile())[0]
+            let profile: Profile = try await CanvasService.shared.loadAndSync(CanvasRequest.getUserProfile(), onCacheReceive: { profiles in
+                currentProfile = profiles?.first
+            })[0]
+
             currentProfile = profile
         } catch {
             print("Error fetching current user profile: \(error)")
         }
 
         print("Current user: \(currentUser?.name ?? "")")
-        print("Current user profile: \(currentProfile?.primary_email ?? "")")
+        print("Current user profile: \(currentProfile?.primaryEmail ?? "")")
+    }
+
+    func getProfile(for id: User.ID) async -> Profile? {
+        do {
+            let profile: Profile = try await CanvasService.shared.loadAndSync(CanvasRequest.getUserProfile(userId: id))[0]
+
+            return profile
+        } catch {
+            print("Error fetching user profile: \(error)")
+        }
+
+        return nil
     }
 }
