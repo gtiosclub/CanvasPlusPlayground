@@ -81,7 +81,8 @@ struct CourseFileService {
         let fileLoc = try? pathWithFolders(foldersPath: foldersPath, courseId: course.id, fileId: file.id, type: FileType.fromFile(file))
 
         // Provide local copy meanwhile
-        if let fileLoc, Self.fileManager.fileExists(atPath: fileLoc.path()), let data = try? Data(contentsOf: fileLoc) {
+        if let fileLoc, Self.fileManager.fileExists(atPath: fileLoc.path(percentEncoded: false)),
+            let data = try? Data(contentsOf: fileLoc) {
             localCopyReceived(data)
         }
 
