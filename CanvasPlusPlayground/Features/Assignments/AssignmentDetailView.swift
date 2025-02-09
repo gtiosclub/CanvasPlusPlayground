@@ -14,32 +14,16 @@ struct AssignmentDetailView: View {
     }
     var body: some View {
         if (assignment.submissionTypes.contains("online_quiz")) {
-            WebView(url: URL(string:assignment.html_url ?? "google.com")!)
+            WebView(url: URL(string:assignment.html_url ?? "gatech.edu")!)
         } else {
             Form {
                 Section {
-                    HStack {
-                        Text("Assignment Name")
-                        Spacer()
-                        Text(assignment.name)
-                    }
+                    LabeledContent("Name", value: assignment.name)
                 }
                 Section {
-                    HStack {
-                        Text("Due")
-                        Spacer()
-                        Text(assignment.dueDate?.formatted() ?? "NULL_DATE")
-                    }
-                    HStack {
-                        Text("Points")
-                        Spacer()
-                        Text(String(format: "%.0f", assignment.points_possible ?? -1))
-                    }
-                    HStack {
-                        Text("File Types")
-                        Spacer()
-                        Text(assignment.submission_types?.joined(separator: ", ") ?? "NULL_FILE_TYPES")
-                    }
+                    LabeledContent("Due", value: assignment.dueDate?.formatted() ?? "NULL_DATE")
+                    LabeledContent("Points", value: String(format: "%.0f", assignment.points_possible ?? -1))
+                    LabeledContent("File Types", value: assignment.submission_types?.joined(separator: ", ") ?? "NULL_FILE_TYPES")
                 }
                 Section {
                     HTMLTextView(htmlText: assignment.description ?? "")
