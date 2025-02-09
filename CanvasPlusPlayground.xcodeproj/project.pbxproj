@@ -23,6 +23,7 @@
 		9B92A4252C93856100C21CFC /* CourseAnnouncementManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B92A4242C93856100C21CFC /* CourseAnnouncementManager.swift */; };
 		9B9C2E042C93F6CD00E4B16B /* CourseAnnouncementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9C2E032C93F6CD00E4B16B /* CourseAnnouncementsView.swift */; };
 		9B9C2E062C93F94C00E4B16B /* CourseAnnouncementDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9C2E052C93F94C00E4B16B /* CourseAnnouncementDetailView.swift */; };
+		9BEB4ED02D56AF570013869D /* AssignmentDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BEB4ECF2D56AF570013869D /* AssignmentDetailView.swift */; };
 		A3049B532D0E5241002F3166 /* Quiz.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3049B522D0E5241002F3166 /* Quiz.swift */; };
 		A3049B562D0E541D002F3166 /* QuizType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3049B552D0E541D002F3166 /* QuizType.swift */; };
 		A3049B592D0E5A96002F3166 /* LockInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3049B582D0E5A96002F3166 /* LockInfo.swift */; };
@@ -165,6 +166,7 @@
 		9B92A4242C93856100C21CFC /* CourseAnnouncementManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAnnouncementManager.swift; sourceTree = "<group>"; };
 		9B9C2E032C93F6CD00E4B16B /* CourseAnnouncementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAnnouncementsView.swift; sourceTree = "<group>"; };
 		9B9C2E052C93F94C00E4B16B /* CourseAnnouncementDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAnnouncementDetailView.swift; sourceTree = "<group>"; };
+		9BEB4ECF2D56AF570013869D /* AssignmentDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentDetailView.swift; sourceTree = "<group>"; };
 		A3049B522D0E5241002F3166 /* Quiz.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quiz.swift; sourceTree = "<group>"; };
 		A3049B552D0E541D002F3166 /* QuizType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizType.swift; sourceTree = "<group>"; };
 		A3049B582D0E5A96002F3166 /* LockInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockInfo.swift; sourceTree = "<group>"; };
@@ -477,6 +479,7 @@
 			children = (
 				A373DC1E2D1D2B5700215019 /* Models */,
 				192EC04B2C963EE600AF8528 /* CourseAssignmentView.swift */,
+				9BEB4ECF2D56AF570013869D /* AssignmentDetailView.swift */,
 				9B69FA4A2CC2CC7F006101F3 /* AggregatedAssignmentsView.swift */,
 				9B69FA4E2CC2CCCF006101F3 /* AggregatedAssignmentsViewCell.swift */,
 				192EC0472C963ACB00AF8528 /* CourseAssignmentManager.swift */,
@@ -834,6 +837,7 @@
 				B76455012C8DF61B002DF00E /* StorageKeys.swift in Sources */,
 				A3FFD03A2CDEC2AC006BAB51 /* LookupCondition.swift in Sources */,
 				B7D95DB72D0A8D78002AD955 /* SettingsView.swift in Sources */,
+				9BEB4ED02D56AF570013869D /* AssignmentDetailView.swift in Sources */,
 				A3049B592D0E5A96002F3166 /* LockInfo.swift in Sources */,
 				A3E7F3932C99338B00DC4300 /* TabAPI.swift in Sources */,
 				A3049B7D2D160299002F3166 /* GetFoldersInFolderRequest.swift in Sources */,

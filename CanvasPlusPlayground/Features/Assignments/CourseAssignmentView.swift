@@ -21,6 +21,11 @@ struct CourseAssignmentsView: View {
     }
 
     var body: some View {
+        NavigationStack {
+            mainbody
+        }
+    }
+    var mainbody: some View {
         List(assignmentManager.assignments, id: \.id) { assignment in
             AssignmentRow(assignment: assignment, showGrades: showGrades)
                 .contextMenu {
@@ -41,8 +46,14 @@ struct CourseAssignmentsView: View {
         .task {
             await loadAssignments()
         }
+        .refreshable {
+            await loadAssignments()
+        }
         .statusToolbarItem("Assignments", isVisible: isLoadingAssignments)
         .navigationTitle(course.displayName)
+        .navigationDestination(for: AssignmentAPI.self) { assignment in
+            AssignmentDetailView(assignment: assignment)
+        }
     }
 
     private func loadAssignments() async {
@@ -57,28 +68,10 @@ struct AssignmentRow: View {
     let showGrades: Bool
 
     var body: some View {
-        let submission = assignment.submission?.createModel()
-
-        HStack {
-            VStack(alignment: .leading) {
+        NavigationLink(value: assignment) {
+            HStack {
                 Text(assignment.name)
                     .font(.headline)
-                Group {
-                    if let submission {
-                        Text(
-                            submission.workflowState?.rawValue.capitalized ?? "Unknown Status"
-                        )
-                    }
-                }
-                .font(.subheadline)
-            }
-
-            if showGrades, let submission {
-                Spacer()
-
-                Text(submission.score?.truncatingTrailingZeros ?? "--") +
-                Text("/") +
-                Text(assignment.points_possible?.truncatingTrailingZeros ?? "--")
             }
         }
     }
