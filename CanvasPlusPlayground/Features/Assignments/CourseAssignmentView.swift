@@ -65,28 +65,11 @@ struct AssignmentRow: View {
     let showGrades: Bool
 
     var body: some View {
-        let submission = assignment.submission?.createModel()
         NavigationLink(value: assignment) {
             HStack {
                 VStack(alignment: .leading) {
                     Text(assignment.name)
                         .font(.headline)
-                    Group {
-                        if let submission {
-                            Text(
-                                submission.workflowState?.rawValue.capitalized ?? "Unknown Status"
-                            )
-                        }
-                    }
-                    .font(.subheadline)
-                }
-
-                if showGrades, let submission {
-                    Spacer()
-
-                    Text(submission.score?.truncatingTrailingZeros ?? "--") +
-                    Text("/") +
-                    Text(assignment.points_possible?.truncatingTrailingZeros ?? "--")
                 }
             }
         }
