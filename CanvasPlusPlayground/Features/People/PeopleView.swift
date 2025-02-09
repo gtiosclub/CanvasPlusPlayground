@@ -79,8 +79,8 @@ struct PeopleView: View {
                 currentSearchTask?.cancel()
                 peopleManager.users = Set()
                 peopleManager.loadingState = .loading
-                Task {
-                    await newQuery()
+                currentSearchTask = Task {
+                    newQueryAsync()
                 }
             }
         }
