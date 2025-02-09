@@ -14,16 +14,20 @@ struct ProfileView: View {
     let user: User
     var showCommonCourses: Bool = true
 
-    @State private var profile: Profile? // needed to get email for curr user
+    var profile: Profile? {
+        if user.id == profileManager.currentUser?.id {
+            return profileManager.currentProfile
+        }
+
+        return nil
+    }
 
     init(
         user: User,
-        profile: Profile? = nil,
         showCommonCourses: Bool = true
     ) {
         self.user = user
         self.showCommonCourses = showCommonCourses
-        self.profile = profile
     }
 
     var body: some View {
@@ -40,11 +44,6 @@ struct ProfileView: View {
             }
         }
         .formStyle(.grouped)
-        .task {
-            if profile == nil {
-                profile = await profileManager.getProfile(for: user.id)
-            }
-        }
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
                 Button("Done") {

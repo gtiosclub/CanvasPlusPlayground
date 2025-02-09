@@ -82,7 +82,6 @@ struct HomeView: View {
                 NavigationStack {
                     ProfileView(
                         user: currentUser,
-                        profile: profileManager.currentProfile,
                         showCommonCourses: false
                     )
                 }
