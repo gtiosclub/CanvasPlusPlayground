@@ -46,6 +46,9 @@ struct CourseAssignmentsView: View {
         .task {
             await loadAssignments()
         }
+        .refreshable {
+            await loadAssignments()
+        }
         .statusToolbarItem("Assignments", isVisible: isLoadingAssignments)
         .navigationTitle(course.displayName)
         .navigationDestination(for: AssignmentAPI.self) { assignment in
