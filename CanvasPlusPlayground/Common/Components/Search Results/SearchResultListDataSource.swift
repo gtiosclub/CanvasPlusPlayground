@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol SearchResultListDataSource : AnyObject {
+protocol SearchResultListDataSource: AnyObject {
     /// Label for source type (e.g. Grade for grades loading). Used in loading text.
     var label: String { get }
     /// Should start with .nextPageFound

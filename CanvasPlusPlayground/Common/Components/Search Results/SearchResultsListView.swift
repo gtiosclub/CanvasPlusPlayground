@@ -26,11 +26,11 @@ struct SearchResultsListView<Content: View, DataSource: SearchResultListDataSour
 
     var listView: some View {
         List {
-            itemsView()
-
             if dataSource.queryMode == .offline {
                 offlineLabel
             }
+
+            itemsView()
 
             switch dataSource.loadingState {
             case .nextPageReady:
