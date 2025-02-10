@@ -13,7 +13,7 @@ struct AggregatedAssignmentsView: View {
 
     var body: some View {
         List {
-            ForEach(courseAssignments, id:\.0.id) { assignment, course in
+            ForEach(courseAssignments, id: \.0.id) { assignment, course in
                 AggregatedAssignmentsListCell(assignment: assignment, course: course)
             }
             .onMove { old, new in

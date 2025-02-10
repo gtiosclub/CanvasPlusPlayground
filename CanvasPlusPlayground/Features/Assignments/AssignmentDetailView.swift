@@ -13,8 +13,8 @@ struct AssignmentDetailView: View {
         self.assignment = assignment
     }
     var body: some View {
-        if (assignment.isOnlineQuiz) {
-            WebView(url: URL(string:assignment.html_url ?? "gatech.edu")!)
+        if assignment.isOnlineQuiz {
+            WebView(url: URL(string: assignment.html_url ?? "gatech.edu")!)
         } else {
             Form {
                 Section {

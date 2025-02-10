@@ -31,14 +31,14 @@ class CanvasRepository {
         modelContext.autosaveEnabled = true
     }
 
-    func insert<T>(_ item: T) where T : Cacheable {
+    func insert<T>(_ item: T) where T: Cacheable {
         modelContext.insert(item)
     }
 
     /// Gets all data based on type. e.g. all Course objects to get all courses
     func get<T>(
         descriptor: FetchDescriptor<T>
-    ) throws -> [T]? where T : Cacheable {
+    ) throws -> [T]? where T: Cacheable {
 
         let models: [T] = try modelContext.fetch(descriptor)
 
@@ -50,7 +50,7 @@ class CanvasRepository {
 
     func count<T>(
         descriptor: FetchDescriptor<T>
-    ) throws -> Int where T : Cacheable {
+    ) throws -> Int where T: Cacheable {
 
         return try modelContext.fetchCount(descriptor)
     }
@@ -68,7 +68,7 @@ class CanvasRepository {
         }
     }
 
-    func merge<T>(other: T, into model: T) where T : Cacheable {
+    func merge<T>(other: T, into model: T) where T: Cacheable {
         model.merge(with: other)
     }
 

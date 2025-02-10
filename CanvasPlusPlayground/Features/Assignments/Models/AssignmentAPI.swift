@@ -89,7 +89,7 @@ struct AssignmentAPI: APIResponse {
         ISO8601DateFormatter().date(from: due_at ?? "2024-12-12T19:06:20Z")
     }
 
-    var submissionTypes:[String] {
+    var submissionTypes: [String] {
         submission_types ?? []
     }
 
