@@ -19,7 +19,7 @@ struct GetModuleItemsRequest: CacheableArrayAPIRequest {
             ("search_term", searchTerm),
             ("per_page", perPage)
         ]
-        + include.map { ("include[]", $0) }
+        + include.map { ("include[]", $0.rawValue) }
     }
 
     let include: [Include]

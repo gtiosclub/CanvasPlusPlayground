@@ -21,10 +21,10 @@ struct GetEnrollmentsRequest: CacheableArrayAPIRequest {
             ("enrollment_term_id", enrollmentTermId),
             ("per_page", perPage)
         ] as [(String, Any?)]
-        params += type.map { ("type[]", $0) }
+        params += type.map { ("type[]", $0.rawValue) }
         params += role.map { ("role[]", $0) }
-        params += state.map { ("state[]", $0) }
-        params += include.map { ("include[]", $0) }
+        params += state.map { ("state[]", $0.rawValue) }
+        params += include.map { ("include[]", $0.rawValue) }
         params += sisAccountId.map { ("sis_account_id[]", $0) }
         params += sisCourseId.map { ("sis_course_id[]", $0) }
         params += sisSectionId.map { ("sis_section_id[]", $0) }

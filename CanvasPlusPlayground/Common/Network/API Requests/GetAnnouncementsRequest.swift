@@ -23,7 +23,7 @@ struct GetAnnouncementsRequest: CacheableArrayAPIRequest {
             ("per_page", perPage)
         ]
         + (contextCodes + ["course_\(courseId)"]).map { ("context_codes[]", $0) }
-        + include.map { ("include[]", $0) }
+        + include.map { ("include[]", $0.rawValue) }
     }
 
     // MARK: Query Params

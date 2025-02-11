@@ -18,7 +18,7 @@ struct GetTabsRequest: ArrayAPIRequest {
         [
             ("per_page", perPage)
         ]
-        + include.map { ("include[]", $0) }
+        + include.map { ("include[]", $0.rawValue) }
     }
 
     // MARK: Query Params

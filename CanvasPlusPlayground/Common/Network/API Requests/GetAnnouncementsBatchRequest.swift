@@ -21,7 +21,7 @@ struct GetAnnouncementsBatchRequest: CacheableArrayAPIRequest {
             ("per_page", perPage)
         ]
         + contextCodes.map { ("context_codes[]", $0) }
-        + include.map { ("include[]", $0) }
+        + include.map { ("include[]", $0.rawValue) }
     }
 
     // MARK: Query Params

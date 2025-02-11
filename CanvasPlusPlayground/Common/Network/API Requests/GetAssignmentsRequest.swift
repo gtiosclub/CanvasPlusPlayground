@@ -24,7 +24,7 @@ struct GetAssignmentsRequest: ArrayAPIRequest {
             ("new_quizzes", newQuizzes),
             ("per_page", perPage)
         ]
-        + include.map { ("include[]", $0) }
+        + include.map { ("include[]", $0.rawValue) }
         + assignmentIds.map { ("assignment_ids[]", $0) }
     }
 

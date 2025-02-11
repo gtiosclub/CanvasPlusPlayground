@@ -24,7 +24,7 @@ struct GetFileRequest: CacheableAPIRequest {
             ("replacement_chain_context_type", replacementChainContextType),
             ("replacement_chain_context_id", replacementChainContextId?.description)
         ]
-        + include.map { ("include[]", $0) }
+        + include.map { ("include[]", $0.rawValue) }
     }
 
     // MARK: Initializer

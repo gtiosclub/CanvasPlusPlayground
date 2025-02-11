@@ -21,8 +21,8 @@ struct GetCoursesRequest: CacheableArrayAPIRequest {
             ("state", state),
             ("per_page", perPage)
         ]
-        + include.map { ("include[]", $0) }
-        + state.map { ("state[]", $0) }
+        + include.map { ("include[]", $0.rawValue) }
+        + state.map { ("state[]", $0.rawValue) }
     }
 
     // MARK: Query Params

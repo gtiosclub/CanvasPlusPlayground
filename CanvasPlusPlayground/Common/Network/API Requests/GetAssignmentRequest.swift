@@ -20,7 +20,7 @@ struct GetAssignmentRequest: APIRequest {
             ("needs_grading_count_by_section", needsGradingCountBySection),
             ("all_dates", allDates)
         ]
-        + include.map { ("include[]", $0) }
+        + include.map { ("include[]", $0.rawValue) }
     }
 
     // MARK: Query Params
