@@ -42,9 +42,7 @@ class QuizzesViewModel {
                     guard let quizzes = $0 else { return }
                     addQuizzes(quizzes)
                 },
-                onNewBatch: {
-                    addQuizzes($0)
-                }
+                loadingMethod: .all(onNewPage: addQuizzes)
             )
 
         } catch {

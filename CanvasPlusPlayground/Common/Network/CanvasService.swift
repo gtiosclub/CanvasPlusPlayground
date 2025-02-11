@@ -44,7 +44,6 @@ class CanvasService {
     @MainActor
     func syncWithAPI<Request: CacheableAPIRequest>(
         _ request: Request,
-        onNewBatch: ([Request.PersistedModel]) -> Void = { _ in },
         loadingMethod: LoadingMethod<Request> = .all(onNewPage: { _ in})
     ) async throws -> [Request.PersistedModel] {
         guard let repository else { return [] }
@@ -52,7 +51,6 @@ class CanvasService {
         // Call for cacheable requests
         let result = try await request.syncWithAPI(
             to: repository,
-            onNewBatch: onNewBatch,
             loadingMethod: loadingMethod
         )
         return result
@@ -64,7 +62,6 @@ class CanvasService {
         - request: the desired API query for a **collection** of models.
         - descriptor: an optimized filter to be performed in the query.
         - onCacheReceive: a closure for early execution when cached version is received - if any.
-        - onNewBatch: if the request involves pagination, this closure will be executed upon arrival of each batch
      - Returns: An array of models concerning the desired query.
      **/
     @discardableResult
@@ -72,7 +69,6 @@ class CanvasService {
     func loadAndSync<Request: CacheableAPIRequest>(
         _ request: Request,
         onCacheReceive: ([Request.PersistedModel]?) -> Void = { _ in },
-        onNewBatch: ([Request.PersistedModel]) -> Void = { _ in },
         loadingMethod: LoadingMethod<Request> = .all(onNewPage: { _ in})
     ) async throws -> [Request.PersistedModel] {
         guard let repository else { return [] }
@@ -83,7 +79,7 @@ class CanvasService {
         )
         onCacheReceive(cached) // Share cached version with caller.
 
-        let latest = try await request.syncWithAPI(to: repository, onNewBatch: onNewBatch)
+        let latest = try await request.syncWithAPI(to: repository)
 
         return latest
     }

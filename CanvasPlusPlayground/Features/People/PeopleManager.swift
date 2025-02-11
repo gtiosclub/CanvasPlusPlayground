@@ -156,9 +156,7 @@ extension PeopleManager {
                         guard let cached else { return }
 
                         processEnrollments(cached)
-                    }, onNewBatch: { batchedResults in
-                        processEnrollments(batchedResults)
-                    }) else {
+                    }, loadingMethod: .all(onNewPage: processEnrollments)) else {
                         print("Couldn't fetch enrollment count for course \(course.name ?? "n/a")")
                         return
                     }
