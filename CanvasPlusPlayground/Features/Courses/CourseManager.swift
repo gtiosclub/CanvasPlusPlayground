@@ -58,8 +58,6 @@ class CourseManager {
 
     @MainActor
     func setCourses(_ courses: [Course]) {
-        DispatchQueue.main.async {
-                self.allCourses = courses
-        }
+        self.allCourses = courses
     }
 }
