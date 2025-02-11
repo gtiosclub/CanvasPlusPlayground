@@ -135,7 +135,7 @@ extension GetCoursesRequest {
              concluded,
              postManually = "post_manually"
     }
-    
+
     enum State: String {
         case unpublished, available, completed, deleted
     }

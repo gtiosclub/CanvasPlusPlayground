@@ -89,13 +89,12 @@ struct GetFilesInFolderRequest: CacheableArrayAPIRequest {
     }
 }
 
-
 extension GetFilesInFolderRequest {
     enum Include: String {
         case user,
              usageRights = "usage_rights"
     }
-    
+
     enum Only: String {
         case names
     }
@@ -108,7 +107,7 @@ extension GetFilesInFolderRequest {
              contentType = "content_type",
              user
     }
-    
+
     enum Order: String {
         case asc,
              desc

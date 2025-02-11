@@ -90,6 +90,5 @@ extension GetAssignmentRequest {
              canEdit = "can_edit",
              scoreStatistics = "score_statistics",
              abGuid = "ab_guid"
-            
     }
 }

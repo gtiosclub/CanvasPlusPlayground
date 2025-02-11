@@ -90,22 +90,23 @@ struct GetEnrollmentsRequest: CacheableArrayAPIRequest {
             enrollment.courseID == requestId
         }
     }
+
     var customPredicate: Predicate<Enrollment> {
         let requestUserId = self.userId?.asInt ?? -1
 
         // Break down the predicate into smaller parts
-        let typePredicate = self.type.isEmpty ? .true : Predicate<Enrollment>({ enrollment in
-            PredicateExpressions.build_contains(
-                PredicateExpressions.build_KeyPath(
-                    root: PredicateExpressions.build_Arg(self),
-                    keyPath: \.type
-                ),
-                PredicateExpressions.build_KeyPath(
-                    root: PredicateExpressions.build_Arg(enrollment),
-                    keyPath: \.type
-                )
-            ) as! any StandardPredicateExpression<Bool>
-        })
+//        let typePredicate = self.type.isEmpty ? .true : Predicate<Enrollment>({ enrollment in
+//            PredicateExpressions.build_contains(
+//                PredicateExpressions.build_KeyPath(
+//                    root: PredicateExpressions.build_Arg(self),
+//                    keyPath: \.type
+//                ),
+//                PredicateExpressions.build_KeyPath(
+//                    root: PredicateExpressions.build_Arg(enrollment),
+//                    keyPath: \.type
+//                )
+//            ) as! any StandardPredicateExpression<Bool>
+//        })
 
         let rolePredicate = self.role.isEmpty ? .true : Predicate<Enrollment>({ enrollment in
             PredicateExpressions.build_contains(
@@ -120,18 +121,18 @@ struct GetEnrollmentsRequest: CacheableArrayAPIRequest {
             ) as! any StandardPredicateExpression<Bool>
         })
 
-        let statePredicate = self.state.isEmpty ? .true : Predicate<Enrollment>({ enrollment in
-            PredicateExpressions.build_contains(
-                PredicateExpressions.build_KeyPath(
-                    root: PredicateExpressions.build_Arg(self),
-                    keyPath: \.state
-                ),
-                PredicateExpressions.build_KeyPath(
-                    root: PredicateExpressions.build_Arg(enrollment),
-                    keyPath: \.state?.rawValue
-                )
-            ) as! any StandardPredicateExpression<Bool>
-        })
+//        let statePredicate = self.state.isEmpty ? .true : Predicate<Enrollment>({ enrollment in
+//            PredicateExpressions.build_contains(
+//                PredicateExpressions.build_KeyPath(
+//                    root: PredicateExpressions.build_Arg(self),
+//                    keyPath: \.state
+//                ),
+//                PredicateExpressions.build_KeyPath(
+//                    root: PredicateExpressions.build_Arg(enrollment),
+//                    keyPath: \.state.rawValue
+//                )
+//            ) as! any StandardPredicateExpression<Bool>
+//        })
 
         let userIdPredicate = self.userId == nil ? .true : #Predicate<Enrollment> { enrollment in
             enrollment.userID == requestUserId
@@ -164,9 +165,9 @@ struct GetEnrollmentsRequest: CacheableArrayAPIRequest {
         })
 
         return #Predicate<Enrollment> { enrollment in
-            typePredicate.evaluate(enrollment) &&
+//            typePredicate.evaluate(enrollment) &&
             rolePredicate.evaluate(enrollment) &&
-            statePredicate.evaluate(enrollment) &&
+//            statePredicate.evaluate(enrollment) &&
             userIdPredicate.evaluate(enrollment) &&
             // gradingPeriodPredicate.evaluate(enrollment) &&
             termPredicate.evaluate(enrollment)
@@ -185,7 +186,7 @@ extension GetEnrollmentsRequest {
              uuid,
              currentPoints = "current_points"
     }
-    
+
     enum State: String {
         case active,
              invited,
@@ -199,12 +200,12 @@ extension GetEnrollmentsRequest {
              currentFutureAndRestricted = "current_future_and_restricted",
              currentAndConcluded = "current_and_concluded"
     }
-    
+
     enum EnrollmentType: String {
         case student = "StudentEnrollment",
              teacher = "TeacherEnrollment",
-             ta = "TaEnrollment",
+             teachingAssistant = "TaEnrollment",
              designer = "DesignerEnrollment",
-             observer = "Observer
+             observer = "Observer"
     }
 }
