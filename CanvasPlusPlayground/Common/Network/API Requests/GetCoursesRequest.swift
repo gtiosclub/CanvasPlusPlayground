@@ -31,8 +31,8 @@ struct GetCoursesRequest: CacheableArrayAPIRequest {
     let enrollmentRoleId: Int?
     let enrollmentState: String?
     let excludeBlueprintCourses: Bool?
-    let include: [String]
-    let state: [String?]
+    let include: [Include]
+    let state: [State]
     let perPage: Int
 
     init(
@@ -41,8 +41,8 @@ struct GetCoursesRequest: CacheableArrayAPIRequest {
         enrollmentRoleId: Int? = nil,
         enrollmentState: String? = nil,
         excludeBlueprintCourses: Bool? = nil,
-        include: [String] = [],
-        state: [String?] = [],
+        include: [Include] = [],
+        state: [State] = [],
         perPage: Int = 50
     ) {
         self.enrollmentType = enrollmentType
@@ -109,6 +109,34 @@ struct GetCoursesRequest: CacheableArrayAPIRequest {
 //            && excludeBluePrintPred.evaluate(course)
 //            && statePred.evaluate(course)
         }
+    }
+}
 
+extension GetCoursesRequest {
+    enum Include: String {
+        case needsGradingCount = "needs_grading_count",
+             syllabusBody = "syllabus_body",
+             publicDescription = "public_description",
+             totalScores = "total_scores",
+             currentGradingPeriodScores = "current_grading_period_scores",
+             gradingPeriods = "grading_periods",
+             term,
+             account,
+             courseProgress = "course_progress",
+             sections,
+             storageQuotaUsedMb = "storage_quota_used_mb",
+             totalStudents = "total_students",
+             passbackStatus = "passback_status",
+             favorites,
+             teachers,
+             observedUsers = "observed_users",
+             courseImage = "course_image",
+             bannerImage = "banner_image",
+             concluded,
+             postManually = "post_manually"
+    }
+    
+    enum State: String {
+        case unpublished, available, completed, deleted
     }
 }

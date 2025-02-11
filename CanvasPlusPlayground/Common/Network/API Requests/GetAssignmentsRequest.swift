@@ -29,7 +29,7 @@ struct GetAssignmentsRequest: ArrayAPIRequest {
     }
 
     // MARK: Query Params
-    let include: [String]
+    let include: [Include]
     let searchTerm: String?
     let overrideAssignmentDates: Bool?
     let needsGradingCountBySection: Bool?
@@ -42,7 +42,7 @@ struct GetAssignmentsRequest: ArrayAPIRequest {
 
     init(
         courseId: String,
-        include: [String] = [],
+        include: [Include] = [],
         searchTerm: String? = nil,
         overrideAssignmentDates: Bool? = nil,
         needsGradingCountBySection: Bool? = nil,
@@ -100,4 +100,17 @@ struct GetAssignmentsRequest: ArrayAPIRequest {
         // TODO: add remaining filters (bucket, assignmentIds)
     }*/
 
+}
+
+extension GetAssignmentsRequest {
+    enum Include: String {
+        case submission,
+            assignmentVisibility = "assignment_visibility",
+            allDates = "all_dates",
+            overrides,
+            observedUsers = "observed_users",
+            canEdit = "can_edit",
+            scoreStatistics = "score_statistics",
+            abGuid = "ab_guid"
+    }
 }

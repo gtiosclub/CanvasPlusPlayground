@@ -19,10 +19,10 @@ struct GetCourseRequest: CacheableAPIRequest {
         + include.map { ("include[]", $0) }
     }
 
-    let include: [String]
+    let include: [Include]
     let teacherLimit: Int?
 
-    init(courseId: String, include: [String] = [], teacherLimit: Int? = nil) {
+    init(courseId: String, include: [Include] = [], teacherLimit: Int? = nil) {
         self.courseId = courseId
         self.include = include
         self.teacherLimit = teacherLimit
@@ -37,5 +37,32 @@ struct GetCourseRequest: CacheableAPIRequest {
     }
     var customPredicate: Predicate<Course> {
         .true
+    }
+}
+
+extension GetCourseRequest {
+    enum Include: String {
+        case needsGradingCount = "needs_grading_count",
+             syllabusBody = "syllabus_body",
+             publicDescription = "public_description",
+             totalScores = "total_scores",
+             currentGradingPeriodScores = "current_grading_period_scores",
+             term,
+             account,
+             courseProgress = "course_progress",
+             sections,
+             storageQuotaUsedMb = "storage_quota_used_mb",
+             totalStudents = "total_students",
+             passbackStatus = "passback_status",
+             favorites,
+             teachers,
+             observedUsers = "observed_users",
+             allCourses = "all_courses",
+             permissions,
+             courseImage = "course_image",
+             bannerImage = "banner_image",
+             concluded,
+             ltiContextId = "lti_context_id",
+             postManually = "post_manually"
     }
 }

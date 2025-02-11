@@ -34,10 +34,10 @@ struct GetEnrollmentsRequest: CacheableArrayAPIRequest {
     }
 
     // MARK: Query Params
-    let type: [String?]
+    let type: [EnrollmentType]
     let role: [String?]
-    let state: [String?]
-    let include: [String?]
+    let state: [State]
+    let include: [Include]
     let userId: String?
     let gradingPeriodId: Int?
     let enrollmentTermId: Int?
@@ -51,10 +51,10 @@ struct GetEnrollmentsRequest: CacheableArrayAPIRequest {
     init(
         courseId: String,
         courseEnrollmentTermId: Int? = nil,
-        type: [String?] = [],
+        type: [EnrollmentType] = [],
         role: [String?] = [],
-        state: [String?] = [],
-        include: [String?] = [],
+        state: [State] = [],
+        include: [Include] = [],
         userId: String? = nil,
         gradingPeriodId: Int? = nil,
         enrollmentTermId: Int? = nil,
@@ -172,5 +172,39 @@ struct GetEnrollmentsRequest: CacheableArrayAPIRequest {
             termPredicate.evaluate(enrollment)
         }
 
+    }
+}
+
+extension GetEnrollmentsRequest {
+    enum Include: String {
+        case avatarUrl = "avatar_url",
+             groupIds = "group_ids",
+             locked,
+             observedUsers = "observed_users",
+             canBeRemoved = "can_be_removed",
+             uuid,
+             currentPoints = "current_points"
+    }
+    
+    enum State: String {
+        case active,
+             invited,
+             creationPending = "creation_pending",
+             deleted,
+             rejected,
+             completed,
+             inactive,
+             currentAndInvited = "current_and_invited",
+             currentAndFuture = "current_and_future",
+             currentFutureAndRestricted = "current_future_and_restricted",
+             currentAndConcluded = "current_and_concluded"
+    }
+    
+    enum EnrollmentType: String {
+        case student = "StudentEnrollment",
+             teacher = "TeacherEnrollment",
+             ta = "TaEnrollment",
+             designer = "DesignerEnrollment",
+             observer = "Observer
     }
 }

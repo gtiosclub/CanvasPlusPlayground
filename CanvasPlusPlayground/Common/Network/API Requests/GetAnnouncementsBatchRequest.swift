@@ -31,7 +31,7 @@ struct GetAnnouncementsBatchRequest: CacheableArrayAPIRequest {
     let endDate: Date?
     // let activeOnly: Bool? ONLY FOR TEACHERS
     let latestOnly: Bool?
-    let include: [String]
+    let include: [Include]
     let perPage: Int
 
     init(
@@ -39,7 +39,7 @@ struct GetAnnouncementsBatchRequest: CacheableArrayAPIRequest {
         startDate: Date? = nil,
         endDate: Date? = nil,
         latestOnly: Bool? = nil,
-        include: [String] = [],
+        include: [Include] = [],
         perPage: Int = 50
     ) {
         assert(!courseIds.isEmpty)
@@ -86,5 +86,12 @@ struct GetAnnouncementsBatchRequest: CacheableArrayAPIRequest {
         return #Predicate<Announcement> { announcement in
             startDatePredicate.evaluate(announcement) && endDatePredicate.evaluate(announcement)
         }
+    }
+}
+
+extension GetAnnouncementsBatchRequest {
+    enum Include: String {
+        case sections,
+             sectionsUserCount = "sections_user_count"
     }
 }

@@ -11,7 +11,7 @@ struct GetFileRequest: CacheableAPIRequest {
     typealias Subject = FileAPI
 
     let fileId: String
-    let include: [String]
+    let include: [Include]
     let replacementChainContextType: String?
     let replacementChainContextId: Int?
 
@@ -21,16 +21,16 @@ struct GetFileRequest: CacheableAPIRequest {
     // MARK: Query Parameters
     var queryParameters: [QueryParameter] {
         [
-            ("include[]", include.joined(separator: ",")),
             ("replacement_chain_context_type", replacementChainContextType),
             ("replacement_chain_context_id", replacementChainContextId?.description)
         ]
+        + include.map { ("include[]", $0) }
     }
 
     // MARK: Initializer
     init(
         fileId: String,
-        include: [String] = [],
+        include: [Include] = [],
         replacementChainContextType: String? = nil,
         replacementChainContextId: Int? = nil
     ) {
@@ -51,5 +51,12 @@ struct GetFileRequest: CacheableAPIRequest {
 
     var customPredicate: Predicate<File> {
         .true
+    }
+}
+
+extension GetFileRequest {
+    enum Include: String {
+        case user,
+            usageRights = "usage_rights"
     }
 }

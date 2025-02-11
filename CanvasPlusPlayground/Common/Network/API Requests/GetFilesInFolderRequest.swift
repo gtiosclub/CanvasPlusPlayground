@@ -30,10 +30,10 @@ struct GetFilesInFolderRequest: CacheableArrayAPIRequest {
     let contentTypes: [String?]
     let excludeContentTypes: [String?]
     let searchTerm: String?
-    let include: [String]
-    let only: [String]
-    let sort: String?
-    let order: String?
+    let include: [Include]
+    let only: [Only]
+    let sort: Sort?
+    let order: Order?
     let perPage: Int
 
     init(
@@ -41,10 +41,10 @@ struct GetFilesInFolderRequest: CacheableArrayAPIRequest {
         contentTypes: [String?] = [],
         excludeContentTypes: [String?] = [],
         searchTerm: String? = nil,
-        include: [String] = [],
-        only: [String] = [],
-        sort: String? = nil,
-        order: String? = nil,
+        include: [Include] = [],
+        only: [Only] = [],
+        sort: Sort? = nil,
+        order: Order? = nil,
         perPage: Int = 50
     ) {
         self.folderId = folderId
@@ -86,5 +86,31 @@ struct GetFilesInFolderRequest: CacheableArrayAPIRequest {
             && excludeContentTypesPred.evaluate(file)
             && searchPred.evaluate(file)
         }
+    }
+}
+
+
+extension GetFilesInFolderRequest {
+    enum Include: String {
+        case user,
+             usageRights = "usage_rights"
+    }
+    
+    enum Only: String {
+        case names
+    }
+    
+    enum Sort: String {
+        case name,
+             size,
+             createdAt = "created_at",
+             updatedAt = "updated_at",
+             contentType = "content_type",
+             user
+    }
+    
+    enum Order: String {
+        case asc,
+             desc
     }
 }

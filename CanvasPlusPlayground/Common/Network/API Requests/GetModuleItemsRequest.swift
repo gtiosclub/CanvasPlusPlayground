@@ -26,10 +26,6 @@ struct GetModuleItemsRequest: CacheableArrayAPIRequest {
     let searchTerm: String?
     let perPage: Int
 
-    enum Include: String {
-        case contentDetails = "content_details"
-    }
-
     var requestId: String? { "\(courseId)_\(moduleId)" }
     var requestIdKey: ParentKeyPath<ModuleItem, String?> {
         .createWritable(\.parentId)
@@ -46,5 +42,11 @@ struct GetModuleItemsRequest: CacheableArrayAPIRequest {
         }
 
         return searchPred
+    }
+}
+
+extension GetModuleItemsRequest {
+    enum Include: String {
+        case contentDetails = "content_details"
     }
 }

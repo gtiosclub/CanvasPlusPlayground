@@ -22,12 +22,18 @@ struct GetTabsRequest: ArrayAPIRequest {
     }
 
     // MARK: Query Params
-    let include: [String]
+    let include: [Include]
     let perPage: Int
 
-    init(courseId: String, include: [String] = [], perPage: Int = 50) {
+    init(courseId: String, include: [Include] = [], perPage: Int = 50) {
         self.courseId = courseId
         self.include = include
         self.perPage = perPage
+    }
+}
+
+extension GetTabsRequest {
+    enum Include: String {
+        case courseSubjectTabs = "course_subject_tabs"
     }
 }

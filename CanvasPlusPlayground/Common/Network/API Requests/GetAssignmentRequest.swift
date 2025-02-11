@@ -24,7 +24,7 @@ struct GetAssignmentRequest: APIRequest {
     }
 
     // MARK: Query Params
-    let include: [String]
+    let include: [Include]
     let overrideAssignmentDates: Bool?
     let needsGradingCountBySection: Bool?
     let allDates: Bool?
@@ -32,7 +32,7 @@ struct GetAssignmentRequest: APIRequest {
     init(
         assignmentId: String,
         courseId: String,
-        include: [String] = [],
+        include: [Include] = [],
         overrideAssignmentDates: Bool? = nil,
         needsGradingCountBySection: Bool? = nil,
         allDates: Bool? = nil
@@ -71,7 +71,7 @@ struct GetAssignmentRequest: APIRequest {
                 assignment.postToSis == postToSis
             }
         } else { postToSisPred = .true }
-
+m
         return #Predicate<Assignment> { assignment in
             searchPred.evaluate(assignment) && assignmentIdsPred.evaluate(assignment) && postToSisPred.evaluate(assignment)
         }
@@ -79,4 +79,17 @@ struct GetAssignmentRequest: APIRequest {
         // TODO: add remaining filters (bucket, assignmentIds)
     }*/
 
+}
+
+extension GetAssignmentRequest {
+    enum Include: String {
+        case submission,
+             assignmentVisibility = "assignment_visibility",
+             overrides,
+             observedUsers = "observed_users",
+             canEdit = "can_edit",
+             scoreStatistics = "score_statistics",
+             abGuid = "ab_guid"
+            
+    }
 }
