@@ -163,9 +163,9 @@ struct GetEnrollmentsRequest: CacheableArrayAPIRequest {
         })
 
         return #Predicate<Enrollment> { enrollment in
-//            typePredicate.evaluate(enrollment) &&
+            typePredicate.evaluate(enrollment) &&
             rolePredicate.evaluate(enrollment) &&
-//            statePredicate.evaluate(enrollment) &&
+            statePredicate.evaluate(enrollment) &&
             userIdPredicate.evaluate(enrollment) &&
             // gradingPeriodPredicate.evaluate(enrollment) &&
             termPredicate.evaluate(enrollment)
