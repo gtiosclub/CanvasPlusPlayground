@@ -95,18 +95,17 @@ struct GetEnrollmentsRequest: CacheableArrayAPIRequest {
         let requestUserId = self.userId?.asInt ?? -1
 
         // Break down the predicate into smaller parts
-//        let typePredicate = self.type.isEmpty ? .true : Predicate<Enrollment>({ enrollment in
-//            PredicateExpressions.build_contains(
-//                PredicateExpressions.build_KeyPath(
-//                    root: PredicateExpressions.build_Arg(self),
-//                    keyPath: \.type
-//                ),
-//                PredicateExpressions.build_KeyPath(
-//                    root: PredicateExpressions.build_Arg(enrollment),
-//                    keyPath: \.type
-//                )
-//            ) as! any StandardPredicateExpression<Bool>
-//        })
+        let typePredicate = self.type.isEmpty ? .true : Predicate<Enrollment>({ enrollment in
+            let allowedTypes = self.type.map { $0.rawValue }
+            
+            return PredicateExpressions.build_contains(
+                PredicateExpressions.build_Arg(allowedTypes),
+                PredicateExpressions.build_KeyPath(
+                    root: PredicateExpressions.build_Arg(enrollment),
+                    keyPath: \.type
+                )
+            ) as! any StandardPredicateExpression<Bool>
+        })
 
         let rolePredicate = self.role.isEmpty ? .true : Predicate<Enrollment>({ enrollment in
             PredicateExpressions.build_contains(
@@ -121,18 +120,17 @@ struct GetEnrollmentsRequest: CacheableArrayAPIRequest {
             ) as! any StandardPredicateExpression<Bool>
         })
 
-//        let statePredicate = self.state.isEmpty ? .true : Predicate<Enrollment>({ enrollment in
-//            PredicateExpressions.build_contains(
-//                PredicateExpressions.build_KeyPath(
-//                    root: PredicateExpressions.build_Arg(self),
-//                    keyPath: \.state
-//                ),
-//                PredicateExpressions.build_KeyPath(
-//                    root: PredicateExpressions.build_Arg(enrollment),
-//                    keyPath: \.state.rawValue
-//                )
-//            ) as! any StandardPredicateExpression<Bool>
-//        })
+        let statePredicate = self.state.isEmpty ? .true : Predicate<Enrollment>({ enrollment in
+            let allowedStates = self.state.map { $0.rawValue }
+            
+            return PredicateExpressions.build_contains(
+                PredicateExpressions.build_Arg(allowedStates),
+                PredicateExpressions.build_KeyPath(
+                    root: PredicateExpressions.build_Arg(enrollment),
+                    keyPath: \.state?.rawValue
+                )
+            ) as! any StandardPredicateExpression<Bool>
+        })
 
         let userIdPredicate = self.userId == nil ? .true : #Predicate<Enrollment> { enrollment in
             enrollment.userID == requestUserId

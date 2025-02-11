@@ -98,7 +98,7 @@ extension GetFilesInFolderRequest {
     enum Only: String {
         case names
     }
-    
+
     enum Sort: String {
         case name,
              size,
