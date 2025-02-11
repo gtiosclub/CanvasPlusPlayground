@@ -22,9 +22,9 @@ import Foundation
 
                 setAnnouncements(cached, courses: courses)
             },
-            onNewBatch: { batchAnnouncements in
-                setBatchAnnouncements(batchAnnouncements, courses: courses)
-            }
+            loadingMethod: .all(onNewPage: { batchAnnouncements in
+                self.setBatchAnnouncements(batchAnnouncements, courses: courses)
+            })
         )
 
         guard let announcements else {

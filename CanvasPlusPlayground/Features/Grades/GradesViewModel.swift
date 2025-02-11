@@ -59,12 +59,13 @@ class GradesViewModel {
                         currentUserID: currentUserID
                     )
                 },
-                onNewBatch: { enrollmentsBatch in
-                    findEnrollment(
+                loadingMethod: .all(onNewPage: { enrollmentsBatch in
+                    self.findEnrollment(
                         enrollments: enrollmentsBatch,
                         currentUserID: currentUserID
                     )
                 })
+            )
 
             if let enrollments {
                 findEnrollment(

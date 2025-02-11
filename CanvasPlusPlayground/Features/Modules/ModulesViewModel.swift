@@ -54,9 +54,7 @@ class ModulesViewModel {
                         print("Cache: " + ($0 ?? []).description)
                         setModules($0)
                     },
-                    onNewBatch: {
-                        setModules($0)
-                    }
+                    loadingMethod: .all(onNewPage: setModules)
                 )
         } catch {
             print("Error fetching modules: \(type(of: error))")
@@ -83,7 +81,7 @@ class ModulesViewModel {
                 .loadAndSync(
                     request,
                     onCacheReceive: setModuleItems(_:),
-                    onNewBatch: setModuleItems(_:)
+                    loadingMethod: .all(onNewPage: setModuleItems(_:))
                 )
         } catch {
             print("Error fetching module items: \(type(of: error))")
