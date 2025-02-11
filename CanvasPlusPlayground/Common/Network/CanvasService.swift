@@ -79,7 +79,10 @@ class CanvasService {
         )
         onCacheReceive(cached) // Share cached version with caller.
 
-        let latest = try await request.syncWithAPI(to: repository)
+        let latest = try await request.syncWithAPI(
+            to: repository,
+            loadingMethod: loadingMethod
+        )
 
         return latest
     }
