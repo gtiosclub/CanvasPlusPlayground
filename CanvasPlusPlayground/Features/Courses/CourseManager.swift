@@ -43,17 +43,20 @@ class CourseManager {
                 CanvasRequest.getCourses(enrollmentState: "active"),
                 onCacheReceive: { cachedCourses in
                     guard let cachedCourses else { return }
-                    setCourses(cachedCourses)
+                    Task { @MainActor in
+                        self.setCourses(cachedCourses)
+                    }
                 }
             )
             print(courses.map(\.name))
 
-            setCourses(courses)
+            await setCourses(courses)
         } catch {
             print("Failed to fetch courses. \(error)")
         }
     }
 
+    @MainActor
     func setCourses(_ courses: [Course]) {
         self.allCourses = courses
     }
