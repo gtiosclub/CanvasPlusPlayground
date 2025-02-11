@@ -86,7 +86,8 @@ struct HomeView: View {
         #if os(macOS)
         .overlay {
             if quickOpenManager.isActive {
-                Text("hi")
+                QuickOpenView()
+                    .environment(quickOpenManager)
             }
         }
         #endif

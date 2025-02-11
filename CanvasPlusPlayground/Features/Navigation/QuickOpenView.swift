@@ -8,8 +8,19 @@
 import SwiftUI
 
 struct QuickOpenView: View {
+    @Environment(QuickOpenManager.self) var manager
+    @FocusState private var isTextFieldActive: Bool
+    @State private var inputText: String = ""
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        TextField("Open...", text: $inputText)
+            .textFieldStyle(.roundedBorder)
+            .focused($isTextFieldActive)
+            .onAppear {
+                isTextFieldActive = true
+            }
+            .frame(width: 300, height: 32)
+            .background(.black)
+            .cornerRadius(8)
     }
 }
 
