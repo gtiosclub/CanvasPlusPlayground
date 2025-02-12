@@ -60,19 +60,7 @@ final class Course: Cacheable {
         get { return CourseDefaultView(rawValue: defaultViewRaw ?? "") }
         set { defaultViewRaw = newValue?.rawValue }
     }
-    
-    var courseName: String? {
-        guard let name else {
-            return nil
-        }
-        
-        let pattern = "[A-Za-z]+-\\d{4}-[A-Za-z0-9]+"
-        if let range = name.range(of: pattern, options: .regularExpression) {
-            return name.replacingCharacters(in: range, with: "").trimmingCharacters(in: .whitespaces)
-        }
-        return name
-    }
-    
+
     // MARK: Custom Properties
     // We cannot use `Color` directly because it needs to conform to `PersistentModel`
     var rgbColors: RGBColors?
@@ -81,7 +69,7 @@ final class Course: Cacheable {
     var isHidden: Bool?
 
     var displayName: String {
-        nickname ?? courseName ?? name ?? "Unknown Name"
+        nickname ?? name ?? "Unknown Name"
     }
 
     init(_ courseAPI: CourseAPI) {

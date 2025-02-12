@@ -27,14 +27,10 @@ struct CourseListCell: View {
     }
 
     var body: some View {
-        VStack(alignment: .listRowSeparatorLeading) {
+        HStack {
             Label(course.displayName, systemImage: "book.pages")
                 .frame(alignment: .leading)
                 .multilineTextAlignment(.leading)
-            
-            Text(course.courseCode ?? "Missing code")
-                .font(.caption)
-                .foregroundStyle(.tint)
         }
         .onAppear {
             resolvedCourseColor = course.rgbColors?.color ?? .accentColor
