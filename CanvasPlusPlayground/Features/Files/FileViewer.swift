@@ -15,7 +15,6 @@ struct FileViewer: View {
     let fileService = CourseFileService()
 
     @Environment(CourseFileViewModel.self) var courseFileVM
-    @State private var content: Data?
     @State private var url: URL?
     @State private var isLoading = false
 
@@ -59,7 +58,7 @@ struct FileViewer: View {
     private func loadContents() async {
         isLoading = true
         do {
-            (self.content, self.url) = try await fileService.courseFile(
+            (_, self.url) = try await fileService.courseFile(
                 for: file,
                 course: course,
                 foldersPath: courseFileVM.traversedFolderIDs,
