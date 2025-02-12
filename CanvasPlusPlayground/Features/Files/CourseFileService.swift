@@ -11,6 +11,7 @@ import AppKit
 #endif
 
 struct CourseFileService {
+    static let shared: CourseFileService = .init()
 
     private static let fileManager: FileManager = .default
     private static var rootURL: URL? {
@@ -48,11 +49,11 @@ struct CourseFileService {
     ) throws -> URL {
         weak var file = file
 
-        guard let file, let type = FileType.fromFile(file) else {
-            throw FileError.unsupportedFileType
+        guard let file else {
+            throw FileError.fileWasNil
         }
 
-        let fileURL = try self.pathWithFolders(foldersPath: folderIds, courseId: courseId, fileId: file.id, type: type)
+        let fileURL = try self.pathWithFolders(foldersPath: folderIds, courseId: courseId, fileId: file.id, type: .init(file: file))
         let parentDirURL = fileURL.deletingLastPathComponent()
 
         try Self.fileManager.createDirectory(
@@ -72,18 +73,35 @@ struct CourseFileService {
         return fileURL
     }
 
+    func locationForCourseFile(
+        _ file: File,
+        course: Course,
+        foldersPath: [String]
+    ) -> URL? {
+        print("Checking if \(file.displayName) exists")
+        let fileLoc = try? pathWithFolders(foldersPath: foldersPath, courseId: course.id, fileId: file.id, type: FileType(file: file))
+
+        if let fileLoc, Self.fileManager
+            .fileExists(atPath: fileLoc.path(percentEncoded: false)) {
+            print("File exists locally!\n")
+            return fileLoc
+        }
+
+        print("File does not exist locally\n")
+
+        return nil
+    }
+
     func courseFile(
         for file: File,
         course: Course,
         foldersPath: [String],
-        localCopyReceived: (Data?) -> Void
-    ) async throws -> Data {
-        let fileLoc = try? pathWithFolders(foldersPath: foldersPath, courseId: course.id, fileId: file.id, type: FileType.fromFile(file))
-
+        localCopyReceived: (Data?, URL) -> Void
+    ) async throws -> (Data, URL) {
         // Provide local copy meanwhile
-        if let fileLoc, Self.fileManager.fileExists(atPath: fileLoc.path(percentEncoded: false)),
-            let data = try? Data(contentsOf: fileLoc) {
-            localCopyReceived(data)
+        if let fileLoc = self.locationForCourseFile(file, course: course, foldersPath: foldersPath),
+           let data = try? Data(contentsOf: fileLoc) {
+            localCopyReceived(data, fileLoc)
         }
 
         // Start downloading remote version
@@ -101,11 +119,12 @@ struct CourseFileService {
                 }
                 let url = try self.saveCourseFile(courseId: course.id, folderIds: foldersPath, file: file, content: content)
                 print("File successfully saved at \(url.path())")
+
+                return (content, url)
             } catch {
                 print("Failed to save file. \(error)")
+                throw error
             }
-
-            return content
 
         } else {
             throw URLError(.badURL)
@@ -174,12 +193,10 @@ struct CourseFileService {
 }
 
 enum FileError: Error {
-    case unsupportedFileType, fileWriteFailed, fileWasNil, directoryInaccessible
+    case fileWriteFailed, fileWasNil, directoryInaccessible
 
     var message: String {
         switch self {
-        case .unsupportedFileType:
-            return "Unsupported file type"
         case .fileWriteFailed:
             return "File save failed"
         case .fileWasNil:

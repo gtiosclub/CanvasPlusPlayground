@@ -13,6 +13,7 @@ struct FoldersPageView: View {
     @State private var filesVM: CourseFileViewModel
 
     @State private var isLoadingContents = true
+    @State private var selectedFile: File?
 
     init(course: Course, folder: Folder? = nil, traversedFolderIDs: [String] = []) {
         self.course = course
@@ -22,66 +23,68 @@ struct FoldersPageView: View {
     }
 
     var body: some View {
-        List {
-            Section("Files") {
-                ForEach(filesVM.displayedFiles, id: \.id) { file in
-                    fileRow(for: file)
-                        .listItemTint(course.rgbColors?.color)
+        List(selection: $selectedFile) {
+            if !filesVM.displayedFiles.isEmpty {
+                Section("Files") {
+                    ForEach(filesVM.displayedFiles, id: \.id) { file in
+                        fileRow(for: file)
+                            .tag(file)
+                            .listItemTint(course.rgbColors?.color)
+                    }
                 }
             }
 
-            Section("Folders") {
-                ForEach(filesVM.displayedFolders, id: \.id) { subFolder in
-                    folderRow(for: subFolder)
-                        .listItemTint(course.rgbColors?.color)
+            if !filesVM.displayedFolders.isEmpty {
+                Section("Folders") {
+                    ForEach(filesVM.displayedFolders, id: \.id) { subFolder in
+                        folderRow(for: subFolder)
+                            .listItemTint(course.rgbColors?.color)
+                    }
                 }
             }
-
         }
         .task {
             await loadContents()
+        }
+        #if os(iOS)
+        .fullScreenCover(item: $selectedFile) { file in
+            NavigationStack {
+                FileViewer(course: course, file: file)
+            }
+                .environment(filesVM)
+        }
+        #else
+        .navigationDestination(item: $selectedFile) { file in
+            FileViewer(course: course, file: file)
+                .environment(filesVM)
+        }
+        #endif
+        .overlay {
+            if !isLoadingContents && filesVM.displayedFiles.isEmpty && filesVM.displayedFolders.isEmpty {
+                ContentUnavailableView("This folder is empty.", systemImage: "folder")
+            }
         }
         .statusToolbarItem(
             folder?.name ?? "Files",
             isVisible: isLoadingContents
         )
-        .navigationTitle("Files")
+        .navigationTitle(folder?.name?.capitalized ?? "Files")
     }
 
     @ViewBuilder
     func fileRow(for file: File) -> some View {
         if file.url != nil {
-            NavigationLink(destination: destination(for: file)) {
-                Label(file.displayName, systemImage: "document")
-            }
-            .contextMenu {
-                PinButton(
-                    itemID: file.id,
-                    courseID: course.id,
-                    type: .file
-                )
-            }
-            .swipeActions(edge: .leading) {
-                PinButton(
-                    itemID: file.id,
-                    courseID: course.id,
-                    type: .file
-                )
-            }
+            FileRow(file: file, course: course)
+                .environment(filesVM)
         } else {
             Label("File not available.", systemImage: "document")
         }
     }
 
-    func destination(for file: File) -> some View {
-        FileViewer(course: course, file: file)
-            .environment(filesVM)
-    }
-
     @ViewBuilder
     func folderRow(for subFolder: Folder) -> some View {
         NavigationLink(destination: FoldersPageView(course: course, folder: subFolder, traversedFolderIDs: filesVM.traversedFolderIDs)) {
-            Label(subFolder.name ?? "Couldn't find folder name.", systemImage: "folder")
+            FolderRow(folder: subFolder)
         }
     }
 
@@ -93,5 +96,88 @@ struct FoldersPageView: View {
             self.folder = await filesVM.fetchRoot()
         }
         isLoadingContents = false
+    }
+}
+
+private struct FileRow: View {
+    @Environment(CourseFileViewModel.self) private var filesVM
+    let file: File
+    let course: Course
+
+    @State private var localFileExists = false
+
+    var body: some View {
+        HStack {
+            mainContent
+
+            Spacer()
+
+            if !localFileExists {
+                Image(systemName: "arrow.down.circle.dotted")
+            }
+        }
+        .imageScale(.large)
+        .contextMenu {
+            PinButton(
+                itemID: file.id,
+                courseID: course.id,
+                type: .file
+            )
+        }
+        .swipeActions(edge: .leading) {
+            PinButton(
+                itemID: file.id,
+                courseID: course.id,
+                type: .file
+            )
+        }
+        .onAppear {
+            localFileExists = CourseFileService.shared.locationForCourseFile(
+                file,
+                course: course,
+                foldersPath: filesVM.traversedFolderIDs
+            ) != nil
+        }
+    }
+
+    private var mainContent: some View {
+        HStack {
+            Image(systemName: "document")
+                .foregroundStyle(.tint)
+
+            VStack(alignment: .leading) {
+                Text(file.displayName)
+                    .font(.headline)
+
+                if let size = file.size {
+                    Text(size.formatted(.byteCount(style: .file)))
+                        .foregroundStyle(.secondary)
+                }
+            }
+        }
+    }
+}
+
+private struct FolderRow: View {
+    let folder: Folder
+
+    var body: some View {
+        HStack {
+            Image(systemName: "folder")
+                .foregroundStyle(.tint)
+
+            VStack(alignment: .leading) {
+                Text(folder.name ?? "Unknown Folder")
+                    .font(.headline)
+
+                Text("\(count) items")
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .imageScale(.large)
+    }
+
+    var count: Int {
+        (folder.filesCount ?? 0) + (folder.foldersCount ?? 0)
     }
 }
