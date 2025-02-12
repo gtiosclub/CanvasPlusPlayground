@@ -16,14 +16,14 @@ struct GetFilesInFolderRequest: CacheableArrayAPIRequest {
     var queryParameters: [QueryParameter] {
         [
             ("search_term", searchTerm),
-            ("sort", sort),
-            ("order", order),
+            ("sort", sort?.rawValue),
+            ("order", order?.rawValue),
             ("per_page", perPage)
         ]
         + contentTypes.map {("content_types[]", $0)}
         + excludeContentTypes.map {("exclude_content_types[]", $0)}
-        + include.map {("include[]", $0)}
-        + only.map {("only[]", $0)}
+        + include.map {("include[]", $0.rawValue)}
+        + only.map {("only[]", $0.rawValue)}
     }
 
     // MARK: Query Params
