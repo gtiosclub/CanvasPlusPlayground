@@ -31,7 +31,7 @@ struct Sidebar: View {
                     ) {
                         CourseListCell(course: course)
                     }
-                    .tint(course.rgbColors?.color)
+                    .listItemTint(.fixed(course.rgbColors?.color ?? .accentColor))
                 }
             }
 
@@ -40,7 +40,7 @@ struct Sidebar: View {
                     NavigationLink(value: NavigationPage.course(id: course.id)) {
                         CourseListCell(course: course)
                     }
-                    .tint(course.rgbColors?.color)
+                    .listItemTint(.fixed(course.rgbColors?.color ?? .accentColor))
                 }
             }
 
@@ -50,7 +50,7 @@ struct Sidebar: View {
                         NavigationLink(value: NavigationPage.course(id: course.id)) {
                             CourseListCell(course: course)
                         }
-                        .tint(course.rgbColors?.color)
+                        .listItemTint(.fixed(course.rgbColors?.color ?? .accentColor))
                     }
                 }
             }
@@ -75,11 +75,10 @@ struct Sidebar: View {
                     Button {
                         navigationModel.showProfileSheet.toggle()
                     } label: {
-                        ProfilePicture(user: currentUser)
                         #if os(macOS)
-                            .frame(width: 19, height: 19)
+                        ProfilePicture(user: currentUser, size: 19)
                         #else
-                            .frame(width: 24, height: 24)
+                        ProfilePicture(user: currentUser, size: 24)
                         #endif
                     }
                 }
