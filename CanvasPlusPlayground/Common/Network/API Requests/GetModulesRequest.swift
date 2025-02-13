@@ -26,10 +26,6 @@ struct GetModulesRequest: CacheableArrayAPIRequest {
     let include: [Include]
     let perPage: Int
 
-    enum Include: String {
-        case items, contentDetails = "content_details"
-    }
-
     var requestId: String? { courseId }
     var requestIdKey: ParentKeyPath<Module, String?> {
         .createWritable(\.courseID)
@@ -46,4 +42,11 @@ struct GetModulesRequest: CacheableArrayAPIRequest {
         return searchPred
     }
 
+}
+
+extension GetModulesRequest {
+    enum Include: String {
+        case items,
+             contentDetails = "content_details"
+    }
 }
