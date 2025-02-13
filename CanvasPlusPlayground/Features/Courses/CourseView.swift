@@ -24,13 +24,15 @@ struct CourseView: View {
         .scrollContentBackground(course.rgbColors?.color == nil ? .automatic : .hidden)
         .background(alignment: .top) {
             if let color = course.rgbColors?.color {
-                LinearGradient(colors: [color, color.opacity(0)], startPoint: .top, endPoint: .bottom)
+                color
                     .overlay {
-                        LinearGradient(colors: [.white, .white.opacity(0)], startPoint: .center, endPoint: .bottom)
+                        LinearGradient(colors: [color, color.opacity(0)], startPoint: .top, endPoint: .bottom)
+                            .hueRotation(.degrees(35))
                             .blendMode(.overlay)
-                            .opacity(0)
                     }
-                    .opacity(0.5)
+                    .mask {
+                        LinearGradient(colors: [.black.opacity(0.5), .black.opacity(0)], startPoint: .top, endPoint: .bottom)
+                    }
                     .frame(height: 200)
                     .ignoresSafeArea()
             }
