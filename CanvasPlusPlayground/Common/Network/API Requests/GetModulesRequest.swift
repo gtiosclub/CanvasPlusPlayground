@@ -18,17 +18,13 @@ struct GetModulesRequest: CacheableArrayAPIRequest {
             ("search_term", searchTerm),
             ("per_page", perPage)
         ]
-        + include.map { ("include[]", $0) }
+        + include.map { ("include[]", $0.rawValue) }
     }
 
     // MARK: Query Params
     let searchTerm: String?
     let include: [Include]
     let perPage: Int
-
-    enum Include: String {
-        case items, contentDetails = "content_details"
-    }
 
     var requestId: String? { courseId }
     var requestIdKey: ParentKeyPath<Module, String?> {
@@ -46,4 +42,11 @@ struct GetModulesRequest: CacheableArrayAPIRequest {
         return searchPred
     }
 
+}
+
+extension GetModulesRequest {
+    enum Include: String {
+        case items,
+             contentDetails = "content_details"
+    }
 }

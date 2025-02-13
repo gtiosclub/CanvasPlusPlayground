@@ -23,7 +23,7 @@ struct GetAnnouncementsRequest: CacheableArrayAPIRequest {
             ("per_page", perPage)
         ]
         + (contextCodes + ["course_\(courseId)"]).map { ("context_codes[]", $0) }
-        + include.map { ("include[]", $0) }
+        + include.map { ("include[]", $0.rawValue) }
     }
 
     // MARK: Query Params
@@ -33,7 +33,7 @@ struct GetAnnouncementsRequest: CacheableArrayAPIRequest {
     let endDate: Date?
     // let activeOnly: Bool? ONLY FOR TEACHERS
     let latestOnly: Bool?
-    let include: [String]
+    let include: [Include]
     let perPage: Int
 
     init(
@@ -42,7 +42,7 @@ struct GetAnnouncementsRequest: CacheableArrayAPIRequest {
         startDate: Date? = nil,
         endDate: Date? = nil,
         latestOnly: Bool? = nil,
-        include: [String] = [],
+        include: [Include] = [],
         perPage: Int = 50
     ) {
         self.courseId = courseId
@@ -88,5 +88,12 @@ struct GetAnnouncementsRequest: CacheableArrayAPIRequest {
         return #Predicate<Announcement> { announcement in
             contextCodePred.evaluate(announcement) && startDatePredicate.evaluate(announcement) && endDatePredicate.evaluate(announcement)
         }
+    }
+}
+
+extension GetAnnouncementsRequest {
+    enum Include: String {
+        case sections,
+             sectionsUserCount = "sections_user_count"
     }
 }

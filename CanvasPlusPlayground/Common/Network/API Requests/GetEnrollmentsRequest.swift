@@ -21,10 +21,10 @@ struct GetEnrollmentsRequest: CacheableArrayAPIRequest {
             ("enrollment_term_id", enrollmentTermId),
             ("per_page", perPage)
         ] as [(String, Any?)]
-        params += type.map { ("type[]", $0) }
+        params += type.map { ("type[]", $0.rawValue) }
         params += role.map { ("role[]", $0) }
-        params += state.map { ("state[]", $0) }
-        params += include.map { ("include[]", $0) }
+        params += state.map { ("state[]", $0.rawValue) }
+        params += include.map { ("include[]", $0.rawValue) }
         params += sisAccountId.map { ("sis_account_id[]", $0) }
         params += sisCourseId.map { ("sis_course_id[]", $0) }
         params += sisSectionId.map { ("sis_section_id[]", $0) }
@@ -34,10 +34,10 @@ struct GetEnrollmentsRequest: CacheableArrayAPIRequest {
     }
 
     // MARK: Query Params
-    let type: [String?]
+    let type: [EnrollmentType]
     let role: [String?]
-    let state: [String?]
-    let include: [String?]
+    let state: [State]
+    let include: [Include]
     let userId: String?
     let gradingPeriodId: Int?
     let enrollmentTermId: Int?
@@ -51,10 +51,10 @@ struct GetEnrollmentsRequest: CacheableArrayAPIRequest {
     init(
         courseId: String,
         courseEnrollmentTermId: Int? = nil,
-        type: [String?] = [],
+        type: [EnrollmentType] = [],
         role: [String?] = [],
-        state: [String?] = [],
-        include: [String?] = [],
+        state: [State] = [],
+        include: [Include] = [],
         userId: String? = nil,
         gradingPeriodId: Int? = nil,
         enrollmentTermId: Int? = nil,
@@ -90,16 +90,16 @@ struct GetEnrollmentsRequest: CacheableArrayAPIRequest {
             enrollment.courseID == requestId
         }
     }
+
     var customPredicate: Predicate<Enrollment> {
         let requestUserId = self.userId?.asInt ?? -1
 
         // Break down the predicate into smaller parts
         let typePredicate = self.type.isEmpty ? .true : Predicate<Enrollment>({ enrollment in
-            PredicateExpressions.build_contains(
-                PredicateExpressions.build_KeyPath(
-                    root: PredicateExpressions.build_Arg(self),
-                    keyPath: \.type
-                ),
+            let allowedTypes = self.type.map { $0.rawValue }
+
+            return PredicateExpressions.build_contains(
+                PredicateExpressions.build_Arg(allowedTypes),
                 PredicateExpressions.build_KeyPath(
                     root: PredicateExpressions.build_Arg(enrollment),
                     keyPath: \.type
@@ -121,11 +121,10 @@ struct GetEnrollmentsRequest: CacheableArrayAPIRequest {
         })
 
         let statePredicate = self.state.isEmpty ? .true : Predicate<Enrollment>({ enrollment in
-            PredicateExpressions.build_contains(
-                PredicateExpressions.build_KeyPath(
-                    root: PredicateExpressions.build_Arg(self),
-                    keyPath: \.state
-                ),
+            let allowedStates = self.state.map { $0.rawValue }
+
+            return PredicateExpressions.build_contains(
+                PredicateExpressions.build_Arg(allowedStates),
                 PredicateExpressions.build_KeyPath(
                     root: PredicateExpressions.build_Arg(enrollment),
                     keyPath: \.state?.rawValue
@@ -172,5 +171,39 @@ struct GetEnrollmentsRequest: CacheableArrayAPIRequest {
             termPredicate.evaluate(enrollment)
         }
 
+    }
+}
+
+extension GetEnrollmentsRequest {
+    enum Include: String {
+        case avatarUrl = "avatar_url",
+             groupIds = "group_ids",
+             locked,
+             observedUsers = "observed_users",
+             canBeRemoved = "can_be_removed",
+             uuid,
+             currentPoints = "current_points"
+    }
+
+    enum State: String {
+        case active,
+             invited,
+             creationPending = "creation_pending",
+             deleted,
+             rejected,
+             completed,
+             inactive,
+             currentAndInvited = "current_and_invited",
+             currentAndFuture = "current_and_future",
+             currentFutureAndRestricted = "current_future_and_restricted",
+             currentAndConcluded = "current_and_concluded"
+    }
+
+    enum EnrollmentType: String {
+        case student = "StudentEnrollment",
+             teacher = "TeacherEnrollment",
+             teachingAssistant = "TaEnrollment",
+             designer = "DesignerEnrollment",
+             observer = "Observer"
     }
 }
