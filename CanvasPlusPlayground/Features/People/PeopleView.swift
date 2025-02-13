@@ -156,17 +156,16 @@ private struct UserCell: View {
         HStack {
             Group {
                 if #available(iOS 18.0, *) {
-                    ProfilePicture(user: user)
-                        .frame(width: 35, height: 35)
+                    ProfilePicture(user: user, size: 35)
                         #if os(iOS)
                         .matchedTransitionSource(id: user.id, in: namespace)
                         #endif
                 } else {
-                    ProfilePicture(user: user)
-                        .frame(width: 35, height: 35)
+                    ProfilePicture(user: user, size: 35)
                 }
             }
             .symbolVariant(.fill)
+            .foregroundStyle(.secondary)
 
             VStack(alignment: .leading) {
                 Text(user.name)
