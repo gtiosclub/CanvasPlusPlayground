@@ -61,8 +61,7 @@ struct ProfileView: View {
         HStack {
             Spacer()
             VStack {
-                ProfilePicture(user: user)
-                    .frame(width: 100, height: 100)
+                ProfilePicture(user: user, size: 100)
                     .symbolVariant(.fill)
 
                 VStack(alignment: .center) {

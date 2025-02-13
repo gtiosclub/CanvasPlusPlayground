@@ -75,11 +75,10 @@ struct Sidebar: View {
                     Button {
                         navigationModel.showProfileSheet.toggle()
                     } label: {
-                        ProfilePicture(user: currentUser)
                         #if os(macOS)
-                            .frame(width: 19, height: 19)
+                        ProfilePicture(user: currentUser, size: 19)
                         #else
-                            .frame(width: 24, height: 24)
+                        ProfilePicture(user: currentUser, size: 24)
                         #endif
                     }
                 }
