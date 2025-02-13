@@ -65,6 +65,8 @@ struct CourseFileService {
 
         do {
             try content.write(to: fileURL, options: .atomic)
+
+            file.localURL = fileURL
         } catch {
             print("Writing failed due to \(error)")
             throw FileError.fileWriteFailed
@@ -84,7 +86,16 @@ struct CourseFileService {
         if let fileLoc, Self.fileManager
             .fileExists(atPath: fileLoc.path(percentEncoded: false)) {
             print("File exists locally!\n")
+
+            if fileLoc != file.localURL {
+                print("Updating File's localURL")
+                file.localURL = fileLoc
+            }
+
             return fileLoc
+        } else if file.localURL != nil {
+            print("Updating File's localURL to nil since it no longer exists locally")
+            file.localURL = nil
         }
 
         print("File does not exist locally\n")

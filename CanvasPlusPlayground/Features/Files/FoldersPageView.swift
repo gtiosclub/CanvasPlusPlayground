@@ -104,15 +104,13 @@ private struct FileRow: View {
     let file: File
     let course: Course
 
-    @State private var localFileExists = false
-
     var body: some View {
         HStack {
             mainContent
 
             Spacer()
 
-            if !localFileExists {
+            if file.localURL == nil {
                 Image(systemName: "arrow.down.circle.dotted")
             }
         }
@@ -132,11 +130,13 @@ private struct FileRow: View {
             )
         }
         .onAppear {
-            localFileExists = CourseFileService.shared.locationForCourseFile(
-                file,
-                course: course,
-                foldersPath: filesVM.traversedFolderIDs
-            ) != nil
+            // Updates file.localURL if needed
+            _ = CourseFileService.shared
+                .locationForCourseFile(
+                    file,
+                    course: course,
+                    foldersPath: filesVM.traversedFolderIDs
+                )
         }
     }
 
