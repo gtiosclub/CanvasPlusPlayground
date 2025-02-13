@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct FoldersPageView: View {
+    @Namespace private var namespace
+
     let course: Course
     @State var folder: Folder?
     @State private var filesVM: CourseFileViewModel
@@ -48,10 +50,19 @@ struct FoldersPageView: View {
         }
         #if os(iOS)
         .fullScreenCover(item: $selectedFile) { file in
-            NavigationStack {
-                FileViewer(course: course, file: file)
+            Group {
+                if #available(iOS 18.0, *) {
+                    NavigationStack {
+                        FileViewer(course: course, file: file)
+                    }
+                    .navigationTransition(.zoom(sourceID: file.id, in: namespace))
+                } else {
+                    NavigationStack {
+                        FileViewer(course: course, file: file)
+                    }
+                }
             }
-                .environment(filesVM)
+            .environment(filesVM)
         }
         #else
         .navigationDestination(item: $selectedFile) { file in
@@ -74,8 +85,17 @@ struct FoldersPageView: View {
     @ViewBuilder
     func fileRow(for file: File) -> some View {
         if file.url != nil {
-            FileRow(file: file, course: course)
-                .environment(filesVM)
+            Group {
+                if #available(iOS 18.0, *) {
+                    FileRow(file: file, course: course)
+                        #if os(iOS)
+                        .matchedTransitionSource(id: file.id, in: namespace)
+                        #endif
+                } else {
+                    FileRow(file: file, course: course)
+                }
+            }
+            .environment(filesVM)
         } else {
             Label("File not available.", systemImage: "document")
         }
