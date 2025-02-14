@@ -15,6 +15,7 @@ private typealias PlatformImage = UIImage
 
 struct ProfilePicture: View {
     let user: User
+    var size: CGFloat
 
     var body: some View {
         Group {
@@ -32,14 +33,16 @@ struct ProfilePicture: View {
                 #endif
             } else {
                 Image(systemName: "person.circle")
-                    .resizable()
-                    .foregroundStyle(.tint)
+                    .font(.system(size: size))
             }
         }
+        .frame(width: size, height: size)
         .overlay {
-            Circle()
-                .stroke(lineWidth: 1)
-                .fill(.separator)
+            if user.hasAvatar {
+                Circle()
+                    .stroke(lineWidth: 1)
+                    .fill(.separator)
+            }
         }
         .task {
             guard user.hasAvatar, let url = user.avatarURL else { return }
