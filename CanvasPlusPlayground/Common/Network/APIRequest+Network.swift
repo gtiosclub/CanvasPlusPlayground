@@ -9,8 +9,7 @@ import Foundation
 
 extension APIRequest {
     // MARK: Helpers
-    private func decodeData(arg: (Data, URLResponse)) throws -> QueryResult {
-        let (data, _) = arg
+    private func decodeData(_ data: Data) throws -> QueryResult {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
 
@@ -37,25 +36,29 @@ extension APIRequest {
         case .all:         // If the request is to be paginated
             fetched = try await fetchPages(
                 onNewPage: { page in
-                    if let page = try decodeData(arg: page) as? [Subject] {
-                        await onNewPage(page)
-                    } else if let page = try decodeData(arg: page) as? Subject {
-                        await onNewPage([page])
-                    }
+                    guard let subjects = try decodeAsSubjects(page.data) else { return }
+                    await onNewPage(subjects)
                 }
             )
         }
 
-        let result = try fetched.map { page in
-            if let page = try decodeData(arg: page) as? [Subject] {
-                return page
-            } else if let page = try decodeData(arg: page) as? Subject {
-                return [page]
-            } else { throw NetworkError.failedToDecode(msg: "Page decoding failed inside fetch()") }
+        let result = try fetched.compactMap { (data, _) in
+            try decodeAsSubjects(data)
         }
 
         return result.reduce([], +)
+    }
 
+    /// Attempts to decode the given data into either `Subject` or `[Subject]`.
+    private func decodeAsSubjects(_ data: Data) throws -> [Subject]? {
+        if let page = try decodeData(data) as? [Subject] {
+            return page
+        } else if let page = try decodeData(data) as? Subject {
+            return [page]
+        } else {
+            print("Failed to decode \(data) into [\(Subject.self)] or \(Subject.self).")
+            return nil
+        }
     }
 }
 
@@ -67,10 +70,9 @@ extension APIRequest where QueryResult == Subject {
         onNewPage: ([Subject]) async -> Void = { _ in}
     ) async throws -> [Subject] {
 
-        // API fetch
         let result = try await fetchResponse()
 
-        let decoded = try decodeData(arg: result)
+        let decoded = try decodeData(result.data)
 
         await onNewPage([decoded])
         return [decoded]
@@ -88,13 +90,14 @@ extension APIRequest {
 
         var urlRequest = URLRequest(url: url)
 
-        urlRequest.httpMethod = "GET"
+        urlRequest.httpMethod = self.method.rawValue
 
         do {
             let (data, response) = try await URLSession.shared.data(for: urlRequest)
 
-            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-                throw NetworkError.fetchFailed(msg: response.description)
+            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+                print("HTTP error: $\(response)$")
+                throw URLError(.badServerResponse)
             }
 
             return (data, response)
@@ -105,51 +108,40 @@ extension APIRequest {
         onNewPage: (((data: Data, url: URLResponse)) async throws -> Void)
     ) async throws -> [(data: Data, url: URLResponse)] {
         /*
-         var currUrl =
-         1) while loop
+         var currPage
+         1) loop
             a) people, newUrl = fetch(currUrl)
             b) onNewPage(people)
-            c) currUrl = newUrl
-            d) if (newUrl = nil) break
+            c) if nextPage == nil
+                break
+            c) currPage = nextPage
          */
 
         var returnData: [(data: Data, url: URLResponse)] = []
-        var currURL: URL? = self.url
-        var count = 1
-        while let url = currURL {
-            var request = URLRequest(url: url)
-
-            request.httpMethod = "GET"
-
-            let (data, response) = try await URLSession.shared.data(for: request)
-            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-                print("HTTP error: $\(response)$")
-                throw NetworkError.fetchFailed(msg: response.description)
-            }
+        var currPage: Int?
+        while true {
+            let (data, response) = try await fetchResponse(at: currPage)
             returnData.append((data, response))
-
             try await onNewPage((data, response))
 
-            guard let linkValue = httpResponse.allHeaderFields["Link"] as? String else {
+            guard let httpResponse = response as? HTTPURLResponse, let linkValue = httpResponse.allHeaderFields["Link"] as? String else {
                 print("No link field data")
                 break
             }
 
             let regEx = /<([^>]+)>; rel="next"/
 
-            guard let match = try regEx.firstMatch(in: linkValue) else {
+            // Parse for next page number
+            guard let match = try regEx.firstMatch(in: linkValue),
+                  let nextUrl = URL(string: String(match.output.1)),
+                  let components = URLComponents(url: nextUrl, resolvingAgainstBaseURL: true),
+                  let pageItem = components.queryItems?.first(where: { $0.name == "page" }),
+                  let nextPage = Int(pageItem.value ?? "") else {
                 print("No matching regex")
                 break
             }
 
-            let urlString = String(match.output.1).trimmingCharacters(in: .whitespacesAndNewlines)
-
-            currURL = URL(string: urlString)
-            currURL = currURL?.appending(queryItems: [
-                URLQueryItem(name: "access_token", value: StorageKeys.accessTokenValue)
-            ])
-
-            count += 1
+            currPage = nextPage
         }
 
         return returnData
