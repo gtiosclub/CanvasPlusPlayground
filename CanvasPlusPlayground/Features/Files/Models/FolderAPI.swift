@@ -9,7 +9,7 @@ import Foundation
 
 // https://canvas.instructure.com/doc/api/files.html
 // https://github.com/instructure/canvas-ios/blob/49a3e347116d623638c66b7adbcc946294faa212/Core/Core/Files/Model/API/APIFile.swift#L179
-struct FolderAPI: APIResponse {
+struct FolderAPI: APIResponse, Identifiable {
     typealias Model = Folder
 
     // swiftlint:disable identifier_name

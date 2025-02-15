@@ -7,14 +7,14 @@
 
 import Foundation
 
-protocol APIResponse: Codable, Identifiable, Hashable {
+protocol APIResponse: Codable {
     associatedtype Model: BaseCacheable
 
     func createModel() -> Model
 }
 
 // MARK: Hashable
-extension APIResponse {
+extension APIResponse where Self: Identifiable, Self: Hashable {
     static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.id == rhs.id
     }
@@ -29,4 +29,8 @@ extension APIResponse where Model: NoOpCacheable {
     func createModel() -> NoOpCacheable {
         NoOpCacheable()
     }
+}
+
+struct Empty: APIResponse {
+    typealias Model = NoOpCacheable
 }

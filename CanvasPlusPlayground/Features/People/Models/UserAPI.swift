@@ -9,7 +9,7 @@ import Foundation
 
 // https://github.com/instructure/canvas-ios/blob/49a3e347116d623638c66b7adbcc946294faa212/Core/Core/People/APIUser.swift
 // https://canvas.instructure.com/doc/api/users.html
-struct UserAPI: APIResponse {
+struct UserAPI: APIResponse, Identifiable {
     typealias Model = User
 
     // swiftlint:disable identifier_name

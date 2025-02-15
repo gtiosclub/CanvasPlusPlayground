@@ -9,7 +9,7 @@ import Foundation
 
 // https://canvas.instructure.com/doc/api/enrollments.html
 // https://github.com/instructure/canvas-ios/blob/49a3e347116d623638c66b7adbcc946294faa212/Core/Core/Enrollments/APIEnrollment.swift
-struct EnrollmentAPI: APIResponse {
+struct EnrollmentAPI: APIResponse, Identifiable {
     typealias Model = Enrollment
 
     // swiftlint:disable identifier_name

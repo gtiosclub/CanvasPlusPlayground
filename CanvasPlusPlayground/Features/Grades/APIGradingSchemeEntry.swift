@@ -8,7 +8,7 @@
 import Foundation
 
 // https://github.com/instructure/canvas-ios/blob/master/Core/Core/Grades/Model/API/APIGradingSchemeEntry.swift
-struct APIGradingSchemeEntry: APIResponse {
+struct APIGradingSchemeEntry: APIResponse, Identifiable {
     typealias Model = NoOpCacheable
 
     var id: String
