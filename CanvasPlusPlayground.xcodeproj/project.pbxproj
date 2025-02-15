@@ -24,6 +24,8 @@
 		9B9C2E042C93F6CD00E4B16B /* CourseAnnouncementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9C2E032C93F6CD00E4B16B /* CourseAnnouncementsView.swift */; };
 		9B9C2E062C93F94C00E4B16B /* CourseAnnouncementDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9C2E052C93F94C00E4B16B /* CourseAnnouncementDetailView.swift */; };
 		9BEB4ED02D56AF570013869D /* AssignmentDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BEB4ECF2D56AF570013869D /* AssignmentDetailView.swift */; };
+		A301EE092D61137400D71139 /* MarkCourseDiscussionTopicReadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A301EE082D61137400D71139 /* MarkCourseDiscussionTopicReadRequest.swift */; };
+		A301EE0B2D61148C00D71139 /* MarkCourseDiscussionTopicUnreadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A301EE0A2D61148C00D71139 /* MarkCourseDiscussionTopicUnreadRequest.swift */; };
 		A3049B532D0E5241002F3166 /* Quiz.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3049B522D0E5241002F3166 /* Quiz.swift */; };
 		A3049B562D0E541D002F3166 /* QuizType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3049B552D0E541D002F3166 /* QuizType.swift */; };
 		A3049B592D0E5A96002F3166 /* LockInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3049B582D0E5A96002F3166 /* LockInfo.swift */; };
@@ -167,6 +169,8 @@
 		9B9C2E032C93F6CD00E4B16B /* CourseAnnouncementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAnnouncementsView.swift; sourceTree = "<group>"; };
 		9B9C2E052C93F94C00E4B16B /* CourseAnnouncementDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAnnouncementDetailView.swift; sourceTree = "<group>"; };
 		9BEB4ECF2D56AF570013869D /* AssignmentDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentDetailView.swift; sourceTree = "<group>"; };
+		A301EE082D61137400D71139 /* MarkCourseDiscussionTopicReadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkCourseDiscussionTopicReadRequest.swift; sourceTree = "<group>"; };
+		A301EE0A2D61148C00D71139 /* MarkCourseDiscussionTopicUnreadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkCourseDiscussionTopicUnreadRequest.swift; sourceTree = "<group>"; };
 		A3049B522D0E5241002F3166 /* Quiz.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quiz.swift; sourceTree = "<group>"; };
 		A3049B552D0E541D002F3166 /* QuizType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizType.swift; sourceTree = "<group>"; };
 		A3049B582D0E5A96002F3166 /* LockInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockInfo.swift; sourceTree = "<group>"; };
@@ -335,6 +339,8 @@
 				A373DC2C2D28172E00215019 /* GetModulesRequest.swift */,
 				A35191422D28ED48001E415F /* GetModuleItemsRequest.swift */,
 				A352AD192D3EF1C1007EE6FC /* GetCourseUsersRequest.swift */,
+				A301EE082D61137400D71139 /* MarkCourseDiscussionTopicReadRequest.swift */,
+				A301EE0A2D61148C00D71139 /* MarkCourseDiscussionTopicUnreadRequest.swift */,
 			);
 			path = "API Requests";
 			sourceTree = "<group>";
@@ -801,6 +807,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A301EE0B2D61148C00D71139 /* MarkCourseDiscussionTopicUnreadRequest.swift in Sources */,
 				9B92A4232C93853C00C21CFC /* Announcement.swift in Sources */,
 				A3CA02592D43294B00A9752B /* SearchResultsListView.swift in Sources */,
 				B76454FE2C8DF61B002DF00E /* Course.swift in Sources */,
@@ -887,6 +894,7 @@
 				B77FD0022D52A0D60049AA5E /* ProfileView.swift in Sources */,
 				192EC04C2C963EE600AF8528 /* CourseAssignmentView.swift in Sources */,
 				A3FFD03C2CDED67C006BAB51 /* String+Numbers.swift in Sources */,
+				A301EE092D61137400D71139 /* MarkCourseDiscussionTopicReadRequest.swift in Sources */,
 				B53D95A02CA0953900647EE9 /* PeopleManager.swift in Sources */,
 				B7C0A3CB2D2F919F003E5A36 /* PinButton.swift in Sources */,
 				B7F950392D1279A1004BB470 /* UserAPI.swift in Sources */,
