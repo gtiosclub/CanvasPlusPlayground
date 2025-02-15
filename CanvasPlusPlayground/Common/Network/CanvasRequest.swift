@@ -143,4 +143,28 @@ struct CanvasRequest {
             perPage: perPage
         )
     }
+
+    static func getDiscussionTopics(
+        courseId: String,
+        include: [GetDiscussionTopicsRequest.Include] = [],
+        orderBy: GetDiscussionTopicsRequest.Order? = .position,
+        scope: GetDiscussionTopicsRequest.Scope? = nil,
+        onlyAnnouncements: Bool = false,
+        filterBy: GetDiscussionTopicsRequest.Filter? = .all,
+        searchTerm: String? = nil,
+        excludeContentModuleLockedTopics: Bool = false,
+        perPage: Int = 25
+    ) -> GetDiscussionTopicsRequest {
+        GetDiscussionTopicsRequest(
+            courseId: courseId,
+            include: include,
+            orderBy: orderBy,
+            scope: scope,
+            onlyAnnouncements: onlyAnnouncements,
+            filterBy: filterBy,
+            searchTerm: searchTerm,
+            excludeContentModuleLockedTopics: excludeContentModuleLockedTopics,
+            perPage: perPage
+        )
+    }
 }

@@ -44,13 +44,38 @@ struct GetDiscussionTopicsRequest: CacheableArrayAPIRequest {
         }
     }
     var customPredicate: Predicate<DiscussionTopic> {
-        let scopePred = scope != nil ? #Predicate<DiscussionTopic> { topic in
-            topic.locked && scope == .locked || !topic.locked && scope == .unlocked || topic.pinned && scope == .pinned || !topic.pinned && scope == .unpinned
-        } : .true
+//        let scope = self.scope
+//        let scopePred = switch scope {
+//            case .locked:
+//                #Predicate<DiscussionTopic> { topic in
+//                    topic.locked
+//                }
+//
+//            case .unlocked:
+//                #Predicate<DiscussionTopic> { topic in
+//                    !topic.locked
+//                }
+//
+//            case .pinned:
+//                #Predicate<DiscussionTopic> { topic in
+//                    topic.pinned
+//                }
+//
+//            case .unpinned:
+//                #Predicate<DiscussionTopic> { topic in
+//                    !topic.pinned
+//                }
+//
+//            default:
+//                .true
+//        }
+        // TODO: implement scope filter
 
-        let filterPred = filterBy != nil ? #Predicate<DiscussionTopic> { topic in
-            topic.readState == .unread && filterBy == .unread || filterBy == .all
-        } : .true
+//        let filterBy = self.filterBy
+//        let filterPred = filterBy != nil ? #Predicate<DiscussionTopic> { topic in
+//            (topic.readState == .unread && filterBy == .unread) || filterBy == .all
+//        } : .true
+        // TODO: implement filterBy
 
         let announcementPred = onlyAnnouncements ? #Predicate<DiscussionTopic> { topic in
             topic.isAnnouncement
@@ -64,9 +89,9 @@ struct GetDiscussionTopicsRequest: CacheableArrayAPIRequest {
         // TODO: filter for `excludeContentModuleLockedTopics` needed
 
         return #Predicate {
-            scopePred.evaluate($0)
-            && filterPred.evaluate($0)
-            && announcementPred.evaluate($0)
+//            scopePred.evaluate($0)
+//            filterPred.evaluate($0)
+            announcementPred.evaluate($0)
             && searchPred.evaluate($0)
         }
     }

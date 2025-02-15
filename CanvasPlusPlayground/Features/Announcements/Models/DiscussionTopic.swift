@@ -34,8 +34,8 @@ class DiscussionTopic: Cacheable {
     var locked: Bool
     var pinned: Bool
     var lockedForUser: Bool
-    //let lock_info: LockInfo?
-    //let lock_explanation: String?
+    // let lock_info: LockInfo?
+    // let lock_explanation: String?
     var userName: String?
     var groupTopicChildren: [DiscussionTopicChildAPI]?
     var rootTopicId: Int?
@@ -159,7 +159,7 @@ class DiscussionTopic: Cacheable {
             sections = other.sections
         }
     }
-    
+
     enum ReadState: String, Codable {
         case read, unread
     }

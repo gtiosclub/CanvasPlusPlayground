@@ -12,6 +12,7 @@ struct DiscussionTopicAPI: APIResponse, Identifiable {
     typealias Model = DiscussionTopic
 
     // MARK: In Docs
+    // swiftlint:disable identifier_name
     let id: Int
     let author: DiscussionParticipantAPI
     let title: String?
@@ -33,8 +34,8 @@ struct DiscussionTopicAPI: APIResponse, Identifiable {
     let locked: Bool?
     let pinned: Bool?
     let locked_for_user: Bool
-    //let lock_info: LockInfo?
-    //let lock_explanation: String?
+    // let lock_info: LockInfo?
+    // let lock_explanation: String?
     let user_name: String?
     let group_topic_children: [DiscussionTopicChildAPI]?
     let root_topic_id: Int?
@@ -82,3 +83,5 @@ struct DiscussionParticipantAPI: Codable {
     let html_url: URL?
     let pronouns: String?
 }
+
+// swiftlint:enable identifier_name
