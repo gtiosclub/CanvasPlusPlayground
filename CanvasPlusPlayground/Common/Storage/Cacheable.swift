@@ -13,7 +13,6 @@ protocol BaseCacheable {}
 class NoOpCacheable: BaseCacheable {}
 
 protocol Cacheable: BaseCacheable, PersistentModel {
-    associatedtype ServerID: Hashable
     var id: String { get }
 
     func merge(with other: Self)

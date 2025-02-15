@@ -26,6 +26,8 @@
 		9BEB4ED02D56AF570013869D /* AssignmentDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BEB4ECF2D56AF570013869D /* AssignmentDetailView.swift */; };
 		A301EE092D61137400D71139 /* MarkCourseDiscussionTopicReadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A301EE082D61137400D71139 /* MarkCourseDiscussionTopicReadRequest.swift */; };
 		A301EE0B2D61148C00D71139 /* MarkCourseDiscussionTopicUnreadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A301EE0A2D61148C00D71139 /* MarkCourseDiscussionTopicUnreadRequest.swift */; };
+		A301EE0D2D612E7100D71139 /* DiscussionTopicAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A301EE0C2D612E7100D71139 /* DiscussionTopicAPI.swift */; };
+		A301EE0F2D612EA800D71139 /* DiscussionTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = A301EE0E2D612EA800D71139 /* DiscussionTopic.swift */; };
 		A3049B532D0E5241002F3166 /* Quiz.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3049B522D0E5241002F3166 /* Quiz.swift */; };
 		A3049B562D0E541D002F3166 /* QuizType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3049B552D0E541D002F3166 /* QuizType.swift */; };
 		A3049B592D0E5A96002F3166 /* LockInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3049B582D0E5A96002F3166 /* LockInfo.swift */; };
@@ -171,6 +173,8 @@
 		9BEB4ECF2D56AF570013869D /* AssignmentDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentDetailView.swift; sourceTree = "<group>"; };
 		A301EE082D61137400D71139 /* MarkCourseDiscussionTopicReadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkCourseDiscussionTopicReadRequest.swift; sourceTree = "<group>"; };
 		A301EE0A2D61148C00D71139 /* MarkCourseDiscussionTopicUnreadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkCourseDiscussionTopicUnreadRequest.swift; sourceTree = "<group>"; };
+		A301EE0C2D612E7100D71139 /* DiscussionTopicAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionTopicAPI.swift; sourceTree = "<group>"; };
+		A301EE0E2D612EA800D71139 /* DiscussionTopic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionTopic.swift; sourceTree = "<group>"; };
 		A3049B522D0E5241002F3166 /* Quiz.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quiz.swift; sourceTree = "<group>"; };
 		A3049B552D0E541D002F3166 /* QuizType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizType.swift; sourceTree = "<group>"; };
 		A3049B582D0E5A96002F3166 /* LockInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockInfo.swift; sourceTree = "<group>"; };
@@ -600,6 +604,8 @@
 			children = (
 				A3CF88E02D1921C3000ACDF3 /* AnnouncementAPI.swift */,
 				9B92A4222C93853C00C21CFC /* Announcement.swift */,
+				A301EE0C2D612E7100D71139 /* DiscussionTopicAPI.swift */,
+				A301EE0E2D612EA800D71139 /* DiscussionTopic.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -835,6 +841,7 @@
 				A324BA662D07AFD5005F53FA /* FileType.swift in Sources */,
 				192EC0482C963ACB00AF8528 /* CourseAssignmentManager.swift in Sources */,
 				A373DC232D1D454000215019 /* APIGradingSchemeEntry.swift in Sources */,
+				A301EE0D2D612E7100D71139 /* DiscussionTopicAPI.swift in Sources */,
 				A373DC252D1D4BEC00215019 /* APIQuizSubmission.swift in Sources */,
 				B7C0A3CF2D31F339003E5A36 /* PinnedItemCard.swift in Sources */,
 				B7D95D772D07C3D3002AD955 /* ICSParser.swift in Sources */,
@@ -908,6 +915,7 @@
 				A3E7F38F2C96C1CE00DC4300 /* CourseTabsView.swift in Sources */,
 				B76455062C8DF61B002DF00E /* CanvasPlusPlaygroundApp.swift in Sources */,
 				B7F950342D11A00F004BB470 /* StatusToolbarItem.swift in Sources */,
+				A301EE0F2D612EA800D71139 /* DiscussionTopic.swift in Sources */,
 				9B69FA4B2CC2CC7F006101F3 /* AggregatedAssignmentsView.swift in Sources */,
 				B7C0A3BF2D2F2251003E5A36 /* PinnedItemsView.swift in Sources */,
 				A3CF88E32D1921CB000ACDF3 /* FolderAPI.swift in Sources */,
