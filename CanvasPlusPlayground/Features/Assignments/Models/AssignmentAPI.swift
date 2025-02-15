@@ -9,7 +9,7 @@ import Foundation
 
 // https://canvas.instructure.com/doc/api/assignments.html
 // https://github.com/instructure/canvas-ios/blob/49a3e347116d623638c66b7adbcc946294faa212/Core/Core/Assignments/APIAssignment.swift
-struct AssignmentAPI: APIResponse {
+struct AssignmentAPI: APIResponse, Identifiable, Hashable {
     typealias Model = NoOpCacheable
 
     // swiftlint:disable identifier_name

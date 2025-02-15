@@ -8,7 +8,7 @@
 import Foundation
 
 // https://canvas.instructure.com/doc/api/courses.html
-struct CourseAPI: APIResponse {
+struct CourseAPI: APIResponse, Identifiable {
     typealias Model = Course
 
     // swiftlint:disable identifier_name

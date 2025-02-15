@@ -63,3 +63,7 @@ protocol CacheableAPIRequest: APIRequest where Subject.Model: Cacheable {
 }
 
 protocol CacheableArrayAPIRequest: CacheableAPIRequest where QueryResult == [Subject] {}
+
+protocol NoReturnAPIRequest: APIRequest {
+    associatedtype Subject = Empty
+}

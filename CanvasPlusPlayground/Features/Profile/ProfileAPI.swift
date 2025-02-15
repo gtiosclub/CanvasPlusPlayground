@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ProfileAPI: APIResponse {
+struct ProfileAPI: APIResponse, Identifiable {
     typealias Model = Profile
 
     // swiftlint:disable identifier_name
