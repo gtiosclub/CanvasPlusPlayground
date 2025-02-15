@@ -28,6 +28,7 @@
 		A301EE0B2D61148C00D71139 /* MarkCourseDiscussionTopicUnreadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A301EE0A2D61148C00D71139 /* MarkCourseDiscussionTopicUnreadRequest.swift */; };
 		A301EE0D2D612E7100D71139 /* DiscussionTopicAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A301EE0C2D612E7100D71139 /* DiscussionTopicAPI.swift */; };
 		A301EE0F2D612EA800D71139 /* DiscussionTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = A301EE0E2D612EA800D71139 /* DiscussionTopic.swift */; };
+		A301EE132D614A4100D71139 /* GetDiscussionTopicsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A301EE122D614A4100D71139 /* GetDiscussionTopicsRequest.swift */; };
 		A3049B532D0E5241002F3166 /* Quiz.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3049B522D0E5241002F3166 /* Quiz.swift */; };
 		A3049B562D0E541D002F3166 /* QuizType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3049B552D0E541D002F3166 /* QuizType.swift */; };
 		A3049B592D0E5A96002F3166 /* LockInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3049B582D0E5A96002F3166 /* LockInfo.swift */; };
@@ -175,6 +176,7 @@
 		A301EE0A2D61148C00D71139 /* MarkCourseDiscussionTopicUnreadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkCourseDiscussionTopicUnreadRequest.swift; sourceTree = "<group>"; };
 		A301EE0C2D612E7100D71139 /* DiscussionTopicAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionTopicAPI.swift; sourceTree = "<group>"; };
 		A301EE0E2D612EA800D71139 /* DiscussionTopic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionTopic.swift; sourceTree = "<group>"; };
+		A301EE122D614A4100D71139 /* GetDiscussionTopicsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetDiscussionTopicsRequest.swift; sourceTree = "<group>"; };
 		A3049B522D0E5241002F3166 /* Quiz.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quiz.swift; sourceTree = "<group>"; };
 		A3049B552D0E541D002F3166 /* QuizType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizType.swift; sourceTree = "<group>"; };
 		A3049B582D0E5A96002F3166 /* LockInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockInfo.swift; sourceTree = "<group>"; };
@@ -345,6 +347,7 @@
 				A352AD192D3EF1C1007EE6FC /* GetCourseUsersRequest.swift */,
 				A301EE082D61137400D71139 /* MarkCourseDiscussionTopicReadRequest.swift */,
 				A301EE0A2D61148C00D71139 /* MarkCourseDiscussionTopicUnreadRequest.swift */,
+				A301EE122D614A4100D71139 /* GetDiscussionTopicsRequest.swift */,
 			);
 			path = "API Requests";
 			sourceTree = "<group>";
@@ -901,6 +904,7 @@
 				B77FD0022D52A0D60049AA5E /* ProfileView.swift in Sources */,
 				192EC04C2C963EE600AF8528 /* CourseAssignmentView.swift in Sources */,
 				A3FFD03C2CDED67C006BAB51 /* String+Numbers.swift in Sources */,
+				A301EE132D614A4100D71139 /* GetDiscussionTopicsRequest.swift in Sources */,
 				A301EE092D61137400D71139 /* MarkCourseDiscussionTopicReadRequest.swift in Sources */,
 				B53D95A02CA0953900647EE9 /* PeopleManager.swift in Sources */,
 				B7C0A3CB2D2F919F003E5A36 /* PinButton.swift in Sources */,
