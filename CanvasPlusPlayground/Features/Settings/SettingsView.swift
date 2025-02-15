@@ -21,20 +21,23 @@ struct SettingsView: View {
     var body: some View {
         @Bindable var navigationModel = navigationModel
 
-        mainBody
-            .sheet(isPresented: $showChangeAccessToken) {
-                NavigationStack {
-                    SetupView()
-                }
+        Form {
+            mainBody
+        }
+        .navigationTitle("Settings")
+        .sheet(isPresented: $showChangeAccessToken) {
+            NavigationStack {
+                SetupView()
             }
-            .sheet(isPresented: $navigationModel.showInstallIntelligenceSheet, content: {
-                NavigationStack {
-                    IntelligenceOnboardingView()
-                }
-                .environmentObject(llmEvaluator)
-                .environmentObject(intelligenceManager)
-                .interactiveDismissDisabled()
-            })
+        }
+        .sheet(isPresented: $navigationModel.showInstallIntelligenceSheet, content: {
+            NavigationStack {
+                IntelligenceOnboardingView()
+            }
+            .environmentObject(llmEvaluator)
+            .environmentObject(intelligenceManager)
+            .interactiveDismissDisabled()
+        })
     }
 
     @ViewBuilder

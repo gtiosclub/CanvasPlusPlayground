@@ -9,16 +9,16 @@ import SwiftUI
 
 struct Sidebar: View {
     typealias NavigationPage = NavigationModel.NavigationPage
-    
+
     @Environment(NavigationModel.self) private var navigationModel
     @Environment(CourseManager.self) private var courseManager
     @Environment(ProfileManager.self) private var profileManager
-    
+
     @State private var isHiddenSectionExpanded: Bool = false
-    
+
     var body: some View {
         @Bindable var navigationModel = navigationModel
-        
+
         List(selection: $navigationModel.selectedNavigationPage) {
             #if os(iOS)
             Section {
@@ -27,11 +27,11 @@ struct Sidebar: View {
                     .listRowBackground(Color.clear)
             }
             #endif
-            
+
             Section {
                 SidebarTiles()
             }
-            
+
             Section("Favorites") {
                 ForEach(courseManager.userFavCourses) { course in
                     NavigationLink(
@@ -42,7 +42,7 @@ struct Sidebar: View {
                     .listItemTint(.fixed(course.rgbColors?.color ?? .accentColor))
                 }
             }
-            
+
             Section("My Courses") {
                 ForEach(courseManager.userOtherCourses) { course in
                     NavigationLink(value: NavigationPage.course(id: course.id)) {
@@ -51,7 +51,7 @@ struct Sidebar: View {
                     .listItemTint(.fixed(course.rgbColors?.color ?? .accentColor))
                 }
             }
-            
+
             if !courseManager.userHiddenCourses.isEmpty {
                 Section("Hidden", isExpanded: $isHiddenSectionExpanded) {
                     ForEach(courseManager.userHiddenCourses) { course in
@@ -63,17 +63,8 @@ struct Sidebar: View {
                 }
             }
         }
-        .listSectionSpacing(16)
-        .padding(.top, -24)
         .navigationTitle("Home")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                Rectangle()
-                    .fill(.clear)
-            }
-        }
-#if os(macOS)
+        #if os(macOS)
         .navigationSplitViewColumnWidth(min: 275, ideal: 275)
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
@@ -81,41 +72,48 @@ struct Sidebar: View {
                     Button {
                         navigationModel.showProfileSheet.toggle()
                     } label: {
-#if os(macOS)
                         ProfilePicture(user: currentUser, size: 19)
-#else
-                        ProfilePicture(user: currentUser, size: 24)
-#endif
                     }
                 }
             }
         }
-#endif
+        #else
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Rectangle()
+                    .fill(.clear)
+            }
+        }
+        .padding(.top, -24)
+        .listSectionSpacing(16)
+        .navigationBarTitleDisplayMode(.inline)
+        #endif
     }
 }
 
+#if os(iOS)
 private struct SidebarHeader: View {
     @Environment(ProfileManager.self) private var profileManager
     @Environment(NavigationModel.self) private var navigationModel
-    
+
     private var formattedDate: String {
         let formatter = DateFormatter()
         formatter.dateFormat = "EEEE, MMMM d"
         return formatter.string(from: Date())
     }
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
             Text(formattedDate)
                 .font(.body.bold())
                 .textCase(.uppercase)
                 .foregroundStyle(.secondary)
-            
+
             HStack(alignment: .top) {
                 Text("Home")
                     .font(.largeTitle.bold())
                 Spacer()
-                
+
                 if let currentUser = profileManager.currentUser {
                     Button {
                         navigationModel.showProfileSheet.toggle()
@@ -127,6 +125,7 @@ private struct SidebarHeader: View {
         }
     }
 }
+#endif
 
 private struct SidebarTiles: View {
     @Environment(NavigationModel.self) private var navigationModel

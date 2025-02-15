@@ -87,13 +87,6 @@ struct HomeView: View {
                 }
             }
         }
-        #if os(iOS)
-        .sheet(isPresented: $navigationModel.showSettingsSheet) {
-            NavigationStack {
-                SettingsView()
-            }
-        }
-        #endif
         .environment(navigationModel)
     }
 

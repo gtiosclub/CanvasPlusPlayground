@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ProfileView: View {
     @Environment(ProfileManager.self) private var profileManager
+    @Environment(NavigationModel.self) var navigationModel
     @Environment(\.dismiss) private var dismiss
 
     let user: User
@@ -31,18 +32,30 @@ struct ProfileView: View {
     }
 
     var body: some View {
+        @Bindable var navigationModel = navigationModel
+
         Form {
             Section {
                 header
                     .listRowBackground(Color.clear)
             }
 
-            details
+            Section {
+                details
+            }
 
-            if isCurrentUser {
-                SettingsView()
-            } else {
-                PeopleCommonView(user: user)
+            Section {
+                if isCurrentUser {
+                    #if os(iOS)
+                    Button {
+                        navigationModel.showSettingsSheet = true
+                    } label: {
+                        Label("Settings", systemImage: "gearshape")
+                    }
+                    #endif
+                } else {
+                    PeopleCommonView(user: user)
+                }
             }
         }
         .formStyle(.grouped)
@@ -54,7 +67,11 @@ struct ProfileView: View {
             }
         }
         .animation(.default, value: profile)
-        #if os(macOS)
+        #if os(iOS)
+        .navigationDestination(isPresented: $navigationModel.showSettingsSheet) {
+            SettingsView()
+        }
+        #else
         .frame(height: 500)
         #endif
     }
@@ -100,6 +117,7 @@ struct ProfileView: View {
         }
 
         LabeledContent("Short Name", value: user.shortName)
+            .multilineTextAlignment(.trailing)
 
         if !user.enrollmentRoles.isEmpty {
             LabeledContent(

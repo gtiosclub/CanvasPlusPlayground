@@ -17,6 +17,13 @@ struct ProfilePicture: View {
     let user: User
     var size: CGFloat
 
+    internal init(user: User, size: CGFloat) {
+        assert(size > 0, "Size must be greater than 0")
+
+        self.user = user
+        self.size = size
+    }
+
     var body: some View {
         Group {
             if user.hasAvatar,
@@ -40,8 +47,8 @@ struct ProfilePicture: View {
         .overlay {
             if user.hasAvatar {
                 Circle()
-                    .stroke(lineWidth: 1)
-                    .fill(.separator)
+                    .strokeBorder(Color(white: 0.35), lineWidth: size/40.0)
+                    .blendMode(.luminosity)
             }
         }
         .task {
