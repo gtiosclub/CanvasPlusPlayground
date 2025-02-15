@@ -82,14 +82,16 @@ struct HomeView: View {
                 NavigationStack {
                     ProfileView(
                         user: currentUser,
-                        showCommonCourses: false
+                        isCurrentUser: true
                     )
                 }
             }
         }
         #if os(iOS)
         .sheet(isPresented: $navigationModel.showSettingsSheet) {
-            SettingsView()
+            NavigationStack {
+                SettingsView()
+            }
         }
         #endif
         .environment(navigationModel)

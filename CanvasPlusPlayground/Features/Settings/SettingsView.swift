@@ -21,41 +21,29 @@ struct SettingsView: View {
     var body: some View {
         @Bindable var navigationModel = navigationModel
 
-        NavigationStack {
-            mainBody
-        }
-        .sheet(isPresented: $showChangeAccessToken) {
-            NavigationStack {
-                SetupView()
+        mainBody
+            .sheet(isPresented: $showChangeAccessToken) {
+                NavigationStack {
+                    SetupView()
+                }
             }
-        }
-        .sheet(isPresented: $navigationModel.showInstallIntelligenceSheet, content: {
-            NavigationStack {
-                IntelligenceOnboardingView()
-            }
-            .environmentObject(llmEvaluator)
-            .environmentObject(intelligenceManager)
-            .interactiveDismissDisabled()
-        })
+            .sheet(isPresented: $navigationModel.showInstallIntelligenceSheet, content: {
+                NavigationStack {
+                    IntelligenceOnboardingView()
+                }
+                .environmentObject(llmEvaluator)
+                .environmentObject(intelligenceManager)
+                .interactiveDismissDisabled()
+            })
     }
 
+    @ViewBuilder
     private var mainBody: some View {
-        Form {
-            loginSettings
-            intelligenceSettings
-            #if DEBUG
-            debugSettings
-            #endif
-        }
-        .formStyle(.grouped)
-        #if os(iOS)
-        .toolbar {
-            ToolbarItem(placement: .confirmationAction) {
-                Button("Done") { dismiss() }
-            }
-        }
+        loginSettings
+        intelligenceSettings
+        #if DEBUG
+        debugSettings
         #endif
-        .navigationTitle("Settings")
     }
 
     private var loginSettings: some View {

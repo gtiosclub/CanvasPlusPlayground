@@ -12,7 +12,7 @@ struct ProfileView: View {
     @Environment(\.dismiss) private var dismiss
 
     let user: User
-    var showCommonCourses: Bool = true
+    var isCurrentUser: Bool
 
     var profile: Profile? {
         if user.id == profileManager.currentUser?.id {
@@ -24,10 +24,10 @@ struct ProfileView: View {
 
     init(
         user: User,
-        showCommonCourses: Bool = true
+        isCurrentUser: Bool = false
     ) {
         self.user = user
-        self.showCommonCourses = showCommonCourses
+        self.isCurrentUser = isCurrentUser
     }
 
     var body: some View {
@@ -39,7 +39,9 @@ struct ProfileView: View {
 
             details
 
-            if showCommonCourses {
+            if isCurrentUser {
+                SettingsView()
+            } else {
                 PeopleCommonView(user: user)
             }
         }
