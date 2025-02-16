@@ -75,7 +75,8 @@ struct CourseFileService {
         return fileURL
     }
 
-    func locationForCourseFile(
+    @discardableResult
+    func setLocationForCourseFile(
         _ file: File,
         course: Course,
         foldersPath: [String]
@@ -110,7 +111,7 @@ struct CourseFileService {
         localCopyReceived: (Data?, URL) -> Void
     ) async throws -> (Data, URL) {
         // Provide local copy meanwhile
-        if let fileLoc = self.locationForCourseFile(file, course: course, foldersPath: foldersPath),
+        if let fileLoc = self.setLocationForCourseFile(file, course: course, foldersPath: foldersPath),
            let data = try? Data(contentsOf: fileLoc) {
             localCopyReceived(data, fileLoc)
         }

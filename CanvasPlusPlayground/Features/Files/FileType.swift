@@ -19,8 +19,7 @@ struct FileType {
         self.fileExtension = Self.extensionFromFile(file)
     }
 
-    /// Checks the filename for file format, returns nil if File format isn't supported or format was uninferable.
-    static func extensionFromFile(_ file: File) -> String {
+    private static func extensionFromFile(_ file: File) -> String {
         let fileExtension = URL(fileURLWithPath: file.filename).pathExtension.lowercased()
 
         return fileExtension

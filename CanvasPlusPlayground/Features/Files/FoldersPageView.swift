@@ -151,8 +151,8 @@ private struct FileRow: View {
         }
         .onAppear {
             // Updates file.localURL if needed
-            _ = CourseFileService.shared
-                .locationForCourseFile(
+            CourseFileService.shared
+                .setLocationForCourseFile(
                     file,
                     course: course,
                     foldersPath: filesVM.traversedFolderIDs
