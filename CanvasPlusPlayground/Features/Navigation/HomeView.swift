@@ -46,6 +46,9 @@ struct HomeView: View {
                 }
         } content: {
             contentView
+            #if os(iOS)
+                .navigationBarTitleDisplayMode(.large)
+            #endif
         } detail: {
             if let selectedCourse, let selectedCoursePage {
                 CourseDetailView(
