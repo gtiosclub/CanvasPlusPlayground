@@ -16,7 +16,7 @@ private typealias PlatformImage = UIImage
 struct ProfilePicture: View {
     let user: User
     var size: CGFloat
-    
+
     internal init(user: User, size: CGFloat) {
         assert(size > 0, "Size must be greater than 0")
 
@@ -44,13 +44,6 @@ struct ProfilePicture: View {
             }
         }
         .frame(width: size, height: size)
-        .overlay {
-            if user.hasAvatar {
-                Circle()
-                    .strokeBorder(lineWidth: 1)
-                    .fill(.separator)
-            }
-        }
         .task {
             guard user.hasAvatar, let url = user.avatarURL else { return }
 
