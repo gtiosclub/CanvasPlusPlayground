@@ -72,7 +72,7 @@ struct Sidebar: View {
                     Button {
                         navigationModel.showProfileSheet.toggle()
                     } label: {
-                        ProfilePicture(user: currentUser, size: 19)
+                        ProfilePicture(user: currentUser, size: 20)
                     }
                 }
             }
@@ -129,7 +129,7 @@ private struct SidebarHeader: View {
 
 private struct SidebarTiles: View {
     @Environment(NavigationModel.self) private var navigationModel
-    
+
     var body: some View {
 #if os(macOS)
         let columns = Array(
