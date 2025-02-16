@@ -40,14 +40,14 @@ struct CanvasPlusPlaygroundApp: App {
         Settings {
             NavigationStack {
                 SettingsView()
-                    .environment(profileManager)
-                    .environment(courseManager)
-                    .environment(pinnedItemsManager)
-                    .environment(navigationModel)
-                    .environmentObject(intelligenceManager)
-                    .environmentObject(llmEvaluator)
-                    .frame(width: 400, height: 500)
             }
+            .environment(profileManager)
+            .environment(courseManager)
+            .environment(pinnedItemsManager)
+            .environment(navigationModel)
+            .environmentObject(intelligenceManager)
+            .environmentObject(llmEvaluator)
+            .frame(width: 400, height: 500)
         }
         #endif
     }
