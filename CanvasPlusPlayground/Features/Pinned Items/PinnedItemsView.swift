@@ -58,7 +58,13 @@ struct PinnedItemsView: View {
                 )
             ) {
                 ForEach(items) { item in
-                    PinnedItemCard(item: item)
+                    NavigationLink {
+                        PinnedItemDetailView(item: item)
+                    } label: {
+                        PinnedItemCard(item: item)
+                    }
+                    .buttonStyle(.plain)
+
                 }
             }
         }
