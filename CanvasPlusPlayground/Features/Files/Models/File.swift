@@ -74,6 +74,9 @@ class File: Cacheable {
     var lockedForUser: Bool?
     var visibilityLevel: String?
 
+    // MARK: Custom Properties
+    var localURL: URL?
+
     init(api: FileAPI) {
         self.id = api.id.asString
 
