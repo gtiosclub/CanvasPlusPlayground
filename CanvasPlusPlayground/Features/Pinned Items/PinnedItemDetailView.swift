@@ -18,16 +18,12 @@ struct PinnedItemDetailView: View {
             case .announcement(let announcement):
                 CourseAnnouncementDetailView(announcement: announcement)
             case .file(let file):
-                FileViewer(file: file)
+                Text("file")
             case .assignment(let assignment):
                 AssignmentDetailView(assignment: assignment)
             }
         } placeholder: {
             Text("Loading...")
-        }
-        .buttonStyle(.plain)
-        .onAppear {
-            print("new item \(item.id)")
         }
         .id(item.id)
     }
