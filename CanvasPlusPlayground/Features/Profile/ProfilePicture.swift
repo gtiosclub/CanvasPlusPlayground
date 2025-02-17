@@ -17,7 +17,7 @@ struct ProfilePicture: View {
     let user: User
     var size: CGFloat
 
-    internal init(user: User, size: CGFloat) {
+    init(user: User, size: CGFloat) {
         assert(size > 0, "Size must be greater than 0")
 
         self.user = user
