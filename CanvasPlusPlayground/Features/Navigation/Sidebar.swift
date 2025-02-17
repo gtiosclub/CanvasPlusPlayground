@@ -133,6 +133,15 @@ private struct SidebarTiles: View {
             ) {
                 navigationModel.selectedNavigationPage = .pinned
             }
+
+            SidebarTile(
+                "Downloads",
+                systemIcon: "arrow.down.circle.fill",
+                color: .green,
+                page: .downloads
+            ) {
+                navigationModel.selectedNavigationPage = .downloads
+            }
         }
         .listRowInsets(EdgeInsets())
         .listRowBackground(Color.clear)
