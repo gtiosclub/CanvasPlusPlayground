@@ -142,7 +142,7 @@ private struct SidebarTiles: View {
             count: 2
         )
 #endif
-        
+
         return LazyVGrid(
             columns: columns,
             spacing: 4
@@ -155,7 +155,7 @@ private struct SidebarTiles: View {
             ) {
                 navigationModel.selectedNavigationPage = .announcements
             }
-            
+
             SidebarTile(
                 "To-Do",
                 systemIcon: "list.bullet.circle.fill",
@@ -164,7 +164,7 @@ private struct SidebarTiles: View {
             ) {
                 navigationModel.selectedNavigationPage = .toDoList
             }
-            
+
             SidebarTile(
                 "Pinned",
                 systemIcon: "pin.circle.fill",
