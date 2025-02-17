@@ -23,7 +23,7 @@ struct Sidebar: View {
             #if os(iOS)
             Section {
                 SidebarHeader()
-                    .listRowInsets(EdgeInsets())
+                    .listRowInsets(EdgeInsets(top: 0, leading: 4.0, bottom: 0, trailing: 8.0))
                     .listRowBackground(Color.clear)
             }
             #endif
@@ -84,7 +84,7 @@ struct Sidebar: View {
                     .fill(.clear)
             }
         }
-        .padding(.top, -24)
+        .contentMargins(.top, 0)
         .listSectionSpacing(16)
         .navigationBarTitleDisplayMode(.inline)
         #endif
