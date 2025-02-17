@@ -16,15 +16,19 @@ struct PinnedItemDetailView: View {
         } content: { itemData in
             switch itemData.modelData {
             case .announcement(let announcement):
-                Text("Announcement: \(announcement.title)")
+                CourseAnnouncementDetailView(announcement: announcement)
             case .file(let file):
-                Text("File: \(file.displayName)")
+                FileViewer(file: file)
             case .assignment(let assignment):
-                Text("Assignment: \(assignment.name)")
+                AssignmentDetailView(assignment: assignment)
             }
         } placeholder: {
             Text("Loading...")
         }
         .buttonStyle(.plain)
+        .onAppear {
+            print("new item \(item.id)")
+        }
+        .id(item.id)
     }
 }
