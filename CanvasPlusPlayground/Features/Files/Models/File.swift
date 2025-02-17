@@ -76,6 +76,7 @@ class File: Cacheable {
 
     // MARK: Custom Properties
     var localURL: URL?
+    var download: Download?
 
     init(api: FileAPI) {
         self.id = api.id.asString

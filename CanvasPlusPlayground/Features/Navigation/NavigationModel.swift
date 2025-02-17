@@ -9,6 +9,8 @@ import SwiftUI
 
 @Observable
 class NavigationModel {
+    static let shared = NavigationModel()
+
     enum NavigationPage: Hashable, RawRepresentable {
         init?(rawValue: String) {
             if rawValue.hasPrefix("course") {
@@ -32,6 +34,7 @@ class NavigationModel {
         case announcements
         case toDoList
         case pinned
+        case downloads
 
         var rawValue: String {
             switch self {
@@ -98,4 +101,14 @@ class NavigationModel {
     #if os(iOS)
     var showSettingsSheet = false
     #endif
+
+    var toast: Toast?
+
+    func queueToast(_ toast: Toast) {
+        self.toast = toast
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + toast.duration) {
+            self.toast = nil
+        }
+    }
 }

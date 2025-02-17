@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct CanvasPlusPlaygroundApp: App {
     // Navigation
-    @State private var navigationModel = NavigationModel()
+    @State private var navigationModel = NavigationModel.shared
 
     // App
     @State private var profileManager = ProfileManager()

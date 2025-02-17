@@ -8,12 +8,9 @@
 import SwiftData
 import SwiftUI
 
-@MainActor
-class CanvasRepository {
-    let modelContainer: ModelContainer
-    let modelContext: ModelContext
-    init() {
-        self.modelContainer = try! ModelContainer(
+extension ModelContext {
+    static var shared: ModelContext {
+        let modelContainer = try! ModelContainer(
             for: Course.self,
             Announcement.self,
             Assignment.self,
@@ -29,9 +26,19 @@ class CanvasRepository {
             Profile.self,
             DiscussionTopic.self,
             Page.self
+            Download.self
             // TODO: Add cacheable models here
         )
-        self.modelContext = ModelContext(modelContainer)
+        return ModelContext(modelContainer)
+    }
+}
+
+@MainActor
+class CanvasRepository {
+    let modelContext: ModelContext
+
+    init() {
+        self.modelContext = ModelContext.shared
         modelContext.autosaveEnabled = true
     }
 

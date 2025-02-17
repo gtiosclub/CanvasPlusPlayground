@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct FoldersPageView: View {
     @Namespace private var namespace
@@ -16,6 +17,8 @@ struct FoldersPageView: View {
 
     @State private var isLoadingContents = true
     @State private var selectedFile: File?
+
+    @Environment(\.modelContext) var modelContext
 
     init(course: Course, folder: Folder? = nil, traversedFolderIDs: [String] = []) {
         self.course = course
@@ -48,28 +51,35 @@ struct FoldersPageView: View {
         .task {
             await loadContents()
         }
-        #if os(iOS)
-        .fullScreenCover(item: $selectedFile) { file in
-            Group {
-                if #available(iOS 18.0, *) {
-                    NavigationStack {
-                        FileViewer(course: course, file: file)
-                    }
-                    .navigationTransition(.zoom(sourceID: file.id, in: namespace))
-                } else {
-                    NavigationStack {
-                        FileViewer(course: course, file: file)
-                    }
-                }
+        .task(id: selectedFile) {
+            if let selectedFile {
+                try? await DownloadService.shared.startDownload(for: selectedFile, course: course)
             }
-            .environment(filesVM)
+
+            selectedFile = nil
         }
-        #else
-        .navigationDestination(item: $selectedFile) { file in
-            FileViewer(course: course, file: file)
-                .environment(filesVM)
-        }
-        #endif
+//        #if os(iOS)
+//        .fullScreenCover(item: $selectedFile) { file in
+//            Group {
+//                if #available(iOS 18.0, *) {
+//                    NavigationStack {
+//                        FileViewer(course: course, file: file)
+//                    }
+//                    .navigationTransition(.zoom(sourceID: file.id, in: namespace))
+//                } else {
+//                    NavigationStack {
+//                        FileViewer(course: course, file: file)
+//                    }
+//                }
+//            }
+//            .environment(filesVM)
+//        }
+//        #else
+//        .navigationDestination(item: $selectedFile) { file in
+//            FileViewer(course: course, file: file)
+//                .environment(filesVM)
+//        }
+//        #endif
         .overlay {
             if !isLoadingContents && filesVM.displayedFiles.isEmpty && filesVM.displayedFolders.isEmpty {
                 ContentUnavailableView("This folder is empty.", systemImage: "folder")

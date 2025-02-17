@@ -102,7 +102,7 @@ class CanvasService {
     // MARK: Repository actions
 
     func clearStorage() {
-        repository?.modelContainer.deleteAllData()
+        repository?.modelContext.container.deleteAllData()
     }
 
     private func filterByDescriptor<T>(
