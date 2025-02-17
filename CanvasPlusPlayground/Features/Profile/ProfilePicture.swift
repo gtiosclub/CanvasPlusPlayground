@@ -43,6 +43,10 @@ struct ProfilePicture: View {
                     .font(.system(size: size))
             }
         }
+        .background {
+            Circle()
+                .fill(.separator)
+        }
         .frame(width: size, height: size)
         .task {
             guard user.hasAvatar, let url = user.avatarURL else { return }
