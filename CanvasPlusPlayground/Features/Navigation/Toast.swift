@@ -14,20 +14,29 @@ struct Toast: Identifiable, Equatable {
 
     enum ToastType {
         case download
+        
+        var subtitle: String {
+            switch self {
+            case .download:
+                "Downloading"
+            }
+        }
+        
+        var systemImage: String {
+            
+        }
     }
 
     let id = UUID()
 
     let type: ToastType
     let title: String
-    let subtitle: String?
     let duration: TimeInterval
     let action: (() -> Void)?
 
-    init(type: Toast.ToastType, title: String, subtitle: String? = nil, duration: TimeInterval, action: (() -> Void)? = nil) {
+    init(type: Toast.ToastType, title: String, duration: TimeInterval, action: (() -> Void)? = nil) {
         self.type = type
         self.title = title
-        self.subtitle = subtitle
         self.duration = duration
         self.action = action
     }

@@ -53,7 +53,7 @@ struct FoldersPageView: View {
         }
         .task(id: selectedFile) {
             if let selectedFile {
-                try? await DownloadService.shared.startDownload(for: selectedFile, course: course)
+                try? await DownloadService.shared.createDownload(for: selectedFile, course: course)
             }
 
             selectedFile = nil
