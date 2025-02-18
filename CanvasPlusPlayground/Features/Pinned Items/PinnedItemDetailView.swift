@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PinnedItemDetailView: View {
     let item: PinnedItem
-
+    
     var body: some View {
         AsyncView {
             await item.itemData()
@@ -18,7 +18,11 @@ struct PinnedItemDetailView: View {
             case .announcement(let announcement):
                 CourseAnnouncementDetailView(announcement: announcement)
             case .file(let file):
-                Text("file")
+                if let url = file.localURL {
+                    QuickLookPreview(url: url, onDismiss: { })
+                } else {
+                    Text("file not downloaded")
+                }
             case .assignment(let assignment):
                 AssignmentDetailView(assignment: assignment)
             }
