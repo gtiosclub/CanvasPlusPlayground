@@ -53,7 +53,7 @@ struct FoldersPageView: View {
         }
         .task(id: selectedFile) {
             if let selectedFile {
-                try? await DownloadService.shared.createDownload(for: selectedFile, course: course)
+                try? await DownloadService.shared.createDownload(for: selectedFile, course: course, folderIds: [])
             }
 
             selectedFile = nil
@@ -97,12 +97,12 @@ struct FoldersPageView: View {
         if file.url != nil {
             Group {
                 if #available(iOS 18.0, *) {
-                    FileRow(file: file, course: course)
+                    FileRow(model: .init(file: file, course: course))
                         #if os(iOS)
                         .matchedTransitionSource(id: file.id, in: namespace)
                         #endif
                 } else {
-                    FileRow(file: file, course: course)
+                    FileRow(model: .init(file: file, course: course))
                 }
             }
             .environment(filesVM)
@@ -129,10 +129,21 @@ struct FoldersPageView: View {
     }
 }
 
+@Observable
+class FileRowViewModel {
+    var file: File
+    var course: Course
+
+    init(file: File, course: Course) {
+        self.file = file
+        self.course = course
+    }
+}
+
 private struct FileRow: View {
     @Environment(CourseFileViewModel.self) private var filesVM
-    let file: File
-    let course: Course
+
+    let model: FileRowViewModel
 
     var body: some View {
         HStack {
@@ -140,33 +151,30 @@ private struct FileRow: View {
 
             Spacer()
 
-            if file.localURL == nil {
-                Image(systemName: "arrow.down.circle.dotted")
+            Group {
+                if let download = model.file.download {
+                    DownloadGaugeView(model: .init(download: download))
+                } else {
+                    Image(systemName: "arrow.down.circle.dotted")
+                }
             }
+            .frame(width: 17, height: 17)
+            .font(.system(size: 17, weight: .bold))
         }
         .imageScale(.large)
         .contextMenu {
             PinButton(
-                itemID: file.id,
-                courseID: course.id,
+                itemID: model.file.id,
+                courseID: model.course.id,
                 type: .file
             )
         }
         .swipeActions(edge: .leading) {
             PinButton(
-                itemID: file.id,
-                courseID: course.id,
+                itemID: model.file.id,
+                courseID: model.course.id,
                 type: .file
             )
-        }
-        .onAppear {
-            // Updates file.localURL if needed
-            CourseFileService.shared
-                .setLocationForCourseFile(
-                    file,
-                    course: course,
-                    foldersPath: filesVM.traversedFolderIDs
-                )
         }
     }
 
@@ -176,10 +184,10 @@ private struct FileRow: View {
                 .foregroundStyle(.tint)
 
             VStack(alignment: .leading) {
-                Text(file.displayName)
+                Text(model.file.displayName)
                     .font(.headline)
 
-                if let size = file.size {
+                if let size = model.file.size {
                     Text(size.formatted(.byteCount(style: .file)))
                         .foregroundStyle(.secondary)
                 }

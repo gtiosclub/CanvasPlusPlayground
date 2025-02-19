@@ -87,19 +87,18 @@ class NavigationModel {
     var showSettingsSheet = false
     #endif
 
-    
     // MARK: Toasts
     var toast: Toast?
 
     func queueToast(_ toast: Toast) {
         self.toast = toast
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + toast.duration) {
-            self.toast = nil
-        }
+//        DispatchQueue.main.asyncAfter(deadline: .now() + toast.duration) {
+//            self.toast = nil
+//        }
     }
-    
+
     func openDownload(_ download: Download) {
-        
+
     }
 }

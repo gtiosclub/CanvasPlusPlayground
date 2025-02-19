@@ -11,24 +11,17 @@ import Foundation
 @Model
 class Download {
     var id = UUID()
-    @Relationship(.unique) var file: File
+    @Relationship(.unique, inverse: \File.download) var file: File
 
     var localURL: URL?
+    var finalURL: URL
     var downloadedDate: Date?
 
     var progress: Double = 0
     @Transient var downloadTask: URLSessionDownloadTask?
 
-    init(file: File) {
+    init(file: File, finalURL: URL) {
         self.file = file
-//        super.init()
+        self.finalURL = finalURL
     }
-
-//    func urlSession(_ session: URLSession,
-//                    downloadTask: URLSessionDownloadTask,
-//                    didWriteData bytesWritten: Int64,
-//                    totalBytesWritten: Int64,
-//                    totalBytesExpectedToWrite: Int64) {
-////        self.progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
-//    }
 }

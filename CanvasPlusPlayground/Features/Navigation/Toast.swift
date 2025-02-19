@@ -13,31 +13,40 @@ struct Toast: Identifiable, Equatable {
     }
 
     enum ToastType {
-        case download
-        
-        var subtitle: String {
+        case download(Download)
+        case downloadFinished(Download)
+
+        var subtitle: String? {
             switch self {
             case .download:
                 "Downloading"
+            case .downloadFinished:
+                "Tap to open"
             }
         }
-        
+
         var systemImage: String {
-            
+            switch self {
+            case .download:
+                "arrow.down.circle"
+            case .downloadFinished:
+                "checkmark.circle"
+            }
+        }
+
+        var name: String {
+            switch self {
+            case .download(let download), .downloadFinished(let download):
+                return download.file.displayName
+            }
         }
     }
 
     let id = UUID()
 
     let type: ToastType
-    let title: String
-    let duration: TimeInterval
-    let action: (() -> Void)?
 
-    init(type: Toast.ToastType, title: String, duration: TimeInterval, action: (() -> Void)? = nil) {
+    init(type: Toast.ToastType) {
         self.type = type
-        self.title = title
-        self.duration = duration
-        self.action = action
     }
 }

@@ -44,6 +44,11 @@ struct HomeView: View {
                 .refreshable {
                     await loadCourses()
                 }
+            #if os(macOS)
+                .overlay(alignment: .bottomLeading) {
+                    toast
+                }
+            #endif
         } content: {
             contentView
         } detail: {
@@ -87,22 +92,28 @@ struct HomeView: View {
                 }
             }
         }
-        .overlay(alignment: .bottom) {
-            if let toast = navigationModel.toast {
-                ToastView(toast: toast)
-                    .transition(.blur
-                        .combined(with: .scale(scale: 0.9))
-                        .combined(with: .offset(x: 0, y: 10))
-                        .combined(with: .opacity))
-            }
-        }
-        .animation(.snappy, value: navigationModel.toast)
+        .animation(.spring, value: navigationModel.toast)
         #if os(iOS)
         .sheet(isPresented: $navigationModel.showSettingsSheet) {
             SettingsView()
         }
+        .overlay(alignment: .bottom) {
+            toast
+        }
         #endif
         .environment(navigationModel)
+    }
+
+    @ViewBuilder
+    private var toast: some View {
+        if let toast = navigationModel.toast {
+            ToastView(toast: toast)
+                .transition(.blur
+                    .combined(with: .scale(scale: 0.9))
+                    .combined(with: .offset(x: 0, y: 10))
+                    .combined(with: .opacity))
+                .padding()
+        }
     }
 
     @ViewBuilder

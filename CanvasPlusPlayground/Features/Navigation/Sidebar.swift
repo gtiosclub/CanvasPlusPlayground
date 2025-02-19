@@ -93,19 +93,19 @@ private struct SidebarTiles: View {
     var body: some View {
         #if os(macOS)
         let columns = Array(
-            repeating: GridItem(.adaptive(minimum: 90)),
+            repeating: GridItem(.adaptive(minimum: 90), spacing: 8),
             count: 2
         )
         #else
         let columns = Array(
-            repeating: GridItem(.adaptive(minimum: 150)),
+            repeating: GridItem(.adaptive(minimum: 150), spacing: 8),
             count: 2
         )
         #endif
 
         return LazyVGrid(
             columns: columns,
-            spacing: 4
+            spacing: 8
         ) {
             SidebarTile(
                 "Announcements",
