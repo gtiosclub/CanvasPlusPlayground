@@ -10,17 +10,13 @@ import SwiftUI
 struct FileViewer: View {
     @Environment(\.dismiss) private var dismiss
 
-    let course: Course
-    let file: File
-    let fileService = CourseFileService()
+    let download: Download
 
-    @Environment(CourseFileViewModel.self) var courseFileViewModel
     @State private var url: URL?
-    @State private var isLoading = false
 
     var body: some View {
         Group {
-            if let url {
+            if let url = download.localURL {
                 QuickLookPreview(url: url) { dismiss() }
                     #if os(iOS)
                     .navigationBarBackButtonHidden()
@@ -31,16 +27,7 @@ struct FileViewer: View {
                     }
                     #endif
             } else {
-                Group {
-                    if isLoading {
-                        VStack(spacing: 12) {
-                            ProgressView()
-                            Text("Loading...")
-                        }
-                    } else {
-                        ContentUnavailableView("Unable to preview file.", systemImage: "xmark.rectangle.fill")
-                    }
-                }
+                ContentUnavailableView("Unable to preview file.", systemImage: "xmark.rectangle.fill")
                 #if os(iOS)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
@@ -50,23 +37,5 @@ struct FileViewer: View {
                 #endif
             }
         }
-        .task {
-            await loadContents()
-        }
-    }
-
-    private func loadContents() async {
-        isLoading = true
-        do {
-            (_, self.url) = try await fileService.courseFile(
-                for: file,
-                course: course,
-                foldersPath: courseFileViewModel.traversedFolderIDs,
-                localCopyReceived: { (_, self.url) = ($0, $1) }
-            )
-        } catch {
-            LoggerService.main.error("Error fetching file content: \(error)")
-        }
-        self.isLoading = false
     }
 }

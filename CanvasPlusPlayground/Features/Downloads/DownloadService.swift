@@ -89,12 +89,17 @@ class DownloadService: NSObject, URLSessionDownloadDelegate {
     }
 
     @MainActor
-    func createDownload(for file: File, course: Course) async throws {
-        let download = Download(file: file)
+    func createDownload(for file: File, course: Course, folderIds: [String]) async throws {
+        let fileURL = try self.pathWithFolders(foldersPath: folderIds,
+                                               courseId: course.id,
+                                               fileId: file.id,
+                                               type: .init(file: file))
+        let download = Download(file: file, finalURL: fileURL)
+
         modelContext.insert(download)
         try? modelContext.save()
 
-        let toast = Toast(type: .download, title: file.displayName, duration: 5)
+        let toast = Toast(type: .download(download))
         NavigationModel.shared.queueToast(toast)
 
         try await startDownload(download, course: course)
@@ -145,7 +150,7 @@ class DownloadService: NSObject, URLSessionDownloadDelegate {
     }
 
     // MARK: Helpers
-    
+
     private func pathWithFolders(foldersPath: [String], courseId: String, fileId: String, type: FileType?) throws -> URL {
         guard let coursesURL = Self.coursesURL else {
             throw FileError.directoryInaccessible
@@ -161,6 +166,8 @@ class DownloadService: NSObject, URLSessionDownloadDelegate {
 
         return pathURL
     }
+
+    // MARK: URLSessionDownloadDelegate
 
     func urlSession(
         _ session: URLSession,
@@ -181,22 +188,54 @@ class DownloadService: NSObject, URLSessionDownloadDelegate {
     }
 
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
-        print("File doesn't exist! Downloading ...")
-        
-        let content = try? Data(contentsOf: location)
-        
-        do {
-            let url = try self.saveCourseFile(courseId: course.id, folderIds: foldersPath, file: file, content: content)
-            print("File successfully saved at \(url.path())")
-            
-//                return (content, url)
-        } catch {
-            print("Failed to save file. \(error)")
+        guard let idString = downloadTask.taskDescription, let id = UUID(uuidString: idString) else { return }
+
+        if let item = self.fetchDownloadItem(by: id) {
+            do {
+                let parentDirURL = item.finalURL.deletingLastPathComponent()
+
+                try Self.fileManager.createDirectory(
+                    at: parentDirURL,
+                    withIntermediateDirectories: true,
+                    attributes: nil
+                )
+
+                try Self.fileManager.moveItem(at: location, to: item.finalURL)
+                item.localURL = item.finalURL
+
+                try? modelContext.save()
+
+                let toast = Toast(type: .downloadFinished(item))
+                NavigationModel.shared.queueToast(toast)
+
+                print("File successfully saved at \(item.finalURL.path)")
+            } catch {
+                print("Failed to save file. \(error)")
+            }
         }
     }
 
     private func fetchDownloadItem(by id: UUID) -> Download? {
         let fetchDescriptor = FetchDescriptor<Download>(predicate: #Predicate { $0.id == id })
         return try? modelContext.fetch(fetchDescriptor).first
+    }
+}
+
+enum FileError: Error {
+    case fileWriteFailed, fileWasNil, directoryInaccessible
+
+    var message: String {
+        switch self {
+        case .fileWriteFailed:
+            return "File save failed"
+        case .fileWasNil:
+            return "File was nil"
+        case .directoryInaccessible:
+            return "Directory inaccessible"
+        }
+    }
+
+    var description: String {
+        message
     }
 }

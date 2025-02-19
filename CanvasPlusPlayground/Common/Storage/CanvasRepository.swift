@@ -9,7 +9,7 @@ import SwiftData
 import SwiftUI
 
 extension ModelContext {
-    static var shared: ModelContext {
+    static var shared: ModelContext = {
         let modelContainer = try! ModelContainer(
             for: Course.self,
             Announcement.self,
@@ -30,7 +30,7 @@ extension ModelContext {
             // TODO: Add cacheable models here
         )
         return ModelContext(modelContainer)
-    }
+    }()
 }
 
 @MainActor
