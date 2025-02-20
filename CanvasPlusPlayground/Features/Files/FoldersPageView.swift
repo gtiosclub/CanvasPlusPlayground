@@ -151,17 +151,8 @@ private struct FileRow: View {
 
             Spacer()
 
-            Group {
-                if let download = model.file.download {
-                    DownloadGaugeView(model: .init(download: download))
-                } else {
-                    Image(systemName: "arrow.down.circle.dotted")
-                }
-            }
-            .frame(width: 17, height: 17)
-            .font(.system(size: 17, weight: .bold))
+            DownloadButtonView(model: .init(download: model.file.download))
         }
-        .imageScale(.large)
         .contextMenu {
             PinButton(
                 itemID: model.file.id,
@@ -193,6 +184,59 @@ private struct FileRow: View {
                 }
             }
         }
+    }
+}
+
+@Observable
+class DownloadButtonViewModel {
+    var download: Download?
+
+    init(download: Download?) {
+        self.download = download
+    }
+}
+
+struct DownloadButtonView: View {
+    let model: DownloadButtonViewModel
+
+    var body: some View {
+        DownloadIcon(progress: model.download?.progress, completed: model.download?.localURL != nil)
+    }
+}
+
+struct DownloadIcon: View {
+    var progress: Double?
+    var completed: Bool
+
+    var size: CGFloat = 26.0
+
+    var body: some View {
+        Group {
+            if !completed {
+                Circle()
+                    .stroke(.secondary, style: .init(lineWidth: 2.0, lineCap: .butt, lineJoin: .round, dash: [2], dashPhase: 1))
+                    .padding(2.0)
+                    .opacity(progress == nil ? 1 : 0)
+                    .foregroundStyle(.secondary)
+                    .overlay {
+                        Image(systemName: "arrow.down")
+                            .foregroundStyle(.secondary)
+                            .font(.system(size: size*0.5, weight: .bold))
+                            .offset(x: 0, y: progress == nil ? 0 : size)
+                            .opacity(progress == nil ? 1 : 0)
+                            .clipShape(Circle())
+                            .animation(.default, value: progress)
+                    }
+                    .overlay {
+                        if let progress {
+                            ProgressView(value: progress, total: 1.0)
+                                .progressViewStyle(GaugeProgressStyle(strokeWidth: 2.0))
+                        }
+                    }
+            }
+        }
+        .frame(width: size, height: size)
+        .font(.system(size: size, weight: .bold))
     }
 }
 
