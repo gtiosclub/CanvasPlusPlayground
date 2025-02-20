@@ -69,7 +69,7 @@ struct GaugeProgressStyle: ProgressViewStyle {
                     Circle()
                         .stroke(.secondary, style: StrokeStyle(lineWidth: strokeWidth))
                 }
-                .padding(strokeWidth/2.0)
+                .padding(strokeWidth)
         }
     }
 }
