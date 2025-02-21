@@ -37,10 +37,10 @@ struct GetDiscussionTopicsRequest: CacheableArrayAPIRequest {
     let perPage: Int
 
     var requestId: String? { courseId }
-    var requestIdKey: ParentKeyPath<DiscussionTopic, String?> { .createWritable(\.contextCode) }
+    var requestIdKey: ParentKeyPath<DiscussionTopic, String?> { .createWritable(\.courseId) }
     var idPredicate: Predicate<DiscussionTopic> {
         #Predicate {
-            $0.contextCode == courseId
+            $0.courseId == courseId
         }
     }
     var customPredicate: Predicate<DiscussionTopic> {

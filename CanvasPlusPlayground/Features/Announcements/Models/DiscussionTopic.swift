@@ -59,6 +59,13 @@ class DiscussionTopic: Cacheable {
     // MARK: Includes
     var sections: [APICourseSection]
 
+    // MARK: Custom
+    var courseId: String?
+
+    var isRead: Bool {
+        readState == .read
+    }
+
     init(from topicAPI: DiscussionTopicAPI) {
         self.id = topicAPI.id.asString
         self.author = topicAPI.author
