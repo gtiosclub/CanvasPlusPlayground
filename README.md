@@ -18,18 +18,18 @@ This [feature database](https://gt-ios-club.notion.site/d2d21e2e80f3417d8528553f
 print(URL.applicationSupportDirectory.path(percentEncoded: false))
 ```
 
-### Swiftlint
+### SwiftLint
 
-This project uses [`swiftlint`](https://github.com/realm/SwiftLint), a Swift Package that ensures consistent code formatting across the codebase. Upon building the project, you will automatically see any swiftlint errors in Xcode. Please resolve these before merging new code into the codebase.
+This project uses [SwiftLint](https://github.com/realm/SwiftLint), a Swift Package that ensures consistent code formatting across the codebase. Please resolve these before merging new code into the codebase.
 
-'swiftlint` can automatically fix these most of these errors for you:
+SwiftLint can automatically fix these most of these errors for you:
 
-1. Install swiftlint via your Terminal: `brew install swiftlint`.
-2. Run `swiftlint --fix` within your project directory.
+1. Install `swiftlint` via your Terminal: `brew install swiftlint`.
+2. `swiflint lint --fix` automatically runs whenever you build or run in Xcode, which will fix most issues or throw warnings related to code formatting.
 
 To make your life easier, you can have Xcode automatically reformat after a particular column length, and trim trailing whitespaces:
 
-1. Open Xcode preferences (Cmd+",")
+1. Open Xcode preferences (<kbd>⌘</kbd> + <kbd>,</kbd>)
 2. Go to Text Editing > Editing
 3. Turn on "Automatically reformat when completing code", "Automatically trim trailing whitespaces", and "Including whitespace-only lines"
 

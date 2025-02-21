@@ -31,7 +31,7 @@ struct Sidebar: View {
                     ) {
                         CourseListCell(course: course)
                     }
-                    .tint(course.rgbColors?.color)
+                    .listItemTint(.fixed(course.rgbColors?.color ?? .accentColor))
                 }
             }
 
@@ -40,7 +40,7 @@ struct Sidebar: View {
                     NavigationLink(value: NavigationPage.course(id: course.id)) {
                         CourseListCell(course: course)
                     }
-                    .tint(course.rgbColors?.color)
+                    .listItemTint(.fixed(course.rgbColors?.color ?? .accentColor))
                 }
             }
 
@@ -50,7 +50,7 @@ struct Sidebar: View {
                         NavigationLink(value: NavigationPage.course(id: course.id)) {
                             CourseListCell(course: course)
                         }
-                        .tint(course.rgbColors?.color)
+                        .listItemTint(.fixed(course.rgbColors?.color ?? .accentColor))
                     }
                 }
             }

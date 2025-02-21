@@ -27,67 +27,65 @@ struct CourseListCell: View {
     }
 
     var body: some View {
-        HStack {
-            Label(course.displayName, systemImage: "book.pages")
-                .frame(alignment: .leading)
-                .multilineTextAlignment(.leading)
-        }
-        .onAppear {
-            resolvedCourseColor = course.rgbColors?.color ?? .accentColor
-        }
-        .swipeActions(edge: .leading) {
-            favoriteButton
-        }
-        .swipeActions(edge: .trailing) {
-            hideCourseButton
-        }
-        .contextMenu {
-            Button("Change Color", systemImage: "paintbrush.fill") {
-                showColorPicker = true
+        Label(course.displayName, systemImage: "book.pages")
+            .frame(alignment: .leading)
+            .multilineTextAlignment(.leading)
+            .onAppear {
+                resolvedCourseColor = course.rgbColors?.color ?? .accentColor
             }
+            .swipeActions(edge: .leading) {
+                favoriteButton
+            }
+            .swipeActions(edge: .trailing) {
+                hideCourseButton
+            }
+            .contextMenu {
+                Button("Change Color", systemImage: "paintbrush.fill") {
+                    showColorPicker = true
+                }
 
-            favoriteButton
-            hideCourseButton
+                favoriteButton
+                hideCourseButton
 
-            Button("Rename \(course.name ?? "")...", systemImage: "character.cursor.ibeam") {
-                renameCourseFieldText = course.nickname ?? ""
-                showRenameTextField = true
+                Button("Rename \(course.name ?? "")...", systemImage: "character.cursor.ibeam") {
+                    renameCourseFieldText = course.nickname ?? ""
+                    showRenameTextField = true
+
+                }
 
             }
-
-        }
-        .alert("Rename Course?", isPresented: $showRenameTextField) {
-            TextField(course.name ?? "MISSING NAME", text: $renameCourseFieldText)
-                Button("OK") {
-                    if renameCourseFieldText == "" {
-                        course.nickname = nil
-                    } else {
-                        course.nickname = renameCourseFieldText
-                        renameCourseFieldText = ""
+            .alert("Rename Course?", isPresented: $showRenameTextField) {
+                TextField(course.name ?? "MISSING NAME", text: $renameCourseFieldText)
+                    Button("OK") {
+                        if renameCourseFieldText == "" {
+                            course.nickname = nil
+                        } else {
+                            course.nickname = renameCourseFieldText
+                            renameCourseFieldText = ""
+                        }
                     }
+                Button("Dismiss", role: .cancel) {
+                    renameCourseFieldText = ""
                 }
-            Button("Dismiss", role: .cancel) {
-                renameCourseFieldText = ""
-            }
 
-        } message: {
-            Text("Rename \(course.name ?? "MISSING NAME")?")
-        }
-        #if os(macOS)
-        .popover(isPresented: $showColorPicker) {
-            ColorPicker(selection: $resolvedCourseColor) { }
-                .onDisappear {
-                    course.rgbColors = .init(color: resolvedCourseColor)
-                }
-        }
-        #elseif os(iOS)
-        .colorPickerSheet(
-            isPresented: $showColorPicker,
-            selection: $resolvedCourseColor
-        ) {
-            course.rgbColors = .init(color: resolvedCourseColor)
-        }
-        #endif
+            } message: {
+                Text("Rename \(course.name ?? "MISSING NAME")?")
+            }
+            #if os(macOS)
+            .popover(isPresented: $showColorPicker) {
+                ColorPicker(selection: $resolvedCourseColor) { }
+                    .onDisappear {
+                        course.rgbColors = .init(color: resolvedCourseColor)
+                    }
+            }
+            #elseif os(iOS)
+            .colorPickerSheet(
+                isPresented: $showColorPicker,
+                selection: $resolvedCourseColor
+            ) {
+                course.rgbColors = .init(color: resolvedCourseColor)
+            }
+            #endif
     }
 
     private var hideCourseButton: some View {
