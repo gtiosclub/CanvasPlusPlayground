@@ -102,6 +102,19 @@ class Assignment: Cacheable {
         submissionTypes?.contains("online_quiz") ?? false
     }
 
+    var formattedPointsPossible: String {
+        guard let points = pointsPossible else { return "--" }
+        return points.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", points) : String(points)
+    }
+
+    var formattedGrade: String {
+        guard let submissionGrade = submission?.grade,
+              let gradeDouble = Double(submissionGrade) else {
+            return submission?.grade ?? "--"
+        }
+        return gradeDouble.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", gradeDouble) : String(gradeDouble)
+    }
+
     init(from assignmentAPI: AssignmentAPI) {
         self.id = assignmentAPI.id.asString
         self.name = assignmentAPI.name

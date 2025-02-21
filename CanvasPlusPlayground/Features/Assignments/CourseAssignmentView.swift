@@ -94,13 +94,10 @@ struct AssignmentRow: View {
 
                 Spacer()
 
-                if let submission = assignment.submission?.createModel(),
-                    let pointsPossible = assignment.pointsPossible {
-                    Text("\(String(submission.grade ?? "--"))")
-                        .bold()
-                    +
-                    Text(" / " + String(pointsPossible))
-                }
+                Text(assignment.formattedGrade)
+                    .bold()
+                +
+                Text(" / " + assignment.formattedPointsPossible)
             }
         }
     }

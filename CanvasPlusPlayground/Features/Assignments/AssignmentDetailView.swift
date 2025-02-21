@@ -38,8 +38,8 @@ struct AssignmentDetailView: View {
                     }
 
                     LabeledContent(
-                        "Points",
-                        value: pointsPossible
+                        "Points Possible",
+                        value: assignment.formattedPointsPossible
                     )
                 }
 
@@ -59,13 +59,18 @@ struct AssignmentDetailView: View {
                         )
                     }
 
-                    LabeledContent("Grade", value: grade + "/" + pointsPossible)
+                    LabeledContent(
+                        "Grade",
+                        value: assignment.formattedGrade + "/" + assignment.formattedPointsPossible
+                    )
                 }
 
-                Section {
-                    HTMLTextView(
-                        htmlText: assignment.assignmentDescription ?? ""
-                    )
+                if let assignmentDescription = assignment.assignmentDescription {
+                    Section {
+                        HTMLTextView(
+                            htmlText: assignmentDescription
+                        )
+                    }
                 }
             }
             .formStyle(.grouped)
