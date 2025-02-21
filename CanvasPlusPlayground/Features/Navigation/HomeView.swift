@@ -44,6 +44,11 @@ struct HomeView: View {
                 .refreshable {
                     await loadCourses()
                 }
+            #if os(macOS)
+                .overlay(alignment: .bottomLeading) {
+                    toast
+                }
+            #endif
         } content: {
             contentView
         } detail: {
@@ -87,12 +92,28 @@ struct HomeView: View {
                 }
             }
         }
+        .animation(.spring, value: navigationModel.toast)
         #if os(iOS)
         .sheet(isPresented: $navigationModel.showSettingsSheet) {
             SettingsView()
         }
+        .overlay(alignment: .bottom) {
+            toast
+        }
         #endif
         .environment(navigationModel)
+    }
+
+    @ViewBuilder
+    private var toast: some View {
+        if let toast = navigationModel.toast {
+            ToastView(toast: toast)
+                .transition(.blur
+                    .combined(with: .scale(scale: 0.9))
+                    .combined(with: .offset(x: 0, y: 10))
+                    .combined(with: .opacity))
+                .padding()
+        }
     }
 
     @ViewBuilder
@@ -104,10 +125,21 @@ struct HomeView: View {
             case .announcements: AllAnnouncementsView()
             case .toDoList: AggregatedAssignmentsView()
             case .pinned: PinnedItemsView()
+            case .downloads: downloadsView
             default: EmptyView()
             }
         } else {
             ContentUnavailableView("Select a course", systemImage: "folder")
+        }
+    }
+
+    @ViewBuilder
+    private var downloadsView: some View {
+        if let modelContext = CanvasService.shared.repository?.modelContext {
+            DownloadsView()
+                .modelContext(modelContext)
+        } else {
+            ContentUnavailableView("Downloads are not available", systemImage: "arrow.down.circle")
         }
     }
 
@@ -116,6 +148,30 @@ struct HomeView: View {
         await courseManager.getCourses()
         await profileManager.getCurrentUserAndProfile()
         isLoadingCourses = false
+    }
+}
+
+struct BlurAnimationModifier: AnimatableModifier {
+
+    var blur: Double
+
+    var animatableData: Double {
+        get { blur }
+        set { blur = newValue }
+    }
+
+    func body(content: Content) -> some View {
+        content
+            .blur(radius: self.animatableData)
+    }
+}
+
+extension AnyTransition {
+    static var blur: AnyTransition {
+        AnyTransition.modifier(
+            active: BlurAnimationModifier(blur: 5.0),
+            identity: BlurAnimationModifier(blur: 0.0)
+        )
     }
 }
 

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct FoldersPageView: View {
     @Namespace private var namespace
@@ -16,6 +17,8 @@ struct FoldersPageView: View {
 
     @State private var isLoadingContents = true
     @State private var selectedFile: File?
+
+    @Environment(\.modelContext) var modelContext
 
     init(course: Course, folder: Folder? = nil, traversedFolderIDs: [String] = []) {
         self.course = course
@@ -48,28 +51,35 @@ struct FoldersPageView: View {
         .task {
             await loadContents()
         }
-        #if os(iOS)
-        .fullScreenCover(item: $selectedFile) { file in
-            Group {
-                if #available(iOS 18.0, *) {
-                    NavigationStack {
-                        FileViewer(course: course, file: file)
-                    }
-                    .navigationTransition(.zoom(sourceID: file.id, in: namespace))
-                } else {
-                    NavigationStack {
-                        FileViewer(course: course, file: file)
-                    }
-                }
+        .task(id: selectedFile) {
+            if let selectedFile {
+                try? await DownloadService.shared.createDownload(for: selectedFile, course: course, folderIds: [])
             }
-            .environment(filesVM)
+
+            selectedFile = nil
         }
-        #else
-        .navigationDestination(item: $selectedFile) { file in
-            FileViewer(course: course, file: file)
-                .environment(filesVM)
-        }
-        #endif
+//        #if os(iOS)
+//        .fullScreenCover(item: $selectedFile) { file in
+//            Group {
+//                if #available(iOS 18.0, *) {
+//                    NavigationStack {
+//                        FileViewer(course: course, file: file)
+//                    }
+//                    .navigationTransition(.zoom(sourceID: file.id, in: namespace))
+//                } else {
+//                    NavigationStack {
+//                        FileViewer(course: course, file: file)
+//                    }
+//                }
+//            }
+//            .environment(filesVM)
+//        }
+//        #else
+//        .navigationDestination(item: $selectedFile) { file in
+//            FileViewer(course: course, file: file)
+//                .environment(filesVM)
+//        }
+//        #endif
         .overlay {
             if !isLoadingContents && filesVM.displayedFiles.isEmpty && filesVM.displayedFolders.isEmpty {
                 ContentUnavailableView("This folder is empty.", systemImage: "folder")
@@ -87,12 +97,12 @@ struct FoldersPageView: View {
         if file.url != nil {
             Group {
                 if #available(iOS 18.0, *) {
-                    FileRow(file: file, course: course)
+                    FileRow(model: .init(file: file, course: course))
                         #if os(iOS)
                         .matchedTransitionSource(id: file.id, in: namespace)
                         #endif
                 } else {
-                    FileRow(file: file, course: course)
+                    FileRow(model: .init(file: file, course: course))
                 }
             }
             .environment(filesVM)
@@ -119,10 +129,21 @@ struct FoldersPageView: View {
     }
 }
 
+@Observable
+class FileRowViewModel {
+    var file: File
+    var course: Course
+
+    init(file: File, course: Course) {
+        self.file = file
+        self.course = course
+    }
+}
+
 private struct FileRow: View {
     @Environment(CourseFileViewModel.self) private var filesVM
-    let file: File
-    let course: Course
+
+    let model: FileRowViewModel
 
     var body: some View {
         HStack {
@@ -130,33 +151,21 @@ private struct FileRow: View {
 
             Spacer()
 
-            if file.localURL == nil {
-                Image(systemName: "arrow.down.circle.dotted")
-            }
+            DownloadButtonView(model: .init(download: model.file.download))
         }
-        .imageScale(.large)
         .contextMenu {
             PinButton(
-                itemID: file.id,
-                courseID: course.id,
+                itemID: model.file.id,
+                courseID: model.course.id,
                 type: .file
             )
         }
         .swipeActions(edge: .leading) {
             PinButton(
-                itemID: file.id,
-                courseID: course.id,
+                itemID: model.file.id,
+                courseID: model.course.id,
                 type: .file
             )
-        }
-        .onAppear {
-            // Updates file.localURL if needed
-            CourseFileService.shared
-                .setLocationForCourseFile(
-                    file,
-                    course: course,
-                    foldersPath: filesVM.traversedFolderIDs
-                )
         }
     }
 
@@ -166,15 +175,68 @@ private struct FileRow: View {
                 .foregroundStyle(.tint)
 
             VStack(alignment: .leading) {
-                Text(file.displayName)
+                Text(model.file.displayName)
                     .font(.headline)
 
-                if let size = file.size {
+                if let size = model.file.size {
                     Text(size.formatted(.byteCount(style: .file)))
                         .foregroundStyle(.secondary)
                 }
             }
         }
+    }
+}
+
+@Observable
+class DownloadButtonViewModel {
+    var download: Download?
+
+    init(download: Download?) {
+        self.download = download
+    }
+}
+
+struct DownloadButtonView: View {
+    let model: DownloadButtonViewModel
+
+    var body: some View {
+        DownloadIcon(progress: model.download?.progress, completed: model.download?.localURL != nil)
+    }
+}
+
+struct DownloadIcon: View {
+    var progress: Double?
+    var completed: Bool
+
+    var size: CGFloat = 26.0
+
+    var body: some View {
+        Group {
+            if !completed {
+                Circle()
+                    .stroke(.secondary, style: .init(lineWidth: 2.0, lineCap: .butt, lineJoin: .round, dash: [2], dashPhase: 1))
+                    .padding(2.0)
+                    .opacity(progress == nil ? 1 : 0)
+                    .foregroundStyle(.secondary)
+                    .overlay {
+                        Image(systemName: "arrow.down")
+                            .foregroundStyle(.secondary)
+                            .font(.system(size: size*0.5, weight: .bold))
+                            .offset(x: 0, y: progress == nil ? 0 : size)
+                            .opacity(progress == nil ? 1 : 0)
+                            .clipShape(Circle())
+                            .animation(.default, value: progress)
+                    }
+                    .overlay {
+                        if let progress {
+                            ProgressView(value: progress, total: 1.0)
+                                .progressViewStyle(GaugeProgressStyle(strokeWidth: 2.0))
+                        }
+                    }
+            }
+        }
+        .frame(width: size, height: size)
+        .font(.system(size: size, weight: .bold))
     }
 }
 
