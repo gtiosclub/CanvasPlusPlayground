@@ -8,21 +8,15 @@
 import Foundation
 import SwiftUI
 
-public class AggregatedAssignmentsViewModel: ObservableObject {
-    let courses: [Course]
-    @Published var assignments: [(Assignment, Course)] = []
+@Observable
+class AggregatedAssignmentsViewModel {
+    var assignments: [(Assignment, Course)] = []
 
-    init(courses: [Course]) {
-        self.courses = courses
-    }
-
-    func loadAssignments() async {
+    func loadAssignments(courses: [Course]) async {
         for course in courses {
             let newAssignments = await CourseAssignmentManager.getAssignmentsForCourse(courseID: course.id)
 
-            for assignment in newAssignments where !(
-                assignment.hasSubmittedSubmissions ?? false
-            ) {
+            for assignment in newAssignments where assignment.submission?.workflow_state == .unsubmitted {
                 // we only want to show assignments w/o submissions
                 self.assignments.append((assignment, course))
             }
