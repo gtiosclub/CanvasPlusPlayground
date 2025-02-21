@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PinnedItemDetailView: View {
     let item: PinnedItem
-    
+
     var body: some View {
         AsyncView {
             await item.itemData()
@@ -21,13 +21,13 @@ struct PinnedItemDetailView: View {
                 if let url = file.localURL {
                     QuickLookPreview(url: url, onDismiss: { })
                 } else {
-                    Text("file not downloaded")
+                    ContentUnavailableView("Unable to preview file, please download first.", systemImage: "xmark.rectangle.fill")
                 }
             case .assignment(let assignment):
                 AssignmentDetailView(assignment: assignment)
             }
         } placeholder: {
-            Text("Loading...")
+            ProgressView()
         }
         .id(item.id)
     }
