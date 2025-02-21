@@ -92,6 +92,12 @@ class Assignment: Cacheable {
         ISO8601DateFormatter().date(from: lockAt ?? "2024-12-12T19:06:20Z")
     }
 
+    var isLocked: Bool {
+        guard let unlockDate else { return false }
+
+        return unlockDate > Date()
+    }
+
     var isOnlineQuiz: Bool {
         submissionTypes?.contains("online_quiz") ?? false
     }

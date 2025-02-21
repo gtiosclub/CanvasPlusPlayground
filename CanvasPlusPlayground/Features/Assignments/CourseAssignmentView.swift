@@ -70,8 +70,37 @@ struct AssignmentRow: View {
     var body: some View {
         NavigationLink(value: assignment) {
             HStack {
-                Text(assignment.name)
-                    .font(.headline)
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(assignment.name)
+                        .fontWeight(.bold)
+
+                    if assignment.isLocked, let unlockDate = assignment.unlockDate {
+                        HStack(spacing: 4) {
+                            Image(systemName: "lock.fill")
+
+                            Text("Available ")
+                                .fontWeight(.semibold)
+                            +
+                            Text(unlockDate, style: .date)
+                        }
+                    } else if let dueDate = assignment.dueDate {
+                        Text("Due ")
+                            .fontWeight(.semibold)
+                        +
+                        Text(dueDate, style: .date)
+                    }
+                }
+                .fontWeight(.light)
+
+                Spacer()
+
+                if let submission = assignment.submission?.createModel(),
+                    let pointsPossible = assignment.pointsPossible {
+                    Text("\(String(submission.grade ?? "--"))")
+                        .bold()
+                    +
+                    Text(" / " + String(pointsPossible))
+                }
             }
         }
     }
