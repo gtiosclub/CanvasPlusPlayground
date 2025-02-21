@@ -167,4 +167,18 @@ struct CanvasRequest {
             perPage: perPage
         )
     }
+
+    static func markCourseDiscussionTopicAsRead(
+        courseId: String,
+        discussionTopicId: String
+    ) -> MarkCourseDiscussionTopicReadRequest {
+        MarkCourseDiscussionTopicReadRequest(courseID: courseId, discussionID: discussionTopicId)
+    }
+
+    static func markCourseDiscussionTopicAsUnread(
+        courseId: String,
+        discussionTopicId: String
+    ) -> MarkCourseDiscussionTopicUnreadRequest {
+        MarkCourseDiscussionTopicUnreadRequest(courseID: courseId, discussionID: discussionTopicId)
+    }
 }

@@ -63,7 +63,8 @@ class DiscussionTopic: Cacheable {
     var courseId: String?
 
     var isRead: Bool {
-        readState == .read
+        get { readState == .read }
+        set { readState = newValue == true ? .read : .unread }
     }
 
     init(from topicAPI: DiscussionTopicAPI) {
