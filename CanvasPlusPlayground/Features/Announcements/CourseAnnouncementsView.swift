@@ -10,7 +10,7 @@ import SwiftUI
 struct CourseAnnouncementsView: View {
     let course: Course
     @State private var announcementManager: CourseAnnouncementManager
-
+    @State private var selectedAnnouncement: Announcement?
     @State private var isLoadingAnnouncements: Bool = true
 
     init(course: Course) {
@@ -20,7 +20,7 @@ struct CourseAnnouncementsView: View {
 
     var body: some View {
         NavigationStack {
-            List(announcementManager.announcements, id: \.id) { announcement in
+            List(announcementManager.displayedAnnouncements, id: \.id, selection: $selectedAnnouncement) { announcement in
                 NavigationLink {
                     CourseAnnouncementDetailView(announcement: announcement)
                 } label: {

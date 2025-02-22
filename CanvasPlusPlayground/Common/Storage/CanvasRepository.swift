@@ -25,6 +25,7 @@ class CanvasRepository {
             Submission.self,
             User.self,
             Profile.self,
+            DiscussionTopic.self,
             Page.self
             // TODO: Add cacheable models here
         )
