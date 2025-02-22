@@ -181,7 +181,7 @@ struct CanvasRequest {
     ) -> MarkCourseDiscussionTopicUnreadRequest {
         MarkCourseDiscussionTopicUnreadRequest(courseID: courseId, discussionID: discussionTopicId)
     }
-  
+
     static func getPages(
         courseId: String,
         perPage: Int = 50

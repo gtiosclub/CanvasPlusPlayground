@@ -16,7 +16,7 @@ struct AllAnnouncementsView: View {
 
     var body: some View {
         List(selection: $selectedAnnouncement) {
-            ForEach(announcementsManager.displayedAnnouncements, id: \.id) { (courseAnnouncement) in
+            ForEach(announcementsManager.displayedAnnouncements, id: \.id) { courseAnnouncement in
                 NavigationLink {
                     CourseAnnouncementDetailView(announcement: courseAnnouncement.announcement)
                 } label: {

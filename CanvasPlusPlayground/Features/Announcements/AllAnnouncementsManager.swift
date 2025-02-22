@@ -85,7 +85,7 @@ import Foundation
                 }
 
                 let course = courses.first(where: { course in
-                    courseId.contains(course.id)
+                    courseId == course.id
                 })
 
                 return CourseAnnouncement(announcement: announcement, course: course)
