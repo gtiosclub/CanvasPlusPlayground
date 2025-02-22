@@ -20,9 +20,7 @@ class CourseAssignmentManager {
         let request = CanvasRequest.getAssignments(courseId: courseID)
 
         do {
-            let assignments = try await CanvasService.shared.loadAndSync(request)
-
-            return assignments
+            return try await CanvasService.shared.loadAndSync(request)
         } catch {
             print("Failed to fetch assignments: \(error)")
         }

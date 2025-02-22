@@ -50,10 +50,10 @@ struct CourseGradeView: View {
                     .foregroundStyle(.tint)
             }
             .fontDesign(.rounded)
-            .font(.title3)
+            .font(.title2)
             .bold()
             .padding(.horizontal)
-            .padding(.vertical, 8)
+            .padding(.vertical, 4)
 
             Divider()
         }
