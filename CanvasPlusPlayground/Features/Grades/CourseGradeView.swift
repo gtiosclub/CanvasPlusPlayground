@@ -21,26 +21,7 @@ struct CourseGradeView: View {
     var body: some View {
         CourseAssignmentsView(course: course, showGrades: true)
             .safeAreaInset(edge: .top, spacing: 0) {
-                VStack {
-                    Divider()
-                    HStack {
-                        Text("Current Score")
-                        Spacer()
-                        Text(gradesVM.currentScore)
-                            .animation(.default, value: gradesVM.currentScore)
-                            .contentTransition(.numericText())
-                            .foregroundStyle(.tint)
-                    }
-                    .fontDesign(.rounded)
-                    .font(.title3)
-                    .bold()
-                    .padding(.horizontal)
-                    .padding(.vertical, 8)
-
-                    Divider()
-                }
-                .frame(maxWidth: .infinity)
-                .background(.bar)
+                gradesAccessoryBar
             }
             .navigationTitle("Grades")
             .task {
@@ -58,16 +39,28 @@ struct CourseGradeView: View {
             #endif
     }
 
-    private func gradeRow(_ label: String, value: String) -> some View {
-        HStack {
-            Text(label)
+    private var gradesAccessoryBar: some View {
+        VStack {
+            Divider()
 
-            Spacer()
+            HStack {
+                Text("Current Score")
+                Spacer()
+                Text(gradesVM.currentScore)
+                    .animation(.default, value: gradesVM.currentScore)
+                    .contentTransition(.numericText())
+                    .foregroundStyle(.tint)
+            }
+            .fontDesign(.rounded)
+            .font(.title3)
+            .bold()
+            .padding(.horizontal)
+            .padding(.vertical, 8)
 
-            Text(value)
+            Divider()
         }
-        .contentTransition(.numericText())
-        .animation(.default, value: value)
+        .frame(maxWidth: .infinity)
+        .background(.bar)
     }
 
     private func loadGrades() async {
