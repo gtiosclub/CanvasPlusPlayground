@@ -29,23 +29,30 @@ struct CourseAssignmentsView: View {
     var mainbody: some View {
         List(assignmentManager.assignmentGroups) { assignmentGroup in
             Section {
-                ForEach(assignmentGroup.assignments ?? []) { assignment in
-                    let assignmentModel = assignment.createModel()
-                    AssignmentRow(assignment: assignmentModel, showGrades: showGrades)
-                        .contextMenu {
-                            PinButton(
-                                itemID: assignmentModel.id,
-                                courseID: course.id,
-                                type: .assignment
-                            )
-                        }
-                        .swipeActions(edge: .leading) {
-                            PinButton(
-                                itemID: assignmentModel.id,
-                                courseID: course.id,
-                                type: .assignment
-                            )
-                        }
+                let assignments = assignmentGroup.assignments ?? []
+
+                if assignments.isEmpty {
+                    Text("No Assignments")
+                        .foregroundStyle(.secondary)
+                } else {
+                    ForEach(assignments) { assignment in
+                        let assignmentModel = assignment.createModel()
+                        AssignmentRow(assignment: assignmentModel, showGrades: showGrades)
+                            .contextMenu {
+                                PinButton(
+                                    itemID: assignmentModel.id,
+                                    courseID: course.id,
+                                    type: .assignment
+                                )
+                            }
+                            .swipeActions(edge: .leading) {
+                                PinButton(
+                                    itemID: assignmentModel.id,
+                                    courseID: course.id,
+                                    type: .assignment
+                                )
+                            }
+                    }
                 }
             } header: {
                 HStack {

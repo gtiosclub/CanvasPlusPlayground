@@ -20,21 +20,27 @@ struct AssignmentDetailView: View {
                     LabeledContent("Name", value: assignment.name)
 
                     if let unlockAt = assignment.unlockDate {
-                        LabeledContent(
-                            "Available From",
-                            value: unlockAt.formatted()
-                        )
+                        LabeledContent("Available From") {
+                            Text(unlockAt, style: .time)
+                            + Text(" on ") +
+                            Text(unlockAt, style: .date)
+                        }
                     }
 
                     if let dueDate = assignment.dueDate {
-                        LabeledContent("Due", value: dueDate.formatted())
+                        LabeledContent("Due") {
+                            Text(dueDate, style: .time)
+                            + Text(" on ") +
+                            Text(dueDate, style: .date)
+                        }
                     }
 
                     if let lockAt = assignment.lockDate {
-                        LabeledContent(
-                            "Available Until",
-                            value: lockAt.formatted()
-                        )
+                        LabeledContent("Available Until") {
+                            Text(lockAt, style: .time)
+                            + Text(" on ") +
+                            Text(lockAt, style: .date)
+                        }
                     }
 
                     LabeledContent(
