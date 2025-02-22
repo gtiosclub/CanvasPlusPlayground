@@ -513,7 +513,6 @@
 		A324BA5A2D0797A2005F53FA /* Assignments */ = {
 			isa = PBXGroup;
 			children = (
-				B7A12F402D69442C00EDFA0A /* AssignmentGroups */,
 				A373DC1E2D1D2B5700215019 /* Models */,
 				192EC04B2C963EE600AF8528 /* CourseAssignmentView.swift */,
 				9BEB4ECF2D56AF570013869D /* AssignmentDetailView.swift */,
@@ -618,6 +617,8 @@
 		A373DC1E2D1D2B5700215019 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B7A12F472D69448C00EDFA0A /* AssignmentGroupAPI.swift */,
+				B7A12F452D69448300EDFA0A /* AssignmentGroup.swift */,
 				192EC0492C963B9000AF8528 /* AssignmentAPI.swift */,
 				B74688A22D63DB59007A27FD /* Assignment.swift */,
 				A3049B5C2D0E5D5A002F3166 /* APIAssignmentDate.swift */,
@@ -712,15 +713,6 @@
 				B76454FA2C8DF61B002DF00E /* CanvasPlusPlaygroundApp.swift */,
 			);
 			path = CanvasPlusPlayground;
-			sourceTree = "<group>";
-		};
-		B7A12F402D69442C00EDFA0A /* AssignmentGroups */ = {
-			isa = PBXGroup;
-			children = (
-				B7A12F472D69448C00EDFA0A /* AssignmentGroupAPI.swift */,
-				B7A12F452D69448300EDFA0A /* AssignmentGroup.swift */,
-			);
-			path = AssignmentGroups;
 			sourceTree = "<group>";
 		};
 		B7AD54EE2CD41D5200FB09BB /* Intelligence */ = {
