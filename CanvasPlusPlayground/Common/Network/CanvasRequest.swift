@@ -143,4 +143,16 @@ struct CanvasRequest {
             perPage: perPage
         )
     }
+
+    static func getPages(
+        courseId: String,
+        perPage: Int = 50
+    ) -> GetPagesRequest {
+        GetPagesRequest(
+            courseId: courseId,
+            published: true,
+            include: [GetPagesRequest.Include.body],
+            perPage: perPage
+        )
+    }
 }
