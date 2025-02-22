@@ -33,7 +33,7 @@ struct GetDiscussionTopicsRequest: CacheableArrayAPIRequest {
     let onlyAnnouncements: Bool
     let filterBy: Filter?
     let searchTerm: String?
-    /// No offline support for this
+    /// No offline support for this filter
     let excludeContentModuleLockedTopics: Bool
     let perPage: Int
 
