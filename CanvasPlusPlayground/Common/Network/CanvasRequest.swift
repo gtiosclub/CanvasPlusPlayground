@@ -85,6 +85,16 @@ struct CanvasRequest {
         GetAssignmentsRequest(courseId: courseId, include: include)
     }
 
+    static func getAssignmentGroups(
+        courseId: String,
+        include: [GetAssignmentGroupsRequest.Include] = [
+            .assignments,
+            .submission
+        ]
+    ) -> GetAssignmentGroupsRequest {
+        GetAssignmentGroupsRequest(courseId: courseId, include: include)
+    }
+
     static func getEnrollments(courseId: String, userId: String? = nil, perPage: Int = 50) -> GetEnrollmentsRequest {
         GetEnrollmentsRequest(courseId: courseId, userId: userId, perPage: perPage)
     }

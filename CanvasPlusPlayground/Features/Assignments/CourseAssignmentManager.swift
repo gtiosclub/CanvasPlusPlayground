@@ -10,36 +10,45 @@ import SwiftUI
 @Observable
 class CourseAssignmentManager {
     private let courseID: String
-    var assignments = [Assignment]()
+    var assignmentGroups = [AssignmentGroup]()
 
     init(courseID: String) {
         self.courseID = courseID
     }
 
-    func fetchAssignments() async {
+    func fetchAssignments() async -> [Assignment] {
         let request = CanvasRequest.getAssignments(courseId: courseID)
 
         do {
-            let assignments = try await CanvasService.shared.loadAndSync(
-                request,
-                onCacheReceive: { cachedAssignments in
-                    self.assignments = cachedAssignments ?? []
-                }
-            )
+            let assignments = try await CanvasService.shared.loadAndSync(request)
 
-            self.assignments = assignments
+            return assignments
         } catch {
             print("Failed to fetch assignments: \(error)")
         }
+
+        return []
     }
 
-    private func setAssignments(_ assignments: [Assignment]) {
-        self.assignments = assignments
+    func fetchAssignmentGroups() async {
+        let request = CanvasRequest.getAssignmentGroups(courseId: courseID)
+
+        do {
+            let groups = try await CanvasService.shared.loadAndSync(
+                request,
+                onCacheReceive: { cachedGroups in
+                    self.assignmentGroups = cachedGroups ?? []
+                }
+            )
+
+            self.assignmentGroups = groups
+        } catch {
+            print("Failed to fetch assignment groups")
+        }
     }
 
     static func getAssignmentsForCourse(courseID: String) async -> [Assignment] {
         let manager = CourseAssignmentManager(courseID: courseID)
-        await manager.fetchAssignments()
-        return manager.assignments
+        return await manager.fetchAssignments()
     }
 }

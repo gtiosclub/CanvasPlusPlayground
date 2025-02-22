@@ -26,22 +26,37 @@ struct CourseAssignmentsView: View {
         }
     }
     var mainbody: some View {
-        List(assignmentManager.assignments) { assignment in
-            AssignmentRow(assignment: assignment, showGrades: showGrades)
-                .contextMenu {
-                    PinButton(
-                        itemID: assignment.id,
-                        courseID: course.id,
-                        type: .assignment
-                    )
+        List(assignmentManager.assignmentGroups) { assignmentGroup in
+            Section {
+                ForEach(assignmentGroup.assignments ?? []) { assignment in
+                    let assignmentModel = assignment.createModel()
+                    AssignmentRow(assignment: assignmentModel, showGrades: showGrades)
+                        .contextMenu {
+                            PinButton(
+                                itemID: assignmentModel.id,
+                                courseID: course.id,
+                                type: .assignment
+                            )
+                        }
+                        .swipeActions(edge: .leading) {
+                            PinButton(
+                                itemID: assignmentModel.id,
+                                courseID: course.id,
+                                type: .assignment
+                            )
+                        }
                 }
-                .swipeActions(edge: .leading) {
-                    PinButton(
-                        itemID: assignment.id,
-                        courseID: course.id,
-                        type: .assignment
-                    )
+            } header: {
+                HStack {
+                    Text(assignmentGroup.name)
+                    Spacer()
+                    if let groupWeight = assignmentGroup.groupWeight {
+                        Text(String(format: "%.1f%%", groupWeight))
+                    } else {
+                        Text("--%")
+                    }
                 }
+            }
         }
         .task {
             await loadAssignments()
@@ -58,7 +73,7 @@ struct CourseAssignmentsView: View {
 
     private func loadAssignments() async {
         isLoadingAssignments = true
-        await assignmentManager.fetchAssignments()
+        await assignmentManager.fetchAssignmentGroups()
         isLoadingAssignments = false
     }
 }
@@ -94,10 +109,12 @@ struct AssignmentRow: View {
 
                 Spacer()
 
-                Text(assignment.formattedGrade)
-                    .bold()
-                +
-                Text(" / " + assignment.formattedPointsPossible)
+                if showGrades {
+                    Text(assignment.formattedGrade)
+                        .bold()
+                    +
+                    Text(" / " + assignment.formattedPointsPossible)
+                }
             }
         }
     }

@@ -17,6 +17,7 @@ class CanvasRepository {
             for: Course.self,
             Announcement.self,
             Assignment.self,
+            AssignmentGroup.self,
             Enrollment.self,
             File.self,
             Folder.self,
