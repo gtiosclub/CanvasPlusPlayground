@@ -33,6 +33,7 @@ struct GetDiscussionTopicsRequest: CacheableArrayAPIRequest {
     let onlyAnnouncements: Bool
     let filterBy: Filter?
     let searchTerm: String?
+    /// No offline support for this
     let excludeContentModuleLockedTopics: Bool
     let perPage: Int
 
@@ -44,38 +45,37 @@ struct GetDiscussionTopicsRequest: CacheableArrayAPIRequest {
         }
     }
     var customPredicate: Predicate<DiscussionTopic> {
-//        let scope = self.scope
-//        let scopePred = switch scope {
-//            case .locked:
-//                #Predicate<DiscussionTopic> { topic in
-//                    topic.locked
-//                }
-//
-//            case .unlocked:
-//                #Predicate<DiscussionTopic> { topic in
-//                    !topic.locked
-//                }
-//
-//            case .pinned:
-//                #Predicate<DiscussionTopic> { topic in
-//                    topic.pinned
-//                }
-//
-//            case .unpinned:
-//                #Predicate<DiscussionTopic> { topic in
-//                    !topic.pinned
-//                }
-//
-//            default:
-//                .true
-//        }
-        // TODO: implement scope filter
+        let scopePred = {
+            switch self.scope {
+            case .locked:
+                return #Predicate<DiscussionTopic> { topic in
+                    topic.locked
+                }
 
-//        let filterBy = self.filterBy
-//        let filterPred = filterBy != nil ? #Predicate<DiscussionTopic> { topic in
-//            (topic.readState == .unread && filterBy == .unread) || filterBy == .all
-//        } : .true
-        // TODO: implement filterBy
+            case .unlocked:
+                return #Predicate<DiscussionTopic> { topic in
+                    !topic.locked
+                }
+
+            case .pinned:
+                return #Predicate<DiscussionTopic> { topic in
+                    topic.pinned
+                }
+
+            case .unpinned:
+                return #Predicate<DiscussionTopic> { topic in
+                    !topic.pinned
+                }
+
+            default:
+                return #Predicate<DiscussionTopic> { _ in true }
+            }
+        }()
+
+        let filterBy = self.filterBy?.toReadState
+        let filterPred = filterBy != nil ? #Predicate<DiscussionTopic> { topic in
+            topic.readState == filterBy
+        } : .true
 
         let announcementPred = onlyAnnouncements ? #Predicate<DiscussionTopic> { topic in
             topic.isAnnouncement
@@ -86,12 +86,12 @@ struct GetDiscussionTopicsRequest: CacheableArrayAPIRequest {
             topic.title?.localizedStandardContains(searchTerm) ?? false
         }
 
-        // TODO: filter for `excludeContentModuleLockedTopics` needed
+        // TODO: filter for `excludeContentModuleLockedTopics`
 
         return #Predicate {
-//            scopePred.evaluate($0)
-//            filterPred.evaluate($0)
-            announcementPred.evaluate($0)
+            scopePred.evaluate($0)
+            && filterPred.evaluate($0)
+            && announcementPred.evaluate($0)
             && searchPred.evaluate($0)
         }
     }
@@ -113,5 +113,14 @@ extension GetDiscussionTopicsRequest {
 
     enum Filter: String {
         case all, unread
+
+        var toReadState: DiscussionTopic.ReadState? {
+            switch self {
+            case .all:
+                return nil
+            case .unread:
+                return .unread
+            }
+        }
     }
 }
