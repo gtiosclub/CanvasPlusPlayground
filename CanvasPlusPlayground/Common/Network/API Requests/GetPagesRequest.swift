@@ -70,7 +70,7 @@ struct GetPagesRequest: CacheableArrayAPIRequest {
         }
 
         let searchTermPredicate: Predicate<Page>
-        if let searchTerm {
+        if let searchTerm, !searchTerm.isEmpty {
             searchTermPredicate = #Predicate<Page> { page in
                 page.title?.contains(searchTerm) ?? false
             }

@@ -144,7 +144,6 @@ struct CanvasRequest {
         )
     }
 
-    /// Fetches Pages for one course
     static func getPages(
         courseId: String,
         perPage: Int = 50
