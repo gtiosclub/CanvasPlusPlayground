@@ -21,6 +21,22 @@ struct CourseView: View {
         }
         .tint(course.rgbColors?.color)
         .navigationTitle(course.displayName)
+        .scrollContentBackground(course.rgbColors?.color == nil ? .automatic : .hidden)
+        .background(alignment: .top) {
+            if let color = course.rgbColors?.color {
+                color
+                    .overlay {
+                        LinearGradient(colors: [color, color.opacity(0)], startPoint: .top, endPoint: .bottom)
+                            .hueRotation(.degrees(35))
+                            .blendMode(.overlay)
+                    }
+                    .mask {
+                        LinearGradient(colors: [.black.opacity(0.5), .black.opacity(0)], startPoint: .top, endPoint: .bottom)
+                    }
+                    .frame(height: 200)
+                    .ignoresSafeArea()
+            }
+        }
         #if os(iOS)
         .listStyle(.insetGrouped)
         #else

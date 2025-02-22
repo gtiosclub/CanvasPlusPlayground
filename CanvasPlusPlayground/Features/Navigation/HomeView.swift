@@ -54,6 +54,7 @@ struct HomeView: View {
                 )
             }
         }
+        .tint(selectedCourse?.rgbColors?.color ?? .accentColor)
         .task {
             navigationModel.selectedNavigationPage = selectedNavigationPage
             navigationModel.selectedCoursePage = selectedCoursePage
