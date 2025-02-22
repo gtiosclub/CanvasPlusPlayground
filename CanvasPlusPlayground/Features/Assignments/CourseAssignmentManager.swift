@@ -37,11 +37,13 @@ class CourseAssignmentManager {
             let groups = try await CanvasService.shared.loadAndSync(
                 request,
                 onCacheReceive: { cachedGroups in
-                    self.assignmentGroups = cachedGroups ?? []
+                    guard let cachedGroups else { return }
+
+                    self.assignmentGroups = cachedGroups.sorted(by: { $0.position < $1.position })
                 }
             )
 
-            self.assignmentGroups = groups
+            self.assignmentGroups = groups.sorted(by: { $0.position < $1.position })
         } catch {
             print("Failed to fetch assignment groups")
         }

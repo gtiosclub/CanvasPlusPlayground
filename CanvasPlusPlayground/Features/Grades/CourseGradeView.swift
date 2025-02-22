@@ -27,6 +27,8 @@ struct CourseGradeView: View {
                         Text("Current Score")
                         Spacer()
                         Text(gradesVM.currentScore)
+                            .animation(.default, value: gradesVM.currentScore)
+                            .contentTransition(.numericText())
                             .foregroundStyle(.tint)
                     }
                     .fontDesign(.rounded)
