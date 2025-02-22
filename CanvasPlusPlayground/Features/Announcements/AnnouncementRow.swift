@@ -29,6 +29,8 @@ struct AnnouncementRow: View {
                 courseID: course?.id,
                 type: .announcement
             )
+
+            toggleReadButton
         }
         .swipeActions(edge: .leading) {
             PinButton(
@@ -47,6 +49,14 @@ struct AnnouncementRow: View {
             .alignmentGuide(.announcementRowAlignment) { context in
                 context[.leading]
             }
+    }
+
+    private var toggleReadButton: some View {
+        Button(announcement.readActionLabel) {
+            Task {
+                try await announcement.toggleReadState()
+            }
+        }
     }
 
     private var header: some View {

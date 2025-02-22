@@ -13,7 +13,7 @@ extension APIRequest {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
 
-        return try decoder.decode(QueryResult.self, from: data)
+        return try decoder.decode(QueryResult.self, from: data.isEmpty ? .emptyJSON : data)
     }
 
 }

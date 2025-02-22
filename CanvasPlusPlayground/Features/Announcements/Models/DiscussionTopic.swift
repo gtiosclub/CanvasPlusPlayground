@@ -73,6 +73,10 @@ class DiscussionTopic: Cacheable, Hashable, Equatable {
         createdAt ?? postedAt ?? delayedPostAt
     }
 
+    var readActionLabel: String {
+        self.readState?.actionLabel ?? ReadState.read.actionLabel
+    }
+
     init(from topicAPI: DiscussionTopicAPI) {
         self.id = topicAPI.id.asString
         self.author = topicAPI.author
@@ -175,8 +179,49 @@ class DiscussionTopic: Cacheable, Hashable, Equatable {
         }
     }
 
+    func markAsRead() async throws {
+        guard let courseId = self.courseId else {
+            print("[markAsRead] Course id missing")
+            throw Error.courseIdMissing
+        }
+
+        self.isRead = true
+
+        let request = CanvasRequest.markCourseDiscussionTopicAsRead(courseId: courseId, discussionTopicId: self.id)
+        try await CanvasService.shared.fetch(request)
+    }
+
+    func markAsUnread() async throws {
+        guard let courseId = self.courseId else {
+            print("[markAsUnread] Course id missing")
+            throw Error.courseIdMissing
+        }
+
+        self.isRead = false
+
+        let request = CanvasRequest.markCourseDiscussionTopicAsUnread(courseId: courseId, discussionTopicId: self.id)
+        try await CanvasService.shared.fetch(request)
+    }
+
+    func toggleReadState() async throws {
+        if self.isRead {
+            try await self.markAsUnread()
+        } else {
+            try await self.markAsRead()
+        }
+    }
+
     enum ReadState: String, Codable {
         case read, unread
+
+        var actionLabel: String {
+            switch self {
+            case .read:
+                return "Mark as unread"
+            case .unread:
+                return "Mark as read"
+            }
+        }
     }
 
     enum SubscriptionHold: String, Codable {
@@ -185,5 +230,15 @@ class DiscussionTopic: Cacheable, Hashable, Equatable {
 
     enum DiscussionType: String, Codable {
         case sideComment = "side_comment", notThreaded = "not_threaded", threaded
+    }
+}
+
+// MARK: Errors
+
+extension DiscussionTopic {
+
+    /// Errors related to discussion topic
+    enum Error: Swift.Error {
+        case courseIdMissing
     }
 }
