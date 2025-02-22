@@ -25,6 +25,7 @@ struct CourseAssignmentsView: View {
             mainbody
         }
     }
+
     var mainbody: some View {
         List(assignmentManager.assignmentGroups) { assignmentGroup in
             Section {
@@ -65,7 +66,7 @@ struct CourseAssignmentsView: View {
             await loadAssignments()
         }
         .statusToolbarItem("Assignments", isVisible: isLoadingAssignments)
-        .navigationTitle(course.displayName)
+        .navigationTitle(showGrades ? "Grades" : "Assignments")
         .navigationDestination(for: Assignment.self) { assignment in
             AssignmentDetailView(assignment: assignment)
         }
@@ -83,38 +84,46 @@ struct AssignmentRow: View {
     let showGrades: Bool
 
     var body: some View {
-        NavigationLink(value: assignment) {
-            HStack {
-                VStack(alignment: .leading, spacing: 3) {
-                    Text(assignment.name)
-                        .fontWeight(.bold)
+        if !showGrades {
+            NavigationLink(value: assignment) {
+                bodyContents
+            }
+        } else {
+            bodyContents
+        }
+    }
 
-                    if assignment.isLocked, let unlockDate = assignment.unlockDate {
-                        HStack(spacing: 4) {
-                            Image(systemName: "lock.fill")
+    private var bodyContents: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 3) {
+                Text(assignment.name)
+                    .fontWeight(.bold)
 
-                            Text("Available ")
-                                .fontWeight(.semibold)
-                            +
-                            Text(unlockDate, style: .date)
-                        }
-                    } else if let dueDate = assignment.dueDate {
-                        Text("Due ")
+                if assignment.isLocked, let unlockDate = assignment.unlockDate {
+                    HStack(spacing: 4) {
+                        Image(systemName: "lock.fill")
+
+                        Text("Available ")
                             .fontWeight(.semibold)
                         +
-                        Text(dueDate, style: .date)
+                        Text(unlockDate, style: .date)
                     }
-                }
-                .fontWeight(.light)
-
-                Spacer()
-
-                if showGrades {
-                    Text(assignment.formattedGrade)
-                        .bold()
+                } else if let dueDate = assignment.dueDate {
+                    Text("Due ")
+                        .fontWeight(.semibold)
                     +
-                    Text(" / " + assignment.formattedPointsPossible)
+                    Text(dueDate, style: .date)
                 }
+            }
+            .fontWeight(.light)
+
+            Spacer()
+
+            if showGrades {
+                Text(assignment.formattedGrade)
+                    .bold()
+                +
+                Text(" / " + assignment.formattedPointsPossible)
             }
         }
     }

@@ -19,40 +19,41 @@ struct CourseGradeView: View {
     }
 
     var body: some View {
-        Form {
-            Section {
-                gradeRow("Current Score", value: gradesVM.currentScore)
-                gradeRow("Current Grade", value: gradesVM.currentGrade)
-                gradeRow("Final Score", value: gradesVM.finalScore)
-                gradeRow("Final Grade", value: gradesVM.finalGrade)
-            } header: {
-                Text("Grades")
-            } footer: {
-                Group {
-                    if let url = gradesVM.canvasURL {
-                        Link("View on Canvas", destination: url)
-                    } else {
-                        Text("Loading grades...")
-                            .foregroundStyle(.secondary)
+        CourseAssignmentsView(course: course, showGrades: true)
+            .safeAreaInset(edge: .top, spacing: 0) {
+                VStack {
+                    Divider()
+                    HStack {
+                        Text("Current Score")
+                        Spacer()
+                        Text(gradesVM.currentScore)
+                            .foregroundStyle(.tint)
                     }
-                }
-                .font(.footnote)
-            }
+                    .fontDesign(.rounded)
+                    .font(.title3)
+                    .bold()
+                    .padding(.horizontal)
+                    .padding(.vertical, 8)
 
-            Section("Assignments") {
-                CourseAssignmentsView(course: course, showGrades: true)
+                    Divider()
+                }
+                .frame(maxWidth: .infinity)
+                .background(.bar)
             }
-        }
-        .formStyle(.grouped)
-        .task {
-            await loadGrades()
-        }
-        .onChange(of: profileManager.currentUser) { _, _ in
-            Task {
+            .navigationTitle("Grades")
+            .task {
                 await loadGrades()
+                print("grade: \(gradesVM.currentScore)")
             }
-        }
-        .navigationTitle("Grades")
+            .onChange(of: profileManager.currentUser) { _, _ in
+                Task {
+                    await loadGrades()
+                    print("grade: \(gradesVM.currentScore)")
+                }
+            }
+            #if os(iOS)
+            .navigationBarTitleDisplayMode(.inline)
+            #endif
     }
 
     private func gradeRow(_ label: String, value: String) -> some View {
