@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AnnouncementRow: View {
     let course: Course?
-    let announcement: Announcement
+    let announcement: DiscussionTopic
     var showCourseName = false
 
     // MARK: Drawing Constants
@@ -52,7 +52,7 @@ struct AnnouncementRow: View {
     private var header: some View {
         HStack {
             Group {
-                if !(announcement.isRead ?? false) {
+                if !(announcement.isRead) {
                     Circle()
                         .fill(.tint)
                 } else {
@@ -68,7 +68,7 @@ struct AnnouncementRow: View {
 
             Spacer()
 
-            if let createdAt = announcement.createdAt {
+            if let createdAt = announcement.date {
                 Text(createdAt.formatted(.relative(presentation: .named)))
                     .foregroundStyle(.secondary)
             }

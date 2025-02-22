@@ -13,7 +13,7 @@ struct CourseAnnouncementDetailView: View {
 
     @State private var loadingSummary = false
 
-    let announcement: Announcement
+    let announcement: DiscussionTopic
 
     var body: some View {
         Form {
@@ -61,7 +61,7 @@ struct CourseAnnouncementDetailView: View {
                 HStack {
                     Text("Created At")
                     Spacer()
-                    Text(announcement.createdAt?.formatted() ?? "NULL_DATE")
+                    Text(announcement.date?.formatted() ?? "NULL_DATE")
                 }
             }
 

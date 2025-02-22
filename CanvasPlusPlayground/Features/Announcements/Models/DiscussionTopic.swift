@@ -9,12 +9,12 @@ import SwiftData
 import Foundation
 
 @Model
-class DiscussionTopic: Cacheable {
+class DiscussionTopic: Cacheable, Hashable, Equatable {
 
     var id: String
 
     // MARK: In Docs
-    var author: DiscussionParticipantAPI
+    var author: DiscussionParticipantAPI?
     var title: String?
     var message: String?
     var htmlURL: URL?
@@ -55,16 +55,22 @@ class DiscussionTopic: Cacheable {
     var anonymousState: String?
     var assignment: [AssignmentAPI]
     var position: Int?
+    var createdAt: Date?
 
     // MARK: Includes
     var sections: [APICourseSection]
 
     // MARK: Custom
     var courseId: String?
+    var summary: String?
 
     var isRead: Bool {
         get { readState == .read }
         set { readState = newValue == true ? .read : .unread }
+    }
+
+    var date: Date? {
+        createdAt ?? postedAt ?? delayedPostAt
     }
 
     init(from topicAPI: DiscussionTopicAPI) {
@@ -107,6 +113,7 @@ class DiscussionTopic: Cacheable {
         self.assignment = topicAPI.assignment ?? []
         self.position = topicAPI.position
         self.sections = topicAPI.sections ?? []
+        self.createdAt = topicAPI.created_at
     }
 
     func merge(with other: DiscussionTopic) {

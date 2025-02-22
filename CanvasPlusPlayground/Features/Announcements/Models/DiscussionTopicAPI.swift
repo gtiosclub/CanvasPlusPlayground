@@ -14,7 +14,7 @@ struct DiscussionTopicAPI: APIResponse, Identifiable {
     // MARK: In Docs
     // swiftlint:disable identifier_name
     let id: Int
-    let author: DiscussionParticipantAPI
+    let author: DiscussionParticipantAPI?
     let title: String?
     let message: String?
     let html_url: URL?
@@ -55,6 +55,7 @@ struct DiscussionTopicAPI: APIResponse, Identifiable {
     let anonymous_state: String?
     let assignment: [AssignmentAPI]?
     let position: Int?
+    let created_at: Date?
 
     // MARK: Includes
     let sections: [APICourseSection]?

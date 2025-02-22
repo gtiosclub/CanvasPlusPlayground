@@ -20,7 +20,7 @@ struct CourseAnnouncementsView: View {
 
     var body: some View {
         NavigationStack {
-            List(announcementManager.announcements, id: \.id) { announcement in
+            List(announcementManager.displayedAnnouncements, id: \.id) { announcement in
                 NavigationLink {
                     CourseAnnouncementDetailView(announcement: announcement)
                 } label: {
