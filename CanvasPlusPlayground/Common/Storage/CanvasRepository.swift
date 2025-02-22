@@ -24,7 +24,8 @@ class CanvasRepository {
             ModuleItem.self,
             Submission.self,
             User.self,
-            Profile.self
+            Profile.self,
+            Page.self
             // TODO: Add cacheable models here
         )
         self.modelContext = ModelContext(modelContainer)
