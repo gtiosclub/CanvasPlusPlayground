@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PinnedItem: Identifiable, Codable {
+struct PinnedItem: Identifiable, Codable, Hashable {
     let id: String
     let courseID: String
     let type: PinnedItemType

@@ -19,6 +19,8 @@ class PinnedItemsManager {
         Dictionary(grouping: pinnedItems) { $0.type }
     }
 
+    var cachedItemData: [PinnedItem: PinnedItemData] = [:]
+
     init() {
         getPinnedItems()
     }
@@ -81,6 +83,13 @@ class PinnedItemsManager {
         }
 
         pinnedItems = result
+
+        for item in result {
+            Task {
+                let data = await item.itemData()
+                cachedItemData[item] = data
+            }
+        }
     }
 
     // MARK: - Debug

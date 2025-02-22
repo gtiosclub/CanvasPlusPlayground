@@ -59,9 +59,9 @@ struct PinnedItemsView: View {
             ) {
                 ForEach(items) { item in
                     NavigationLink {
-                        PinnedItemDetailView(item: item)
+                        PinnedItemDetailView(item: item, itemData: pinnedItemsManager.cachedItemData[item])
                     } label: {
-                        PinnedItemCard(item: item)
+                        PinnedItemCard(item: item, itemData: pinnedItemsManager.cachedItemData[item])
                     }
                     .buttonStyle(.plain)
 

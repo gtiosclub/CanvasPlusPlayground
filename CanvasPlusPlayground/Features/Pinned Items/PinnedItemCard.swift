@@ -9,30 +9,30 @@ import SwiftUI
 
 struct PinnedItemCard: View {
     let item: PinnedItem
-
+    @State var itemData: PinnedItemData?
     var body: some View {
-        AsyncView {
-            await item.itemData()
-        } content: { itemData in
-            switch itemData.modelData {
-            case .announcement(let announcement):
-                PinnedAnnouncementCard(
-                    announcement: announcement,
-                    course: itemData.course
-                )
-            case .file(let file):
-                PinnedFileCard(
-                    file: file,
-                    course: itemData.course
-                )
-            case .assignment(let assignment):
-                PinnedAssignmentCard(
-                    assignment: assignment,
-                    course: itemData.course
-                )
+        Group {
+            if let itemData = itemData {
+                switch itemData.modelData {
+                case .announcement(let announcement):
+                    PinnedAnnouncementCard(
+                        announcement: announcement,
+                        course: itemData.course
+                    )
+                case .file(let file):
+                    PinnedFileCard(
+                        file: file,
+                        course: itemData.course
+                    )
+                case .assignment(let assignment):
+                    PinnedAssignmentCard(
+                        assignment: assignment,
+                        course: itemData.course
+                    )
+                }
+            } else {
+                ProgressView()
             }
-        } placeholder: {
-            Text("Loading...")
         }
         .buttonStyle(.plain)
     }
