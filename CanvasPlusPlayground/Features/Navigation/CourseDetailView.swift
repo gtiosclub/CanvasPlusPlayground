@@ -32,8 +32,6 @@ struct CourseDetailView: View {
                 CourseQuizzesView(courseId: course.id)
             case .modules:
                 ModulesListView(courseId: course.id)
-            case .pages:
-                PagesListView()
             }
         }
         .tint(course.rgbColors?.color)
