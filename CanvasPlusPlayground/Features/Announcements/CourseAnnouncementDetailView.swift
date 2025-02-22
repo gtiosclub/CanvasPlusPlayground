@@ -123,7 +123,7 @@ struct CourseAnnouncementDetailView: View {
     func markAsRead() {
         Task { @MainActor in
             do {
-                try await announcement.markAsRead()
+                try await announcement.markReadStatus(true)
             } catch {
                 print("Failure marking as read:\n \(error)")
             }

@@ -15,7 +15,9 @@ import Foundation
     var displayedAnnouncements: [DiscussionTopic] {
         announcements
             .filter { $0.published }
-            .sorted { $0.position ?? .max > $1.position ?? .max }
+            .sorted {
+                $0.date ?? .distantPast > $1.date ?? .distantPast
+            }
     }
 
     init(course: Course) {

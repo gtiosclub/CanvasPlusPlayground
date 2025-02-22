@@ -70,7 +70,7 @@ class DiscussionTopic: Cacheable, Hashable, Equatable {
     }
 
     var date: Date? {
-        createdAt ?? postedAt ?? delayedPostAt
+        postedAt ?? createdAt ?? delayedPostAt
     }
 
     var readActionLabel: String {
@@ -179,38 +179,6 @@ class DiscussionTopic: Cacheable, Hashable, Equatable {
         }
     }
 
-    func markAsRead() async throws {
-        guard let courseId = self.courseId else {
-            print("[markAsRead] Course id missing")
-            throw Error.courseIdMissing
-        }
-
-        self.isRead = true
-
-        let request = CanvasRequest.markCourseDiscussionTopicAsRead(courseId: courseId, discussionTopicId: self.id)
-        try await CanvasService.shared.fetch(request)
-    }
-
-    func markAsUnread() async throws {
-        guard let courseId = self.courseId else {
-            print("[markAsUnread] Course id missing")
-            throw Error.courseIdMissing
-        }
-
-        self.isRead = false
-
-        let request = CanvasRequest.markCourseDiscussionTopicAsUnread(courseId: courseId, discussionTopicId: self.id)
-        try await CanvasService.shared.fetch(request)
-    }
-
-    func toggleReadState() async throws {
-        if self.isRead {
-            try await self.markAsUnread()
-        } else {
-            try await self.markAsRead()
-        }
-    }
-
     enum ReadState: String, Codable {
         case read, unread
 
@@ -240,5 +208,34 @@ extension DiscussionTopic {
     /// Errors related to discussion topic
     enum Error: Swift.Error {
         case courseIdMissing
+    }
+}
+
+// MARK: Read Marking
+extension DiscussionTopic {
+
+    func markReadStatus(_ isRead: Bool) async throws {
+        guard let courseId = self.courseId else {
+            print("[markAsRead] Course id missing")
+            throw Error.courseIdMissing
+        }
+
+        self.isRead = true
+
+        if isRead {
+            let request = CanvasRequest.markCourseDiscussionTopicAsRead(courseId: courseId, discussionTopicId: self.id)
+            try await CanvasService.shared.fetch(request)
+        } else {
+            let request = CanvasRequest.markCourseDiscussionTopicAsUnread(courseId: courseId, discussionTopicId: self.id)
+            try await CanvasService.shared.fetch(request)
+        }
+    }
+
+    func toggleReadState() async throws {
+        if self.isRead {
+            try await self.markReadStatus(true)
+        } else {
+            try await self.markReadStatus(false)
+        }
     }
 }
