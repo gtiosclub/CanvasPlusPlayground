@@ -26,12 +26,10 @@ struct CourseGradeView: View {
             .navigationTitle("Grades")
             .task {
                 await loadGrades()
-                print("grade: \(gradesVM.currentScore)")
             }
             .onChange(of: profileManager.currentUser) { _, _ in
                 Task {
                     await loadGrades()
-                    print("grade: \(gradesVM.currentScore)")
                 }
             }
             #if os(iOS)
