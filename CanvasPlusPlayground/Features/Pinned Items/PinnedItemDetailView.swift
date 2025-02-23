@@ -29,6 +29,5 @@ struct PinnedItemDetailView: View {
                 ProgressView()
             }
         }
-            .id(item.id)
     }
 }

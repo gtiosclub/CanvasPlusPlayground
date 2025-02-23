@@ -67,6 +67,7 @@ struct PinnedItemsView: View {
                 ForEach(items) { item in
                     NavigationLink {
                         PinnedItemDetailView(item: item)
+                            .id(item.id)
                     } label: {
                         PinnedItemCard(item: item)
                     }
