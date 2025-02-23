@@ -17,6 +17,13 @@ struct ProfilePicture: View {
     let user: User
     var size: CGFloat
 
+    init(user: User, size: CGFloat) {
+        assert(size > 0, "Size must be greater than 0")
+
+        self.user = user
+        self.size = size
+    }
+
     var body: some View {
         Group {
             if user.hasAvatar,
@@ -36,14 +43,11 @@ struct ProfilePicture: View {
                     .font(.system(size: size))
             }
         }
-        .frame(width: size, height: size)
-        .overlay {
-            if user.hasAvatar {
-                Circle()
-                    .stroke(lineWidth: 1)
-                    .fill(.separator)
-            }
+        .background {
+            Circle()
+                .fill(.separator)
         }
+        .frame(width: size, height: size)
         .task {
             guard user.hasAvatar, let url = user.avatarURL else { return }
 

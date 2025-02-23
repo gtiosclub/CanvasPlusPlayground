@@ -20,6 +20,14 @@ struct Sidebar: View {
         @Bindable var navigationModel = navigationModel
 
         List(selection: $navigationModel.selectedNavigationPage) {
+            #if os(iOS)
+            Section {
+                SidebarHeader()
+                    .listRowInsets(EdgeInsets(top: 0, leading: 4.0, bottom: 0, trailing: 8.0))
+                    .listRowBackground(Color.clear)
+            }
+            #endif
+
             Section {
                 SidebarTiles()
             }
@@ -58,50 +66,82 @@ struct Sidebar: View {
         .navigationTitle("Home")
         #if os(macOS)
         .navigationSplitViewColumnWidth(min: 275, ideal: 275)
-        #endif
-        .listStyle(.sidebar)
-        #if os(iOS)
-        .toolbar {
-            ToolbarItem(placement: .cancellationAction) {
-                Button("Settings", systemImage: "gear") {
-                    navigationModel.showSettingsSheet.toggle()
-                }
-            }
-        }
-        #endif
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
                 if let currentUser = profileManager.currentUser {
                     Button {
                         navigationModel.showProfileSheet.toggle()
                     } label: {
-                        #if os(macOS)
-                        ProfilePicture(user: currentUser, size: 19)
-                        #else
-                        ProfilePicture(user: currentUser, size: 24)
-                        #endif
+                        ProfilePicture(user: currentUser, size: 20)
+                    }
+                }
+            }
+        }
+        #else
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Rectangle()
+                    .fill(.clear)
+            }
+        }
+        .contentMargins(.top, 0)
+        .listSectionSpacing(16)
+        .navigationBarTitleDisplayMode(.inline)
+        #endif
+    }
+}
+
+#if os(iOS)
+private struct SidebarHeader: View {
+    @Environment(ProfileManager.self) private var profileManager
+    @Environment(NavigationModel.self) private var navigationModel
+
+    private var formattedDate: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "EEEE, MMMM d"
+        return formatter.string(from: Date())
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(formattedDate)
+                .font(.body.bold())
+                .textCase(.uppercase)
+                .foregroundStyle(.secondary)
+
+            HStack(alignment: .top) {
+                Text("Home")
+                    .font(.largeTitle.bold())
+                Spacer()
+
+                if let currentUser = profileManager.currentUser {
+                    Button {
+                        navigationModel.showProfileSheet.toggle()
+                    } label: {
+                        ProfilePicture(user: currentUser, size: 42)
                     }
                 }
             }
         }
     }
 }
+#endif
 
 private struct SidebarTiles: View {
     @Environment(NavigationModel.self) private var navigationModel
 
     var body: some View {
-        #if os(macOS)
+#if os(macOS)
         let columns = Array(
             repeating: GridItem(.adaptive(minimum: 90)),
             count: 2
         )
-        #else
+#else
         let columns = Array(
             repeating: GridItem(.adaptive(minimum: 150)),
             count: 2
         )
-        #endif
+#endif
 
         return LazyVGrid(
             columns: columns,
