@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct GetAssignmentRequest: APIRequest {
+struct GetAssignmentRequest: CacheableAPIRequest {
     typealias Subject = AssignmentAPI
 
     let assignmentId: String
@@ -45,40 +45,16 @@ struct GetAssignmentRequest: APIRequest {
         self.allDates = allDates
     }
 
-    /* Assignment isn't cacheable, reimplement when it is
-    // MARK: Request Id
-    var requestId: Int? { courseId.asInt }
-    var requestIdKey: ParentKeyPath<Assignment, Int?> { .createReadable(\.courseId) }
+    var requestId: String { assignmentId }
+    var requestIdKey: ParentKeyPath<Assignment, String> { .createReadable(\.id) }
     var idPredicate: Predicate<Assignment> {
         #Predicate<Assignment> { assignment in
-            assignment.courseId == requestId
+            assignment.id == requestId
         }
     }
     var customPredicate: Predicate<Assignment> {
-        let searchTerm = searchTerm ?? ""
-        let searchPred = #Predicate<Assignment> { assignment in
-            assignment.name.contains(searchTerm)
-        }
-
-        let ids = assignmentIds.compactMap(\.?.asInt)
-        let assignmentIdsPred = assignmentIds.isEmpty ? .true :  #Predicate<Assignment> { assignment in
-            ids.contains(assignment.id)
-        }
-
-        let postToSisPred: Predicate<Assignment>
-        if let postToSis {
-            postToSisPred = #Predicate<Assignment> { assignment in
-                assignment.postToSis == postToSis
-            }
-        } else { postToSisPred = .true }
-m
-        return #Predicate<Assignment> { assignment in
-            searchPred.evaluate(assignment) && assignmentIdsPred.evaluate(assignment) && postToSisPred.evaluate(assignment)
-        }
-
-        // TODO: add remaining filters (bucket, assignmentIds)
-    }*/
-
+        .true
+    }
 }
 
 extension GetAssignmentRequest {

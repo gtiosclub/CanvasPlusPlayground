@@ -66,12 +66,33 @@ struct CanvasRequest {
         )
     }
 
-    static func getAssignment(id: String, courseId: String) -> GetAssignmentRequest {
-        GetAssignmentRequest(assignmentId: id, courseId: courseId)
+    static func getAssignment(
+        id: String,
+        courseId: String,
+        include: [GetAssignmentRequest.Include] = [.submission]
+    ) -> GetAssignmentRequest {
+        GetAssignmentRequest(
+            assignmentId: id,
+            courseId: courseId,
+            include: include
+        )
     }
 
-    static func getAssignments(courseId: String) -> GetAssignmentsRequest {
-        GetAssignmentsRequest(courseId: courseId)
+    static func getAssignments(
+        courseId: String,
+        include: [GetAssignmentsRequest.Include] = [.submission]
+    ) -> GetAssignmentsRequest {
+        GetAssignmentsRequest(courseId: courseId, include: include)
+    }
+
+    static func getAssignmentGroups(
+        courseId: String,
+        include: [GetAssignmentGroupsRequest.Include] = [
+            .assignments,
+            .submission
+        ]
+    ) -> GetAssignmentGroupsRequest {
+        GetAssignmentGroupsRequest(courseId: courseId, include: include)
     }
 
     static func getEnrollments(courseId: String, userId: String? = nil, perPage: Int = 50) -> GetEnrollmentsRequest {
