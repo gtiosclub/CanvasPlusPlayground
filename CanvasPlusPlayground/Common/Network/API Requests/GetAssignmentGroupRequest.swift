@@ -22,10 +22,12 @@ struct GetAssignmentGroupsRequest: CacheableArrayAPIRequest {
         ]
         + include.map { ("include[]", $0.rawValue) }
         + excludeSubmissionTypes.map { ("exclude_assignment_submission_types[]", $0.rawValue) }
+        + assignmentIds.map { ("assignment_ids[]", $0) }
     }
 
     // MARK: Query Params
     let include: [Include]
+    let assignmentIds: [String]
     let excludeSubmissionTypes: [ExcludeSubmissionType]
     let includeAllDates: Bool?
     let overrideAssignmentDates: Bool?
@@ -35,6 +37,7 @@ struct GetAssignmentGroupsRequest: CacheableArrayAPIRequest {
     init(
         courseId: String,
         include: [Include] = [],
+        assignmentIds: [String] = [],
         excludeSubmissionTypes: [ExcludeSubmissionType] = [],
         includeAllDates: Bool? = nil,
         overrideAssignmentDates: Bool? = nil,
@@ -43,6 +46,7 @@ struct GetAssignmentGroupsRequest: CacheableArrayAPIRequest {
     ) {
         self.courseId = courseId
         self.include = include
+        self.assignmentIds = assignmentIds
         self.excludeSubmissionTypes = excludeSubmissionTypes
         self.includeAllDates = includeAllDates
         self.overrideAssignmentDates = overrideAssignmentDates
@@ -60,7 +64,14 @@ struct GetAssignmentGroupsRequest: CacheableArrayAPIRequest {
         }
     }
     var customPredicate: Predicate<AssignmentGroup> {
-        .true
+        let assignmentIdsPred = assignmentIds.isEmpty ? .true : #Predicate<AssignmentGroup> { group in
+            group.assignments?
+                .contains { assignmentIds.contains($0.id.asString) } ?? false
+        }
+
+        // TODO: Add excludeSubmissionTypes support
+
+        return assignmentIdsPred
     }
 }
 

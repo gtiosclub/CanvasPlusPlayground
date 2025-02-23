@@ -55,15 +55,7 @@ struct CourseAssignmentsView: View {
                     }
                 }
             } header: {
-                HStack {
-                    Text(assignmentGroup.name)
-                    Spacer()
-                    if let groupWeight = assignmentGroup.groupWeight {
-                        Text(String(format: "%.1f%%", groupWeight))
-                    } else {
-                        Text("--%")
-                    }
-                }
+                sectionHeader(for: assignmentGroup)
             }
         }
         .task {
@@ -83,6 +75,18 @@ struct CourseAssignmentsView: View {
         isLoadingAssignments = true
         await assignmentManager.fetchAssignmentGroups()
         isLoadingAssignments = false
+    }
+
+    private func sectionHeader(for assignmentGroup: AssignmentGroup) -> some View {
+        HStack {
+            Text(assignmentGroup.name)
+            Spacer()
+            if let groupWeight = assignmentGroup.groupWeight {
+                Text(String(format: "%.1f%%", groupWeight))
+            } else {
+                Text("--%")
+            }
+        }
     }
 }
 

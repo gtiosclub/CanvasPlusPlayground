@@ -41,32 +41,12 @@ struct SubmissionAPI: APIResponse {
     let late_policy_status: String?
     let points_deducted: Double?
     let seconds_late: Int?
-    let workflow_state: WorkflowState?
+    let workflow_state: String?
     let extra_attempts: Int?
     let anonymous_id: String?
     let posted_at: String?
     let read_status: String?
     let redo_request: Bool?
-
-    enum WorkflowState: String, Codable {
-        case submitted
-        case unsubmitted
-        case graded
-        case pendingReview = "pending_review"
-
-        var displayValue: String {
-            switch self {
-            case .submitted:
-                return "Submitted"
-            case .unsubmitted:
-                return "Unsubmitted"
-            case .graded:
-                return "Graded"
-            case .pendingReview:
-                return "Pending Review"
-            }
-        }
-    }
 
     func createModel() -> Submission {
         Submission(from: self)

@@ -2,7 +2,7 @@
 //  Assignment.swift
 //  CanvasPlusPlayground
 //
-//  Created by Alex on 9/14/24.
+//  Created by Rahul on 2/21/25.
 //
 
 import Foundation
@@ -20,7 +20,7 @@ class Assignment: Cacheable {
     var unlockAt: String?
     var lockAt: String?
     var pointsPossible: Double?
-    var gradingType: String?
+    var gradingType: GradingType?
     var gradingStandardId: Int?
     var createdAt: String?
     var updatedAt: String?
@@ -47,7 +47,7 @@ class Assignment: Cacheable {
     var secureParams: String?
     var ltiContextId: String?
     var courseId: Int?
-    var submissionTypes: [String]?
+    var submissionTypes: [SubmissionType]?
     /// If true, the assignment has been submitted to by at least one student
     var hasSubmittedSubmissions: Bool?
     var dueDateRequired: Bool?
@@ -99,7 +99,7 @@ class Assignment: Cacheable {
     }
 
     var isOnlineQuiz: Bool {
-        submissionTypes?.contains("online_quiz") ?? false
+        submissionTypes?.contains(.onlineQuiz) ?? false
     }
 
     var formattedPointsPossible: String {
@@ -124,7 +124,7 @@ class Assignment: Cacheable {
         self.unlockAt = assignmentAPI.unlock_at
         self.lockAt = assignmentAPI.lock_at
         self.pointsPossible = assignmentAPI.points_possible
-        self.gradingType = assignmentAPI.grading_type
+        self.gradingType = GradingType(rawValue: assignmentAPI.grading_type ?? "")
         self.gradingStandardId = assignmentAPI.grading_standard_id
         self.createdAt = assignmentAPI.created_at
         self.updatedAt = assignmentAPI.updated_at
@@ -151,7 +151,7 @@ class Assignment: Cacheable {
         self.secureParams = assignmentAPI.secure_params
         self.ltiContextId = assignmentAPI.lti_context_id
         self.courseId = assignmentAPI.course_id
-        self.submissionTypes = assignmentAPI.submission_types
+        self.submissionTypes = assignmentAPI.submission_types?.compactMap { SubmissionType(rawValue: $0) }
         self.hasSubmittedSubmissions = assignmentAPI.has_submitted_submissions
         self.dueDateRequired = assignmentAPI.due_date_required
         self.maxNameLength = assignmentAPI.max_name_length
@@ -248,5 +248,26 @@ class Assignment: Cacheable {
         self.restrictQuantitativeData = other.restrictQuantitativeData
         self.allowedExtensions = other.allowedExtensions
         self.submission = other.submission
+    }
+
+    enum SubmissionType: String, Codable {
+        case discussionTopic = "discussion_topic"
+        case onlineQuiz = "online_quiz"
+        case onPaper = "on_paper"
+        case none = "none"
+        case externalTool = "external_tool"
+        case onlineTextEntry = "online_text_entry"
+        case onlineUrl = "online_url"
+        case onlineUpload = "online_upload"
+        case mediaRecording = "media_recording"
+        case studentAnnotation = "student_annotation"
+    }
+
+    enum GradingType: String, Codable {
+        case passFail = "pass_fail"
+        case percent = "percent"
+        case letterGrade = "letter_grade"
+        case gpaScale = "gpa_scale"
+        case points = "points"
     }
 }

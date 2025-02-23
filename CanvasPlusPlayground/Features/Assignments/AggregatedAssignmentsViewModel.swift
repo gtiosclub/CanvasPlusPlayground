@@ -16,7 +16,7 @@ class AggregatedAssignmentsViewModel {
         for course in courses {
             let newAssignments = await CourseAssignmentManager.getAssignmentsForCourse(courseID: course.id)
 
-            for assignment in newAssignments where assignment.submission?.workflow_state == .unsubmitted {
+            for assignment in newAssignments where assignment.submission?.createModel().workflowState == .unsubmitted {
                 // we only want to show assignments w/o submissions
                 self.assignments.append((assignment, course))
             }
