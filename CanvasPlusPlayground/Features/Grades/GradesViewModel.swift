@@ -47,47 +47,46 @@ class GradesViewModel {
             return
         }
 
-        let request = CanvasRequest.getEnrollments(courseId: courseId)
+        let request = CanvasRequest.getEnrollments(
+            courseId: courseId,
+            userId: currentUserID.asString
+        )
 
         do {
             let enrollments: [Enrollment]? = try await CanvasService.shared.loadAndSync(request,
                 onCacheReceive: { enrollmentsCache in
                     guard let enrollmentsCache else { return }
 
-                    findEnrollment(
-                        enrollments: enrollmentsCache,
+                    verifyAndSetEnrollment(
+                        enrollmentsCache.first,
                         currentUserID: currentUserID
                     )
                 },
                 loadingMethod: .all(onNewPage: { enrollmentsBatch in
-                    self.findEnrollment(
-                        enrollments: enrollmentsBatch,
+                    self.verifyAndSetEnrollment(
+                        enrollmentsBatch.first,
                         currentUserID: currentUserID
                     )
                 })
             )
 
-            if let enrollments {
-                findEnrollment(
-                    enrollments: enrollments,
-                    currentUserID: currentUserID
-                )
-            }
+            verifyAndSetEnrollment(
+                enrollments?.first,
+                currentUserID: currentUserID
+            )
         } catch {
             print("Failed to fetch enrollments. \(error)")
         }
     }
 
     /// Searches for the users enrollment and sets it if found
-    func findEnrollment(enrollments: [Enrollment], currentUserID: Int) {
-        let newEnrollment = enrollments
-            .first { $0.userID == currentUserID }
-
-        if newEnrollment != nil {
-            DispatchQueue.main.async {
-                self.enrollment = newEnrollment
-            }
+    func verifyAndSetEnrollment(_ enrollment: Enrollment?, currentUserID: Int) {
+        guard let enrollment, enrollment.userID == currentUserID else {
+            print("GradesVM: Enrollment did not match.")
+            return
         }
+
+        self.enrollment = enrollment
     }
 
 }

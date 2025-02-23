@@ -39,7 +39,7 @@ class Submission: Cacheable {
     var latePolicyStatus: String?
     var pointsDeducted: Double?
     var secondsLate: Int?
-    var workflowState: SubmissionAPI.WorkflowState?
+    var workflowState: WorkflowState?
     var extraAttempts: Int?
     var anonymousId: String?
     var postedAt: String?
@@ -73,7 +73,11 @@ class Submission: Cacheable {
         self.latePolicyStatus = submissionAPI.late_policy_status
         self.pointsDeducted = submissionAPI.points_deducted
         self.secondsLate = submissionAPI.seconds_late
-        self.workflowState = submissionAPI.workflow_state
+        if let workflowState = submissionAPI.workflow_state {
+            self.workflowState = WorkflowState(
+                rawValue: workflowState
+            )
+        }
         self.extraAttempts = submissionAPI.extra_attempts
         self.anonymousId = submissionAPI.anonymous_id
         self.postedAt = submissionAPI.posted_at
@@ -113,5 +117,25 @@ class Submission: Cacheable {
         self.postedAt = other.postedAt
         self.readStatus = other.readStatus
         self.redoRequest = other.redoRequest
+    }
+
+    enum WorkflowState: String, Codable {
+        case submitted
+        case unsubmitted
+        case graded
+        case pendingReview = "pending_review"
+
+        var displayValue: String {
+            switch self {
+            case .submitted:
+                return "Submitted"
+            case .unsubmitted:
+                return "Unsubmitted"
+            case .graded:
+                return "Graded"
+            case .pendingReview:
+                return "Pending Review"
+            }
+        }
     }
 }

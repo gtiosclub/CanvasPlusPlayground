@@ -19,52 +19,46 @@ struct CourseGradeView: View {
     }
 
     var body: some View {
-        Form {
-            Section {
-                gradeRow("Current Score", value: gradesVM.currentScore)
-                gradeRow("Current Grade", value: gradesVM.currentGrade)
-                gradeRow("Final Score", value: gradesVM.finalScore)
-                gradeRow("Final Grade", value: gradesVM.finalGrade)
-            } header: {
-                Text("Grades")
-            } footer: {
-                Group {
-                    if let url = gradesVM.canvasURL {
-                        Link("View on Canvas", destination: url)
-                    } else {
-                        Text("Loading grades...")
-                            .foregroundStyle(.secondary)
-                    }
-                }
-                .font(.footnote)
+        CourseAssignmentsView(course: course, showGrades: true)
+            .safeAreaInset(edge: .top, spacing: 0) {
+                gradesAccessoryBar
             }
-
-            Section("Assignments") {
-                CourseAssignmentsView(course: course, showGrades: true)
-            }
-        }
-        .formStyle(.grouped)
-        .task {
-            await loadGrades()
-        }
-        .onChange(of: profileManager.currentUser) { _, _ in
-            Task {
+            .navigationTitle("Grades")
+            .task {
                 await loadGrades()
             }
-        }
-        .navigationTitle("Grades")
+            .onChange(of: profileManager.currentUser) { _, _ in
+                Task {
+                    await loadGrades()
+                }
+            }
+            #if os(iOS)
+            .navigationBarTitleDisplayMode(.inline)
+            #endif
     }
 
-    private func gradeRow(_ label: String, value: String) -> some View {
-        HStack {
-            Text(label)
+    private var gradesAccessoryBar: some View {
+        VStack {
+            Divider()
 
-            Spacer()
+            HStack {
+                Text("Current Score")
+                Spacer()
+                Text(gradesVM.currentScore)
+                    .animation(.default, value: gradesVM.currentScore)
+                    .contentTransition(.numericText())
+                    .foregroundStyle(.tint)
+            }
+            .fontDesign(.rounded)
+            .font(.title2)
+            .bold()
+            .padding(.horizontal)
+            .padding(.vertical, 4)
 
-            Text(value)
+            Divider()
         }
-        .contentTransition(.numericText())
-        .animation(.default, value: value)
+        .frame(maxWidth: .infinity)
+        .background(.bar)
     }
 
     private func loadGrades() async {

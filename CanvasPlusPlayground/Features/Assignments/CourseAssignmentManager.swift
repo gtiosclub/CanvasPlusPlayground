@@ -9,31 +9,46 @@ import SwiftUI
 
 @Observable
 class CourseAssignmentManager {
-    private let courseID: String?
-    var assignments = [AssignmentAPI]()
+    private let courseID: String
+    var assignmentGroups = [AssignmentGroup]()
 
-    init(courseID: String?) {
+    init(courseID: String) {
         self.courseID = courseID
     }
 
-    func fetchAssignments() async {
-        guard let courseID = courseID, let (data, _) = try? await CanvasService.shared.fetchResponse(
-            CanvasRequest.getAssignments(courseId: courseID)
-        ) else {
-            print("Failed to fetch assignments.")
-            return
-        }
+    func fetchAssignments() async -> [Assignment] {
+        let request = CanvasRequest.getAssignments(courseId: courseID)
 
         do {
-            self.assignments = try JSONDecoder().decode([AssignmentAPI].self, from: data)
+            return try await CanvasService.shared.loadAndSync(request)
         } catch {
-            print(error)
+            print("Failed to fetch assignments: \(error)")
+        }
+
+        return []
+    }
+
+    func fetchAssignmentGroups() async {
+        let request = CanvasRequest.getAssignmentGroups(courseId: courseID)
+
+        do {
+            let groups = try await CanvasService.shared.loadAndSync(
+                request,
+                onCacheReceive: { cachedGroups in
+                    guard let cachedGroups else { return }
+
+                    self.assignmentGroups = cachedGroups.sorted(by: { $0.position < $1.position })
+                }
+            )
+
+            self.assignmentGroups = groups.sorted(by: { $0.position < $1.position })
+        } catch {
+            print("Failed to fetch assignment groups")
         }
     }
 
-    static func getAssignmentsForCourse(courseID: String) async -> [AssignmentAPI] {
-            let manager = CourseAssignmentManager(courseID: courseID)
-            await manager.fetchAssignments()
-            return manager.assignments
+    static func getAssignmentsForCourse(courseID: String) async -> [Assignment] {
+        let manager = CourseAssignmentManager(courseID: courseID)
+        return await manager.fetchAssignments()
     }
 }

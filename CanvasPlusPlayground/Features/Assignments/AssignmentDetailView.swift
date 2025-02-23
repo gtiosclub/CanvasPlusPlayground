@@ -8,32 +8,97 @@
 import SwiftUI
 
 struct AssignmentDetailView: View {
-    let assignment: AssignmentAPI
-    init(assignment: AssignmentAPI) {
-        self.assignment = assignment
-    }
+    let assignment: Assignment
+    @State private var submission: Submission?
+
     var body: some View {
         if assignment.isOnlineQuiz {
-            WebView(url: URL(string: assignment.html_url ?? "gatech.edu")!)
+            WebView(url: URL(string: assignment.htmlUrl ?? "gatech.edu")!)
         } else {
             Form {
-                Section {
+                Section("Details") {
                     LabeledContent("Name", value: assignment.name)
+
+                    if let unlockAt = assignment.unlockDate {
+                        LabeledContent("Available From") {
+                            Text(unlockAt, style: .time)
+                            + Text(" on ") +
+                            Text(unlockAt, style: .date)
+                        }
+                    }
+
+                    if let dueDate = assignment.dueDate {
+                        LabeledContent("Due") {
+                            Text(dueDate, style: .time)
+                            + Text(" on ") +
+                            Text(dueDate, style: .date)
+                        }
+                    }
+
+                    if let lockAt = assignment.lockDate {
+                        LabeledContent("Available Until") {
+                            Text(lockAt, style: .time)
+                            + Text(" on ") +
+                            Text(lockAt, style: .date)
+                        }
+                    }
+
+                    LabeledContent(
+                        "Points Possible",
+                        value: assignment.formattedPointsPossible
+                    )
                 }
-                Section {
-                    LabeledContent("Due", value: assignment.dueDate?.formatted() ?? "NULL_DATE")
-                    LabeledContent("Points", value: String(format: "%.0f", assignment.points_possible ?? -1))
-                    LabeledContent("File Types", value: assignment.allowed_extensions?.joined(separator: ", ") ?? "NULL_FILE_TYPES")
+
+                Section("Submission") {
+                    if let allowedExtensions = assignment.allowedExtensions {
+                        LabeledContent(
+                            "Submission Types",
+                            value: allowedExtensions
+                                .joined(separator: ", ")
+                        )
+                    }
+
+                    if let workflowState = submission?.workflowState {
+                        LabeledContent(
+                            "Status",
+                            value: workflowState.displayValue
+                        )
+                    }
+
+                    LabeledContent(
+                        "Grade",
+                        value: assignment.formattedGrade + "/" + assignment.formattedPointsPossible
+                    )
                 }
-                Section {
-                    HTMLTextView(htmlText: assignment.description ?? "")
+
+                if let assignmentDescription = assignment.assignmentDescription {
+                    Section {
+                        HTMLTextView(
+                            htmlText: assignmentDescription
+                        )
+                    }
                 }
             }
             .formStyle(.grouped)
+            .task {
+                submission = assignment.submission?.createModel()
+            }
         }
     }
-}
 
-#Preview {
-    AssignmentDetailView(assignment: AssignmentAPI.example)
+    private var pointsPossible: String {
+        if let pointsPossible = assignment.pointsPossible {
+            return String(pointsPossible)
+        } else {
+            return "--"
+        }
+    }
+
+    private var grade: String {
+        if let grade = submission?.grade {
+            return String(grade)
+        } else {
+            return "--"
+        }
+    }
 }
