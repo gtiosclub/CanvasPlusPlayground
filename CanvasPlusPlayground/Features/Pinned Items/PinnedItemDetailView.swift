@@ -8,27 +8,27 @@
 import SwiftUI
 
 struct PinnedItemDetailView: View {
-    let item: PinnedItem
+    @State var item: PinnedItem
 
     var body: some View {
-        AsyncView {
-            await item.itemData()
-        } content: { itemData in
-            switch itemData.modelData {
-            case .announcement(let announcement):
-                CourseAnnouncementDetailView(announcement: announcement)
-            case .file(let file):
-                if let url = file.localURL {
-                    QuickLookPreview(url: url, onDismiss: { })
-                } else {
-                    ContentUnavailableView("Unable to preview file, please download first.", systemImage: "xmark.rectangle.fill")
+        Group {
+            if let itemData = item.data {
+                switch itemData.modelData {
+                case .announcement(let announcement):
+                    CourseAnnouncementDetailView(announcement: announcement)
+                case .file(let file):
+                    if let url = file.localURL {
+                        QuickLookPreview(url: url, onDismiss: { })
+                    } else {
+                        ContentUnavailableView("Unable to preview file, please download first.", systemImage: "xmark.rectangle.fill")
+                    }
+                case .assignment(let assignment):
+                    AssignmentDetailView(assignment: assignment)
                 }
-            case .assignment(let assignment):
-                AssignmentDetailView(assignment: assignment)
+            } else {
+                ProgressView()
             }
-        } placeholder: {
-            ProgressView()
         }
-        .id(item.id)
+            .id(item.id)
     }
 }

@@ -28,6 +28,13 @@ struct PinnedItemsView: View {
             }
 
         }
+        .onAppear {
+            for item in pinnedItemsManager.pinnedItems {
+                Task {
+                    await item.itemData()
+                }
+            }
+        }
         .navigationTitle("Pinned")
         #if os(macOS)
         .navigationSplitViewColumnWidth(min: 350, ideal: 400)

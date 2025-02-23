@@ -7,10 +7,12 @@
 
 import Foundation
 
-struct PinnedItem: Identifiable, Codable {
+@Observable
+class PinnedItem: Identifiable, Codable {
     let id: String
     let courseID: String
     let type: PinnedItemType
+    var data: PinnedItemData?
 
     enum PinnedItemType: Int, Codable {
         case announcement, assignment, file
@@ -25,20 +27,20 @@ struct PinnedItem: Identifiable, Codable {
         }
     }
 
-    func itemData() async -> PinnedItemData? {
+    func itemData() async {
         do {
             async let modelData = try fetchData()
             async let course = try CanvasService.shared.loadAndSync(
                 CanvasRequest.getCourse(id: courseID)
             )
 
-            return .init(
+            self.data =  .init(
                 modelData: try await modelData,
                 course: try await course.first
             )
+            print("Caching pinnedItem data \(self.data)")
         } catch {
             print("Error fetching \(type): \(error.localizedDescription)")
-            return nil
         }
     }
 
@@ -65,6 +67,19 @@ struct PinnedItem: Identifiable, Codable {
             guard let file = files.first else { return nil }
             return .file(file)
         }
+    }
+
+    enum CodingKeys: String, CodingKey {
+            case id
+            case courseID
+            case type
+    }
+
+    init(id: String, courseID: String, type: PinnedItemType, data: PinnedItemData? = nil) {
+        self.id = id
+        self.courseID = courseID
+        self.type = type
+        self.data = data
     }
 }
 

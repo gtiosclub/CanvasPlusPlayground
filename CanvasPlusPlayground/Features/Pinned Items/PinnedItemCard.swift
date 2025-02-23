@@ -8,12 +8,10 @@
 import SwiftUI
 
 struct PinnedItemCard: View {
-    let item: PinnedItem
+    @State var item: PinnedItem
 
     var body: some View {
-        AsyncView {
-            await item.itemData()
-        } content: { itemData in
+        if let itemData = item.data {
             switch itemData.modelData {
             case .announcement(let announcement):
                 PinnedAnnouncementCard(
@@ -31,10 +29,10 @@ struct PinnedItemCard: View {
                     course: itemData.course
                 )
             }
-        } placeholder: {
+        } else {
             Text("Loading...")
         }
-        .buttonStyle(.plain)
+//        .buttonStyle(.plain)
     }
 }
 
