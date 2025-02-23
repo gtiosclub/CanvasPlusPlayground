@@ -46,9 +46,13 @@ class PinnedItemsManager {
         courseID: String,
         type: PinnedItem.PinnedItemType
     ) {
+        let item = PinnedItem(id: itemID, courseID: courseID, type: type)
         pinnedItems.append(
-            PinnedItem(id: itemID, courseID: courseID, type: type)
+            item
         )
+        Task {
+            await item.itemData()
+        }
     }
 
     func removePinnedItem(

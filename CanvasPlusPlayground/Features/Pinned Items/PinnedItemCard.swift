@@ -8,31 +8,31 @@
 import SwiftUI
 
 struct PinnedItemCard: View {
-    let item: PinnedItem
+    @State var item: PinnedItem
 
     var body: some View {
-        AsyncView {
-            await item.itemData()
-        } content: { itemData in
-            switch itemData.modelData {
-            case .announcement(let announcement):
-                PinnedAnnouncementCard(
-                    announcement: announcement,
-                    course: itemData.course
-                )
-            case .file(let file):
-                PinnedFileCard(
-                    file: file,
-                    course: itemData.course
-                )
-            case .assignment(let assignment):
-                PinnedAssignmentCard(
-                    assignment: assignment,
-                    course: itemData.course
-                )
+        Group {
+            if let itemData = item.data {
+                switch itemData.modelData {
+                case .announcement(let announcement):
+                    PinnedAnnouncementCard(
+                        announcement: announcement,
+                        course: itemData.course
+                    )
+                case .file(let file):
+                    PinnedFileCard(
+                        file: file,
+                        course: itemData.course
+                    )
+                case .assignment(let assignment):
+                    PinnedAssignmentCard(
+                        assignment: assignment,
+                        course: itemData.course
+                    )
+                }
+            } else {
+                Text("Loading...")
             }
-        } placeholder: {
-            Text("Loading...")
         }
         .buttonStyle(.plain)
     }

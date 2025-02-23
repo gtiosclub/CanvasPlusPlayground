@@ -28,6 +28,13 @@ struct PinnedItemsView: View {
             }
 
         }
+        .onAppear {
+            for item in pinnedItemsManager.pinnedItems {
+                Task {
+                    await item.itemData()
+                }
+            }
+        }
         .navigationTitle("Pinned")
         #if os(macOS)
         .navigationSplitViewColumnWidth(min: 350, ideal: 400)
@@ -58,7 +65,14 @@ struct PinnedItemsView: View {
                 )
             ) {
                 ForEach(items) { item in
-                    PinnedItemCard(item: item)
+                    NavigationLink {
+                        PinnedItemDetailView(item: item)
+                            .id(item.id)
+                    } label: {
+                        PinnedItemCard(item: item)
+                    }
+                    .buttonStyle(.plain)
+
                 }
             }
         }
