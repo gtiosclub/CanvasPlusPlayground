@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct GetAssignmentsRequest: ArrayAPIRequest {
+struct GetAssignmentsRequest: CacheableArrayAPIRequest {
     typealias Subject = AssignmentAPI
 
     let courseId: String
@@ -18,7 +18,7 @@ struct GetAssignmentsRequest: ArrayAPIRequest {
             ("search_term", searchTerm),
             ("override_assignment_dates", overrideAssignmentDates),
             ("needs_grading_count_by_section", needsGradingCountBySection),
-            ("bucket", bucket),
+            ("bucket", bucket?.rawValue),
             ("order_by", orderBy),
             ("post_to_sis", postToSis),
             ("new_quizzes", newQuizzes),
@@ -33,8 +33,8 @@ struct GetAssignmentsRequest: ArrayAPIRequest {
     let searchTerm: String?
     let overrideAssignmentDates: Bool?
     let needsGradingCountBySection: Bool?
-    let bucket: String?
-    let assignmentIds: [String?]
+    let bucket: Bucket?
+    let assignmentIds: [String]
     let orderBy: String?
     let postToSis: Bool?
     let newQuizzes: Bool?
@@ -46,8 +46,8 @@ struct GetAssignmentsRequest: ArrayAPIRequest {
         searchTerm: String? = nil,
         overrideAssignmentDates: Bool? = nil,
         needsGradingCountBySection: Bool? = nil,
-        bucket: String? = nil,
-        assignmentIds: [String?] = [],
+        bucket: Bucket? = nil,
+        assignmentIds: [String] = [],
         orderBy: String? = nil,
         postToSis: Bool? = nil,
         newQuizzes: Bool? = nil,
@@ -66,7 +66,6 @@ struct GetAssignmentsRequest: ArrayAPIRequest {
         self.perPage = perPage
     }
 
-    /* Assignment isn't cacheable, reimplement when it is
     // MARK: Request Id
     var requestId: Int? { courseId.asInt }
     var requestIdKey: ParentKeyPath<Assignment, Int?> { .createReadable(\.courseId) }
@@ -77,29 +76,25 @@ struct GetAssignmentsRequest: ArrayAPIRequest {
     }
     var customPredicate: Predicate<Assignment> {
         let searchTerm = searchTerm ?? ""
-        let searchPred = #Predicate<Assignment> { assignment in
+        let searchPred = searchTerm.isEmpty ? .true : #Predicate<Assignment> { assignment in
             assignment.name.contains(searchTerm)
         }
-        
-        let ids = assignmentIds.compactMap(\.?.asInt)
+
         let assignmentIdsPred = assignmentIds.isEmpty ? .true :  #Predicate<Assignment> { assignment in
-            ids.contains(assignment.id)
+            assignmentIds.contains(assignment.id)
         }
-        
+
         let postToSisPred: Predicate<Assignment>
         if let postToSis {
             postToSisPred = #Predicate<Assignment> { assignment in
                 assignment.postToSis == postToSis
             }
         } else { postToSisPred = .true }
-        
+
         return #Predicate<Assignment> { assignment in
             searchPred.evaluate(assignment) && assignmentIdsPred.evaluate(assignment) && postToSisPred.evaluate(assignment)
         }
-         
-        // TODO: add remaining filters (bucket, assignmentIds)
-    }*/
-
+    }
 }
 
 extension GetAssignmentsRequest {
@@ -112,5 +107,15 @@ extension GetAssignmentsRequest {
             canEdit = "can_edit",
             scoreStatistics = "score_statistics",
             abGuid = "ab_guid"
+    }
+
+    enum Bucket: String {
+        case past,
+        overdue,
+        undated,
+        ungraded,
+        unsubmitted,
+        upcoming,
+        future
     }
 }

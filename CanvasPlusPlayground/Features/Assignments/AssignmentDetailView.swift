@@ -8,32 +8,86 @@
 import SwiftUI
 
 struct AssignmentDetailView: View {
-    let assignment: AssignmentAPI
-    init(assignment: AssignmentAPI) {
-        self.assignment = assignment
-    }
+    let assignment: Assignment
+    @State private var submission: Submission?
+
     var body: some View {
         if assignment.isOnlineQuiz {
-            WebView(url: URL(string: assignment.html_url ?? "gatech.edu")!)
+            WebView(url: URL(string: assignment.htmlUrl ?? "gatech.edu")!)
         } else {
             Form {
-                Section {
+                Section("Details") {
                     LabeledContent("Name", value: assignment.name)
+
+                    if let unlockAt = assignment.unlockDate {
+                        LabeledContent(
+                            "Available From",
+                            value: unlockAt.formatted()
+                        )
+                    }
+
+                    if let dueDate = assignment.dueDate {
+                        LabeledContent("Due", value: dueDate.formatted())
+                    }
+
+                    if let lockAt = assignment.lockDate {
+                        LabeledContent(
+                            "Available Until",
+                            value: lockAt.formatted()
+                        )
+                    }
+
+                    LabeledContent(
+                        "Points",
+                        value: pointsPossible
+                    )
                 }
-                Section {
-                    LabeledContent("Due", value: assignment.dueDate?.formatted() ?? "NULL_DATE")
-                    LabeledContent("Points", value: String(format: "%.0f", assignment.points_possible ?? -1))
-                    LabeledContent("File Types", value: assignment.allowed_extensions?.joined(separator: ", ") ?? "NULL_FILE_TYPES")
+
+                Section("Submission") {
+                    if let allowedExtensions = assignment.allowedExtensions {
+                        LabeledContent(
+                            "Submission Types",
+                            value: allowedExtensions
+                                .joined(separator: ", ")
+                        )
+                    }
+
+                    if let workflowState = submission?.workflowState {
+                        LabeledContent(
+                            "Status",
+                            value: workflowState.displayValue
+                        )
+                    }
+
+                    LabeledContent("Grade", value: grade + "/" + pointsPossible)
                 }
+
                 Section {
-                    HTMLTextView(htmlText: assignment.description ?? "")
+                    HTMLTextView(
+                        htmlText: assignment.assignmentDescription ?? ""
+                    )
                 }
             }
             .formStyle(.grouped)
+            .task {
+                submission = assignment.submission?.createModel()
+            }
         }
     }
-}
 
-#Preview {
-    AssignmentDetailView(assignment: AssignmentAPI.example)
+    private var pointsPossible: String {
+        if let pointsPossible = assignment.pointsPossible {
+            return String(pointsPossible)
+        } else {
+            return "--"
+        }
+    }
+
+    private var grade: String {
+        if let grade = submission?.grade {
+            return String(grade)
+        } else {
+            return "--"
+        }
+    }
 }

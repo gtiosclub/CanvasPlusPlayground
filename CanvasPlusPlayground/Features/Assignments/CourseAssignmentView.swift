@@ -26,18 +26,18 @@ struct CourseAssignmentsView: View {
         }
     }
     var mainbody: some View {
-        List(assignmentManager.assignments, id: \.id) { assignment in
+        List(assignmentManager.assignments) { assignment in
             AssignmentRow(assignment: assignment, showGrades: showGrades)
                 .contextMenu {
                     PinButton(
-                        itemID: assignment.id.asString,
+                        itemID: assignment.id,
                         courseID: course.id,
                         type: .assignment
                     )
                 }
                 .swipeActions(edge: .leading) {
                     PinButton(
-                        itemID: assignment.id.asString,
+                        itemID: assignment.id,
                         courseID: course.id,
                         type: .assignment
                     )
@@ -51,7 +51,7 @@ struct CourseAssignmentsView: View {
         }
         .statusToolbarItem("Assignments", isVisible: isLoadingAssignments)
         .navigationTitle(course.displayName)
-        .navigationDestination(for: AssignmentAPI.self) { assignment in
+        .navigationDestination(for: Assignment.self) { assignment in
             AssignmentDetailView(assignment: assignment)
         }
     }
@@ -64,7 +64,7 @@ struct CourseAssignmentsView: View {
 }
 
 struct AssignmentRow: View {
-    let assignment: AssignmentAPI
+    let assignment: Assignment
     let showGrades: Bool
 
     var body: some View {

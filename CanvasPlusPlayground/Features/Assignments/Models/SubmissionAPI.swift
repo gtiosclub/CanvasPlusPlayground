@@ -53,6 +53,19 @@ struct SubmissionAPI: APIResponse {
         case unsubmitted
         case graded
         case pendingReview = "pending_review"
+
+        var displayValue: String {
+            switch self {
+            case .submitted:
+                return "Submitted"
+            case .unsubmitted:
+                return "Unsubmitted"
+            case .graded:
+                return "Graded"
+            case .pendingReview:
+                return "Pending Review"
+            }
+        }
     }
 
     func createModel() -> Submission {

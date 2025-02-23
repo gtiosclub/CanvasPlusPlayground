@@ -9,31 +9,37 @@ import SwiftUI
 
 @Observable
 class CourseAssignmentManager {
-    private let courseID: String?
-    var assignments = [AssignmentAPI]()
+    private let courseID: String
+    var assignments = [Assignment]()
 
-    init(courseID: String?) {
+    init(courseID: String) {
         self.courseID = courseID
     }
 
     func fetchAssignments() async {
-        guard let courseID = courseID, let (data, _) = try? await CanvasService.shared.fetchResponse(
-            CanvasRequest.getAssignments(courseId: courseID)
-        ) else {
-            print("Failed to fetch assignments.")
-            return
-        }
+        let request = CanvasRequest.getAssignments(courseId: courseID)
 
         do {
-            self.assignments = try JSONDecoder().decode([AssignmentAPI].self, from: data)
+            let assignments = try await CanvasService.shared.loadAndSync(
+                request,
+                onCacheReceive: { cachedAssignments in
+                    self.assignments = cachedAssignments ?? []
+                }
+            )
+
+            self.assignments = assignments
         } catch {
-            print(error)
+            print("Failed to fetch assignments: \(error)")
         }
     }
 
-    static func getAssignmentsForCourse(courseID: String) async -> [AssignmentAPI] {
-            let manager = CourseAssignmentManager(courseID: courseID)
-            await manager.fetchAssignments()
-            return manager.assignments
+    private func setAssignments(_ assignments: [Assignment]) {
+        self.assignments = assignments
+    }
+
+    static func getAssignmentsForCourse(courseID: String) async -> [Assignment] {
+        let manager = CourseAssignmentManager(courseID: courseID)
+        await manager.fetchAssignments()
+        return manager.assignments
     }
 }
