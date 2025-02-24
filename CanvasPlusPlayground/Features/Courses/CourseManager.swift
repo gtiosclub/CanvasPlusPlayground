@@ -37,7 +37,7 @@ class CourseManager {
     }
 
     func getCourses() async {
-        logger.debug("Fetching courses")
+        LoggerService.main.debug("Fetching courses")
         do {
             let courses: [Course] = try await CanvasService.shared.loadAndSync(
                 CanvasRequest.getCourses(enrollmentState: "active"),
@@ -48,11 +48,11 @@ class CourseManager {
                     }
                 }
             )
-            logger.debug("\(courses.map(\.name))")
+            LoggerService.main.debug("\(courses.map(\.name))")
 
             await setCourses(courses)
         } catch {
-            logger.error("Failed to fetch courses. \(error)")
+            LoggerService.main.error("Failed to fetch courses. \(error)")
         }
     }
 

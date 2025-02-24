@@ -21,7 +21,7 @@ class ProfileManager {
 
             currentUser = user
         } catch {
-            logger.error("Error fetching current user: \(error)")
+            LoggerService.main.error("Error fetching current user: \(error)")
         }
 
         do {
@@ -31,11 +31,11 @@ class ProfileManager {
 
             currentProfile = profile
         } catch {
-            logger.error("Error fetching current user profile: \(error)")
+            LoggerService.main.error("Error fetching current user profile: \(error)")
         }
 
-        logger.debug("Current user: \(self.currentUser?.name ?? "")")
-        logger.debug("Current user profile: \(self.currentProfile?.primaryEmail ?? "")")
+        LoggerService.main.debug("Current user: \(self.currentUser?.name ?? "")")
+        LoggerService.main.debug("Current user profile: \(self.currentProfile?.primaryEmail ?? "")")
     }
 
     func getProfile(for id: User.ID) async -> Profile? {
@@ -44,7 +44,7 @@ class ProfileManager {
 
             return profile
         } catch {
-            logger.error("Error fetching user profile: \(error)")
+            LoggerService.main.error("Error fetching user profile: \(error)")
         }
 
         return nil

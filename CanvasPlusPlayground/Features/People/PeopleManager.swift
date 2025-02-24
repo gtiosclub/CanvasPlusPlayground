@@ -88,7 +88,7 @@ class PeopleManager: SearchResultListDataSource {
             if let error = error as? URLError, error.code == .cancelled {
                 return
             }
-            logger.error("Error fetching users: \(error)")
+            LoggerService.main.error("Error fetching users: \(error)")
 
             if queryMode == .live && page == 1 {
                 await setQueryMode(.offline)
@@ -104,7 +104,7 @@ class PeopleManager: SearchResultListDataSource {
     private func addNewUsers(_ newUsers: [User]) {
         // Implies new search query
         if page == 1 {
-            logger.debug("Users: \(self.users.map(\.name))")
+            LoggerService.main.debug("Users: \(self.users.map(\.name))")
             self.users = []
         }
 
@@ -157,7 +157,7 @@ extension PeopleManager {
 
                         processEnrollments(cached)
                     }, loadingMethod: .all(onNewPage: processEnrollments)) else {
-                        logger.error("Couldn't fetch enrollment count for course \(course.name ?? "n/a")")
+                        LoggerService.main.error("Couldn't fetch enrollment count for course \(course.name ?? "n/a")")
                         return
                     }
                 }

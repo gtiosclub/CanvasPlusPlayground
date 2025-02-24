@@ -23,14 +23,14 @@ class CourseTabsManager {
     func fetchTabs() async {
         let courseId = course.id
         guard let (data, _) = try? await CanvasService.shared.fetchResponse(CanvasRequest.getTabs(courseId: courseId)) else {
-            logger.error("Unable to fetch tabs.")
+            LoggerService.main.error("Unable to fetch tabs.")
             return
         }
 
         if let tabs = try? JSONDecoder().decode([TabAPI].self, from: data) {
             self.tabs = tabs
         } else {
-            logger.error("Unable to decode tab.")
+            LoggerService.main.error("Unable to decode tab.")
         }
     }
 }

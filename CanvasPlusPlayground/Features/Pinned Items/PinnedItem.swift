@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import os
 
 @Observable
 class PinnedItem: Identifiable, Codable, Equatable {
@@ -41,7 +40,7 @@ class PinnedItem: Identifiable, Codable, Equatable {
                     setData(course: course)
                 }
         } catch {
-            logger.error("Error fetching \(type.displayName)")
+            LoggerService.main.error("Error fetching \(self.type.displayName)")
         }
     }
 

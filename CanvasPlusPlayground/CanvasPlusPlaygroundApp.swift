@@ -51,6 +51,6 @@ struct CanvasPlusPlaygroundApp: App {
     }
 
     init() {
-        logger.debug("\(URL.applicationSupportDirectory.path(percentEncoded: false))")
+        LoggerService.main.debug("\(URL.applicationSupportDirectory.path(percentEncoded: false))")
     }
 }
