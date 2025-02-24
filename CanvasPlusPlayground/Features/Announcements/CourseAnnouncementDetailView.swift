@@ -98,8 +98,8 @@ struct CourseAnnouncementDetailView: View {
     func summarize() async {
         guard let title = announcement.title, let message = announcement.message else { return }
 
-        print("title: \(title)")
-        print("message: \(message)")
+        LoggerService.main.debug("title: \(title)")
+        LoggerService.main.debug("message: \(message)")
 
         let prompt = """
         Summarize the following announcement in a college course. Keep the summary to under three sentences. The title of the announcement is \(title). Only provide the summary text as a response and do not say anything else. Remove all surrouding text other than the summary. Give me only the text without any HTML tags, etc. This is the message:
@@ -125,7 +125,7 @@ struct CourseAnnouncementDetailView: View {
             do {
                 try await announcement.markReadStatus(true)
             } catch {
-                print("Failure marking as read:\n \(error)")
+                LoggerService.main.error("Failure marking as read:\n \(error)")
             }
         }
     }

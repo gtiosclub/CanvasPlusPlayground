@@ -22,7 +22,7 @@ class CourseAssignmentManager {
         do {
             return try await CanvasService.shared.loadAndSync(request)
         } catch {
-            print("Failed to fetch assignments: \(error)")
+            LoggerService.main.error("Failed to fetch assignments: \(error)")
         }
 
         return []
@@ -43,7 +43,7 @@ class CourseAssignmentManager {
 
             self.assignmentGroups = groups.sorted(by: { $0.position < $1.position })
         } catch {
-            print("Failed to fetch assignment groups")
+            LoggerService.main.error("Failed to fetch assignment groups")
         }
     }
 

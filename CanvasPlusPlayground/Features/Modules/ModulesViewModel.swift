@@ -51,21 +51,21 @@ class ModulesViewModel {
                 .loadAndSync(
                     CanvasRequest.getModules(courseId: courseID),
                     onCacheReceive: {
-                        print("Cache: " + ($0 ?? []).description)
+                        LoggerService.main.debug("Cache: \(($0 ?? []).description)")
                         setModules($0)
                     },
                     loadingMethod: .all(onNewPage: setModules)
                 )
         } catch {
-            print("Error fetching modules: \(type(of: error))")
+            LoggerService.main.error("Error fetching modules: \(type(of: error))")
         }
 
         await withTaskGroup(of: Void.self) { group in
-            print("Iterating over modules: \(_modules.map(\.name))")
+            LoggerService.main.debug("Iterating over modules: \(self._modules.map(\.name))")
             for module in self._modules {
-                print("Adding \(module.name) task.")
+                LoggerService.main.debug("Adding \(module.name) task.")
                 group.addTask {
-                    print("Executing \(module.name) task.")
+                    LoggerService.main.debug("Executing \(module.name) task.")
                     await self.fetchModuleItems(for: module.id)
                 }
             }
@@ -84,7 +84,7 @@ class ModulesViewModel {
                     loadingMethod: .all(onNewPage: setModuleItems(_:))
                 )
         } catch {
-            print("Error fetching module items: \(type(of: error))")
+            LoggerService.main.error("Error fetching module items: \(type(of: error))")
         }
 
         return []
@@ -98,7 +98,7 @@ class ModulesViewModel {
 
             let newModules = Set(modules + _modules)
             self._modules = newModules
-            print("Modules have been added: " + modules.map(\.name).description)
+            LoggerService.main.debug("Modules have been added: \(modules.map(\.name).description)")
         // }
     }
 

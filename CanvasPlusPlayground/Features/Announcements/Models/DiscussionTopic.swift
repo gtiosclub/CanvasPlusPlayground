@@ -216,7 +216,7 @@ extension DiscussionTopic {
 
     func markReadStatus(_ isRead: Bool) async throws {
         guard let courseId = self.courseId else {
-            print("[markAsRead] Course id missing")
+            LoggerService.main.debug("[markAsRead] Course id missing")
             throw Error.courseIdMissing
         }
 

@@ -40,7 +40,7 @@ class PinnedItem: Identifiable, Codable, Equatable {
                     setData(course: course)
                 }
         } catch {
-            print("Error fetching \(type): \(error.localizedDescription)")
+            LoggerService.main.error("Error fetching \(self.type.displayName)")
         }
     }
 

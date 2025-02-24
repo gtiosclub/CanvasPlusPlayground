@@ -65,7 +65,7 @@ struct FileViewer: View {
                 localCopyReceived: { (_, self.url) = ($0, $1) }
             )
         } catch {
-            print("Error fetching file content: \(error)")
+            LoggerService.main.error("Error fetching file content: \(error)")
         }
         self.isLoading = false
     }

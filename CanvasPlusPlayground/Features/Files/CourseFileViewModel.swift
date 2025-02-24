@@ -41,7 +41,7 @@ class CourseFileViewModel {
             return rootFolder
         }
 
-        print("Failed to fetch root folder.")
+        LoggerService.main.error("Failed to fetch root folder.")
         return nil
 
     }
@@ -71,7 +71,7 @@ class CourseFileViewModel {
                 self.files = files
             }
         } catch {
-            print(error)
+            LoggerService.main.error("\(error.localizedDescription)")
         }
 
     }

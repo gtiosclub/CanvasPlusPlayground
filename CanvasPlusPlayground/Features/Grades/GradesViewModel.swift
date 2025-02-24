@@ -43,7 +43,7 @@ class GradesViewModel {
 
     func getEnrollments(currentUserID: String?) async {
         guard let currentUserID = currentUserID?.asInt else {
-            print("GradesViewModel: Current UserID is nil.")
+            LoggerService.main.error("GradesViewModel: Current UserID is nil.")
             return
         }
 
@@ -75,14 +75,14 @@ class GradesViewModel {
                 currentUserID: currentUserID
             )
         } catch {
-            print("Failed to fetch enrollments. \(error)")
+            LoggerService.main.error("Failed to fetch enrollments. \(error)")
         }
     }
 
     /// Searches for the users enrollment and sets it if found
     func verifyAndSetEnrollment(_ enrollment: Enrollment?, currentUserID: Int) {
         guard let enrollment, enrollment.userID == currentUserID else {
-            print("GradesVM: Enrollment did not match.")
+            LoggerService.main.error("GradesVM: Enrollment did not match.")
             return
         }
 
