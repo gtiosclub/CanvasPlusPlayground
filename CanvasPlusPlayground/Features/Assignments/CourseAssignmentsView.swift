@@ -39,18 +39,22 @@ struct CourseAssignmentsView: View {
                         let assignmentModel = assignment.createModel()
                         AssignmentRow(assignment: assignmentModel, showGrades: showGrades)
                             .contextMenu {
-                                PinButton(
-                                    itemID: assignmentModel.id,
-                                    courseID: course.id,
-                                    type: .assignment
-                                )
+                                if !showGrades {
+                                    PinButton(
+                                        itemID: assignmentModel.id,
+                                        courseID: course.id,
+                                        type: .assignment
+                                    )
+                                }
                             }
                             .swipeActions(edge: .leading) {
-                                PinButton(
-                                    itemID: assignmentModel.id,
-                                    courseID: course.id,
-                                    type: .assignment
-                                )
+                                if !showGrades {
+                                    PinButton(
+                                        itemID: assignmentModel.id,
+                                        courseID: course.id,
+                                        type: .assignment
+                                    )
+                                }
                             }
                     }
                 }
