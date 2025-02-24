@@ -7,10 +7,16 @@
 
 import Foundation
 
-struct PinnedItem: Identifiable, Codable {
+@Observable
+class PinnedItem: Identifiable, Codable, Equatable {
+
     let id: String
     let courseID: String
     let type: PinnedItemType
+    var data: PinnedItemData?
+
+    private var course: Course?
+    private var modelData: PinnedItemData.ModelData?
 
     enum PinnedItemType: Int, Codable {
         case announcement, assignment, file
@@ -25,53 +31,85 @@ struct PinnedItem: Identifiable, Codable {
         }
     }
 
-    func itemData() async -> PinnedItemData? {
+    func itemData() async {
         do {
-            async let modelData = try fetchData()
-            async let course = try CanvasService.shared.loadAndSync(
-                CanvasRequest.getCourse(id: courseID)
-            )
-
-            return .init(
-                modelData: try await modelData,
-                course: try await course.first
-            )
+            try await fetchData()
+            try await CanvasService.shared.loadAndSync(
+                CanvasRequest.getCourse(id: courseID)) { cachedCourse in
+                    guard let course = cachedCourse?.first else { return }
+                    setData(course: course)
+                }
         } catch {
             print("Error fetching \(type): \(error.localizedDescription)")
-            return nil
         }
     }
 
-    private func fetchData() async throws -> PinnedItemData.ModelData? {
+    private func fetchData() async throws {
         switch type {
         case .announcement:
             let announcements = try await CanvasService.shared.loadAndSync(
-                CanvasRequest.getAnnouncements(courseId: courseID)
-            )
-            guard let announcement = announcements.first(where: { $0.id == id }) else { return nil }
-            return .announcement(announcement)
-
+                CanvasRequest.getDiscussionTopics(courseId: courseID)) { cachedAnnouncements in
+                    guard let announcement = cachedAnnouncements?.first(where: { $0.id == id }) else { return }
+                    setData(modelData: .announcement(announcement))
+                }
+            guard let announcement = announcements.first(where: { $0.id == id }) else { return }
+            setData(modelData: .announcement(announcement))
         case .assignment:
-            let assignments = try await CanvasService.shared.fetch(
-                CanvasRequest.getAssignment(id: id, courseId: courseID)
-            )
-            guard let assignment = assignments.first else { return nil }
-            return .assignment(assignment)
+            let assignments = try await CanvasService.shared.loadAndSync(
+                CanvasRequest.getAssignment(id: id, courseId: courseID)) { cachedAssignments in
+                    guard let assignment = cachedAssignments?.first else { return }
+                    setData(modelData: .assignment(assignment))
+                }
+            guard let assignment = assignments.first else { return }
+            setData(modelData: .assignment(assignment))
 
         case .file:
             let files = try await CanvasService.shared.loadAndSync(
-                CanvasRequest.getFile(fileId: id)
-            )
-            guard let file = files.first else { return nil }
-            return .file(file)
+                CanvasRequest.getFile(fileId: id)) { cachedFiles in
+                    guard let file = cachedFiles?.first else { return }
+                    setData(modelData: .file(file))
+                }
+            guard let file = files.first else { return }
+            setData(modelData: .file(file))
         }
+    }
+
+    func setData(course: Course? = nil, modelData: PinnedItemData.ModelData? = nil) {
+        if course != nil {
+            self.course = course
+        }
+
+        if modelData != nil {
+            self.modelData = modelData
+        }
+
+        if self.course != nil && self.modelData != nil {
+            self.data = .init(modelData: self.modelData, course: self.course)
+        }
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case courseID
+        case type
+    }
+
+    init(id: String, courseID: String, type: PinnedItemType, data: PinnedItemData? = nil) {
+        self.id = id
+        self.courseID = courseID
+        self.type = type
+        self.data = data
+    }
+
+    static func == (lhs: PinnedItem, rhs: PinnedItem) -> Bool {
+        lhs.id == rhs.id
     }
 }
 
 struct PinnedItemData {
     enum ModelData {
-        case announcement(Announcement)
-        case assignment(AssignmentAPI)
+        case announcement(DiscussionTopic)
+        case assignment(Assignment)
         case file(File)
         // TODO: Add more pinned item types
     }

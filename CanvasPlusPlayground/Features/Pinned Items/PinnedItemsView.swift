@@ -10,6 +10,8 @@ import SwiftUI
 struct PinnedItemsView: View {
     @Environment(PinnedItemsManager.self) private var pinnedItemsManager
 
+    @State var selectedItem: PinnedItem?
+
     private var sortedTypes: [PinnedItem.PinnedItemType] {
         Array(pinnedItemsManager.pinnedItemsByType.keys)
             .sorted(by: { $0.rawValue < $1.rawValue })
@@ -27,6 +29,11 @@ struct PinnedItemsView: View {
                     .bold()
             }
 
+        }
+        .task {
+            for item in pinnedItemsManager.pinnedItems.filter({ $0.data == nil}) {
+                await item.itemData()
+            }
         }
         .navigationTitle("Pinned")
         #if os(macOS)
@@ -58,7 +65,17 @@ struct PinnedItemsView: View {
                 )
             ) {
                 ForEach(items) { item in
-                    PinnedItemCard(item: item)
+                    NavigationLink {
+                        PinnedItemDetailView(item: item)
+                            .onAppear {
+                                self.selectedItem = item
+                            }
+                            .id(item.id)
+                    } label: {
+                        PinnedItemCard(item: item)
+                            .cardBackground(selected: selectedItem == item)
+                    }
+                    .buttonStyle(.plain)
                 }
             }
         }

@@ -8,38 +8,38 @@
 import SwiftUI
 
 struct PinnedItemCard: View {
-    let item: PinnedItem
+    @State var item: PinnedItem
 
     var body: some View {
-        AsyncView {
-            await item.itemData()
-        } content: { itemData in
-            switch itemData.modelData {
-            case .announcement(let announcement):
-                PinnedAnnouncementCard(
-                    announcement: announcement,
-                    course: itemData.course
-                )
-            case .file(let file):
-                PinnedFileCard(
-                    file: file,
-                    course: itemData.course
-                )
-            case .assignment(let assignment):
-                PinnedAssignmentCard(
-                    assignment: assignment,
-                    course: itemData.course
-                )
+        Group {
+            if let itemData = item.data {
+                switch itemData.modelData {
+                case .announcement(let announcement):
+                    PinnedAnnouncementCard(
+                        announcement: announcement,
+                        course: itemData.course
+                    )
+                case .file(let file):
+                    PinnedFileCard(
+                        file: file,
+                        course: itemData.course
+                    )
+                case .assignment(let assignment):
+                    PinnedAssignmentCard(
+                        assignment: assignment,
+                        course: itemData.course
+                    )
+                }
+            } else {
+                Text("Loading...")
             }
-        } placeholder: {
-            Text("Loading...")
         }
         .buttonStyle(.plain)
     }
 }
 
 private struct PinnedAnnouncementCard: View {
-    let announcement: Announcement
+    let announcement: DiscussionTopic
     let course: Course
 
     var body: some View {
@@ -65,7 +65,6 @@ private struct PinnedAnnouncementCard: View {
                 .lineLimit(2)
             }
         }
-        .cardBackground()
     }
 }
 
@@ -92,12 +91,11 @@ private struct PinnedFileCard: View {
 
             Spacer()
         }
-        .cardBackground()
     }
 }
 
 private struct PinnedAssignmentCard: View {
-    let assignment: AssignmentAPI
+    let assignment: Assignment
     let course: Course
 
     var body: some View {
@@ -119,19 +117,18 @@ private struct PinnedAssignmentCard: View {
 
             Spacer()
         }
-        .cardBackground()
     }
 }
 
 extension View {
-    fileprivate func cardBackground() -> some View {
+    func cardBackground(selected: Bool) -> some View {
         self
             .frame(width: 250)
             .frame(maxHeight: .infinity)
             .padding(12)
             .background {
                 RoundedRectangle(cornerRadius: 16.0)
-                    .fill(.secondary.opacity(0.15))
+                    .fill(.secondary.opacity(selected ? 0.30 : 0.15))
             }
     }
 }
