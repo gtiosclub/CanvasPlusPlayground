@@ -8,7 +8,8 @@
 import Foundation
 
 @Observable
-class PinnedItem: Identifiable, Codable {
+class PinnedItem: Identifiable, Codable, Equatable {
+
     let id: String
     let courseID: String
     let type: PinnedItemType
@@ -80,6 +81,10 @@ class PinnedItem: Identifiable, Codable {
         self.courseID = courseID
         self.type = type
         self.data = data
+    }
+
+    static func == (lhs: PinnedItem, rhs: PinnedItem) -> Bool {
+        lhs.id == rhs.id
     }
 }
 

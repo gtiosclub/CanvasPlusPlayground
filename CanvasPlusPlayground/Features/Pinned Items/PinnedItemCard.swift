@@ -65,7 +65,6 @@ private struct PinnedAnnouncementCard: View {
                 .lineLimit(2)
             }
         }
-        .cardBackground()
     }
 }
 
@@ -92,7 +91,6 @@ private struct PinnedFileCard: View {
 
             Spacer()
         }
-        .cardBackground()
     }
 }
 
@@ -119,19 +117,18 @@ private struct PinnedAssignmentCard: View {
 
             Spacer()
         }
-        .cardBackground()
     }
 }
 
 extension View {
-    fileprivate func cardBackground() -> some View {
+    func cardBackground(selected:Bool) -> some View {
         self
             .frame(width: 250)
             .frame(maxHeight: .infinity)
             .padding(12)
             .background {
                 RoundedRectangle(cornerRadius: 16.0)
-                    .fill(.secondary.opacity(0.15))
+                    .fill(.secondary.opacity(selected ? 0.30 : 0.15))
             }
     }
 }
