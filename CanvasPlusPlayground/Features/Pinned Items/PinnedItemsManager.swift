@@ -50,9 +50,6 @@ class PinnedItemsManager {
         pinnedItems.append(
             item
         )
-        Task {
-            await item.itemData()
-        }
     }
 
     func removePinnedItem(

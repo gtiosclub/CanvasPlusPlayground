@@ -28,11 +28,9 @@ struct PinnedItemsView: View {
             }
 
         }
-        .onAppear {
-            for item in pinnedItemsManager.pinnedItems {
-                Task {
-                    await item.itemData()
-                }
+        .task {
+            for item in pinnedItemsManager.pinnedItems.filter({ $0.data == nil}) {
+                await item.itemData()
             }
         }
         .navigationTitle("Pinned")
@@ -72,6 +70,9 @@ struct PinnedItemsView: View {
                         PinnedItemCard(item: item)
                     }
                     .buttonStyle(.plain)
+                    .onTapGesture {
+                        self.selectedItem = item
+                    }
 
                 }
             }

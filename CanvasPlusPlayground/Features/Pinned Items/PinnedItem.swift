@@ -70,9 +70,9 @@ class PinnedItem: Identifiable, Codable {
     }
 
     enum CodingKeys: String, CodingKey {
-            case id
-            case courseID
-            case type
+        case id
+        case courseID
+        case type
     }
 
     init(id: String, courseID: String, type: PinnedItemType, data: PinnedItemData? = nil) {
