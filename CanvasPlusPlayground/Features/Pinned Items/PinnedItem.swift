@@ -7,6 +7,25 @@
 
 import Foundation
 
+struct PinnedItemData {
+    enum ModelData {
+        case announcement(DiscussionTopic)
+        case assignment(Assignment)
+        case file(File)
+        // TODO: Add more pinned item types
+    }
+
+    let modelData: ModelData
+    let course: Course
+
+    init?(modelData: ModelData?, course: Course?) {
+        guard let modelData, let course else { return nil }
+
+        self.modelData = modelData
+        self.course = course
+    }
+}
+
 @Observable
 class PinnedItem: Identifiable, Codable, Equatable {
     let id: String
@@ -37,7 +56,8 @@ class PinnedItem: Identifiable, Codable, Equatable {
         do {
             try await fetchData()
             try await CanvasService.shared.loadAndSync(
-                CanvasRequest.getCourse(id: courseID)) { cachedCourse in
+                CanvasRequest.getCourse(id: courseID)
+            ) { cachedCourse in
                     guard let course = cachedCourse?.first else { return }
                     setData(course: course)
             }
@@ -50,7 +70,8 @@ class PinnedItem: Identifiable, Codable, Equatable {
         switch type {
         case .announcement:
             let announcements = try await CanvasService.shared.loadAndSync(
-                CanvasRequest.getDiscussionTopics(courseId: courseID)) { cachedAnnouncements in
+                CanvasRequest.getDiscussionTopics(courseId: courseID)
+            ) { cachedAnnouncements in
                     guard let announcement = cachedAnnouncements?.first(where: { $0.id == id }) else { return }
                     setData(modelData: .announcement(announcement))
             }
@@ -58,7 +79,8 @@ class PinnedItem: Identifiable, Codable, Equatable {
             setData(modelData: .announcement(announcement))
         case .assignment:
             let assignments = try await CanvasService.shared.loadAndSync(
-                CanvasRequest.getAssignment(id: id, courseId: courseID)) { cachedAssignments in
+                CanvasRequest.getAssignment(id: id, courseId: courseID)
+            ) { cachedAssignments in
                     guard let assignment = cachedAssignments?.first else { return }
                     setData(modelData: .assignment(assignment))
             }
@@ -67,7 +89,8 @@ class PinnedItem: Identifiable, Codable, Equatable {
 
         case .file:
             let files = try await CanvasService.shared.loadAndSync(
-                CanvasRequest.getFile(fileId: id)) { cachedFiles in
+                CanvasRequest.getFile(fileId: id)
+            ) { cachedFiles in
                     guard let file = cachedFiles?.first else { return }
                     setData(modelData: .file(file))
             }
@@ -105,24 +128,5 @@ class PinnedItem: Identifiable, Codable, Equatable {
 
     static func == (lhs: PinnedItem, rhs: PinnedItem) -> Bool {
         lhs.id == rhs.id
-    }
-}
-
-struct PinnedItemData {
-    enum ModelData {
-        case announcement(DiscussionTopic)
-        case assignment(Assignment)
-        case file(File)
-        // TODO: Add more pinned item types
-    }
-
-    let modelData: ModelData
-    let course: Course
-
-    init?(modelData: ModelData?, course: Course?) {
-        guard let modelData, let course else { return nil }
-
-        self.modelData = modelData
-        self.course = course
     }
 }

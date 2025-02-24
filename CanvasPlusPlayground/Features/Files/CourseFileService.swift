@@ -176,7 +176,6 @@ struct CourseFileService {
             }
 
             LoggerService.main.debug("All files in \(fileURL.path) have been deleted.")
-
         } catch {
             LoggerService.main.error("Error deleting files: \(error.localizedDescription)")
         }

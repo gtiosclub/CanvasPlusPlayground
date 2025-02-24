@@ -90,7 +90,7 @@ private struct PinnedAssignmentCard: View {
 }
 
 struct PinnedItemCard: View {
-    @State private var item: PinnedItem
+    var item: PinnedItem
 
     var body: some View {
         Group {
