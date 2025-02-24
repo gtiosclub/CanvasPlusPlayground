@@ -8,6 +8,10 @@
 import Foundation
 
 // swiftlint:disable commented_code identifier_name
+enum ModuleState: String, Codable {
+    case locked, unlocked, started, completed
+}
+
 // https://canvas.instructure.com/doc/api/modules.html
 struct APIModule: APIResponse {
     typealias Model = Module
@@ -48,8 +52,4 @@ struct APIModule: APIResponse {
     enum WorkflowState: String, Codable {
         case active, deleted
     }
-}
-
-enum ModuleState: String, Codable {
-    case locked, unlocked, started, completed
 }

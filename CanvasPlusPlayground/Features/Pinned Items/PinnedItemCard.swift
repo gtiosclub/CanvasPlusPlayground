@@ -120,6 +120,37 @@ private struct PinnedAssignmentCard: View {
     }
 }
 
+struct PinnedItemCard: View {
+    let item: PinnedItem
+
+    var body: some View {
+        AsyncView {
+            await item.itemData()
+        } content: { itemData in
+            switch itemData.modelData {
+            case .announcement(let announcement):
+                PinnedAnnouncementCard(
+                    announcement: announcement,
+                    course: itemData.course
+                )
+            case .file(let file):
+                PinnedFileCard(
+                    file: file,
+                    course: itemData.course
+                )
+            case .assignment(let assignment):
+                PinnedAssignmentCard(
+                    assignment: assignment,
+                    course: itemData.course
+                )
+            }
+        } placeholder: {
+            Text("Loading...")
+        }
+        .buttonStyle(.plain)
+    }
+}
+
 extension View {
     func cardBackground(selected: Bool) -> some View {
         self

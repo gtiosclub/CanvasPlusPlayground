@@ -7,6 +7,89 @@
 
 import SwiftUI
 
+private struct FileRow: View {
+    @Environment(CourseFileViewModel.self) private var filesVM
+    let file: File
+    let course: Course
+
+    var body: some View {
+        HStack {
+            mainContent
+
+            Spacer()
+
+            if file.localURL == nil {
+                Image(systemName: "arrow.down.circle.dotted")
+            }
+        }
+        .imageScale(.large)
+        .contextMenu {
+            PinButton(
+                itemID: file.id,
+                courseID: course.id,
+                type: .file
+            )
+        }
+        .swipeActions(edge: .leading) {
+            PinButton(
+                itemID: file.id,
+                courseID: course.id,
+                type: .file
+            )
+        }
+        .onAppear {
+            // Updates file.localURL if needed
+            CourseFileService.shared
+                .setLocationForCourseFile(
+                    file,
+                    course: course,
+                    foldersPath: filesVM.traversedFolderIDs
+                )
+        }
+    }
+
+    private var mainContent: some View {
+        HStack {
+            Image(systemName: "document")
+                .foregroundStyle(.tint)
+
+            VStack(alignment: .leading) {
+                Text(file.displayName)
+                    .font(.headline)
+
+                if let size = file.size {
+                    Text(size.formatted(.byteCount(style: .file)))
+                        .foregroundStyle(.secondary)
+                }
+            }
+        }
+    }
+}
+
+private struct FolderRow: View {
+    let folder: Folder
+
+    var body: some View {
+        HStack {
+            Image(systemName: "folder")
+                .foregroundStyle(.tint)
+
+            VStack(alignment: .leading) {
+                Text(folder.name ?? "Unknown Folder")
+                    .font(.headline)
+
+                Text("\(count) items")
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .imageScale(.large)
+    }
+
+    var count: Int {
+        (folder.filesCount ?? 0) + (folder.foldersCount ?? 0)
+    }
+}
+
 struct FoldersPageView: View {
     @Namespace private var namespace
 
@@ -116,88 +199,5 @@ struct FoldersPageView: View {
             self.folder = await filesVM.fetchRoot()
         }
         isLoadingContents = false
-    }
-}
-
-private struct FileRow: View {
-    @Environment(CourseFileViewModel.self) private var filesVM
-    let file: File
-    let course: Course
-
-    var body: some View {
-        HStack {
-            mainContent
-
-            Spacer()
-
-            if file.localURL == nil {
-                Image(systemName: "arrow.down.circle.dotted")
-            }
-        }
-        .imageScale(.large)
-        .contextMenu {
-            PinButton(
-                itemID: file.id,
-                courseID: course.id,
-                type: .file
-            )
-        }
-        .swipeActions(edge: .leading) {
-            PinButton(
-                itemID: file.id,
-                courseID: course.id,
-                type: .file
-            )
-        }
-        .onAppear {
-            // Updates file.localURL if needed
-            CourseFileService.shared
-                .setLocationForCourseFile(
-                    file,
-                    course: course,
-                    foldersPath: filesVM.traversedFolderIDs
-                )
-        }
-    }
-
-    private var mainContent: some View {
-        HStack {
-            Image(systemName: "document")
-                .foregroundStyle(.tint)
-
-            VStack(alignment: .leading) {
-                Text(file.displayName)
-                    .font(.headline)
-
-                if let size = file.size {
-                    Text(size.formatted(.byteCount(style: .file)))
-                        .foregroundStyle(.secondary)
-                }
-            }
-        }
-    }
-}
-
-private struct FolderRow: View {
-    let folder: Folder
-
-    var body: some View {
-        HStack {
-            Image(systemName: "folder")
-                .foregroundStyle(.tint)
-
-            VStack(alignment: .leading) {
-                Text(folder.name ?? "Unknown Folder")
-                    .font(.headline)
-
-                Text("\(count) items")
-                    .foregroundStyle(.secondary)
-            }
-        }
-        .imageScale(.large)
-    }
-
-    var count: Int {
-        (folder.filesCount ?? 0) + (folder.foldersCount ?? 0)
     }
 }

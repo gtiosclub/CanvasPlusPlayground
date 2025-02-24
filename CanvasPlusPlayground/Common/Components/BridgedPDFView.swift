@@ -14,6 +14,10 @@ typealias PlatformViewRepresentable = NSViewRepresentable
 typealias PlatformViewRepresentable = UIViewRepresentable
 #endif
 
+enum PDFSource {
+    case url(URL), data(Data)
+}
+
 struct BridgedPDFView: PlatformViewRepresentable {
     let pdfSource: PDFSource
 
@@ -58,8 +62,4 @@ struct BridgedPDFView: PlatformViewRepresentable {
         pdfView.autoScales = true
         return pdfView
     }
-}
-
-enum PDFSource {
-    case url(URL), data(Data)
 }

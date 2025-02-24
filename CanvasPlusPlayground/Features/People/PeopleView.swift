@@ -7,6 +7,47 @@
 
 import SwiftUI
 
+private struct UserCell: View {
+    let user: User
+    let namespace: Namespace.ID
+    @Binding var selectedUser: User?
+
+    var body: some View {
+        HStack {
+            Group {
+                if #available(iOS 18.0, *) {
+                    ProfilePicture(user: user, size: 35)
+#if os(iOS)
+                        .matchedTransitionSource(id: user.id, in: namespace)
+#endif
+                } else {
+                    ProfilePicture(user: user, size: 35)
+                }
+            }
+            .symbolVariant(.fill)
+            .foregroundStyle(.secondary)
+
+            VStack(alignment: .leading) {
+                Text(user.name)
+                Text(
+                    user.enrollmentRoles
+                        .map(\.displayName)
+                        .joined(separator: ", ")
+                )
+                .foregroundStyle(.secondary)
+            }
+
+            Spacer()
+
+            Button {
+                selectedUser = user
+            } label: {
+                Image(systemName: "info.circle")
+            }
+        }
+    }
+}
+
 struct PeopleView: View {
     struct Token: Identifiable, Equatable {
         let id = UUID()
@@ -143,47 +184,6 @@ struct PeopleView: View {
         currentSearchTask?.cancel()
         currentSearchTask = Task {
             await newQuery()
-        }
-    }
-}
-
-private struct UserCell: View {
-    let user: User
-    let namespace: Namespace.ID
-    @Binding var selectedUser: User?
-
-    var body: some View {
-        HStack {
-            Group {
-                if #available(iOS 18.0, *) {
-                    ProfilePicture(user: user, size: 35)
-                        #if os(iOS)
-                        .matchedTransitionSource(id: user.id, in: namespace)
-                        #endif
-                } else {
-                    ProfilePicture(user: user, size: 35)
-                }
-            }
-            .symbolVariant(.fill)
-            .foregroundStyle(.secondary)
-
-            VStack(alignment: .leading) {
-                Text(user.name)
-                Text(
-                    user.enrollmentRoles
-                        .map(\.displayName)
-                        .joined(separator: ", ")
-                )
-                .foregroundStyle(.secondary)
-            }
-
-            Spacer()
-
-            Button {
-                selectedUser = user
-            } label: {
-                Image(systemName: "info.circle")
-            }
         }
     }
 }
