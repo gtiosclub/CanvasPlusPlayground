@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AnnouncementRow: View {
     let course: Course?
-    let announcement: Announcement
+    let announcement: DiscussionTopic
     var showCourseName = false
 
     // MARK: Drawing Constants
@@ -29,6 +29,8 @@ struct AnnouncementRow: View {
                 courseID: course?.id,
                 type: .announcement
             )
+
+            toggleReadButton
         }
         .swipeActions(edge: .leading) {
             PinButton(
@@ -49,10 +51,18 @@ struct AnnouncementRow: View {
             }
     }
 
+    private var toggleReadButton: some View {
+        Button(announcement.readActionLabel) {
+            Task {
+                try await announcement.toggleReadState()
+            }
+        }
+    }
+
     private var header: some View {
         HStack {
             Group {
-                if !(announcement.isRead ?? false) {
+                if !(announcement.isRead) {
                     Circle()
                         .fill(.tint)
                 } else {
@@ -68,7 +78,7 @@ struct AnnouncementRow: View {
 
             Spacer()
 
-            if let createdAt = announcement.createdAt {
+            if let createdAt = announcement.date {
                 Text(createdAt.formatted(.relative(presentation: .named)))
                     .foregroundStyle(.secondary)
             }

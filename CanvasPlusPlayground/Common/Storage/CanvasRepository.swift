@@ -16,6 +16,8 @@ class CanvasRepository {
         self.modelContainer = try! ModelContainer(
             for: Course.self,
             Announcement.self,
+            Assignment.self,
+            AssignmentGroup.self,
             Enrollment.self,
             File.self,
             Folder.self,
@@ -24,7 +26,9 @@ class CanvasRepository {
             ModuleItem.self,
             Submission.self,
             User.self,
-            Profile.self
+            Profile.self,
+            DiscussionTopic.self,
+            Page.self
             // TODO: Add cacheable models here
         )
         self.modelContext = ModelContext(modelContainer)

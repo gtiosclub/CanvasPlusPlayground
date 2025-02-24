@@ -13,7 +13,7 @@ struct CourseAnnouncementDetailView: View {
 
     @State private var loadingSummary = false
 
-    let announcement: Announcement
+    let announcement: DiscussionTopic
 
     var body: some View {
         Form {
@@ -61,7 +61,7 @@ struct CourseAnnouncementDetailView: View {
                 HStack {
                     Text("Created At")
                     Spacer()
-                    Text(announcement.createdAt?.formatted() ?? "NULL_DATE")
+                    Text(announcement.date?.formatted() ?? "NULL_DATE")
                 }
             }
 
@@ -71,7 +71,8 @@ struct CourseAnnouncementDetailView: View {
         }
         .formStyle(.grouped)
         .onAppear {
-            announcement.isRead = true
+            // dont use `.task` so that this Task outlives its view upon disappear
+            self.markAsRead()
         }
         .id(announcement.id)
     }
@@ -116,6 +117,16 @@ struct CourseAnnouncementDetailView: View {
                 )
                 .trimmingCharacters(in: .whitespacesAndNewlines)
             loadingSummary = false
+        }
+    }
+
+    func markAsRead() {
+        Task { @MainActor in
+            do {
+                try await announcement.markReadStatus(true)
+            } catch {
+                print("Failure marking as read:\n \(error)")
+            }
         }
     }
 }

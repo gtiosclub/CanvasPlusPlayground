@@ -10,7 +10,15 @@ import Foundation
 @Observable class CourseAnnouncementManager {
     let course: Course
     var courseId: String { course.id }
-    var announcements: [Announcement]
+
+    var announcements: Set<DiscussionTopic>
+    var displayedAnnouncements: [DiscussionTopic] {
+        announcements
+            .filter { $0.published }
+            .sorted {
+                $0.date ?? .distantPast > $1.date ?? .distantPast
+            }
+    }
 
     init(course: Course) {
         self.course = course
@@ -18,13 +26,23 @@ import Foundation
     }
 
     func fetchAnnouncements() async {
-        let announcements: [Announcement]? = try? await CanvasService.shared.loadAndSync(
-            CanvasRequest.getAnnouncements(courseId: courseId),
-            onCacheReceive: { (cached: [Announcement]?) in
+        let request = CanvasRequest.getDiscussionTopics(
+            courseId: courseId,
+            orderBy: .position,
+            onlyAnnouncements: true,
+            perPage: 25
+        )
+
+        let announcements: [DiscussionTopic]? = try? await CanvasService.shared.loadAndSync(
+            request,
+            onCacheReceive: { (cached: [DiscussionTopic]?) in
                 guard let cached else { return }
 
-                setAnnouncements(cached)
-            }
+                self.setAnnouncements(cached)
+            },
+            loadingMethod: .all(onNewPage: { topics in
+                self.addAnnouncements(topics)
+            })
         )
 
         guard let announcements else {
@@ -35,7 +53,15 @@ import Foundation
         setAnnouncements(announcements)
     }
 
-    func setAnnouncements(_ announcements: [Announcement]) {
-        self.announcements = announcements
+    func setAnnouncements(_ announcements: [DiscussionTopic]) {
+        DispatchQueue.main.async {
+            self.announcements = Set(announcements)
+        }
+    }
+
+    func addAnnouncements(_ announcements: [DiscussionTopic]) {
+        DispatchQueue.main.async {
+            self.announcements.formUnion(announcements)
+        }
     }
 }

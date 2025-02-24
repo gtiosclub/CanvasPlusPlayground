@@ -93,6 +93,7 @@ class CanvasService {
         return try await request.fetchResponse(at: page)
     }
 
+    @discardableResult
     func fetch<Request: APIRequest>(_ request: Request, loadingMethod: LoadingMethod<Request> = .all(onNewPage: {_ in})) async throws -> [Request.Subject] {
         return try await request.fetch(loadingMethod: loadingMethod)
     }

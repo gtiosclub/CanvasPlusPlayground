@@ -10,7 +10,7 @@ import Foundation
 // https://canvas.instructure.com/doc/api/assignments.html
 // https://github.com/instructure/canvas-ios/blob/49a3e347116d623638c66b7adbcc946294faa212/Core/Core/Assignments/APIAssignment.swift
 struct AssignmentAPI: APIResponse, Identifiable, Hashable {
-    typealias Model = NoOpCacheable
+    typealias Model = Assignment
 
     // swiftlint:disable identifier_name
     let id: Int
@@ -49,6 +49,7 @@ struct AssignmentAPI: APIResponse, Identifiable, Hashable {
     var course_id: Int?
     var name: String
     var submission_types: [String]?
+    /// If true, the assignment has been submitted to by at least one student
     var has_submitted_submissions: Bool?
     var due_date_required: Bool?
     var max_name_length: Int?
@@ -96,5 +97,10 @@ struct AssignmentAPI: APIResponse, Identifiable, Hashable {
     var isOnlineQuiz: Bool {
         submissionTypes.contains("online_quiz")
     }
+
+    func createModel() -> Assignment {
+        Assignment(from: self)
+    }
+
     static let example: AssignmentAPI = AssignmentAPI(id: 5, name: "example", groupID: 5)
 }
