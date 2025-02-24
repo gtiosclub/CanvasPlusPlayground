@@ -8,6 +8,7 @@
 import Foundation
 import SwiftData
 
+// swiftlint:disable commented_code
 @Model
 final class Page: Cacheable {
     typealias ID = String
@@ -36,7 +37,7 @@ final class Page: Cacheable {
 //    var blockEditorAttributes: [String: Any]?
 
     var displayTitle: String {
-        return title ?? "Untitled Page"
+        title ?? "Untitled Page"
     }
 
     init(pageAPI: PageAPI) {

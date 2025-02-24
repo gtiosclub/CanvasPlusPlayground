@@ -8,9 +8,9 @@
 import Foundation
 import SwiftData
 
+// swiftlint:disable commented_code
 @Model
 class Quiz {
-
     @Attribute(.unique) let id: String
     var courseID: String
 
@@ -54,17 +54,17 @@ class Quiz {
     var anonymousSubmissions: Bool
 
     var hideResults: QuizHideResults? {
-        get { return hideResultsRaw.flatMap { QuizHideResults(rawValue: $0) } }
+        get { hideResultsRaw.flatMap { QuizHideResults(rawValue: $0) } }
         set { hideResultsRaw = newValue?.rawValue }
     }
 
     var quizType: QuizType {
-        get { return QuizType(rawValue: quizTypeRaw) ?? .assignment }
+        get { QuizType(rawValue: quizTypeRaw) ?? .assignment }
         set { quizTypeRaw = newValue.rawValue }
     }
 
     var scoringPolicy: ScoringPolicy? {
-        get { return scoringPolicyRaw.flatMap { ScoringPolicy(rawValue: $0) } }
+        get { scoringPolicyRaw.flatMap { ScoringPolicy(rawValue: $0) } }
         set { scoringPolicyRaw = newValue?.rawValue }
     }
 

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CanvasRequest {
+enum CanvasRequest {
     static func getCourses(enrollmentState: String, perPage: Int = 50) -> GetCoursesRequest {
         GetCoursesRequest(enrollmentState: enrollmentState, perPage: perPage)
     }

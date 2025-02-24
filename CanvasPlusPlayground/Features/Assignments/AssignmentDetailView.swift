@@ -13,7 +13,11 @@ struct AssignmentDetailView: View {
 
     var body: some View {
         if assignment.isOnlineQuiz {
-            WebView(url: URL(string: assignment.htmlUrl ?? "gatech.edu")!)
+            if let url = URL(string: assignment.htmlUrl ?? "gatech.edu") {
+                WebView(url: url)
+            } else {
+                fatalError("Invalid URL for online quiz: \(assignment.htmlUrl ?? "nil")")
+            }
         } else {
             Form {
                 Section("Details") {

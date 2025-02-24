@@ -29,7 +29,7 @@ struct CanvasCalendarEvent: Identifiable {
     let location: String
 }
 
-struct ICSParser {
+enum ICSParser {
     private static var dateFormatter: DateFormatter {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMMdd'T'HHmmss'Z'"
@@ -62,7 +62,6 @@ struct ICSParser {
                    let endDateString = currentEvent["DTEND"],
                    let startDate = dateFormatter.date(from: startDateString),
                    let endDate = dateFormatter.date(from: endDateString) {
-
                     let location = currentEvent["LOCATION"] ?? "-"
 
                     let event = CanvasCalendarEvent(
@@ -90,12 +89,10 @@ struct ICSParser {
 
     private static func groupEvents(_ events: [CanvasCalendarEvent]) -> [CanvasCalendarEventGroup] {
         let groupedEvents = Dictionary(grouping: events) { event in
-            let date = Calendar.current.dateComponents(
+            Calendar.current.dateComponents(
                 [.day, .year, .month],
                 from: event.startDate
             )
-
-            return date
         }
 
         return groupedEvents

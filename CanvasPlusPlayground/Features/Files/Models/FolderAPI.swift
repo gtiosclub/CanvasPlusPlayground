@@ -7,12 +7,12 @@
 
 import Foundation
 
+// swiftlint:disable identifier_name
 // https://canvas.instructure.com/doc/api/files.html
 // https://github.com/instructure/canvas-ios/blob/49a3e347116d623638c66b7adbcc946294faa212/Core/Core/Files/Model/API/APIFile.swift#L179
 struct FolderAPI: APIResponse, Identifiable {
     typealias Model = Folder
 
-    // swiftlint:disable identifier_name
     var id: Int
     var name: String?
     var full_name: String?
@@ -34,7 +34,6 @@ struct FolderAPI: APIResponse, Identifiable {
     var hidden_for_user: Bool?
     var for_submissions: Bool?
     var can_upload: Bool?
-    // swiftlint:enable identifier_name
 
     func createModel() -> Folder {
         Folder(api: self)

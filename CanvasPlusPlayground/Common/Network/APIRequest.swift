@@ -7,6 +7,27 @@
 
 import Foundation
 
+protocol ArrayAPIRequest: APIRequest {
+    associatedtype QueryResult = [Subject]
+}
+
+protocol CacheableAPIRequest: APIRequest where Subject.Model: Cacheable {
+    typealias PersistedModel = Subject.Model
+
+    associatedtype KeyType: Equatable
+
+    var requestId: KeyType { get }
+    var requestIdKey: ParentKeyPath<Subject.Model, KeyType> { get }
+    var idPredicate: Predicate<Subject.Model> { get }
+    var customPredicate: Predicate<Subject.Model> { get }
+}
+
+protocol CacheableArrayAPIRequest: CacheableAPIRequest where QueryResult == [Subject] {}
+
+protocol NoReturnAPIRequest: APIRequest {
+    associatedtype Subject = Empty
+}
+
 protocol APIRequest {
     associatedtype Subject: APIResponse
     associatedtype QueryResult: Codable = Subject
@@ -21,7 +42,11 @@ protocol APIRequest {
 
 extension APIRequest {
     var baseURL: URL {
-        URL(string: "https://gatech.instructure.com/api/v1")!
+        if let baseURL = URL(string: "https://gatech.instructure.com/api/v1") {
+            return baseURL
+        } else {
+            fatalError("Invalid base Canvas URL")
+        }
     }
 
     var combinedQueryParams: [(String, String)] {
@@ -45,25 +70,4 @@ extension APIRequest {
     var method: RequestMethod { .GET }
 
     var perPage: Int { 50 }
-}
-
-protocol ArrayAPIRequest: APIRequest {
-    associatedtype QueryResult = [Subject]
-}
-
-protocol CacheableAPIRequest: APIRequest where Subject.Model: Cacheable {
-    typealias PersistedModel = Subject.Model
-
-    associatedtype KeyType: Equatable
-
-    var requestId: KeyType { get }
-    var requestIdKey: ParentKeyPath<Subject.Model, KeyType> { get }
-    var idPredicate: Predicate<Subject.Model> { get }
-    var customPredicate: Predicate<Subject.Model> { get }
-}
-
-protocol CacheableArrayAPIRequest: CacheableAPIRequest where QueryResult == [Subject] {}
-
-protocol NoReturnAPIRequest: APIRequest {
-    associatedtype Subject = Empty
 }

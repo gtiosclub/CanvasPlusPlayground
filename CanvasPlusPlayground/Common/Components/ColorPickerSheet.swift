@@ -1,5 +1,5 @@
 //
-//  ColorPickerWithoutLabel.swift
+//  ColorPickerSheet.swift
 //  CanvasPlusPlayground
 //
 //  Created by Rahul on 11/16/24.
@@ -8,48 +8,6 @@
 #if os(iOS)
 
 import SwiftUI
-
-@available(iOS 14.0, *)
-public struct ColorPickerWithoutLabel: UIViewRepresentable {
-    @Binding var selection: Color
-    var supportsAlpha: Bool = true
-
-    public init(selection: Binding<Color>, supportsAlpha: Bool = true) {
-        self._selection = selection
-        self.supportsAlpha = supportsAlpha
-    }
-
-    public func makeUIView(context: Context) -> UIColorWell {
-        let well = UIColorWell()
-        well.supportsAlpha = supportsAlpha
-        return well
-    }
-
-    public func updateUIView(_ uiView: UIColorWell, context: Context) {
-        uiView.selectedColor = UIColor(selection)
-    }
-}
-
-extension View {
-    @available(iOS 14.0, *)
-    public func colorPickerSheet(
-        isPresented: Binding<Bool>,
-        selection: Binding<Color>,
-        supportsAlpha: Bool = true,
-        title: String? = nil,
-        onDisappear: @escaping (() -> Void) = { }
-    ) -> some View {
-        self.background(
-            ColorPickerSheet(
-                isPresented: isPresented,
-                selection: selection,
-                supportsAlpha: supportsAlpha,
-                title: title,
-                onDisappear: onDisappear
-            )
-        )
-    }
-}
 
 @available(iOS 14.0, *)
 private struct ColorPickerSheet: UIViewRepresentable {
@@ -121,6 +79,27 @@ private struct ColorPickerSheet: UIViewRepresentable {
             top?.present(modal, animated: true)
             context.coordinator.didPresent = true
         }
+    }
+}
+
+extension View {
+    @available(iOS 14.0, *)
+    public func colorPickerSheet(
+        isPresented: Binding<Bool>,
+        selection: Binding<Color>,
+        supportsAlpha: Bool = true,
+        title: String? = nil,
+        onDisappear: @escaping (() -> Void) = { }
+    ) -> some View {
+        self.background(
+            ColorPickerSheet(
+                isPresented: isPresented,
+                selection: selection,
+                supportsAlpha: supportsAlpha,
+                title: title,
+                onDisappear: onDisappear
+            )
+        )
     }
 }
 

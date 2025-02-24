@@ -7,12 +7,12 @@
 
 import Foundation
 
+// swiftlint:disable identifier_name
 // https://github.com/instructure/canvas-ios/blob/49a3e347116d623638c66b7adbcc946294faa212/Core/Core/People/APIUser.swift
 // https://canvas.instructure.com/doc/api/users.html
 struct UserAPI: APIResponse, Identifiable {
     typealias Model = User
 
-    // swiftlint:disable identifier_name
     let id: Int
     let name: String
     let sortable_name: String
@@ -33,7 +33,6 @@ struct UserAPI: APIResponse, Identifiable {
     let bio: String?
     let pronouns: String?
     var role: String?
-    // swiftlint:enable identifier_name
 
     func createModel() -> User {
         User(from: self)
@@ -93,8 +92,8 @@ struct UserAPI: APIResponse, Identifiable {
    "time_zone": "America/Denver",
    // Optional: The user's bio.
    "bio": "I like the Muppets.",
-   // Optional: This field is only returned if pronouns are enabled, and will
-   // return the pronouns of the user.
+   // Optional: This field is only returned if pronouns are enabled, and will return
+   // the pronouns of the user.
    "pronouns": "he/him"
  }
  */

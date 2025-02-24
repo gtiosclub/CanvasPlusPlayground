@@ -7,11 +7,15 @@
 
 import Foundation
 
+// swiftlint:disable commented_code identifier_name
+enum ModuleState: String, Codable {
+    case locked, unlocked, started, completed
+}
+
 // https://canvas.instructure.com/doc/api/modules.html
 struct APIModule: APIResponse {
     typealias Model = Module
 
-    // swiftlint:disable identifier_name
     let id: Int
     /// The state of the module: `active` or `deleted`
     let workflow_state: WorkflowState?
@@ -40,7 +44,6 @@ struct APIModule: APIResponse {
     /// (Optional) Whether this module is published. This field is present only if the caller has permission to view unpublished modules.
     let published: Bool?
     // let publish_final_grade: Bool?
-    // swiftlint:enable identifier_name
 
     func createModel() -> Model {
         Module(from: self)
@@ -49,8 +52,4 @@ struct APIModule: APIResponse {
     enum WorkflowState: String, Codable {
         case active, deleted
     }
-}
-
-enum ModuleState: String, Codable {
-    case locked, unlocked, started, completed
 }

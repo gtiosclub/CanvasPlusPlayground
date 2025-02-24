@@ -7,10 +7,10 @@
 
 import Foundation
 
+// swiftlint:disable identifier_name
 struct ProfileAPI: APIResponse, Identifiable {
     typealias Model = Profile
 
-    // swiftlint:disable identifier_name
     let id: Int
     let name: String?
     let short_name: String?
@@ -28,7 +28,6 @@ struct ProfileAPI: APIResponse, Identifiable {
     let locale: String?
     let k5_user: Bool?
     let use_classic_font_in_k5: Bool?
-    // swiftlint:enable identifier_name
 
     func createModel() -> Profile {
         Profile(from: self)

@@ -7,12 +7,41 @@
 
 import Foundation
 
+// swiftlint:disable commented_code identifier_name
+struct APIFileToken: Codable, Equatable {
+    let token: String
+}
+
+struct APIUsageRights: Codable, Equatable {
+    let legal_copyright: String?
+    let license: String?
+    let use_justification: UseJustification?
+}
+
+enum UseJustification: String, Codable, CaseIterable {
+    case own_copyright, used_by_permission, public_domain, fair_use, creative_commons
+
+    var label: String {
+        switch self {
+        case .own_copyright:
+            "I hold the copyright"
+        case .used_by_permission:
+            "I obtained permission"
+        case .public_domain:
+            "It is in the public domain"
+        case .fair_use:
+            "It is a fair use or similar exception"
+        case .creative_commons:
+            "It is licensed under Creative Commons"
+        }
+    }
+}
+
 // https://github.com/instructure/canvas-ios/blob/49a3e347116d623638c66b7adbcc946294faa212/Core/Core/Files/Model/API/APIFile.swift#L175
 // https://canvas.instructure.com/doc/api/files.html
 struct FileAPI: APIResponse, Identifiable {
     typealias Model = File
 
-    // swiftlint:disable identifier_name
     let id: Int
     let uuid: String
     let folder_id: Int
@@ -20,7 +49,7 @@ struct FileAPI: APIResponse, Identifiable {
     let filename: String
     let content_type: String
     var url: String?
-    // var url: APIURL?
+//     var url: APIURL?
     // file size in bytes
     let size: Int?
     let created_at: Date
@@ -80,34 +109,3 @@ struct FileAPI: APIResponse, Identifiable {
         case visibility_level
     }
 }
-
-struct APIFileToken: Codable, Equatable {
-    let token: String
-}
-
-struct APIUsageRights: Codable, Equatable {
-    let legal_copyright: String?
-    let license: String?
-    let use_justification: UseJustification?
-}
-
-enum UseJustification: String, Codable, CaseIterable {
-    case own_copyright, used_by_permission, public_domain, fair_use, creative_commons
-
-    var label: String {
-        switch self {
-        case .own_copyright:
-            "I hold the copyright"
-        case .used_by_permission:
-            "I obtained permission"
-        case .public_domain:
-            "It is in the public domain"
-        case .fair_use:
-            "It is a fair use or similar exception"
-        case .creative_commons:
-            "It is licensed under Creative Commons"
-        }
-    }
-}
-
-// swiftlint:enable identifier_name

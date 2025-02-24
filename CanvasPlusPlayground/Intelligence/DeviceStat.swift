@@ -3,12 +3,11 @@
  */
 
 import Foundation
-import MLXLLM
 import MLX
+import MLXLLM
 
 @Observable
 final class DeviceStat: @unchecked Sendable {
-
     @MainActor
     var gpuUsage = GPU.snapshot()
 
@@ -31,5 +30,4 @@ final class DeviceStat: @unchecked Sendable {
             self?.gpuUsage = gpuSnapshotDelta
         }
     }
-
 }

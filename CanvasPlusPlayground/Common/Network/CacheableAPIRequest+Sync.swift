@@ -1,5 +1,5 @@
 //
-//  APIRequest+Sync.swift
+//  CacheableAPIRequest+Sync.swift
 //  CanvasPlusPlayground
 //
 //  Created by Abdulaziz Albahar on 12/21/24.
@@ -14,7 +14,7 @@ extension CacheableAPIRequest {
         to repository: CanvasRepository,
         loadingMethod: LoadingMethod<Self> = .all(onNewPage: { _ in })
     ) async throws -> [PersistedModel] {
-        let cached = try await load(from: repository, loadingMethod: .all(onNewPage: { _ in})) ?? []
+        let cached = try await load(from: repository, loadingMethod: .all(onNewPage: { _ in })) ?? []
 
         return try await syncWithAPI(
             to: repository,
@@ -29,7 +29,6 @@ extension CacheableAPIRequest {
         using cache: [PersistedModel],
         loadingMethod: LoadingMethod<Self>
     ) async throws -> [PersistedModel] {
-
         let cacheLookup = Dictionary(uniqueKeysWithValues: Set(cache).map { ($0.id, $0) })
 
         let updateStorage: ([PersistedModel]) async -> [PersistedModel] = { newModels in
@@ -59,7 +58,6 @@ extension CacheableAPIRequest {
 
         // Fetch newest version from API, then filter as desired by caller.
         var latest: [PersistedModel] = try await {
-
             // Adjust `fetch` generic parameter based on whether request is for a collection.
             var fetched: [PersistedModel] = []
             if QueryResult.self is any Collection.Type {
@@ -78,7 +76,6 @@ extension CacheableAPIRequest {
                     let raw = try await fetch(loadingMethod: loadingMethod)
                     fetched = await updateStorage(raw.map { $0.createModel() })
                 }
-
             } else {
                 let responseAsModel = try await fetch(loadingMethod: loadingMethod).map {
                     $0.createModel()
@@ -114,19 +111,16 @@ extension CacheableAPIRequest {
         onCacheReceive: ([PersistedModel]?) -> Void = { _ in },
         loadingMethod: LoadingMethod<Self> = .all(onNewPage: { _ in })
     ) async throws -> [PersistedModel] {
-
         let cached: [PersistedModel]? = try await load(
             from: repository,
             loadingMethod: loadingMethod
         )
         onCacheReceive(cached) // Share cached version with caller.
 
-        let latest = try await syncWithAPI(
+        return try await syncWithAPI(
             to: repository,
             using: cached ?? [],
             loadingMethod: loadingMethod
         )
-
-        return latest
     }
 }

@@ -8,6 +8,10 @@
 import SwiftData
 import SwiftUI
 
+enum CacheError: Error {
+    case encodingError, decodingError
+}
+
 @MainActor
 class CanvasRepository {
     let modelContainer: ModelContainer
@@ -43,7 +47,6 @@ class CanvasRepository {
     func get<T>(
         descriptor: FetchDescriptor<T>
     ) throws -> [T]? where T: Cacheable {
-
         let models: [T] = try modelContext.fetch(descriptor)
 
         // Make sure model exists.
@@ -55,8 +58,7 @@ class CanvasRepository {
     func count<T>(
         descriptor: FetchDescriptor<T>
     ) throws -> Int where T: Cacheable {
-
-        return try modelContext.fetchCount(descriptor)
+        try modelContext.fetchCount(descriptor)
     }
 
     func delete(_ model: any PersistentModel) {
@@ -79,9 +81,4 @@ class CanvasRepository {
     func setAutosave(_ enabled: Bool) async {
         self.modelContext.autosaveEnabled = enabled
     }
-
-}
-
-enum CacheError: Error {
-    case encodingError, decodingError
 }

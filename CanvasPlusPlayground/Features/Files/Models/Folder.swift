@@ -110,5 +110,4 @@ class Folder: Cacheable {
         self.forSubmissions = other.forSubmissions
         self.canUpload = other.canUpload
     }
-
 }

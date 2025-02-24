@@ -20,16 +20,17 @@ class CanvasService {
 
     /// Only loads from storage, doesn't make a network call
     @MainActor
-    func load<Request: CacheableAPIRequest>(_ request: Request, loadingMethod: LoadingMethod<Request> = .all(onNewPage: { _ in})) async throws -> [Request.PersistedModel]? {
+    func load<Request: CacheableAPIRequest>(
+        _ request: Request,
+        loadingMethod: LoadingMethod<Request> = .all(onNewPage: { _ in })
+    ) async throws -> [Request.PersistedModel]? {
         guard let repository else { return nil }
 
         // Get cached data for this type then filter to only get models related to `request`
-        let cached: [Request.PersistedModel]? = try await request.load(
+        return try await request.load(
             from: repository,
             loadingMethod: loadingMethod
-        )
-
-        return cached
+        ) as [Request.PersistedModel]?
     }
 
     /// Number of occurences of models related to request
@@ -44,16 +45,15 @@ class CanvasService {
     @MainActor
     func syncWithAPI<Request: CacheableAPIRequest>(
         _ request: Request,
-        loadingMethod: LoadingMethod<Request> = .all(onNewPage: { _ in})
+        loadingMethod: LoadingMethod<Request> = .all(onNewPage: { _ in })
     ) async throws -> [Request.PersistedModel] {
         guard let repository else { return [] }
 
         // Call for cacheable requests
-        let result = try await request.syncWithAPI(
+        return try await request.syncWithAPI(
             to: repository,
             loadingMethod: loadingMethod
         )
-        return result
     }
 
     /**
@@ -69,7 +69,7 @@ class CanvasService {
     func loadAndSync<Request: CacheableAPIRequest>(
         _ request: Request,
         onCacheReceive: ([Request.PersistedModel]?) -> Void = { _ in },
-        loadingMethod: LoadingMethod<Request> = .all(onNewPage: { _ in})
+        loadingMethod: LoadingMethod<Request> = .all(onNewPage: { _ in })
     ) async throws -> [Request.PersistedModel] {
         guard let repository else { return [] }
 
@@ -79,23 +79,24 @@ class CanvasService {
         )
         onCacheReceive(cached) // Share cached version with caller.
 
-        let latest = try await request.syncWithAPI(
+        return try await request.syncWithAPI(
             to: repository,
             loadingMethod: loadingMethod
         )
-
-        return latest
     }
 
     // MARK: Network Requests
 
     func fetchResponse<Request: APIRequest>(_ request: Request, at page: Int? = nil) async throws -> (data: Data, url: URLResponse) {
-        return try await request.fetchResponse(at: page)
+        try await request.fetchResponse(at: page)
     }
 
     @discardableResult
-    func fetch<Request: APIRequest>(_ request: Request, loadingMethod: LoadingMethod<Request> = .all(onNewPage: {_ in})) async throws -> [Request.Subject] {
-        return try await request.fetch(loadingMethod: loadingMethod)
+    func fetch<Request: APIRequest>(
+        _ request: Request,
+        loadingMethod: LoadingMethod<Request> = .all(onNewPage: { _ in })
+    ) async throws -> [Request.Subject] {
+        try await request.fetch(loadingMethod: loadingMethod)
     }
 
     // MARK: Repository actions
@@ -110,7 +111,7 @@ class CanvasService {
         let predicate = descriptor.predicate ?? #Predicate { _ in true }
         let sorters = descriptor.sortBy
 
-        let filteredModels = try models.filter(predicate).sorted { modelA, modelB in
+        return try models.filter(predicate).sorted { modelA, modelB in
             for sorter in sorters {
                 let comparison = sorter.compare(modelA, modelB)
                 switch sorter.order {
@@ -124,7 +125,5 @@ class CanvasService {
             }
             return false
         }
-
-        return filteredModels
     }
 }

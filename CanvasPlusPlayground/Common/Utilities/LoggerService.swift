@@ -7,6 +7,6 @@
 
 import os
 
-struct LoggerService {
+enum LoggerService {
     static let main = Logger(subsystem: "com.gtiosclub.CanvasPlusPlayground", category: "CanvasPlusPlayground")
 }

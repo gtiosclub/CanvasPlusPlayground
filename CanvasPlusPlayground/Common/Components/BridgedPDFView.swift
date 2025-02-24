@@ -1,18 +1,22 @@
 //
-//  PDFViewHelper.swift
+//  BridgedPDFView.swift
 //  CanvasPlusPlayground
 //
 //  Created by Vamsi Putti on 9/17/24.
 //
 
-import SwiftUI
 import PDFKit
+import SwiftUI
 
 #if os(macOS)
 typealias PlatformViewRepresentable = NSViewRepresentable
 #else
 typealias PlatformViewRepresentable = UIViewRepresentable
 #endif
+
+enum PDFSource {
+    case url(URL), data(Data)
+}
 
 struct BridgedPDFView: PlatformViewRepresentable {
     let pdfSource: PDFSource
@@ -29,11 +33,9 @@ struct BridgedPDFView: PlatformViewRepresentable {
 
     #if os(macOS)
     func updateNSView(_ nsView: NSViewType, context: Context) {
-
     }
     #else
     func updateUIView(_ uiView: PDFView, context: Context) {
-
     }
     #endif
 
@@ -60,8 +62,4 @@ struct BridgedPDFView: PlatformViewRepresentable {
         pdfView.autoScales = true
         return pdfView
     }
-}
-
-enum PDFSource {
-    case url(URL), data(Data)
 }

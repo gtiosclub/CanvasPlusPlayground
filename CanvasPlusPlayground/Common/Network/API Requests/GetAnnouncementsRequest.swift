@@ -31,6 +31,7 @@ struct GetAnnouncementsRequest: CacheableArrayAPIRequest {
     let contextCodes: [String]
     let startDate: Date?
     let endDate: Date?
+    // swiftlint:disable:next commented_code
     // let activeOnly: Bool? ONLY FOR TEACHERS
     let latestOnly: Bool?
     let include: [Include]

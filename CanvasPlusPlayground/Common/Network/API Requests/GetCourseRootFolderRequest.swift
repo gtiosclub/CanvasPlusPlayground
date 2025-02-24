@@ -1,5 +1,5 @@
 //
-//  GetCourseRootFolder.swift
+//  GetCourseRootFolderRequest.swift
 //  CanvasPlusPlayground
 //
 //  Created by Abdulaziz Albahar on 12/20/24.

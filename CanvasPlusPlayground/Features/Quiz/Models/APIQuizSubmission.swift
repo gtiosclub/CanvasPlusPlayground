@@ -6,8 +6,8 @@
 //
 import Foundation
 
+// swiftlint:disable commented_code identifier_name
 struct APIQuizSubmission: Codable {
-    // swiftlint:disable identifier_name
     let attempt: Int?
     let attempts_left: Int
     let end_at: Date?
@@ -29,6 +29,4 @@ struct APIQuizSubmission: Codable {
     // let overdue_and_needs_submission: Bool
     // let score_before_regrade: Double?
     // let time_spent: TimeInterval?
-
-    // swiftlint:enable identifier_name
 }

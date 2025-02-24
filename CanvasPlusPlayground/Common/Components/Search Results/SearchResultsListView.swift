@@ -9,7 +9,7 @@ import SwiftUI
 
 /// Inspired by https://medium.engineering/how-to-do-pagination-in-swiftui-04511be7fbd1
 struct SearchResultsListView<Content: View, DataSource: SearchResultListDataSource>: View {
-    @State var dataSource: DataSource
+    @State private var dataSource: DataSource
     let itemsView: () -> Content
 
     init(
@@ -74,7 +74,3 @@ struct SearchResultsListView<Content: View, DataSource: SearchResultListDataSour
         }
     }
 }
-
-// #Preview {
-//    SearchResultsListView()
-// }

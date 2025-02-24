@@ -1,5 +1,5 @@
 //
-//  GetAssignmentGroupRequest.swift
+//  GetAssignmentGroupsRequest.swift
 //  CanvasPlusPlayground
 //
 //  Created by Rahul on 2/21/25.
@@ -64,14 +64,12 @@ struct GetAssignmentGroupsRequest: CacheableArrayAPIRequest {
         }
     }
     var customPredicate: Predicate<AssignmentGroup> {
-        let assignmentIdsPred = assignmentIds.isEmpty ? .true : #Predicate<AssignmentGroup> { group in
+        // TODO: Add excludeSubmissionTypes support
+
+        assignmentIds.isEmpty ? .true : #Predicate<AssignmentGroup> { group in
             group.assignments?
                 .contains { assignmentIds.contains($0.id.asString) } ?? false
         }
-
-        // TODO: Add excludeSubmissionTypes support
-
-        return assignmentIdsPred
     }
 }
 

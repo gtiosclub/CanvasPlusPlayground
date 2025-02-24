@@ -40,9 +40,7 @@ class ProfileManager {
 
     func getProfile(for id: User.ID) async -> Profile? {
         do {
-            let profile: Profile = try await CanvasService.shared.loadAndSync(CanvasRequest.getUserProfile(userId: id))[0]
-
-            return profile
+            return try await CanvasService.shared.loadAndSync(CanvasRequest.getUserProfile(userId: id))[0] as Profile
         } catch {
             LoggerService.main.error("Error fetching user profile: \(error)")
         }

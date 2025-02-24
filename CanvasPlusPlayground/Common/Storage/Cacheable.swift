@@ -5,8 +5,8 @@
 //  Created by Abdulaziz Albahar on 11/1/24.
 //
 
-import SwiftData
 import Foundation
+import SwiftData
 
 protocol BaseCacheable {}
 
@@ -26,6 +26,6 @@ extension Cacheable where Self: Hashable {
 
 extension Cacheable where Self: Equatable {
     static func == (lhs: Self, rhs: Self) -> Bool {
-        return lhs.id == rhs.id
+        lhs.id == rhs.id
     }
 }

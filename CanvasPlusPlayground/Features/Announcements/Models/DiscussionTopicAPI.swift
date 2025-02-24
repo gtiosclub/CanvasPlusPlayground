@@ -7,12 +7,32 @@
 
 import Foundation
 
+// swiftlint:disable commented_code identifier_name
+struct DiscussionTopicChildAPI: Codable {
+    let id: Int
+    let group_id: Int
+}
+
+struct DiscussionPermissionsAPI: Codable {
+    let attach: Bool?
+    let update: Bool?
+    let reply: Bool?
+    let delete: Bool?
+}
+
+struct DiscussionParticipantAPI: Codable {
+    let id: Int?
+    let display_name: String?
+    let avatar_image_url: URL?
+    let html_url: URL?
+    let pronouns: String?
+}
+
 // https://canvas.instructure.com/doc/api/discussion_topics.html#method.discussion_topics.index
 struct DiscussionTopicAPI: APIResponse, Identifiable {
     typealias Model = DiscussionTopic
 
     // MARK: In Docs
-    // swiftlint:disable identifier_name
     let id: Int
     let author: DiscussionParticipantAPI?
     let title: String?
@@ -64,25 +84,3 @@ struct DiscussionTopicAPI: APIResponse, Identifiable {
         DiscussionTopic(from: self)
     }
 }
-
-struct DiscussionTopicChildAPI: Codable {
-    let id: Int
-    let group_id: Int
-}
-
-struct DiscussionPermissionsAPI: Codable {
-    let attach: Bool?
-    let update: Bool?
-    let reply: Bool?
-    let delete: Bool?
-}
-
-struct DiscussionParticipantAPI: Codable {
-    let id: Int?
-    let display_name: String?
-    let avatar_image_url: URL?
-    let html_url: URL?
-    let pronouns: String?
-}
-
-// swiftlint:enable identifier_name

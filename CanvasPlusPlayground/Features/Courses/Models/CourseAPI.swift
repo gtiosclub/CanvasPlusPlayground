@@ -7,11 +7,44 @@
 
 import Foundation
 
+// swiftlint:disable commented_code identifier_name
+struct CalendarLink: Codable, Equatable, Hashable {
+    let ics: String
+}
+
+enum CourseDefaultView: String, Codable, CaseIterable {
+    case assignments, feed, modules, syllabus, wiki
+
+    var string: String {
+        switch self {
+        case .assignments:
+            "Assignments List"
+        case .feed:
+            "Course Activity Stream"
+        case .modules:
+            "Course Modules"
+        case .syllabus:
+            "Syllabus"
+        case .wiki:
+            "Pages Front Page"
+        }
+    }
+}
+
+enum CourseWorkflowState: String, Codable {
+    case available, completed, deleted, unpublished
+}
+
+struct APICourseSettings: Codable, Equatable {
+    let usage_rights_required: Bool?
+    let syllabus_course_summary: Bool?
+    let restrict_quantitative_data: Bool?
+}
+
 // https://canvas.instructure.com/doc/api/courses.html
 struct CourseAPI: APIResponse, Identifiable {
     typealias Model = Course
 
-    // swiftlint:disable identifier_name
     let id: Int
     // let sis_course_id: String?
     // let uuid: String?
@@ -103,38 +136,3 @@ struct CourseAPI: APIResponse, Identifiable {
         let limit_privileges_to_course_section: Bool?
     }
 }
-
-struct CalendarLink: Codable, Equatable, Hashable {
-    let ics: String
-}
-
-enum CourseDefaultView: String, Codable, CaseIterable {
-    case assignments, feed, modules, syllabus, wiki
-
-    var string: String {
-        switch self {
-        case .assignments:
-            "Assignments List"
-        case .feed:
-            "Course Activity Stream"
-        case .modules:
-            "Course Modules"
-        case .syllabus:
-            "Syllabus"
-        case .wiki:
-            "Pages Front Page"
-        }
-    }
-}
-
-enum CourseWorkflowState: String, Codable {
-    case available, completed, deleted, unpublished
-}
-
-struct APICourseSettings: Codable, Equatable {
-    let usage_rights_required: Bool?
-    let syllabus_course_summary: Bool?
-    let restrict_quantitative_data: Bool?
-}
-
-// swiftlint:enable identifier_name

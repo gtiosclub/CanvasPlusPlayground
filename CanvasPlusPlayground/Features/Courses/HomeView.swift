@@ -346,9 +346,7 @@ private struct CourseListCell: View {
             Button("Rename \(course.name ?? "")...", systemImage: "character.cursor.ibeam") {
                 renameCourseFieldText = course.nickname ?? ""
                 showRenameTextField = true
-
             }
-
         }
         .alert("Rename Course?", isPresented: $showRenameTextField) {
             TextField(course.name ?? "MISSING NAME", text: $renameCourseFieldText)
@@ -363,7 +361,6 @@ private struct CourseListCell: View {
             Button("Dismiss", role: .cancel) {
                 renameCourseFieldText = ""
             }
-
         } message: {
             Text("Rename \(course.name ?? "MISSING NAME")?")
         }
