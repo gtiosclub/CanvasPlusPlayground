@@ -15,6 +15,9 @@ class PinnedItem: Identifiable, Codable, Equatable {
     let type: PinnedItemType
     var data: PinnedItemData?
 
+    private var course: Course?
+    private var modelData: PinnedItemData.ModelData?
+
     enum PinnedItemType: Int, Codable {
         case announcement, assignment, file
         // TODO: Add more pinned item types
@@ -30,43 +33,58 @@ class PinnedItem: Identifiable, Codable, Equatable {
 
     func itemData() async {
         do {
-            async let modelData = try fetchData()
-            async let course = try CanvasService.shared.loadAndSync(
-                CanvasRequest.getCourse(id: courseID)
-            )
-
-            self.data =  .init(
-                modelData: try await modelData,
-                course: try await course.first
-            )
-            print("Caching pinnedItem data \(self.data)")
+            try await fetchData()
+            try await CanvasService.shared.loadAndSync(
+                CanvasRequest.getCourse(id: courseID)) { cachedCourse in
+                    guard let course = cachedCourse?.first else { return }
+                    setData(course: course)
+                }
         } catch {
             print("Error fetching \(type): \(error.localizedDescription)")
         }
     }
 
-    private func fetchData() async throws -> PinnedItemData.ModelData? {
+    private func fetchData() async throws {
         switch type {
         case .announcement:
             let announcements = try await CanvasService.shared.loadAndSync(
-                CanvasRequest.getDiscussionTopics(courseId: courseID)
-            )
-            guard let announcement = announcements.first(where: { $0.id == id }) else { return nil }
-            return .announcement(announcement)
-
+                CanvasRequest.getDiscussionTopics(courseId: courseID)) { cachedAnnouncements in
+                    guard let announcement = cachedAnnouncements?.first(where: { $0.id == id }) else { return }
+                    setData(modelData: .announcement(announcement))
+                }
+            guard let announcement = announcements.first(where: { $0.id == id }) else { return }
+            setData(modelData: .announcement(announcement))
         case .assignment:
             let assignments = try await CanvasService.shared.loadAndSync(
-                CanvasRequest.getAssignment(id: id, courseId: courseID)
-            )
-            guard let assignment = assignments.first else { return nil }
-            return .assignment(assignment)
+                CanvasRequest.getAssignment(id: id, courseId: courseID)) { cachedAssignments in
+                    guard let assignment = cachedAssignments?.first else { return }
+                    setData(modelData: .assignment(assignment))
+                }
+            guard let assignment = assignments.first else { return }
+            setData(modelData: .assignment(assignment))
 
         case .file:
             let files = try await CanvasService.shared.loadAndSync(
-                CanvasRequest.getFile(fileId: id)
-            )
-            guard let file = files.first else { return nil }
-            return .file(file)
+                CanvasRequest.getFile(fileId: id)) { cachedFiles in
+                    guard let file = cachedFiles?.first else { return }
+                    setData(modelData: .file(file))
+                }
+            guard let file = files.first else { return }
+            setData(modelData: .file(file))
+        }
+    }
+
+    func setData(course: Course? = nil, modelData: PinnedItemData.ModelData? = nil) {
+        if course != nil {
+            self.course = course
+        }
+
+        if modelData != nil {
+            self.modelData = modelData
+        }
+
+        if self.course != nil && self.modelData != nil {
+            self.data = .init(modelData: self.modelData, course: self.course)
         }
     }
 
