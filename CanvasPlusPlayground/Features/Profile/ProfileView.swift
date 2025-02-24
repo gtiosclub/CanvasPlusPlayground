@@ -9,10 +9,11 @@ import SwiftUI
 
 struct ProfileView: View {
     @Environment(ProfileManager.self) private var profileManager
+    @Environment(NavigationModel.self) var navigationModel
     @Environment(\.dismiss) private var dismiss
 
     let user: User
-    var showCommonCourses: Bool = true
+    var isCurrentUser: Bool
 
     var profile: Profile? {
         if user.id == profileManager.currentUser?.id {
@@ -24,23 +25,37 @@ struct ProfileView: View {
 
     init(
         user: User,
-        showCommonCourses: Bool = true
+        isCurrentUser: Bool = false
     ) {
         self.user = user
-        self.showCommonCourses = showCommonCourses
+        self.isCurrentUser = isCurrentUser
     }
 
     var body: some View {
+        @Bindable var navigationModel = navigationModel
+
         Form {
             Section {
                 header
                     .listRowBackground(Color.clear)
             }
 
-            details
+            Section {
+                details
+            }
 
-            if showCommonCourses {
-                PeopleCommonView(user: user)
+            Section {
+                if isCurrentUser {
+                    #if os(iOS)
+                    Button {
+                        navigationModel.showSettingsSheet = true
+                    } label: {
+                        Label("Settings", systemImage: "gearshape")
+                    }
+                    #endif
+                } else {
+                    PeopleCommonView(user: user)
+                }
             }
         }
         .formStyle(.grouped)
@@ -52,7 +67,11 @@ struct ProfileView: View {
             }
         }
         .animation(.default, value: profile)
-        #if os(macOS)
+        #if os(iOS)
+        .navigationDestination(isPresented: $navigationModel.showSettingsSheet) {
+            SettingsView()
+        }
+        #else
         .frame(height: 500)
         #endif
     }
@@ -98,6 +117,7 @@ struct ProfileView: View {
         }
 
         LabeledContent("Short Name", value: user.shortName)
+            .multilineTextAlignment(.trailing)
 
         if !user.enrollmentRoles.isEmpty {
             LabeledContent(

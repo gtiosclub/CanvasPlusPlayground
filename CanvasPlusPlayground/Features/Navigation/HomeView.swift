@@ -46,6 +46,9 @@ struct HomeView: View {
                 }
         } content: {
             contentView
+            #if os(iOS)
+                .navigationBarTitleDisplayMode(.large)
+            #endif
         } detail: {
             if let selectedCourse, let selectedCoursePage {
                 CourseDetailView(
@@ -82,16 +85,11 @@ struct HomeView: View {
                 NavigationStack {
                     ProfileView(
                         user: currentUser,
-                        showCommonCourses: false
+                        isCurrentUser: true
                     )
                 }
             }
         }
-        #if os(iOS)
-        .sheet(isPresented: $navigationModel.showSettingsSheet) {
-            SettingsView()
-        }
-        #endif
         .environment(navigationModel)
     }
 
