@@ -562,10 +562,9 @@
 		A324BA5F2D0798A1005F53FA /* Grades */ = {
 			isa = PBXGroup;
 			children = (
+				B7460A8F2D6BF9320069CF5B /* Models */,
 				7F8535732C98DE3C0023E384 /* CourseGradeView.swift */,
 				A31A81E62D0CCB69003C37EB /* GradesViewModel.swift */,
-				A373DC0C2D19F65700215019 /* APIGradingPeriod.swift */,
-				A373DC222D1D454000215019 /* APIGradingSchemeEntry.swift */,
 			);
 			path = Grades;
 			sourceTree = "<group>";
@@ -681,6 +680,15 @@
 				A3D0225F2D6A715400F8068C /* PageAPI.swift */,
 			);
 			path = Pages;
+			sourceTree = "<group>";
+		};
+		B7460A8F2D6BF9320069CF5B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A373DC0C2D19F65700215019 /* APIGradingPeriod.swift */,
+				A373DC222D1D454000215019 /* APIGradingSchemeEntry.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		B764545B2C8BBC7F002DF00E = {
