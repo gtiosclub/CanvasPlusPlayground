@@ -15,6 +15,7 @@
 		7F8535742C98DE3C0023E384 /* CourseGradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8535732C98DE3C0023E384 /* CourseGradeView.swift */; };
 		95BA93482C9CE20D00137A91 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95BA93472C9CE20D00137A91 /* CalendarView.swift */; };
 		9A977E832D6C322F001D7F0A /* LoggerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A977E822D6C322F001D7F0A /* LoggerService.swift */; };
+		9A977E8B2D6C375E001D7F0A /* ColorPickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A977E8A2D6C375E001D7F0A /* ColorPickerSheet.swift */; };
 		9B350F082C9652C6003FC60D /* NSAttributedString+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B350F072C9652C6003FC60D /* NSAttributedString+HTML.swift */; };
 		9B6663E32C9853BC0060990E /* HTMLTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6663E22C9853BC0060990E /* HTMLTextView.swift */; };
 		9B69FA4B2CC2CC7F006101F3 /* AggregatedAssignmentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B69FA4A2CC2CC7F006101F3 /* AggregatedAssignmentsView.swift */; };
@@ -129,7 +130,6 @@
 		B77FD0072D5309340049AA5E /* ProfilePicture.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77FD0062D5309340049AA5E /* ProfilePicture.swift */; };
 		B785BE652CF592710094BF94 /* LLM in Frameworks */ = {isa = PBXBuildFile; productRef = B785BE642CF592710094BF94 /* LLM */; };
 		B7926D162CE95CED00BFFBE1 /* RGBColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7926D152CE95CE900BFFBE1 /* RGBColors.swift */; };
-		B7926D182CE962C200BFFBE1 /* ColorPickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7926D172CE962C200BFFBE1 /* ColorPickerSheet.swift */; };
 		B7A12F3F2D69441500EDFA0A /* GetAssignmentGroupsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A12F3E2D69440F00EDFA0A /* GetAssignmentGroupsRequest.swift */; };
 		B7A12F462D69448300EDFA0A /* AssignmentGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A12F452D69448300EDFA0A /* AssignmentGroup.swift */; };
 		B7A12F482D69448C00EDFA0A /* AssignmentGroupAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A12F472D69448C00EDFA0A /* AssignmentGroupAPI.swift */; };
@@ -174,6 +174,7 @@
 		7F8535732C98DE3C0023E384 /* CourseGradeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseGradeView.swift; sourceTree = "<group>"; };
 		95BA93472C9CE20D00137A91 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		9A977E822D6C322F001D7F0A /* LoggerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerService.swift; sourceTree = "<group>"; };
+		9A977E8A2D6C375E001D7F0A /* ColorPickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerSheet.swift; sourceTree = "<group>"; };
 		9B350F072C9652C6003FC60D /* NSAttributedString+HTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+HTML.swift"; sourceTree = "<group>"; };
 		9B6663E22C9853BC0060990E /* HTMLTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLTextView.swift; sourceTree = "<group>"; };
 		9B69FA4A2CC2CC7F006101F3 /* AggregatedAssignmentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AggregatedAssignmentsView.swift; sourceTree = "<group>"; };
@@ -288,7 +289,6 @@
 		B77FD0012D52A0D20049AA5E /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		B77FD0062D5309340049AA5E /* ProfilePicture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePicture.swift; sourceTree = "<group>"; };
 		B7926D152CE95CE900BFFBE1 /* RGBColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RGBColors.swift; sourceTree = "<group>"; };
-		B7926D172CE962C200BFFBE1 /* ColorPickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerSheet.swift; sourceTree = "<group>"; };
 		B7A12F3E2D69440F00EDFA0A /* GetAssignmentGroupsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAssignmentGroupsRequest.swift; sourceTree = "<group>"; };
 		B7A12F452D69448300EDFA0A /* AssignmentGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentGroup.swift; sourceTree = "<group>"; };
 		B7A12F472D69448C00EDFA0A /* AssignmentGroupAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentGroupAPI.swift; sourceTree = "<group>"; };
@@ -472,7 +472,7 @@
 			children = (
 				B7C0A3C82D2F87E9003E5A36 /* AsyncView.swift */,
 				B7F950332D11A00F004BB470 /* StatusToolbarItem.swift */,
-				B7926D172CE962C200BFFBE1 /* ColorPickerSheet.swift */,
+				9A977E8A2D6C375E001D7F0A /* ColorPickerSheet.swift */,
 				3DAE84FF2C9A0E4F008C22E7 /* BridgedPDFView.swift */,
 				A3CA025C2D432B8500A9752B /* Search Results */,
 			);
@@ -973,6 +973,7 @@
 				A3CA025B2D432A8700A9752B /* SearchResultListDataSource.swift in Sources */,
 				9B9C2E042C93F6CD00E4B16B /* CourseAnnouncementsView.swift in Sources */,
 				B77FD0022D52A0D60049AA5E /* ProfileView.swift in Sources */,
+				9A977E8B2D6C375E001D7F0A /* ColorPickerSheet.swift in Sources */,
 				192EC04C2C963EE600AF8528 /* CourseAssignmentsView.swift in Sources */,
 				A3FFD03C2CDED67C006BAB51 /* String+Numbers.swift in Sources */,
 				A301EE132D614A4100D71139 /* GetDiscussionTopicsRequest.swift in Sources */,
@@ -1010,7 +1011,6 @@
 				B7A12F462D69448300EDFA0A /* AssignmentGroup.swift in Sources */,
 				3DAE85002C9A0E4F008C22E7 /* BridgedPDFView.swift in Sources */,
 				B533C0BE2CADDDE700A74AF6 /* PeopleCommonView.swift in Sources */,
-				B7926D182CE962C200BFFBE1 /* ColorPickerSheet.swift in Sources */,
 				B7C0A3C72D2F4E82003E5A36 /* GetFileRequest.swift in Sources */,
 				A31A81E72D0CCB69003C37EB /* GradesViewModel.swift in Sources */,
 				A373DC142D19FA2A00215019 /* APICourseSection.swift in Sources */,
