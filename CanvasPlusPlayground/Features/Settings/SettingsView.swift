@@ -113,7 +113,7 @@ struct SettingsView: View {
                     do {
                         try CourseFileService.clearAllFiles()
                     } catch {
-                        print("Couldn't clear files: \(error)")
+                        logger.error("Couldn't clear files: \(error)")
                     }
                 }
 

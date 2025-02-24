@@ -25,13 +25,13 @@ struct CourseFileService {
                     try fileManager.createDirectory(at: root, withIntermediateDirectories: true, attributes: nil)
                     return root
                 } catch {
-                    print("Failure creating directory to root.")
+                    logger.error("Failure creating directory to root.")
                     return nil
                 }
             }
 
         } else {
-            print("Failure getting bundle identifier")
+            logger.error("Failure getting bundle identifier")
             return nil
         }
     }
@@ -61,14 +61,14 @@ struct CourseFileService {
             withIntermediateDirectories: true,
             attributes: nil
         )
-        print("Saving to \(fileURL)")
+        logger.debug("Saving to \(fileURL)")
 
         do {
             try content.write(to: fileURL, options: .atomic)
 
             file.localURL = fileURL
         } catch {
-            print("Writing failed due to \(error)")
+            logger.error("Writing failed due to \(error)")
             throw FileError.fileWriteFailed
         }
 
@@ -81,25 +81,25 @@ struct CourseFileService {
         course: Course,
         foldersPath: [String]
     ) -> URL? {
-        print("Checking if \(file.displayName) exists")
+        logger.debug("Checking if \(file.displayName) exists")
         let fileLoc = try? pathWithFolders(foldersPath: foldersPath, courseId: course.id, fileId: file.id, type: FileType(file: file))
 
         if let fileLoc, Self.fileManager
             .fileExists(atPath: fileLoc.path(percentEncoded: false)) {
-            print("File exists locally!\n")
+            logger.debug("File exists locally!\n")
 
             if fileLoc != file.localURL {
-                print("Updating File's localURL")
+                logger.debug("Updating File's localURL")
                 file.localURL = fileLoc
             }
 
             return fileLoc
         } else if file.localURL != nil {
-            print("Updating File's localURL to nil since it no longer exists locally")
+            logger.debug("Updating File's localURL to nil since it no longer exists locally")
             file.localURL = nil
         }
 
-        print("File does not exist locally\n")
+        logger.debug("File does not exist locally")
 
         return nil
     }
@@ -118,7 +118,7 @@ struct CourseFileService {
 
         // Start downloading remote version
         if let urlStr = file.url, let url = URL(string: urlStr) {
-            print("File doesn't exist! Downloading ...")
+            logger.debug("File doesn't exist! Downloading ...")
 
             weak var file = file
             let tempFileLoc = try await self.downloadFile(from: url)
@@ -130,11 +130,11 @@ struct CourseFileService {
                     throw FileError.fileWasNil
                 }
                 let url = try self.saveCourseFile(courseId: course.id, folderIds: foldersPath, file: file, content: content)
-                print("File successfully saved at \(url.path())")
+                logger.debug("File successfully saved at \(url.path())")
 
                 return (content, url)
             } catch {
-                print("Failed to save file. \(error)")
+                logger.error("Failed to save file. \(error)")
                 throw error
             }
 
@@ -155,13 +155,13 @@ struct CourseFileService {
 
             for fileURL in fileURLs {
                 try fileManager.removeItem(at: fileURL)
-                print("Deleted: \(fileURL.lastPathComponent)")
+                logger.debug("Deleted: \(fileURL.lastPathComponent)")
             }
 
-            print("All files in \(fileURL.path) have been deleted.")
+            logger.debug("All files in \(fileURL.path) have been deleted.")
 
         } catch {
-            print("Error deleting files: \(error.localizedDescription)")
+            logger.error("Error deleting files: \(error.localizedDescription)")
         }
     }
 
@@ -180,7 +180,7 @@ struct CourseFileService {
         let (tempUrl, response) = try await URLSession.shared.download(from: remoteURL)
 
         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-            print("Error downloading file: \(response)")
+            logger.error("Error downloading file: \(response)")
             throw URLError(.badServerResponse)
         }
 

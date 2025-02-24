@@ -51,7 +51,7 @@ struct ProfilePicture: View {
                 let (data, _) = try await URLSession.shared.data(from: url)
                 user.avatarImageData = data
             } catch {
-                print("Error loading image: \(error)")
+                logger.error("Error loading image: \(error)")
             }
         }
     }

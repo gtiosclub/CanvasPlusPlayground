@@ -68,7 +68,7 @@ class CanvasRepository {
         do {
             try modelContext.save()
         } catch {
-            print("Trouble saving to cache")
+            logger.error("Trouble saving to cache: \(error)")
         }
     }
 

@@ -56,7 +56,7 @@ extension APIRequest {
         } else if let page = try decodeData(data) as? Subject {
             return [page]
         } else {
-            print("Failed to decode \(data) into [\(Subject.self)] or \(Subject.self).")
+            logger.error("Failed to decode \(data) into [\(Subject.self)] or \(Subject.self).")
             return nil
         }
     }
@@ -96,7 +96,7 @@ extension APIRequest {
             let (data, response) = try await URLSession.shared.data(for: urlRequest)
 
             guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-                print("HTTP error: $\(response)$")
+                logger.error("HTTP error: $\(response)$")
                 throw URLError(.badServerResponse)
             }
 
@@ -125,7 +125,7 @@ extension APIRequest {
             try await onNewPage((data, response))
 
             guard let httpResponse = response as? HTTPURLResponse, let linkValue = httpResponse.allHeaderFields["Link"] as? String else {
-                print("No link field data")
+                logger.error("No link field data")
                 break
             }
 
@@ -137,7 +137,7 @@ extension APIRequest {
                   let components = URLComponents(url: nextUrl, resolvingAgainstBaseURL: true),
                   let pageItem = components.queryItems?.first(where: { $0.name == "page" }),
                   let nextPage = Int(pageItem.value ?? "") else {
-                print("No matching regex")
+                logger.error("No matching regex")
                 break
             }
 

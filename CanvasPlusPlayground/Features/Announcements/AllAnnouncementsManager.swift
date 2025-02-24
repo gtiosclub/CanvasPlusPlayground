@@ -67,7 +67,7 @@ import Foundation
                     )
 
                     guard let announcements else {
-                        print("Failed to fetch announcements.")
+                        logger.error("Failed to fetch announcements.")
                         return
                     }
 

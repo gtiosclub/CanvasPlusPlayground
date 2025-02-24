@@ -5,6 +5,7 @@
 //  Created by Rahul on 9/8/24.
 //
 
+import os
 import SwiftUI
 
 @Observable
@@ -41,7 +42,7 @@ class CourseFileViewModel {
             return rootFolder
         }
 
-        print("Failed to fetch root folder.")
+        logger.error("Failed to fetch root folder.")
         return nil
 
     }
@@ -71,7 +72,7 @@ class CourseFileViewModel {
                 self.files = files
             }
         } catch {
-            print(error)
+            logger.error("\(error.localizedDescription)")
         }
 
     }

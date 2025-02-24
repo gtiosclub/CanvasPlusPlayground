@@ -14,6 +14,7 @@
 		3DAE85002C9A0E4F008C22E7 /* PDFViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DAE84FF2C9A0E4F008C22E7 /* PDFViewHelper.swift */; };
 		7F8535742C98DE3C0023E384 /* CourseGradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8535732C98DE3C0023E384 /* CourseGradeView.swift */; };
 		95BA93482C9CE20D00137A91 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95BA93472C9CE20D00137A91 /* CalendarView.swift */; };
+		9A977E832D6C322F001D7F0A /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A977E822D6C322F001D7F0A /* Logger.swift */; };
 		9B350F082C9652C6003FC60D /* NSAttributedString+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B350F072C9652C6003FC60D /* NSAttributedString+HTML.swift */; };
 		9B6663E32C9853BC0060990E /* HTMLTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6663E22C9853BC0060990E /* HTMLTextView.swift */; };
 		9B69FA4B2CC2CC7F006101F3 /* AggregatedAssignmentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B69FA4A2CC2CC7F006101F3 /* AggregatedAssignmentsView.swift */; };
@@ -172,6 +173,7 @@
 		3DAE84FF2C9A0E4F008C22E7 /* PDFViewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFViewHelper.swift; sourceTree = "<group>"; };
 		7F8535732C98DE3C0023E384 /* CourseGradeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseGradeView.swift; sourceTree = "<group>"; };
 		95BA93472C9CE20D00137A91 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		9A977E822D6C322F001D7F0A /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		9B350F072C9652C6003FC60D /* NSAttributedString+HTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+HTML.swift"; sourceTree = "<group>"; };
 		9B6663E22C9853BC0060990E /* HTMLTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLTextView.swift; sourceTree = "<group>"; };
 		9B69FA4A2CC2CC7F006101F3 /* AggregatedAssignmentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AggregatedAssignmentsView.swift; sourceTree = "<group>"; };
@@ -460,6 +462,7 @@
 				9B350F072C9652C6003FC60D /* NSAttributedString+HTML.swift */,
 				A3FFD0392CDEC2AC006BAB51 /* LookupCondition.swift */,
 				A3D022582D6A5BC500F8068C /* Data+Empty.swift */,
+				9A977E822D6C322F001D7F0A /* Logger.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -973,6 +976,7 @@
 				192EC04C2C963EE600AF8528 /* CourseAssignmentView.swift in Sources */,
 				A3FFD03C2CDED67C006BAB51 /* String+Numbers.swift in Sources */,
 				A301EE132D614A4100D71139 /* GetDiscussionTopicsRequest.swift in Sources */,
+				9A977E832D6C322F001D7F0A /* Logger.swift in Sources */,
 				A301EE092D61137400D71139 /* MarkCourseDiscussionTopicReadRequest.swift in Sources */,
 				B53D95A02CA0953900647EE9 /* PeopleManager.swift in Sources */,
 				B7C0A3CB2D2F919F003E5A36 /* PinButton.swift in Sources */,

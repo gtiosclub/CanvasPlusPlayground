@@ -46,7 +46,7 @@ class QuizzesViewModel {
             )
 
         } catch {
-            print("Quiz fetch failed with error: \n\(error)")
+            logger.error("Quiz fetch failed with error: \n\(error)")
         }
 
     }

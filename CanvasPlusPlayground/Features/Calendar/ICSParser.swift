@@ -44,7 +44,7 @@ struct ICSParser {
         guard let icsURL else { return [] }
 
         guard let content = try? await fetchICSContentsFromURL(icsURL) else {
-            print("Error fetching ICS contents")
+            logger.error("Error fetching ICS contents")
             return []
         }
 
