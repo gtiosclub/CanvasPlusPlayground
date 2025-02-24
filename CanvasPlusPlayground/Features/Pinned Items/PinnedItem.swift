@@ -49,13 +49,13 @@ class PinnedItem: Identifiable, Codable, Equatable {
         switch type {
         case .announcement:
             let announcements = try await CanvasService.shared.loadAndSync(
-                CanvasRequest.getAnnouncements(courseId: courseID)
+                CanvasRequest.getDiscussionTopics(courseId: courseID)
             )
             guard let announcement = announcements.first(where: { $0.id == id }) else { return nil }
             return .announcement(announcement)
 
         case .assignment:
-            let assignments = try await CanvasService.shared.fetch(
+            let assignments = try await CanvasService.shared.loadAndSync(
                 CanvasRequest.getAssignment(id: id, courseId: courseID)
             )
             guard let assignment = assignments.first else { return nil }
@@ -90,8 +90,8 @@ class PinnedItem: Identifiable, Codable, Equatable {
 
 struct PinnedItemData {
     enum ModelData {
-        case announcement(Announcement)
-        case assignment(AssignmentAPI)
+        case announcement(DiscussionTopic)
+        case assignment(Assignment)
         case file(File)
         // TODO: Add more pinned item types
     }

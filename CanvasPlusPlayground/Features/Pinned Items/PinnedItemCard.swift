@@ -39,7 +39,7 @@ struct PinnedItemCard: View {
 }
 
 private struct PinnedAnnouncementCard: View {
-    let announcement: Announcement
+    let announcement: DiscussionTopic
     let course: Course
 
     var body: some View {
@@ -95,7 +95,7 @@ private struct PinnedFileCard: View {
 }
 
 private struct PinnedAssignmentCard: View {
-    let assignment: AssignmentAPI
+    let assignment: Assignment
     let course: Course
 
     var body: some View {
@@ -121,7 +121,7 @@ private struct PinnedAssignmentCard: View {
 }
 
 extension View {
-    func cardBackground(selected:Bool) -> some View {
+    func cardBackground(selected: Bool) -> some View {
         self
             .frame(width: 250)
             .frame(maxHeight: .infinity)
