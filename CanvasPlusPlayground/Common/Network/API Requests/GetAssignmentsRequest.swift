@@ -80,7 +80,7 @@ struct GetAssignmentsRequest: CacheableArrayAPIRequest {
             assignment.name.contains(searchTerm)
         }
 
-        let assignmentIdsPred = assignmentIds.isEmpty ? .true :  #Predicate<Assignment> { assignment in
+        let assignmentIdsPred = assignmentIds.isEmpty ? .true : #Predicate<Assignment> { assignment in
             assignmentIds.contains(assignment.id)
         }
 

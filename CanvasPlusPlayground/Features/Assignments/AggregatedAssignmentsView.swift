@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AggregatedAssignmentsView: View {
-    @Environment(CourseManager.self) var courseManager
+    @Environment(CourseManager.self) private var courseManager
 
     @State private var viewModel = AggregatedAssignmentsViewModel()
 
@@ -27,5 +27,4 @@ struct AggregatedAssignmentsView: View {
                 .loadAssignments(courses: courseManager.displayedCourses)
         }
     }
-
 }

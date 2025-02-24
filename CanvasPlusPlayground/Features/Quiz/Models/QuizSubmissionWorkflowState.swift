@@ -5,8 +5,11 @@
 //  Created by Abdulaziz Albahar on 12/26/24.
 //
 
+// swiftlint:disable identifier_name
 public enum QuizSubmissionWorkflowState: String, Codable {
-    // swiftlint:disable identifier_name
-    case untaken, pending_review, complete, settings_only, preview
-    // swiftlint:enable identifier_name
+    case untaken
+    case pending_review
+    case complete
+    case settings_only
+    case preview
 }

@@ -10,7 +10,7 @@ import SwiftUI
 struct HTMLTextView: View {
     let htmlText: String
 
-    @State var announcementAttributedText: NSAttributedString?
+    @State private var announcementAttributedText: NSAttributedString?
 
     var body: some View {
         Group {
@@ -25,5 +25,4 @@ struct HTMLTextView: View {
                 .html(withBody: htmlText)
         }
     }
-
 }

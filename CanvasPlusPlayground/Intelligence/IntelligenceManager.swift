@@ -2,8 +2,8 @@
  Imported from fullmoon app: https://github.com/mainframecomputer/fullmoon-ios
  */
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 class IntelligenceManager: ObservableObject {
     @AppStorage("systemPrompt") var systemPrompt = "you are a helpful assistant"
@@ -45,7 +45,7 @@ class IntelligenceManager: ObservableObject {
     }
 
     func modelDisplayName(_ modelName: String) -> String {
-        return modelName.replacingOccurrences(of: "mlx-community/", with: "").lowercased()
+        modelName.replacingOccurrences(of: "mlx-community/", with: "").lowercased()
     }
 }
 
@@ -80,7 +80,7 @@ class Thread {
     var messages: [Message] = []
 
     var sortedMessages: [Message] {
-        return messages.sorted { $0.timestamp < $1.timestamp }
+        messages.sorted { $0.timestamp < $1.timestamp }
     }
 
     init() {

@@ -7,12 +7,12 @@
 
 import Foundation
 
+// swiftlint:disable commented_code identifier_name
 // https://github.com/instructure/canvas-ios/blob/49a3e347116d623638c66b7adbcc946294faa212/Core/Core/Files/Model/API/APIFile.swift#L175
 // https://canvas.instructure.com/doc/api/files.html
 struct FileAPI: APIResponse, Identifiable {
     typealias Model = File
 
-    // swiftlint:disable identifier_name
     let id: Int
     let uuid: String
     let folder_id: Int
@@ -20,7 +20,7 @@ struct FileAPI: APIResponse, Identifiable {
     let filename: String
     let content_type: String
     var url: String?
-    // var url: APIURL?
+//     var url: APIURL?
     // file size in bytes
     let size: Int?
     let created_at: Date
@@ -109,5 +109,3 @@ enum UseJustification: String, Codable, CaseIterable {
         }
     }
 }
-
-// swiftlint:enable identifier_name

@@ -5,8 +5,8 @@
 //  Created by Ethan Fox on 9/12/24.
 //
 
-import SwiftData
 import Foundation
+import SwiftData
 
 @Model
 final class Announcement: Cacheable {

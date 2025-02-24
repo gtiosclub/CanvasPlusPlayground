@@ -7,6 +7,8 @@
 
 import Foundation
 
+// swiftlint:disable identifier_name
+// swiftlint:disable commented_code
 // https://github.com/instructure/canvas-ios/blob/master/Core/Core/Quizzes/APIQuiz.swift
 // https://canvas.instructure.com/doc/api/quizzes.html
 struct QuizAPI: APIResponse, Identifiable {
@@ -14,7 +16,6 @@ struct QuizAPI: APIResponse, Identifiable {
 
     let id: Int
 
-    // swiftlint:disable identifier_name
     let access_code: String?
     let all_dates: [APIAssignmentDate]?
     /** Nil when `quiz_type` is `quizzes.next`. */
@@ -64,7 +65,6 @@ struct QuizAPI: APIResponse, Identifiable {
     // let quiz_extensions_url: URL?
     // let speedgrader_url: URL?
     // let version_number: Int
-    // swiftlint:enable identifier_name
 
     func createModel() -> Quiz {
         Quiz(api: self)

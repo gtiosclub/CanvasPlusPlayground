@@ -16,7 +16,7 @@ typealias PlatformColor = UIColor
 
 extension NSAttributedString {
     static func html(withBody body: String) async -> NSAttributedString {
-        return await withCheckedContinuation { continuation in
+        await withCheckedContinuation { continuation in
             DispatchQueue.global(qos: .userInitiated).async {
                 // Match the HTML `lang` attribute to current localisation used by the app (aka Bundle.main).
                 let bundle = Bundle.main
@@ -74,11 +74,13 @@ extension NSAttributedString {
 
 extension Color {
     var hexString: String {
-        let uiColor = PlatformColor(self)
-        let hexString = String(format: "#%02X%02X%02X",
-                               Int(uiColor.cgColor.components![0] * 255),
-                               Int(uiColor.cgColor.components![1] * 255),
-                               Int(uiColor.cgColor.components![2] * 255))
-        return hexString
+        // swiftlint:disable:next force_unwrapping
+        let colorComponents = PlatformColor(self).cgColor.components!
+        return String(
+            format: "#%02X%02X%02X",
+            Int(colorComponents[0] * 255),
+            Int(colorComponents[1] * 255),
+            Int(colorComponents[2] * 255)
+        )
     }
 }

@@ -5,12 +5,12 @@
 //  Created by Abdulaziz Albahar on 2/15/25.
 //
 
-import SwiftData
 import Foundation
+import SwiftData
 
+// swiftlint:disable commented_code
 @Model
 class DiscussionTopic: Cacheable, Hashable, Equatable {
-
     var id: String
 
     // MARK: In Docs
@@ -193,7 +193,10 @@ class DiscussionTopic: Cacheable, Hashable, Equatable {
     }
 
     enum SubscriptionHold: String, Codable {
-        case initialPostRequired = "initial_post_required", notInGroupSet = "not_in_group_set", notInGroup = "not_in_group", topicIsAnnouncement = "topic_is_announcement"
+        case initialPostRequired = "initial_post_required"
+        case notInGroupSet = "not_in_group_set"
+        case notInGroup = "not_in_group"
+        case topicIsAnnouncement = "topic_is_announcement"
     }
 
     enum DiscussionType: String, Codable {
@@ -204,7 +207,6 @@ class DiscussionTopic: Cacheable, Hashable, Equatable {
 // MARK: Errors
 
 extension DiscussionTopic {
-
     /// Errors related to discussion topic
     enum Error: Swift.Error {
         case courseIdMissing
@@ -213,7 +215,6 @@ extension DiscussionTopic {
 
 // MARK: Read Marking
 extension DiscussionTopic {
-
     func markReadStatus(_ isRead: Bool) async throws {
         guard let courseId = self.courseId else {
             LoggerService.main.debug("[markAsRead] Course id missing")

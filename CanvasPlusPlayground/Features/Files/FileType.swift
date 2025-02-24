@@ -20,8 +20,6 @@ struct FileType {
     }
 
     private static func extensionFromFile(_ file: File) -> String {
-        let fileExtension = URL(fileURLWithPath: file.filename).pathExtension.lowercased()
-
-        return fileExtension
+        URL(fileURLWithPath: file.filename).pathExtension.lowercased()
     }
 }

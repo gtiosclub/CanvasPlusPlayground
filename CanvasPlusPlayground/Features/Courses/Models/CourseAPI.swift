@@ -7,11 +7,11 @@
 
 import Foundation
 
+// swiftlint:disable commented_code identifier_name
 // https://canvas.instructure.com/doc/api/courses.html
 struct CourseAPI: APIResponse, Identifiable {
     typealias Model = Course
 
-    // swiftlint:disable identifier_name
     let id: Int
     // let sis_course_id: String?
     // let uuid: String?
@@ -136,5 +136,3 @@ struct APICourseSettings: Codable, Equatable {
     let syllabus_course_summary: Bool?
     let restrict_quantitative_data: Bool?
 }
-
-// swiftlint:enable identifier_name

@@ -7,6 +7,7 @@
 
 import Foundation
 
+// swiftlint:disable identifier_name
 struct SubmissionAPI: APIResponse {
     typealias Model = Submission
 
@@ -15,7 +16,6 @@ struct SubmissionAPI: APIResponse {
         "\(assignment_id)_\(user_id)"
     }
 
-    // swiftlint:disable identifier_name
     let assignment_id: Int
     let assignment: String?
     let course: String?
@@ -52,8 +52,6 @@ struct SubmissionAPI: APIResponse {
         Submission(from: self)
     }
 }
-
-// swiftlint:enable identifier_name
 
 /*
 {

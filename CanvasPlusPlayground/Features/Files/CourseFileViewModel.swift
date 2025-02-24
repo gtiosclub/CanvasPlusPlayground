@@ -43,11 +43,9 @@ class CourseFileViewModel {
 
         LoggerService.main.error("Failed to fetch root folder.")
         return nil
-
     }
 
     func fetchContent(in folder: Folder) async {
-
         if !traversedFolderIDs.contains(folder.id) {
             traversedFolderIDs.append(folder.id)
         }
@@ -55,13 +53,15 @@ class CourseFileViewModel {
         async let foldersInRootFolder: [Folder] = CanvasService.shared.loadAndSync(
             CanvasRequest.getFoldersInFolder(folderId: folder.id),
             onCacheReceive: { folders in
-            self.folders = folders ?? []
-        })
+                self.folders = folders ?? []
+            }
+        )
         async let filesInRootFolder: [File] = CanvasService.shared.loadAndSync(
             CanvasRequest.getFilesInFolder(folderId: folder.id),
             onCacheReceive: { files in
-            self.files = files ?? []
-        })
+                self.files = files ?? []
+            }
+        )
 
         do {
             let (folders, files) = await ((try foldersInRootFolder), (try filesInRootFolder))
@@ -73,6 +73,5 @@ class CourseFileViewModel {
         } catch {
             LoggerService.main.error("\(error.localizedDescription)")
         }
-
     }
 }

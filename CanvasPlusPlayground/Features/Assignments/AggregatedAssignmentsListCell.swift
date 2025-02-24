@@ -17,7 +17,6 @@ struct AggregatedAssignmentsListCell: View {
 
             Text("\(course.displayName)")
                 .font(.subheadline)
-
         }
     }
 }

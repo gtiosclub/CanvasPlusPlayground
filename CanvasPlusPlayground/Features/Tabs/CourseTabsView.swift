@@ -19,7 +19,7 @@ struct WebView: PlatformRepresentable {
 
     #if os(iOS)
     func makeUIView(context: Context) -> WKWebView {
-        return WKWebView()
+        WKWebView()
     }
 
     func updateUIView(_ webView: WKWebView, context: Context) {
@@ -27,7 +27,7 @@ struct WebView: PlatformRepresentable {
     }
     #else
     func makeNSView(context: Context) -> WKWebView {
-        return WKWebView()
+        WKWebView()
     }
 
     func updateNSView(_ webView: WKWebView, context: Context) {
@@ -47,7 +47,7 @@ struct WebView: PlatformRepresentable {
 struct CourseTabsView: View {
     let course: Course
     let baseURL: String
-    @State var tabsManager: CourseTabsManager
+    @State private var tabsManager: CourseTabsManager
 
     @State private var selectedURL: URL?
     @State private var showWebView = false
@@ -75,7 +75,6 @@ struct CourseTabsView: View {
             await tabsManager.fetchTabs()
         }
         .sheet(isPresented: $showWebView) {
-
             NavigationStack {
                 Group {
                     if let url = selectedURL {

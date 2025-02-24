@@ -44,11 +44,9 @@ class QuizzesViewModel {
                 },
                 loadingMethod: .all(onNewPage: addQuizzes)
             )
-
         } catch {
             LoggerService.main.error("Quiz fetch failed with error: \n\(error)")
         }
-
     }
 
     func addQuizzes(_ newQuizzes: [Quiz]) {
@@ -56,5 +54,4 @@ class QuizzesViewModel {
             self.quizzes.formUnion(newQuizzes)
         }
     }
-
 }

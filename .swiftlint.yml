@@ -1,28 +1,73 @@
-# By default, SwiftLint uses a set of sensible default rules you can adjust:
-disabled_rules: # rule identifiers turned on by default to exclude from running
+# List of all available rules: https://realm.github.io/SwiftLint/rule-directory.html
+
+# Rules that are disabled
+disabled_rules:
+  - blanket_disable_command
   - colon
-  - comma
-  - control_statement
   - todo
   - force_try
   - force_cast
   - large_tuple
-opt_in_rules: # some rules are turned off by default, so you need to opt-in
-  - empty_count # find all the available rules by running: `swiftlint rules`
 
-# Alternatively, specify all rules explicitly by uncommenting this option:
-# only_rules: # delete `disabled_rules` & `opt_in_rules` if using this
-#   - empty_parameters
-#   - vertical_whitespace
+# Rules that are additionally enabled
+opt_in_rules:
+  - closure_end_indentation
+  - closure_spacing
+  - collection_alignment
+  - convenience_type
+  - direct_return
+  - empty_collection_literal
+  - empty_count
+  - empty_string
+  - enum_case_associated_values_count
+  - fatal_error_message
+  - file_name
+  - file_name_no_space
+  - file_types_order
+  - force_unwrapping
+  - identical_operands
+  - implicit_return
+  - literal_expression_end_indentation
+  - lower_acl_than_parent
+  - modifier_order
+  - multiline_arguments
+  - multiline_arguments_brackets
+  - multiline_function_chains
+  - multiline_literal_brackets
+  - multiline_parameters
+  - multiline_parameters_brackets
+  - operator_usage_whitespace
+  - overridden_super_call
+  - pattern_matching_keywords
+  - prefer_self_type_over_type_of_self
+  - prefer_zero_over_explicit_init
+  - private_subject
+  - private_swiftui_state
+  - prohibited_super_call
+  - redundant_nil_coalescing
+  - redundant_self_in_closure
+  - redundant_type_annotation
+  - required_enum_case
+  - return_value_from_void_function
+  - shorthand_optional_binding
+  - sorted_imports
+  - static_operator
+  - switch_case_on_newline
+  - toggle_bool
+  - unneeded_parentheses_in_closure_argument
+  - untyped_error_in_catch
+  - vertical_parameter_alignment_on_call
+  - vertical_whitespace_closing_braces
+  - vertical_whitespace_opening_braces
+  - weak_delegate
+  - yoda_condition
 
-analyzer_rules: # rules run by `swiftlint analyze`
+# rules run by `swiftlint analyze`
+analyzer_rules:
   - explicit_self
-
-# Case-sensitive paths to include during linting. Directory paths supplied on the
-# command line will be ignored.
-included: 
-  - Sources
-  - CanvasPlusPlayground
+  - typesafe_array_init
+  - unused_declaration
+  - unused_import
 
 # If true, SwiftLint will not fail if no lintable files are found.
 allow_zero_lintable_files: false
@@ -30,49 +75,44 @@ allow_zero_lintable_files: false
 # If true, SwiftLint will treat all warnings as errors.
 strict: false
 
-# If true, SwiftLint will treat all errors as warnings.
-lenient: false
+# Set the indentation to 4 spaces
+indentation: 4
 
-# The path to a baseline file, which will be used to filter out detected violations.
-#baseline: Baseline.json
+# Explicitly setting bounds for rules
+line_length:
+  warning: 150
+  error: 200
 
-# The path to save detected violations to as a new baseline.
-#write_baseline: ./Baseline.json
+function_body_length:
+  warning: 60
+  error: 80
 
-# If true, SwiftLint will check for updates after linting or analyzing.
-check_for_updates: true
-
-# rules that have both warning and error levels, can set just the warning level
-# implicitly
-line_length: 500
-# they can set both implicitly with an array
-type_body_length:
-  - 300 # warning
-  - 400 # error
-# or they can set both explicitly
-file_length:
-  warning: 500
-  error: 1200
-function_body_length: 80
-# naming rules can set warnings/errors for min_length and max_length
-# additionally they can set excluded names
-type_name:
-  min_length: 4 # only warning
-  max_length: # warning and error
-    warning: 40
-    error: 50
-  excluded:
-    - iPhone
-    - ID
-  allowed_symbols: ["_"] # these are allowed in type names
 identifier_name:
-  min_length: # only min_length
-    error: 3 # only error
-  excluded: # excluded via string array
-    - id
-    - url
-    - key
-    - val
-    - lhs
-    - rhs
-reporter: "xcode" # reporter type (xcode, json, csv, checkstyle, codeclimate, junit, html, emoji, sonarqube, markdown, github-actions-logging, summary)
+  min_length: 1
+  max_length: 40
+
+type_name:
+  min_length: 1
+  max_length: 40
+
+# Custom rules
+custom_rules:
+  commented_code:
+    regex: '^\h*\/\/\h*(?!.*\.swift$)(?:self|func\s+|class\s+|struct\s+|enum\s+|var\s+|let\s+|if\s+|guard\s+|switch\s+|for\s+|while\s+|repeat\s+|return\s+|import\s+|@\w+\s+|protocol\s+|extension\s+|\{|\}|\w+\s*\(|\w+\s*\+=?|await\s+\w+\.?\w*\s*\{)'
+    message: "Commented out code. Remember not to commit."
+    severity: warning
+  no_direct_standard_out_logs:
+    name: "Writing log messages directly to standard out is disallowed"
+    regex: "(\\bprint|\\bdebugPrint|\\bdump|Swift\\.print|Swift\\.debugPrint|Swift\\.dump)\\s*\\("
+    match_kinds:
+    - identifier
+    message: "Don't commit `print(…)`, `debugPrint(…)`, or `dump(…)` as they write to standard out in release. Either log to a dedicated logging system or silence this warning in debug-only scenarios explicitly using `// swiftlint:disable:next no_direct_standard_out_logs`"
+    severity: warning
+  swiftui_state_private:
+    regex: '@(StateObject|ObservedObject|EnvironmentObject)\s+var'
+    message: 'SwiftUI @StateObject/@ObservedObject/@EnvironmentObject properties should be private'
+    severity: warning
+  swiftui_environment_private:
+    regex: '@Environment\((?:\\\.\w+|\w+\.\w+|[\w\.]+)\)\s+var\s+(?!private\b)\w+'
+    message: 'SwiftUI @Environment properties should be private'
+    severity: warning

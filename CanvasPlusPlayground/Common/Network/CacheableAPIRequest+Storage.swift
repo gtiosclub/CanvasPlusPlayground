@@ -1,5 +1,5 @@
 //
-//  APIRequest+Storage.swift
+//  CacheableAPIRequest+Storage.swift
 //  CanvasPlusPlayground
 //
 //  Created by Abdulaziz Albahar on 12/21/24.
@@ -34,14 +34,12 @@ extension CacheableAPIRequest {
         }
 
         // Get cached data for this type then filter to only get models related to `request`
-        let cached: [PersistedModel]? = try repository.get(descriptor: descriptor)
-
-        return cached
+        return try repository.get(descriptor: descriptor) as [PersistedModel]?
     }
 
     /// Number of occurences of models related to request
     @MainActor
     func loadCount(from repository: CanvasRepository) async throws -> Int {
-        return try repository.count(descriptor: loadDescriptor)
+        try repository.count(descriptor: loadDescriptor)
     }
 }

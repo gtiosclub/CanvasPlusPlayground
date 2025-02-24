@@ -17,7 +17,8 @@ struct AsyncView<T, Content: View, Placeholder: View>: View {
             switch (lhs, rhs) {
             case (.loading, .loading), (.loaded, .loaded), (.failed, .failed):
                 return true
-            default: return false
+            default:
+                return false
             }
         }
     }
@@ -26,7 +27,7 @@ struct AsyncView<T, Content: View, Placeholder: View>: View {
     @ViewBuilder let content: (T) -> Content
     @ViewBuilder let placeholder: () -> Placeholder
 
-    @State var viewState: LoadingState = .loading
+    @State private var viewState: LoadingState = .loading
 
     var body: some View {
         Group {

@@ -29,6 +29,7 @@ struct GetAnnouncementsBatchRequest: CacheableArrayAPIRequest {
     let contextCodes: [String]
     let startDate: Date?
     let endDate: Date?
+    // swiftlint:disable:next commented_code
     // let activeOnly: Bool? ONLY FOR TEACHERS
     let latestOnly: Bool?
     let include: [Include]
@@ -58,11 +59,9 @@ struct GetAnnouncementsBatchRequest: CacheableArrayAPIRequest {
     }
     var idPredicate: Predicate<Announcement> {
         let contextCodes = contextCodes as [String?]
-        let contextCodePred = contextCodes.isEmpty ? .true : #Predicate<Announcement> { announcement in
+        return contextCodes.isEmpty ? .true : #Predicate<Announcement> { announcement in
             contextCodes.contains(announcement.contextCode)
         }
-
-        return contextCodePred
     }
     var customPredicate: Predicate<Announcement> {
         let startDatePredicate: Predicate<Announcement>

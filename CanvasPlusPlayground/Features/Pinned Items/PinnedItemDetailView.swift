@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PinnedItemDetailView: View {
-    @State var item: PinnedItem
+    @State private var item: PinnedItem
 
     var body: some View {
         Group {

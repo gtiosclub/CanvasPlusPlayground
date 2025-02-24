@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct SetupView: View {
-    @Environment(ProfileManager.self) var profileManager
-    @Environment(CourseManager.self) var courseManager
-    @Environment(\.dismiss) var dismiss
+    @Environment(ProfileManager.self) private var profileManager
+    @Environment(CourseManager.self) private var courseManager
+    @Environment(\.dismiss) private var dismiss
 
     @State private var tempAccessKey: String = ""
 
@@ -39,6 +39,7 @@ struct SetupView: View {
                 }
                 .padding(.horizontal)
 
+                // swiftlint:disable:next force_unwrapping
                 Link("Generate Access Token on Canvas", destination: URL(string: "https://gatech.instructure.com/profile")!)
                     .font(.headline)
             }

@@ -21,7 +21,11 @@ protocol APIRequest {
 
 extension APIRequest {
     var baseURL: URL {
-        URL(string: "https://gatech.instructure.com/api/v1")!
+        if let baseURL = URL(string: "https://gatech.instructure.com/api/v1") {
+            return baseURL
+        } else {
+            fatalError("Invalid base Canvas URL")
+        }
     }
 
     var combinedQueryParams: [(String, String)] {

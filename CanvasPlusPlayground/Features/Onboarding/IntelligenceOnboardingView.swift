@@ -5,8 +5,8 @@
 //  Created by Rahul on 10/31/24.
 //
 
-import SwiftUI
 import MLXLLM
+import SwiftUI
 
 struct IntelligenceOnboardingView: View {
     enum InstallState {

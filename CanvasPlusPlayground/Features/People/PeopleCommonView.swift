@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PeopleCommonView: View {
-    @Environment(CourseManager.self) var courseManager
+    @Environment(CourseManager.self) private var courseManager
     let user: User
 
     @State private var commonCourses: [Course] = []
@@ -69,7 +69,7 @@ struct PeopleCommonView: View {
                 activeCourses: courseManager.displayedCourses
             ) {
             commonCourses.append($0)
-        }
+            }
         fetchingCommonCourses = false
     }
 }

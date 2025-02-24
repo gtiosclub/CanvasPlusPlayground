@@ -28,14 +28,14 @@ struct QuickLookPreview: PlatformViewControllerRepresentable {
         let controller = QLPreviewController()
         controller.dataSource = context.coordinator
         controller.navigationItem.leftBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: .done, target: context.coordinator,
+            barButtonSystemItem: .done,
+            target: context.coordinator,
             action: #selector(context.coordinator.dismiss)
         )
 
-        let navigationController = UINavigationController(
+        return UINavigationController(
             rootViewController: controller
         )
-        return navigationController
     }
 
     func updateUIViewController(
@@ -56,7 +56,7 @@ struct QuickLookPreview: PlatformViewControllerRepresentable {
     #endif
 
     func makeCoordinator() -> Coordinator {
-        return Coordinator(parent: self)
+        Coordinator(parent: self)
     }
 
     #if os(iOS)
@@ -69,11 +69,11 @@ struct QuickLookPreview: PlatformViewControllerRepresentable {
         }
 
         func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
-            return 1
+            1
         }
 
         func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
-            return parent.url as QLPreviewItem
+            parent.url as QLPreviewItem
         }
 
         @objc func dismiss() {
@@ -90,11 +90,11 @@ struct QuickLookPreview: PlatformViewControllerRepresentable {
         }
 
         func numberOfPreviewItems(in panel: QLPreviewPanel!) -> Int {
-            return 1
+            1
         }
 
         func previewPanel(_ panel: QLPreviewPanel!, previewItemAt index: Int) -> QLPreviewItem! {
-            return parent.url as QLPreviewItem
+            parent.url as QLPreviewItem
         }
 
         func previewPanelDidClose(_ panel: QLPreviewPanel!) {

@@ -1,5 +1,5 @@
 //
-//  CourseAssignmentView.swift
+//  CourseAssignmentsView.swift
 //  CanvasPlusPlayground
 //
 //  Created by Sankaet Cheemalamarri on 9/14/24.

@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct ModulesListView: View {
-    @State var modulesVM: ModulesViewModel
-    @State var isLoadingModules: Bool = false
+    @State private var modulesVM: ModulesViewModel
+    @State private var isLoadingModules: Bool = false
 
     init(courseId: String) {
         let modulesVM = ModulesViewModel(courseID: courseId)
@@ -79,7 +79,7 @@ private struct ModuleSection: View {
 private struct ModuleItemCell: View {
     @Bindable var item: ModuleItem
     var indent: CGFloat {
-        CGFloat(item.indent*10)
+        CGFloat(item.indent * 10)
     }
 
     var body: some View {

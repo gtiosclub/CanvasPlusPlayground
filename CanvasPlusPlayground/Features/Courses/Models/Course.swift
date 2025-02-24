@@ -8,6 +8,7 @@
 import Foundation
 import SwiftData
 
+// swiftlint:disable commented_code
 @Model
 final class Course: Cacheable {
     typealias ID = String
@@ -57,7 +58,7 @@ final class Course: Cacheable {
     var tabs: [TabAPI]
 
     var defaultView: CourseDefaultView? {
-        get { return CourseDefaultView(rawValue: defaultViewRaw ?? "") }
+        get { CourseDefaultView(rawValue: defaultViewRaw ?? "") }
         set { defaultViewRaw = newValue?.rawValue }
     }
 
@@ -73,8 +74,7 @@ final class Course: Cacheable {
     }
 
     init(_ courseAPI: CourseAPI) {
-
-        self.id =  String(describing: courseAPI.id)
+        self.id = String(describing: courseAPI.id)
         self.parentId = ""
 
         self.name = courseAPI.name

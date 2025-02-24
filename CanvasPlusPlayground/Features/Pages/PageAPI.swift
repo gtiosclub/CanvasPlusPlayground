@@ -7,12 +7,12 @@
 
 import Foundation
 
+// swiftlint:disable commented_code
+// swiftlint:disable identifier_name
 // https://canvas.instructure.com/doc/api/pages.html
-
 struct PageAPI: APIResponse, Identifiable {
     typealias Model = Page
 
-    // swiftlint:disable identifier_name
     let page_id: Int
     let url: String
     let title: String?
@@ -29,11 +29,10 @@ struct PageAPI: APIResponse, Identifiable {
 //    let lock_explanation: String?
 //    let editor: String?
 //    let block_editor_attributes: [String: Any]?
-    // swiftlint:enable identifier_name
 
     var id: Int { page_id }
 
     func createModel() -> Page {
-        return Page(pageAPI: self)
+        Page(pageAPI: self)
     }
 }

@@ -7,12 +7,12 @@
 
 import Foundation
 
+// swiftlint:disable commented_code identifier_name
 // https://canvas.instructure.com/doc/api/enrollments.html
 // https://github.com/instructure/canvas-ios/blob/49a3e347116d623638c66b7adbcc946294faa212/Core/Core/Enrollments/APIEnrollment.swift
 struct EnrollmentAPI: APIResponse, Identifiable {
     typealias Model = Enrollment
 
-    // swiftlint:disable identifier_name
     let id: Int
     let course_id: Int?
     // let sis_course_id: String?
@@ -89,5 +89,3 @@ public struct Grades: Codable, Equatable, Hashable {
 public enum EnrollmentState: String, Codable, CaseIterable {
     case active, inactive, invited, completed, creation_pending, rejected, deleted
 }
-
-// swiftlint:enable identifier_name

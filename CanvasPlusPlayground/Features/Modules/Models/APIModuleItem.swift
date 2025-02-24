@@ -54,7 +54,6 @@ struct APIModuleItem: APIResponse, Identifiable {
         let locked_for_user: Bool?
         let lock_explanation: String?
     }
-
 }
 
 enum APIModuleItemType: String, Codable {
@@ -77,5 +76,3 @@ struct CompletionRequirement: Codable {
 enum CompletionRequirementType: String, Codable {
     case min_score, must_view, must_submit, must_contribute, must_mark_done
 }
-
-// swiftlint:enable identifier_name
