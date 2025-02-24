@@ -25,23 +25,38 @@ struct CourseAssignmentsView: View {
             mainbody
         }
     }
+
     var mainbody: some View {
-        List(assignmentManager.assignments, id: \.id) { assignment in
-            AssignmentRow(assignment: assignment, showGrades: showGrades)
-                .contextMenu {
-                    PinButton(
-                        itemID: assignment.id.asString,
-                        courseID: course.id,
-                        type: .assignment
-                    )
+        List(assignmentManager.assignmentGroups) { assignmentGroup in
+            Section {
+                let assignments = assignmentGroup.assignments ?? []
+
+                if assignments.isEmpty {
+                    Text("No Assignments")
+                        .foregroundStyle(.secondary)
+                } else {
+                    ForEach(assignments) { assignment in
+                        let assignmentModel = assignment.createModel()
+                        AssignmentRow(assignment: assignmentModel, showGrades: showGrades)
+                            .contextMenu {
+                                PinButton(
+                                    itemID: assignmentModel.id,
+                                    courseID: course.id,
+                                    type: .assignment
+                                )
+                            }
+                            .swipeActions(edge: .leading) {
+                                PinButton(
+                                    itemID: assignmentModel.id,
+                                    courseID: course.id,
+                                    type: .assignment
+                                )
+                            }
+                    }
                 }
-                .swipeActions(edge: .leading) {
-                    PinButton(
-                        itemID: assignment.id.asString,
-                        courseID: course.id,
-                        type: .assignment
-                    )
-                }
+            } header: {
+                sectionHeader(for: assignmentGroup)
+            }
         }
         .task {
             await loadAssignments()
@@ -50,28 +65,76 @@ struct CourseAssignmentsView: View {
             await loadAssignments()
         }
         .statusToolbarItem("Assignments", isVisible: isLoadingAssignments)
-        .navigationTitle(course.displayName)
-        .navigationDestination(for: AssignmentAPI.self) { assignment in
+        .navigationTitle(showGrades ? "Grades" : "Assignments")
+        .navigationDestination(for: Assignment.self) { assignment in
             AssignmentDetailView(assignment: assignment)
         }
     }
 
     private func loadAssignments() async {
         isLoadingAssignments = true
-        await assignmentManager.fetchAssignments()
+        await assignmentManager.fetchAssignmentGroups()
         isLoadingAssignments = false
+    }
+
+    private func sectionHeader(for assignmentGroup: AssignmentGroup) -> some View {
+        HStack {
+            Text(assignmentGroup.name)
+            Spacer()
+            if let groupWeight = assignmentGroup.groupWeight {
+                Text(String(format: "%.1f%%", groupWeight))
+            } else {
+                Text("--%")
+            }
+        }
     }
 }
 
 struct AssignmentRow: View {
-    let assignment: AssignmentAPI
+    let assignment: Assignment
     let showGrades: Bool
 
     var body: some View {
-        NavigationLink(value: assignment) {
-            HStack {
+        if !showGrades {
+            NavigationLink(value: assignment) {
+                bodyContents
+            }
+        } else {
+            bodyContents
+        }
+    }
+
+    private var bodyContents: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 3) {
                 Text(assignment.name)
-                    .font(.headline)
+                    .fontWeight(.bold)
+
+                if assignment.isLocked, let unlockDate = assignment.unlockDate {
+                    HStack(spacing: 4) {
+                        Image(systemName: "lock.fill")
+
+                        Text("Available ")
+                            .fontWeight(.semibold)
+                        +
+                        Text(unlockDate, style: .date)
+                    }
+                } else if let dueDate = assignment.dueDate {
+                    Text("Due ")
+                        .fontWeight(.semibold)
+                    +
+                    Text(dueDate, style: .date)
+                }
+            }
+            .fontWeight(.light)
+
+            Spacer()
+
+            if showGrades {
+                Text(assignment.formattedGrade)
+                    .bold()
+                +
+                Text(" / " + assignment.formattedPointsPossible)
             }
         }
     }

@@ -66,12 +66,33 @@ struct CanvasRequest {
         )
     }
 
-    static func getAssignment(id: String, courseId: String) -> GetAssignmentRequest {
-        GetAssignmentRequest(assignmentId: id, courseId: courseId)
+    static func getAssignment(
+        id: String,
+        courseId: String,
+        include: [GetAssignmentRequest.Include] = [.submission]
+    ) -> GetAssignmentRequest {
+        GetAssignmentRequest(
+            assignmentId: id,
+            courseId: courseId,
+            include: include
+        )
     }
 
-    static func getAssignments(courseId: String) -> GetAssignmentsRequest {
-        GetAssignmentsRequest(courseId: courseId)
+    static func getAssignments(
+        courseId: String,
+        include: [GetAssignmentsRequest.Include] = [.submission]
+    ) -> GetAssignmentsRequest {
+        GetAssignmentsRequest(courseId: courseId, include: include)
+    }
+
+    static func getAssignmentGroups(
+        courseId: String,
+        include: [GetAssignmentGroupsRequest.Include] = [
+            .assignments,
+            .submission
+        ]
+    ) -> GetAssignmentGroupsRequest {
+        GetAssignmentGroupsRequest(courseId: courseId, include: include)
     }
 
     static func getEnrollments(courseId: String, userId: String? = nil, perPage: Int = 50) -> GetEnrollmentsRequest {
@@ -140,6 +161,56 @@ struct CanvasRequest {
             moduleId: moduleId,
             include: include,
             searchTerm: searchTerm,
+            perPage: perPage
+        )
+    }
+
+    static func getDiscussionTopics(
+        courseId: String,
+        include: [GetDiscussionTopicsRequest.Include] = [],
+        orderBy: GetDiscussionTopicsRequest.Order? = .position,
+        scope: GetDiscussionTopicsRequest.Scope? = nil,
+        onlyAnnouncements: Bool = false,
+        filterBy: GetDiscussionTopicsRequest.Filter? = .all,
+        searchTerm: String? = nil,
+        excludeContentModuleLockedTopics: Bool = false,
+        perPage: Int = 25
+    ) -> GetDiscussionTopicsRequest {
+        GetDiscussionTopicsRequest(
+            courseId: courseId,
+            include: include,
+            orderBy: orderBy,
+            scope: scope,
+            onlyAnnouncements: onlyAnnouncements,
+            filterBy: filterBy,
+            searchTerm: searchTerm,
+            excludeContentModuleLockedTopics: excludeContentModuleLockedTopics,
+            perPage: perPage
+        )
+    }
+
+    static func markCourseDiscussionTopicAsRead(
+        courseId: String,
+        discussionTopicId: String
+    ) -> MarkCourseDiscussionTopicReadRequest {
+        MarkCourseDiscussionTopicReadRequest(courseID: courseId, discussionID: discussionTopicId)
+    }
+
+    static func markCourseDiscussionTopicAsUnread(
+        courseId: String,
+        discussionTopicId: String
+    ) -> MarkCourseDiscussionTopicUnreadRequest {
+        MarkCourseDiscussionTopicUnreadRequest(courseID: courseId, discussionID: discussionTopicId)
+    }
+
+    static func getPages(
+        courseId: String,
+        perPage: Int = 50
+    ) -> GetPagesRequest {
+        GetPagesRequest(
+            courseId: courseId,
+            published: true,
+            include: [GetPagesRequest.Include.body],
             perPage: perPage
         )
     }

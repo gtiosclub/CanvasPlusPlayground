@@ -11,18 +11,18 @@ struct AllAnnouncementsView: View {
     @Environment(CourseManager.self) private var courseManager
 
     @State private var announcementsManager = AllAnnouncementsManager()
-    @State private var selectedAnnouncement: Announcement?
+    @State private var selectedAnnouncement: DiscussionTopic?
     @State private var isLoadingAnnouncements = false
 
     var body: some View {
         List(selection: $selectedAnnouncement) {
-            ForEach(announcementsManager.announcements, id: \.0) { announcement, course in
+            ForEach(announcementsManager.displayedAnnouncements, id: \.id) { courseAnnouncement in
                 NavigationLink {
-                    CourseAnnouncementDetailView(announcement: announcement)
+                    CourseAnnouncementDetailView(announcement: courseAnnouncement.announcement)
                 } label: {
                     AnnouncementRow(
-                        course: course,
-                        announcement: announcement,
+                        course: courseAnnouncement.course,
+                        announcement: courseAnnouncement.announcement,
                         showCourseName: true
                     )
                 }

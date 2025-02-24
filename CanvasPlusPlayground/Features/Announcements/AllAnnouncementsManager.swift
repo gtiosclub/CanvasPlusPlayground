@@ -8,57 +8,88 @@
 import Foundation
 
 @Observable class AllAnnouncementsManager {
-    var announcements: [(Announcement, Course?)] = []
+
+    struct CourseAnnouncement: Hashable, Identifiable {
+        var id: String {
+            announcement.id
+        }
+        let announcement: DiscussionTopic
+        let course: Course?
+
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(announcement.id)
+        }
+
+        static func == (lhs: Self, rhs: Self) -> Bool {
+            lhs.announcement.id == rhs.announcement.id
+        }
+    }
+
+    var courseAnnouncements = Set<CourseAnnouncement>()
+    var displayedAnnouncements: [CourseAnnouncement] {
+        get {
+            courseAnnouncements
+                .filter { $0.announcement.published }
+                .sorted {
+                    $0.announcement.date ?? .distantPast > $1.announcement.date ?? .distantPast
+                }
+        }
+        set {
+            self.courseAnnouncements = Set(newValue)
+        }
+    }
 
     func fetchAnnouncements(courses: [Course]) async {
         guard !courses.isEmpty else { return }
 
         let courseIds = courses.map { $0.id }
 
-        let announcements: [Announcement]? = try? await CanvasService.shared.loadAndSync(
-            CanvasRequest.getAnnouncements(courseIds: courseIds),
-            onCacheReceive: { (cached: [Announcement]?) in
-                guard let cached else { return }
+        await withTaskGroup(of: Void.self) { group in
+            for courseId in courseIds {
+                group.addTask(priority: .userInitiated) { [weak self] in
+                    let request = CanvasRequest.getDiscussionTopics(
+                        courseId: courseId,
+                        orderBy: .position,
+                        onlyAnnouncements: true,
+                        perPage: 25
+                    )
 
-                setAnnouncements(cached, courses: courses)
-            },
-            loadingMethod: .all(onNewPage: { batchAnnouncements in
-                self.setBatchAnnouncements(batchAnnouncements, courses: courses)
-            })
-        )
+                    let announcements: [DiscussionTopic]? = try? await CanvasService.shared.loadAndSync(
+                        request,
+                        onCacheReceive: { (cached: [DiscussionTopic]?) in
+                            guard let cached else { return }
 
-        guard let announcements else {
-            print("Failed to fetch announcements.")
-            return
+                            self?.addAnnouncements(cached, courses: courses)
+                        },
+                        loadingMethod: .all(onNewPage: { batchAnnouncements in
+                            self?.addAnnouncements(batchAnnouncements, courses: courses)
+                        })
+                    )
+
+                    guard let announcements else {
+                        print("Failed to fetch announcements.")
+                        return
+                    }
+
+                    self?.addAnnouncements(announcements, courses: courses)
+                }
+            }
         }
-
-        setAnnouncements(announcements, courses: courses)
     }
 
-    private func setAnnouncements(_ announcements: [Announcement], courses: [Course]) {
+    private func addAnnouncements(_ announcements: [DiscussionTopic], courses: [Course]) {
         DispatchQueue.main.async {
-            self.announcements = announcements.map { announcement in
-                guard let contextCode = announcement.contextCode else {
-                    return (announcement, nil)
+            self.displayedAnnouncements += announcements.map { announcement in
+                guard let courseId = announcement.courseId else {
+                    return CourseAnnouncement(announcement: announcement, course: nil)
                 }
 
                 let course = courses.first(where: { course in
-                    contextCode.contains(course.id)
+                    courseId == course.id
                 })
 
-                return (announcement, course)
-            }.sorted { $0.0.createdAt ?? Date() > $1.0.createdAt ?? Date() }
+                return CourseAnnouncement(announcement: announcement, course: course)
+            }
         }
-    }
-
-    private func setBatchAnnouncements(
-        _ announcements: [Announcement],
-        courses: [Course]
-    ) {
-        let newAnnouncements = self.announcements.map(\.0) + announcements.filter {
-            !self.announcements.map(\.0).contains($0)
-        }
-
-        setAnnouncements(newAnnouncements, courses: courses)
     }
 }

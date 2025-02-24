@@ -13,18 +13,18 @@ protocol BaseCacheable {}
 class NoOpCacheable: BaseCacheable {}
 
 protocol Cacheable: BaseCacheable, PersistentModel {
-    associatedtype ServerID: Hashable
     var id: String { get }
 
     func merge(with other: Self)
 }
 
-extension Cacheable {
-
+extension Cacheable where Self: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
+}
 
+extension Cacheable where Self: Equatable {
     static func == (lhs: Self, rhs: Self) -> Bool {
         return lhs.id == rhs.id
     }
