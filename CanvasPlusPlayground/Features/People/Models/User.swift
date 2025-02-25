@@ -8,41 +8,6 @@
 import Foundation
 import SwiftData
 
-enum EnrollmentType: String, CaseIterable {
-    case teacher = "TeacherEnrollment", student = "StudentEnrollment", taEnrollment = "TaEnrollment",
-         observer = "ObserverEnrollment", designer = "DesignerEnrollment"
-
-    var displayName: String {
-        switch self {
-        case .teacher:
-            "Teacher"
-        case .student:
-            "Student"
-        case .taEnrollment:
-            "TA"
-        case .observer:
-            "Observer"
-        case .designer:
-            "Designer"
-        }
-    }
-
-    var asFilter: String {
-        switch self {
-        case .teacher:
-            "teacher"
-        case .student:
-            "student"
-        case .taEnrollment:
-            "ta"
-        case .observer:
-            "observer"
-        case .designer:
-            "designer"
-        }
-    }
-}
-
 @Model
 class User: Cacheable {
     typealias ID = String
@@ -101,5 +66,40 @@ class User: Cacheable {
         guard let avatarURL else { return false }
 
         return !avatarURL.absoluteString.hasSuffix("avatar-50.png")
+    }
+}
+
+enum EnrollmentType: String, CaseIterable {
+    case teacher = "TeacherEnrollment", student = "StudentEnrollment", taEnrollment = "TaEnrollment",
+         observer = "ObserverEnrollment", designer = "DesignerEnrollment"
+
+    var displayName: String {
+        switch self {
+        case .teacher:
+            "Teacher"
+        case .student:
+            "Student"
+        case .taEnrollment:
+            "TA"
+        case .observer:
+            "Observer"
+        case .designer:
+            "Designer"
+        }
+    }
+
+    var asFilter: String {
+        switch self {
+        case .teacher:
+            "teacher"
+        case .student:
+            "student"
+        case .taEnrollment:
+            "ta"
+        case .observer:
+            "observer"
+        case .designer:
+            "designer"
+        }
     }
 }

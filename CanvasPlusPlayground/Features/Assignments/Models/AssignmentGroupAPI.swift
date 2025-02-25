@@ -8,12 +8,6 @@
 import Foundation
 
 // swiftlint:disable identifier_name
-struct AssignmentGroupRules: Codable {
-    let drop_highest: Int?
-    let drop_lowest: Int?
-    let never_drop: [Int]?
-}
-
 struct AssignmentGroupAPI: APIResponse {
     typealias Model = AssignmentGroup
     let id: Int
@@ -26,4 +20,10 @@ struct AssignmentGroupAPI: APIResponse {
     func createModel() -> AssignmentGroup {
         AssignmentGroup(from: self)
     }
+}
+
+struct AssignmentGroupRules: Codable {
+    let drop_highest: Int?
+    let drop_lowest: Int?
+    let never_drop: [Int]?
 }

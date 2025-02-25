@@ -7,6 +7,31 @@
 
 import SwiftUI
 
+struct ModulesListView: View {
+    @State private var modulesVM: ModulesViewModel
+    @State private var isLoadingModules: Bool = false
+
+    init(courseId: String) {
+        let modulesVM = ModulesViewModel(courseID: courseId)
+        _modulesVM = State(initialValue: modulesVM)
+    }
+
+    var body: some View {
+        NavigationStack {
+            List(modulesVM.moduleBlocks) {block in
+                ModuleSection(moduleBlock: block)
+            }
+            .task {
+                isLoadingModules = true
+                await modulesVM.fetchModules()
+                isLoadingModules = false
+            }
+            .statusToolbarItem("Modules", isVisible: isLoadingModules)
+        }
+        .environment(modulesVM)
+    }
+}
+
 private struct ModuleSection: View {
     typealias ModuleBlock = ModulesViewModel.ModuleBlock
 
@@ -60,30 +85,5 @@ private struct ModuleItemCell: View {
     var body: some View {
         Text(item.title)
             .padding(.leading, indent)
-    }
-}
-
-struct ModulesListView: View {
-    @State private var modulesVM: ModulesViewModel
-    @State private var isLoadingModules: Bool = false
-
-    init(courseId: String) {
-        let modulesVM = ModulesViewModel(courseID: courseId)
-        _modulesVM = State(initialValue: modulesVM)
-    }
-
-    var body: some View {
-        NavigationStack {
-            List(modulesVM.moduleBlocks) {block in
-                ModuleSection(moduleBlock: block)
-            }
-            .task {
-                isLoadingModules = true
-                await modulesVM.fetchModules()
-                isLoadingModules = false
-            }
-            .statusToolbarItem("Modules", isVisible: isLoadingModules)
-        }
-        .environment(modulesVM)
     }
 }

@@ -7,6 +7,37 @@
 
 import SwiftUI
 
+struct PinnedItemCard: View {
+    var item: PinnedItem
+
+    var body: some View {
+        Group {
+            if let itemData = item.data {
+                switch itemData.modelData {
+                case .announcement(let announcement):
+                    PinnedAnnouncementCard(
+                        announcement: announcement,
+                        course: itemData.course
+                    )
+                case .file(let file):
+                    PinnedFileCard(
+                        file: file,
+                        course: itemData.course
+                    )
+                case .assignment(let assignment):
+                    PinnedAssignmentCard(
+                        assignment: assignment,
+                        course: itemData.course
+                    )
+                }
+            } else {
+                Text("Loading...")
+            }
+        }
+        .buttonStyle(.plain)
+    }
+}
+
 private struct PinnedAnnouncementCard: View {
     let announcement: DiscussionTopic
     let course: Course
@@ -86,37 +117,6 @@ private struct PinnedAssignmentCard: View {
 
             Spacer()
         }
-    }
-}
-
-struct PinnedItemCard: View {
-    var item: PinnedItem
-
-    var body: some View {
-        Group {
-            if let itemData = item.data {
-                switch itemData.modelData {
-                case .announcement(let announcement):
-                    PinnedAnnouncementCard(
-                        announcement: announcement,
-                        course: itemData.course
-                    )
-                case .file(let file):
-                    PinnedFileCard(
-                        file: file,
-                        course: itemData.course
-                    )
-                case .assignment(let assignment):
-                    PinnedAssignmentCard(
-                        assignment: assignment,
-                        course: itemData.course
-                    )
-                }
-            } else {
-                Text("Loading...")
-            }
-        }
-        .buttonStyle(.plain)
     }
 }
 

@@ -7,25 +7,6 @@
 
 import Foundation
 
-struct PinnedItemData {
-    enum ModelData {
-        case announcement(DiscussionTopic)
-        case assignment(Assignment)
-        case file(File)
-        // TODO: Add more pinned item types
-    }
-
-    let modelData: ModelData
-    let course: Course
-
-    init?(modelData: ModelData?, course: Course?) {
-        guard let modelData, let course else { return nil }
-
-        self.modelData = modelData
-        self.course = course
-    }
-}
-
 @Observable
 class PinnedItem: Identifiable, Codable, Equatable {
     let id: String
@@ -128,5 +109,24 @@ class PinnedItem: Identifiable, Codable, Equatable {
 
     static func == (lhs: PinnedItem, rhs: PinnedItem) -> Bool {
         lhs.id == rhs.id
+    }
+}
+
+struct PinnedItemData {
+    enum ModelData {
+        case announcement(DiscussionTopic)
+        case assignment(Assignment)
+        case file(File)
+        // TODO: Add more pinned item types
+    }
+
+    let modelData: ModelData
+    let course: Course
+
+    init?(modelData: ModelData?, course: Course?) {
+        guard let modelData, let course else { return nil }
+
+        self.modelData = modelData
+        self.course = course
     }
 }

@@ -8,43 +8,6 @@
 import Foundation
 import SwiftData
 
-enum ModuleItemType: Equatable, Codable {
-    case file(id: String?)
-    case discussion(id: String?)
-    case assignment(id: String?)
-    case quiz(id: String?)
-    case externalURL(url: URL?)
-    case externalTool(id: String?, url: URL?, newTab: Bool)
-    case page(id: String?)
-    case subHeader
-
-    init(from moduleItemAPI: APIModuleItem) {
-        let contentId = moduleItemAPI.content_id?.asString
-        switch moduleItemAPI.type {
-        case .file:
-            self = .file(id: contentId)
-        case .discussion:
-            self = .discussion(id: contentId)
-        case .assignment:
-            self = .assignment(id: contentId)
-        case .quiz:
-            self = .quiz(id: contentId)
-        case .externalURL:
-            self = .externalURL(url: moduleItemAPI.external_url)
-        case .externalTool:
-            self = .externalTool(
-                id: contentId,
-                url: moduleItemAPI.external_url,
-                newTab: moduleItemAPI.new_tab ?? false
-            )
-        case .page:
-            self = .page(id: moduleItemAPI.page_url)
-        case .subHeader:
-            self = .subHeader
-        }
-    }
-}
-
 @Model
 class ModuleItem: Cacheable {
     typealias ServerID = Int
@@ -103,5 +66,42 @@ class ModuleItem: Cacheable {
         self.contentDetails = other.contentDetails ?? self.contentDetails
         self.published = other.published ?? self.published
         self.quizLti = other.quizLti ?? self.quizLti
+    }
+}
+
+enum ModuleItemType: Equatable, Codable {
+    case file(id: String?)
+    case discussion(id: String?)
+    case assignment(id: String?)
+    case quiz(id: String?)
+    case externalURL(url: URL?)
+    case externalTool(id: String?, url: URL?, newTab: Bool)
+    case page(id: String?)
+    case subHeader
+
+    init(from moduleItemAPI: APIModuleItem) {
+        let contentId = moduleItemAPI.content_id?.asString
+        switch moduleItemAPI.type {
+        case .file:
+            self = .file(id: contentId)
+        case .discussion:
+            self = .discussion(id: contentId)
+        case .assignment:
+            self = .assignment(id: contentId)
+        case .quiz:
+            self = .quiz(id: contentId)
+        case .externalURL:
+            self = .externalURL(url: moduleItemAPI.external_url)
+        case .externalTool:
+            self = .externalTool(
+                id: contentId,
+                url: moduleItemAPI.external_url,
+                newTab: moduleItemAPI.new_tab ?? false
+            )
+        case .page:
+            self = .page(id: moduleItemAPI.page_url)
+        case .subHeader:
+            self = .subHeader
+        }
     }
 }

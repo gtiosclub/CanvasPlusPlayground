@@ -7,6 +7,18 @@
 
 import Foundation
 
+protocol APIRequest {
+    associatedtype Subject: APIResponse
+    associatedtype QueryResult: Codable = Subject
+
+    typealias QueryParameter = (name: String, value: Any?)
+
+    var path: String { get }
+    var queryParameters: [QueryParameter] { get }
+    var method: RequestMethod { get }
+    var perPage: Int { get }
+}
+
 protocol ArrayAPIRequest: APIRequest {
     associatedtype QueryResult = [Subject]
 }
@@ -26,18 +38,6 @@ protocol CacheableArrayAPIRequest: CacheableAPIRequest where QueryResult == [Sub
 
 protocol NoReturnAPIRequest: APIRequest {
     associatedtype Subject = Empty
-}
-
-protocol APIRequest {
-    associatedtype Subject: APIResponse
-    associatedtype QueryResult: Codable = Subject
-
-    typealias QueryParameter = (name: String, value: Any?)
-
-    var path: String { get }
-    var queryParameters: [QueryParameter] { get }
-    var method: RequestMethod { get }
-    var perPage: Int { get }
 }
 
 extension APIRequest {

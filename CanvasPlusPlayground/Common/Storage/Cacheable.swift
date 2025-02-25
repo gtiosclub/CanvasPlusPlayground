@@ -8,15 +8,15 @@
 import Foundation
 import SwiftData
 
-protocol BaseCacheable {}
-
-class NoOpCacheable: BaseCacheable {}
-
 protocol Cacheable: BaseCacheable, PersistentModel {
     var id: String { get }
 
     func merge(with other: Self)
 }
+
+protocol BaseCacheable {}
+
+class NoOpCacheable: BaseCacheable {}
 
 extension Cacheable where Self: Hashable {
     func hash(into hasher: inout Hasher) {

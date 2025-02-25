@@ -7,28 +7,6 @@
 
 import Foundation
 
-struct CanvasCalendarEventGroup: Identifiable {
-    let id: String = UUID().uuidString
-    let date: Date
-    let events: [CanvasCalendarEvent]
-
-    var displayDate: String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .medium
-        dateFormatter.timeZone = .current
-
-        return dateFormatter.string(from: date)
-    }
-}
-
-struct CanvasCalendarEvent: Identifiable {
-    let id: String
-    let summary: String
-    let startDate: Date
-    let endDate: Date
-    let location: String
-}
-
 enum ICSParser {
     private static var dateFormatter: DateFormatter {
         let dateFormatter = DateFormatter()
@@ -127,4 +105,26 @@ enum ICSParser {
             throw NetworkError.fetchFailed(msg: error.localizedDescription)
         }
     }
+}
+
+struct CanvasCalendarEventGroup: Identifiable {
+    let id: String = UUID().uuidString
+    let date: Date
+    let events: [CanvasCalendarEvent]
+
+    var displayDate: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeZone = .current
+
+        return dateFormatter.string(from: date)
+    }
+}
+
+struct CanvasCalendarEvent: Identifiable {
+    let id: String
+    let summary: String
+    let startDate: Date
+    let endDate: Date
+    let location: String
 }
