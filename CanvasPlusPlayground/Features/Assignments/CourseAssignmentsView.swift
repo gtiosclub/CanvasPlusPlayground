@@ -8,8 +8,17 @@
 import SwiftUI
 
 struct AssignmentRow: View {
+    @Environment(GradeCalculatorViewModel.self) private var calculator
+
     let assignment: Assignment
     let showGrades: Bool
+
+    var isDropped: Bool {
+        !calculator.gradeGroups
+            .flatMap(\.consideredAssignments)
+            .map(\.id)
+            .contains(assignment.id)
+    }
 
     var body: some View {
         if !showGrades {
@@ -48,6 +57,11 @@ struct AssignmentRow: View {
             Spacer()
 
             if showGrades {
+                if isDropped, !calculator.gradeGroups.isEmpty {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundStyle(.secondary)
+                }
+
                 Text(assignment.formattedGrade)
                     .bold()
                 +
@@ -60,14 +74,25 @@ struct AssignmentRow: View {
 struct CourseAssignmentsView: View {
     let course: Course
     let showGrades: Bool
+
     @State private var assignmentManager: CourseAssignmentManager
+    @State private var gradeCalculator: GradeCalculatorViewModel
 
     @State private var isLoadingAssignments = true
+    @State private var showingGradeCalculator = false
 
     init(course: Course, showGrades: Bool = false) {
         self.course = course
         self.showGrades = showGrades
-        _assignmentManager = .init(initialValue: CourseAssignmentManager(courseID: course.id))
+
+        let manager = CourseAssignmentManager(courseID: course.id)
+        _assignmentManager = .init(initialValue: manager)
+
+        _gradeCalculator = .init(
+            initialValue: .init(
+                assignmentGroups: manager.assignmentGroups
+            )
+        )
     }
 
     var body: some View {
@@ -89,23 +114,37 @@ struct CourseAssignmentsView: View {
                         let assignmentModel = assignment.createModel()
                         AssignmentRow(assignment: assignmentModel, showGrades: showGrades)
                             .contextMenu {
-                                PinButton(
-                                    itemID: assignmentModel.id,
-                                    courseID: course.id,
-                                    type: .assignment
-                                )
+                                if !showGrades {
+                                    PinButton(
+                                        itemID: assignmentModel.id,
+                                        courseID: course.id,
+                                        type: .assignment
+                                    )
+                                }
                             }
                             .swipeActions(edge: .leading) {
-                                PinButton(
-                                    itemID: assignmentModel.id,
-                                    courseID: course.id,
-                                    type: .assignment
-                                )
+                                if !showGrades {
+                                    PinButton(
+                                        itemID: assignmentModel.id,
+                                        courseID: course.id,
+                                        type: .assignment
+                                    )
+                                }
                             }
                     }
                 }
             } header: {
                 sectionHeader(for: assignmentGroup)
+            }
+        }
+        .toolbar {
+            if showGrades {
+                ToolbarItem(placement: .automatic) {
+                    Button("Calculate Grades") {
+                        showingGradeCalculator = true
+                    }
+                    .disabled(isLoadingAssignments)
+                }
             }
         }
         .task {
@@ -119,11 +158,20 @@ struct CourseAssignmentsView: View {
         .navigationDestination(for: Assignment.self) { assignment in
             AssignmentDetailView(assignment: assignment)
         }
+        .sheet(isPresented: $showingGradeCalculator) {
+            NavigationStack {
+                GradeCalculatorView()
+            }
+            .frame(width: 450, height: 600)
+            .environment(gradeCalculator)
+        }
+        .environment(gradeCalculator)
     }
 
     private func loadAssignments() async {
         isLoadingAssignments = true
         await assignmentManager.fetchAssignmentGroups()
+        gradeCalculator.resetGroups(assignmentManager.assignmentGroups)
         isLoadingAssignments = false
     }
 
