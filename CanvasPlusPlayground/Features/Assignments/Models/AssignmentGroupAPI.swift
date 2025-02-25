@@ -23,7 +23,7 @@ struct AssignmentGroupAPI: APIResponse {
 }
 // swiftlint:enable identifier_name
 
-struct AssignmentGroupRules: Codable {
+struct AssignmentGroupRules: Codable, Hashable {
     let dropHighest: Int?
     let dropLowest: Int?
     let neverDrop: [Int]?

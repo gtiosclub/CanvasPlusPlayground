@@ -13,6 +13,7 @@ struct CourseAssignmentsView: View {
     @State private var assignmentManager: CourseAssignmentManager
 
     @State private var isLoadingAssignments = true
+    @State private var showingGradeCalculator = false
 
     init(course: Course, showGrades: Bool = false) {
         self.course = course
@@ -62,6 +63,16 @@ struct CourseAssignmentsView: View {
                 sectionHeader(for: assignmentGroup)
             }
         }
+        .toolbar {
+            if showGrades {
+                ToolbarItem(placement: .automatic) {
+                    Button("Calculate Grades") {
+                        showingGradeCalculator = true
+                    }
+                    .disabled(isLoadingAssignments)
+                }
+            }
+        }
         .task {
             await loadAssignments()
         }
@@ -72,6 +83,14 @@ struct CourseAssignmentsView: View {
         .navigationTitle(showGrades ? "Grades" : "Assignments")
         .navigationDestination(for: Assignment.self) { assignment in
             AssignmentDetailView(assignment: assignment)
+        }
+        .sheet(isPresented: $showingGradeCalculator) {
+            NavigationStack {
+                GradeCalculatorView(
+                    assignmentGroups: assignmentManager.assignmentGroups
+                )
+            }
+            .frame(width: 450, height: 600)
         }
     }
 
