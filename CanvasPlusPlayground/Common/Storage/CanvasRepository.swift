@@ -8,10 +8,6 @@
 import SwiftData
 import SwiftUI
 
-enum CacheError: Error {
-    case encodingError, decodingError
-}
-
 @MainActor
 class CanvasRepository {
     let modelContainer: ModelContainer
@@ -81,4 +77,8 @@ class CanvasRepository {
     func setAutosave(_ enabled: Bool) async {
         self.modelContext.autosaveEnabled = enabled
     }
+}
+
+enum CacheError: Error {
+    case encodingError, decodingError
 }

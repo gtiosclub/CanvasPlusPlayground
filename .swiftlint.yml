@@ -95,6 +95,11 @@ type_name:
   min_length: 1
   max_length: 40
 
+file_types_order:
+  order:
+    - main_type
+    - supporting_type
+
 # Custom rules
 custom_rules:
   commented_code:

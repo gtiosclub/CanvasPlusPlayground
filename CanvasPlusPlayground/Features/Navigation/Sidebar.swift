@@ -7,59 +7,6 @@
 
 import SwiftUI
 
-private struct SidebarTiles: View {
-    @Environment(NavigationModel.self) private var navigationModel
-
-    var body: some View {
-#if os(macOS)
-        let columns = Array(
-            repeating: GridItem(.adaptive(minimum: 90)),
-            count: 2
-        )
-#else
-        let columns = Array(
-            repeating: GridItem(.adaptive(minimum: 150)),
-            count: 2
-        )
-#endif
-
-        return LazyVGrid(
-            columns: columns,
-            spacing: 4
-        ) {
-            SidebarTile(
-                "Announcements",
-                systemIcon: "bell.circle.fill",
-                color: .blue,
-                page: .announcements
-            ) {
-                navigationModel.selectedNavigationPage = .announcements
-            }
-
-            SidebarTile(
-                "To-Do",
-                systemIcon: "list.bullet.circle.fill",
-                color: .red,
-                page: .toDoList
-            ) {
-                navigationModel.selectedNavigationPage = .toDoList
-            }
-
-            SidebarTile(
-                "Pinned",
-                systemIcon: "pin.circle.fill",
-                color: .orange,
-                page: .pinned
-            ) {
-                navigationModel.selectedNavigationPage = .pinned
-            }
-        }
-        .listRowInsets(EdgeInsets())
-        .listRowBackground(Color.clear)
-        .buttonStyle(.plain)
-    }
-}
-
 struct Sidebar: View {
     typealias NavigationPage = NavigationModel.NavigationPage
 
@@ -137,5 +84,58 @@ struct Sidebar: View {
                 }
             }
         }
+    }
+}
+
+private struct SidebarTiles: View {
+    @Environment(NavigationModel.self) private var navigationModel
+
+    var body: some View {
+        #if os(macOS)
+        let columns = Array(
+            repeating: GridItem(.adaptive(minimum: 90)),
+            count: 2
+        )
+        #else
+        let columns = Array(
+            repeating: GridItem(.adaptive(minimum: 150)),
+            count: 2
+        )
+        #endif
+
+        return LazyVGrid(
+            columns: columns,
+            spacing: 4
+        ) {
+            SidebarTile(
+                "Announcements",
+                systemIcon: "bell.circle.fill",
+                color: .blue,
+                page: .announcements
+            ) {
+                navigationModel.selectedNavigationPage = .announcements
+            }
+
+            SidebarTile(
+                "To-Do",
+                systemIcon: "list.bullet.circle.fill",
+                color: .red,
+                page: .toDoList
+            ) {
+                navigationModel.selectedNavigationPage = .toDoList
+            }
+
+            SidebarTile(
+                "Pinned",
+                systemIcon: "pin.circle.fill",
+                color: .orange,
+                page: .pinned
+            ) {
+                navigationModel.selectedNavigationPage = .pinned
+            }
+        }
+        .listRowInsets(EdgeInsets())
+        .listRowBackground(Color.clear)
+        .buttonStyle(.plain)
     }
 }

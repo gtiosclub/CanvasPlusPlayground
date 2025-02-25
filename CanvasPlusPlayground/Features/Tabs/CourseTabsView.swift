@@ -8,42 +8,6 @@
 import SwiftUI
 import WebKit
 
-#if os(iOS)
-typealias PlatformRepresentable = UIViewRepresentable
-#else
-typealias PlatformRepresentable = NSViewRepresentable
-#endif
-
-struct WebView: PlatformRepresentable {
-    let url: URL
-
-    #if os(iOS)
-    func makeUIView(context: Context) -> WKWebView {
-        WKWebView()
-    }
-
-    func updateUIView(_ webView: WKWebView, context: Context) {
-        loadRequest(webView)
-    }
-    #else
-    func makeNSView(context: Context) -> WKWebView {
-        WKWebView()
-    }
-
-    func updateNSView(_ webView: WKWebView, context: Context) {
-        loadRequest(webView)
-    }
-    #endif
-
-    private func loadRequest(_ webView: WKWebView) {
-        var request = URLRequest(url: url)
-
-        // TODO: pass auth token, not accessToken
-        request.setValue("Bearer \(StorageKeys.accessTokenValue)", forHTTPHeaderField: "Authorization")
-        webView.load(request)
-    }
-}
-
 struct CourseTabsView: View {
     let course: Course
     let baseURL: String
@@ -89,5 +53,41 @@ struct CourseTabsView: View {
             }
             .frame(minWidth: 800, minHeight: 600)
         }
+    }
+}
+
+#if os(iOS)
+typealias PlatformRepresentable = UIViewRepresentable
+#else
+typealias PlatformRepresentable = NSViewRepresentable
+#endif
+
+struct WebView: PlatformRepresentable {
+    let url: URL
+
+#if os(iOS)
+    func makeUIView(context: Context) -> WKWebView {
+        WKWebView()
+    }
+
+    func updateUIView(_ webView: WKWebView, context: Context) {
+        loadRequest(webView)
+    }
+#else
+    func makeNSView(context: Context) -> WKWebView {
+        WKWebView()
+    }
+
+    func updateNSView(_ webView: WKWebView, context: Context) {
+        loadRequest(webView)
+    }
+#endif
+
+    private func loadRequest(_ webView: WKWebView) {
+        var request = URLRequest(url: url)
+
+        // TODO: pass auth token, not accessToken
+        request.setValue("Bearer \(StorageKeys.accessTokenValue)", forHTTPHeaderField: "Authorization")
+        webView.load(request)
     }
 }

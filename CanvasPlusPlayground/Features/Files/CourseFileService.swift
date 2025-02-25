@@ -10,25 +10,6 @@ import Foundation
 import AppKit
 #endif
 
-enum FileError: Error {
-    case fileWriteFailed, fileWasNil, directoryInaccessible
-
-    var message: String {
-        switch self {
-        case .fileWriteFailed:
-            return "File save failed"
-        case .fileWasNil:
-            return "File was nil"
-        case .directoryInaccessible:
-            return "Directory inaccessible"
-        }
-    }
-
-    var description: String {
-        message
-    }
-}
-
 struct CourseFileService {
     static let shared: CourseFileService = .init()
 
@@ -217,5 +198,24 @@ struct CourseFileService {
         pathURL.appendPathComponent(fileId + (type?.formatExtension ?? ""))
 
         return pathURL
+    }
+}
+
+enum FileError: Error {
+    case fileWriteFailed, fileWasNil, directoryInaccessible
+
+    var message: String {
+        switch self {
+        case .fileWriteFailed:
+            return "File save failed"
+        case .fileWasNil:
+            return "File was nil"
+        case .directoryInaccessible:
+            return "Directory inaccessible"
+        }
+    }
+
+    var description: String {
+        message
     }
 }

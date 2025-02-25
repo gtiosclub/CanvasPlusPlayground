@@ -13,12 +13,6 @@ import QuickLook
 import QuickLookUI
 #endif
 
-#if os(iOS)
-typealias PlatformViewControllerRepresentable = UIViewControllerRepresentable
-#elseif os(macOS)
-typealias PlatformViewControllerRepresentable = NSViewRepresentable
-#endif
-
 struct QuickLookPreview: PlatformViewControllerRepresentable {
     let url: URL
     let onDismiss: () -> Void
@@ -103,3 +97,9 @@ struct QuickLookPreview: PlatformViewControllerRepresentable {
     }
     #endif
 }
+
+#if os(iOS)
+typealias PlatformViewControllerRepresentable = UIViewControllerRepresentable
+#elseif os(macOS)
+typealias PlatformViewControllerRepresentable = NSViewRepresentable
+#endif

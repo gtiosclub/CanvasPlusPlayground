@@ -8,27 +8,6 @@
 import Foundation
 
 // swiftlint:disable identifier_name
-enum APIModuleItemType: String, Codable {
-    case file = "File"
-    case page = "Page"
-    case discussion = "Discussion"
-    case assignment = "Assignment"
-    case quiz = "Quiz"
-    case subHeader = "SubHeader"
-    case externalURL = "ExternalUrl"
-    case externalTool = "ExternalTool"
-}
-
-struct CompletionRequirement: Codable {
-    let type: CompletionRequirementType
-    let min_score: Double?
-    let completed: Bool?
-}
-
-enum CompletionRequirementType: String, Codable {
-    case min_score, must_view, must_submit, must_contribute, must_mark_done
-}
-
 struct APIModuleItem: APIResponse, Identifiable {
     typealias Model = ModuleItem
 
@@ -75,4 +54,25 @@ struct APIModuleItem: APIResponse, Identifiable {
         let locked_for_user: Bool?
         let lock_explanation: String?
     }
+}
+
+enum APIModuleItemType: String, Codable {
+    case file = "File"
+    case page = "Page"
+    case discussion = "Discussion"
+    case assignment = "Assignment"
+    case quiz = "Quiz"
+    case subHeader = "SubHeader"
+    case externalURL = "ExternalUrl"
+    case externalTool = "ExternalTool"
+}
+
+struct CompletionRequirement: Codable {
+    let type: CompletionRequirementType
+    let min_score: Double?
+    let completed: Bool?
+}
+
+enum CompletionRequirementType: String, Codable {
+    case min_score, must_view, must_submit, must_contribute, must_mark_done
 }

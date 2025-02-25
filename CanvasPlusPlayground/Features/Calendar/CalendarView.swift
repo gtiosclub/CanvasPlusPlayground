@@ -7,28 +7,6 @@
 
 import SwiftUI
 
-private struct EventRow: View {
-    let event: CanvasCalendarEvent
-
-    var body: some View {
-        HStack {
-            Text(event.summary)
-            Spacer()
-
-            dateDetailText
-                .foregroundStyle(.secondary)
-        }
-    }
-
-    private var dateDetailText: Text {
-        if event.startDate == event.endDate {
-            Text(event.startDate, style: .time)
-        } else {
-            Text(event.startDate, style: .time) + Text(" - ") + Text(event.endDate, style: .time)
-        }
-    }
-}
-
 struct CalendarView: View {
     let icsURL: URL?
 
@@ -78,5 +56,27 @@ struct CalendarView: View {
         isLoadingCalendar = true
         events = await ICSParser.parseEvents(from: icsURL)
         isLoadingCalendar = false
+    }
+}
+
+private struct EventRow: View {
+    let event: CanvasCalendarEvent
+
+    var body: some View {
+        HStack {
+            Text(event.summary)
+            Spacer()
+
+            dateDetailText
+                .foregroundStyle(.secondary)
+        }
+    }
+
+    private var dateDetailText: Text {
+        if event.startDate == event.endDate {
+            Text(event.startDate, style: .time)
+        } else {
+            Text(event.startDate, style: .time) + Text(" - ") + Text(event.endDate, style: .time)
+        }
     }
 }

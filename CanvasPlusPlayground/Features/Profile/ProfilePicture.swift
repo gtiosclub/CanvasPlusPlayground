@@ -7,12 +7,6 @@
 
 import SwiftUI
 
-#if os(macOS)
-private typealias PlatformImage = NSImage
-#else
-private typealias PlatformImage = UIImage
-#endif
-
 struct ProfilePicture: View {
     let user: User
     var size: CGFloat
@@ -56,3 +50,9 @@ struct ProfilePicture: View {
         }
     }
 }
+
+#if os(macOS)
+private typealias PlatformImage = NSImage
+#else
+private typealias PlatformImage = UIImage
+#endif

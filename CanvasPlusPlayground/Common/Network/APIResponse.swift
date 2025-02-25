@@ -7,14 +7,14 @@
 
 import Foundation
 
-struct Empty: APIResponse {
-    typealias Model = NoOpCacheable
-}
-
 protocol APIResponse: Codable {
     associatedtype Model: BaseCacheable
 
     func createModel() -> Model
+}
+
+struct Empty: APIResponse {
+    typealias Model = NoOpCacheable
 }
 
 // MARK: Hashable
