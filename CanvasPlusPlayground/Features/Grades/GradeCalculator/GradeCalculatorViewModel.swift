@@ -9,11 +9,11 @@ import SwiftUI
 
 @Observable
 class GradeCalculatorViewModel {
-    struct GradeAssignment: Identifiable {
+    struct GradeAssignment: Identifiable, Hashable {
         let id: String
         let name: String
         var pointsEarned: Double?
-        let pointsPossible: Double?
+        var pointsPossible: Double?
 
         var percentage: Double? {
             guard let pointsEarned, let pointsPossible, pointsPossible > 0 else {
@@ -23,7 +23,7 @@ class GradeCalculatorViewModel {
         }
     }
 
-    struct GradeGroup: Identifiable {
+    struct GradeGroup: Identifiable, Hashable {
         let id: String
         let name: String
         var weight: Double
@@ -39,7 +39,7 @@ class GradeCalculatorViewModel {
 
             var consideredAssignments = assignments
 
-            var neverDropAssignments = consideredAssignments.filter {
+            let neverDropAssignments = consideredAssignments.filter {
                 guard let idAsInt = $0.id.asInt, let neverDrop = rules?.neverDrop else {
                     return false
                 }
@@ -90,8 +90,13 @@ class GradeCalculatorViewModel {
         }
     }
 
-    var gradeGroups: [GradeGroup] = []
+    var gradeGroups: [GradeGroup] = [] {
+        didSet {
+            calculateTotalGrade()
+        }
+    }
     var totalGrade: Double = 0.0
+    var expandedAssignmentGroups: [GradeGroup: Bool] = [:]
 
     private func calculateTotalGrade() {
         let totalWeight = gradeGroups.reduce(0.0) {
@@ -155,6 +160,10 @@ class GradeCalculatorViewModel {
                 rules: group.rules
             )
         }
+
+        expandedAssignmentGroups = Dictionary(
+            uniqueKeysWithValues: gradeGroups.lazy.map { ($0, true) }
+        )
 
         calculateTotalGrade()
     }
