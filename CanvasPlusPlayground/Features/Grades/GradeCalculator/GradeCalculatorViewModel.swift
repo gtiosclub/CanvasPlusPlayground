@@ -31,15 +31,10 @@ class GradeCalculatorViewModel {
 
         var rules: AssignmentGroupRules?
 
-        var weightedScore: Double? {
-            guard weight > 0.0, !assignments.isEmpty, assignments
-                .contains( where: { $0.pointsEarned != nil }) else {
-                return nil
-            }
+        var consideredAssignments: [GradeAssignment] {
+            var retValue = assignments
 
-            var consideredAssignments = assignments
-
-            let neverDropAssignments = consideredAssignments.filter {
+            let neverDropAssignments = retValue.filter {
                 guard let idAsInt = $0.id.asInt, let neverDrop = rules?.neverDrop else {
                     return false
                 }
@@ -47,7 +42,7 @@ class GradeCalculatorViewModel {
                 return neverDrop.contains(idAsInt)
             }
 
-            consideredAssignments = consideredAssignments.filter {
+            retValue = retValue.filter {
                 guard let idAsInt = $0.id.asInt, let neverDrop = rules?.neverDrop else {
                     return true
                 }
@@ -56,19 +51,28 @@ class GradeCalculatorViewModel {
             }
 
             if let dropLowest = rules?.dropLowest, dropLowest > 0 {
-                consideredAssignments = Array(
-                    consideredAssignments
-                        .dropFirst(min(dropLowest, consideredAssignments.count))
+                retValue = Array(
+                    retValue
+                        .dropFirst(min(dropLowest, retValue.count))
                 )
             }
 
-            consideredAssignments.sort { ($0.pointsEarned ?? 0.0) > ($1.pointsEarned ?? 0.0) }
+            retValue.sort { ($0.pointsEarned ?? 0.0) > ($1.pointsEarned ?? 0.0) }
 
             if let dropHighest = rules?.dropHighest, dropHighest > 0 {
-                consideredAssignments = Array(consideredAssignments.dropFirst(min(dropHighest, consideredAssignments.count)))
+                retValue = Array(retValue.dropFirst(min(dropHighest, retValue.count)))
             }
 
-            consideredAssignments += neverDropAssignments
+            retValue += neverDropAssignments
+
+            return retValue
+        }
+
+        var weightedScore: Double? {
+            guard weight > 0.0, !assignments.isEmpty, assignments
+                .contains( where: { $0.pointsEarned != nil }) else {
+                return nil
+            }
 
             let totalPossible = consideredAssignments.reduce(0.0) {
                 guard $1.pointsEarned != nil else { return $0 }
@@ -142,6 +146,10 @@ class GradeCalculatorViewModel {
     }
 
     init(assignmentGroups: [AssignmentGroup]) {
+        resetGroups(assignmentGroups)
+    }
+
+    func resetGroups(_ assignmentGroups: [AssignmentGroup]) {
         self.gradeGroups = assignmentGroups.map { group in
             let assignments = group.assignments?.map { $0.createModel() }.map { assignment in
                 GradeAssignment(
@@ -164,7 +172,5 @@ class GradeCalculatorViewModel {
         expandedAssignmentGroups = Dictionary(
             uniqueKeysWithValues: gradeGroups.lazy.map { ($0, true) }
         )
-
-        calculateTotalGrade()
     }
 }
