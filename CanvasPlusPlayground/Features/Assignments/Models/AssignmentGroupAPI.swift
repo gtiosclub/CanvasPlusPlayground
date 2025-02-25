@@ -8,7 +8,7 @@
 import Foundation
 
 // swiftlint:disable identifier_name
-struct AssignmentGroupRules: Codable {
+struct AssignmentGroupRules: Codable, Hashable {
     let dropHighest: Int?
     let dropLowest: Int?
     let neverDrop: [Int]?
