@@ -29,13 +29,48 @@ class GradeCalculatorViewModel {
         var weight: Double
         var assignments: [GradeAssignment]
 
+        var rules: AssignmentGroupRules?
+
         var weightedScore: Double? {
-            guard !assignments.isEmpty, assignments
+            guard weight > 0.0, !assignments.isEmpty, assignments
                 .contains( where: { $0.pointsEarned != nil }) else {
                 return nil
             }
 
-            let totalPossible = assignments.reduce(0.0) {
+            var consideredAssignments = assignments
+
+            var neverDropAssignments = consideredAssignments.filter {
+                guard let idAsInt = $0.id.asInt, let neverDrop = rules?.neverDrop else {
+                    return false
+                }
+
+                return neverDrop.contains(idAsInt)
+            }
+
+            consideredAssignments = consideredAssignments.filter {
+                guard let idAsInt = $0.id.asInt, let neverDrop = rules?.neverDrop else {
+                    return true
+                }
+
+                return !neverDrop.contains(idAsInt)
+            }
+
+            if let dropLowest = rules?.dropLowest, dropLowest > 0 {
+                consideredAssignments = Array(
+                    consideredAssignments
+                        .dropFirst(min(dropLowest, consideredAssignments.count))
+                )
+            }
+
+            consideredAssignments.sort { ($0.pointsEarned ?? 0.0) > ($1.pointsEarned ?? 0.0) }
+
+            if let dropHighest = rules?.dropHighest, dropHighest > 0 {
+                consideredAssignments = Array(consideredAssignments.dropFirst(min(dropHighest, consideredAssignments.count)))
+            }
+
+            consideredAssignments += neverDropAssignments
+
+            let totalPossible = consideredAssignments.reduce(0.0) {
                 guard $1.pointsEarned != nil else { return $0 }
 
                 guard let pointsPossible = $1.pointsPossible else { return $0 }
@@ -43,7 +78,7 @@ class GradeCalculatorViewModel {
                 return $0 + pointsPossible
             }
 
-            let totalEarned: Double = assignments.reduce(0.0) {
+            let totalEarned: Double = consideredAssignments.reduce(0.0) {
                 guard let pointsEarned = $1.pointsEarned else { return $0 }
 
                 return $0 + pointsEarned
@@ -66,17 +101,21 @@ class GradeCalculatorViewModel {
         if totalWeight > 0 {
             var usedWeightage = 0.0
 
-            let weightedTotal = gradeGroups.reduce(0.0) { sum, group in
+            let weightedTotal = gradeGroups.reduce(0.0) {sum, group in
                 guard let weightedScore = group.weightedScore else { return sum }
 
                 usedWeightage += group.weight
 
-                print("Group: \(group.name), Weight: \(group.weight), Score: \(weightedScore)")
+                LoggerService.main.debug(
+                    "Group: \(group.name), Weight: \(group.weight), Score: \(weightedScore)"
+                )
 
                 return sum + weightedScore
             }
 
-            print("Weighted Total: \(weightedTotal), Used Weightage: \(usedWeightage)")
+            LoggerService.main.debug(
+                "Weighted Total: \(weightedTotal), Used Weightage: \(usedWeightage)"
+            )
 
             totalGrade = (weightedTotal / usedWeightage) * 100
         } else {
@@ -86,8 +125,7 @@ class GradeCalculatorViewModel {
             for group in gradeGroups {
                 for assignment in group.assignments {
                     if let earned = assignment.pointsEarned,
-                       let possible = assignment.pointsPossible,
-                       possible > 0 {
+                       let possible = assignment.pointsPossible {
                         totalPoints += earned
                         totalPossible += possible
                     }
@@ -113,7 +151,8 @@ class GradeCalculatorViewModel {
                 id: group.id,
                 name: group.name,
                 weight: group.groupWeight ?? 0.0,
-                assignments: assignments
+                assignments: assignments,
+                rules: group.rules
             )
         }
 

@@ -19,9 +19,7 @@ class AssignmentGroup: Cacheable {
     var assignments: [AssignmentAPI]?
 
     // Rules
-    var dropHighest: Int?
-    var dropLowest: Int?
-    var neverDrop: [Int]?
+    var rules: AssignmentGroupRules?
 
     // MARK: Custom Properties
     var tag: String
@@ -33,9 +31,7 @@ class AssignmentGroup: Cacheable {
         self.groupWeight = groupAPI.group_weight
         self.assignments = groupAPI.assignments
 
-        self.dropHighest = groupAPI.rules?.drop_highest
-        self.dropLowest = groupAPI.rules?.drop_lowest
-        self.neverDrop = groupAPI.rules?.never_drop
+        self.rules = groupAPI.rules
 
         self.tag = ""
     }
@@ -44,9 +40,7 @@ class AssignmentGroup: Cacheable {
         self.name = other.name
         self.position = other.position
         self.groupWeight = other.groupWeight
-        self.dropHighest = other.dropHighest
-        self.dropLowest = other.dropLowest
-        self.neverDrop = other.neverDrop
+        self.rules = other.rules
         self.assignments = other.assignments
     }
 }
