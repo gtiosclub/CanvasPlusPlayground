@@ -70,7 +70,10 @@ struct CourseAssignmentsView: View {
                     }
                 }
             } header: {
-                sectionHeader(for: assignmentGroup)
+                GroupHeader(
+                    assignmentGroup: assignmentGroup,
+                    showGrades: showGrades
+                )
             }
         }
         .toolbar {
@@ -110,21 +113,9 @@ struct CourseAssignmentsView: View {
         gradeCalculator.resetGroups(assignmentManager.assignmentGroups)
         isLoadingAssignments = false
     }
-
-    private func sectionHeader(for assignmentGroup: AssignmentGroup) -> some View {
-        HStack {
-            Text(assignmentGroup.name)
-            Spacer()
-            if let groupWeight = assignmentGroup.groupWeight {
-                Text(String(format: "%.1f%%", groupWeight))
-            } else {
-                Text("--%")
-            }
-        }
-    }
 }
 
-struct AssignmentRow: View {
+private struct AssignmentRow: View {
     @Environment(GradeCalculatorViewModel.self) private var calculator
 
     let assignment: Assignment
@@ -176,7 +167,7 @@ struct AssignmentRow: View {
             if showGrades {
                 if isDropped, !calculator.gradeGroups.isEmpty {
                     Image(systemName: "xmark.circle.fill")
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.separator)
                 }
 
                 Text(assignment.formattedGrade)
@@ -185,5 +176,85 @@ struct AssignmentRow: View {
                 Text(" / " + assignment.formattedPointsPossible)
             }
         }
+    }
+}
+
+private struct GroupHeader: View {
+    let assignmentGroup: AssignmentGroup
+    let showGrades: Bool
+
+    @State private var showingInfo = false
+
+    private var showsInfoButton: Bool {
+        assignmentGroup.rules?.dropLowest != nil ||
+        assignmentGroup.rules?.dropHighest != nil ||
+        !(assignmentGroup.rules?.neverDrop?.isEmpty ?? true)
+    }
+
+    var body: some View {
+        HStack {
+            Text(assignmentGroup.name)
+
+            Spacer()
+
+            if let groupWeight = assignmentGroup.groupWeight {
+                Text(String(format: "%.1f%%", groupWeight))
+            } else {
+                Text("--%")
+            }
+
+            if showGrades, showsInfoButton {
+                Button("Show Rules", systemImage: "info.circle") {
+                    showingInfo = true
+                }
+                .popover(isPresented: $showingInfo) {
+                    infoGrid
+                        .presentationCompactAdaptation(.popover)
+                        .presentationBackground(.thinMaterial)
+                }
+                .buttonStyle(.plain)
+                .labelStyle(.iconOnly)
+            }
+        }
+    }
+
+    private var infoGrid: some View {
+        VStack {
+            Text("Rules").fontWeight(.heavy)
+
+            Spacer()
+
+            Grid {
+                if let dropLowest = assignmentGroup.rules?.dropLowest {
+                    GridRow {
+                        Text("Drop Lowest:")
+                            .fontWeight(.light)
+
+                        Spacer()
+
+                        Text(
+                            dropLowest,
+                            format: .number
+                        )
+                    }
+                }
+
+                if let dropHighest = assignmentGroup.rules?.dropHighest {
+                    GridRow {
+                        Text("Drop Highest:")
+                            .fontWeight(.light)
+
+                        Spacer()
+
+                        Text(
+                            dropHighest,
+                            format: .number
+                        )
+                        .bold()
+                    }
+                }
+            }
+        }
+        .padding(16)
     }
 }
