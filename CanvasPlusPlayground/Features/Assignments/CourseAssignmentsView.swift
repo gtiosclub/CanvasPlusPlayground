@@ -10,7 +10,9 @@ import SwiftUI
 struct CourseAssignmentsView: View {
     let course: Course
     let showGrades: Bool
+
     @State private var assignmentManager: CourseAssignmentManager
+    @State private var gradeCalculator: GradeCalculatorViewModel
 
     @State private var isLoadingAssignments = true
     @State private var showingGradeCalculator = false
@@ -18,7 +20,15 @@ struct CourseAssignmentsView: View {
     init(course: Course, showGrades: Bool = false) {
         self.course = course
         self.showGrades = showGrades
-        _assignmentManager = .init(initialValue: CourseAssignmentManager(courseID: course.id))
+
+        let manager = CourseAssignmentManager(courseID: course.id)
+        _assignmentManager = .init(initialValue: manager)
+
+        _gradeCalculator = .init(
+            initialValue: .init(
+                assignmentGroups: manager.assignmentGroups
+            )
+        )
     }
 
     var body: some View {
@@ -86,17 +96,18 @@ struct CourseAssignmentsView: View {
         }
         .sheet(isPresented: $showingGradeCalculator) {
             NavigationStack {
-                GradeCalculatorView(
-                    assignmentGroups: assignmentManager.assignmentGroups
-                )
+                GradeCalculatorView()
             }
             .frame(width: 450, height: 600)
+            .environment(gradeCalculator)
         }
+        .environment(gradeCalculator)
     }
 
     private func loadAssignments() async {
         isLoadingAssignments = true
         await assignmentManager.fetchAssignmentGroups()
+        gradeCalculator.resetGroups(assignmentManager.assignmentGroups)
         isLoadingAssignments = false
     }
 
@@ -114,8 +125,17 @@ struct CourseAssignmentsView: View {
 }
 
 struct AssignmentRow: View {
+    @Environment(GradeCalculatorViewModel.self) private var calculator
+
     let assignment: Assignment
     let showGrades: Bool
+
+    var isDropped: Bool {
+        !calculator.gradeGroups
+            .flatMap(\.consideredAssignments)
+            .map(\.id)
+            .contains(assignment.id)
+    }
 
     var body: some View {
         if !showGrades {
@@ -154,6 +174,11 @@ struct AssignmentRow: View {
             Spacer()
 
             if showGrades {
+                if isDropped, !calculator.gradeGroups.isEmpty {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundStyle(.secondary)
+                }
+
                 Text(assignment.formattedGrade)
                     .bold()
                 +

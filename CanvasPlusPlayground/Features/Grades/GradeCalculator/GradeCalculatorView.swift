@@ -8,18 +8,14 @@
 import SwiftUI
 
 struct GradeCalculatorView: View {
+    @Environment(GradeCalculatorViewModel.self) private var calculator
     @Environment(\.dismiss) private var dismiss
 
-    @State private var calculator: GradeCalculatorViewModel
     @FocusState private var assignmentRowFocus: GradeCalculatorViewModel.GradeAssignment?
 
-    init(assignmentGroups: [AssignmentGroup]) {
-        self._calculator = .init(
-            initialValue: .init(assignmentGroups: assignmentGroups)
-        )
-    }
-
     var body: some View {
+        @Bindable var calculator = calculator
+
         List {
             ForEach($calculator.gradeGroups, id: \.id) { $group in
                 DisclosureGroup(
@@ -42,7 +38,8 @@ struct GradeCalculatorView: View {
         .navigationTitle("Calculate Grades")
         .toolbar {
             ToolbarItem(placement: .destructiveAction) {
-                Text("Total: \(calculator.totalGrade)")
+                Text("Total: \(calculator.totalGrade.truncatingTrailingZeros)%")
+                    .bold()
                     .contentTransition(.numericText())
                     .animation(.default, value: calculator.totalGrade)
             }
