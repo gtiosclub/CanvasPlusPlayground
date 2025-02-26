@@ -79,8 +79,7 @@ struct ReminderDatePicker: View {
                     imageName: imageName,
                     imageColor: color,
                     text: text,
-                    date: date)
-                {
+                    date: date) {
                     Task {
                         await reminderManager.scheduleReminder(for: item, at: date)
                     }
@@ -96,14 +95,14 @@ struct ReminderDatePicker: View {
         .padding()
         .presentationDragIndicator(.visible)
     }
-    
+
     struct QuickDateButton: View {
         let imageName: String
         let imageColor: Color
         let text: String
         let date: Date
         let action: () -> Void
-        
+
         var body: some View {
             Button(action: action) {
                 HStack {
@@ -121,14 +120,14 @@ struct ReminderDatePicker: View {
                         .opacity(0.75)
                 }
             }
-            
+
             .buttonStyle(.plain)
             .padding([.leading], 5)
             .padding([.trailing], 10)
             .padding([.top, .bottom])
             .background(.quaternary)
             .cornerRadius(5)
-            
+
         }
     }
 }
@@ -140,19 +139,19 @@ extension Date {
         formatter.dateFormat = "EEE"
         return formatter.string(from: date)
     }
-    
+
     static var tomorrowAt8am: Date {
         let calendar = Calendar.current
         let now = Date()
-        
+
         guard let tomorrow = calendar.date(byAdding: .day, value: 1, to: now)  else {
             return Date.now
         }
-        
+
         let tomorrowAt8AM = calendar.date(bySettingHour: 8, minute: 0, second: 0, of: tomorrow)
         return tomorrowAt8AM ?? Date.now
     }
-    
+
     static func nextOrdinalAt8am(weekday: Int) -> Date {
         if weekday < 1 || weekday > 7 {
             return .now

@@ -13,11 +13,10 @@ class RemindersManager {
     var reminders: [UNNotificationRequest] = []
     var center = UNUserNotificationCenter.current()
 
-    
     init() {
         loadItems()
     }
-    
+
     func scheduleReminder(for item: ReminderType, at date: Date) async {
         do {
             try await center.requestAuthorization(options: [.alert, .sound, .badge])
@@ -26,7 +25,7 @@ class RemindersManager {
         }
 
         let content = UNMutableNotificationContent()
-        
+
         switch item {
             case .assignment(let assignment):
             content.title = "REMINDER: \(assignment.name)"
@@ -38,8 +37,7 @@ class RemindersManager {
                 content.body = ""
             }
         }
-        
-        
+
         content.sound = .default
         let components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: date)
         let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
@@ -65,7 +63,7 @@ class RemindersManager {
             self.reminders = await center.pendingNotificationRequests()
         }
     }
-    
+
     func itemHasReminder(_ item: ReminderType) -> Bool {
         reminders.contains { request in
             request.identifier == item.reminderIdentifier
