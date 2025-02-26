@@ -80,6 +80,9 @@ struct AssignmentDetailView: View {
                 }
             }
             .formStyle(.grouped)
+            .toolbar {
+                ReminderButton(item: .assignment(assignment))
+            }
             .task {
                 submission = assignment.submission?.createModel()
             }
