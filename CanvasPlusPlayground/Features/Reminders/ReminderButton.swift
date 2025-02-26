@@ -53,7 +53,7 @@ struct ReminderDatePicker: View {
     [
         ("bell", .yellow, "Tomorrow", .tomorrowAt8am),
         ("sofa", .purple, "This Weekend", .nextOrdinalAt8am(weekday: 7)),
-        ("calendar.badge.clock", .green, "Next Week", .nextOrdinalAt8am(weekday: 1)) // Essentially, "next Monday"
+        ("calendar.badge.clock", .green, "Next Week", .nextOrdinalAt8am(weekday: 2)) // Essentially, "next Monday"
     ]
 
     var body: some View {
@@ -134,7 +134,7 @@ struct ReminderDatePicker: View {
 
 extension Date {
     func dayOfWeekString() -> String {
-        let date = Date()
+        let date = self
         let formatter = DateFormatter()
         formatter.dateFormat = "EEE"
         return formatter.string(from: date)
