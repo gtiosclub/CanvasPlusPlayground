@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct StorageKeys {
+enum StorageKeys {
     static let accessToken = "com.canvasPlus.AccessToken"
 
     static var accessTokenValue: String {

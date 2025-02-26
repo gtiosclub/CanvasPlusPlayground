@@ -64,7 +64,6 @@ struct GetCoursesRequest: CacheableArrayAPIRequest {
         }
     }
     var customPredicate: Predicate<Course> {
-
         let enrollmentTypePred: Predicate<Course>
         if let enrollmentType {
             enrollmentTypePred = #Predicate<Course> { course in
@@ -93,6 +92,7 @@ struct GetCoursesRequest: CacheableArrayAPIRequest {
             }
         } else { enrollmentStatePred = .true }
 
+        // swiftlint:disable commented_code
 //        let excludeBluePrintPred = excludeBlueprintCourses == nil ? .true : #Predicate<Course> { course in
 //            !(course.blueprint == true)
 //        }
@@ -109,6 +109,7 @@ struct GetCoursesRequest: CacheableArrayAPIRequest {
 //            && excludeBluePrintPred.evaluate(course)
 //            && statePred.evaluate(course)
         }
+        // swiftlint:enable commented_code
     }
 }
 

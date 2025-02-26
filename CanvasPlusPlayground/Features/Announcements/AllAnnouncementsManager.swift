@@ -8,7 +8,6 @@
 import Foundation
 
 @Observable class AllAnnouncementsManager {
-
     struct CourseAnnouncement: Hashable, Identifiable {
         var id: String {
             announcement.id

@@ -93,13 +93,9 @@ class ModulesViewModel {
     private func setModules(_ modules: [Module]?) {
         guard let modules else { return }
 
-        // await MainActor.run { [weak self] in
-           // guard let self else { return }
-
-            let newModules = Set(modules + _modules)
-            self._modules = newModules
-            LoggerService.main.debug("Modules have been added: \(modules.map(\.name).description)")
-        // }
+        let newModules = Set(modules + _modules)
+        self._modules = newModules
+        LoggerService.main.debug("Modules have been added: \(modules.map(\.name).description)")
     }
 
     private func setModuleItems(_ moduleItems: [ModuleItem]?) {
@@ -109,8 +105,7 @@ class ModulesViewModel {
             guard let self else { return }
 
             let newItems = Set(moduleItems + _moduleItems)
-            self._moduleItems = newItems
+            _moduleItems = newItems
         }
     }
-
 }

@@ -5,12 +5,11 @@
 //  Created by Max Ko on 9/22/24.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 @Observable
 class PeopleManager: SearchResultListDataSource {
-
     // MARK: SearchResultListDatasource
 
     let label: String = "People"
@@ -97,7 +96,6 @@ class PeopleManager: SearchResultListDataSource {
                 throw error
             }
         }
-
     }
 
     @MainActor
@@ -152,11 +150,14 @@ extension PeopleManager {
                 group.addTask {
                     // Get the enrollments of course
                     // swiftlint:disable:next unused_optional_binding
-                    guard let _: [Enrollment] = try? await CanvasService.shared.loadAndSync(request, onCacheReceive: { cached in
-                        guard let cached else { return }
+                    guard let _: [Enrollment] = try? await CanvasService.shared.loadAndSync(
+                        request,
+                        onCacheReceive: { cached in
+                            guard let cached else { return }
 
-                        processEnrollments(cached)
-                    }, loadingMethod: .all(onNewPage: processEnrollments)) else {
+                            processEnrollments(cached)
+                        }, loadingMethod: .all(onNewPage: processEnrollments)
+                    ) else {
                         LoggerService.main.error("Couldn't fetch enrollment count for course \(course.name ?? "n/a")")
                         return
                     }
@@ -164,5 +165,4 @@ extension PeopleManager {
             }
         }
     }
-
 }

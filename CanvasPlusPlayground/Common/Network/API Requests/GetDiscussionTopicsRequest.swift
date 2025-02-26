@@ -46,7 +46,7 @@ struct GetDiscussionTopicsRequest: CacheableArrayAPIRequest {
     }
     var customPredicate: Predicate<DiscussionTopic> {
         let scopePred = {
-            switch self.scope {
+            switch scope {
             case .locked:
                 return #Predicate<DiscussionTopic> { topic in
                     topic.locked
@@ -95,7 +95,6 @@ struct GetDiscussionTopicsRequest: CacheableArrayAPIRequest {
             && searchPred.evaluate($0)
         }
     }
-
 }
 
 extension GetDiscussionTopicsRequest {

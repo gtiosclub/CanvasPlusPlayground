@@ -10,9 +10,9 @@ import SwiftUI
 struct HomeView: View {
     typealias NavigationPage = NavigationModel.NavigationPage
 
-    @Environment(ProfileManager.self) var profileManager
-    @Environment(CourseManager.self) var courseManager
-    @Environment(NavigationModel.self) var navigationModel
+    @Environment(ProfileManager.self) private var profileManager
+    @Environment(CourseManager.self) private var courseManager
+    @Environment(NavigationModel.self) private var navigationModel
 
     @EnvironmentObject private var intelligenceManager: IntelligenceManager
     @EnvironmentObject private var llmEvaluator: LLMEvaluator
@@ -101,10 +101,14 @@ struct HomeView: View {
             CourseView(course: selectedCourse)
         } else if let selectedNavigationPage {
             switch selectedNavigationPage {
-            case .announcements: AllAnnouncementsView()
-            case .toDoList: AggregatedAssignmentsView()
-            case .pinned: PinnedItemsView()
-            default: EmptyView()
+            case .announcements:
+                AllAnnouncementsView()
+            case .toDoList:
+                AggregatedAssignmentsView()
+            case .pinned:
+                PinnedItemsView()
+            default:
+                EmptyView()
             }
         } else {
             ContentUnavailableView("Select a course", systemImage: "folder")

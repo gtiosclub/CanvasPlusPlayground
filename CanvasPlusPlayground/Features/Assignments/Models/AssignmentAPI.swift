@@ -7,12 +7,12 @@
 
 import Foundation
 
+// swiftlint:disable identifier_name
 // https://canvas.instructure.com/doc/api/assignments.html
 // https://github.com/instructure/canvas-ios/blob/49a3e347116d623638c66b7adbcc946294faa212/Core/Core/Assignments/APIAssignment.swift
 struct AssignmentAPI: APIResponse, Identifiable, Hashable {
     typealias Model = Assignment
 
-    // swiftlint:disable identifier_name
     let id: Int
     var description: String?
     var due_at: String?
@@ -79,7 +79,7 @@ struct AssignmentAPI: APIResponse, Identifiable, Hashable {
     var restrict_quantitative_data: Bool?
     var submission: SubmissionAPI?
     var allowed_extensions: [String]?
-    // swiftlint:enable identifier_name
+
     init(id: Int, name: String, groupID: Int) {
         self.id = id
         self.name = name
@@ -102,5 +102,5 @@ struct AssignmentAPI: APIResponse, Identifiable, Hashable {
         Assignment(from: self)
     }
 
-    static let example: AssignmentAPI = AssignmentAPI(id: 5, name: "example", groupID: 5)
+    static let example = AssignmentAPI(id: 5, name: "example", groupID: 5)
 }

@@ -9,7 +9,6 @@ import Foundation
 
 @Observable
 class PinnedItem: Identifiable, Codable, Equatable {
-
     let id: String
     let courseID: String
     let type: PinnedItemType
@@ -24,9 +23,12 @@ class PinnedItem: Identifiable, Codable, Equatable {
 
         var displayName: String {
             switch self {
-            case .announcement: "Announcements"
-            case .assignment: "Assignments"
-            case .file: "Files"
+            case .announcement:
+                "Announcements"
+            case .assignment:
+                "Assignments"
+            case .file:
+                "Files"
             }
         }
     }
@@ -35,10 +37,11 @@ class PinnedItem: Identifiable, Codable, Equatable {
         do {
             try await fetchData()
             try await CanvasService.shared.loadAndSync(
-                CanvasRequest.getCourse(id: courseID)) { cachedCourse in
+                CanvasRequest.getCourse(id: courseID)
+            ) { cachedCourse in
                     guard let course = cachedCourse?.first else { return }
                     setData(course: course)
-                }
+            }
         } catch {
             LoggerService.main.error("Error fetching \(self.type.displayName)")
         }
@@ -48,27 +51,30 @@ class PinnedItem: Identifiable, Codable, Equatable {
         switch type {
         case .announcement:
             let announcements = try await CanvasService.shared.loadAndSync(
-                CanvasRequest.getDiscussionTopics(courseId: courseID)) { cachedAnnouncements in
+                CanvasRequest.getDiscussionTopics(courseId: courseID)
+            ) { cachedAnnouncements in
                     guard let announcement = cachedAnnouncements?.first(where: { $0.id == id }) else { return }
                     setData(modelData: .announcement(announcement))
-                }
+            }
             guard let announcement = announcements.first(where: { $0.id == id }) else { return }
             setData(modelData: .announcement(announcement))
         case .assignment:
             let assignments = try await CanvasService.shared.loadAndSync(
-                CanvasRequest.getAssignment(id: id, courseId: courseID)) { cachedAssignments in
+                CanvasRequest.getAssignment(id: id, courseId: courseID)
+            ) { cachedAssignments in
                     guard let assignment = cachedAssignments?.first else { return }
                     setData(modelData: .assignment(assignment))
-                }
+            }
             guard let assignment = assignments.first else { return }
             setData(modelData: .assignment(assignment))
 
         case .file:
             let files = try await CanvasService.shared.loadAndSync(
-                CanvasRequest.getFile(fileId: id)) { cachedFiles in
+                CanvasRequest.getFile(fileId: id)
+            ) { cachedFiles in
                     guard let file = cachedFiles?.first else { return }
                     setData(modelData: .file(file))
-                }
+            }
             guard let file = files.first else { return }
             setData(modelData: .file(file))
         }

@@ -15,19 +15,16 @@ extension APIRequest {
 
         return try decoder.decode(QueryResult.self, from: data.isEmpty ? .emptyJSON : data)
     }
-
 }
 
 // MARK: Network Requests
 
 extension APIRequest {
-
     /// To fetch data from the Canvas API in batches!
     func fetch(
         loadingMethod: LoadingMethod<Self>,
-        onNewPage: ([Subject]) async -> Void = { _ in}
+        onNewPage: ([Subject]) async -> Void = { _ in }
     ) async throws -> [Subject] {
-
         let fetched: [(data: Data, url: URLResponse)]
 
         switch loadingMethod {
@@ -42,7 +39,7 @@ extension APIRequest {
             )
         }
 
-        let result = try fetched.compactMap { (data, _) in
+        let result = try fetched.compactMap { data, _ in
             try decodeAsSubjects(data)
         }
 
@@ -63,13 +60,11 @@ extension APIRequest {
 }
 
 extension APIRequest where QueryResult == Subject {
-
     /// To fetch data from the Canvas API, only!
     func fetch(
         loadingMethod: LoadingMethod<Self>,
-        onNewPage: ([Subject]) async -> Void = { _ in}
+        onNewPage: ([Subject]) async -> Void = { _ in }
     ) async throws -> [Subject] {
-
         let result = try await fetchResponse()
 
         let decoded = try decodeData(result.data)

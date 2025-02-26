@@ -11,7 +11,7 @@ struct FoldersPageView: View {
     @Namespace private var namespace
 
     let course: Course
-    @State var folder: Folder?
+    @State private var folder: Folder?
     @State private var filesVM: CourseFileViewModel
 
     @State private var isLoadingContents = true

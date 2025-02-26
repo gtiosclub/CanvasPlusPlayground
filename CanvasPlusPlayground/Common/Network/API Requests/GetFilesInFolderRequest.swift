@@ -20,10 +20,10 @@ struct GetFilesInFolderRequest: CacheableArrayAPIRequest {
             ("order", order?.rawValue),
             ("per_page", perPage)
         ]
-        + contentTypes.map {("content_types[]", $0)}
-        + excludeContentTypes.map {("exclude_content_types[]", $0)}
-        + include.map {("include[]", $0.rawValue)}
-        + only.map {("only[]", $0.rawValue)}
+        + contentTypes.map { ("content_types[]", $0) }
+        + excludeContentTypes.map { ("exclude_content_types[]", $0) }
+        + include.map { ("include[]", $0.rawValue) }
+        + only.map { ("only[]", $0.rawValue) }
     }
 
     // MARK: Query Params
@@ -67,7 +67,6 @@ struct GetFilesInFolderRequest: CacheableArrayAPIRequest {
         }
     }
     var customPredicate: Predicate<File> {
-
         let contentTypePred = contentTypes.isEmpty ? .true : #Predicate<File> { file in
             contentTypes.contains(file.contentType)
         }

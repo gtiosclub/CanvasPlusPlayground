@@ -54,7 +54,7 @@ extension Color {
 
     var rgba: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
         #if os(macOS)
-        let color = asNative.usingColorSpace(.deviceRGB)!
+        let color = asNative.usingColorSpace(.deviceRGB) ?? NSColor.clear
         #else
         let color = asNative
         #endif
@@ -65,7 +65,7 @@ extension Color {
 
     var hsva: (hue: CGFloat, saturation: CGFloat, value: CGFloat, alpha: CGFloat) {
         #if os(macOS)
-        let color = asNative.usingColorSpace(.deviceRGB)!
+        let color = asNative.usingColorSpace(.deviceRGB) ?? NSColor.clear
         #else
         let color = asNative
         #endif

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CourseQuizzesView: View {
-    @State var quizzesVM: QuizzesViewModel
+    @State private var quizzesVM: QuizzesViewModel
 
     @State private var isLoadingQuizzes = true
 
@@ -51,7 +51,6 @@ struct CourseQuizzesView: View {
                 HStack {
                     if let pointsPossible = quiz.pointsPossible?.truncatingTrailingZeros {
                         Text("\(pointsPossible) pts")
-
                     } else { Text("No pts")}
 
                     Text("\(quiz.questionCount ?? 0) Questions")

@@ -8,5 +8,5 @@
 import Foundation
 
 extension Data {
-    static let emptyJSON: Data = Data("{}".utf8)
+    static let emptyJSON = Data("{}".utf8)
 }

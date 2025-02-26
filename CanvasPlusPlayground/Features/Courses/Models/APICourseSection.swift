@@ -7,9 +7,9 @@
 
 import Foundation
 
+// swiftlint:disable commented_code identifier_name
 // https://canvas.instructure.com/doc/api/sections.html
 struct APICourseSection: Codable, Equatable {
-    // swiftlint:disable identifier_name
     let id: Int
     let name: String
     // let sis_section_id: String?
@@ -22,7 +22,6 @@ struct APICourseSection: Codable, Equatable {
     // let restrict_enrollments_to_section_dates: Bool?
     // let nonxlist_course_id: String?
     let total_students: Int?
-    // swiftlint:enable identifier_name
 
     static func create(from section: CourseAPI.SectionRef, courseID: Int) -> Self {
         .init(

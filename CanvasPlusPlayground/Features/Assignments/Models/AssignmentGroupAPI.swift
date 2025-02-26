@@ -7,10 +7,9 @@
 
 import Foundation
 
+// swiftlint:disable identifier_name
 struct AssignmentGroupAPI: APIResponse {
     typealias Model = AssignmentGroup
-
-    // swiftlint:disable identifier_name
     let id: Int
     let name: String
     let position: Int
@@ -27,5 +26,4 @@ struct AssignmentGroupRules: Codable {
     let drop_highest: Int?
     let drop_lowest: Int?
     let never_drop: [Int]?
-    // swiftlint:enable identifier_name
 }

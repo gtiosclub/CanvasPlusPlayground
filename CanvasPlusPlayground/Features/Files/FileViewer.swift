@@ -14,7 +14,7 @@ struct FileViewer: View {
     let file: File
     let fileService = CourseFileService()
 
-    @Environment(CourseFileViewModel.self) var courseFileVM
+    @Environment(CourseFileViewModel.self) private var courseFileVM
     @State private var url: URL?
     @State private var isLoading = false
 
@@ -62,7 +62,7 @@ struct FileViewer: View {
                 for: file,
                 course: course,
                 foldersPath: courseFileVM.traversedFolderIDs,
-                localCopyReceived: { (_, self.url) = ($0, $1) }
+                localCopyReceived: { (_, url) = ($0, $1) }
             )
         } catch {
             LoggerService.main.error("Error fetching file content: \(error)")

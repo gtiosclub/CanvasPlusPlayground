@@ -53,7 +53,8 @@ class GradesViewModel {
         )
 
         do {
-            let enrollments: [Enrollment]? = try await CanvasService.shared.loadAndSync(request,
+            let enrollments: [Enrollment]? = try await CanvasService.shared.loadAndSync(
+                request,
                 onCacheReceive: { enrollmentsCache in
                     guard let enrollmentsCache else { return }
 
@@ -88,5 +89,4 @@ class GradesViewModel {
 
         self.enrollment = enrollment
     }
-
 }

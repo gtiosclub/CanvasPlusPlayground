@@ -115,6 +115,7 @@ class Assignment: Cacheable {
         return gradeDouble.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", gradeDouble) : String(gradeDouble)
     }
 
+    // swiftlint:disable:next function_body_length
     init(from assignmentAPI: AssignmentAPI) {
         self.id = assignmentAPI.id.asString
         self.name = assignmentAPI.name
@@ -183,6 +184,7 @@ class Assignment: Cacheable {
         self.submission = assignmentAPI.submission
     }
 
+    // swiftlint:disable:next function_body_length
     func merge(with other: Assignment) {
         self.name = other.name
         self.assignmentGroupId = other.assignmentGroupId

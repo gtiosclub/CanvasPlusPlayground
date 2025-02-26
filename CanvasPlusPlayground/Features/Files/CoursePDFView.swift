@@ -13,7 +13,6 @@ struct CoursePDFView: View {
     var body: some View {
         VStack {
             BridgedPDFView(pdfSource: source)
-
         }
     }
 }
@@ -21,6 +20,7 @@ struct CoursePDFView: View {
 #Preview {
     CoursePDFView(
         source: PDFSource.url(
+            // swiftlint:disable:next force_unwrapping
             URL(string: "https://gatech.instructure.com/files/54268941/download?download_frd=1&verifier=QRH5kfKJQQwH7tjhHLga5Uhn038gQ10ylh44yMxh")!
         )
     )

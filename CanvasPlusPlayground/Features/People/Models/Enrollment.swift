@@ -8,6 +8,7 @@
 import Foundation
 import SwiftData
 
+// swiftlint:disable commented_code
 @Model
 final class Enrollment: Cacheable {
     typealias ID = String

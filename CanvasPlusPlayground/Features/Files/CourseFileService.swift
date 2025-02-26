@@ -29,7 +29,6 @@ struct CourseFileService {
                     return nil
                 }
             }
-
         } else {
             LoggerService.main.error("Failure getting bundle identifier")
             return nil
@@ -137,7 +136,6 @@ struct CourseFileService {
                 LoggerService.main.error("Failed to save file. \(error)")
                 throw error
             }
-
         } else {
             throw URLError(.badURL)
         }
@@ -159,7 +157,6 @@ struct CourseFileService {
             }
 
             LoggerService.main.debug("All files in \(fileURL.path) have been deleted.")
-
         } catch {
             LoggerService.main.error("Error deleting files: \(error.localizedDescription)")
         }

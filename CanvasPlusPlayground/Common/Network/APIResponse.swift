@@ -1,5 +1,5 @@
 //
-//  DTO.swift
+//  APIResponse.swift
 //  CanvasPlusPlayground
 //
 //  Created by Abdulaziz Albahar on 12/22/24.
@@ -11,6 +11,10 @@ protocol APIResponse: Codable {
     associatedtype Model: BaseCacheable
 
     func createModel() -> Model
+}
+
+struct Empty: APIResponse {
+    typealias Model = NoOpCacheable
 }
 
 // MARK: Hashable
@@ -29,8 +33,4 @@ extension APIResponse where Model: NoOpCacheable {
     func createModel() -> NoOpCacheable {
         NoOpCacheable()
     }
-}
-
-struct Empty: APIResponse {
-    typealias Model = NoOpCacheable
 }

@@ -51,6 +51,7 @@ class LLMEvaluator: ObservableObject {
             // limit the buffer cache
             MLX.GPU.set(cacheLimit: 20 * 1024 * 1024)
 
+            // swiftlint:disable:next force_unwrapping
             let modelContainer = try await MLXLLM.loadModelContainer(configuration: model!) { [modelConfiguration] progress in
                 Task { @MainActor in
                     self.modelInfo =
@@ -95,8 +96,11 @@ class LLMEvaluator: ObservableObject {
 
             let result = await modelContainer.perform { model, tokenizer in
                 MLXLLM.generate(
-                    promptTokens: promptTokens, parameters: generateParameters, model: model,
-                    tokenizer: tokenizer, extraEOSTokens: extraEOSTokens
+                    promptTokens: promptTokens,
+                    parameters: generateParameters,
+                    model: model,
+                    tokenizer: tokenizer,
+                    extraEOSTokens: extraEOSTokens
                 ) { tokens in
                     // update the output -- this will make the view show the text as it generates
                     if tokens.count % displayEveryNTokens == 0 {
@@ -119,7 +123,6 @@ class LLMEvaluator: ObservableObject {
                 self.output = result.output
             }
             self.stat = " Tokens/second: \(String(format: "%.3f", result.tokensPerSecond))"
-
         } catch {
             output = "Failed: \(error)"
         }

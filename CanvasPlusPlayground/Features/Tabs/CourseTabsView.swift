@@ -8,46 +8,10 @@
 import SwiftUI
 import WebKit
 
-#if os(iOS)
-typealias PlatformRepresentable = UIViewRepresentable
-#else
-typealias PlatformRepresentable = NSViewRepresentable
-#endif
-
-struct WebView: PlatformRepresentable {
-    let url: URL
-
-    #if os(iOS)
-    func makeUIView(context: Context) -> WKWebView {
-        return WKWebView()
-    }
-
-    func updateUIView(_ webView: WKWebView, context: Context) {
-        loadRequest(webView)
-    }
-    #else
-    func makeNSView(context: Context) -> WKWebView {
-        return WKWebView()
-    }
-
-    func updateNSView(_ webView: WKWebView, context: Context) {
-        loadRequest(webView)
-    }
-    #endif
-
-    private func loadRequest(_ webView: WKWebView) {
-        var request = URLRequest(url: url)
-
-        // TODO: pass auth token, not accessToken
-        request.setValue("Bearer \(StorageKeys.accessTokenValue)", forHTTPHeaderField: "Authorization")
-        webView.load(request)
-    }
-}
-
 struct CourseTabsView: View {
     let course: Course
     let baseURL: String
-    @State var tabsManager: CourseTabsManager
+    @State private var tabsManager: CourseTabsManager
 
     @State private var selectedURL: URL?
     @State private var showWebView = false
@@ -75,7 +39,6 @@ struct CourseTabsView: View {
             await tabsManager.fetchTabs()
         }
         .sheet(isPresented: $showWebView) {
-
             NavigationStack {
                 Group {
                     if let url = selectedURL {
@@ -90,5 +53,41 @@ struct CourseTabsView: View {
             }
             .frame(minWidth: 800, minHeight: 600)
         }
+    }
+}
+
+#if os(iOS)
+typealias PlatformRepresentable = UIViewRepresentable
+#else
+typealias PlatformRepresentable = NSViewRepresentable
+#endif
+
+struct WebView: PlatformRepresentable {
+    let url: URL
+
+#if os(iOS)
+    func makeUIView(context: Context) -> WKWebView {
+        WKWebView()
+    }
+
+    func updateUIView(_ webView: WKWebView, context: Context) {
+        loadRequest(webView)
+    }
+#else
+    func makeNSView(context: Context) -> WKWebView {
+        WKWebView()
+    }
+
+    func updateNSView(_ webView: WKWebView, context: Context) {
+        loadRequest(webView)
+    }
+#endif
+
+    private func loadRequest(_ webView: WKWebView) {
+        var request = URLRequest(url: url)
+
+        // TODO: pass auth token, not accessToken
+        request.setValue("Bearer \(StorageKeys.accessTokenValue)", forHTTPHeaderField: "Authorization")
+        webView.load(request)
     }
 }

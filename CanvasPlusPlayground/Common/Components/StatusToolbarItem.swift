@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-private struct StatusToolbarItemToolbarItem: ViewModifier {
+private struct StatusToolbarItem: ViewModifier {
     let contentName: String
     let isVisible: Bool
 
@@ -53,7 +53,7 @@ extension View {
         isVisible: Bool
     ) -> some View {
         modifier(
-            StatusToolbarItemToolbarItem(
+            StatusToolbarItem(
                 contentName,
                 isVisible: isVisible
             )

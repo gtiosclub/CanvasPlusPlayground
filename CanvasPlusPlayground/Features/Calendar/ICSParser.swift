@@ -7,29 +7,7 @@
 
 import Foundation
 
-struct CanvasCalendarEventGroup: Identifiable {
-    let id: String = UUID().uuidString
-    let date: Date
-    let events: [CanvasCalendarEvent]
-
-    var displayDate: String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .medium
-        dateFormatter.timeZone = .current
-
-        return dateFormatter.string(from: date)
-    }
-}
-
-struct CanvasCalendarEvent: Identifiable {
-    let id: String
-    let summary: String
-    let startDate: Date
-    let endDate: Date
-    let location: String
-}
-
-struct ICSParser {
+enum ICSParser {
     private static var dateFormatter: DateFormatter {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMMdd'T'HHmmss'Z'"
@@ -62,7 +40,6 @@ struct ICSParser {
                    let endDateString = currentEvent["DTEND"],
                    let startDate = dateFormatter.date(from: startDateString),
                    let endDate = dateFormatter.date(from: endDateString) {
-
                     let location = currentEvent["LOCATION"] ?? "-"
 
                     let event = CanvasCalendarEvent(
@@ -90,12 +67,10 @@ struct ICSParser {
 
     private static func groupEvents(_ events: [CanvasCalendarEvent]) -> [CanvasCalendarEventGroup] {
         let groupedEvents = Dictionary(grouping: events) { event in
-            let date = Calendar.current.dateComponents(
+            Calendar.current.dateComponents(
                 [.day, .year, .month],
                 from: event.startDate
             )
-
-            return date
         }
 
         return groupedEvents
@@ -130,4 +105,26 @@ struct ICSParser {
             throw NetworkError.fetchFailed(msg: error.localizedDescription)
         }
     }
+}
+
+struct CanvasCalendarEventGroup: Identifiable {
+    let id: String = UUID().uuidString
+    let date: Date
+    let events: [CanvasCalendarEvent]
+
+    var displayDate: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeZone = .current
+
+        return dateFormatter.string(from: date)
+    }
+}
+
+struct CanvasCalendarEvent: Identifiable {
+    let id: String
+    let summary: String
+    let startDate: Date
+    let endDate: Date
+    let location: String
 }

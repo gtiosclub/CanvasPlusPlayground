@@ -16,10 +16,14 @@ class NavigationModel {
                 self = .course(id: String(id))
             } else {
                 switch rawValue {
-                case "announcements": self = .announcements
-                case "todoList": self = .toDoList
-                case "pinned": self = .pinned
-                default: return nil
+                case "announcements":
+                    self = .announcements
+                case "todoList":
+                    self = .toDoList
+                case "pinned":
+                    self = .pinned
+                default:
+                    return nil
                 }
             }
         }
@@ -31,10 +35,14 @@ class NavigationModel {
 
         var rawValue: String {
             switch self {
-            case .course(id: let id): "course/\(id)"
-            case .announcements: "announcements"
-            case .toDoList: "todoList"
-            case .pinned: "pinned"
+            case .course(id: let id):
+                "course/\(id)"
+            case .announcements:
+                "announcements"
+            case .toDoList:
+                "todoList"
+            case .pinned:
+                "pinned"
             }
         }
     }
@@ -56,15 +64,24 @@ class NavigationModel {
 
         var systemImageIcon: String {
             switch self {
-            case .files: "folder"
-            case .assignments: "circle.inset.filled"
-            case .calendar: "calendar"
-            case .tabs: "tray.2"
-            case .announcements: "bubble"
-            case .grades: "graduationcap.fill"
-            case .people: "person.crop.circle.fill"
-            case .quizzes: "questionmark.circle.fill"
-            case .modules: "book.closed.circle.fill"
+            case .files:
+                "folder"
+            case .assignments:
+                "circle.inset.filled"
+            case .calendar:
+                "calendar"
+            case .tabs:
+                "tray.2"
+            case .announcements:
+                "bubble"
+            case .grades:
+                "graduationcap.fill"
+            case .people:
+                "person.crop.circle.fill"
+            case .quizzes:
+                "questionmark.circle.fill"
+            case .modules:
+                "book.closed.circle.fill"
             }
         }
     }

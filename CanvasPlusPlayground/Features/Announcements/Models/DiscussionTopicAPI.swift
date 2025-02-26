@@ -7,12 +7,12 @@
 
 import Foundation
 
+// swiftlint:disable commented_code identifier_name
 // https://canvas.instructure.com/doc/api/discussion_topics.html#method.discussion_topics.index
 struct DiscussionTopicAPI: APIResponse, Identifiable {
     typealias Model = DiscussionTopic
 
     // MARK: In Docs
-    // swiftlint:disable identifier_name
     let id: Int
     let author: DiscussionParticipantAPI?
     let title: String?
@@ -84,5 +84,3 @@ struct DiscussionParticipantAPI: Codable {
     let html_url: URL?
     let pronouns: String?
 }
-
-// swiftlint:enable identifier_name

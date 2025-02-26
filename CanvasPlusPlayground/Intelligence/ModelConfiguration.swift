@@ -2,12 +2,12 @@
  Imported from fullmoon app: https://github.com/mainframecomputer/fullmoon-ios
  */
 
-import MLXLLM
 import Foundation
+import MLXLLM
 
 extension ModelConfiguration: @retroactive Equatable {
     public static func == (lhs: MLXLLM.ModelConfiguration, rhs: MLXLLM.ModelConfiguration) -> Bool {
-        return lhs.name == rhs.name
+        lhs.name == rhs.name
     }
 
     public static let llama321B4bit = ModelConfiguration(
@@ -38,6 +38,7 @@ extension ModelConfiguration: @retroactive Equatable {
             for message in thread.sortedMessages {
                 LoggerService.main.debug("\(message.content)")
                 if message.role == .user {
+                    // swiftlint:disable:next line_length
                     history += "<|eot_id|>\n<|start_header_id|>user<|end_header_id|>\n\(message.content)\n<|eot_id|>\n<|start_header_id|>assistant<|end_header_id|>"
                 }
 
