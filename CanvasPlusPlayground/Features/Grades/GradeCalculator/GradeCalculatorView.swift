@@ -14,6 +14,8 @@ struct GradeCalculatorView: View {
     @FocusState private var assignmentRowFocus: GradeCalculator.GradeAssignment?
     @FocusState private var groupRowFocus: GradeCalculator.GradeGroup?
 
+    @State private var targetedGroup: GradeCalculator.GradeGroup?
+
     var body: some View {
         @Bindable var calculator = calculator
 
@@ -41,6 +43,13 @@ struct GradeCalculatorView: View {
                 } label: {
                     groupHeader(for: $group)
                 }
+                .contentShape(.rect)
+                .dropDestination(for: GradeCalculator.GradeAssignment.self) { assignments, _ in
+                    calculator.moveAssignments(assignments, to: group)
+                } isTargeted: {
+                    targetedGroup = $0 ? group : nil
+                }
+                .listRowBackground(targetedGroup == group ? Color.blue : Color.clear)
             }
             .onMove {
                 calculator.gradeGroups.move(fromOffsets: $0, toOffset: $1)
@@ -156,6 +165,7 @@ struct GradeCalculatorView: View {
             )
         }
         .focused($assignmentRowFocus, equals: assignment.wrappedValue)
+        .draggable(assignment.wrappedValue)
     }
 
     private func isExpanded(
