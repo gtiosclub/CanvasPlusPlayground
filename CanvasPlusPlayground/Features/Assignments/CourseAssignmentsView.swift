@@ -12,7 +12,7 @@ struct CourseAssignmentsView: View {
     let showGrades: Bool
 
     @State private var assignmentManager: CourseAssignmentManager
-    @State private var gradeCalculator: GradeCalculatorViewModel
+    @State private var gradeCalculator: GradeCalculator
 
     @State private var isLoadingAssignments = true
     @State private var showingGradeCalculator = false
@@ -116,7 +116,7 @@ struct CourseAssignmentsView: View {
 }
 
 private struct AssignmentRow: View {
-    @Environment(GradeCalculatorViewModel.self) private var calculator
+    @Environment(GradeCalculator.self) private var calculator
 
     let assignment: Assignment
     let showGrades: Bool

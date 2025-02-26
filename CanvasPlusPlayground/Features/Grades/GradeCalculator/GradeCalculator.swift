@@ -8,7 +8,7 @@
 import SwiftUI
 
 @Observable
-class GradeCalculatorViewModel {
+class GradeCalculator {
     struct GradeAssignment: Identifiable, Hashable {
         let id: String
         let name: String

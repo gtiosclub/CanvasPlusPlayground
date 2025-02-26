@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct GradeCalculatorView: View {
-    @Environment(GradeCalculatorViewModel.self) private var calculator
+    @Environment(GradeCalculator.self) private var calculator
     @Environment(\.dismiss) private var dismiss
 
-    @FocusState private var assignmentRowFocus: GradeCalculatorViewModel.GradeAssignment?
+    @FocusState private var assignmentRowFocus: GradeCalculator.GradeAssignment?
 
     var body: some View {
         @Bindable var calculator = calculator
@@ -27,6 +27,8 @@ struct GradeCalculatorView: View {
                     .onMove {
                         group.assignments.move(fromOffsets: $0, toOffset: $1)
                     }
+
+                    
                 } label: {
                     groupHeader(for: group)
                 }
@@ -67,7 +69,7 @@ struct GradeCalculatorView: View {
         }
     }
 
-    private func groupHeader(for group: GradeCalculatorViewModel.GradeGroup) -> some View {
+    private func groupHeader(for group: GradeCalculator.GradeGroup) -> some View {
         HStack {
             Text(group.name)
             Spacer()
@@ -77,7 +79,7 @@ struct GradeCalculatorView: View {
         .padding(4)
     }
 
-    private func assignmentRow(for assignment: Binding<GradeCalculatorViewModel.GradeAssignment>) -> some View {
+    private func assignmentRow(for assignment: Binding<GradeCalculator.GradeAssignment>) -> some View {
         HStack {
             Text(assignment.wrappedValue.name)
 
@@ -106,7 +108,7 @@ struct GradeCalculatorView: View {
     }
 
     private func isExpanded(
-        for group: GradeCalculatorViewModel.GradeGroup
+        for group: GradeCalculator.GradeGroup
     ) -> Binding<Bool> {
         .init {
             calculator.expandedAssignmentGroups[group, default: true]
