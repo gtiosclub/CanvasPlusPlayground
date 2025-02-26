@@ -118,13 +118,16 @@ class GradeCalculator {
         )
     }
 
-    func createEmptyAssignment(in group: GradeGroup) {
+    @discardableResult
+    func createEmptyAssignment(in group: GradeGroup) -> GradeAssignment? {
         guard let indexOfGroup = gradeGroups.firstIndex(of: group) else {
-            return
+            return nil
         }
 
-        gradeGroups[indexOfGroup].assignments
-            .append(.init(id: UUID().uuidString, name: ""))
+        let newAssignment = GradeAssignment(id: UUID().uuidString, name: "")
+        gradeGroups[indexOfGroup].assignments.append(newAssignment)
+
+        return newAssignment
     }
 
     // MARK: - Helpers
@@ -149,7 +152,8 @@ class GradeCalculator {
         }
 
         expandedAssignmentGroups = Dictionary(
-            uniqueKeysWithValues: gradeGroups.lazy.map { ($0, true) }
+            uniqueKeysWithValues: gradeGroups.lazy
+                .map { ($0, !$0.assignments.isEmpty) }
         )
     }
 

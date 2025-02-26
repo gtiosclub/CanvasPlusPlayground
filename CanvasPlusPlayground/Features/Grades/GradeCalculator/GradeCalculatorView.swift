@@ -30,7 +30,8 @@ struct GradeCalculatorView: View {
                         }
 
                         Button("Add Assignment", systemImage: "plus.circle.fill") {
-                            calculator.createEmptyAssignment(in: group)
+                            let newAssignment = calculator.createEmptyAssignment(in: group)
+                            assignmentRowFocus = newAssignment
                         }
                         .buttonStyle(.borderless)
                         .foregroundStyle(.secondary)
@@ -44,12 +45,23 @@ struct GradeCalculatorView: View {
                 calculator.gradeGroups.move(fromOffsets: $0, toOffset: $1)
             }
 
+            #if os(macOS)
+            Divider()
+            #endif
+
             Button("Add Assignment Group", systemImage: "plus.circle.fill") {
                 calculator.createEmptyGroup()
             }
             .buttonStyle(.borderless)
             .foregroundStyle(.secondary)
         }
+        #if os(macOS)
+        .listStyle(.sidebar)
+        #else
+        .listStyle(.inset)
+        #endif
+        .scrollContentBackground(.hidden)
+        .background(.background)
         .navigationTitle("Calculate Grades")
         .toolbar {
             ToolbarItem(placement: .destructiveAction) {

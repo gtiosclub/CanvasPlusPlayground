@@ -101,7 +101,9 @@ struct CourseAssignmentsView: View {
             NavigationStack {
                 GradeCalculatorView()
             }
-            .frame(width: 450, height: 600)
+            #if os(macOS)
+            .frame(width: 550, height: 650)
+            #endif
             .environment(gradeCalculator)
         }
         .environment(gradeCalculator)
