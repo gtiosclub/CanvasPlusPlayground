@@ -9,7 +9,7 @@ import SwiftUI
 
 @Observable
 class GradeCalculator {
-    struct GradeAssignment: Identifiable, Hashable {
+    struct GradeAssignment: Identifiable, Hashable, Transferable, Codable {
         let id: String
         var name: String
         var pointsEarned: Double?
@@ -20,6 +20,10 @@ class GradeCalculator {
                 return nil
             }
             return (pointsEarned / pointsPossible) * 100
+        }
+
+        static var transferRepresentation: some TransferRepresentation {
+            CodableRepresentation(contentType: .item)
         }
     }
 
@@ -131,6 +135,32 @@ class GradeCalculator {
         gradeGroups[indexOfGroup].assignments.append(newAssignment)
 
         return newAssignment
+    }
+
+    func moveAssignments(
+        _ assignments: [GradeAssignment],
+        to newGroup: GradeGroup
+    ) -> Bool {
+        guard let newGroupIndex = gradeGroups.firstIndex(of: newGroup) else {
+            return false
+        }
+
+        let assignmentsToAdd = assignments.filter {
+            !gradeGroups[newGroupIndex].assignments.contains($0)
+        }
+
+        guard !assignmentsToAdd.isEmpty else { return false }
+
+        gradeGroups[newGroupIndex].assignments
+            .append(contentsOf: assignmentsToAdd)
+
+        for assignment in assignments {
+            for groupIndex in gradeGroups.indices where groupIndex != newGroupIndex {
+                gradeGroups[groupIndex].assignments.removeAll { $0.id == assignment.id }
+            }
+        }
+
+        return true
     }
 
     // MARK: - Helpers
