@@ -17,7 +17,7 @@ class PagesManager {
     }
 
     func fetchPages() async {
-        let request = CanvasRequest.getPages(courseId: "268514")
+        let request = CanvasRequest.getPages(courseId: self.courseID)
         do {
             let fetchedPages = try await CanvasService.shared.loadAndSync(request)
             self.pages = fetchedPages
