@@ -49,6 +49,8 @@ struct ReminderDatePicker: View {
     @State var selectedDate: Date = .now
 
     let item: ReminderType
+
+    // SF Symbol Icon Name, Color of SF Symbol, Date Interval Text, Date Interval
     let datePickerOptions: [(String, Color, String, Date)] =
     [
         ("bell", .yellow, "Tomorrow", .tomorrowAt8am),
