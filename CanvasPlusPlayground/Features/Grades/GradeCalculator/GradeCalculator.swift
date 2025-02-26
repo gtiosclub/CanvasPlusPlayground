@@ -25,7 +25,7 @@ class GradeCalculator {
 
     struct GradeGroup: Identifiable, Hashable {
         let id: String
-        let name: String
+        var name: String
         var weight: Double
         var assignments: [GradeAssignment]
 
@@ -107,15 +107,18 @@ class GradeCalculator {
     }
 
     // MARK: - User Intents
-    func createEmptyGroup() {
-        gradeGroups.append(
-            .init(
-                id: UUID().uuidString,
-                name: "New Group",
-                weight: 0.0,
-                assignments: []
-            )
+    @discardableResult
+    func createEmptyGroup() -> GradeGroup {
+        let newGroup = GradeGroup(
+            id: UUID().uuidString,
+            name: "New Group",
+            weight: 0.0,
+            assignments: []
         )
+
+        gradeGroups.append(newGroup)
+
+        return newGroup
     }
 
     @discardableResult

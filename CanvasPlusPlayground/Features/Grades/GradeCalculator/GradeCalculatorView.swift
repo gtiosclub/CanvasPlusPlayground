@@ -12,6 +12,7 @@ struct GradeCalculatorView: View {
     @Environment(\.dismiss) private var dismiss
 
     @FocusState private var assignmentRowFocus: GradeCalculator.GradeAssignment?
+    @FocusState private var groupRowFocus: GradeCalculator.GradeGroup?
 
     var body: some View {
         @Bindable var calculator = calculator
@@ -38,7 +39,7 @@ struct GradeCalculatorView: View {
                     }
                     .padding(.vertical, 4)
                 } label: {
-                    groupHeader(for: group)
+                    groupHeader(for: $group)
                 }
             }
             .onMove {
@@ -50,7 +51,8 @@ struct GradeCalculatorView: View {
             #endif
 
             Button("Add Assignment Group", systemImage: "plus.circle.fill") {
-                calculator.createEmptyGroup()
+                let newGroup = calculator.createEmptyGroup()
+                groupRowFocus = newGroup
             }
             .buttonStyle(.borderless)
             .foregroundStyle(.secondary)
@@ -81,7 +83,9 @@ struct GradeCalculatorView: View {
                     Image(systemName: "xmark")
                     #endif
                 }
-                .keyboardShortcut(assignmentRowFocus == nil ? .defaultAction : .none)
+                .keyboardShortcut(
+                    assignmentRowFocus == nil && groupRowFocus == nil ? .defaultAction : .none
+                )
             }
 
             ToolbarItemGroup(placement: .keyboard) {
@@ -94,14 +98,33 @@ struct GradeCalculatorView: View {
         }
     }
 
-    private func groupHeader(for group: GradeCalculator.GradeGroup) -> some View {
+    @ViewBuilder
+    private func groupHeader(for group: Binding<GradeCalculator.GradeGroup>) -> some View {
+        let formattedWeightBinding: Binding<Double> = .init {
+            group.wrappedValue.weight / 100.0
+        } set: {
+            group.wrappedValue.weight = $0 * 100.0
+        }
+
         HStack {
-            Text(group.name)
+            TextField("Assignment Group Name", text: group.name)
+
             Spacer()
-            Text("\(group.weight.truncatingTrailingZeros)%")
+
+            TextField(
+                "Weight",
+                value: formattedWeightBinding,
+                format: .percent
+            )
+            .fixedSize()
+            .foregroundStyle(.tint)
+            #if os(iOS)
+            .keyboardType(.numberPad)
+            #endif
         }
         .bold()
         .padding(4)
+        .focused($groupRowFocus, equals: group.wrappedValue)
     }
 
     private func assignmentRow(for assignment: Binding<GradeCalculator.GradeAssignment>) -> some View {
