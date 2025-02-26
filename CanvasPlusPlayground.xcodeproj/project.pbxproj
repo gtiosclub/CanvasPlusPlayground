@@ -113,7 +113,6 @@
 		B5894F132D6EBD8C00E8F527 /* Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5894F0D2D6EBD8C00E8F527 /* Page.swift */; };
 		B5894F172D6EBEA100E8F527 /* PagesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5894F162D6EBEA100E8F527 /* PagesManager.swift */; };
 		B5894F192D6EC56000E8F527 /* PageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5894F182D6EC56000E8F527 /* PageView.swift */; };
-		B5894F1C2D6EC68F00E8F527 /* RichText in Frameworks */ = {isa = PBXBuildFile; productRef = B5894F1B2D6EC68F00E8F527 /* RichText */; };
 		B72EA5702D5689B20013070E /* QuickLookPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72EA56F2D5689B20013070E /* QuickLookPreview.swift */; };
 		B73AE0BD2D4FB68B007094A8 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73AE0BC2D4FB68B007094A8 /* Profile.swift */; };
 		B74688A32D63DB59007A27FD /* Assignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74688A22D63DB59007A27FD /* Assignment.swift */; };
@@ -341,7 +340,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B785BE652CF592710094BF94 /* LLM in Frameworks */,
-				B5894F1C2D6EC68F00E8F527 /* RichText in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -824,7 +822,6 @@
 			name = CanvasPlusPlayground;
 			packageProductDependencies = (
 				B785BE642CF592710094BF94 /* LLM */,
-				B5894F1B2D6EC68F00E8F527 /* RichText */,
 			);
 			productName = CanvasPlusPlayground;
 			productReference = B76454642C8BBC7F002DF00E /* CanvasPlusPlayground.app */;
@@ -858,7 +855,6 @@
 			packageReferences = (
 				B785BE632CF592710094BF94 /* XCRemoteSwiftPackageReference "mlx-swift-examples" */,
 				B7E59A1C2D21551D001836FE /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */,
-				B5894F1A2D6EC68F00E8F527 /* XCRemoteSwiftPackageReference "RichText" */,
 			);
 			productRefGroup = B76454652C8BBC7F002DF00E /* Products */;
 			projectDirPath = "";
@@ -1292,14 +1288,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		B5894F1A2D6EC68F00E8F527 /* XCRemoteSwiftPackageReference "RichText" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/NuPlay/RichText.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.5.0;
-			};
-		};
 		B785BE632CF592710094BF94 /* XCRemoteSwiftPackageReference "mlx-swift-examples" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ml-explore/mlx-swift-examples/";
@@ -1319,11 +1307,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		B5894F1B2D6EC68F00E8F527 /* RichText */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B5894F1A2D6EC68F00E8F527 /* XCRemoteSwiftPackageReference "RichText" */;
-			productName = RichText;
-		};
 		B785BE642CF592710094BF94 /* LLM */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = B785BE632CF592710094BF94 /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
