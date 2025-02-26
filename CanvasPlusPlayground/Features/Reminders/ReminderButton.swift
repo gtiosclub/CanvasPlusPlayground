@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-let logger = LoggerService.main
-
 struct ReminderButton: View {
     @Environment(RemindersManager.self) var reminderManager
     @State var showPopUp = false

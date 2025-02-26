@@ -20,7 +20,6 @@ struct CanvasPlusPlaygroundApp: App {
     // Intelligence
     @StateObject private var intelligenceManager = IntelligenceManager()
     @StateObject private var llmEvaluator = LLMEvaluator()
-
     var body: some Scene {
         WindowGroup {
             HomeView()

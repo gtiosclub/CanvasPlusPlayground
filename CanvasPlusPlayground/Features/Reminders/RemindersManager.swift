@@ -8,8 +8,6 @@
 import Foundation
 import UserNotifications
 
-let logger = LoggerService.main
-
 @Observable
 class RemindersManager {
     var reminders: [UNNotificationRequest] = []
@@ -24,7 +22,7 @@ class RemindersManager {
         do {
             try await center.requestAuthorization(options: [.alert, .sound, .badge])
         } catch {
-            logger.error("Error requesting authorization: \(error)")
+            LoggerService.main.error("Error requesting authorization: \(error)")
         }
 
         let content = UNMutableNotificationContent()
@@ -51,7 +49,7 @@ class RemindersManager {
             try await center.add(request)
             self.reminders.append(request)
         } catch {
-            logger.error("Error adding notification: \(error)")
+            LoggerService.main.error("Error adding notification: \(error)")
         }
     }
 
