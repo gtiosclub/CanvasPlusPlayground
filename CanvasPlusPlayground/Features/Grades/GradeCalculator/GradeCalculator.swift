@@ -11,9 +11,9 @@ import SwiftUI
 class GradeCalculator {
     struct GradeAssignment: Identifiable, Hashable {
         let id: String
-        let name: String
+        var name: String
         var pointsEarned: Double?
-        var pointsPossible: Double?
+        var pointsPossible: Double? = 0.0
 
         var percentage: Double? {
             guard let pointsEarned, let pointsPossible, pointsPossible > 0 else {
@@ -102,6 +102,58 @@ class GradeCalculator {
     var totalGrade: Double = 0.0
     var expandedAssignmentGroups: [GradeGroup: Bool] = [:]
 
+    init(assignmentGroups: [AssignmentGroup]) {
+        resetGroups(assignmentGroups)
+    }
+
+    // MARK: - User Intents
+    func createEmptyGroup() {
+        gradeGroups.append(
+            .init(
+                id: UUID().uuidString,
+                name: "New Group",
+                weight: 0.0,
+                assignments: []
+            )
+        )
+    }
+
+    func createEmptyAssignment(in group: GradeGroup) {
+        guard let indexOfGroup = gradeGroups.firstIndex(of: group) else {
+            return
+        }
+
+        gradeGroups[indexOfGroup].assignments
+            .append(.init(id: UUID().uuidString, name: ""))
+    }
+
+    // MARK: - Helpers
+    func resetGroups(_ assignmentGroups: [AssignmentGroup]) {
+        self.gradeGroups = assignmentGroups.map { group in
+            let assignments = group.assignments?.map { $0.createModel() }.map { assignment in
+                GradeAssignment(
+                    id: assignment.id,
+                    name: assignment.name,
+                    pointsEarned: assignment.submission?.score,
+                    pointsPossible: assignment.pointsPossible ?? 0.0
+                )
+            } ?? []
+
+            return GradeGroup(
+                id: group.id,
+                name: group.name,
+                weight: group.groupWeight ?? 0.0,
+                assignments: assignments,
+                rules: group.rules
+            )
+        }
+
+        expandedAssignmentGroups = Dictionary(
+            uniqueKeysWithValues: gradeGroups.lazy.map { ($0, true) }
+        )
+    }
+
+    // MARK: - Private
     private func calculateTotalGrade() {
         let totalWeight = gradeGroups.reduce(0.0) {
             $0 + $1.weight
@@ -143,34 +195,5 @@ class GradeCalculator {
 
             totalGrade = totalPossible > 0 ? (totalPoints / totalPossible) * 100 : 0.0
         }
-    }
-
-    init(assignmentGroups: [AssignmentGroup]) {
-        resetGroups(assignmentGroups)
-    }
-
-    func resetGroups(_ assignmentGroups: [AssignmentGroup]) {
-        self.gradeGroups = assignmentGroups.map { group in
-            let assignments = group.assignments?.map { $0.createModel() }.map { assignment in
-                GradeAssignment(
-                    id: assignment.id,
-                    name: assignment.name,
-                    pointsEarned: assignment.submission?.score,
-                    pointsPossible: assignment.pointsPossible ?? 0.0
-                )
-            } ?? []
-
-            return GradeGroup(
-                id: group.id,
-                name: group.name,
-                weight: group.groupWeight ?? 0.0,
-                assignments: assignments,
-                rules: group.rules
-            )
-        }
-
-        expandedAssignmentGroups = Dictionary(
-            uniqueKeysWithValues: gradeGroups.lazy.map { ($0, true) }
-        )
     }
 }
