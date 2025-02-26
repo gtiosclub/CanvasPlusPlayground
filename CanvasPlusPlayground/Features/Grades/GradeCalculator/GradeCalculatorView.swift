@@ -21,14 +21,21 @@ struct GradeCalculatorView: View {
                 DisclosureGroup(
                     isExpanded: isExpanded(for: group)
                 ) {
-                    ForEach($group.assignments, id: \.id) { $assignment in
-                        assignmentRow(for: $assignment)
-                    }
-                    .onMove {
-                        group.assignments.move(fromOffsets: $0, toOffset: $1)
-                    }
+                    Group {
+                        ForEach($group.assignments, id: \.id) { $assignment in
+                            assignmentRow(for: $assignment)
+                        }
+                        .onMove {
+                            group.assignments.move(fromOffsets: $0, toOffset: $1)
+                        }
 
-                    
+                        Button("Add Assignment", systemImage: "plus.circle.fill") {
+                            calculator.createEmptyAssignment(in: group)
+                        }
+                        .buttonStyle(.borderless)
+                        .foregroundStyle(.secondary)
+                    }
+                    .padding(.vertical, 4)
                 } label: {
                     groupHeader(for: group)
                 }
@@ -36,6 +43,12 @@ struct GradeCalculatorView: View {
             .onMove {
                 calculator.gradeGroups.move(fromOffsets: $0, toOffset: $1)
             }
+
+            Button("Add Assignment Group", systemImage: "plus.circle.fill") {
+                calculator.createEmptyGroup()
+            }
+            .buttonStyle(.borderless)
+            .foregroundStyle(.secondary)
         }
         .navigationTitle("Calculate Grades")
         .toolbar {
@@ -81,7 +94,11 @@ struct GradeCalculatorView: View {
 
     private func assignmentRow(for assignment: Binding<GradeCalculator.GradeAssignment>) -> some View {
         HStack {
-            Text(assignment.wrappedValue.name)
+            TextField(
+                "Assignment Name",
+                text: assignment.name,
+                prompt: Text("Assignment Name")
+            )
 
             Spacer()
 
@@ -90,21 +107,20 @@ struct GradeCalculatorView: View {
                 value: assignment.pointsEarned,
                 format: .number
             )
-                .focused($assignmentRowFocus, equals: assignment.wrappedValue)
-                .fixedSize()
-                .font(.title3)
-                .fontWeight(.semibold)
-                .foregroundStyle(.tint)
-                #if os(iOS)
-                .keyboardType(.numberPad)
-                #endif
+            .fixedSize()
+            .font(.title3)
+            .fontWeight(.semibold)
+            .foregroundStyle(.tint)
+            #if os(iOS)
+            .keyboardType(.numberPad)
+            #endif
 
             Text(
                 " / " +
                 "\(assignment.wrappedValue.pointsPossible?.truncatingTrailingZeros ?? "-")"
             )
         }
-        .padding(.vertical, 4)
+        .focused($assignmentRowFocus, equals: assignment.wrappedValue)
     }
 
     private func isExpanded(
