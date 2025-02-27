@@ -158,10 +158,20 @@ struct GradeCalculatorView: View {
             .keyboardType(.numberPad)
             #endif
 
-            Text(
-                " / " +
-                "\(assignment.wrappedValue.pointsPossible?.truncatingTrailingZeros ?? "-")"
+            Text("/")
+
+            TextField(
+                "Total",
+                value: assignment.pointsPossible,
+                format: .number
             )
+            .fixedSize()
+            .font(.title3)
+            .fontWeight(.semibold)
+            .foregroundStyle(.tint)
+            #if os(iOS)
+            .keyboardType(.numberPad)
+            #endif
         }
         .focused($assignmentRowFocus, equals: assignment.wrappedValue)
         .draggable(assignment.wrappedValue)

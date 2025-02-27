@@ -92,9 +92,7 @@ class GradeCalculator {
                 return $0 + pointsEarned
             }
 
-            guard totalPossible > 0 else {
-                return totalEarned > 0 ? totalEarned * weight : nil
-            }
+            guard totalPossible > 0 else { return nil }
 
             return (totalEarned / totalPossible) * weight
         }
@@ -217,7 +215,7 @@ class GradeCalculator {
                 "Weighted Total: \(weightedTotal), Used Weightage: \(usedWeightage)"
             )
 
-            totalGrade = (weightedTotal / usedWeightage) * 100
+            totalGrade = max((weightedTotal / usedWeightage) * 100, weightedTotal)
         } else {
             var totalPoints = 0.0
             var totalPossible = 0.0
