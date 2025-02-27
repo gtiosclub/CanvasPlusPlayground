@@ -92,7 +92,9 @@ class GradeCalculator {
                 return $0 + pointsEarned
             }
 
-            guard totalPossible > 0 else { return nil }
+            guard totalPossible > 0 else {
+                return totalEarned > 0 ? totalEarned * weight : nil
+            }
 
             return (totalEarned / totalPossible) * weight
         }

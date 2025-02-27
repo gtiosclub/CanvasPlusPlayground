@@ -49,7 +49,6 @@ struct GradeCalculatorView: View {
                 } isTargeted: {
                     targetedGroup = $0 ? group : nil
                 }
-                .listRowBackground(targetedGroup == group ? Color.blue : Color.clear)
             }
             .onMove {
                 calculator.gradeGroups.move(fromOffsets: $0, toOffset: $1)
