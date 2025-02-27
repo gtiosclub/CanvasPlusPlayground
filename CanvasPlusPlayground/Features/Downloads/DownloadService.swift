@@ -94,7 +94,7 @@ class DownloadService: NSObject, URLSessionDownloadDelegate {
                                                courseId: course.id,
                                                fileId: file.id,
                                                type: .init(file: file))
-        let download = Download(file: file, finalURL: fileURL)
+        let download = Download(file: file, course: course, finalURL: fileURL)
 
         modelContext.insert(download)
         try? modelContext.save()

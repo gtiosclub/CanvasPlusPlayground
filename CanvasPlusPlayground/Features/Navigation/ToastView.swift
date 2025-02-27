@@ -16,11 +16,8 @@ struct ToastView: View {
         HStack(spacing: 12) {
             Group {
                 switch toast.type {
-                case .download(let download):
-                    DownloadGaugeView(model: .init(download: download))
-                default:
-                    Image(systemName: toast.type.systemImage)
-                        .resizable()
+                case .download(let download), .downloadFinished(let download):
+                    DownloadAccessoryView(model: .init(download: download))
                 }
             }
             .frame(width: 17, height: 17)
@@ -66,7 +63,7 @@ struct ToastView: View {
 }
 
 @Observable
-class DownloadGaugeViewModel {
+class DownloadAccessoryViewModel {
     var download: Download
 
     init(download: Download) {
@@ -74,11 +71,10 @@ class DownloadGaugeViewModel {
     }
 }
 
-struct DownloadGaugeView: View {
-    var model: DownloadGaugeViewModel
+struct DownloadAccessoryView: View {
+    var model: DownloadAccessoryViewModel
 
     var body: some View {
-        ProgressView(value: model.download.progress, total: 1.0)
-            .progressViewStyle(GaugeProgressStyle())
+        DownloadIcon(progress: model.download.progress, completed: model.download.localURL != nil)
     }
 }

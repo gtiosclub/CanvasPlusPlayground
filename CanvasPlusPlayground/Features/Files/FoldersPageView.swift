@@ -140,9 +140,7 @@ class FileRowViewModel {
     }
 }
 
-private struct FileRow: View {
-    @Environment(CourseFileViewModel.self) private var filesVM
-
+struct FileRow: View {
     let model: FileRowViewModel
 
     var body: some View {
@@ -211,32 +209,61 @@ struct DownloadIcon: View {
     var size: CGFloat = 26.0
 
     var body: some View {
-        Group {
-            if !completed {
-                Circle()
-                    .stroke(.secondary, style: .init(lineWidth: 2.0, lineCap: .butt, lineJoin: .round, dash: [2], dashPhase: 1))
-                    .padding(2.0)
+        ProgressView(value: progress, total: 1.0)
+            .progressViewStyle(GaugeProgressStyle(strokeWidth: 2.0))
+            .overlay {
+                Image(systemName: "arrow.down")
+                    .font(.system(size: size*0.5, weight: .bold))
+                    .offset(x: 0, y: progress == nil ? 0 : size)
                     .opacity(progress == nil ? 1 : 0)
                     .foregroundStyle(.secondary)
-                    .overlay {
-                        Image(systemName: "arrow.down")
-                            .foregroundStyle(.secondary)
-                            .font(.system(size: size*0.5, weight: .bold))
-                            .offset(x: 0, y: progress == nil ? 0 : size)
-                            .opacity(progress == nil ? 1 : 0)
-                            .clipShape(Circle())
-                            .animation(.default, value: progress)
-                    }
-                    .overlay {
-                        if let progress {
-                            ProgressView(value: progress, total: 1.0)
-                                .progressViewStyle(GaugeProgressStyle(strokeWidth: 2.0))
-                        }
-                    }
             }
+            .overlay {
+                Image(systemName: "checkmark")
+                    .font(.system(size: size*0.4, weight: .bold))
+                    .offset(x: 0, y: progress == 1 ? 0 : size)
+                    .opacity(progress == 1 ? 1 : 0)
+                    .foregroundColor(.white)
+            }
+            .clipShape(Circle())
+            .animation(.default, value: completed)
+            .animation(.default, value: progress)
+            .frame(width: size, height: size)
+            .font(.system(size: size, weight: .bold))
+    }
+
+    struct GaugeProgressStyle: ProgressViewStyle {
+        var strokeColor = Color.accentColor
+        var strokeWidth = 2.5
+
+        func makeBody(configuration: Configuration) -> some View {
+            let fractionCompleted = configuration.fractionCompleted
+
+            return Circle()
+                .trim(from: 0, to: fractionCompleted ?? 0.0)
+                .stroke(strokeColor, style: StrokeStyle(lineWidth: strokeWidth, lineCap: .round))
+                .rotationEffect(.degrees(-90))
+                .overlay {
+                    if fractionCompleted == 1.0 {
+                        Circle()
+                            .fill(strokeColor)
+                    }
+                }
+                .background {
+                    if fractionCompleted == nil {
+                        Circle()
+                            .stroke(.secondary, style: .init(lineWidth: strokeWidth, lineCap: .butt, lineJoin: .round, dash: [2], dashPhase: 1))
+                    }
+                }
+                .background {
+                    if fractionCompleted != nil {
+                        Circle()
+                            .stroke(.secondary, lineWidth: strokeWidth)
+                    }
+                }
+                .padding(strokeWidth)
+                .animation(.default, value: fractionCompleted)
         }
-        .frame(width: size, height: size)
-        .font(.system(size: size, weight: .bold))
     }
 }
 

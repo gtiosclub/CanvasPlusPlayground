@@ -34,7 +34,6 @@ class NavigationModel {
         case announcements
         case toDoList
         case pinned
-        case downloads
 
         var rawValue: String {
             switch self {
@@ -96,6 +95,7 @@ class NavigationModel {
     }
     var selectedCoursePage: CoursePage?
     var showInstallIntelligenceSheet = false
+    var showDownloadsSheet = false
     var showAuthorizationSheet = false
     var showProfileSheet = false
     #if os(iOS)

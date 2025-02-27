@@ -12,6 +12,7 @@ import Foundation
 class Download {
     var id = UUID()
     @Relationship(.unique, inverse: \File.download) var file: File
+    var course: Course?
 
     var localURL: URL?
     var finalURL: URL
@@ -20,8 +21,9 @@ class Download {
     var progress: Double = 0
     @Transient var downloadTask: URLSessionDownloadTask?
 
-    init(file: File, finalURL: URL) {
+    init(file: File, course: Course, finalURL: URL) {
         self.file = file
+        self.course = course
         self.finalURL = finalURL
     }
 }

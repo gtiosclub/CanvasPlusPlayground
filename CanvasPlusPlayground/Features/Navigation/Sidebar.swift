@@ -71,6 +71,18 @@ struct Sidebar: View {
         #endif
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
+                Button("Downloads", systemImage: "arrow.down.circle") {
+                    navigationModel.showDownloadsSheet.toggle()
+                }
+                .popover(isPresented: $navigationModel.showDownloadsSheet) {
+                    NavigationStack {
+                        DownloadsView()
+                    }
+                    .presentationDetents([.medium, .large])
+                }
+            }
+
+            ToolbarItem(placement: .confirmationAction) {
                 if let currentUser = profileManager.currentUser {
                     Button {
                         navigationModel.showProfileSheet.toggle()
@@ -132,15 +144,6 @@ private struct SidebarTiles: View {
                 page: .pinned
             ) {
                 navigationModel.selectedNavigationPage = .pinned
-            }
-
-            SidebarTile(
-                "Downloads",
-                systemIcon: "arrow.down.circle.fill",
-                color: .green,
-                page: .downloads
-            ) {
-                navigationModel.selectedNavigationPage = .downloads
             }
         }
         .listRowInsets(EdgeInsets())

@@ -14,10 +14,12 @@ struct DownloadsView: View {
 
     var body: some View {
         List(downloads) { download in
-            DownloadItemView(model: .init(download: download))
-                .onTapGesture {
-                    selectedDownload = download
-                }
+            if let course = download.course {
+                FileRow(model: .init(file: download.file, course: course))
+                    .onTapGesture {
+                        selectedDownload = download
+                    }
+            }
         }
         .sheet(item: $selectedDownload) { item in
             FileViewer(download: item)
@@ -46,30 +48,6 @@ struct DownloadItemView: View {
         HStack {
             Text(model.download.file.displayName)
                 .frame(maxWidth: .infinity, alignment: .leading)
-            ProgressView(value: model.download.progress, total: 1.0)
-                .progressViewStyle(GaugeProgressStyle())
-                .frame(height: 14)
-        }
-    }
-}
-
-struct GaugeProgressStyle: ProgressViewStyle {
-    var strokeColor = Color.accentColor
-    var strokeWidth = 2.5
-
-    func makeBody(configuration: Configuration) -> some View {
-        let fractionCompleted = configuration.fractionCompleted ?? 0
-
-        return ZStack {
-            Circle()
-                .trim(from: 0, to: fractionCompleted)
-                .stroke(strokeColor, style: StrokeStyle(lineWidth: strokeWidth, lineCap: .round))
-                .rotationEffect(.degrees(-90))
-                .background {
-                    Circle()
-                        .stroke(.secondary, style: StrokeStyle(lineWidth: strokeWidth))
-                }
-                .padding(strokeWidth)
         }
     }
 }
