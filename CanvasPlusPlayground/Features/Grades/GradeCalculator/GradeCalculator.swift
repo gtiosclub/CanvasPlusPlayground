@@ -186,7 +186,7 @@ class GradeCalculator {
 
         expandedAssignmentGroups = Dictionary(
             uniqueKeysWithValues: gradeGroups.lazy
-                .map { ($0, !$0.assignments.isEmpty) }
+                .map { ($0, $0.weightedScore != nil) }
         )
     }
 

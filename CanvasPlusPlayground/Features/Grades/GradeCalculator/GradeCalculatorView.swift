@@ -105,19 +105,23 @@ private struct GradeGroupSection: View {
                 group.assignments.move(fromOffsets: $0, toOffset: $1)
             }
 
-            Button("Add Assignment", systemImage: "plus.circle.fill") {
-                let newAssignment = calculator.createEmptyAssignment(in: group)
-                assignmentRowFocus = newAssignment
-            }
-            .buttonStyle(.borderless)
-            .foregroundStyle(.secondary)
-            .padding(4)
+            addAssignmentButton
         } label: {
             GradeGroupHeader(group: $group, groupRowFocus: _groupRowFocus)
         }
     }
 
-    var isExpanded: Binding<Bool> {
+    private var addAssignmentButton: some View {
+        Button("Add Assignment", systemImage: "plus.circle.fill") {
+            let newAssignment = calculator.createEmptyAssignment(in: group)
+            assignmentRowFocus = newAssignment
+        }
+        .buttonStyle(.borderless)
+        .foregroundStyle(.secondary)
+        .padding(4)
+    }
+
+    private var isExpanded: Binding<Bool> {
         .init {
             calculator.expandedAssignmentGroups[group, default: true]
         } set: { newValue in
@@ -139,8 +143,7 @@ private struct GradeGroupHeader: View {
 
         HStack {
             TextField("Assignment Group Name", text: $group.name)
-
-            Spacer()
+                .fixedSize()
 
             TextField(
                 "Weight",
@@ -156,6 +159,7 @@ private struct GradeGroupHeader: View {
         .bold()
         .padding(4)
         .focused($groupRowFocus, equals: group)
+        .foregroundStyle(group.weightedScore == nil ? .secondary : .primary)
     }
 }
 
@@ -178,13 +182,7 @@ private struct GradeAssignmentRow: View {
                 value: $assignment.pointsEarned,
                 format: .number
             )
-            .fixedSize()
-            .font(.title3)
-            .fontWeight(.semibold)
-            .foregroundStyle(.tint)
-            #if os(iOS)
-            .keyboardType(.numberPad)
-            #endif
+            .pointsTextField()
 
             Text("/")
 
@@ -193,6 +191,17 @@ private struct GradeAssignmentRow: View {
                 value: $assignment.pointsPossible,
                 format: .number
             )
+            .pointsTextField()
+        }
+        .focused($assignmentRowFocus, equals: assignment)
+        .draggable(assignment)
+        .padding(4)
+    }
+}
+
+extension View {
+    fileprivate func pointsTextField() -> some View {
+        self
             .fixedSize()
             .font(.title3)
             .fontWeight(.semibold)
@@ -200,9 +209,5 @@ private struct GradeAssignmentRow: View {
             #if os(iOS)
             .keyboardType(.numberPad)
             #endif
-        }
-        .focused($assignmentRowFocus, equals: assignment)
-        .draggable(assignment)
-        .padding(4)
     }
 }
