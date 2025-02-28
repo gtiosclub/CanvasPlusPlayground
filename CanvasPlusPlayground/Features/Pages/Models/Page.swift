@@ -62,4 +62,34 @@ final class Page: Cacheable {
         self.publishAt = other.publishAt
         self.frontPage = other.frontPage
     }
+
+    static func sortedPages(
+        _ pages: [Page],
+        by sortOption: GetPagesRequest.SortOption = .title,
+        order: GetPagesRequest.OrderOption = .ascending
+    ) -> [Page] {
+        pages.sorted { lhs, rhs in
+            switch sortOption {
+            case .title:
+                guard let lhsTitle = lhs.title, let rhsTitle = rhs.title else { return false }
+                return order == .ascending ? lhsTitle < rhsTitle : lhsTitle > rhsTitle
+            case .createdAt:
+                guard let lhsDate = lhs.createdAt, let rhsDate = rhs.createdAt else { return false }
+                return order == .ascending ? lhsDate < rhsDate : lhsDate > rhsDate
+            case .updatedAt:
+                guard let lhsDate = lhs.updatedAt, let rhsDate = rhs.updatedAt else { return false }
+                return order == .ascending ? lhsDate < rhsDate : lhsDate > rhsDate
+            }
+        }
+    }
+}
+
+extension Page: Hashable {
+    static func == (lhs: Page, rhs: Page) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 }

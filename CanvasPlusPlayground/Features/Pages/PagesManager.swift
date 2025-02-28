@@ -10,7 +10,14 @@ import Foundation
 @Observable
 class PagesManager {
     private let courseID: String
-    var pages = [Page]()
+    private var pagesSet = Set<Page>()
+
+    var sortOption: GetPagesRequest.SortOption = .title
+    var sortOrder: GetPagesRequest.OrderOption = .ascending
+
+    var pages: [Page] {
+        Page.sortedPages(Array(pagesSet), by: sortOption, order: sortOrder)
+    }
 
     init(courseID: String) {
         self.courseID = courseID
@@ -23,23 +30,29 @@ class PagesManager {
                 request,
                 onCacheReceive: { cachedPages in
                     guard let cachedPages else { return }
-                    self.setPages(cachedPages)
+                    Task { @MainActor in
+                        self.setPages(cachedPages)
+                    }
                 },
                 loadingMethod: .all(onNewPage: { newPages in
-                    self.appendPages(newPages)
+                    Task { @MainActor in
+                        self.appendPages(newPages)
+                    }
                 })
             )
-            self.setPages(fetchedPages)
+            Task { @MainActor in
+                self.setPages(fetchedPages)
+            }
         } catch {
             LoggerService.main.error("Failed to fetch pages: \(error)")
         }
     }
 
     func setPages(_ pages: [Page]) {
-        self.pages = pages
+        self.pagesSet = Set(pages)
     }
 
     func appendPages(_ newPages: [Page]) {
-        self.pages.append(contentsOf: newPages)
+        self.pagesSet.formUnion(newPages)
     }
 }
