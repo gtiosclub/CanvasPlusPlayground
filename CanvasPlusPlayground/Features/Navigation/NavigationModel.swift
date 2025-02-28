@@ -84,7 +84,7 @@ class NavigationModel {
             case .modules:
                 "book.closed.circle.fill"
             case .pages:
-                "book.closed.circle.fill"
+                "doc.text.fill"
             }
         }
     }
