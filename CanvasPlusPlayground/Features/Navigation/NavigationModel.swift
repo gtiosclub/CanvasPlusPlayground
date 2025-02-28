@@ -57,6 +57,7 @@ class NavigationModel {
         case tabs
         case quizzes
         case modules
+        case pages
 
         var title: String {
             rawValue.capitalized
@@ -82,6 +83,8 @@ class NavigationModel {
                 "questionmark.circle.fill"
             case .modules:
                 "book.closed.circle.fill"
+            case .pages:
+                "doc.text.fill"
             }
         }
     }

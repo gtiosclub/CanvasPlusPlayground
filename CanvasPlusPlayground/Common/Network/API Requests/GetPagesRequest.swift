@@ -26,8 +26,8 @@ struct GetPagesRequest: CacheableArrayAPIRequest {
     }
 
     // MARK: Query Params
-    let sort: String?   // Allowed values: title, created_at, updated_at
-    let order: String?  // Allowed values: asc, desc
+    let sort: SortOption?
+    let order: OrderOption?
     let searchTerm: String?
     let published: Bool?
     let include: [Include]
@@ -35,8 +35,8 @@ struct GetPagesRequest: CacheableArrayAPIRequest {
 
     init(
         courseId: String,
-        sort: String? = nil,
-        order: String? = nil,
+        sort: SortOption? = nil,
+        order: OrderOption? = nil,
         searchTerm: String? = nil,
         published: Bool? = nil,
         include: [Include] = [],
@@ -87,5 +87,15 @@ struct GetPagesRequest: CacheableArrayAPIRequest {
 extension GetPagesRequest {
     enum Include: String {
         case body
+    }
+    enum SortOption: String {
+        case title
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+    }
+
+    enum OrderOption: String {
+        case ascending = "asc"
+        case descending = "desc"
     }
 }
