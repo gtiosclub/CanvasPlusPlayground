@@ -96,13 +96,14 @@ private struct GradeGroupSection: View {
             ForEach($group.assignments, id: \.id) { $assignment in
                 GradeAssignmentRow(assignment: $assignment, assignmentRowFocus: _assignmentRowFocus)
             }
+            .onMove {
+                group.assignments.move(fromOffsets: $0, toOffset: $1)
+            }
 
             addAssignmentButton
         } label: {
             GradeGroupHeader(group: $group, groupRowFocus: _groupRowFocus)
         }
-        .disclosureGroupStyle(GradeGroupDisclosureStyle())
-        .background(.secondary.opacity(0.1), in: .rect(cornerRadius: 8.0))
         .dropDestination(for: GradeCalculator.GradeAssignment.self) { assignments, _ in
             calculator.moveAssignments(assignments, to: group)
         }
@@ -195,31 +196,6 @@ private struct GradeAssignmentRow: View {
         .focused($assignmentRowFocus, equals: assignment)
         .draggable(assignment)
         .padding(4)
-    }
-}
-
-private struct GradeGroupDisclosureStyle: DisclosureGroupStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        VStack(alignment: .leading) {
-            HStack {
-                Image(systemName: "chevron.right")
-                    .rotationEffect(configuration.isExpanded ? .degrees(90) : .degrees(0))
-                    .onTapGesture {
-                        configuration.isExpanded.toggle()
-                    }
-
-                configuration.label
-
-                Spacer()
-            }
-            .padding(.bottom, 4)
-
-            if configuration.isExpanded {
-                configuration.content
-            }
-        }
-        .frame(maxWidth: .infinity)
-        .padding(6)
     }
 }
 
