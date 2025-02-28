@@ -209,6 +209,7 @@ enum CanvasRequest {
     ) -> GetPagesRequest {
         GetPagesRequest(
             courseId: courseId,
+            sort: "title",
             published: true,
             include: [GetPagesRequest.Include.body],
             perPage: perPage

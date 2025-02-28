@@ -15,6 +15,8 @@ struct PageView: View {
         ZStack {
             if let htmlContent = page.body, !htmlContent.isEmpty {
                 HTMLView(html: htmlContent)
+            } else {
+                ContentUnavailableView("No pages available", systemImage: "exclamationmark.bubble.fill")
             }
         }
         .navigationTitle(page.title ?? "Untitled")

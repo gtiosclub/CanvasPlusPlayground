@@ -12,7 +12,7 @@ struct PagesListView: View {
     @State private var isLoadingPages: Bool = true
 
     init(courseId: String) {
-        self.pagesManager = PagesManager(courseID: courseId)
+        _pagesManager = State(initialValue: PagesManager(courseID: courseId))
     }
 
     var body: some View {
