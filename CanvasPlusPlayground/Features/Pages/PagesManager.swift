@@ -23,19 +23,23 @@ class PagesManager {
                 request,
                 onCacheReceive: { cachedPages in
                     guard let cachedPages else { return }
-                    Task { @MainActor in
-                        self.setPages(cachedPages)
-                    }
-                }
+                    self.setPages(cachedPages)
+                },
+                loadingMethod: .all(onNewPage: { newPages in
+                    self.appendPages(newPages)
+                })
             )
-            self.pages = fetchedPages
+            self.setPages(fetchedPages)
         } catch {
             LoggerService.main.error("Failed to fetch pages: \(error)")
         }
     }
 
-    @MainActor
     func setPages(_ pages: [Page]) {
         self.pages = pages
+    }
+
+    func appendPages(_ newPages: [Page]) {
+        self.pages.append(contentsOf: newPages)
     }
 }
