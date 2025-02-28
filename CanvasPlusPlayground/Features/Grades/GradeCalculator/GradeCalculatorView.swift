@@ -21,28 +21,11 @@ struct GradeCalculatorView: View {
 
         List {
             ForEach($calculator.gradeGroups, id: \.id) { $group in
-                DisclosureGroup(
-                    isExpanded: isExpanded(for: group)
-                ) {
-                    Group {
-                        ForEach($group.assignments, id: \.id) { $assignment in
-                            assignmentRow(for: $assignment)
-                        }
-                        .onMove {
-                            group.assignments.move(fromOffsets: $0, toOffset: $1)
-                        }
-
-                        Button("Add Assignment", systemImage: "plus.circle.fill") {
-                            let newAssignment = calculator.createEmptyAssignment(in: group)
-                            assignmentRowFocus = newAssignment
-                        }
-                        .buttonStyle(.borderless)
-                        .foregroundStyle(.secondary)
-                    }
-                    .padding(.vertical, 4)
-                } label: {
-                    groupHeader(for: $group)
-                }
+                GradeGroupSection(
+                    group: $group,
+                    assignmentRowFocus: _assignmentRowFocus,
+                    groupRowFocus: _groupRowFocus
+                )
                 .contentShape(.rect)
                 .dropDestination(for: GradeCalculator.GradeAssignment.self) { assignments, _ in
                     calculator.moveAssignments(assignments, to: group)
@@ -105,17 +88,57 @@ struct GradeCalculatorView: View {
             }
         }
     }
+}
 
-    @ViewBuilder
-    private func groupHeader(for group: Binding<GradeCalculator.GradeGroup>) -> some View {
+private struct GradeGroupSection: View {
+    @Environment(GradeCalculator.self) private var calculator
+    @Binding var group: GradeCalculator.GradeGroup
+    @FocusState var assignmentRowFocus: GradeCalculator.GradeAssignment?
+    @FocusState var groupRowFocus: GradeCalculator.GradeGroup?
+
+    var body: some View {
+        DisclosureGroup(isExpanded: isExpanded) {
+            ForEach($group.assignments, id: \.id) { $assignment in
+                GradeAssignmentRow(assignment: $assignment, assignmentRowFocus: _assignmentRowFocus)
+            }
+            .onMove {
+                group.assignments.move(fromOffsets: $0, toOffset: $1)
+            }
+
+            Button("Add Assignment", systemImage: "plus.circle.fill") {
+                let newAssignment = calculator.createEmptyAssignment(in: group)
+                assignmentRowFocus = newAssignment
+            }
+            .buttonStyle(.borderless)
+            .foregroundStyle(.secondary)
+            .padding(4)
+        } label: {
+            GradeGroupHeader(group: $group, groupRowFocus: _groupRowFocus)
+        }
+    }
+
+    var isExpanded: Binding<Bool> {
+        .init {
+            calculator.expandedAssignmentGroups[group, default: true]
+        } set: { newValue in
+            calculator.expandedAssignmentGroups[group] = newValue
+        }
+    }
+}
+
+private struct GradeGroupHeader: View {
+    @Binding var group: GradeCalculator.GradeGroup
+    @FocusState var groupRowFocus: GradeCalculator.GradeGroup?
+
+    var body: some View {
         let formattedWeightBinding: Binding<Double> = .init {
-            group.wrappedValue.weight / 100.0
+            group.weight / 100.0
         } set: {
-            group.wrappedValue.weight = $0 * 100.0
+            group.weight = $0 * 100.0
         }
 
         HStack {
-            TextField("Assignment Group Name", text: group.name)
+            TextField("Assignment Group Name", text: $group.name)
 
             Spacer()
 
@@ -132,14 +155,19 @@ struct GradeCalculatorView: View {
         }
         .bold()
         .padding(4)
-        .focused($groupRowFocus, equals: group.wrappedValue)
+        .focused($groupRowFocus, equals: group)
     }
+}
 
-    private func assignmentRow(for assignment: Binding<GradeCalculator.GradeAssignment>) -> some View {
+private struct GradeAssignmentRow: View {
+    @Binding var assignment: GradeCalculator.GradeAssignment
+    @FocusState var assignmentRowFocus: GradeCalculator.GradeAssignment?
+
+    var body: some View {
         HStack {
             TextField(
                 "Assignment Name",
-                text: assignment.name,
+                text: $assignment.name,
                 prompt: Text("Assignment Name")
             )
 
@@ -147,7 +175,7 @@ struct GradeCalculatorView: View {
 
             TextField(
                 "Score",
-                value: assignment.pointsEarned,
+                value: $assignment.pointsEarned,
                 format: .number
             )
             .fixedSize()
@@ -162,7 +190,7 @@ struct GradeCalculatorView: View {
 
             TextField(
                 "Total",
-                value: assignment.pointsPossible,
+                value: $assignment.pointsPossible,
                 format: .number
             )
             .fixedSize()
@@ -173,17 +201,8 @@ struct GradeCalculatorView: View {
             .keyboardType(.numberPad)
             #endif
         }
-        .focused($assignmentRowFocus, equals: assignment.wrappedValue)
-        .draggable(assignment.wrappedValue)
-    }
-
-    private func isExpanded(
-        for group: GradeCalculator.GradeGroup
-    ) -> Binding<Bool> {
-        .init {
-            calculator.expandedAssignmentGroups[group, default: true]
-        } set: { newValue in
-            calculator.expandedAssignmentGroups[group] = newValue
-        }
+        .focused($assignmentRowFocus, equals: assignment)
+        .draggable(assignment)
+        .padding(4)
     }
 }
