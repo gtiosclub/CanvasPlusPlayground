@@ -31,7 +31,7 @@ class RemindersManager {
             content.title = "REMINDER: \(assignment.name)"
             // if the assignment has a due date, we want to let the user know how much time left
             if let dueDate = assignment.dueDate {
-                let deltaText = timeDeltaString(from: dueDate, to: date)
+                let deltaText = Date.timeDeltaString(from: dueDate, to: date)
                 content.body = "Assignment is due in \(deltaText)"
             } else {
                 content.body = ""
@@ -82,9 +82,11 @@ enum ReminderType: Equatable {
     }
 }
 
-func timeDeltaString(from startDate: Date, to endDate: Date) -> String {
-    let formatter = DateComponentsFormatter()
-    formatter.unitsStyle = .full // Use .short or .abbreviated for different styles
-    formatter.allowedUnits = [.day, .hour]
-    return formatter.string(from: startDate, to: endDate) ?? "N/A"
+extension Date {
+    static func timeDeltaString(from startDate: Date, to endDate: Date) -> String {
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .full // Use .short or .abbreviated for different styles
+        formatter.allowedUnits = [.day, .hour]
+        return formatter.string(from: startDate, to: endDate) ?? "N/A"
+    }
 }

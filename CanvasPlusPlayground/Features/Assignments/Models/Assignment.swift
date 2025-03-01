@@ -273,5 +273,5 @@ class Assignment: Cacheable {
         case points = "points"
     }
 
-    static let example: Assignment = Assignment(from: .example)
+    static let example = Assignment(from: .example)
 }
