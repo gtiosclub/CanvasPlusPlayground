@@ -28,11 +28,6 @@ struct GradeCalculatorView: View {
             .onMove {
                 calculator.gradeGroups.move(fromOffsets: $0, toOffset: $1)
             }
-            .listRowSeparator(.hidden)
-
-            #if os(macOS)
-            Divider()
-            #endif
 
             Button("Add Assignment Group", systemImage: "plus.circle.fill") {
                 let newGroup = calculator.createEmptyGroup()
@@ -40,24 +35,21 @@ struct GradeCalculatorView: View {
             }
             .buttonStyle(.borderless)
             .foregroundStyle(.secondary)
-            .listRowSeparator(.hidden)
         }
         .textFieldStyle(.plain)
-        #if os(macOS)
-        .listStyle(.sidebar)
-        #else
-        .listStyle(.inset)
-        #endif
-        .scrollContentBackground(.hidden)
-        .background(.background)
         .navigationTitle("Calculate Grades")
+        #if os(iOS)
+        .navigationBarTitleDisplayMode(.inline)
+        .safeAreaInset(edge: .top) {
+            totalGradeView
+        }
+        #endif
         .toolbar {
+            #if os(macOS)
             ToolbarItem(placement: .destructiveAction) {
-                Text("Total: \(calculator.totalGrade.truncatingTrailingZeros)%")
-                    .bold()
-                    .contentTransition(.numericText())
-                    .animation(.default, value: calculator.totalGrade)
+                totalGradeView
             }
+            #endif
 
             ToolbarItem(placement: .cancellationAction) {
                 Button {
@@ -82,6 +74,18 @@ struct GradeCalculatorView: View {
                 .bold()
             }
         }
+    }
+
+    private var totalGradeView: some View {
+        #if os(iOS)
+        AccessoryBar(title: "Total", value: "\(calculator.totalGrade.truncatingTrailingZeros)%")
+            .animation(.default, value: calculator.totalGrade)
+        #else
+        Text("Total: \(calculator.totalGrade.truncatingTrailingZeros)%")
+            .bold()
+            .contentTransition(.numericText())
+            .animation(.default, value: calculator.totalGrade)
+        #endif
     }
 }
 
@@ -180,7 +184,8 @@ private struct GradeAssignmentRow: View {
             TextField(
                 "Score",
                 value: $assignment.pointsEarned,
-                format: .number
+                format: .number,
+                prompt: Text("-")
             )
             .pointsTextField()
 
@@ -189,7 +194,8 @@ private struct GradeAssignmentRow: View {
             TextField(
                 "Total",
                 value: $assignment.pointsPossible,
-                format: .number
+                format: .number,
+                prompt: Text("-")
             )
             .pointsTextField()
         }
@@ -199,10 +205,11 @@ private struct GradeAssignmentRow: View {
     }
 }
 
-extension View {
+extension TextField {
     fileprivate func pointsTextField() -> some View {
         self
-            .fixedSize()
+            .frame(width: 30)
+            .multilineTextAlignment(.trailing)
             .font(.title3)
             .fontWeight(.semibold)
             .foregroundStyle(.tint)

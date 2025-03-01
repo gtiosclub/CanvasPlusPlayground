@@ -38,27 +38,7 @@ struct CourseGradeView: View {
     }
 
     private var gradesAccessoryBar: some View {
-        VStack {
-            Divider()
-
-            HStack {
-                Text("Current Score")
-                Spacer()
-                Text(gradesVM.currentScore)
-                    .animation(.default, value: gradesVM.currentScore)
-                    .contentTransition(.numericText())
-                    .foregroundStyle(.tint)
-            }
-            .fontDesign(.rounded)
-            .font(.title2)
-            .bold()
-            .padding(.horizontal)
-            .padding(.vertical, 4)
-
-            Divider()
-        }
-        .frame(maxWidth: .infinity)
-        .background(.bar)
+        AccessoryBar(title: "Current Score", value: gradesVM.currentScore)
     }
 
     private func loadGrades() async {

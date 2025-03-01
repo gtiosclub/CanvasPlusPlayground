@@ -79,9 +79,12 @@ struct CourseAssignmentsView: View {
         .toolbar {
             if showGrades {
                 ToolbarItem(placement: .automatic) {
-                    Button("Calculate Grades") {
+                    Button("Calculate Grades", image: .customFunctionCapsule) {
                         showingGradeCalculator = true
                     }
+                    #if os(macOS)
+                    .labelStyle(.titleAndIcon)
+                    #endif
                     .disabled(isLoadingAssignments)
                 }
             }
