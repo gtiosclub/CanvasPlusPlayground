@@ -21,9 +21,16 @@ struct AssignmentGroupAPI: APIResponse {
         AssignmentGroup(from: self)
     }
 }
+// swiftlint:enable identifier_name
 
-struct AssignmentGroupRules: Codable {
-    let drop_highest: Int?
-    let drop_lowest: Int?
-    let never_drop: [Int]?
+struct AssignmentGroupRules: Codable, Hashable {
+    let dropHighest: Int?
+    let dropLowest: Int?
+    let neverDrop: [Int]?
+
+    enum CodingKeys: String, CodingKey {
+        case dropHighest = "drop_highest"
+        case dropLowest = "drop_lowest"
+        case neverDrop = "never_drop"
+    }
 }
