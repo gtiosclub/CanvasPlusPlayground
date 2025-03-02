@@ -43,7 +43,6 @@ struct GradeCalculatorView: View {
             .buttonStyle(.borderless)
             .foregroundStyle(.secondary)
         }
-        .textFieldStyle(.plain)
         .navigationTitle("Calculate Grades")
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
@@ -150,9 +149,9 @@ private struct GradeGroupHeader: View {
 
     var body: some View {
         let formattedWeightBinding: Binding<Double> = .init {
-            group.weight / 100.0
+            group.weight
         } set: {
-            group.weight = $0 * 100.0
+            group.weight = $0
         }
 
         HStack {
@@ -161,16 +160,20 @@ private struct GradeGroupHeader: View {
                 .fixedSize()
                 #endif
 
-            TextField(
-                "Weight",
-                value: formattedWeightBinding,
-                format: .percent
-            )
-            .fixedSize()
+            HStack(spacing: 0) {
+                TextField(
+                    "--",
+                    value: formattedWeightBinding,
+                    format: .number
+                )
+                .fixedSize()
+                #if os(iOS)
+                .keyboardType(.numberPad)
+                #endif
+
+                Text("%")
+            }
             .foregroundStyle(.tint)
-            #if os(iOS)
-            .keyboardType(.numberPad)
-            #endif
         }
         .bold()
         .padding(4)
@@ -197,7 +200,7 @@ private struct GradeAssignmentRow: View {
                 "Score",
                 value: $assignment.pointsEarned,
                 format: .number,
-                prompt: Text("-")
+                prompt: Text("--")
             )
             .pointsTextField()
 
@@ -207,7 +210,7 @@ private struct GradeAssignmentRow: View {
                 "Total",
                 value: $assignment.pointsPossible,
                 format: .number,
-                prompt: Text("-")
+                prompt: Text("--")
             )
             .pointsTextField()
         }
