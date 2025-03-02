@@ -8,11 +8,18 @@
 import SwiftUI
 
 struct GradeCalculatorView: View {
-    @Environment(GradeCalculator.self) private var calculator
     @Environment(\.dismiss) private var dismiss
+
+    @State private var calculator: GradeCalculator
 
     @FocusState private var assignmentRowFocus: GradeCalculator.GradeAssignment?
     @FocusState private var groupRowFocus: GradeCalculator.GradeGroup?
+
+    init(assignmentGroups: [AssignmentGroup]) {
+        _calculator = .init(
+            initialValue: .init(assignmentGroups: assignmentGroups)
+        )
+    }
 
     var body: some View {
         @Bindable var calculator = calculator
@@ -70,10 +77,12 @@ struct GradeCalculatorView: View {
                 Spacer()
                 Button("Done") {
                     assignmentRowFocus = nil
+                    groupRowFocus = nil
                 }
                 .bold()
             }
         }
+        .environment(calculator)
     }
 
     private var totalGradeView: some View {
@@ -102,6 +111,9 @@ private struct GradeGroupSection: View {
             }
             .onMove {
                 group.assignments.move(fromOffsets: $0, toOffset: $1)
+            }
+            .onDelete {
+                group.assignments.remove(atOffsets: $0)
             }
 
             addAssignmentButton
@@ -208,7 +220,7 @@ private struct GradeAssignmentRow: View {
 extension TextField {
     fileprivate func pointsTextField() -> some View {
         self
-            .frame(width: 30)
+            .fixedSize()
             .multilineTextAlignment(.trailing)
             .font(.title3)
             .fontWeight(.semibold)
