@@ -115,7 +115,7 @@ class GradeCalculator {
     func createEmptyGroup() -> GradeGroup {
         let newGroup = GradeGroup(
             id: UUID().uuidString,
-            name: "New Group",
+            name: "",
             weight: 0.0,
             assignments: []
         )
@@ -199,8 +199,10 @@ class GradeCalculator {
         if totalWeight > 0 {
             var usedWeightage = 0.0
 
-            let weightedTotal = gradeGroups.reduce(0.0) {sum, group in
-                guard let weightedScore = group.weightedScore else { return sum }
+            let weightedTotal = gradeGroups.reduce(0.0) { sum, group in
+                guard let weightedScore = group.weightedScore else {
+                    return sum
+                }
 
                 usedWeightage += group.weight
 

@@ -102,12 +102,13 @@ struct CourseAssignmentsView: View {
         }
         .sheet(isPresented: $showingGradeCalculator) {
             NavigationStack {
-                GradeCalculatorView()
+                GradeCalculatorView(
+                    assignmentGroups: assignmentManager.assignmentGroups
+                )
             }
             #if os(macOS)
             .frame(width: 550, height: 650)
             #endif
-            .environment(gradeCalculator)
         }
         .environment(gradeCalculator)
     }
