@@ -9,8 +9,7 @@ import SwiftUI
 
 struct ReminderButton: View {
     @Environment(RemindersManager.self) var reminderManager
-    @State var showPopUp = false
-    @State var rotate = false
+    @State private var showDatePicker = false
 
     let item: ReminderType
 
@@ -25,7 +24,7 @@ struct ReminderButton: View {
             if reminderEnabled {
                 reminderManager.removeReminder(for: item)
             } else {
-                showPopUp.toggle()
+                showDatePicker.toggle()
             }
         } label: {
             if #available(iOS 18.0, macOS 15.0, *) {
@@ -35,7 +34,7 @@ struct ReminderButton: View {
                 Image(systemName: reminderEnabled ? "bell.fill" : "bell")
             }
         }
-        .sheet(isPresented: $showPopUp) {
+        .sheet(isPresented: $showDatePicker) {
             ReminderDatePicker(item: item)
         }
     }
@@ -44,7 +43,9 @@ struct ReminderButton: View {
 struct ReminderDatePicker: View {
     @Environment(RemindersManager.self) var reminderManager
     @Environment(\.dismiss) var dismiss
-    @State var selectedDate: Date = .now
+    @State private var selectedDate: Date = .now
+    @State private var alertMessage = ""
+    @State private var showError = false
 
     let item: ReminderType
 
@@ -63,12 +64,7 @@ struct ReminderDatePicker: View {
                     dismiss()
                 }
                 Spacer()
-                Button("Done") {
-                    Task {
-                        await reminderManager.scheduleReminder(for: item, at: selectedDate)
-                    }
-                    dismiss()
-                }
+                Button("Done", action: { scheduleReminder(date: selectedDate) })
             }
             .padding(.bottom, 15)
             Text("Set a Reminder")
@@ -79,14 +75,10 @@ struct ReminderDatePicker: View {
                     imageName: imageName,
                     imageColor: color,
                     text: text,
-                    date: date) {
-                    Task {
-                        await reminderManager.scheduleReminder(for: item, at: date)
-                    }
-                    dismiss()
-                }
+                    date: date,
+                    action: { scheduleReminder(date: date) })
             }
-            DatePicker("Set reminder for:", selection: $selectedDate)
+            DatePicker("Set reminder for:", selection: $selectedDate, in: Date.now...)
             #if os(iOS)
                 .datePickerStyle(.graphical)
             #endif
@@ -94,6 +86,26 @@ struct ReminderDatePicker: View {
         }
         .padding()
         .presentationDragIndicator(.visible)
+        .alert(isPresented: $showError) {
+            Alert(title: Text("Error setting reminder"), message: Text(alertMessage))
+        }
+    }
+
+    func scheduleReminder(date: Date) {
+        // Go ahead and strip out the seconds and milliseconds
+        let date = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: date)) ?? Date.now
+        Task {
+            do {
+                try await reminderManager.scheduleReminder(for: item, at: date)
+                dismiss()
+            } catch ReminderSchedulingError.invalidDate {
+                alertMessage = "Please select a valid date."
+                showError = true
+            } catch ReminderSchedulingError.notificationsDisbled {
+                alertMessage = "Please enable notifications in your device settings to receive reminders."
+                showError = true
+            }
+        }
     }
 
     struct QuickDateButton: View {
@@ -104,7 +116,9 @@ struct ReminderDatePicker: View {
         let action: () -> Void
 
         var body: some View {
-            Button(action: action) {
+            Button {
+                action()
+            } label: {
                 HStack {
                     Image(systemName: imageName)
                         .foregroundColor(imageColor)
@@ -119,15 +133,14 @@ struct ReminderDatePicker: View {
                         .font(.callout)
                         .opacity(0.75)
                 }
+
+                .padding([.leading], 5)
+                .padding([.trailing], 10)
+                .padding([.top, .bottom])
+                .background(.quaternary)
+                .cornerRadius(5)
             }
-
             .buttonStyle(.plain)
-            .padding([.leading], 5)
-            .padding([.trailing], 10)
-            .padding([.top, .bottom])
-            .background(.quaternary)
-            .cornerRadius(5)
-
         }
     }
 }
@@ -142,7 +155,7 @@ extension Date {
 
     static var tomorrowAt8am: Date {
         let calendar = Calendar.current
-        let now = Date()
+        let now = Date.now
 
         guard let tomorrow = calendar.date(byAdding: .day, value: 1, to: now)  else {
             return Date.now
@@ -157,9 +170,9 @@ extension Date {
             return .now
         }
         let calendar = Calendar.current
-        let now = Date()
+        let now = Date.now
 
-        // Find the next Saturday
+        // Find the next ordinal day
         guard let nextDay = calendar.nextDate(after: now, matching: DateComponents(weekday: weekday), matchingPolicy: .nextTime) else {
             return Date.now
         }

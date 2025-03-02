@@ -9,25 +9,32 @@ import Foundation
 import UserNotifications
 
 @Observable
-class RemindersManager {
+class RemindersManager: NSObject, UNUserNotificationCenterDelegate {
     var reminders: [UNNotificationRequest] = []
-    var center = UNUserNotificationCenter.current()
+    var center: UNUserNotificationCenter
 
-    init() {
+    override init() {
+        center = UNUserNotificationCenter.current()
+        super.init()
+        center.delegate = self
         loadItems()
     }
 
-    func scheduleReminder(for item: ReminderType, at date: Date) async {
+    func scheduleReminder(for item: ReminderType, at date: Date) async throws {
+        if date < Date.now { // scheduling a reminder for the past
+            throw ReminderSchedulingError.invalidDate
+        }
         do {
             try await center.requestAuthorization(options: [.alert, .sound, .badge])
         } catch {
             LoggerService.main.error("Error requesting authorization: \(error)")
+            throw ReminderSchedulingError.notificationsDisbled
         }
 
         let content = UNMutableNotificationContent()
 
         switch item {
-            case .assignment(let assignment):
+        case .assignment(let assignment):
             content.title = "REMINDER: \(assignment.name)"
             // if the assignment has a due date, we want to let the user know how much time left
             if let dueDate = assignment.dueDate {
@@ -46,6 +53,8 @@ class RemindersManager {
         do {
             try await center.add(request)
             self.reminders.append(request)
+
+            LoggerService.main.debug("Scheduling a reminder \(item.reminderIdentifier) for \(date.description)")
         } catch {
             LoggerService.main.error("Error adding notification: \(error)")
         }
@@ -69,11 +78,17 @@ class RemindersManager {
             request.identifier == item.reminderIdentifier
         }
     }
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        reminders.removeAll { request in
+            notification.request.identifier == request.identifier
+        }
+        completionHandler([.badge, .banner])
+    }
 }
 
 enum ReminderType: Equatable {
     case assignment(Assignment)
-
     var reminderIdentifier: String {
         switch self {
         case .assignment(let assignment):
@@ -89,4 +104,9 @@ extension Date {
         formatter.allowedUnits = [.day, .hour]
         return formatter.string(from: startDate, to: endDate) ?? "N/A"
     }
+}
+
+enum ReminderSchedulingError: Error {
+    case notificationsDisbled
+    case invalidDate
 }
