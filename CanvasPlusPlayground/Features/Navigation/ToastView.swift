@@ -10,10 +10,21 @@ import SwiftUI
 struct ToastView: View {
     var toast: Toast
 
+    @Environment(NavigationModel.self) private var navigationModel
+
     @Namespace var animation
 
     var body: some View {
-        HStack(spacing: 12) {
+        Button(action: {
+            toast.type.action(navigationModel)
+        }) {
+            content
+        }
+        .buttonStyle(ElasticButtonStyle())
+    }
+
+    var content: some View {
+        HStack(spacing: 16) {
             Group {
                 switch toast.type {
                 case .download(let download), .downloadFinished(let download):
@@ -28,6 +39,7 @@ struct ToastView: View {
                 Text(toast.type.name)
                     .font(.body)
                     .fontWeight(.medium)
+                    .allowsTightening(true)
                     .minimumScaleFactor(0.5)
                     .lineLimit(2)
 
@@ -50,7 +62,7 @@ struct ToastView: View {
                 .overlay {
                     Capsule()
                         .fill(.linearGradient(colors: [.white, .white.opacity(0)], startPoint: .top, endPoint: .bottom))
-                        .opacity(0.1)
+                        .opacity(0.05)
                 }
                 .overlay {
                     Capsule()

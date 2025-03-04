@@ -41,7 +41,6 @@ class DownloadService: NSObject, URLSessionDownloadDelegate {
                     return nil
                 }
             }
-
         } else {
             print("Failure getting bundle identifier")
             return nil
@@ -136,7 +135,6 @@ class DownloadService: NSObject, URLSessionDownloadDelegate {
             }
 
             print("All files in \(fileURL.path) have been deleted.")
-
         } catch {
             print("Error deleting files: \(error.localizedDescription)")
         }

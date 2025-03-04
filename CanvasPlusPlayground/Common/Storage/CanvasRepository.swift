@@ -25,7 +25,7 @@ extension ModelContext {
             User.self,
             Profile.self,
             DiscussionTopic.self,
-            Page.self
+            Page.self,
             Download.self
             // TODO: Add cacheable models here
         )

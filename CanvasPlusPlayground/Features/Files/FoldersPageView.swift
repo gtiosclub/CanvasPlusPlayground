@@ -5,8 +5,8 @@
 //  Created by Abdulaziz Albahar on 12/10/24.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct FoldersPageView: View {
     @Namespace private var namespace
@@ -213,14 +213,14 @@ struct DownloadIcon: View {
             .progressViewStyle(GaugeProgressStyle(strokeWidth: 2.0))
             .overlay {
                 Image(systemName: "arrow.down")
-                    .font(.system(size: size*0.5, weight: .bold))
+                    .font(.system(size: size * 0.5, weight: .bold))
                     .offset(x: 0, y: progress == nil ? 0 : size)
                     .opacity(progress == nil ? 1 : 0)
                     .foregroundStyle(.secondary)
             }
             .overlay {
                 Image(systemName: "checkmark")
-                    .font(.system(size: size*0.4, weight: .bold))
+                    .font(.system(size: size * 0.4, weight: .bold))
                     .offset(x: 0, y: progress == 1 ? 0 : size)
                     .opacity(progress == 1 ? 1 : 0)
                     .foregroundColor(.white)

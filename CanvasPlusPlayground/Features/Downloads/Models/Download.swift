@@ -5,8 +5,8 @@
 //  Created by João Pozzobon on 2/17/25.
 //
 
-import SwiftData
 import Foundation
+import SwiftData
 
 @Model
 class Download {
@@ -16,7 +16,7 @@ class Download {
 
     var localURL: URL?
     var finalURL: URL
-    var downloadedDate: Date?
+    var downloadedDate = Date()
 
     var progress: Double = 0
     @Transient var downloadTask: URLSessionDownloadTask?

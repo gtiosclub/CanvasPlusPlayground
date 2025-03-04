@@ -107,16 +107,23 @@ class NavigationModel {
 
     // MARK: Toasts
     var toast: Toast?
+    var dismissTimer: Timer?
 
     func queueToast(_ toast: Toast) {
         self.toast = toast
 
-//        DispatchQueue.main.asyncAfter(deadline: .now() + toast.duration) {
-//            self.toast = nil
-//        }
+        dismissTimer?.invalidate()
+        dismissTimer = nil
+
+        if let timer = toast.type.timer {
+            Task { @MainActor in
+                dismissTimer = Timer.scheduledTimer(withTimeInterval: timer, repeats: false) { [weak self] _ in
+                    self?.toast = nil
+                }
+            }
+        }
     }
 
     func openDownload(_ download: Download) {
-
     }
 }

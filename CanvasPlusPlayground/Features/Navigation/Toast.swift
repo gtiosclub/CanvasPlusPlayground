@@ -34,10 +34,32 @@ struct Toast: Identifiable, Equatable {
             }
         }
 
+        var timer: TimeInterval? {
+            switch self {
+            case .download:
+                return nil
+            case .downloadFinished:
+                return 5
+            }
+        }
+
         var name: String {
             switch self {
             case .download(let download), .downloadFinished(let download):
                 return download.file.displayName
+            }
+        }
+
+        var action: (NavigationModel) -> Void {
+            switch self {
+            case .download:
+                return {
+                    $0.showDownloadsSheet = true
+                }
+            case .downloadFinished:
+                return {
+                    $0.showDownloadsSheet = true
+                }
             }
         }
     }

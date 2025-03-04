@@ -76,7 +76,7 @@ struct Sidebar: View {
                 }
                 .popover(isPresented: $navigationModel.showDownloadsSheet) {
                     NavigationStack {
-                        DownloadsView()
+                        downloadsView
                     }
                     .presentationDetents([.medium, .large])
                 }
@@ -95,6 +95,16 @@ struct Sidebar: View {
                     }
                 }
             }
+        }
+    }
+
+    @ViewBuilder
+    private var downloadsView: some View {
+        if let modelContext = CanvasService.shared.repository?.modelContext {
+            DownloadsView()
+                .modelContext(modelContext)
+        } else {
+            ContentUnavailableView("Downloads are not available", systemImage: "arrow.down.circle")
         }
     }
 }

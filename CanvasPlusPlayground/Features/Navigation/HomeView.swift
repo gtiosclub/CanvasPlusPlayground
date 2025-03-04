@@ -99,6 +99,7 @@ struct HomeView: View {
         }
         .overlay(alignment: .bottom) {
             toast
+                .animation(.spring, value: navigationModel.toast)
         }
         #endif
         .environment(navigationModel)
@@ -136,16 +137,6 @@ struct HomeView: View {
         }
     }
 
-    @ViewBuilder
-    private var downloadsView: some View {
-        if let modelContext = CanvasService.shared.repository?.modelContext {
-            DownloadsView()
-                .modelContext(modelContext)
-        } else {
-            ContentUnavailableView("Downloads are not available", systemImage: "arrow.down.circle")
-        }
-    }
-
     private func loadCourses() async {
         isLoadingCourses = true
         await courseManager.getCourses()
@@ -155,7 +146,6 @@ struct HomeView: View {
 }
 
 struct BlurAnimationModifier: AnimatableModifier {
-
     var blur: Double
 
     var animatableData: Double {
