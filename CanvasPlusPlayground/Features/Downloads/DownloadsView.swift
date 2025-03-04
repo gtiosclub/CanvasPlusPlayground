@@ -18,7 +18,11 @@ struct DownloadsView: View {
         var downloads = self.downloads
 
         if !searchText.isEmpty {
-            downloads = downloads.filter({ $0.file.filename.localizedCaseInsensitiveContains(searchText) })
+            downloads = downloads.filter({ download in
+                searchText.split(separator: " ").allSatisfy {
+                    download.file.filename.localizedCaseInsensitiveContains($0)
+                }
+            })
         }
 
         return downloads.reduce(into: [Date: [Download]]()) { accumulator, current in
