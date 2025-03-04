@@ -37,12 +37,12 @@ class DownloadService: NSObject, URLSessionDownloadDelegate {
                     try fileManager.createDirectory(at: root, withIntermediateDirectories: true, attributes: nil)
                     return root
                 } catch {
-                    print("Failure creating directory to root.")
+                    LoggerService.main.error("Failure creating directory to root.")
                     return nil
                 }
             }
         } else {
-            print("Failure getting bundle identifier")
+            LoggerService.main.error("Failure getting bundle identifier")
             return nil
         }
     }
@@ -73,14 +73,14 @@ class DownloadService: NSObject, URLSessionDownloadDelegate {
             withIntermediateDirectories: true,
             attributes: nil
         )
-        print("Saving to \(fileURL)")
+        LoggerService.main.debug("Saving to \(fileURL)")
 
         do {
             try content.write(to: fileURL, options: .atomic)
 
             file.localURL = fileURL
         } catch {
-            print("Writing failed due to \(error)")
+            LoggerService.main.error("Writing failed due to \(error)")
             throw FileError.fileWriteFailed
         }
 
@@ -114,7 +114,7 @@ class DownloadService: NSObject, URLSessionDownloadDelegate {
         download.downloadTask?.taskDescription = download.id.uuidString
         download.downloadTask?.resume()
 
-        print("Start download for \(download.file.filename)")
+        LoggerService.main.debug("Start download for \(download.file.filename)")
 
         try? modelContext.save()
     }
@@ -131,12 +131,12 @@ class DownloadService: NSObject, URLSessionDownloadDelegate {
 
             for fileURL in fileURLs {
                 try fileManager.removeItem(at: fileURL)
-                print("Deleted: \(fileURL.lastPathComponent)")
+                LoggerService.main.debug("Deleted: \(fileURL.lastPathComponent)")
             }
 
-            print("All files in \(fileURL.path) have been deleted.")
+            LoggerService.main.debug("All files in \(fileURL.path) have been deleted.")
         } catch {
-            print("Error deleting files: \(error.localizedDescription)")
+            LoggerService.main.error("Error deleting files: \(error.localizedDescription)")
         }
     }
 
@@ -206,9 +206,9 @@ class DownloadService: NSObject, URLSessionDownloadDelegate {
                 let toast = Toast(type: .downloadFinished(item))
                 NavigationModel.shared.queueToast(toast)
 
-                print("File successfully saved at \(item.finalURL.path)")
+                LoggerService.main.debug("File successfully saved at \(item.finalURL.path)")
             } catch {
-                print("Failed to save file. \(error)")
+                LoggerService.main.error("Failed to save file. \(error)")
             }
         }
     }

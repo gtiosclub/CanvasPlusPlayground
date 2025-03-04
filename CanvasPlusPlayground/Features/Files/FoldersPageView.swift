@@ -58,28 +58,6 @@ struct FoldersPageView: View {
 
             selectedFile = nil
         }
-//        #if os(iOS)
-//        .fullScreenCover(item: $selectedFile) { file in
-//            Group {
-//                if #available(iOS 18.0, *) {
-//                    NavigationStack {
-//                        FileViewer(course: course, file: file)
-//                    }
-//                    .navigationTransition(.zoom(sourceID: file.id, in: namespace))
-//                } else {
-//                    NavigationStack {
-//                        FileViewer(course: course, file: file)
-//                    }
-//                }
-//            }
-//            .environment(filesVM)
-//        }
-//        #else
-//        .navigationDestination(item: $selectedFile) { file in
-//            FileViewer(course: course, file: file)
-//                .environment(filesVM)
-//        }
-//        #endif
         .overlay {
             if !isLoadingContents && filesVM.displayedFiles.isEmpty && filesVM.displayedFolders.isEmpty {
                 ContentUnavailableView("This folder is empty.", systemImage: "folder")

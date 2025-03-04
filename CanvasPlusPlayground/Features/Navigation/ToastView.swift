@@ -17,9 +17,9 @@ struct ToastView: View {
     var body: some View {
         Button(action: {
             toast.type.action(navigationModel)
-        }) {
+        }, label: {
             content
-        }
+        })
         .buttonStyle(ElasticButtonStyle())
     }
 
