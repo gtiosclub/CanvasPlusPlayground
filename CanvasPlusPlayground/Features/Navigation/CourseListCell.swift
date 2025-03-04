@@ -18,10 +18,6 @@ struct CourseListCell: View {
     @State private var showRenameTextField = false
     @State private var renameCourseFieldText: String = ""
 
-    private var wrappedCourseIsFavorite: Bool {
-        course.isFavorite
-    }
-
     private var wrappedCourseIsHidden: Bool {
         course.isHidden ?? false
     }
@@ -33,9 +29,6 @@ struct CourseListCell: View {
             .onAppear {
                 resolvedCourseColor = course.rgbColors?.color ?? .accentColor
             }
-            .swipeActions(edge: .leading) {
-                favoriteButton
-            }
             .swipeActions(edge: .trailing) {
                 hideCourseButton
             }
@@ -44,7 +37,6 @@ struct CourseListCell: View {
                     showColorPicker = true
                 }
 
-                favoriteButton
                 hideCourseButton
 
                 Button("Rename \(course.name ?? "")...", systemImage: "character.cursor.ibeam") {
@@ -69,6 +61,7 @@ struct CourseListCell: View {
                 Text("Rename \(course.name ?? "MISSING NAME")?")
             }
             #if os(macOS)
+            .padding(.vertical, 4)
             .popover(isPresented: $showColorPicker) {
                 ColorPicker(selection: $resolvedCourseColor) { }
                     .onDisappear {
@@ -94,20 +87,7 @@ struct CourseListCell: View {
                 course.isHidden = !wrappedCourseIsHidden
             }
         }
-        .symbolVariant(wrappedCourseIsHidden ? .none : .slash)
         .tint(.gray)
-    }
-
-    private var favoriteButton: some View {
-        Button(
-            wrappedCourseIsFavorite ? "Unfavorite Course" : "Favorite Course",
-            systemImage: "star"
-        ) {
-            withAnimation {
-                course.isFavorite = !wrappedCourseIsFavorite
-            }
-        }
-        .symbolVariant(wrappedCourseIsFavorite ? .slash : .none)
-        .tint(.orange)
+        .symbolVariant(wrappedCourseIsHidden ? .none : .slash)
     }
 }

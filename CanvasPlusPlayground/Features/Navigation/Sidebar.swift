@@ -24,35 +24,31 @@ struct Sidebar: View {
                 SidebarTiles()
             }
 
-            Section("Favorites") {
-                ForEach(courseManager.userFavCourses) { course in
-                    NavigationLink(
-                        value: NavigationPage.course(id: course.id)
-                    ) {
-                        CourseListCell(course: course)
-                    }
-                    .listItemTint(.fixed(course.rgbColors?.color ?? .accentColor))
-                }
-            }
-
-            Section("My Courses") {
+            Section {
                 ForEach(courseManager.userOtherCourses) { course in
                     NavigationLink(value: NavigationPage.course(id: course.id)) {
                         CourseListCell(course: course)
                     }
                     .listItemTint(.fixed(course.rgbColors?.color ?? .accentColor))
                 }
+            } header: {
+                SectionHeader(text: "My Courses")
             }
+            .textCase(nil)
 
             if !courseManager.userHiddenCourses.isEmpty {
-                Section("Hidden", isExpanded: $isHiddenSectionExpanded) {
+                Section(isExpanded: $isHiddenSectionExpanded) {
                     ForEach(courseManager.userHiddenCourses) { course in
                         NavigationLink(value: NavigationPage.course(id: course.id)) {
                             CourseListCell(course: course)
                         }
                         .listItemTint(.fixed(course.rgbColors?.color ?? .accentColor))
+                        .tint(course.rgbColors?.color ?? .accentColor)
                     }
+                } header: {
+                    SectionHeader(text: "Hidden")
                 }
+                .textCase(nil)
             }
         }
         .navigationTitle("Home")
@@ -84,6 +80,19 @@ struct Sidebar: View {
                 }
             }
         }
+    }
+}
+
+private struct SectionHeader: View {
+    let text: String
+
+    var body: some View {
+        Text(text)
+            .font(.title2)
+            .fontWeight(.bold)
+            .fontDesign(.rounded)
+            .foregroundStyle(.primary)
+            .padding(.vertical, 6)
     }
 }
 
