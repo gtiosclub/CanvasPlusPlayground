@@ -12,8 +12,16 @@ struct DownloadsView: View {
     @Query var downloads: [Download]
     @State private var selectedDownload: Download?
 
+    @State private var searchText: String = ""
+
     var groupedDownloads: [Date: [Download]] {
-        downloads.reduce(into: [Date: [Download]]()) { accumulator, current in
+        var downloads = self.downloads
+
+        if !searchText.isEmpty {
+            downloads = downloads.filter({ $0.file.filename.localizedCaseInsensitiveContains(searchText) })
+        }
+
+        return downloads.reduce(into: [Date: [Download]]()) { accumulator, current in
             let components = Calendar.current.dateComponents([.year, .month, .day], from: current.downloadedDate)
             if let date = Calendar.current.date(from: components) {
                 let existing = accumulator[date] ?? []
@@ -39,19 +47,20 @@ struct DownloadsView: View {
         List {
             ForEach(Array(groupedDownloads.keys), id: \.self) { key in
                 Section(relativeDate(from: key)) {
-                if let downloads = groupedDownloads[key] {
-                    ForEach(downloads) { download in
-                        if let course = download.course {
-                            FileRow(model: .init(file: download.file, course: course))
-                                .onTapGesture {
-                                    selectedDownload = download
-                                }
+                    if let downloads = groupedDownloads[key] {
+                        ForEach(downloads) { download in
+                            if let course = download.course {
+                                FileRow(model: .init(file: download.file, course: course))
+                                    .onTapGesture {
+                                        selectedDownload = download
+                                    }
+                            }
                         }
                     }
                 }
-                }
             }
         }
+        .searchable(text: $searchText)
         .sheet(item: $selectedDownload) { item in
             FileViewer(download: item)
                 .frame(minHeight: 500)

@@ -109,7 +109,7 @@ class NavigationModel {
     var toast: Toast?
     var dismissTimer: Timer?
 
-    func queueToast(_ toast: Toast) {
+    func present(_ toast: Toast) {
         self.toast = toast
 
         dismissTimer?.invalidate()
@@ -122,8 +122,5 @@ class NavigationModel {
                 }
             }
         }
-    }
-
-    func openDownload(_ download: Download) {
     }
 }

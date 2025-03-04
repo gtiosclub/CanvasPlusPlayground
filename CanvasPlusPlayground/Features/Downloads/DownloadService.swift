@@ -99,7 +99,7 @@ class DownloadService: NSObject, URLSessionDownloadDelegate {
         try? modelContext.save()
 
         let toast = Toast(type: .download(download))
-        NavigationModel.shared.queueToast(toast)
+        NavigationModel.shared.present(toast)
 
         try await startDownload(download, course: course)
     }
@@ -204,7 +204,7 @@ class DownloadService: NSObject, URLSessionDownloadDelegate {
                 try? modelContext.save()
 
                 let toast = Toast(type: .downloadFinished(item))
-                NavigationModel.shared.queueToast(toast)
+                NavigationModel.shared.present(toast)
 
                 LoggerService.main.debug("File successfully saved at \(item.finalURL.path)")
             } catch {
