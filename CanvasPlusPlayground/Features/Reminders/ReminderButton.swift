@@ -40,7 +40,7 @@ struct ReminderButton: View {
     }
 }
 
-struct ReminderDatePicker: View {
+private struct ReminderDatePicker: View {
     @Environment(RemindersManager.self) var reminderManager
     @Environment(\.dismiss) var dismiss
     @State private var selectedDate: Date = .now
@@ -58,33 +58,46 @@ struct ReminderDatePicker: View {
     ]
 
     var body: some View {
-        VStack {
-            HStack {
-                Button("Cancel") {
-                    dismiss()
+        NavigationStack {
+            Form {
+                Section("Quick Options") {
+                    ForEach(datePickerOptions, id: \.0) { imageName, color, text, date in
+                        QuickDateButton(
+                            imageName: imageName,
+                            imageColor: color,
+                            text: text,
+                            date: date,
+                            action: { scheduleReminder(date: date) })
+                    }
+                    .padding([.leading, .trailing], 5)
                 }
-                Spacer()
-                Button("Done", action: { scheduleReminder(date: selectedDate) })
+                Section("Custom") {
+                    DatePicker("", selection: $selectedDate, in: Date.now...)
+                    #if os(iOS)
+                        .datePickerStyle(.graphical)
+                    #else
+                        .datePickerStyle(.compact)
+                    #endif
+                }
             }
-            .padding(.bottom, 15)
-            Text("Set a Reminder")
-                .font(.headline)
-                .padding(.bottom, 15)
-            ForEach(datePickerOptions, id: \.0) { imageName, color, text, date in
-                QuickDateButton(
-                    imageName: imageName,
-                    imageColor: color,
-                    text: text,
-                    date: date,
-                    action: { scheduleReminder(date: date) })
-            }
-            DatePicker("Set reminder for:", selection: $selectedDate, in: Date.now...)
+            .navigationTitle("Set a Reminder")
             #if os(iOS)
-                .datePickerStyle(.graphical)
+            .navigationBarTitleDisplayMode(.inline)
             #endif
-            Spacer()
+            .formStyle(.grouped)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") {
+                        scheduleReminder(date: selectedDate)
+                    }
+                }
+            }
         }
-        .padding()
         .presentationDragIndicator(.visible)
         .alert(isPresented: $showError) {
             Alert(title: Text("Error setting reminder"), message: Text(alertMessage))
@@ -137,46 +150,8 @@ struct ReminderDatePicker: View {
                 .padding([.leading], 5)
                 .padding([.trailing], 10)
                 .padding([.top, .bottom])
-                .background(.quaternary)
-                .cornerRadius(5)
             }
             .buttonStyle(.plain)
         }
-    }
-}
-
-extension Date {
-    func dayOfWeekString() -> String {
-        let date = self
-        let formatter = DateFormatter()
-        formatter.dateFormat = "EEE"
-        return formatter.string(from: date)
-    }
-
-    static var tomorrowAt8am: Date {
-        let calendar = Calendar.current
-        let now = Date.now
-
-        guard let tomorrow = calendar.date(byAdding: .day, value: 1, to: now)  else {
-            return Date.now
-        }
-
-        let tomorrowAt8AM = calendar.date(bySettingHour: 8, minute: 0, second: 0, of: tomorrow)
-        return tomorrowAt8AM ?? Date.now
-    }
-
-    static func nextOrdinalAt8am(weekday: Int) -> Date {
-        if weekday < 1 || weekday > 7 {
-            return .now
-        }
-        let calendar = Calendar.current
-        let now = Date.now
-
-        // Find the next ordinal day
-        guard let nextDay = calendar.nextDate(after: now, matching: DateComponents(weekday: weekday), matchingPolicy: .nextTime) else {
-            return Date.now
-        }
-        // Set the time to 8 AM
-        return calendar.date(bySettingHour: 8, minute: 0, second: 0, of: nextDay) ?? Date.now
     }
 }
