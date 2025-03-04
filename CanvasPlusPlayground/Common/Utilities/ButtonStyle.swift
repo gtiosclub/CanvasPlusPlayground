@@ -17,7 +17,7 @@ struct ElasticButtonStyle: ButtonStyle {
 struct ElasticModifier: ViewModifier {
     var active: Bool
     @State var hovering = false
-    @Environment(\.isEnabled) var isEnabled
+    @Environment(\.isEnabled) private var isEnabled
 
     func body(content: Content) -> some View {
         content
@@ -29,7 +29,9 @@ struct ElasticModifier: ViewModifier {
             }
             .onChange(of: active) { _, value in
                 if value {
+                    #if os(iOS)
                     UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                    #endif
                 }
             }
             .opacity(isEnabled ? 1.0 : 0.5)

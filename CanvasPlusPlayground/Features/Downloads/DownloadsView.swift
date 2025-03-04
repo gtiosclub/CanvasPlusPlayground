@@ -49,6 +49,13 @@ struct DownloadsView: View {
 
     var body: some View {
         List {
+            #if os(macOS)
+            TextField(text: $searchText, label: {
+                Label("Search", systemImage: "magnifyingglass")
+            })
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+            #endif
+
             ForEach(Array(groupedDownloads.keys), id: \.self) { key in
                 Section(relativeDate(from: key)) {
                     if let downloads = groupedDownloads[key] {
@@ -64,13 +71,15 @@ struct DownloadsView: View {
                 }
             }
         }
-        .searchable(text: $searchText)
         .sheet(item: $selectedDownload) { item in
             FileViewer(download: item)
                 .frame(minHeight: 500)
         }
         #if os(iOS)
+        .searchable(text: $searchText)
         .listStyle(.insetGrouped)
+        #else
+        .listStyle(.sidebar)
         #endif
         .navigationTitle("Downloads")
     }
