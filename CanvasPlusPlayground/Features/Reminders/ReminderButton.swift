@@ -69,7 +69,6 @@ private struct ReminderDatePicker: View {
                             date: date,
                             action: { scheduleReminder(date: date) })
                     }
-                    .padding([.leading, .trailing], 5)
                 }
                 Section("Custom") {
                     DatePicker("", selection: $selectedDate, in: Date.now...)
@@ -150,6 +149,7 @@ private struct ReminderDatePicker: View {
                 .padding([.leading], 5)
                 .padding([.trailing], 10)
                 .padding([.top, .bottom])
+                .contentShape(.rect)
             }
             .buttonStyle(.plain)
         }
