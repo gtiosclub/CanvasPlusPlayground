@@ -272,4 +272,6 @@ class Assignment: Cacheable {
         case gpaScale = "gpa_scale"
         case points = "points"
     }
+
+    static let example = Assignment(from: .example)
 }
