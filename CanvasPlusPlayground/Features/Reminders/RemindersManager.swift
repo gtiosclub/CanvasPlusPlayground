@@ -79,7 +79,10 @@ class RemindersManager: NSObject, UNUserNotificationCenterDelegate {
         }
     }
 
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+    func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        willPresent notification: UNNotification,
+        withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         reminders.removeAll { request in
             notification.request.identifier == request.identifier
         }
