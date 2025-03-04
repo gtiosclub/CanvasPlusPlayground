@@ -71,6 +71,18 @@ struct Sidebar: View {
         #endif
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
+                Button("Downloads", systemImage: "arrow.down.circle") {
+                    navigationModel.showDownloadsSheet.toggle()
+                }
+                .popover(isPresented: $navigationModel.showDownloadsSheet) {
+                    NavigationStack {
+                        downloadsView
+                    }
+                    .presentationDetents([.medium, .large])
+                }
+            }
+
+            ToolbarItem(placement: .confirmationAction) {
                 if let currentUser = profileManager.currentUser {
                     Button {
                         navigationModel.showProfileSheet.toggle()
@@ -85,6 +97,16 @@ struct Sidebar: View {
             }
         }
     }
+
+    @ViewBuilder
+    private var downloadsView: some View {
+        if let modelContext = CanvasService.shared.repository?.modelContext {
+            DownloadsView()
+                .modelContext(modelContext)
+        } else {
+            ContentUnavailableView("Downloads are not available", systemImage: "arrow.down.circle")
+        }
+    }
 }
 
 private struct SidebarTiles: View {
@@ -93,19 +115,19 @@ private struct SidebarTiles: View {
     var body: some View {
         #if os(macOS)
         let columns = Array(
-            repeating: GridItem(.adaptive(minimum: 90)),
+            repeating: GridItem(.adaptive(minimum: 90), spacing: 8),
             count: 2
         )
         #else
         let columns = Array(
-            repeating: GridItem(.adaptive(minimum: 150)),
+            repeating: GridItem(.adaptive(minimum: 150), spacing: 8),
             count: 2
         )
         #endif
 
         return LazyVGrid(
             columns: columns,
-            spacing: 4
+            spacing: 8
         ) {
             SidebarTile(
                 "Announcements",

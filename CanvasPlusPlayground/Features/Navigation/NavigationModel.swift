@@ -9,6 +9,8 @@ import SwiftUI
 
 @Observable
 class NavigationModel {
+    static let shared = NavigationModel()
+
     enum NavigationPage: Hashable, RawRepresentable {
         init?(rawValue: String) {
             if rawValue.hasPrefix("course") {
@@ -96,9 +98,29 @@ class NavigationModel {
     }
     var selectedCoursePage: CoursePage?
     var showInstallIntelligenceSheet = false
+    var showDownloadsSheet = false
     var showAuthorizationSheet = false
     var showProfileSheet = false
     #if os(iOS)
     var showSettingsSheet = false
     #endif
+
+    // MARK: Toasts
+    var toast: Toast?
+    var dismissTimer: Timer?
+
+    func present(_ toast: Toast) {
+        self.toast = toast
+
+        dismissTimer?.invalidate()
+        dismissTimer = nil
+
+        if let timer = toast.type.timer {
+            Task { @MainActor in
+                dismissTimer = Timer.scheduledTimer(withTimeInterval: timer, repeats: false) { [weak self] _ in
+                    self?.toast = nil
+                }
+            }
+        }
+    }
 }

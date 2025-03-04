@@ -5,6 +5,7 @@
 //  Created by Abdulaziz Albahar on 12/10/24.
 //
 
+import SwiftData
 import SwiftUI
 
 struct FoldersPageView: View {
@@ -16,6 +17,8 @@ struct FoldersPageView: View {
 
     @State private var isLoadingContents = true
     @State private var selectedFile: File?
+
+    @Environment(\.modelContext) var modelContext
 
     init(course: Course, folder: Folder? = nil, traversedFolderIDs: [String] = []) {
         self.course = course
@@ -48,28 +51,13 @@ struct FoldersPageView: View {
         .task {
             await loadContents()
         }
-        #if os(iOS)
-        .fullScreenCover(item: $selectedFile) { file in
-            Group {
-                if #available(iOS 18.0, *) {
-                    NavigationStack {
-                        FileViewer(course: course, file: file)
-                    }
-                    .navigationTransition(.zoom(sourceID: file.id, in: namespace))
-                } else {
-                    NavigationStack {
-                        FileViewer(course: course, file: file)
-                    }
-                }
+        .task(id: selectedFile) {
+            if let selectedFile {
+                try? await DownloadService.shared.createDownload(for: selectedFile, course: course, folderIds: [])
             }
-            .environment(filesVM)
+
+            selectedFile = nil
         }
-        #else
-        .navigationDestination(item: $selectedFile) { file in
-            FileViewer(course: course, file: file)
-                .environment(filesVM)
-        }
-        #endif
         .overlay {
             if !isLoadingContents && filesVM.displayedFiles.isEmpty && filesVM.displayedFolders.isEmpty {
                 ContentUnavailableView("This folder is empty.", systemImage: "folder")
@@ -87,12 +75,12 @@ struct FoldersPageView: View {
         if file.url != nil {
             Group {
                 if #available(iOS 18.0, *) {
-                    FileRow(file: file, course: course)
+                    FileRow(model: .init(file: file, course: course))
                         #if os(iOS)
                         .matchedTransitionSource(id: file.id, in: namespace)
                         #endif
                 } else {
-                    FileRow(file: file, course: course)
+                    FileRow(model: .init(file: file, course: course))
                 }
             }
             .environment(filesVM)
@@ -119,10 +107,19 @@ struct FoldersPageView: View {
     }
 }
 
-private struct FileRow: View {
-    @Environment(CourseFileViewModel.self) private var filesVM
-    let file: File
-    let course: Course
+@Observable
+class FileRowViewModel {
+    var file: File
+    var course: Course
+
+    init(file: File, course: Course) {
+        self.file = file
+        self.course = course
+    }
+}
+
+struct FileRow: View {
+    let model: FileRowViewModel
 
     var body: some View {
         HStack {
@@ -130,33 +127,21 @@ private struct FileRow: View {
 
             Spacer()
 
-            if file.localURL == nil {
-                Image(systemName: "arrow.down.circle.dotted")
-            }
+            DownloadButtonView(model: .init(download: model.file.download))
         }
-        .imageScale(.large)
         .contextMenu {
             PinButton(
-                itemID: file.id,
-                courseID: course.id,
+                itemID: model.file.id,
+                courseID: model.course.id,
                 type: .file
             )
         }
         .swipeActions(edge: .leading) {
             PinButton(
-                itemID: file.id,
-                courseID: course.id,
+                itemID: model.file.id,
+                courseID: model.course.id,
                 type: .file
             )
-        }
-        .onAppear {
-            // Updates file.localURL if needed
-            CourseFileService.shared
-                .setLocationForCourseFile(
-                    file,
-                    course: course,
-                    foldersPath: filesVM.traversedFolderIDs
-                )
         }
     }
 
@@ -166,14 +151,96 @@ private struct FileRow: View {
                 .foregroundStyle(.tint)
 
             VStack(alignment: .leading) {
-                Text(file.displayName)
+                Text(model.file.displayName)
                     .font(.headline)
 
-                if let size = file.size {
+                if let size = model.file.size {
                     Text(size.formatted(.byteCount(style: .file)))
                         .foregroundStyle(.secondary)
                 }
             }
+        }
+    }
+}
+
+@Observable
+class DownloadButtonViewModel {
+    var download: Download?
+
+    init(download: Download?) {
+        self.download = download
+    }
+}
+
+struct DownloadButtonView: View {
+    let model: DownloadButtonViewModel
+
+    var body: some View {
+        DownloadIcon(progress: model.download?.progress, completed: model.download?.localURL != nil)
+    }
+}
+
+struct DownloadIcon: View {
+    var progress: Double?
+    var completed: Bool
+
+    var size: CGFloat = 26.0
+
+    var body: some View {
+        ProgressView(value: progress, total: 1.0)
+            .progressViewStyle(GaugeProgressStyle(strokeWidth: 2.0))
+            .overlay {
+                Image(systemName: "arrow.down")
+                    .font(.system(size: size * 0.5, weight: .bold))
+                    .offset(x: 0, y: progress == nil ? 0 : size)
+                    .opacity(progress == nil ? 1 : 0)
+                    .foregroundStyle(.secondary)
+            }
+            .overlay {
+                Image(systemName: "checkmark")
+                    .font(.system(size: size * 0.4, weight: .bold))
+                    .offset(x: 0, y: progress == 1 ? 0 : size)
+                    .opacity(progress == 1 ? 1 : 0)
+                    .foregroundColor(.white)
+            }
+            .clipShape(Circle())
+            .animation(.default, value: completed)
+            .animation(.default, value: progress)
+            .frame(width: size, height: size)
+            .font(.system(size: size, weight: .bold))
+    }
+
+    struct GaugeProgressStyle: ProgressViewStyle {
+        var strokeColor = Color.accentColor
+        var strokeWidth = 2.5
+
+        func makeBody(configuration: Configuration) -> some View {
+            let fractionCompleted = configuration.fractionCompleted
+
+            return Circle()
+                .trim(from: 0, to: fractionCompleted ?? 0.0)
+                .stroke(strokeColor, style: StrokeStyle(lineWidth: strokeWidth, lineCap: .round))
+                .rotationEffect(.degrees(-90))
+                .overlay {
+                    if fractionCompleted == 1.0 {
+                        Circle()
+                            .fill(strokeColor)
+                    }
+                }
+                .background {
+                    if fractionCompleted == nil {
+                        Circle()
+                            .stroke(.secondary, style: .init(lineWidth: strokeWidth, lineCap: .butt, lineJoin: .round, dash: [2], dashPhase: 1))
+                    }
+                }
+                .background {
+                    if fractionCompleted != nil {
+                        Circle()
+                            .stroke(.secondary, lineWidth: strokeWidth)
+                    }
+                }
+                .padding(strokeWidth)
+                .animation(.default, value: fractionCompleted)
         }
     }
 }

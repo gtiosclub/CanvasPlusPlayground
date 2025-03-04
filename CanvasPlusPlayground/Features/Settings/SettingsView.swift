@@ -111,14 +111,14 @@ struct SettingsView: View {
 
                 Button("Delete all files", systemImage: "folder.badge.minus") {
                     do {
-                        try CourseFileService.clearAllFiles()
+//                        try CourseFileService.clearAllFiles()
                     } catch {
                         LoggerService.main.error("Couldn't clear files: \(error)")
                     }
                 }
 
                 Button("Show files in Finder", systemImage: "folder.badge.person.crop") {
-                    CourseFileService.showInFinder()
+//                    CourseFileService.showInFinder()
                 }
             }
             .foregroundStyle(.red)

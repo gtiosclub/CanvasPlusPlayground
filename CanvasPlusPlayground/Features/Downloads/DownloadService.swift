@@ -1,19 +1,31 @@
 //
-//  CourseFileService.swift
+//  DownloadService.swift
 //  CanvasPlusPlayground
 //
-//  Created by Abdulaziz Albahar on 12/9/24.
+//  Created by João Pozzobon on 2/17/25.
 //
 
 import Foundation
 #if os(macOS)
 import AppKit
 #endif
+import SwiftData
 
-struct CourseFileService {
-    static let shared: CourseFileService = .init()
+class DownloadService: NSObject, URLSessionDownloadDelegate {
+    private var session: URLSession!
+    private var modelContext: ModelContext
 
     private static let fileManager: FileManager = .default
+
+    static var shared = DownloadService()
+
+    override init() {
+        self.modelContext = ModelContext.shared
+        super.init()
+        let configuration = URLSessionConfiguration.default
+        session = URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
+    }
+
     private static var rootURL: URL? {
         if let bundleId = Bundle.main.bundleIdentifier {
             let root = URL.applicationSupportDirectory.appendingPathComponent(bundleId)
@@ -34,6 +46,7 @@ struct CourseFileService {
             return nil
         }
     }
+
     private static var coursesURL: URL? {
         rootURL?
             .appendingPathComponent(StorageKeys.accessTokenValue)
@@ -74,71 +87,36 @@ struct CourseFileService {
         return fileURL
     }
 
-    @discardableResult
-    func setLocationForCourseFile(
-        _ file: File,
-        course: Course,
-        foldersPath: [String]
-    ) -> URL? {
-        LoggerService.main.debug("Checking if \(file.displayName) exists")
-        let fileLoc = try? pathWithFolders(foldersPath: foldersPath, courseId: course.id, fileId: file.id, type: FileType(file: file))
+    @MainActor
+    func createDownload(for file: File, course: Course, folderIds: [String]) async throws {
+        let fileURL = try self.pathWithFolders(foldersPath: folderIds,
+                                               courseId: course.id,
+                                               fileId: file.id,
+                                               type: .init(file: file))
+        let download = Download(file: file, course: course, finalURL: fileURL)
 
-        if let fileLoc, Self.fileManager
-            .fileExists(atPath: fileLoc.path(percentEncoded: false)) {
-            LoggerService.main.debug("File exists locally!\n")
+        modelContext.insert(download)
+        try? modelContext.save()
 
-            if fileLoc != file.localURL {
-                LoggerService.main.debug("Updating File's localURL")
-                file.localURL = fileLoc
-            }
+        let toast = Toast(type: .download(download))
+        NavigationModel.shared.present(toast)
 
-            return fileLoc
-        } else if file.localURL != nil {
-            LoggerService.main.debug("Updating File's localURL to nil since it no longer exists locally")
-            file.localURL = nil
-        }
-
-        LoggerService.main.debug("File does not exist locally")
-
-        return nil
+        try await startDownload(download, course: course)
     }
 
-    func courseFile(
-        for file: File,
-        course: Course,
-        foldersPath: [String],
-        localCopyReceived: (Data?, URL) -> Void
-    ) async throws -> (Data, URL) {
-        // Provide local copy meanwhile
-        if let fileLoc = self.setLocationForCourseFile(file, course: course, foldersPath: foldersPath),
-           let data = try? Data(contentsOf: fileLoc) {
-            localCopyReceived(data, fileLoc)
+    func startDownload(_ download: Download, course: Course) async throws {
+        guard let url = URL(string: download.file.url ?? "") else {
+            return
         }
 
-        // Start downloading remote version
-        if let urlStr = file.url, let url = URL(string: urlStr) {
-            LoggerService.main.debug("File doesn't exist! Downloading ...")
+        download.downloadTask = session.downloadTask(with: url)
+        download.downloadTask?.delegate = self
+        download.downloadTask?.taskDescription = download.id.uuidString
+        download.downloadTask?.resume()
 
-            weak var file = file
-            let tempFileLoc = try await self.downloadFile(from: url)
+        LoggerService.main.debug("Start download for \(download.file.filename)")
 
-            let content = try Data(contentsOf: tempFileLoc)
-
-            do {
-                guard let file else {
-                    throw FileError.fileWasNil
-                }
-                let url = try self.saveCourseFile(courseId: course.id, folderIds: foldersPath, file: file, content: content)
-                LoggerService.main.debug("File successfully saved at \(url.path())")
-
-                return (content, url)
-            } catch {
-                LoggerService.main.error("Failed to save file. \(error)")
-                throw error
-            }
-        } else {
-            throw URLError(.badURL)
-        }
+        try? modelContext.save()
     }
 
     // MARK: Global
@@ -164,25 +142,12 @@ struct CourseFileService {
 
     /// Opens finder tab at specific directory URL
     static func showInFinder(fileURL: URL = rootURL ?? .currentDirectory()) {
-        #if os(macOS)
+#if os(macOS)
         NSWorkspace.shared.open(fileURL)
-        #endif
+#endif
     }
 
     // MARK: Helpers
-
-    private func downloadFile(
-        from remoteURL: URL
-    ) async throws -> URL {
-        let (tempUrl, response) = try await URLSession.shared.download(from: remoteURL)
-
-        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-            LoggerService.main.error("Error downloading file: \(response)")
-            throw URLError(.badServerResponse)
-        }
-
-        return tempUrl
-    }
 
     private func pathWithFolders(foldersPath: [String], courseId: String, fileId: String, type: FileType?) throws -> URL {
         guard let coursesURL = Self.coursesURL else {
@@ -198,6 +163,59 @@ struct CourseFileService {
         pathURL.appendPathComponent(fileId + (type?.formatExtension ?? ""))
 
         return pathURL
+    }
+
+    // MARK: URLSessionDownloadDelegate
+
+    func urlSession(
+        _ session: URLSession,
+        downloadTask: URLSessionDownloadTask,
+        didWriteData bytesWritten: Int64,
+        totalBytesWritten: Int64,
+        totalBytesExpectedToWrite: Int64
+    ) {
+        guard let idString = downloadTask.taskDescription, let id = UUID(uuidString: idString) else { return }
+
+        if let item = self.fetchDownloadItem(by: id) {
+            Task { @MainActor in
+                item.progress = Double(totalBytesWritten) / Double(totalBytesExpectedToWrite)
+                print(item.progress)
+                try? modelContext.save()
+            }
+        }
+    }
+
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
+        guard let idString = downloadTask.taskDescription, let id = UUID(uuidString: idString) else { return }
+
+        if let item = self.fetchDownloadItem(by: id) {
+            do {
+                let parentDirURL = item.finalURL.deletingLastPathComponent()
+
+                try Self.fileManager.createDirectory(
+                    at: parentDirURL,
+                    withIntermediateDirectories: true,
+                    attributes: nil
+                )
+
+                try Self.fileManager.moveItem(at: location, to: item.finalURL)
+                item.localURL = item.finalURL
+
+                try? modelContext.save()
+
+                let toast = Toast(type: .downloadFinished(item))
+                NavigationModel.shared.present(toast)
+
+                LoggerService.main.debug("File successfully saved at \(item.finalURL.path)")
+            } catch {
+                LoggerService.main.error("Failed to save file. \(error)")
+            }
+        }
+    }
+
+    private func fetchDownloadItem(by id: UUID) -> Download? {
+        let fetchDescriptor = FetchDescriptor<Download>(predicate: #Predicate { $0.id == id })
+        return try? modelContext.fetch(fetchDescriptor).first
     }
 }
 
