@@ -93,16 +93,7 @@ struct HomeView: View {
                 pinnedTiles
             }
 
-            Section("Favorites") {
-                ForEach(courseManager.userFavCourses, id: \.id) { course in
-                    NavigationLink(
-                        value: NavigationPage.course(id: course.id)
-                    ) {
-                        CourseListCell(course: course)
-                    }
-                    .tint(course.rgbColors?.color)
-                }
-            }
+            // Favorites section removed
 
             Section("Courses") {
                 ForEach(courseManager.userOtherCourses, id: \.id) { course in
@@ -312,20 +303,7 @@ private struct CourseListCell: View {
                 .frame(alignment: .leading)
                 .multilineTextAlignment(.leading)
         }
-        .swipeActions(edge: .leading) {
-            Button {
-                withAnimation {
-                    course.isFavorite = !wrappedCourseIsFavorite
-                }
-            } label: {
-                Image(systemName: "star")
-                    .symbolVariant(
-                        wrappedCourseIsFavorite
-                        ? .slash
-                        : .none
-                    )
-            }
-        }
+        // Favorite swipe action removed
         .onAppear {
             resolvedCourseColor = course.rgbColors?.color ?? .accentColor
         }
@@ -334,14 +312,7 @@ private struct CourseListCell: View {
                 showColorPicker = true
             }
 
-            Button(
-                wrappedCourseIsFavorite ? "Unfavorite Course" : "Favorite Course",
-                systemImage: wrappedCourseIsFavorite ? "star.slash.fill" : "star.fill"
-            ) {
-                withAnimation {
-                    course.isFavorite = !wrappedCourseIsFavorite
-                }
-            }
+            // Favorite button removed
 
             Button("Rename \(course.name ?? "")...", systemImage: "character.cursor.ibeam") {
                 renameCourseFieldText = course.nickname ?? ""
@@ -382,7 +353,7 @@ private struct CourseListCell: View {
     }
 
     private var wrappedCourseIsFavorite: Bool {
-        course.isFavorite
+        false // Always return false to disable favoriting functionality
     }
 }
 

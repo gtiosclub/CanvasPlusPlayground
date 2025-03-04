@@ -16,17 +16,9 @@ class CourseManager {
             .filter { !($0.isHidden ?? false) }
     }
 
-    var userFavCourses: [Course] {
-        allCourses
-            .filter { !($0.isHidden ?? false) }
-            .filter { $0.isFavorite }
-            .sorted { $0.name ?? "" < $1.name ?? "" }
-    }
-
     var userOtherCourses: [Course] {
         allCourses
             .filter { !($0.isHidden ?? false) }
-            .filter { !($0.isFavorite) }
             .sorted { $0.name ?? "" < $1.name ?? "" }
     }
 
