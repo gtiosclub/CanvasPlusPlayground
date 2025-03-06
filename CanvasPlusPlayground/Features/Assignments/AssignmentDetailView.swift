@@ -10,7 +10,7 @@ import SwiftUI
 struct AssignmentDetailView: View {
     let assignment: Assignment
     @State private var submission: Submission?
-
+    @State private var showSubmissionPopUp: Bool = false
     var body: some View {
         if assignment.isOnlineQuiz {
             if let url = URL(string: assignment.htmlUrl ?? "gatech.edu") {
@@ -82,6 +82,16 @@ struct AssignmentDetailView: View {
                         )
                     }
                 }
+
+                Section("submission") {
+                    HStack {
+                        Text("Create submission")
+                        Spacer()
+                        Button("Get submission") {
+                            showSubmissionPopUp.toggle()
+                        }
+                    }
+                }
             }
             .formStyle(.grouped)
             .toolbar {
@@ -89,6 +99,9 @@ struct AssignmentDetailView: View {
             }
             .task {
                 submission = assignment.submission?.createModel()
+            }
+            .sheet(isPresented: $showSubmissionPopUp) {
+                AssignmentSubmissionView(assignment: assignment)
             }
         }
     }
