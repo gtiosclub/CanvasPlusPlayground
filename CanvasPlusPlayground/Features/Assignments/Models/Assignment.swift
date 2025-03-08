@@ -78,7 +78,7 @@ class Assignment: Cacheable {
     var restrictQuantitativeData: Bool?
     var allowedExtensions: [String]?
     var submission: SubmissionAPI?
-
+    var canSubmit: Bool?
     // MARK: Custom Properties
     var dueDate: Date? {
         ISO8601DateFormatter().date(from: dueAt ?? "2024-12-12T19:06:20Z")
@@ -182,6 +182,7 @@ class Assignment: Cacheable {
         self.restrictQuantitativeData = assignmentAPI.restrict_quantitative_data
         self.allowedExtensions = assignmentAPI.allowed_extensions
         self.submission = assignmentAPI.submission
+        self.canSubmit = assignmentAPI.can_submit
     }
 
     // swiftlint:disable:next function_body_length

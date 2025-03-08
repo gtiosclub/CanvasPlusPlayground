@@ -9,13 +9,19 @@ import SwiftUI
 
 struct AssignmentSubmissionView: View {
     let assignment: Assignment
-    var submissionTypes: [Assignment.SubmissionType] {
-        assignment.submissionTypes ?? []
+    var submissionTypes: [Assignment.SubmissionType] //{
+        //assignment.submissionTypes ?? [.]
+    // }
+    {
+        [.discussionTopic, .onPaper, .onlineUpload, .onlineTextEntry]
     }
+    
     @Environment(\.dismiss) var dismiss
 
     @State private var selectedSubmissionType: Assignment.SubmissionType?
-
+    
+    @State var urls: [URL] = []
+    @State var text: String = ""
     var body: some View {
         NavigationStack {
             Form {
@@ -37,11 +43,9 @@ struct AssignmentSubmissionView: View {
                             Text("No submission/paper submission")
                         }
                     case .onlineUrl, .onlineTextEntry:
-                        Section(type.rawValue) {
-                            Text("Textfield here")
-                        }
+                        AssignmentTextSubmissionView(text: $text)
                     case .onlineUpload:
-                        AssignmentFileUploadView()
+                        AssignmentFileUploadView(selectedFiles: $urls)
                     default:
                         Section {
                             Text("\(type.rawValue) submissions not supported")
@@ -72,13 +76,19 @@ struct AssignmentSubmissionView: View {
 }
 
 struct AssignmentTextSubmissionView: View {
+    @Binding var text: String
     var body: some View {
-        Text("hi")
+        Section("Add text") {
+            TextEditor(text: $text)
+                .frame(minHeight: 200)
+                .lineLimit(5...10)
+                .padding()
+        }
     }
 }
 
 struct AssignmentFileUploadView: View {
-    @State private var selectedFiles: [URL] = []
+    @Binding var selectedFiles: [URL]
     @State private var iosPicker = false
     var body: some View {
         Section("File upload") {
@@ -98,7 +108,6 @@ struct AssignmentFileUploadView: View {
                 }
             }
             Button("Pick files...", systemImage: "plus") {
-//                openFilePicker()
                 iosPicker = true
             }
             .buttonStyle(.borderless)
@@ -115,26 +124,4 @@ struct AssignmentFileUploadView: View {
             }
         }
     }
-}
-
-struct Test: View {
-    @State private var options = ["Option 1", "Option 2", "Option 3"]
-    @State private var selected:String?
-
-    var body: some View {
-        Form {
-            Section("Test") {
-                Picker("Test", selection: $selected) {
-                    ForEach(options, id:\.self) { option in
-                        Text(option)
-                    }
-                }
-            }
-        }
-        .formStyle(.grouped)
-    }
-}
-
-#Preview {
-    Test()
 }

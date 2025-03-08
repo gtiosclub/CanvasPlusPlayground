@@ -202,6 +202,14 @@ enum CanvasRequest {
     ) -> MarkCourseDiscussionTopicUnreadRequest {
         MarkCourseDiscussionTopicUnreadRequest(courseID: courseId, discussionID: discussionTopicId)
     }
+    
+    static func submitAssignment(
+        courseID: String,
+        assignmentID: String,
+        submissionType: Assignment.SubmissionType
+    ) -> SubmitAssignmentRequest {
+        SubmitAssignmentRequest(courseID: courseID, assignmentID: assignmentID, submissionType: submissionType)
+    }
 
     static func getPages(
         courseId: String,

@@ -79,7 +79,7 @@ struct AssignmentAPI: APIResponse, Identifiable, Hashable {
     var restrict_quantitative_data: Bool?
     var submission: SubmissionAPI?
     var allowed_extensions: [String]?
-
+    var can_submit: Bool?
     init(id: Int, name: String, groupID: Int) {
         self.id = id
         self.name = name
