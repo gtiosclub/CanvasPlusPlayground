@@ -79,6 +79,9 @@ struct Sidebar: View {
                         downloadsView
                     }
                     .presentationDetents([.medium, .large])
+                    #if os(macOS)
+                    .frame(minWidth: 300)
+                    #endif
                 }
             }
 

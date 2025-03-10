@@ -5,6 +5,7 @@
 //  Created by Abdulaziz Albahar on 12/10/24.
 //
 
+import QuickLook
 import SwiftData
 import SwiftUI
 
@@ -17,6 +18,7 @@ struct FoldersPageView: View {
 
     @State private var isLoadingContents = true
     @State private var selectedFile: File?
+    @State private var url: URL?
 
     @Environment(\.modelContext) var modelContext
 
@@ -53,11 +55,16 @@ struct FoldersPageView: View {
         }
         .task(id: selectedFile) {
             if let selectedFile {
-                try? await DownloadService.shared.createDownload(for: selectedFile, course: course, folderIds: [])
+                if let download = selectedFile.download, download.localURL != nil {
+                    url = download.localURL!
+                } else {
+                    try? await DownloadService.shared.createDownload(for: selectedFile, course: course, folderIds: [])
+                }
             }
 
             selectedFile = nil
         }
+        .quickLookPreview($url)
         .overlay {
             if !isLoadingContents && filesVM.displayedFiles.isEmpty && filesVM.displayedFolders.isEmpty {
                 ContentUnavailableView("This folder is empty.", systemImage: "folder")
@@ -184,11 +191,15 @@ struct DownloadIcon: View {
     var progress: Double?
     var completed: Bool
 
+    #if os(iOS)
     var size: CGFloat = 26.0
+    #else
+    var size: CGFloat = 18.0
+    #endif
 
     var body: some View {
         ProgressView(value: progress, total: 1.0)
-            .progressViewStyle(GaugeProgressStyle(strokeWidth: 2.0))
+            .progressViewStyle(GaugeProgressStyle(strokeWidth: size / 12.0))
             .overlay {
                 Image(systemName: "arrow.down")
                     .font(.system(size: size * 0.5, weight: .bold))

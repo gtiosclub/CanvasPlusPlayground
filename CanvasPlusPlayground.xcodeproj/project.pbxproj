@@ -13,7 +13,6 @@
 		27770F9F2D76631A00CEA063 /* DownloadsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27770F9C2D76631A00CEA063 /* DownloadsView.swift */; };
 		27770FA02D76631A00CEA063 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27770F992D76631A00CEA063 /* Download.swift */; };
 		27770FA12D76631A00CEA063 /* DownloadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27770F9B2D76631A00CEA063 /* DownloadService.swift */; };
-		27770FA22D76631A00CEA063 /* DownloadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27770F9D2D76631A00CEA063 /* DownloadView.swift */; };
 		27770FA52D76632B00CEA063 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27770FA32D76632B00CEA063 /* Toast.swift */; };
 		27770FA62D76632B00CEA063 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27770FA42D76632B00CEA063 /* ToastView.swift */; };
 		27770FA82D7666FF00CEA063 /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27770FA72D7666FF00CEA063 /* ButtonStyle.swift */; };
@@ -181,7 +180,6 @@
 		27770F992D76631A00CEA063 /* Download.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Download.swift; sourceTree = "<group>"; };
 		27770F9B2D76631A00CEA063 /* DownloadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadService.swift; sourceTree = "<group>"; };
 		27770F9C2D76631A00CEA063 /* DownloadsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsView.swift; sourceTree = "<group>"; };
-		27770F9D2D76631A00CEA063 /* DownloadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadView.swift; sourceTree = "<group>"; };
 		27770FA32D76632B00CEA063 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		27770FA42D76632B00CEA063 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		27770FA72D7666FF00CEA063 /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
@@ -380,7 +378,6 @@
 				27770F9A2D76631A00CEA063 /* Models */,
 				27770F9B2D76631A00CEA063 /* DownloadService.swift */,
 				27770F9C2D76631A00CEA063 /* DownloadsView.swift */,
-				27770F9D2D76631A00CEA063 /* DownloadView.swift */,
 			);
 			path = Downloads;
 			sourceTree = "<group>";
@@ -951,7 +948,6 @@
 				27770F9F2D76631A00CEA063 /* DownloadsView.swift in Sources */,
 				27770FA02D76631A00CEA063 /* Download.swift in Sources */,
 				27770FA12D76631A00CEA063 /* DownloadService.swift in Sources */,
-				27770FA22D76631A00CEA063 /* DownloadView.swift in Sources */,
 				9B92A4232C93853C00C21CFC /* Announcement.swift in Sources */,
 				A3CA02592D43294B00A9752B /* SearchResultsListView.swift in Sources */,
 				A3D0225D2D6A711900F8068C /* GetPagesRequest.swift in Sources */,

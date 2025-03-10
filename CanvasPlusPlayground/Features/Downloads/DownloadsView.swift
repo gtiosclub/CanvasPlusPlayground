@@ -10,7 +10,7 @@ import SwiftUI
 
 struct DownloadsView: View {
     @Query var downloads: [Download]
-    @State private var selectedDownload: Download?
+    @State private var url: URL?
 
     @State private var searchText: String = ""
 
@@ -49,21 +49,17 @@ struct DownloadsView: View {
 
     var body: some View {
         List {
-            #if os(macOS)
-            TextField(text: $searchText, label: {
-                Label("Search", systemImage: "magnifyingglass")
-            })
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-            #endif
+            Spacer()
 
-            ForEach(Array(groupedDownloads.keys), id: \.self) { key in
+            let keys = Array(groupedDownloads.keys).reversed()
+            ForEach(keys, id: \.self) { key in
                 Section(relativeDate(from: key)) {
                     if let downloads = groupedDownloads[key] {
                         ForEach(downloads) { download in
                             if let course = download.course {
                                 FileRow(model: .init(file: download.file, course: course))
                                     .onTapGesture {
-                                        selectedDownload = download
+                                        url = download.localURL
                                     }
                             }
                         }
@@ -71,17 +67,23 @@ struct DownloadsView: View {
                 }
             }
         }
-        .sheet(item: $selectedDownload) { item in
-            FileViewer(download: item)
-                .frame(minHeight: 500)
-        }
+        .quickLookPreview($url)
         #if os(iOS)
         .searchable(text: $searchText)
         .listStyle(.insetGrouped)
+        .navigationTitle("Downloads")
         #else
+        .overlay(alignment: .top) {
+            TextField(text: $searchText, label: {
+                Label("Search", systemImage: "magnifyingglass")
+            })
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+            .frame(height: 16)
+            .padding(16)
+            .background(.ultraThinMaterial)
+        }
         .listStyle(.sidebar)
         #endif
-        .navigationTitle("Downloads")
     }
 }
 
