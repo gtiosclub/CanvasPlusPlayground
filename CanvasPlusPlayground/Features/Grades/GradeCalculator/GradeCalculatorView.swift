@@ -103,10 +103,21 @@ private struct GradeGroupSection: View {
     @FocusState var assignmentRowFocus: GradeCalculator.GradeAssignment?
     @FocusState var groupRowFocus: GradeCalculator.GradeGroup?
 
+    private var isExpanded: Binding<Bool> {
+        .init {
+            calculator.expandedAssignmentGroups[group, default: true]
+        } set: { newValue in
+            calculator.expandedAssignmentGroups[group] = newValue
+        }
+    }
+
     var body: some View {
         DisclosureGroup(isExpanded: isExpanded) {
             ForEach($group.assignments, id: \.id) { $assignment in
                 GradeAssignmentRow(assignment: $assignment, assignmentRowFocus: _assignmentRowFocus)
+                    .contextMenu {
+                        deleteAssignmentButton(for: assignment)
+                    }
             }
             .onMove {
                 group.assignments.move(fromOffsets: $0, toOffset: $1)
@@ -134,11 +145,11 @@ private struct GradeGroupSection: View {
         .padding(4)
     }
 
-    private var isExpanded: Binding<Bool> {
-        .init {
-            calculator.expandedAssignmentGroups[group, default: true]
-        } set: { newValue in
-            calculator.expandedAssignmentGroups[group] = newValue
+    private func deleteAssignmentButton(for assignment: GradeCalculator.GradeAssignment) -> some View {
+        Button("Delete Assignment", systemImage: "trash", role: .destructive) {
+            group.assignments.removeAll {
+                $0 == assignment
+            }
         }
     }
 }

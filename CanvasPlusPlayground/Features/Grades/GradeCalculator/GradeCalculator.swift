@@ -131,7 +131,18 @@ class GradeCalculator {
             return nil
         }
 
-        let newAssignment = GradeAssignment(id: UUID().uuidString, name: "")
+        // If all the assignments in the group have the same points possible,
+        // try to be smart and have the new assignment have the same number
+        // of points possible.
+        let newPointsPossible = group.assignments.map { $0.pointsPossible }.allSatisfy {
+            $0 == group.assignments.first?.pointsPossible
+        } ? group.assignments.first?.pointsPossible : nil
+
+        let newAssignment = GradeAssignment(
+            id: UUID().uuidString,
+            name: "",
+            pointsPossible: newPointsPossible
+        )
         gradeGroups[indexOfGroup].assignments.append(newAssignment)
 
         return newAssignment
