@@ -28,7 +28,7 @@ struct ToastView: View {
             Group {
                 switch toast.type {
                 case .download(let download), .downloadFinished(let download):
-                    DownloadAccessoryView(model: .init(download: download))
+                    DownloadButtonView(model: .init(download: download))
                 }
             }
             .frame(width: 17, height: 17)
@@ -71,22 +71,5 @@ struct ToastView: View {
                 }
                 .compositingGroup()
         }
-    }
-}
-
-@Observable
-class DownloadAccessoryViewModel {
-    var download: Download
-
-    init(download: Download) {
-        self.download = download
-    }
-}
-
-struct DownloadAccessoryView: View {
-    var model: DownloadAccessoryViewModel
-
-    var body: some View {
-        DownloadIcon(progress: model.download.progress, completed: model.download.localURL != nil)
     }
 }

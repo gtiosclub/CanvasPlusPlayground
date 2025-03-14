@@ -16,6 +16,7 @@
 		27770FA52D76632B00CEA063 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27770FA32D76632B00CEA063 /* Toast.swift */; };
 		27770FA62D76632B00CEA063 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27770FA42D76632B00CEA063 /* ToastView.swift */; };
 		27770FA82D7666FF00CEA063 /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27770FA72D7666FF00CEA063 /* ButtonStyle.swift */; };
+		27A3165A2D84A3C9007015E4 /* DownloadButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A316592D84A3C9007015E4 /* DownloadButtonView.swift */; };
 		3DAE84FE2C9A0CE8008C22E7 /* CoursePDFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DAE84FD2C9A0CE8008C22E7 /* CoursePDFView.swift */; };
 		3DAE85002C9A0E4F008C22E7 /* BridgedPDFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DAE84FF2C9A0E4F008C22E7 /* BridgedPDFView.swift */; };
 		7F8535742C98DE3C0023E384 /* CourseGradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8535732C98DE3C0023E384 /* CourseGradeView.swift */; };
@@ -183,6 +184,7 @@
 		27770FA32D76632B00CEA063 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		27770FA42D76632B00CEA063 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		27770FA72D7666FF00CEA063 /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
+		27A316592D84A3C9007015E4 /* DownloadButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadButtonView.swift; sourceTree = "<group>"; };
 		3DAE84FD2C9A0CE8008C22E7 /* CoursePDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoursePDFView.swift; sourceTree = "<group>"; };
 		3DAE84FF2C9A0E4F008C22E7 /* BridgedPDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgedPDFView.swift; sourceTree = "<group>"; };
 		7F8535732C98DE3C0023E384 /* CourseGradeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseGradeView.swift; sourceTree = "<group>"; };
@@ -378,6 +380,7 @@
 				27770F9A2D76631A00CEA063 /* Models */,
 				27770F9B2D76631A00CEA063 /* DownloadService.swift */,
 				27770F9C2D76631A00CEA063 /* DownloadsView.swift */,
+				27A316592D84A3C9007015E4 /* DownloadButtonView.swift */,
 			);
 			path = Downloads;
 			sourceTree = "<group>";
@@ -987,6 +990,7 @@
 				A3FFD03A2CDEC2AC006BAB51 /* LookupCondition.swift in Sources */,
 				B7D95DB72D0A8D78002AD955 /* SettingsView.swift in Sources */,
 				B7A12F3F2D69441500EDFA0A /* GetAssignmentGroupsRequest.swift in Sources */,
+				27A3165A2D84A3C9007015E4 /* DownloadButtonView.swift in Sources */,
 				9BEB4ED02D56AF570013869D /* AssignmentDetailView.swift in Sources */,
 				A3049B592D0E5A96002F3166 /* LockInfo.swift in Sources */,
 				A3E7F3932C99338B00DC4300 /* TabAPI.swift in Sources */,

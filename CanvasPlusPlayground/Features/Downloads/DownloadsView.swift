@@ -34,6 +34,10 @@ struct DownloadsView: View {
         }
     }
 
+    var keys: [Date] {
+        Array(groupedDownloads.keys).sorted()
+    }
+
     func relativeDate(from date: Date) -> String {
         let calendar = Calendar.current
         if calendar.isDateInToday(date) {
@@ -49,9 +53,6 @@ struct DownloadsView: View {
 
     var body: some View {
         List {
-            Spacer()
-
-            let keys = Array(groupedDownloads.keys).reversed()
             ForEach(keys, id: \.self) { key in
                 Section(relativeDate(from: key)) {
                     if let downloads = groupedDownloads[key] {
