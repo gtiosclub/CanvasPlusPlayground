@@ -65,7 +65,6 @@ final class Course: Cacheable {
     // MARK: Custom Properties
     // We cannot use `Color` directly because it needs to conform to `PersistentModel`
     var rgbColors: RGBColors?
-    // var isFavorite: Bool?
     var nickname: String?
     var isHidden: Bool?
 
@@ -224,9 +223,9 @@ final class Course: Cacheable {
         self.enrollmentRoleIds = other.enrollmentRoleIds
         self.enrollmentUserIds = other.enrollmentUserIds
         self.enrollmentStatesRaw = other.enrollmentStatesRaw
+        self.isFavorite = other.isFavorite
 
         // Note: These must NOT be merged.
-//        self.isFavorite = other.isFavorite
 //        self.rgbColors = other.rgbColors
 //        self.nickname = other.nickname
     }
