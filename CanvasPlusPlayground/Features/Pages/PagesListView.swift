@@ -16,33 +16,31 @@ struct PagesListView: View {
     }
 
     var body: some View {
-        NavigationStack {
-            List(pagesManager.pages, id: \.id) { page in
-                NavigationLink {
-                    PageView(page: page)
-                } label: {
-                    Text(page.title ?? "Untitled")
-                }
+        List(pagesManager.pages, id: \.id) { page in
+            NavigationLink {
+                PageView(page: page)
+            } label: {
+                Text(page.title ?? "Untitled")
             }
-            .overlay {
-                if pagesManager.pages.isEmpty {
-                    ContentUnavailableView("No pages available", systemImage: "exclamationmark.bubble.fill")
-                } else {
-                    EmptyView()
-                }
-            }
-            .task {
-                await loadPages()
-            }
-            .refreshable {
-                await loadPages()
-            }
-            .statusToolbarItem(
-                "Pages",
-                isVisible: isLoadingPages
-            )
-            .navigationTitle("Pages")
         }
+        .overlay {
+            if pagesManager.pages.isEmpty {
+                ContentUnavailableView("No pages available", systemImage: "exclamationmark.bubble.fill")
+            } else {
+                EmptyView()
+            }
+        }
+        .task {
+            await loadPages()
+        }
+        .refreshable {
+            await loadPages()
+        }
+        .statusToolbarItem(
+            "Pages",
+            isVisible: isLoadingPages
+        )
+        .navigationTitle("Pages")
     }
 
     private func loadPages() async {

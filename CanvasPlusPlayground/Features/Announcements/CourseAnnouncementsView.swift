@@ -10,7 +10,7 @@ import SwiftUI
 struct CourseAnnouncementsView: View {
     let course: Course
     @State private var announcementManager: CourseAnnouncementManager
-    @State private var selectedAnnouncement: Announcement?
+    @State private var selectedAnnouncement: DiscussionTopic?
     @State private var isLoadingAnnouncements: Bool = true
 
     init(course: Course) {
@@ -19,33 +19,32 @@ struct CourseAnnouncementsView: View {
     }
 
     var body: some View {
-        NavigationStack {
-            List(announcementManager.displayedAnnouncements, id: \.id, selection: $selectedAnnouncement) { announcement in
-                NavigationLink {
-                    CourseAnnouncementDetailView(announcement: announcement)
-                } label: {
-                    AnnouncementRow(course: course, announcement: announcement)
-                }
-                .tint(course.rgbColors?.color)
+        List(announcementManager.displayedAnnouncements, id: \.id, selection: $selectedAnnouncement) { announcement in
+            NavigationLink(value: announcement) {
+                AnnouncementRow(course: course, announcement: announcement)
             }
-            .overlay {
-                if announcementManager.announcements.isEmpty {
-                    ContentUnavailableView("No announcements available", systemImage: "exclamationmark.bubble.fill")
-                } else {
-                    EmptyView()
-                }
+            .tint(course.rgbColors?.color)
+        }
+        .overlay {
+            if announcementManager.announcements.isEmpty {
+                ContentUnavailableView("No announcements available", systemImage: "exclamationmark.bubble.fill")
+            } else {
+                EmptyView()
             }
-            .task {
-                await loadAnnouncements()
-            }
-            .refreshable {
-                await loadAnnouncements()
-            }
-            .statusToolbarItem(
-                "Announcements",
-                isVisible: isLoadingAnnouncements
-            )
-            .navigationTitle("Announcements")
+        }
+        .task {
+            await loadAnnouncements()
+        }
+        .refreshable {
+            await loadAnnouncements()
+        }
+        .statusToolbarItem(
+            "Announcements",
+            isVisible: isLoadingAnnouncements
+        )
+        .navigationTitle("Announcements")
+        .navigationDestination(item: $selectedAnnouncement) { announcement in
+            CourseAnnouncementDetailView(announcement: announcement)
         }
     }
 

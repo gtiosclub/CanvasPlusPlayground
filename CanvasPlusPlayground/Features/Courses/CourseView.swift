@@ -23,8 +23,20 @@ struct CourseView: View {
         .navigationTitle(course.displayName)
         #if os(iOS)
         .listStyle(.insetGrouped)
+        .navigationDestination(item: $navigationModel.selectedCoursePage) { coursePage in
+            CourseDetailView(
+                course: course,
+                coursePage: coursePage
+            )
+        }
         #else
         .listStyle(.sidebar)
+        .navigationDestination(for: NavigationModel.CoursePage.self) { coursePage in
+            CourseDetailView(
+                course: course,
+                coursePage: coursePage
+            )
+        }
         #endif
     }
 }

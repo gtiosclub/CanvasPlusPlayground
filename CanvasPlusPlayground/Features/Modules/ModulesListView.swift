@@ -17,17 +17,15 @@ struct ModulesListView: View {
     }
 
     var body: some View {
-        NavigationStack {
-            List(modulesVM.moduleBlocks) {block in
-                ModuleSection(moduleBlock: block)
-            }
-            .task {
-                isLoadingModules = true
-                await modulesVM.fetchModules()
-                isLoadingModules = false
-            }
-            .statusToolbarItem("Modules", isVisible: isLoadingModules)
+        List(modulesVM.moduleBlocks) {block in
+            ModuleSection(moduleBlock: block)
         }
+        .task {
+            isLoadingModules = true
+            await modulesVM.fetchModules()
+            isLoadingModules = false
+        }
+        .statusToolbarItem("Modules", isVisible: isLoadingModules)
         .environment(modulesVM)
     }
 }

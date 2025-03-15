@@ -11,8 +11,6 @@ struct CourseFilesView: View {
     let course: Course
 
     var body: some View {
-        NavigationStack {
-            FoldersPageView(course: course)
-        }
+        FoldersPageView(course: course)
     }
 }

@@ -44,15 +44,8 @@ struct HomeView: View {
                 .refreshable {
                     await loadCourses()
                 }
-        } content: {
-            contentView
         } detail: {
-            if let selectedCourse, let selectedCoursePage {
-                CourseDetailView(
-                    course: selectedCourse,
-                    coursePage: selectedCoursePage
-                )
-            }
+            contentView
         }
         .task {
             navigationModel.selectedNavigationPage = selectedNavigationPage
@@ -98,7 +91,9 @@ struct HomeView: View {
     @ViewBuilder
     private var contentView: some View {
         if let selectedCourse {
-            CourseView(course: selectedCourse)
+            NavigationStack {
+                CourseView(course: selectedCourse)
+            }
         } else if let selectedNavigationPage {
             switch selectedNavigationPage {
             case .announcements:
