@@ -25,6 +25,8 @@ struct GetAssignmentGroupsRequest: CacheableArrayAPIRequest {
         + assignmentIds.map { ("assignment_ids[]", $0) }
     }
 
+    var body: Data? { nil }
+
     // MARK: Query Params
     let include: [Include]
     let assignmentIds: [String]

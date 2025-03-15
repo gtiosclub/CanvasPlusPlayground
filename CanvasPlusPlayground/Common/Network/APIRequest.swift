@@ -17,6 +17,7 @@ protocol APIRequest {
     var queryParameters: [QueryParameter] { get }
     var method: RequestMethod { get }
     var perPage: Int { get }
+    var body: Data? { get }
 }
 
 protocol ArrayAPIRequest: APIRequest {

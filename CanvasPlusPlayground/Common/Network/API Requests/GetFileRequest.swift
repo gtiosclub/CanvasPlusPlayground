@@ -27,6 +27,8 @@ struct GetFileRequest: CacheableAPIRequest {
         + include.map { ("include[]", $0.rawValue) }
     }
 
+    var body: Data? { nil }
+
     // MARK: Initializer
     init(
         fileId: String,

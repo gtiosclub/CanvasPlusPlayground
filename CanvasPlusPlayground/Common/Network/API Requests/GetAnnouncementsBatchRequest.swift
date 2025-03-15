@@ -24,6 +24,8 @@ struct GetAnnouncementsBatchRequest: CacheableArrayAPIRequest {
         + include.map { ("include[]", $0.rawValue) }
     }
 
+    var body: Data? { nil }
+
     // MARK: Query Params
     /// At least one context code must be provided here otherwise request fails
     let contextCodes: [String]

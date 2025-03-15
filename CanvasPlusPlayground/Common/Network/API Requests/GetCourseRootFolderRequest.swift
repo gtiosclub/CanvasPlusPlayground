@@ -17,6 +17,8 @@ struct GetCourseRootFolderRequest: CacheableAPIRequest {
         []
     }
 
+    var body: Data? { nil }
+
     // MARK: request Id
     var requestId: String? { "\(courseId)_root_folder" }
     var requestIdKey: ParentKeyPath<Folder, String?> { .createWritable(\.tag) }

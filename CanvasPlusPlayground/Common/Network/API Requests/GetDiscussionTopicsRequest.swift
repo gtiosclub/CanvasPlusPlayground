@@ -27,6 +27,8 @@ struct GetDiscussionTopicsRequest: CacheableArrayAPIRequest {
         + include.map { ("include[]", $0.rawValue) }
     }
 
+    var body: Data? { nil }
+
     let include: [Include]
     let orderBy: Order?
     let scope: Scope?

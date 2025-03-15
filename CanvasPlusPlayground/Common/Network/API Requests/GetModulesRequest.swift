@@ -21,6 +21,8 @@ struct GetModulesRequest: CacheableArrayAPIRequest {
         + include.map { ("include[]", $0.rawValue) }
     }
 
+    var body: Data? { nil }
+
     // MARK: Query Params
     let searchTerm: String?
     let include: [Include]

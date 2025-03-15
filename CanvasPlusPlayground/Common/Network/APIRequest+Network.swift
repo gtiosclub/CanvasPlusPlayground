@@ -86,6 +86,7 @@ extension APIRequest {
         var urlRequest = URLRequest(url: url)
 
         urlRequest.httpMethod = self.method.rawValue
+        urlRequest.httpBody = self.body
 
         do {
             let (data, response) = try await URLSession.shared.data(for: urlRequest)

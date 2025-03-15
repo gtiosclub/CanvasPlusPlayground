@@ -4,6 +4,7 @@
 //
 //  Created by Abdulaziz Albahar on 2/15/25.
 //
+import Foundation
 
 struct MarkCourseDiscussionTopicReadRequest: NoReturnAPIRequest {
     let courseID: String
@@ -12,4 +13,5 @@ struct MarkCourseDiscussionTopicReadRequest: NoReturnAPIRequest {
     var path: String { "courses/\(courseID)/discussion_topics/\(discussionID)/read" }
     var method: RequestMethod { .PUT }
     var queryParameters: [QueryParameter] { [] }
+    var body: Data? { nil }
 }

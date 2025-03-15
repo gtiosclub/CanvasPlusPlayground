@@ -26,6 +26,8 @@ struct GetCourseUsersRequest: CacheableArrayAPIRequest {
         + enrollmentState.map { ("enrollment_state", $0) }
     }
 
+    var body: Data? { nil }
+
     let include: [Include]
     let searchTerm: String?
     let sort: Sorter?

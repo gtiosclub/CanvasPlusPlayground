@@ -20,6 +20,8 @@ struct GetQuizzesRequest: CacheableArrayAPIRequest {
 
     var path: String { "courses/\(courseId)/all_quizzes" }
 
+    var body: Data? { nil }
+
     // MARK: Query Params
     let searchTerm: String?
     let perPage: Int
