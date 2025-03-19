@@ -57,7 +57,9 @@ struct Sidebar: View {
         }
         .navigationTitle("Home")
         #if os(macOS)
-        .navigationSplitViewColumnWidth(min: 275, ideal: 275)
+        .navigationSplitViewColumnWidth(min: 275, ideal: 275, max: 350)
+        #else
+        .navigationSplitViewColumnWidth(min: 350, ideal: 350)
         #endif
         .listStyle(.sidebar)
         #if os(iOS)

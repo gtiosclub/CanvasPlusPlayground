@@ -48,6 +48,7 @@ struct SidebarTile: View {
                     .font(.title)
                     .tint(isSelected ? .white : color)
                     .foregroundStyle(.tint)
+
                 Spacer()
             }
             Text(title)
@@ -65,7 +66,7 @@ struct SidebarTile: View {
         )
         #if os(iOS)
         .padding(2)
-        .frame(minWidth: 150)
+        .frame(minWidth: 140)
         #else
         .frame(minWidth: 90)
         #endif
