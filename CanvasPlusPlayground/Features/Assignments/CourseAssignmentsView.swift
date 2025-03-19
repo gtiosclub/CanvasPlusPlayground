@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CourseAssignmentsView: View {
     let course: Course
+    /// Display grades in each assignment row. Disables navigation to Assignment Details.
     let showGrades: Bool
 
     @State private var assignmentManager: CourseAssignmentManager

@@ -35,9 +35,12 @@ class GradeCalculator {
 
         var rules: AssignmentGroupRules?
 
+        /// A subset of all assignments that should be considered for the final grade.
+        /// Determined based on the provided rules of the group.
         var consideredAssignments: [GradeAssignment] {
             var retValue = assignments
 
+            // Separate out the assignments that should never be dropped
             let neverDropAssignments = retValue.filter {
                 guard let idAsInt = $0.id.asInt, let neverDrop = rules?.neverDrop else {
                     return false
@@ -46,6 +49,7 @@ class GradeCalculator {
                 return neverDrop.contains(idAsInt)
             }
 
+            // Consider assignments that can potentially be dropped
             retValue = retValue.filter {
                 guard let idAsInt = $0.id.asInt, let neverDrop = rules?.neverDrop else {
                     return true
@@ -54,6 +58,7 @@ class GradeCalculator {
                 return !neverDrop.contains(idAsInt)
             }
 
+            // Drop the lowest assignments if specified
             if let dropLowest = rules?.dropLowest, dropLowest > 0 {
                 retValue = Array(
                     retValue
@@ -63,21 +68,27 @@ class GradeCalculator {
 
             retValue.sort { ($0.pointsEarned ?? 0.0) > ($1.pointsEarned ?? 0.0) }
 
+            // Drop the highest assignments if specified
             if let dropHighest = rules?.dropHighest, dropHighest > 0 {
                 retValue = Array(retValue.dropFirst(min(dropHighest, retValue.count)))
             }
 
+            // Re-add the assignments that should never be dropped
             retValue += neverDropAssignments
 
             return retValue
         }
 
+        /// The score of the group based on the weighted average of the assignments.
         var weightedScore: Double? {
+            // No score if the group is empty, no weight,
+            // or no points earned in any assignment.
             guard weight > 0.0, !assignments.isEmpty, assignments
                 .contains( where: { $0.pointsEarned != nil }) else {
                 return nil
             }
 
+            // Sum the points possible for the considered assignments.
             let totalPossible = consideredAssignments.reduce(0.0) {
                 guard $1.pointsEarned != nil else { return $0 }
 
@@ -86,6 +97,7 @@ class GradeCalculator {
                 return $0 + pointsPossible
             }
 
+            // Sum the points earned for the considered assignments.
             let totalEarned: Double = consideredAssignments.reduce(0.0) {
                 guard let pointsEarned = $1.pointsEarned else { return $0 }
 
@@ -202,15 +214,19 @@ class GradeCalculator {
     }
 
     // MARK: - Private
+
     private func calculateTotalGrade() {
+        // Calculate sum of all group weights
         let totalWeight = gradeGroups.reduce(0.0) {
             $0 + $1.weight
         }
 
         if totalWeight > 0 {
+            // Handle weighted grading scenario
             var usedWeightage = 0.0
 
             let weightedTotal = gradeGroups.reduce(0.0) { sum, group in
+                // Ignore groups with no score
                 guard let weightedScore = group.weightedScore else {
                     return sum
                 }
@@ -228,8 +244,14 @@ class GradeCalculator {
                 "Weighted Total: \(weightedTotal), Used Weightage: \(usedWeightage)"
             )
 
+            // Adjust final grade based on used weightage.
+            // Take the max of the percentage based on how much is used
+            // and the weighted total in case the used weightage is less than 100%.
+            // This allows Extra Credit to be accounted for correctly in case the
+            // weights don't add up to 100%.
             totalGrade = max((weightedTotal / usedWeightage) * 100, weightedTotal)
         } else {
+            // Traditional fractional grading without weights
             var totalPoints = 0.0
             var totalPossible = 0.0
 
