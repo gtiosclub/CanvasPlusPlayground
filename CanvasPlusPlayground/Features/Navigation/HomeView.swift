@@ -90,23 +90,23 @@ struct HomeView: View {
 
     @ViewBuilder
     private var contentView: some View {
-        if let selectedCourse {
-            NavigationStack {
+        NavigationStack {
+            if let selectedCourse {
                 CourseView(course: selectedCourse)
+            } else if let selectedNavigationPage {
+                switch selectedNavigationPage {
+                case .announcements:
+                    AllAnnouncementsView()
+                case .toDoList:
+                    AggregatedAssignmentsView()
+                case .pinned:
+                    PinnedItemsView()
+                default:
+                    EmptyView()
+                }
+            } else {
+                ContentUnavailableView("Select a course", systemImage: "folder")
             }
-        } else if let selectedNavigationPage {
-            switch selectedNavigationPage {
-            case .announcements:
-                AllAnnouncementsView()
-            case .toDoList:
-                AggregatedAssignmentsView()
-            case .pinned:
-                PinnedItemsView()
-            default:
-                EmptyView()
-            }
-        } else {
-            ContentUnavailableView("Select a course", systemImage: "folder")
         }
     }
 

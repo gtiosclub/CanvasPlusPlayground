@@ -8,7 +8,7 @@
 import Foundation
 
 @Observable
-class PinnedItem: Identifiable, Codable, Equatable {
+class PinnedItem: Identifiable, Codable, Equatable, Hashable {
     let id: String
     let courseID: String
     let type: PinnedItemType
@@ -109,6 +109,10 @@ class PinnedItem: Identifiable, Codable, Equatable {
 
     static func == (lhs: PinnedItem, rhs: PinnedItem) -> Bool {
         lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }
 
