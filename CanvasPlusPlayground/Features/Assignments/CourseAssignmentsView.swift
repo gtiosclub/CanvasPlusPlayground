@@ -9,15 +9,27 @@ import SwiftUI
 
 struct CourseAssignmentsView: View {
     let course: Course
+    /// Display grades in each assignment row. Disables navigation to Assignment Details.
     let showGrades: Bool
+
     @State private var assignmentManager: CourseAssignmentManager
+    @State private var gradeCalculator: GradeCalculator
 
     @State private var isLoadingAssignments = true
+    @State private var showingGradeCalculator = false
 
     init(course: Course, showGrades: Bool = false) {
         self.course = course
         self.showGrades = showGrades
-        _assignmentManager = .init(initialValue: CourseAssignmentManager(courseID: course.id))
+
+        let manager = CourseAssignmentManager(courseID: course.id)
+        _assignmentManager = .init(initialValue: manager)
+
+        _gradeCalculator = .init(
+            initialValue: .init(
+                assignmentGroups: manager.assignmentGroups
+            )
+        )
     }
 
     var body: some View {
@@ -39,23 +51,43 @@ struct CourseAssignmentsView: View {
                         let assignmentModel = assignment.createModel()
                         AssignmentRow(assignment: assignmentModel, showGrades: showGrades)
                             .contextMenu {
-                                PinButton(
-                                    itemID: assignmentModel.id,
-                                    courseID: course.id,
-                                    type: .assignment
-                                )
+                                if !showGrades {
+                                    PinButton(
+                                        itemID: assignmentModel.id,
+                                        courseID: course.id,
+                                        type: .assignment
+                                    )
+                                }
                             }
                             .swipeActions(edge: .leading) {
-                                PinButton(
-                                    itemID: assignmentModel.id,
-                                    courseID: course.id,
-                                    type: .assignment
-                                )
+                                if !showGrades {
+                                    PinButton(
+                                        itemID: assignmentModel.id,
+                                        courseID: course.id,
+                                        type: .assignment
+                                    )
+                                }
                             }
                     }
                 }
             } header: {
-                sectionHeader(for: assignmentGroup)
+                GroupHeader(
+                    assignmentGroup: assignmentGroup,
+                    showGrades: showGrades
+                )
+            }
+        }
+        .toolbar {
+            if showGrades {
+                ToolbarItem(placement: .automatic) {
+                    Button("Calculate Grades", image: .customFunctionCapsule) {
+                        showingGradeCalculator = true
+                    }
+                    #if os(macOS)
+                    .labelStyle(.titleAndIcon)
+                    #endif
+                    .disabled(isLoadingAssignments)
+                }
             }
         }
         .task {
@@ -69,30 +101,39 @@ struct CourseAssignmentsView: View {
         .navigationDestination(for: Assignment.self) { assignment in
             AssignmentDetailView(assignment: assignment)
         }
+        .sheet(isPresented: $showingGradeCalculator) {
+            NavigationStack {
+                GradeCalculatorView(
+                    assignmentGroups: assignmentManager.assignmentGroups
+                )
+            }
+            #if os(macOS)
+            .frame(width: 550, height: 650)
+            #endif
+        }
+        .environment(gradeCalculator)
     }
 
     private func loadAssignments() async {
         isLoadingAssignments = true
         await assignmentManager.fetchAssignmentGroups()
+        gradeCalculator.resetGroups(assignmentManager.assignmentGroups)
         isLoadingAssignments = false
-    }
-
-    private func sectionHeader(for assignmentGroup: AssignmentGroup) -> some View {
-        HStack {
-            Text(assignmentGroup.name)
-            Spacer()
-            if let groupWeight = assignmentGroup.groupWeight {
-                Text(String(format: "%.1f%%", groupWeight))
-            } else {
-                Text("--%")
-            }
-        }
     }
 }
 
-struct AssignmentRow: View {
+private struct AssignmentRow: View {
+    @Environment(GradeCalculator.self) private var calculator
+
     let assignment: Assignment
     let showGrades: Bool
+
+    var isDropped: Bool {
+        !calculator.gradeGroups
+            .flatMap(\.consideredAssignments)
+            .map(\.id)
+            .contains(assignment.id)
+    }
 
     var body: some View {
         if !showGrades {
@@ -131,11 +172,96 @@ struct AssignmentRow: View {
             Spacer()
 
             if showGrades {
+                if isDropped, !calculator.gradeGroups.isEmpty {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundStyle(.separator)
+                }
+
                 Text(assignment.formattedGrade)
                     .bold()
                 +
                 Text(" / " + assignment.formattedPointsPossible)
             }
         }
+    }
+}
+
+private struct GroupHeader: View {
+    let assignmentGroup: AssignmentGroup
+    let showGrades: Bool
+
+    @State private var showingInfo = false
+
+    private var showsInfoButton: Bool {
+        assignmentGroup.rules?.dropLowest != nil ||
+        assignmentGroup.rules?.dropHighest != nil ||
+        !(assignmentGroup.rules?.neverDrop?.isEmpty ?? true)
+    }
+
+    var body: some View {
+        HStack {
+            Text(assignmentGroup.name)
+
+            Spacer()
+
+            if let groupWeight = assignmentGroup.groupWeight {
+                Text(String(format: "%.1f%%", groupWeight))
+            } else {
+                Text("--%")
+            }
+
+            if showGrades, showsInfoButton {
+                Button("Show Rules", systemImage: "info.circle") {
+                    showingInfo = true
+                }
+                .popover(isPresented: $showingInfo) {
+                    infoGrid
+                        .presentationCompactAdaptation(.popover)
+                        .presentationBackground(.thinMaterial)
+                }
+                .buttonStyle(.plain)
+                .labelStyle(.iconOnly)
+            }
+        }
+    }
+
+    private var infoGrid: some View {
+        VStack {
+            Text("Rules").fontWeight(.heavy)
+
+            Spacer()
+
+            Grid {
+                if let dropLowest = assignmentGroup.rules?.dropLowest {
+                    GridRow {
+                        Text("Drop Lowest:")
+                            .fontWeight(.light)
+
+                        Spacer()
+
+                        Text(
+                            dropLowest,
+                            format: .number
+                        )
+                    }
+                }
+
+                if let dropHighest = assignmentGroup.rules?.dropHighest {
+                    GridRow {
+                        Text("Drop Highest:")
+                            .fontWeight(.light)
+
+                        Spacer()
+
+                        Text(
+                            dropHighest,
+                            format: .number
+                        )
+                        .bold()
+                    }
+                }
+            }
+        }
+        .padding(16)
     }
 }

@@ -118,6 +118,8 @@
 		B5894F192D6EC56000E8F527 /* PageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5894F182D6EC56000E8F527 /* PageView.swift */; };
 		B72EA5702D5689B20013070E /* QuickLookPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72EA56F2D5689B20013070E /* QuickLookPreview.swift */; };
 		B73AE0BD2D4FB68B007094A8 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73AE0BC2D4FB68B007094A8 /* Profile.swift */; };
+		B7460A942D6BFB1A0069CF5B /* GradeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7460A932D6BFB1A0069CF5B /* GradeCalculator.swift */; };
+		B7460A962D6CCD730069CF5B /* GradeCalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7460A952D6CCD6E0069CF5B /* GradeCalculatorView.swift */; };
 		B74688A32D63DB59007A27FD /* Assignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74688A22D63DB59007A27FD /* Assignment.swift */; };
 		B76454FE2C8DF61B002DF00E /* Course.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454ED2C8DF61B002DF00E /* Course.swift */; };
 		B76454FF2C8DF61B002DF00E /* Enrollment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454EE2C8DF61B002DF00E /* Enrollment.swift */; };
@@ -132,6 +134,7 @@
 		B76455082C8DF61B002DF00E /* CourseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454FC2C8DF61B002DF00E /* CourseManager.swift */; };
 		B76455092C8DF61B002DF00E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B76454F22C8DF61B002DF00E /* Preview Assets.xcassets */; };
 		B764550A2C8DF61B002DF00E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B76454F92C8DF61B002DF00E /* Assets.xcassets */; };
+		B7725D652D7387D600D64ED8 /* AccessoryBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7725D642D7387D300D64ED8 /* AccessoryBar.swift */; };
 		B77FD0022D52A0D60049AA5E /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77FD0012D52A0D20049AA5E /* ProfileView.swift */; };
 		B77FD0072D5309340049AA5E /* ProfilePicture.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77FD0062D5309340049AA5E /* ProfilePicture.swift */; };
 		B785BE652CF592710094BF94 /* LLM in Frameworks */ = {isa = PBXBuildFile; productRef = B785BE642CF592710094BF94 /* LLM */; };
@@ -283,6 +286,8 @@
 		B5894F182D6EC56000E8F527 /* PageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageView.swift; sourceTree = "<group>"; };
 		B72EA56F2D5689B20013070E /* QuickLookPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookPreview.swift; sourceTree = "<group>"; };
 		B73AE0BC2D4FB68B007094A8 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		B7460A932D6BFB1A0069CF5B /* GradeCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradeCalculator.swift; sourceTree = "<group>"; };
+		B7460A952D6CCD6E0069CF5B /* GradeCalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradeCalculatorView.swift; sourceTree = "<group>"; };
 		B74688A22D63DB59007A27FD /* Assignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assignment.swift; sourceTree = "<group>"; };
 		B76454642C8BBC7F002DF00E /* CanvasPlusPlayground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CanvasPlusPlayground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B76454ED2C8DF61B002DF00E /* Course.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Course.swift; sourceTree = "<group>"; };
@@ -298,6 +303,7 @@
 		B76454FA2C8DF61B002DF00E /* CanvasPlusPlaygroundApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasPlusPlaygroundApp.swift; sourceTree = "<group>"; };
 		B76454FB2C8DF61B002DF00E /* CourseFileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseFileViewModel.swift; sourceTree = "<group>"; };
 		B76454FC2C8DF61B002DF00E /* CourseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseManager.swift; sourceTree = "<group>"; };
+		B7725D642D7387D300D64ED8 /* AccessoryBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessoryBar.swift; sourceTree = "<group>"; };
 		B77FD0012D52A0D20049AA5E /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		B77FD0062D5309340049AA5E /* ProfilePicture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePicture.swift; sourceTree = "<group>"; };
 		B7926D152CE95CE900BFFBE1 /* RGBColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RGBColors.swift; sourceTree = "<group>"; };
@@ -481,6 +487,7 @@
 			isa = PBXGroup;
 			children = (
 				9B07E7112D779CA500359B69 /* Date+RelativeDates.swift */,
+				B7725D642D7387D300D64ED8 /* AccessoryBar.swift */,
 				A373DC0E2D19F71600215019 /* TypeSafeCodable.swift */,
 				A3CF88D22D18E6BB000ACDF3 /* ParentKeyPath.swift */,
 				B7F950312D118EAA004BB470 /* String+StripHTML.swift */,
@@ -589,10 +596,10 @@
 		A324BA5F2D0798A1005F53FA /* Grades */ = {
 			isa = PBXGroup;
 			children = (
+				B7460A902D6BFB050069CF5B /* GradeCalculator */,
+				B7460A8F2D6BF9320069CF5B /* Models */,
 				7F8535732C98DE3C0023E384 /* CourseGradeView.swift */,
 				A31A81E62D0CCB69003C37EB /* GradesViewModel.swift */,
-				A373DC0C2D19F65700215019 /* APIGradingPeriod.swift */,
-				A373DC222D1D454000215019 /* APIGradingSchemeEntry.swift */,
 			);
 			path = Grades;
 			sourceTree = "<group>";
@@ -717,8 +724,26 @@
 			children = (
 				B5894F0D2D6EBD8C00E8F527 /* Page.swift */,
 				B5894F0E2D6EBD8C00E8F527 /* PageAPI.swift */,
+            );
+            path = Models;
+            sourceTree = "<group>";
+        };
+		B7460A8F2D6BF9320069CF5B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A373DC0C2D19F65700215019 /* APIGradingPeriod.swift */,
+				A373DC222D1D454000215019 /* APIGradingSchemeEntry.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		B7460A902D6BFB050069CF5B /* GradeCalculator */ = {
+			isa = PBXGroup;
+			children = (
+				B7460A952D6CCD6E0069CF5B /* GradeCalculatorView.swift */,
+				B7460A932D6BFB1A0069CF5B /* GradeCalculator.swift */,
+			);
+			path = GradeCalculator;
 			sourceTree = "<group>";
 		};
 		B764545B2C8BBC7F002DF00E = {
@@ -949,6 +974,7 @@
 				9B69FA4F2CC2CCCF006101F3 /* AggregatedAssignmentsListCell.swift in Sources */,
 				B7F950372D127869004BB470 /* ProfileManager.swift in Sources */,
 				A324BA662D07AFD5005F53FA /* FileType.swift in Sources */,
+				B7725D652D7387D600D64ED8 /* AccessoryBar.swift in Sources */,
 				192EC0482C963ACB00AF8528 /* CourseAssignmentManager.swift in Sources */,
 				A373DC232D1D454000215019 /* APIGradingSchemeEntry.swift in Sources */,
 				A301EE0D2D612E7100D71139 /* DiscussionTopicAPI.swift in Sources */,
@@ -971,6 +997,7 @@
 				B76455022C8DF61B002DF00E /* CourseFilesView.swift in Sources */,
 				B76455032C8DF61B002DF00E /* HomeView.swift in Sources */,
 				A3269E8E2CD5533F006F7D14 /* CanvasRepository.swift in Sources */,
+				B7460A962D6CCD730069CF5B /* GradeCalculatorView.swift in Sources */,
 				A3049B5B2D0E5C18002F3166 /* QuizPermissions.swift in Sources */,
 				B7C0A3C52D2F4C19003E5A36 /* GetAssignmentRequest.swift in Sources */,
 				A3FFD03E2CE0065A006BAB51 /* NetworkError.swift in Sources */,
@@ -1029,6 +1056,7 @@
 				B7D7512B2D3D5D8000F7B8B8 /* AllAnnouncementsView.swift in Sources */,
 				A3E7F3892C954E0500DC4300 /* CanvasRequest.swift in Sources */,
 				A352AD1A2D3EF1C1007EE6FC /* GetCourseUsersRequest.swift in Sources */,
+				B7460A942D6BFB1A0069CF5B /* GradeCalculator.swift in Sources */,
 				B77FD0072D5309340049AA5E /* ProfilePicture.swift in Sources */,
 				A35191412D283589001E415F /* ModulesViewModel.swift in Sources */,
 				A3E7F3912C99317100DC4300 /* CourseTabsManager.swift in Sources */,
