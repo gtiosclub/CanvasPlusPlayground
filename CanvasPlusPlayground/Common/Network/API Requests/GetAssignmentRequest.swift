@@ -23,7 +23,7 @@ struct GetAssignmentRequest: CacheableAPIRequest {
         + include.map { ("include[]", $0.rawValue) }
     }
 
-    var body: Data? { nil }
+    
 
     // MARK: Query Params
     let include: [Include]

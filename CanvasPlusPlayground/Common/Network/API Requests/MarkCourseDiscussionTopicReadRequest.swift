@@ -13,5 +13,5 @@ struct MarkCourseDiscussionTopicReadRequest: NoReturnAPIRequest {
     var path: String { "courses/\(courseID)/discussion_topics/\(discussionID)/read" }
     var method: RequestMethod { .PUT }
     var queryParameters: [QueryParameter] { [] }
-    var body: Data? { nil }
+    
 }

@@ -22,7 +22,7 @@ struct SubmitAssignmentRequest: NoReturnAPIRequest {
     let fileIDs: [Int]?
     var queryParameters: [QueryParameter] = []
     var method:RequestMethod { .POST }
-
+    var contentType: String? { "application/json" }
     var body: Data? {
         let dict: [String: [String: Any]] = [
             "submission": [

@@ -25,7 +25,7 @@ struct GetPagesRequest: CacheableArrayAPIRequest {
         + include.map { ("include[]", $0.rawValue) }
     }
 
-    var body: Data? { nil }
+    
 
     // MARK: Query Params
     let sort: SortOption?

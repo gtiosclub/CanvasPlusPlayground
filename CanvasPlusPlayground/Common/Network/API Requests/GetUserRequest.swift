@@ -22,7 +22,7 @@ struct GetUserRequest: CacheableAPIRequest {
 
     var path: String { "users/\(userId)" }
 
-    var body: Data? { nil }
+    
 
     var requestId: String { userId }
     var requestIdKey: ParentKeyPath<User, String> { .createWritable(\.tag) }

@@ -18,6 +18,7 @@ protocol APIRequest {
     var method: RequestMethod { get }
     var perPage: Int { get }
     var body: Data? { get }
+    var contentType: String? { get }
 }
 
 protocol ArrayAPIRequest: APIRequest {
@@ -71,4 +72,8 @@ extension APIRequest {
     var method: RequestMethod { .GET }
 
     var perPage: Int { 50 }
+    
+    var contentType: String? { nil }
+    
+    var body: Data? { nil }
 }

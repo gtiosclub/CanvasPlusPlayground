@@ -26,7 +26,7 @@ struct GetAnnouncementsRequest: CacheableArrayAPIRequest {
         + include.map { ("include[]", $0.rawValue) }
     }
 
-    var body: Data? { nil }
+    
 
     // MARK: Query Params
     /// At least one courseId must be provided here otherwise request fails

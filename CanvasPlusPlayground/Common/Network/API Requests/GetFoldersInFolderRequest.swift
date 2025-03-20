@@ -17,7 +17,7 @@ struct GetFoldersInFolderRequest: CacheableArrayAPIRequest {
         [("per_page", perPage)]
     }
 
-    var body: Data? { nil }
+    
 
     // MARK: Query Params
     let perPage: Int
