@@ -12,17 +12,13 @@ class CourseManager {
     var allCourses = [Course]()
 
     /// This list is used in `PeopleCommonView` and `AllAnnouncements`.
-    var displayedCourses: [Course] {
-        userCourses
-    }
-
     var userCourses: [Course] {
         allCourses
             .filter { !($0.isHidden ?? false) }
             .sorted { $0.name ?? "" < $1.name ?? "" }
     }
 
-    var userHiddenCourses: [Course] {
+    var hiddenCourses: [Course] {
         allCourses
             .filter { $0.isHidden ?? false }
             .sorted { $0.name ?? "" < $1.name ?? "" }

@@ -33,9 +33,9 @@ struct Sidebar: View {
                 }
             }
 
-            if !courseManager.userHiddenCourses.isEmpty {
+            if !courseManager.hiddenCourses.isEmpty {
                 Section("Hidden", isExpanded: $isHiddenSectionExpanded) {
-                    ForEach(courseManager.userHiddenCourses) { course in
+                    ForEach(courseManager.hiddenCourses) { course in
                         NavigationLink(value: NavigationPage.course(id: course.id)) {
                             CourseListCell(course: course)
                         }
