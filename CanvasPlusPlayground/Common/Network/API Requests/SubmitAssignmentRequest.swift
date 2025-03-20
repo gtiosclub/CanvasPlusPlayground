@@ -22,22 +22,22 @@ struct SubmitAssignmentRequest: NoReturnAPIRequest {
     let fileIDs: [Int]?
     var queryParameters: [QueryParameter] = []
     var method:RequestMethod { .POST }
-    
+
     var body: Data? {
-        let dict: [String: Any] = [
+        let dict: [String: [String: Any]] = [
             "submission": [
-                "submission_type": submissionType.rawValue,
-                "text_comment": textComment,
-                "body": submission_body,
-                "file_ids": fileIDs,
-                "url": url,
+                "submission_type": submissionType.rawValue as Any,
+                "text_comment": textComment as Any,
+                "body": submission_body as Any,
+                "file_ids": fileIDs as Any,
+                "url": url as Any
             ]
         ]
         if let jsonData = try? JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted) {
             print(jsonData)
             return jsonData
         }
-        
+
         return nil
     }
 }

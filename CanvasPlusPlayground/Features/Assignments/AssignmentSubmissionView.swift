@@ -10,12 +10,12 @@ import SwiftUI
 struct AssignmentSubmissionView: View {
     @Environment(AssignmentSubmissionManager.self) var manager
     let assignment: Assignment
-    @State var selectedSubmissionType: SubmissionType?
+    @State private var selectedSubmissionType: SubmissionType?
     var submissionTypes: [SubmissionType] {
         assignment.submissionTypes ?? []
     }
     @Environment(\.dismiss) var dismiss
-    
+
     var body: some View {
         NavigationStack {
             Form {
@@ -75,7 +75,7 @@ struct AssignmentSubmissionView: View {
             selectedSubmissionType = submissionTypes.first
         }
     }
-    
+
     // MARK: Should the submit button be enabled or not
     var submitDisabled: Bool {
         guard let selectedSubmissionType else {
@@ -83,23 +83,23 @@ struct AssignmentSubmissionView: View {
         }
         switch selectedSubmissionType {
         case .onlineUrl:
-            return selectedURLs.count == 0
+            return selectedURLs.isEmpty
         case .onlineTextEntry:
-            return textbox.count == 0
+            return textbox.isEmpty
         default:
             return true
         }
     }
-    
+
     // MARK: Paper/No submission subview
     var noSubmissionView: some View {
         Section {
             Text("No submission/paper submission")
         }
     }
-    
+
     // MARK: Text submission subview
-    @State var textbox: String = ""
+    @State private var textbox: String = ""
     var textSubmissionView: some View {
         Section("Add text") {
             TextEditor(text: $textbox)
@@ -108,9 +108,9 @@ struct AssignmentSubmissionView: View {
                 .padding()
         }
     }
-    
+
     // MARK: File upload submission subview
-    @State var selectedURLs: [URL] = []
+    @State private var selectedURLs: [URL] = []
     @State private var iosPicker = false
     var fileUploadView: some View {
         Section("File upload") {
@@ -146,7 +146,7 @@ struct AssignmentSubmissionView: View {
             }
         }
     }
-    
+
     // MARK: URL Submission
     // TODO: Implement URL submission
 }

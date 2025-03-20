@@ -31,7 +31,7 @@ enum CanvasRequest {
     static func getFoldersInFolder(folderId: String) -> GetFoldersInFolderRequest {
         GetFoldersInFolderRequest(folderId: folderId)
     }
-    
+
     static func uploadFileSubmission(
         courseID: String,
         assignmentID: String,

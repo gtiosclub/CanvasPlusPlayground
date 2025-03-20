@@ -11,15 +11,13 @@ import Foundation
 // First tell canvas about the file upload and get a token back
 
 struct UploadSubmissionFileRequest: APIRequest {
-
     var path: String { "courses/\(courseID)/assignments/\(assignmentID)/submissions/self/files" }
     var queryParameters: [QueryParameter] = []
     typealias Subject = UploadFileNotificationResponse
     let courseID: String
     let assignmentID: String
     var method:RequestMethod { .POST }
-    
-    
+
     // Parameters
     let name: String // name of file
     let size: Int // Size in bytes
@@ -37,7 +35,7 @@ struct UploadSubmissionFileRequest: APIRequest {
         }
         return nil
     }
-    
+
     enum DuplicateCondition: String {
         case overwrite, rename
     }
@@ -59,7 +57,7 @@ struct UploadFileConfirmationResponse: Codable {
     let contentType: String
     let displayName: String
     let size: Int
-    
+
     enum CodingKeys: String, CodingKey {
         case id, url, contentType = "content-type", displayName = "display_name", size
     }
