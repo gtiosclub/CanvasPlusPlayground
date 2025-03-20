@@ -253,19 +253,6 @@ class Assignment: Cacheable {
         self.submission = other.submission
     }
 
-    enum SubmissionType: String, Codable {
-        case discussionTopic = "discussion_topic"
-        case onlineQuiz = "online_quiz"
-        case onPaper = "on_paper"
-        case none = "none"
-        case externalTool = "external_tool"
-        case onlineTextEntry = "online_text_entry"
-        case onlineUrl = "online_url"
-        case onlineUpload = "online_upload"
-        case mediaRecording = "media_recording"
-        case studentAnnotation = "student_annotation"
-    }
-
     enum GradingType: String, Codable {
         case passFail = "pass_fail"
         case percent = "percent"
@@ -275,4 +262,17 @@ class Assignment: Cacheable {
     }
 
     static let example = Assignment(from: .example)
+}
+
+enum SubmissionType: String, Codable {
+    case discussionTopic = "discussion_topic"
+    case onlineQuiz = "online_quiz"
+    case onPaper = "on_paper"
+    case none = "none"
+    case externalTool = "external_tool"
+    case onlineTextEntry = "online_text_entry"
+    case onlineUrl = "online_url"
+    case onlineUpload = "online_upload"
+    case mediaRecording = "media_recording"
+    case studentAnnotation = "student_annotation"
 }

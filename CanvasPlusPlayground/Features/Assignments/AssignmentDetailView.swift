@@ -102,6 +102,7 @@ struct AssignmentDetailView: View {
             }
             .sheet(isPresented: $showSubmissionPopUp) {
                 AssignmentSubmissionView(assignment: assignment)
+                    .environment(AssignmentSubmissionManager(assignment: assignment))
             }
         }
     }

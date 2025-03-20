@@ -87,6 +87,7 @@ extension APIRequest {
 
         urlRequest.httpMethod = self.method.rawValue
         urlRequest.httpBody = self.body
+        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
         do {
             let (data, response) = try await URLSession.shared.data(for: urlRequest)

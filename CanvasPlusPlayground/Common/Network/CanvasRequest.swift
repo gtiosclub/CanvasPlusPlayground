@@ -31,6 +31,15 @@ enum CanvasRequest {
     static func getFoldersInFolder(folderId: String) -> GetFoldersInFolderRequest {
         GetFoldersInFolderRequest(folderId: folderId)
     }
+    
+    static func uploadFileSubmission(
+        courseID: String,
+        assignmentID: String,
+        filename: String,
+        fileSizeInBytes size: Int
+    ) -> UploadSubmissionFileRequest {
+        UploadSubmissionFileRequest(courseID: courseID, assignmentID: assignmentID, name: filename, size: size, contentType: nil, on_duplicate: .overwrite)
+    }
 
     static func getTabs(courseId: String) -> GetTabsRequest {
         GetTabsRequest(courseId: courseId)
@@ -202,13 +211,17 @@ enum CanvasRequest {
     ) -> MarkCourseDiscussionTopicUnreadRequest {
         MarkCourseDiscussionTopicUnreadRequest(courseID: courseId, discussionID: discussionTopicId)
     }
-    
+
     static func submitAssignment(
         courseID: String,
         assignmentID: String,
-        submissionType: Assignment.SubmissionType
+        textComment: String? = nil,
+        submissionType: SubmissionType,
+        submissionBody: String? = nil,
+        url: String? = nil,
+        fileIDs: [Int]? = nil
     ) -> SubmitAssignmentRequest {
-        SubmitAssignmentRequest(courseID: courseID, assignmentID: assignmentID, submissionType: submissionType)
+        SubmitAssignmentRequest(courseID: courseID, assignmentID: assignmentID, textComment: textComment, submissionType: submissionType, submission_body: submissionBody, url: url, fileIDs: fileIDs)
     }
 
     static func getPages(

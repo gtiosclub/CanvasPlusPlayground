@@ -8,20 +8,14 @@
 import SwiftUI
 
 struct AssignmentSubmissionView: View {
+    @Environment(AssignmentSubmissionManager.self) var manager
     let assignment: Assignment
-    var submissionTypes: [Assignment.SubmissionType] //{
-        //assignment.submissionTypes ?? [.]
-    // }
-    {
-        [.discussionTopic, .onPaper, .onlineUpload, .onlineTextEntry]
+    @State var selectedSubmissionType: SubmissionType?
+    var submissionTypes: [SubmissionType] {
+        assignment.submissionTypes ?? []
     }
-    
     @Environment(\.dismiss) var dismiss
-
-    @State private var selectedSubmissionType: Assignment.SubmissionType?
     
-    @State var urls: [URL] = []
-    @State var text: String = ""
     var body: some View {
         NavigationStack {
             Form {
@@ -39,13 +33,11 @@ struct AssignmentSubmissionView: View {
                     let type = selectedSubmissionType!
                     switch type {
                     case .none, .onPaper:
-                        Section {
-                            Text("No submission/paper submission")
-                        }
+                        noSubmissionView
                     case .onlineUrl, .onlineTextEntry:
-                        AssignmentTextSubmissionView(text: $text)
+                        textSubmissionView
                     case .onlineUpload:
-                        AssignmentFileUploadView(selectedFiles: $urls)
+                        fileUploadView
                     default:
                         Section {
                             Text("\(type.rawValue) submissions not supported")
@@ -64,41 +56,71 @@ struct AssignmentSubmissionView: View {
                 }
             }
             ToolbarItem(placement: .confirmationAction) {
-                Button("Submit") {
-                    dismiss()
+                Button("File submit") {
+                    Task {
+                        switch selectedSubmissionType! {
+                        case .onlineUrl:
+                            await manager.submitAssignment(withText: textbox)
+                        case .onlineUpload:
+                            await manager.submitFileAssignment(forFiles: selectedURLs)
+                        default:
+                            print("unimplemented")
+                        }
+                    }
                 }
+                // .disabled(submitDisabled)
             }
         }
         .onAppear {
             selectedSubmissionType = submissionTypes.first
         }
     }
-}
-
-struct AssignmentTextSubmissionView: View {
-    @Binding var text: String
-    var body: some View {
+    
+    // MARK: Should the submit button be enabled or not
+    var submitDisabled: Bool {
+        guard let selectedSubmissionType else {
+            return true
+        }
+        switch selectedSubmissionType {
+        case .onlineUrl:
+            return selectedURLs.count == 0
+        case .onlineTextEntry:
+            return textbox.count == 0
+        default:
+            return true
+        }
+    }
+    
+    // MARK: Paper/No submission subview
+    var noSubmissionView: some View {
+        Section {
+            Text("No submission/paper submission")
+        }
+    }
+    
+    // MARK: Text submission subview
+    @State var textbox: String = ""
+    var textSubmissionView: some View {
         Section("Add text") {
-            TextEditor(text: $text)
+            TextEditor(text: $textbox)
                 .frame(minHeight: 200)
                 .lineLimit(5...10)
                 .padding()
         }
     }
-}
-
-struct AssignmentFileUploadView: View {
-    @Binding var selectedFiles: [URL]
+    
+    // MARK: File upload submission subview
+    @State var selectedURLs: [URL] = []
     @State private var iosPicker = false
-    var body: some View {
+    var fileUploadView: some View {
         Section("File upload") {
-            ForEach(selectedFiles, id: \.self) { fileURL in
+            ForEach(selectedURLs, id: \.self) { fileURL in
                 HStack {
                     Text(fileURL.lastPathComponent)
                     Spacer()
                     Button("Remove file", systemImage: "trash") {
                         withAnimation {
-                            selectedFiles.removeAll { url in
+                            selectedURLs.removeAll { url in
                                 url == fileURL
                             }
                         }
@@ -116,7 +138,7 @@ struct AssignmentFileUploadView: View {
             .fileImporter(isPresented: $iosPicker, allowedContentTypes: [.item], allowsMultipleSelection: true) { result in
                 switch result {
                 case .success(let urls):
-                    selectedFiles.append(contentsOf: urls)
+                    selectedURLs.append(contentsOf: urls)
                 case .failure(let error):
                     LoggerService.main.log("Error: \(error)")
                     // TODO: Add a popup for this error
@@ -124,4 +146,7 @@ struct AssignmentFileUploadView: View {
             }
         }
     }
+    
+    // MARK: URL Submission
+    // TODO: Implement URL submission
 }
