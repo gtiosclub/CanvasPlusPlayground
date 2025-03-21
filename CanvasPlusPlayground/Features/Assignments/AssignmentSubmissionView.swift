@@ -55,35 +55,35 @@ struct AssignmentSubmissionView: View {
                     ProgressView()
                 }
             }
-        }
-        .toolbar {
-            ToolbarItem(placement: .cancellationAction) {
-                Button("Cancel") {
-                    dismiss()
-                }
-            }
-            ToolbarItem(placement: .confirmationAction) {
-                Button("Submit") {
-                    Task {
-                        do {
-                            showSubmissionUploadProgress = true
-                            switch selectedSubmissionType {
-                            case .onlineUrl:
-                                try await manager.submitAssignment(withText: textbox)
-                            case .onlineUpload:
-                                try await manager.submitFileAssignment(forFiles: selectedURLs)
-                            default:
-                                LoggerService.main.error("User attempted to submit unimlemented assignment type")
-                            }
-                        } catch {
-                            // TODO: We could display error information to the user here
-                            LoggerService.main.error("Error submitting assignment: \(error.localizedDescription)")
-                        }
-                        showSubmissionUploadProgress = false
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") {
                         dismiss()
                     }
                 }
-                .disabled(submitButtonDisabled)
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Submit") {
+                        Task {
+                            do {
+                                showSubmissionUploadProgress = true
+                                switch selectedSubmissionType {
+                                case .onlineUrl:
+                                    try await manager.submitAssignment(withText: textbox)
+                                case .onlineUpload:
+                                    try await manager.submitFileAssignment(forFiles: selectedURLs)
+                                default:
+                                    LoggerService.main.error("User attempted to submit unimlemented assignment type")
+                                }
+                            } catch {
+                                // TODO: We could display error information to the user here
+                                LoggerService.main.error("Error submitting assignment: \(error.localizedDescription)")
+                            }
+                            showSubmissionUploadProgress = false
+                            dismiss()
+                        }
+                    }
+                    .disabled(submitButtonDisabled)
+                }
             }
         }
         .onAppear {

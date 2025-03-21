@@ -72,10 +72,11 @@ struct AssignmentDetailView: View {
                         "Grade",
                         value: assignment.formattedGrade + "/" + assignment.formattedPointsPossible
                     )
-
-                    LabeledContent("Create submission") {
-                        Button("Create Submission...") {
-                            showSubmissionPopUp.toggle()
+                    if assignment.canSubmit ?? true {
+                        LabeledContent("Create submission") {
+                            Button("Create Submission...") {
+                                showSubmissionPopUp.toggle()
+                            }
                         }
                     }
                 }
