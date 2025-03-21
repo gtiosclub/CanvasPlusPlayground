@@ -22,7 +22,7 @@ struct IntelligenceOnboardingView: View {
     @State private var currentInstallState: InstallState = .readyToInstall
 
     var body: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: 24) {
             Spacer()
 
             header
@@ -36,9 +36,14 @@ struct IntelligenceOnboardingView: View {
 
                     ProgressView()
                 }
+            } else if currentInstallState == .readyToInstall {
+                #if os(iOS)
+                installButton
+                #endif
             }
         }
         .padding()
+        .multilineTextAlignment(.center)
         .onAppear {
             if !intelligenceManager.installedModels.isEmpty {
                 currentInstallState = .installed
@@ -66,11 +71,11 @@ struct IntelligenceOnboardingView: View {
                 }
                 #endif
 
+                #if os(macOS)
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Install") {
-                        installModel()
-                    }
+                    installButton
                 }
+                #endif
             } else if currentInstallState == .installed {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") {
@@ -96,8 +101,22 @@ struct IntelligenceOnboardingView: View {
             .bold()
 
         Text(descriptionText)
-            .font(.title3)
-            .multilineTextAlignment(.center)
+    }
+
+    private var installButton: some View {
+        Button {
+            installModel()
+        } label: {
+            Text("Install")
+                #if os(iOS)
+                .frame(maxWidth: .infinity)
+                .frame(height: 32)
+                .bold()
+                #endif
+        }
+        #if os(iOS)
+        .buttonStyle(.borderedProminent)
+        #endif
     }
 
     private func installModel() {
