@@ -6,9 +6,16 @@
 //
 
 import Foundation
-// 3 step process
 
-// First tell canvas about the file upload and get a token back
+/*
+ Uploading a file to Canvas is a 3 step process and involves 3 separate request-response
+    1. First notify canvas that you are going to upload a file, this provides file metadata like size, type, etc
+    2. Next, the file data is sent in the body of the second response
+    3. Finally, after you have uploaded a the file, you need to ping an endpoint to confirm the upload
+    More info here: https://canvas.instructure.com/doc/api/file.file_uploads.html
+ */
+
+// MARK: First, notify Canvas of intentions to upload a file
 
 struct UploadFileNotificationRequest: APIRequest {
     var path: String { "courses/\(courseID)/assignments/\(assignmentID)/submissions/self/files" }
@@ -41,11 +48,6 @@ struct UploadFileNotificationRequest: APIRequest {
     }
 }
 
-// Upload notification request
-// File upload request
-// upload confirmation request
-// Next, canvas sends you an endpoint to upload the file to
-
 struct UploadFileNotificationResponse: APIResponse {
     let uploadURL: String
     let uploadParams: [String: String?]
@@ -55,10 +57,8 @@ struct UploadFileNotificationResponse: APIResponse {
         case uploadParams = "upload_params"
     }
 }
-// Upload notification request
-// File upload request
-// upload confirmation request
-// Next, canvas sends you an endpoint to upload the file to
+
+// MARK: Second, upload file data
 
 struct UploadFileUploadRequest: APIRequest {
     typealias Subject = UploadFileConfirmationResponse
@@ -99,6 +99,18 @@ struct UploadFileUploadRequest: APIRequest {
     }
 }
 
+// MARK: Third, confirm file upload
+
+struct UploadFileConfirmationRequest: APIRequest {
+    typealias Subject = UploadFileConfirmationResponse
+
+    var path: String
+    var queryParameters: [QueryParameter] = []
+    var method: RequestMethod { .GET }
+    var forceURL: String? { path }
+    var contentLength: String? { "0" }
+}
+
 struct UploadFileConfirmationResponse: APIResponse {
     let id: Int
     let url: String
@@ -109,14 +121,4 @@ struct UploadFileConfirmationResponse: APIResponse {
     enum CodingKeys: String, CodingKey {
         case id, url, contentType = "content-type", displayName = "display_name", size
     }
-}
-
-struct UploadFileConfirmationRequest: APIRequest {
-    typealias Subject = UploadFileConfirmationResponse
-
-    var path: String
-    var queryParameters: [QueryParameter] = []
-    var method: RequestMethod { .GET }
-    var forceURL: String? { path }
-    var contentLength: String? { "0" }
 }
