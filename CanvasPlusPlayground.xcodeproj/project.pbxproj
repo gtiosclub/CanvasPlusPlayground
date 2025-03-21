@@ -156,6 +156,7 @@
 		B7C0A3CB2D2F919F003E5A36 /* PinButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0A3CA2D2F919F003E5A36 /* PinButton.swift */; };
 		B7C0A3CD2D3023CA003E5A36 /* PinnedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0A3CC2D3023CA003E5A36 /* PinnedItem.swift */; };
 		B7C0A3CF2D31F339003E5A36 /* PinnedItemCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0A3CE2D31F339003E5A36 /* PinnedItemCard.swift */; };
+		B7CC4D3C2D8DB87200254F55 /* URL+AppRootURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D3B2D8DB86E00254F55 /* URL+AppRootURL.swift */; };
 		B7D7512B2D3D5D8000F7B8B8 /* AllAnnouncementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D7512A2D3D5D7700F7B8B8 /* AllAnnouncementsView.swift */; };
 		B7D7512D2D3D652300F7B8B8 /* GetAnnouncementsBatchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D7512C2D3D652300F7B8B8 /* GetAnnouncementsBatchRequest.swift */; };
 		B7D7512F2D3D660B00F7B8B8 /* AllAnnouncementsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D7512E2D3D660B00F7B8B8 /* AllAnnouncementsManager.swift */; };
@@ -324,6 +325,7 @@
 		B7C0A3CA2D2F919F003E5A36 /* PinButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinButton.swift; sourceTree = "<group>"; };
 		B7C0A3CC2D3023CA003E5A36 /* PinnedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedItem.swift; sourceTree = "<group>"; };
 		B7C0A3CE2D31F339003E5A36 /* PinnedItemCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedItemCard.swift; sourceTree = "<group>"; };
+		B7CC4D3B2D8DB86E00254F55 /* URL+AppRootURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+AppRootURL.swift"; sourceTree = "<group>"; };
 		B7D7512A2D3D5D7700F7B8B8 /* AllAnnouncementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllAnnouncementsView.swift; sourceTree = "<group>"; };
 		B7D7512C2D3D652300F7B8B8 /* GetAnnouncementsBatchRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAnnouncementsBatchRequest.swift; sourceTree = "<group>"; };
 		B7D7512E2D3D660B00F7B8B8 /* AllAnnouncementsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllAnnouncementsManager.swift; sourceTree = "<group>"; };
@@ -341,10 +343,6 @@
 		B7F9503A2D127AD0004BB470 /* ProfileAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAPI.swift; sourceTree = "<group>"; };
 		B7F9503C2D12ADAE004BB470 /* SubmissionAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmissionAPI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		B5BFC9BA2D6A39F300EDF3B5 /* Models */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Models; sourceTree = "<group>"; };
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		B76454612C8BBC7F002DF00E /* Frameworks */ = {
@@ -486,6 +484,7 @@
 		A324BA552D0796BE005F53FA /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				B7CC4D3B2D8DB86E00254F55 /* URL+AppRootURL.swift */,
 				9B07E7112D779CA500359B69 /* Date+RelativeDates.swift */,
 				B7725D642D7387D300D64ED8 /* AccessoryBar.swift */,
 				A373DC0E2D19F71600215019 /* TypeSafeCodable.swift */,
@@ -724,10 +723,10 @@
 			children = (
 				B5894F0D2D6EBD8C00E8F527 /* Page.swift */,
 				B5894F0E2D6EBD8C00E8F527 /* PageAPI.swift */,
-            );
-            path = Models;
-            sourceTree = "<group>";
-        };
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		B7460A8F2D6BF9320069CF5B /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -857,9 +856,6 @@
 			);
 			dependencies = (
 				B7E59A202D217BCB001836FE /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				B5BFC9BA2D6A39F300EDF3B5 /* Models */,
 			);
 			name = CanvasPlusPlayground;
 			packageProductDependencies = (
@@ -1076,6 +1072,7 @@
 				B5894F192D6EC56000E8F527 /* PageView.swift in Sources */,
 				A351913F2D283556001E415F /* ModulesListView.swift in Sources */,
 				A3CF88DF2D1921B5000ACDF3 /* FileAPI.swift in Sources */,
+				B7CC4D3C2D8DB87200254F55 /* URL+AppRootURL.swift in Sources */,
 				A3CF88DD2D1921A7000ACDF3 /* QuizAPI.swift in Sources */,
 				A3049B532D0E5241002F3166 /* Quiz.swift in Sources */,
 				A3049B872D16146D002F3166 /* GetQuizzesRequest.swift in Sources */,

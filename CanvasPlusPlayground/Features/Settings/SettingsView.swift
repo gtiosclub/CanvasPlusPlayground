@@ -73,24 +73,24 @@ struct SettingsView: View {
             Button {
                 navigationModel.showInstallIntelligenceSheet = true
             } label: {
-                Label("Download & Install Models", systemImage: "square.and.arrow.down")
+                Label("Setup Intelligence", systemImage: "square.and.arrow.down")
             }
             .foregroundStyle(.blue)
         } header: {
             Label("Intelligence", systemImage: "wand.and.stars")
         } footer: {
-            #if targetEnvironment(simulator)
-            Text("Intelligence features are not supported on simulator")
-            #else
-            if intelligenceManager.installedModels.isEmpty {
-                Text("Install models to use the intelligence features.")
-            } else {
-                let count = intelligenceManager.installedModels.count
-                Text(
-                    "You have \(count) installed \(count == 1 ? "model" : "models")"
-                )
+            Group {
+                #if targetEnvironment(simulator)
+                Text("Intelligence features are not supported on simulator.")
+                #else
+                if intelligenceManager.installedModels.isEmpty {
+                    Text("Intelligence is not installed yet.")
+                } else {
+                    Text("Intelligence is setup.")
+                }
+                #endif
             }
-            #endif
+            .font(.caption)
         }
         #if targetEnvironment(simulator)
         .disabled(true)
@@ -120,6 +120,9 @@ struct SettingsView: View {
                 Button("Show files in Finder", systemImage: "folder.badge.person.crop") {
                     CourseFileService.showInFinder()
                 }
+                #if os(iOS)
+                .disabled(true)
+                #endif
             }
             .foregroundStyle(.red)
         } header: {

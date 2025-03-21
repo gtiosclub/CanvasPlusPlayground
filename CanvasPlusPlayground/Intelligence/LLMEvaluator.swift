@@ -10,6 +10,22 @@ import SwiftUI
 @Observable
 @MainActor
 class LLMEvaluator: ObservableObject {
+    enum LoadError: Error {
+        case invalidModel
+
+        var localizedDescription: String {
+            switch self {
+            case .invalidModel:
+                return "Invalid model name. Could not fetch."
+            }
+        }
+    }
+
+    private static var llmDownloadBase: URL? {
+        URL.appRootURL?
+            .appending(component: "intelligence")
+    }
+
     var running = false
     var output = ""
     var modelInfo = ""
@@ -44,15 +60,19 @@ class LLMEvaluator: ObservableObject {
     /// load and return the model -- can be called multiple times, subsequent calls will
     /// just return the loaded model
     private func load(modelName: String) async throws -> ModelContainer {
-        let model = getModelByName(modelName)
+        guard let model = getModelByName(modelName) else {
+            throw LoadError.invalidModel
+        }
 
         switch loadState {
         case .idle:
             // limit the buffer cache
             MLX.GPU.set(cacheLimit: 20 * 1024 * 1024)
 
-            // swiftlint:disable:next force_unwrapping
-            let modelContainer = try await MLXLLM.loadModelContainer(configuration: model!) { [modelConfiguration] progress in
+            let modelContainer = try await MLXLLM.loadModelContainer(
+                hub: .init(downloadBase: Self.llmDownloadBase),
+                configuration: model
+            ) { [modelConfiguration] progress in
                 Task { @MainActor in
                     self.modelInfo =
                         "Downloading \(modelConfiguration.name): \(Int(progress.fractionCompleted * 100))%"
