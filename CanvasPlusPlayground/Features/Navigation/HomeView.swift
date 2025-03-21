@@ -44,15 +44,8 @@ struct HomeView: View {
                 .refreshable {
                     await loadCourses()
                 }
-        } content: {
-            contentView
         } detail: {
-            if let selectedCourse, let selectedCoursePage {
-                CourseDetailView(
-                    course: selectedCourse,
-                    coursePage: selectedCoursePage
-                )
-            }
+            contentView
         }
         .task {
             navigationModel.selectedNavigationPage = selectedNavigationPage
@@ -97,21 +90,23 @@ struct HomeView: View {
 
     @ViewBuilder
     private var contentView: some View {
-        if let selectedCourse {
-            CourseView(course: selectedCourse)
-        } else if let selectedNavigationPage {
-            switch selectedNavigationPage {
-            case .announcements:
-                AllAnnouncementsView()
-            case .toDoList:
-                AggregatedAssignmentsView()
-            case .pinned:
-                PinnedItemsView()
-            default:
-                EmptyView()
+        NavigationStack {
+            if let selectedCourse {
+                CourseView(course: selectedCourse)
+            } else if let selectedNavigationPage {
+                switch selectedNavigationPage {
+                case .announcements:
+                    AllAnnouncementsView()
+                case .toDoList:
+                    AggregatedAssignmentsView()
+                case .pinned:
+                    PinnedItemsView()
+                default:
+                    EmptyView()
+                }
+            } else {
+                ContentUnavailableView("Select a course", systemImage: "folder")
             }
-        } else {
-            ContentUnavailableView("Select a course", systemImage: "folder")
         }
     }
 

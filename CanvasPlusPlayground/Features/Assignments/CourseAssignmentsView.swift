@@ -17,6 +17,7 @@ struct CourseAssignmentsView: View {
 
     @State private var isLoadingAssignments = true
     @State private var showingGradeCalculator = false
+    @State private var selectedAssignment: Assignment?
 
     init(course: Course, showGrades: Bool = false) {
         self.course = course
@@ -33,13 +34,14 @@ struct CourseAssignmentsView: View {
     }
 
     var body: some View {
-        NavigationStack {
-            mainbody
-        }
+        mainbody
     }
 
     var mainbody: some View {
-        List(assignmentManager.assignmentGroups) { assignmentGroup in
+        List(
+            assignmentManager.assignmentGroups,
+            selection: $selectedAssignment
+        ) { assignmentGroup in
             Section {
                 let assignments = assignmentGroup.assignments ?? []
 
@@ -98,9 +100,6 @@ struct CourseAssignmentsView: View {
         }
         .statusToolbarItem("Assignments", isVisible: isLoadingAssignments)
         .navigationTitle(showGrades ? "Grades" : "Assignments")
-        .navigationDestination(for: Assignment.self) { assignment in
-            AssignmentDetailView(assignment: assignment)
-        }
         .sheet(isPresented: $showingGradeCalculator) {
             NavigationStack {
                 GradeCalculatorView(
@@ -112,6 +111,15 @@ struct CourseAssignmentsView: View {
             #endif
         }
         .environment(gradeCalculator)
+        #if os(macOS)
+        .navigationDestination(for: Assignment.self) { assignment in
+            AssignmentDetailView(assignment: assignment)
+        }
+        #else
+        .navigationDestination(item: $selectedAssignment) { assignment in
+            AssignmentDetailView(assignment: assignment)
+        }
+        #endif
     }
 
     private func loadAssignments() async {

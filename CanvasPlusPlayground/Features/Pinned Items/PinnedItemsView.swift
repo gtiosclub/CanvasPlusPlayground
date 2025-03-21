@@ -29,15 +29,17 @@ struct PinnedItemsView: View {
                     .bold()
             }
         }
+        .listStyle(.inset)
         .task {
             for item in pinnedItemsManager.pinnedItems.filter({ $0.data == nil }) {
                 await item.itemData()
             }
         }
         .navigationTitle("Pinned")
-        #if os(macOS)
-        .navigationSplitViewColumnWidth(min: 350, ideal: 400)
-        #endif
+        .navigationDestination(item: $selectedItem) { item in
+            PinnedItemDetailView(item: item)
+                .id(item.id)
+        }
         .overlay {
             if sortedTypes.isEmpty {
                 ContentUnavailableView(
@@ -64,12 +66,8 @@ struct PinnedItemsView: View {
                 )
             ) {
                 ForEach(items) { item in
-                    NavigationLink {
-                        PinnedItemDetailView(item: item)
-                            .onAppear {
-                                selectedItem = item
-                            }
-                            .id(item.id)
+                    Button {
+                        selectedItem = item
                     } label: {
                         PinnedItemCard(item: item)
                             .cardBackground(selected: selectedItem == item)
