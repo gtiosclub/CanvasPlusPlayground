@@ -13,5 +13,4 @@ struct MarkCourseDiscussionTopicUnreadRequest: NoReturnAPIRequest {
     var path: String { "courses/\(courseID)/discussion_topics/\(discussionID)/read" }
     var method: RequestMethod { .DELETE }
     var queryParameters: [QueryParameter] { [] }
-    
 }

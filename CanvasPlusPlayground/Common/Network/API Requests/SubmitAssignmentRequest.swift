@@ -17,7 +17,7 @@ struct SubmitAssignmentRequest: NoReturnAPIRequest {
 
     let textComment: String?
     let submissionType: SubmissionType
-    let submission_body: String?
+    let submissionBody: String?
     let url: String?
     let fileIDs: [Int]?
     var queryParameters: [QueryParameter] = []
@@ -28,13 +28,12 @@ struct SubmitAssignmentRequest: NoReturnAPIRequest {
             "submission": [
                 "submission_type": submissionType.rawValue as Any,
                 "text_comment": textComment as Any,
-                "body": submission_body as Any,
+                "body": submissionBody as Any,
                 "file_ids": fileIDs as Any,
                 "url": url as Any
             ]
         ]
         if let jsonData = try? JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted) {
-            print(jsonData)
             return jsonData
         }
 

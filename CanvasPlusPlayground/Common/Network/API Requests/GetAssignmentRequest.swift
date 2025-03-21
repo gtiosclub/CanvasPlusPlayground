@@ -23,8 +23,6 @@ struct GetAssignmentRequest: CacheableAPIRequest {
         + include.map { ("include[]", $0.rawValue) }
     }
 
-    
-
     // MARK: Query Params
     let include: [Include]
     let overrideAssignmentDates: Bool?

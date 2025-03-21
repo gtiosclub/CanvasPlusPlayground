@@ -26,8 +26,6 @@ struct GetFilesInFolderRequest: CacheableArrayAPIRequest {
         + only.map { ("only[]", $0.rawValue) }
     }
 
-    
-
     // MARK: Query Params
     let contentTypes: [String?]
     let excludeContentTypes: [String?]

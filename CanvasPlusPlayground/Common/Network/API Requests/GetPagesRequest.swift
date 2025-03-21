@@ -25,8 +25,6 @@ struct GetPagesRequest: CacheableArrayAPIRequest {
         + include.map { ("include[]", $0.rawValue) }
     }
 
-    
-
     // MARK: Query Params
     let sort: SortOption?
     let order: OrderOption?

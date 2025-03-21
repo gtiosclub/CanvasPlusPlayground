@@ -28,8 +28,6 @@ struct GetAssignmentsRequest: CacheableArrayAPIRequest {
         + assignmentIds.map { ("assignment_ids[]", $0) }
     }
 
-    
-
     // MARK: Query Params
     let include: [Include]
     let searchTerm: String?

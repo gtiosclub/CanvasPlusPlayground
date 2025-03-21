@@ -15,8 +15,6 @@ struct GetUserProfileRequest: CacheableAPIRequest {
         []
     }
 
-    
-
     /// Pass in `nil` as `userID` to fetch the current user profile.
     init(userId: String? = nil) {
         self.userId = userId ?? "self"

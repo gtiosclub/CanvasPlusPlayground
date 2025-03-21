@@ -38,20 +38,19 @@ enum CanvasRequest {
         filename: String,
         fileSizeInBytes size: Int
     ) -> UploadSubmissionFileNotificationRequest {
-        UploadSubmissionFileNotificationRequest(courseID: courseID, assignmentID: assignmentID, name: filename, size: size, contentType: nil, on_duplicate: .overwrite)
+        UploadSubmissionFileNotificationRequest(courseID: courseID, assignmentID: assignmentID, name: filename, size: size, contentType: nil, onDuplicate: .overwrite)
     }
-    
+
     static func uploadSubmissionFile(
         path: String,
         keyValues: [String: String?],
         filename: String,
         fileData: Data,
         mimeType: MimeType
-        
     ) -> UploadSubmissionFileUploadRequest {
         UploadSubmissionFileUploadRequest(path: path, keyValues: keyValues, filename: filename, fileData: fileData, mimeType: mimeType.rawValue)
     }
-    
+
     static func confirmFileUpload(
         path: String
     ) -> UploadSubmissionFileConfirmationRequest {
@@ -238,7 +237,7 @@ enum CanvasRequest {
         url: String? = nil,
         fileIDs: [Int]? = nil
     ) -> SubmitAssignmentRequest {
-        SubmitAssignmentRequest(courseID: courseID, assignmentID: assignmentID, textComment: textComment, submissionType: submissionType, submission_body: submissionBody, url: url, fileIDs: fileIDs)
+        SubmitAssignmentRequest(courseID: courseID, assignmentID: assignmentID, textComment: textComment, submissionType: submissionType, submissionBody: submissionBody, url: url, fileIDs: fileIDs)
     }
 
     static func getPages(

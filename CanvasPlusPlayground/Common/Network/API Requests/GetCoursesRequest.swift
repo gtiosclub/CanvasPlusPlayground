@@ -25,8 +25,6 @@ struct GetCoursesRequest: CacheableArrayAPIRequest {
         + state.map { ("state[]", $0.rawValue) }
     }
 
-    
-
     // MARK: Query Params
     let enrollmentType: String?
     let enrollmentRole: String?

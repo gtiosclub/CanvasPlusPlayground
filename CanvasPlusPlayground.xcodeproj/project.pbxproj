@@ -202,7 +202,7 @@
 		9BEB4ECF2D56AF570013869D /* AssignmentDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentDetailView.swift; sourceTree = "<group>"; };
 		9BF228C72D6CD1EB000676F2 /* RemindersManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindersManager.swift; sourceTree = "<group>"; };
 		9BFD457C2D80F6EB00BBAA01 /* UploadSubmissionFileNotificationRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadSubmissionFileNotificationRequest.swift; sourceTree = "<group>"; };
-		9BFD45802D811B1000BBAA01 /* AssignmentSubmissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AssignmentSubmissionManager.swift; path = CanvasPlusPlayground/Features/Assignments/AssignmentSubmissionManager.swift; sourceTree = "<group>"; };
+		9BFD45802D811B1000BBAA01 /* AssignmentSubmissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentSubmissionManager.swift; sourceTree = "<group>"; };
 		A301EE082D61137400D71139 /* MarkCourseDiscussionTopicReadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkCourseDiscussionTopicReadRequest.swift; sourceTree = "<group>"; };
 		A301EE0A2D61148C00D71139 /* MarkCourseDiscussionTopicUnreadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkCourseDiscussionTopicUnreadRequest.swift; sourceTree = "<group>"; };
 		A301EE0C2D612E7100D71139 /* DiscussionTopicAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionTopicAPI.swift; sourceTree = "<group>"; };
@@ -571,6 +571,7 @@
 				9B69FA4E2CC2CCCF006101F3 /* AggregatedAssignmentsListCell.swift */,
 				192EC0472C963ACB00AF8528 /* CourseAssignmentManager.swift */,
 				9B69FA4C2CC2CCB1006101F3 /* AggregatedAssignmentsViewModel.swift */,
+				9BFD45802D811B1000BBAA01 /* AssignmentSubmissionManager.swift */,
 			);
 			path = Assignments;
 			sourceTree = "<group>";
@@ -743,7 +744,6 @@
 		B764545B2C8BBC7F002DF00E = {
 			isa = PBXGroup;
 			children = (
-				9BFD45802D811B1000BBAA01 /* AssignmentSubmissionManager.swift */,
 				B76454FD2C8DF61B002DF00E /* CanvasPlusPlayground */,
 				B76454652C8BBC7F002DF00E /* Products */,
 				9B07E7142D77BF1700359B69 /* Recovered References */,

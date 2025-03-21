@@ -19,8 +19,6 @@ struct GetCourseRequest: CacheableAPIRequest {
         + include.map { ("include[]", $0.rawValue) }
     }
 
-    
-
     let include: [Include]
     let teacherLimit: Int?
 

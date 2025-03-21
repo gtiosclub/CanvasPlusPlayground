@@ -79,12 +79,12 @@ extension APIRequest {
     var method: RequestMethod { .GET }
 
     var perPage: Int { 50 }
-    
+
     var contentType: String? { nil }
-    
+
     var body: Data? { nil }
-    
+
     var forceURL: String? { nil }
-    
+
     var contentLength: String? { nil }
 }

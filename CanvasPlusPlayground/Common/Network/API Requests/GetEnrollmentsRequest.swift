@@ -33,8 +33,6 @@ struct GetEnrollmentsRequest: CacheableArrayAPIRequest {
         return params
     }
 
-    
-
     // MARK: Query Params
     let type: [EnrollmentType]
     let role: [String?]

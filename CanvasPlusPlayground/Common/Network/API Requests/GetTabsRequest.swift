@@ -21,8 +21,6 @@ struct GetTabsRequest: ArrayAPIRequest {
         + include.map { ("include[]", $0.rawValue) }
     }
 
-    
-
     // MARK: Query Params
     let include: [Include]
     let perPage: Int
