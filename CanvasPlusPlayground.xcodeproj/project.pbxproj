@@ -32,7 +32,7 @@
 		9BA7C0F72D62DC92000F2918 /* PinnedItemDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BA7C0F62D62DC92000F2918 /* PinnedItemDetailView.swift */; };
 		9BEB4ED02D56AF570013869D /* AssignmentDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BEB4ECF2D56AF570013869D /* AssignmentDetailView.swift */; };
 		9BF228C82D6CD1EB000676F2 /* RemindersManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF228C72D6CD1EB000676F2 /* RemindersManager.swift */; };
-		9BFD457D2D80F6EB00BBAA01 /* UploadSubmissionFileRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFD457C2D80F6EB00BBAA01 /* UploadSubmissionFileRequest.swift */; };
+		9BFD457D2D80F6EB00BBAA01 /* UploadSubmissionFileNotificationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFD457C2D80F6EB00BBAA01 /* UploadSubmissionFileNotificationRequest.swift */; };
 		9BFD45812D811B1000BBAA01 /* AssignmentSubmissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFD45802D811B1000BBAA01 /* AssignmentSubmissionManager.swift */; };
 		A301EE092D61137400D71139 /* MarkCourseDiscussionTopicReadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A301EE082D61137400D71139 /* MarkCourseDiscussionTopicReadRequest.swift */; };
 		A301EE0B2D61148C00D71139 /* MarkCourseDiscussionTopicUnreadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A301EE0A2D61148C00D71139 /* MarkCourseDiscussionTopicUnreadRequest.swift */; };
@@ -201,7 +201,7 @@
 		9BA7C0F62D62DC92000F2918 /* PinnedItemDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedItemDetailView.swift; sourceTree = "<group>"; };
 		9BEB4ECF2D56AF570013869D /* AssignmentDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentDetailView.swift; sourceTree = "<group>"; };
 		9BF228C72D6CD1EB000676F2 /* RemindersManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindersManager.swift; sourceTree = "<group>"; };
-		9BFD457C2D80F6EB00BBAA01 /* UploadSubmissionFileRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadSubmissionFileRequest.swift; sourceTree = "<group>"; };
+		9BFD457C2D80F6EB00BBAA01 /* UploadSubmissionFileNotificationRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadSubmissionFileNotificationRequest.swift; sourceTree = "<group>"; };
 		9BFD45802D811B1000BBAA01 /* AssignmentSubmissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AssignmentSubmissionManager.swift; path = CanvasPlusPlayground/Features/Assignments/AssignmentSubmissionManager.swift; sourceTree = "<group>"; };
 		A301EE082D61137400D71139 /* MarkCourseDiscussionTopicReadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkCourseDiscussionTopicReadRequest.swift; sourceTree = "<group>"; };
 		A301EE0A2D61148C00D71139 /* MarkCourseDiscussionTopicUnreadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkCourseDiscussionTopicUnreadRequest.swift; sourceTree = "<group>"; };
@@ -414,7 +414,7 @@
 				A301EE0A2D61148C00D71139 /* MarkCourseDiscussionTopicUnreadRequest.swift */,
 				A301EE122D614A4100D71139 /* GetDiscussionTopicsRequest.swift */,
 				9B762BC82D7BF8E70051F1F6 /* SubmitAssignmentRequest.swift */,
-				9BFD457C2D80F6EB00BBAA01 /* UploadSubmissionFileRequest.swift */,
+				9BFD457C2D80F6EB00BBAA01 /* UploadSubmissionFileNotificationRequest.swift */,
 			);
 			path = "API Requests";
 			sourceTree = "<group>";
@@ -944,7 +944,7 @@
 			files = (
 				A301EE0B2D61148C00D71139 /* MarkCourseDiscussionTopicUnreadRequest.swift in Sources */,
 				9B92A4232C93853C00C21CFC /* Announcement.swift in Sources */,
-				9BFD457D2D80F6EB00BBAA01 /* UploadSubmissionFileRequest.swift in Sources */,
+				9BFD457D2D80F6EB00BBAA01 /* UploadSubmissionFileNotificationRequest.swift in Sources */,
 				A3CA02592D43294B00A9752B /* SearchResultsListView.swift in Sources */,
 				A3D0225D2D6A711900F8068C /* GetPagesRequest.swift in Sources */,
 				B76454FE2C8DF61B002DF00E /* Course.swift in Sources */,

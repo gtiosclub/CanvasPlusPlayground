@@ -19,6 +19,8 @@ protocol APIRequest {
     var perPage: Int { get }
     var body: Data? { get }
     var contentType: String? { get }
+    var forceURL: String? { get }
+    var contentLength: String? { get }
 }
 
 protocol ArrayAPIRequest: APIRequest {
@@ -52,7 +54,7 @@ extension APIRequest {
     }
 
     var combinedQueryParams: [(String, String)] {
-        ([(name: "access_token", value: StorageKeys.accessTokenValue)] + queryParameters).compactMap {
+        (queryParameters).compactMap {
             let (key, val) = $0
             guard let val else {
                 return nil
@@ -62,11 +64,16 @@ extension APIRequest {
     }
 
     var url: URL {
-        baseURL
-            .appendingPathComponent(path)
-            .appending(queryItems: combinedQueryParams.map { name, val in
-                URLQueryItem(name: name, value: "\(val)")
-            })
+        guard let url = forceURL else {
+            print("ForceURL nil, using \(baseURL)")
+            return baseURL
+                .appendingPathComponent(path)
+                .appending(queryItems: combinedQueryParams.map { name, val in
+                    URLQueryItem(name: name, value: "\(val)")
+                })
+        }
+        print("Using ForceURL \(url)")
+        return URL(string: url)!
     }
 
     var method: RequestMethod { .GET }
@@ -76,4 +83,8 @@ extension APIRequest {
     var contentType: String? { nil }
     
     var body: Data? { nil }
+    
+    var forceURL: String? { nil }
+    
+    var contentLength: String? { nil }
 }

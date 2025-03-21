@@ -32,13 +32,30 @@ enum CanvasRequest {
         GetFoldersInFolderRequest(folderId: folderId)
     }
 
-    static func uploadFileSubmission(
+    static func notifyFileUpload(
         courseID: String,
         assignmentID: String,
         filename: String,
         fileSizeInBytes size: Int
-    ) -> UploadSubmissionFileRequest {
-        UploadSubmissionFileRequest(courseID: courseID, assignmentID: assignmentID, name: filename, size: size, contentType: nil, on_duplicate: .overwrite)
+    ) -> UploadSubmissionFileNotificationRequest {
+        UploadSubmissionFileNotificationRequest(courseID: courseID, assignmentID: assignmentID, name: filename, size: size, contentType: nil, on_duplicate: .overwrite)
+    }
+    
+    static func uploadSubmissionFile(
+        path: String,
+        keyValues: [String: String?],
+        filename: String,
+        fileData: Data,
+        mimeType: MimeType
+        
+    ) -> UploadSubmissionFileUploadRequest {
+        UploadSubmissionFileUploadRequest(path: path, keyValues: keyValues, filename: filename, fileData: fileData, mimeType: mimeType.rawValue)
+    }
+    
+    static func confirmFileUpload(
+        path: String
+    ) -> UploadSubmissionFileConfirmationRequest {
+        UploadSubmissionFileConfirmationRequest(path: path)
     }
 
     static func getTabs(courseId: String) -> GetTabsRequest {
