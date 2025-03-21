@@ -39,12 +39,9 @@ public class AssignmentSubmissionManager {
             // TODO: Error handle
             return
         }
-        
-        
+
         let fileIDs = await withTaskGroup(of: Int.self, returning: [Int].self) { taskGroup in
-            
             for url in urls {
-                
                 taskGroup.addTask {
                     do {
                         return try await self.uploadFile(fileURL: url)
@@ -53,7 +50,6 @@ public class AssignmentSubmissionManager {
                         return -1
                     }
                 }
-                
             }
 
             var fileids = [Int]()
@@ -62,7 +58,7 @@ public class AssignmentSubmissionManager {
             }
             return fileids
         }
-        
+
         let submissionRequest = CanvasRequest.submitAssignment(courseID: courseID, assignmentID: assignment.id, submissionType: .onlineUpload, fileIDs: fileIDs.filter { $0 != -1 })
         do {
             try await CanvasService.shared.fetch(submissionRequest)
@@ -70,11 +66,11 @@ public class AssignmentSubmissionManager {
             print(error)
         }
     }
-    
+
     // Returns fileID
     func uploadFile(fileURL url: URL) async throws -> Int {
         let filename = url.lastPathComponent
-    
+
         let fileData = try Data(contentsOf: url)
         let size = fileData.count
         guard let courseID = assignment.courseId?.asString else {
@@ -86,22 +82,28 @@ public class AssignmentSubmissionManager {
             // TODO: BRUH
             return -1
         }
-        
+
         let mime: MimeType = url.pathExtension.lowercased() == "txt" ? .txt : .other
-        
-        let uploadRequest = CanvasRequest.uploadSubmissionFile(path: notificationResponse.uploadURL, keyValues: notificationResponse.uploadParams, filename: filename, fileData: fileData, mimeType: mime)
-        
+
+        let uploadRequest = CanvasRequest.uploadSubmissionFile(
+            path: notificationResponse.uploadURL,
+            keyValues: notificationResponse.uploadParams,
+            filename: filename,
+            fileData: fileData,
+            mimeType: mime
+        )
+
         let (_, uploadResponse) = try await CanvasService.shared.fetchResponse(uploadRequest)
-        
+
         let httpResponse = uploadResponse as! HTTPURLResponse
 
         if httpResponse.value(forHTTPHeaderField: "Location") == nil {
             // TODO: Handle Error
             return -1
         }
-        
+
         guard let locationString = httpResponse.value(forHTTPHeaderField: "Location") else {
-            //TODO: Error
+            // TODO: Error
             return -1
         }
         let confirmationRequest = CanvasRequest.confirmFileUpload(path: locationString)

@@ -22,13 +22,13 @@ struct UploadSubmissionFileNotificationRequest: APIRequest {
     let name: String // name of file
     let size: Int // Size in bytes
     let contentType: String? // if not provided, guesses based on file extension
-    let on_duplicate: DuplicateCondition?
+    let onDuplicate: DuplicateCondition?
     var body: Data? {
         let dict:[String: Any] = [
             "name": name,
             "size": size,
             "content_type": contentType as Any,
-            "on_duplicate": on_duplicate?.rawValue as Any
+            "on_duplicate": onDuplicate?.rawValue as Any
         ]
         if let jsonData = try? JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted) {
             return jsonData
@@ -41,6 +41,11 @@ struct UploadSubmissionFileNotificationRequest: APIRequest {
     }
 }
 
+// Upload notification request
+// File upload request
+// upload confirmation request
+// Next, canvas sends you an endpoint to upload the file to
+
 struct UploadSubmissionFileNotificationResponse: APIResponse {
     let uploadURL: String
     let uploadParams: [String: String?]
@@ -50,7 +55,6 @@ struct UploadSubmissionFileNotificationResponse: APIResponse {
         case uploadParams = "upload_params"
     }
 }
-
 // Upload notification request
 // File upload request
 // upload confirmation request
@@ -58,13 +62,13 @@ struct UploadSubmissionFileNotificationResponse: APIResponse {
 
 struct UploadSubmissionFileUploadRequest: APIRequest {
     typealias Subject = UploadSubmissionFileConfirmationResponse
-    
+
     var path: String
     var queryParameters: [QueryParameter] = []
     var method: RequestMethod { .POST }
     var contentType: String? { "multipart/form-data; boundary=\(boundary)" }
     var forceURL: String? { path }
-    
+
     let boundary = UUID().uuidString
     let keyValues: [String: String?]
     let filename: String
@@ -72,7 +76,7 @@ struct UploadSubmissionFileUploadRequest: APIRequest {
     let mimeType: String
     var body: Data? {
         var body = Data()
-        
+
         // Append upload params
         for (key, value) in keyValues {
             if let value { // Ignore nil values
@@ -83,7 +87,6 @@ struct UploadSubmissionFileUploadRequest: APIRequest {
         }
 
         // Append file data
-
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
         body.append("Content-Disposition: form-data; name=\"file\"; filename=\"\(filename)\"\r\n".data(using: .utf8)!)
         body.append("Content-Type: \(mimeType)\r\n\r\n".data(using: .utf8)!)
@@ -92,12 +95,9 @@ struct UploadSubmissionFileUploadRequest: APIRequest {
 
         // End boundary
         body.append("--\(boundary)--\r\n".data(using: .utf8)!)
-        
-        
         return body
     }
 }
-
 
 struct UploadSubmissionFileConfirmationResponse: APIResponse {
     let id: Int
@@ -113,7 +113,7 @@ struct UploadSubmissionFileConfirmationResponse: APIResponse {
 
 struct UploadSubmissionFileConfirmationRequest: APIRequest {
     typealias Subject = UploadSubmissionFileConfirmationResponse
-    
+
     var path: String
     var queryParameters: [QueryParameter] = []
     var method: RequestMethod { .GET }
