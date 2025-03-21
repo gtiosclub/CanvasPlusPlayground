@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct AssignmentSubmissionView: View {
     @Environment(AssignmentSubmissionManager.self) private var manager
@@ -18,7 +19,7 @@ struct AssignmentSubmissionView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var showSubmissionUploadProgress = false
     @State private var showSubmissionErrorAlert: Bool = false
-
+    @State private var isFileHover: Bool = false
     var body: some View {
         NavigationStack {
             Form {
@@ -85,12 +86,21 @@ struct AssignmentSubmissionView: View {
                     .disabled(submitButtonDisabled)
                 }
             }
+            .onDrop(of: [UTType.fileURL], isTargeted: $isFileHover) { providers in
+                handleDrop(providers: providers)
+            }
         }
         .onAppear {
             selectedSubmissionType = submissionTypes.first
         }
         .alert("Error submitting assignment", isPresented: $showSubmissionErrorAlert) {
             Button("Dismiss") { }
+        }
+        .overlay {
+            if isFileHover {
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(Color.accentColor, lineWidth: 4)
+            }
         }
     }
 
@@ -187,15 +197,30 @@ struct AssignmentSubmissionView: View {
                     selectedURLs.append(contentsOf: urls)
                 case .failure(let error):
                     LoggerService.main.log("Error: \(error)")
-                    // TODO: Add a popup for this error
+                    showSubmissionErrorAlert = true
                 }
             }
         }
     }
+
     var fileSubmissionValid: Bool {
         !selectedURLs.isEmpty
     }
 
-    // MARK: URL Submission
-    // TODO: Implement URL submission
+    private func handleDrop(providers: [NSItemProvider]) -> Bool {
+        for provider in providers.filter({ $0.hasItemConformingToTypeIdentifier(UTType.fileURL.identifier) }) {
+            provider.loadItem(forTypeIdentifier: UTType.fileURL.identifier, options: nil) { item, _ in
+                if let data = item as? Data,
+                   let url = URL(dataRepresentation: data, relativeTo: nil) {
+                    DispatchQueue.main.async {
+                        selectedURLs.append(url)
+                    }
+                } else {
+                    LoggerService.main.error("Failed to load file URL")
+                }
+            }
+            return true
+        }
+        return false
+    }
 }
