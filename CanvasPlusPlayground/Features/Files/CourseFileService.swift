@@ -14,26 +14,11 @@ struct CourseFileService {
     static let shared: CourseFileService = .init()
 
     private static let fileManager: FileManager = .default
-    private static var rootURL: URL? {
-        if let bundleId = Bundle.main.bundleIdentifier {
-            let root = URL.applicationSupportDirectory.appendingPathComponent(bundleId)
 
-            if fileManager.fileExists(atPath: root.path) {
-                return root
-            } else {
-                do {
-                    try fileManager.createDirectory(at: root, withIntermediateDirectories: true, attributes: nil)
-                    return root
-                } catch {
-                    LoggerService.main.error("Failure creating directory to root.")
-                    return nil
-                }
-            }
-        } else {
-            LoggerService.main.error("Failure getting bundle identifier")
-            return nil
-        }
+    private static var rootURL: URL? {
+        URL.appRootURL
     }
+
     private static var coursesURL: URL? {
         rootURL?
             .appendingPathComponent(StorageKeys.accessTokenValue)

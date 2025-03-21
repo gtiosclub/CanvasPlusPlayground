@@ -9,7 +9,7 @@ class IntelligenceManager: ObservableObject {
     @AppStorage("systemPrompt") var systemPrompt = "you are a helpful assistant"
     @AppStorage("currentModelName") var currentModelName: String?
 
-    private let installedModelsKey = "installedModels"
+    private let installedModelsKey = StorageKeys.installedModels
 
     @Published var installedModels: [String] = [] {
         didSet {

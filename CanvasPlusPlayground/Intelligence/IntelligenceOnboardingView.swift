@@ -10,7 +10,7 @@ import SwiftUI
 
 struct IntelligenceOnboardingView: View {
     enum InstallState {
-        case selectModel
+        case readyToInstall
         case installing
         case installed
     }
@@ -19,8 +19,7 @@ struct IntelligenceOnboardingView: View {
     @EnvironmentObject private var intelligenceManager: IntelligenceManager
     @EnvironmentObject private var llmEvaluator: LLMEvaluator
 
-    @State private var selectedModel: ModelConfiguration?
-    @State private var currentInstallState: InstallState = .selectModel
+    @State private var currentInstallState: InstallState = .readyToInstall
 
     var body: some View {
         VStack(spacing: 8) {
@@ -30,30 +29,28 @@ struct IntelligenceOnboardingView: View {
 
             Spacer()
 
-            List {
-                listContent
-            }
-            .listStyle(.plain)
-
-            Spacer()
-
             if currentInstallState == .installing {
                 HStack {
                     ProgressView(value: llmEvaluator.progress, total: 1)
                         .progressViewStyle(.linear)
+
                     ProgressView()
                 }
             }
         }
-        .fontDesign(.rounded)
         .padding()
+        .onAppear {
+            if !intelligenceManager.installedModels.isEmpty {
+                currentInstallState = .installed
+            }
+        }
         .onChange(of: llmEvaluator.progress) { _, newValue in
             if newValue == 1.0 {
                 completeInstallation()
             }
         }
         .toolbar {
-            if currentInstallState == .selectModel {
+            if currentInstallState == .readyToInstall {
                 #if os(macOS)
                 ToolbarItem(placement: .destructiveAction) {
                     Button("Cancel") {
@@ -73,7 +70,6 @@ struct IntelligenceOnboardingView: View {
                     Button("Install") {
                         installModel()
                     }
-                    .disabled(selectedModel == nil)
                 }
             } else if currentInstallState == .installed {
                 ToolbarItem(placement: .confirmationAction) {
@@ -91,57 +87,17 @@ struct IntelligenceOnboardingView: View {
     @ViewBuilder
     private var header: some View {
         Image(systemName: "wand.and.stars")
-            .font(.largeTitle)
+            .font(.system(size: 70))
             .foregroundStyle(.tint)
 
-        Text("Install a Model")
+        Text("Canvas Plus Intelligence")
             .font(.largeTitle)
+            .fontDesign(.rounded)
             .bold()
 
         Text(descriptionText)
+            .font(.title3)
             .multilineTextAlignment(.center)
-    }
-
-    @ViewBuilder
-    private var listContent: some View {
-        Section("Available") {
-            ForEach(filteredModels, id: \.name) { model in
-                Button {
-                    selectedModel = model
-                } label: {
-                    HStack {
-                        Text(intelligenceManager.modelDisplayName(model.name))
-                        Spacer()
-                        if selectedModel == model {
-                            Image(systemName: "checkmark")
-                        }
-                    }
-                    .contentShape(.rect)
-                }
-            }
-        }
-        .disabled(currentInstallState != .selectModel)
-
-        if !intelligenceManager.installedModels.isEmpty {
-            Section("Installed") {
-                ForEach(intelligenceManager.installedModels, id: \.self) { model in
-                    Button {
-                        if let config = llmEvaluator.getModelByName(model) {
-                            selectedModel = config
-                            installModel()
-                        }
-                    } label: {
-                        HStack {
-                            Text(model)
-                            Spacer()
-                            if intelligenceManager.currentModelName == model {
-                                Image(systemName: "checkmark")
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
 
     private func installModel() {
@@ -150,10 +106,8 @@ struct IntelligenceOnboardingView: View {
         #endif
 
         Task {
-            if let selectedModel {
-                currentInstallState = .installing
-                await llmEvaluator.switchModel(selectedModel)
-            }
+            currentInstallState = .installing
+            await llmEvaluator.switchModel(ModelConfiguration.defaultModel)
         }
     }
 
@@ -162,30 +116,28 @@ struct IntelligenceOnboardingView: View {
         UIApplication.shared.isIdleTimerDisabled = false
         #endif
 
-        if let selectedModel {
-            intelligenceManager.currentModelName = selectedModel.name
-            intelligenceManager.addInstalledModel(selectedModel.name)
-        }
+        intelligenceManager.currentModelName = ModelConfiguration.defaultModel.name
+        intelligenceManager.addInstalledModel(ModelConfiguration.defaultModel.name)
 
         currentInstallState = .installed
     }
 
-    private var filteredModels: [ModelConfiguration] {
-        ModelConfiguration.availableModels
-            .filter { !intelligenceManager.installedModels.contains($0.name) }
-            .sorted { $0.name < $1.name }
-    }
-
     private var descriptionText: String {
-        let modelName = intelligenceManager.modelDisplayName(selectedModel?.name ?? "")
+        let baseText = """
+            Canvas Plus can leverage on-device LLMs to enable intelligence capabilities,\
+            such as summarizing announcements, \
+            performing intelligent grade calculations, \
+            and more. \
+            Simply download and install a model to get started.
+            """
 
         return switch currentInstallState {
-        case .selectModel:
-            "Choose a model to install and use for summarization and other intelligence features."
+        case .readyToInstall:
+            baseText
         case .installing:
-            "Installing \(modelName)"
+            baseText + "\n\nInstalling..."
         case .installed:
-            "Installed \(modelName)"
+            baseText + "\n\nIntelligence is installed."
         }
     }
 }
@@ -194,6 +146,6 @@ struct IntelligenceOnboardingView: View {
     NavigationStack {
         IntelligenceOnboardingView()
     }
-        .environmentObject(IntelligenceManager())
-        .environmentObject(LLMEvaluator())
+    .environmentObject(IntelligenceManager())
+    .environmentObject(LLMEvaluator())
 }
