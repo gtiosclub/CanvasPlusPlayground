@@ -24,19 +24,8 @@ struct Sidebar: View {
                 SidebarTiles()
             }
 
-            Section("Favorites") {
-                ForEach(courseManager.userFavCourses) { course in
-                    NavigationLink(
-                        value: NavigationPage.course(id: course.id)
-                    ) {
-                        CourseListCell(course: course)
-                    }
-                    .listItemTint(.fixed(course.rgbColors?.color ?? .accentColor))
-                }
-            }
-
             Section("My Courses") {
-                ForEach(courseManager.userOtherCourses) { course in
+                ForEach(courseManager.userCourses) { course in
                     NavigationLink(value: NavigationPage.course(id: course.id)) {
                         CourseListCell(course: course)
                     }
@@ -44,9 +33,9 @@ struct Sidebar: View {
                 }
             }
 
-            if !courseManager.userHiddenCourses.isEmpty {
+            if !courseManager.hiddenCourses.isEmpty {
                 Section("Hidden", isExpanded: $isHiddenSectionExpanded) {
-                    ForEach(courseManager.userHiddenCourses) { course in
+                    ForEach(courseManager.hiddenCourses) { course in
                         NavigationLink(value: NavigationPage.course(id: course.id)) {
                             CourseListCell(course: course)
                         }

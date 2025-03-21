@@ -66,7 +66,7 @@ struct PeopleCommonView: View {
         await PeopleManager
             .fetchAllClassesWith(
                 userID: id,
-                activeCourses: courseManager.displayedCourses
+                activeCourses: courseManager.userCourses
             ) {
             commonCourses.append($0)
             }

@@ -24,7 +24,7 @@ struct AggregatedAssignmentsView: View {
         .navigationTitle("Your Assignments")
         .task {
             await viewModel
-                .loadAssignments(courses: courseManager.displayedCourses)
+                .loadAssignments(courses: courseManager.userCourses)
         }
     }
 }
