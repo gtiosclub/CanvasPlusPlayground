@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ReminderButton: View {
-    @Environment(RemindersManager.self) var reminderManager
+    @Environment(RemindersManager.self) private var reminderManager
     @State private var showDatePicker = false
 
     let item: ReminderType
@@ -41,8 +41,8 @@ struct ReminderButton: View {
 }
 
 private struct ReminderDatePicker: View {
-    @Environment(RemindersManager.self) var reminderManager
-    @Environment(\.dismiss) var dismiss
+    @Environment(RemindersManager.self) private var reminderManager
+    @Environment(\.dismiss) private var dismiss
     @State private var selectedDate: Date = .now
     @State private var alertMessage = ""
     @State private var showError = false
@@ -67,7 +67,8 @@ private struct ReminderDatePicker: View {
                             imageColor: color,
                             text: text,
                             date: date,
-                            action: { scheduleReminder(date: date) })
+                            action: { scheduleReminder(date: date) }
+                        )
                     }
                 }
                 Section("Custom") {

@@ -41,3 +41,12 @@ extension Date {
         return calendar.date(bySettingHour: 8, minute: 0, second: 0, of: nextDay) ?? Date.now
     }
 }
+
+extension Date {
+    static func timeDeltaString(from startDate: Date, to endDate: Date) -> String {
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .full // Use .short or .abbreviated for different styles
+        formatter.allowedUnits = [.day, .hour]
+        return formatter.string(from: startDate, to: endDate) ?? "N/A"
+    }
+}
