@@ -34,60 +34,80 @@ public class AssignmentSubmissionManager {
             // tell canavas about the file upload and get a token
             // upload file data with the provided URL
             // confirm upload success
-        var fileIDs:[Int] = []
 
         guard let courseID = assignment.courseId?.asString else {
             // TODO: Error handle
             return
         }
-
-        for url in urls {
-            let filename = url.lastPathComponent
-            do {
-                let fileData = try Data(contentsOf: url)
-                let size = fileData.count
-                guard let courseID = assignment.courseId?.asString else {
-                    // TODO: Error handle
-                    return
-                }
-                let notificationRequest = CanvasRequest.notifyFileUpload(courseID: courseID, assignmentID: assignment.id, filename: filename, fileSizeInBytes: size)
-                guard let notificationResponse = try await CanvasService.shared.fetch(notificationRequest).first else {
-                    // TODO: BRUH
-                    return
-                }
+        
+        
+        let fileIDs = await withTaskGroup(of: Int.self, returning: [Int].self) { taskGroup in
+            
+            for url in urls {
                 
-                let mime: MimeType = url.pathExtension.lowercased() == "txt" ? .txt : .other
-                
-                let uploadRequest = CanvasRequest.uploadSubmissionFile(path: notificationResponse.uploadURL, keyValues: notificationResponse.uploadParams, filename: filename, fileData: fileData, mimeType: mime)
-                
-                let (_, uploadResponse) = try await CanvasService.shared.fetchResponse(uploadRequest)
-                
-                let httpResponse = uploadResponse as! HTTPURLResponse
-
-                if httpResponse.value(forHTTPHeaderField: "Location") == nil {
-                    // TODO: Handle Error
-                    return
+                taskGroup.addTask {
+                    do {
+                        return try await self.uploadFile(fileURL: url)
+                    } catch {
+                        print(error)
+                        return -1
+                    }
                 }
                 
-                guard let locationString = httpResponse.value(forHTTPHeaderField: "Location") else {
-                    //TODO: Error
-                    return
-                }
-                let confirmationRequest = CanvasRequest.confirmFileUpload(path: locationString)
-                let (finalData, _) = try await CanvasService.shared.fetchResponse(confirmationRequest)
-                let finalResponseStruct = try JSONDecoder().decode(UploadSubmissionFileConfirmationResponse.self, from: finalData)
-                fileIDs.append(finalResponseStruct.id)
-            } catch {
-                print(error)
             }
 
-            let submissionRequest = CanvasRequest.submitAssignment(courseID: courseID, assignmentID: assignment.id, submissionType: .onlineUpload, fileIDs: fileIDs)
-            do {
-                try await CanvasService.shared.fetch(submissionRequest)
-            } catch {
-                print(error)
+            var fileids = [Int]()
+            for await result in taskGroup {
+                fileids.append(result)
             }
+            return fileids
         }
+        
+        let submissionRequest = CanvasRequest.submitAssignment(courseID: courseID, assignmentID: assignment.id, submissionType: .onlineUpload, fileIDs: fileIDs.filter { $0 != -1 })
+        do {
+            try await CanvasService.shared.fetch(submissionRequest)
+        } catch {
+            print(error)
+        }
+    }
+    
+    // Returns fileID
+    func uploadFile(fileURL url: URL) async throws -> Int {
+        let filename = url.lastPathComponent
+    
+        let fileData = try Data(contentsOf: url)
+        let size = fileData.count
+        guard let courseID = assignment.courseId?.asString else {
+            // TODO: Error handle
+            return -1
+        }
+        let notificationRequest = CanvasRequest.notifyFileUpload(courseID: courseID, assignmentID: assignment.id, filename: filename, fileSizeInBytes: size)
+        guard let notificationResponse = try await CanvasService.shared.fetch(notificationRequest).first else {
+            // TODO: BRUH
+            return -1
+        }
+        
+        let mime: MimeType = url.pathExtension.lowercased() == "txt" ? .txt : .other
+        
+        let uploadRequest = CanvasRequest.uploadSubmissionFile(path: notificationResponse.uploadURL, keyValues: notificationResponse.uploadParams, filename: filename, fileData: fileData, mimeType: mime)
+        
+        let (_, uploadResponse) = try await CanvasService.shared.fetchResponse(uploadRequest)
+        
+        let httpResponse = uploadResponse as! HTTPURLResponse
+
+        if httpResponse.value(forHTTPHeaderField: "Location") == nil {
+            // TODO: Handle Error
+            return -1
+        }
+        
+        guard let locationString = httpResponse.value(forHTTPHeaderField: "Location") else {
+            //TODO: Error
+            return -1
+        }
+        let confirmationRequest = CanvasRequest.confirmFileUpload(path: locationString)
+        let (finalData, _) = try await CanvasService.shared.fetchResponse(confirmationRequest)
+        let finalResponseStruct = try JSONDecoder().decode(UploadSubmissionFileConfirmationResponse.self, from: finalData)
+        return finalResponseStruct.id
     }
 }
 
