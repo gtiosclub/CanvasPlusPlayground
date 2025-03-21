@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 63;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -28,6 +28,7 @@
 		9B9C2E042C93F6CD00E4B16B /* CourseAnnouncementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9C2E032C93F6CD00E4B16B /* CourseAnnouncementsView.swift */; };
 		9B9C2E062C93F94C00E4B16B /* CourseAnnouncementDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9C2E052C93F94C00E4B16B /* CourseAnnouncementDetailView.swift */; };
 		9BA7C0F72D62DC92000F2918 /* PinnedItemDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BA7C0F62D62DC92000F2918 /* PinnedItemDetailView.swift */; };
+		9BA7E2BC2D8E17DC00281FA2 /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BA7E2BB2D8E17DC00281FA2 /* Tab.swift */; };
 		9BEB4ED02D56AF570013869D /* AssignmentDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BEB4ECF2D56AF570013869D /* AssignmentDetailView.swift */; };
 		9BF228C82D6CD1EB000676F2 /* RemindersManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF228C72D6CD1EB000676F2 /* RemindersManager.swift */; };
 		A301EE092D61137400D71139 /* MarkCourseDiscussionTopicReadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A301EE082D61137400D71139 /* MarkCourseDiscussionTopicReadRequest.swift */; };
@@ -196,6 +197,7 @@
 		9B9C2E032C93F6CD00E4B16B /* CourseAnnouncementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAnnouncementsView.swift; sourceTree = "<group>"; };
 		9B9C2E052C93F94C00E4B16B /* CourseAnnouncementDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAnnouncementDetailView.swift; sourceTree = "<group>"; };
 		9BA7C0F62D62DC92000F2918 /* PinnedItemDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedItemDetailView.swift; sourceTree = "<group>"; };
+		9BA7E2BB2D8E17DC00281FA2 /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
 		9BEB4ECF2D56AF570013869D /* AssignmentDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentDetailView.swift; sourceTree = "<group>"; };
 		9BF228C72D6CD1EB000676F2 /* RemindersManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindersManager.swift; sourceTree = "<group>"; };
 		A301EE082D61137400D71139 /* MarkCourseDiscussionTopicReadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkCourseDiscussionTopicReadRequest.swift; sourceTree = "<group>"; };
@@ -358,6 +360,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9BA7E2BA2D8E177900281FA2 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				B5BFC9BA2D6A39F300EDF3B5 /* Models */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		9BF228C62D6CD1DF000676F2 /* Reminders */ = {
 			isa = PBXGroup;
 			children = (
@@ -578,6 +588,7 @@
 			isa = PBXGroup;
 			children = (
 				A3E7F3922C99338B00DC4300 /* TabAPI.swift */,
+				9BA7E2BB2D8E17DC00281FA2 /* Tab.swift */,
 				A3E7F38E2C96C1CE00DC4300 /* CourseTabsView.swift */,
 				A3E7F3902C99317100DC4300 /* CourseTabsManager.swift */,
 			);
@@ -724,10 +735,10 @@
 			children = (
 				B5894F0D2D6EBD8C00E8F527 /* Page.swift */,
 				B5894F0E2D6EBD8C00E8F527 /* PageAPI.swift */,
-            );
-            path = Models;
-            sourceTree = "<group>";
-        };
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		B7460A8F2D6BF9320069CF5B /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -751,6 +762,7 @@
 			children = (
 				B76454FD2C8DF61B002DF00E /* CanvasPlusPlayground */,
 				B76454652C8BBC7F002DF00E /* Products */,
+				9BA7E2BA2D8E177900281FA2 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1003,6 +1015,7 @@
 				A3FFD03E2CE0065A006BAB51 /* NetworkError.swift in Sources */,
 				B7E59A142D2004A4001836FE /* CourseListCell.swift in Sources */,
 				B53D95A22CA0A22A00647EE9 /* PeopleView.swift in Sources */,
+				9BA7E2BC2D8E17DC00281FA2 /* Tab.swift in Sources */,
 				A373DC312D28176100215019 /* APIModule.swift in Sources */,
 				B7D7512F2D3D660B00F7B8B8 /* AllAnnouncementsManager.swift in Sources */,
 				A3049B752D15DC1C002F3166 /* GetCoursesRequest.swift in Sources */,
