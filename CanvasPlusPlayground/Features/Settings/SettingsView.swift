@@ -10,7 +10,11 @@ import SwiftUI
 struct SettingsView: View {
     #if DEBUG
     @Environment(PinnedItemsManager.self) private var pinnedItemManager
+    @Environment(CourseManager.self) private var courseManager
+
+    @State private var selectedItem: (any PickableItem)?
     #endif
+
     @Environment(NavigationModel.self) private var navigationModel
     @EnvironmentObject private var llmEvaluator: LLMEvaluator
     @EnvironmentObject private var intelligenceManager: IntelligenceManager
@@ -24,6 +28,11 @@ struct SettingsView: View {
         NavigationStack {
             mainBody
         }
+        #if DEBUG
+        .sheet(item: $navigationModel.selectedCourseForItemPicker) {
+            CourseItemPicker(course: $0, selectedItem: $selectedItem)
+        }
+        #endif
         .sheet(isPresented: $showChangeAccessToken) {
             NavigationStack {
                 SetupView()
@@ -98,9 +107,16 @@ struct SettingsView: View {
     }
 
     #if DEBUG
+    @ViewBuilder
     private var debugSettings: some View {
+        @Bindable var navigationModel = navigationModel
+
         Section {
             Group {
+                Button("View Item Picker", systemImage: "filemenu.and.selection") {
+                    navigationModel.selectedCourseForItemPicker = courseManager.userCourses.first
+                }
+
                 Button("Clear Pinned Items", systemImage: "trash") {
                     pinnedItemManager.clearAllPinnedItems()
                 }
