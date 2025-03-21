@@ -71,7 +71,11 @@ extension APIRequest {
                     URLQueryItem(name: name, value: "\(val)")
                 })
         }
-        return URL(string: url)!
+        if let returl = URL(string: url) {
+            return returl
+        } else {
+            fatalError("Invalid URL \(url)")
+        }
     }
 
     var method: RequestMethod { .GET }
