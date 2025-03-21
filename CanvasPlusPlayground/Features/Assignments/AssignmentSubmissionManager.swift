@@ -14,11 +14,10 @@ public class AssignmentSubmissionManager {
         self.assignment = assignment
     }
 
-    func submitAssignment(withText text: String) async {
+    func submitAssignment(withText text: String) async throws {
         // make and send submission request
         guard let courseID = assignment.courseId?.asString else {
-            // TODO: Error handle
-            return
+            throw AssignmentSubmissionError.missingCourseID
         }
         let request = CanvasRequest.submitAssignment(
             courseID: courseID,
@@ -26,18 +25,12 @@ public class AssignmentSubmissionManager {
             submissionType: .onlineTextEntry,
             submissionBody: text
         )
-
-        do {
-            try await CanvasService.shared.fetch(request)
-        } catch {
-            LoggerService.main.error("Error uploading text for assignment: \(self.assignment.name)\n \(error)")
-        }
+        try await CanvasService.shared.fetch(request)
     }
 
-    func submitFileAssignment(forFiles urls: [URL]) async {
+    func submitFileAssignment(forFiles urls: [URL]) async throws {
         guard let courseID = assignment.courseId?.asString else {
-            // TODO: Error handle
-            return
+            throw AssignmentSubmissionError.missingCourseID
         }
 
         let fileIDs = await withTaskGroup(of: Int.self, returning: [Int].self) { taskGroup in
@@ -91,8 +84,7 @@ public class AssignmentSubmissionManager {
         )
 
         guard let notificationResponse = try await CanvasService.shared.fetch(notificationRequest).first else {
-            // TODO: BRUH
-            return -1
+            throw AssignmentSubmissionError.notificationResponseFailure
         }
 
         let mime: MimeType = url.pathExtension.lowercased() == "txt" ? .txt : .other
@@ -108,15 +100,8 @@ public class AssignmentSubmissionManager {
         let (_, uploadResponse) = try await CanvasService.shared.fetchResponse(uploadRequest)
 
         let httpResponse = uploadResponse as! HTTPURLResponse
-
-        if httpResponse.value(forHTTPHeaderField: "Location") == nil {
-            // TODO: Handle Error
-            return -1
-        }
-
         guard let locationString = httpResponse.value(forHTTPHeaderField: "Location") else {
-            // TODO: Error
-            return -1
+            throw AssignmentSubmissionError.uploadResponseLocationMissing
         }
 
         let confirmationRequest = CanvasRequest.confirmFileUpload(path: locationString)
@@ -137,4 +122,8 @@ struct FileWrapper: Codable {
 
 enum MimeType: String {
     case txt = "text/plain", other = "application/octet-stream"
+}
+
+enum AssignmentSubmissionError: Error {
+    case missingCourseID, notificationResponseFailure, uploadResponseLocationMissing
 }

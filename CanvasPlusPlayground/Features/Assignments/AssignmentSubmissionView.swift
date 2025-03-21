@@ -11,11 +11,13 @@ struct AssignmentSubmissionView: View {
     @Environment(AssignmentSubmissionManager.self) private var manager
     let assignment: Assignment
     @State private var selectedSubmissionType: SubmissionType?
+    // TODO: Expand supported types beyond [.onlineUrl, .onlineUpload, .onlineTextEntry, .onPaper]
     var submissionTypes: [SubmissionType] {
         assignment.submissionTypes ?? []
     }
     @Environment(\.dismiss) private var dismiss
     @State private var showSubmissionUploadProgress = false
+    @State private var showSubmissionErrorAlert: Bool = false
 
     var body: some View {
         NavigationStack {
@@ -63,26 +65,50 @@ struct AssignmentSubmissionView: View {
             ToolbarItem(placement: .confirmationAction) {
                 Button("Submit") {
                     Task {
-                        showSubmissionUploadProgress = true
-                        switch selectedSubmissionType {
-                        case .onlineUrl:
-                            await manager.submitAssignment(withText: textbox)
-                        case .onlineUpload:
-                            await manager.submitFileAssignment(forFiles: selectedURLs)
-                        default:
-                            LoggerService.main.error("User attempted to submit unimlemented assignment type")
+                        do {
+                            showSubmissionUploadProgress = true
+                            switch selectedSubmissionType {
+                            case .onlineUrl:
+                                try await manager.submitAssignment(withText: textbox)
+                            case .onlineUpload:
+                                try await manager.submitFileAssignment(forFiles: selectedURLs)
+                            default:
+                                LoggerService.main.error("User attempted to submit unimlemented assignment type")
+                            }
+                        } catch {
+                            // TODO: We could display error information to the user here
+                            LoggerService.main.error("Error submitting assignment: \(error.localizedDescription)")
                         }
                         showSubmissionUploadProgress = false
                         dismiss()
                     }
                 }
+                .disabled(submitButtonDisabled)
             }
         }
         .onAppear {
             selectedSubmissionType = submissionTypes.first
         }
+        .alert("Error submitting assignment", isPresented: $showSubmissionErrorAlert) {
+            Button("Dismiss") { }
+        }
     }
 
+    var submitButtonDisabled:Bool {
+        guard let selectedSubmissionType else {
+            return true
+        }
+        switch selectedSubmissionType {
+        case .onlineTextEntry:
+            return !textSubmissionValid
+        case .onlineUrl:
+            return !urlSubmissionValid
+        case .onlineUpload:
+            return !fileSubmissionValid
+        default:
+            return true
+        }
+    }
     // MARK: Should the submit button be enabled or not
     var submitDisabled: Bool {
         guard let selectedSubmissionType else {
@@ -115,6 +141,19 @@ struct AssignmentSubmissionView: View {
                 .padding()
         }
     }
+    var textSubmissionValid: Bool {
+        !textbox.isEmpty
+    }
+
+    // MARK: URL submission subview
+    @State private var urlTextField: String = ""
+    var urlSubmissionView: some View {
+        Section("Add URL") {
+            TextField("url", text: $urlTextField)
+        }
+    }
+    // TODO: Parse url to make sure it's a valid web url
+    var urlSubmissionValid: Bool { !urlTextField.isEmpty }
 
     // MARK: File upload submission subview
     @State private var selectedURLs: [URL] = []
@@ -152,6 +191,9 @@ struct AssignmentSubmissionView: View {
                 }
             }
         }
+    }
+    var fileSubmissionValid: Bool {
+        !selectedURLs.isEmpty
     }
 
     // MARK: URL Submission
