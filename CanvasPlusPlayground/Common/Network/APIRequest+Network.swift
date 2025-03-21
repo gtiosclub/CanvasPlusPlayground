@@ -87,9 +87,11 @@ extension APIRequest {
 
         urlRequest.httpMethod = self.method.rawValue
         urlRequest.httpBody = self.body
-        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
+        urlRequest.setValue(contentType, forHTTPHeaderField: "Content-Type")
+        urlRequest.setValue(contentLength, forHTTPHeaderField: "Content-Length")
+        urlRequest.setValue("Bearer \(StorageKeys.accessTokenValue)", forHTTPHeaderField: "Authorization")
         do {
+            print(urlRequest)
             let (data, response) = try await URLSession.shared.data(for: urlRequest)
 
             guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {

@@ -66,6 +66,8 @@ struct AssignmentSubmissionView: View {
                         default:
                             print("unimplemented")
                         }
+                        
+                        dismiss()
                     }
                 }
                 // .disabled(submitDisabled)

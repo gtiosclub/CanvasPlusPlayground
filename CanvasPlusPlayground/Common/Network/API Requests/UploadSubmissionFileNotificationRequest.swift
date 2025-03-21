@@ -10,7 +10,7 @@ import Foundation
 
 // First tell canvas about the file upload and get a token back
 
-struct UploadSubmissionFileRequest: APIRequest {
+struct UploadSubmissionFileNotificationRequest: APIRequest {
     var path: String { "courses/\(courseID)/assignments/\(assignmentID)/submissions/self/files" }
     var queryParameters: [QueryParameter] = []
     typealias Subject = UploadFileNotificationResponse
@@ -40,6 +40,11 @@ struct UploadSubmissionFileRequest: APIRequest {
         case overwrite, rename
     }
 }
+// Upload notification request
+// File upload request
+// upload confirmation request
+// Next, canvas sends you an endpoint to upload the file to
+
 
 struct UploadFileNotificationResponse: APIResponse {
     let uploadURL: String

@@ -44,70 +44,39 @@ public class AssignmentSubmissionManager {
         for url in urls {
             let filename = url.lastPathComponent
             do {
-                let file_data = try Data(contentsOf: url)
-                let size = file_data.count
+                let fileData = try Data(contentsOf: url)
+                let size = fileData.count
                 guard let courseID = assignment.courseId?.asString else {
                     // TODO: Error handle
                     return
                 }
-                let request = CanvasRequest.uploadFileSubmission(courseID: courseID, assignmentID: assignment.id, filename: filename, fileSizeInBytes: size)
-
-                guard let response = try await CanvasService.shared.fetch(request).first else {
+                let notificationRequest = CanvasRequest.notifyFileUpload(courseID: courseID, assignmentID: assignment.id, filename: filename, fileSizeInBytes: size)
+                guard let notificationResponse = try await CanvasService.shared.fetch(notificationRequest).first else {
                     // TODO: BRUH
                     return
                 }
-
-                print("URL:\(response.uploadURL)")
-                print("Params: \(response.uploadParams)")
-                let uploadURL = response.uploadURL
-                var uploadRequest = URLRequest(url: URL(string: uploadURL)!)
-                uploadRequest.httpMethod = "POST"
-                let boundary = UUID().uuidString
-                uploadRequest.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-                var body = Data()
-
-                // Append upload params
-                for (key, value) in response.uploadParams {
-                    if let value { // Ignore nil values
-                        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-                        body.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8)!)
-                        body.append("\(value)\r\n".data(using: .utf8)!)
-                    }
-                }
-
-                // Append file data
-                let mimeType = "text/plain" // Change this based on file type
-
-                body.append("--\(boundary)\r\n".data(using: .utf8)!)
-                body.append("Content-Disposition: form-data; name=\"file\"; filename=\"\(filename)\"\r\n".data(using: .utf8)!)
-                body.append("Content-Type: \(mimeType)\r\n\r\n".data(using: .utf8)!)
-                body.append(file_data)
-                body.append("\r\n".data(using: .utf8)!)
-
-                // End boundary
-                body.append("--\(boundary)--\r\n".data(using: .utf8)!)
-
-                uploadRequest.httpBody = body
-
-                let (data, uploadResponse) = try await URLSession.shared.data(for: uploadRequest)
-
+                
+                let mime: MimeType = url.pathExtension.lowercased() == "txt" ? .txt : .other
+                
+                let uploadRequest = CanvasRequest.uploadSubmissionFile(path: notificationResponse.uploadURL, keyValues: notificationResponse.uploadParams, filename: filename, fileData: fileData, mimeType: mime)
+                
+                let (_, uploadResponse) = try await CanvasService.shared.fetchResponse(uploadRequest)
+                
                 let httpResponse = uploadResponse as! HTTPURLResponse
 
                 if httpResponse.value(forHTTPHeaderField: "Location") == nil {
                     // TODO: Handle Error
                     return
                 }
-                let locationString = httpResponse.value(forHTTPHeaderField: "Location") as! String
-                let locationURL = URL(string: locationString)!
-                var confirmationRequest = URLRequest(url: locationURL)
-                confirmationRequest.httpMethod = "POST"
-                confirmationRequest.setValue("0", forHTTPHeaderField: "Content-Length")
-                confirmationRequest.setValue("Bearer \(StorageKeys.accessTokenValue)", forHTTPHeaderField: "Authorization")
-
-                let (finalData, finalResponse) = try await URLSession.shared.data(for: confirmationRequest)
-                let finalResponseStruct = try JSONDecoder().decode(UploadFileConfirmationResponse.self, from: finalData)
+                
+                guard let locationString = httpResponse.value(forHTTPHeaderField: "Location") else {
+                    //TODO: Error
+                    return
+                }
+                let confirmationRequest = CanvasRequest.confirmFileUpload(path: locationString)
+                let (finalData, _) = try await CanvasService.shared.fetchResponse(confirmationRequest)
+                let finalResponseStruct = try JSONDecoder().decode(UploadSubmissionFileConfirmationResponse.self, from: finalData)
                 fileIDs.append(finalResponseStruct.id)
-                print("Struct \(finalResponseStruct)")
             } catch {
                 print(error)
             }
@@ -129,4 +98,8 @@ enum SubmissionError: Error {
 struct FileWrapper: Codable {
     let key: String
     let data: Data
+}
+
+enum MimeType: String {
+    case txt = "text/plain", other = "application/octet-stream"
 }
