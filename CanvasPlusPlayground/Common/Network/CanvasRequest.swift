@@ -38,7 +38,14 @@ enum CanvasRequest {
         filename: String,
         fileSizeInBytes size: Int
     ) -> UploadFileNotificationRequest {
-        UploadFileNotificationRequest(courseID: courseID, assignmentID: assignmentID, name: filename, size: size, contentType: nil, onDuplicate: .overwrite)
+        UploadFileNotificationRequest(
+            courseID: courseID,
+            assignmentID: assignmentID,
+            name: filename,
+            size: size,
+            contentType: nil,
+            onDuplicate: .overwrite
+        )
     }
 
     static func performFileUpload(
@@ -237,7 +244,15 @@ enum CanvasRequest {
         url: String? = nil,
         fileIDs: [Int]? = nil
     ) -> SubmitAssignmentRequest {
-        SubmitAssignmentRequest(courseID: courseID, assignmentID: assignmentID, textComment: textComment, submissionType: submissionType, submissionBody: submissionBody, url: url, fileIDs: fileIDs)
+        SubmitAssignmentRequest(
+            courseID: courseID,
+            assignmentID: assignmentID,
+            textComment: textComment,
+            submissionType: submissionType,
+            submissionBody: submissionBody,
+            url: url,
+            fileIDs: fileIDs
+        )
     }
 
     static func getPages(

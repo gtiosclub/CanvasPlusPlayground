@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct AssignmentSubmissionView: View {
-    @Environment(AssignmentSubmissionManager.self) var manager
+    @Environment(AssignmentSubmissionManager.self) private var manager
     let assignment: Assignment
     @State private var selectedSubmissionType: SubmissionType?
     var submissionTypes: [SubmissionType] {
         assignment.submissionTypes ?? []
     }
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         NavigationStack {
@@ -29,9 +29,8 @@ struct AssignmentSubmissionView: View {
                     .pickerStyle(.segmented)
                 }
 
-                if selectedSubmissionType != nil {
-                    let type = selectedSubmissionType!
-                    switch type {
+                if let selectedSubmissionType {
+                    switch selectedSubmissionType {
                     case .none, .onPaper:
                         noSubmissionView
                     case .onlineUrl, .onlineTextEntry:
@@ -40,7 +39,7 @@ struct AssignmentSubmissionView: View {
                         fileUploadView
                     default:
                         Section {
-                            Text("\(type.rawValue) submissions not supported")
+                            Text("\(selectedSubmissionType.rawValue) submissions not supported")
                         }
                         // TODO: implement .discussionTopic, .onlineQuiz, .externalTool, .mediaRecording, and .studentAnnotation
                     }
@@ -56,21 +55,20 @@ struct AssignmentSubmissionView: View {
                 }
             }
             ToolbarItem(placement: .confirmationAction) {
-                Button("File submit") {
+                Button("Submit") {
                     Task {
-                        switch selectedSubmissionType! {
+                        switch selectedSubmissionType {
                         case .onlineUrl:
                             await manager.submitAssignment(withText: textbox)
                         case .onlineUpload:
                             await manager.submitFileAssignment(forFiles: selectedURLs)
                         default:
-                            print("unimplemented")
+                            LoggerService.main.error("User attempted to submit unimlemented assignment type")
                         }
 
                         dismiss()
                     }
                 }
-                // .disabled(submitDisabled)
             }
         }
         .onAppear {

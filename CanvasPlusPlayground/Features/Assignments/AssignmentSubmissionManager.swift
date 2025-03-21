@@ -75,14 +75,21 @@ public class AssignmentSubmissionManager {
     // Returns fileID
     func uploadFile(fileURL url: URL) async throws -> Int {
         let filename = url.lastPathComponent
-
         let fileData = try Data(contentsOf: url)
         let size = fileData.count
+
         guard let courseID = assignment.courseId?.asString else {
             // TODO: Error handle
             return -1
         }
-        let notificationRequest = CanvasRequest.notifyFileUpload(courseID: courseID, assignmentID: assignment.id, filename: filename, fileSizeInBytes: size)
+
+        let notificationRequest = CanvasRequest.notifyFileUpload(
+            courseID: courseID,
+            assignmentID: assignment.id,
+            filename: filename,
+            fileSizeInBytes: size
+        )
+
         guard let notificationResponse = try await CanvasService.shared.fetch(notificationRequest).first else {
             // TODO: BRUH
             return -1
@@ -111,6 +118,7 @@ public class AssignmentSubmissionManager {
             // TODO: Error
             return -1
         }
+
         let confirmationRequest = CanvasRequest.confirmFileUpload(path: locationString)
         let (finalData, _) = try await CanvasService.shared.fetchResponse(confirmationRequest)
         let finalResponseStruct = try JSONDecoder().decode(UploadFileConfirmationResponse.self, from: finalData)

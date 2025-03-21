@@ -65,14 +65,12 @@ extension APIRequest {
 
     var url: URL {
         guard let url = forceURL else {
-            print("ForceURL nil, using \(baseURL)")
             return baseURL
                 .appendingPathComponent(path)
                 .appending(queryItems: combinedQueryParams.map { name, val in
                     URLQueryItem(name: name, value: "\(val)")
                 })
         }
-        print("Using ForceURL \(url)")
         return URL(string: url)!
     }
 
