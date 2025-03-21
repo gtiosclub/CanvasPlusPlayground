@@ -60,16 +60,20 @@ class GradeCalculator {
 
             // Drop the lowest assignments if specified
             if let dropLowest = rules?.dropLowest, dropLowest > 0 {
+                // Sort the lowest percentage scored assignments first
+                retValue.sort { ($0.percentage ?? 0.0) < ($1.percentage ?? 0.0) }
+
                 retValue = Array(
                     retValue
                         .dropFirst(min(dropLowest, retValue.count))
                 )
             }
 
-            retValue.sort { ($0.pointsEarned ?? 0.0) > ($1.pointsEarned ?? 0.0) }
-
             // Drop the highest assignments if specified
             if let dropHighest = rules?.dropHighest, dropHighest > 0 {
+                // Sort the highest percentage scored assignments first
+                retValue.sort { ($0.percentage ?? 0.0) > ($1.percentage ?? 0.0) }
+
                 retValue = Array(retValue.dropFirst(min(dropHighest, retValue.count)))
             }
 
