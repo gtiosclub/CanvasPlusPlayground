@@ -85,7 +85,7 @@ public class AssignmentSubmissionManager {
 
         let mime: MimeType = url.pathExtension.lowercased() == "txt" ? .txt : .other
 
-        let uploadRequest = CanvasRequest.uploadSubmissionFile(
+        let uploadRequest = CanvasRequest.performFileUpload(
             path: notificationResponse.uploadURL,
             keyValues: notificationResponse.uploadParams,
             filename: filename,
@@ -108,7 +108,7 @@ public class AssignmentSubmissionManager {
         }
         let confirmationRequest = CanvasRequest.confirmFileUpload(path: locationString)
         let (finalData, _) = try await CanvasService.shared.fetchResponse(confirmationRequest)
-        let finalResponseStruct = try JSONDecoder().decode(UploadSubmissionFileConfirmationResponse.self, from: finalData)
+        let finalResponseStruct = try JSONDecoder().decode(UploadFileConfirmationResponse.self, from: finalData)
         return finalResponseStruct.id
     }
 }

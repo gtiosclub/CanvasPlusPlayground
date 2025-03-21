@@ -10,10 +10,10 @@ import Foundation
 
 // First tell canvas about the file upload and get a token back
 
-struct UploadSubmissionFileNotificationRequest: APIRequest {
+struct UploadFileNotificationRequest: APIRequest {
     var path: String { "courses/\(courseID)/assignments/\(assignmentID)/submissions/self/files" }
     var queryParameters: [QueryParameter] = []
-    typealias Subject = UploadSubmissionFileNotificationResponse
+    typealias Subject = UploadFileNotificationResponse
     let courseID: String
     let assignmentID: String
     var method:RequestMethod { .POST }
@@ -46,7 +46,7 @@ struct UploadSubmissionFileNotificationRequest: APIRequest {
 // upload confirmation request
 // Next, canvas sends you an endpoint to upload the file to
 
-struct UploadSubmissionFileNotificationResponse: APIResponse {
+struct UploadFileNotificationResponse: APIResponse {
     let uploadURL: String
     let uploadParams: [String: String?]
 
@@ -60,8 +60,8 @@ struct UploadSubmissionFileNotificationResponse: APIResponse {
 // upload confirmation request
 // Next, canvas sends you an endpoint to upload the file to
 
-struct UploadSubmissionFileUploadRequest: APIRequest {
-    typealias Subject = UploadSubmissionFileConfirmationResponse
+struct UploadFileUploadRequest: APIRequest {
+    typealias Subject = UploadFileConfirmationResponse
 
     var path: String
     var queryParameters: [QueryParameter] = []
@@ -99,7 +99,7 @@ struct UploadSubmissionFileUploadRequest: APIRequest {
     }
 }
 
-struct UploadSubmissionFileConfirmationResponse: APIResponse {
+struct UploadFileConfirmationResponse: APIResponse {
     let id: Int
     let url: String
     let contentType: String
@@ -111,8 +111,8 @@ struct UploadSubmissionFileConfirmationResponse: APIResponse {
     }
 }
 
-struct UploadSubmissionFileConfirmationRequest: APIRequest {
-    typealias Subject = UploadSubmissionFileConfirmationResponse
+struct UploadFileConfirmationRequest: APIRequest {
+    typealias Subject = UploadFileConfirmationResponse
 
     var path: String
     var queryParameters: [QueryParameter] = []
