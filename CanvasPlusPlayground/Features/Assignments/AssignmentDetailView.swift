@@ -68,11 +68,16 @@ struct AssignmentDetailView: View {
                             value: workflowState.displayValue
                         )
                     }
-
                     LabeledContent(
                         "Grade",
                         value: assignment.formattedGrade + "/" + assignment.formattedPointsPossible
                     )
+
+                    LabeledContent("Create submission") {
+                        Button("Create Submission...") {
+                            showSubmissionPopUp.toggle()
+                        }
+                    }
                 }
 
                 if let assignmentDescription = assignment.assignmentDescription {
@@ -80,16 +85,6 @@ struct AssignmentDetailView: View {
                         HTMLTextView(
                             htmlText: assignmentDescription
                         )
-                    }
-                }
-
-                Section("submission") {
-                    HStack {
-                        Text("Create submission")
-                        Spacer()
-                        Button("Get submission") {
-                            showSubmissionPopUp.toggle()
-                        }
                     }
                 }
             }

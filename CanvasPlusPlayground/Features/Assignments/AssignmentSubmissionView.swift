@@ -23,7 +23,7 @@ struct AssignmentSubmissionView: View {
                 if submissionTypes.count != 1 {
                     Picker("Submission Type", selection: $selectedSubmissionType) {
                         ForEach(submissionTypes, id:\.self) { type in
-                            Text(type.rawValue)
+                            Text(type.displayName)
                                 .tag(type)
                         }
                     }

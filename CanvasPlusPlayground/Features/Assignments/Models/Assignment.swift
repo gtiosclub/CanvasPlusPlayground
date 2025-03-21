@@ -275,4 +275,10 @@ enum SubmissionType: String, Codable {
     case onlineUpload = "online_upload"
     case mediaRecording = "media_recording"
     case studentAnnotation = "student_annotation"
+
+    var displayName: String {
+        rawValue
+            .replacingOccurrences(of: "_", with: " ")
+            .capitalized
+    }
 }
