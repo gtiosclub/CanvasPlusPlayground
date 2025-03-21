@@ -15,6 +15,7 @@ struct AssignmentSubmissionView: View {
         assignment.submissionTypes ?? []
     }
     @Environment(\.dismiss) private var dismiss
+    @State private var showSubmissionUploadProgress = false
 
     var body: some View {
         NavigationStack {
@@ -47,6 +48,11 @@ struct AssignmentSubmissionView: View {
             }
             .formStyle(.grouped)
             .navigationTitle("Create submission")
+            .overlay {
+                if showSubmissionUploadProgress {
+                    ProgressView()
+                }
+            }
         }
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
@@ -57,6 +63,7 @@ struct AssignmentSubmissionView: View {
             ToolbarItem(placement: .confirmationAction) {
                 Button("Submit") {
                     Task {
+                        showSubmissionUploadProgress = true
                         switch selectedSubmissionType {
                         case .onlineUrl:
                             await manager.submitAssignment(withText: textbox)
@@ -65,7 +72,7 @@ struct AssignmentSubmissionView: View {
                         default:
                             LoggerService.main.error("User attempted to submit unimlemented assignment type")
                         }
-
+                        showSubmissionUploadProgress = false
                         dismiss()
                     }
                 }
