@@ -11,15 +11,15 @@ struct PagesListView: View {
     @State private var pagesManager: PagesManager
     @State private var isLoadingPages: Bool = true
 
+    @State private var selectedPage: Page?
+
     init(courseId: String) {
         _pagesManager = State(initialValue: PagesManager(courseID: courseId))
     }
 
     var body: some View {
-        List(pagesManager.pages, id: \.id) { page in
-            NavigationLink {
-                PageView(page: page)
-            } label: {
+        List(pagesManager.pages, id: \.id, selection: $selectedPage) { page in
+            NavigationLink(value: page) {
                 Text(page.title ?? "Untitled")
             }
         }
@@ -41,6 +41,10 @@ struct PagesListView: View {
             isVisible: isLoadingPages
         )
         .navigationTitle("Pages")
+        .navigationDestination(item: $selectedPage) { page in
+            PageView(page: page)
+        }
+        .pickedItem(selectedPage)
     }
 
     private func loadPages() async {

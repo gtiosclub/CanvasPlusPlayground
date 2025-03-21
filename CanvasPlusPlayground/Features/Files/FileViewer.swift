@@ -23,7 +23,6 @@ struct FileViewer: View {
             if let url {
                 QuickLookPreview(url: url) { dismiss() }
                     #if os(iOS)
-                    .navigationBarBackButtonHidden()
                     .ignoresSafeArea()
                     #else
                     .toolbar {
@@ -53,6 +52,9 @@ struct FileViewer: View {
         .task {
             await loadContents()
         }
+        #if os(iOS)
+        .navigationBarBackButtonHidden()
+        #endif
     }
 
     private func loadContents() async {
