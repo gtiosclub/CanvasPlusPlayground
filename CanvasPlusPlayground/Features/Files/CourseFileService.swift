@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import PDFKit
 #if os(macOS)
 import AppKit
 #endif
@@ -127,6 +128,52 @@ struct CourseFileService {
     }
 
     // MARK: Global
+
+    /// Get the string contents of a file. Supported types: doc, docx, txt.
+    static func getContentsOfFile(at localURL: URL?) -> String {
+        guard let localURL else { return "" }
+
+        let fileExtension = localURL.pathExtension
+
+        guard File.supportedPickableTypes.contains(fileExtension) else {
+            return ""
+        }
+
+        if fileExtension == "pdf" {
+            let pdf = PDFDocument(url: localURL)
+            return pdf?.string ?? ""
+        }
+
+        let documentType = switch fileExtension {
+        #if os(macOS)
+        case "docx":
+            NSAttributedString.DocumentType.officeOpenXML
+        case "doc":
+            NSAttributedString.DocumentType.docFormat
+        #endif
+        case "html":
+            NSAttributedString.DocumentType.html
+        default:
+            NSAttributedString.DocumentType.plain
+        }
+
+        var text = ""
+
+        if let data = try? Data(contentsOf: localURL) {
+            if let attrString = try? NSAttributedString(
+                data: data,
+                options: [
+                    .documentType: documentType,
+                    .characterEncoding: String.Encoding.utf8.rawValue
+                ],
+                documentAttributes: nil
+            ) {
+                text = attrString.string
+            }
+        }
+
+        return text
+    }
 
     static func clearAllFiles() throws {
         guard let fileURL = coursesURL else {

@@ -14,8 +14,18 @@ struct FoldersPageView: View {
 
         var id: String {
             switch self {
-            case .file(let file): return file.id
-            case .folder(let folder): return folder.id
+            case .file(let file):
+                return file.id
+            case .folder(let folder):
+                return folder.id
+            }
+        }
+
+        var pickedValue: PickableItem? {
+            if case .file(let file) = self {
+                return file
+            } else {
+                return nil
             }
         }
     }
@@ -41,9 +51,11 @@ struct FoldersPageView: View {
             if !filesVM.displayedFiles.isEmpty {
                 Section("Files") {
                     ForEach(filesVM.displayedFiles, id: \.id) { file in
-                        fileRow(for: file)
-                            .tag(Selection.file(file))
-                            .listItemTint(course.rgbColors?.color)
+                        NavigationLink(value: Selection.file(file)) {
+                            fileRow(for: file)
+                        }
+                        .tag(Selection.file(file))
+                        .listItemTint(course.rgbColors?.color)
                     }
                 }
             }
@@ -51,9 +63,11 @@ struct FoldersPageView: View {
             if !filesVM.displayedFolders.isEmpty {
                 Section("Folders") {
                     ForEach(filesVM.displayedFolders, id: \.id) { subFolder in
-                        folderRow(for: subFolder)
-                            .tag(Selection.folder(subFolder))
-                            .listItemTint(course.rgbColors?.color)
+                        NavigationLink(value: Selection.folder(subFolder)) {
+                            folderRow(for: subFolder)
+                        }
+                        .tag(Selection.folder(subFolder))
+                        .listItemTint(course.rgbColors?.color)
                     }
                 }
             }
@@ -62,24 +76,26 @@ struct FoldersPageView: View {
             await loadContents()
         }
         #if os(iOS)
-        .fullScreenCover(item: $selectedItem) { item in
-            Group {
-                if #available(iOS 18.0, *) {
-                    NavigationStack {
-                        destinationView(for: item)
-                    }
+        .navigationDestination(item: $selectedItem) { item in
+            if #available(iOS 18.0, *) {
+                destinationView(for: item)
+                    #if os(iOS)
                     .navigationTransition(.zoom(sourceID: item.id, in: namespace))
-                } else {
-                    NavigationStack {
-                        destinationView(for: item)
-                    }
-                }
+                    #endif
+            } else {
+                destinationView(for: item)
             }
-            .environment(filesVM)
         }
         #else
-        .navigationDestination(item: $selectedItem) { item in
-            destinationView(for: item)
+        .navigationDestination(for: Selection.self) { item in
+            if #available(iOS 18.0, *) {
+                destinationView(for: item)
+                    #if os(iOS)
+                    .navigationTransition(.zoom(sourceID: item.id, in: namespace))
+                    #endif
+            } else {
+                destinationView(for: item)
+            }
         }
         #endif
         .overlay {
@@ -92,6 +108,7 @@ struct FoldersPageView: View {
             isVisible: isLoadingContents
         )
         .navigationTitle(folder?.name?.capitalized ?? "Files")
+        .pickedItem(selectedItem?.pickedValue)
     }
 
     @ViewBuilder
