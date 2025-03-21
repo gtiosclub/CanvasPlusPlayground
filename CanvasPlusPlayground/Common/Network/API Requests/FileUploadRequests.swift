@@ -1,5 +1,5 @@
 //
-//  UploadSubmissionFileRequest.swift
+//  FileUploadRequests.swift
 //  CanvasPlusPlayground
 //
 //  Created by Ethan Fox on 3/11/25.
