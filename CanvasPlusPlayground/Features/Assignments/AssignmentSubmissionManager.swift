@@ -20,21 +20,21 @@ public class AssignmentSubmissionManager {
             // TODO: Error handle
             return
         }
-        let request = CanvasRequest.submitAssignment(courseID: courseID, assignmentID: assignment.id, submissionType: .onlineTextEntry, submissionBody: text)
+        let request = CanvasRequest.submitAssignment(
+            courseID: courseID,
+            assignmentID: assignment.id,
+            submissionType: .onlineTextEntry,
+            submissionBody: text
+        )
+
         do {
             try await CanvasService.shared.fetch(request)
         } catch {
-            print(error)
+            LoggerService.main.error("Error uploading text for assignment: \(self.assignment.name)\n \(error)")
         }
     }
 
     func submitFileAssignment(forFiles urls: [URL]) async {
-        print("Entering submit file assignment")
-        // for each file
-            // tell canavas about the file upload and get a token
-            // upload file data with the provided URL
-            // confirm upload success
-
         guard let courseID = assignment.courseId?.asString else {
             // TODO: Error handle
             return
@@ -46,7 +46,7 @@ public class AssignmentSubmissionManager {
                     do {
                         return try await self.uploadFile(fileURL: url)
                     } catch {
-                        print(error)
+                        LoggerService.main.error("Error uploading file: \(url)\n \(error)")
                         return -1
                     }
                 }
@@ -59,11 +59,16 @@ public class AssignmentSubmissionManager {
             return fileids
         }
 
-        let submissionRequest = CanvasRequest.submitAssignment(courseID: courseID, assignmentID: assignment.id, submissionType: .onlineUpload, fileIDs: fileIDs.filter { $0 != -1 })
+        let submissionRequest = CanvasRequest.submitAssignment(
+            courseID: courseID,
+            assignmentID: assignment.id,
+            submissionType: .onlineUpload,
+            fileIDs: fileIDs.filter { $0 != -1 }
+        )
         do {
             try await CanvasService.shared.fetch(submissionRequest)
         } catch {
-            print(error)
+            LoggerService.main.error("Error creating submission file for assignment: \(self.assignment.name)\n \(error)")
         }
     }
 
