@@ -7,21 +7,21 @@
 
 import SwiftUI
 
-private struct PickerServiceViewModifier: ViewModifier {
+private struct PickerServiceViewModifier<T: PickableItem & Equatable>: ViewModifier {
     @Environment(PickerService.self) private var pickerService: PickerService?
 
-    var item: (any PickableItem)?
+    var item: T?
 
     func body(content: Content) -> some View {
         content
-            .onChange(of: item?.contents) { _, _ in
+            .onChange(of: item) { _, _ in
                 pickerService?.pickedItem = item
             }
     }
 }
 
 extension View {
-    func pickedItem(_ item: (any PickableItem)?) -> some View {
+    func pickedItem<T: PickableItem & Equatable>(_ item: T?) -> some View {
         modifier(PickerServiceViewModifier(item: item))
     }
 }

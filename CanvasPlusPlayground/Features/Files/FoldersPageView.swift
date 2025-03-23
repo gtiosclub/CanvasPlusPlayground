@@ -21,7 +21,7 @@ struct FoldersPageView: View {
             }
         }
 
-        var pickedValue: (any PickableItem)? {
+        var pickedValue: File? {
             if case .file(let file) = self {
                 return file
             } else {

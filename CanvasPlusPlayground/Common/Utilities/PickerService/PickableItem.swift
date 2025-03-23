@@ -7,9 +7,11 @@
 
 import Foundation
 
-protocol PickableItem: Equatable {
+protocol PickableItem {
     var contents: String { get }
 }
+
+extension PickableItem where Self: Equatable { }
 
 extension DiscussionTopic: PickableItem {
     var contents: String {
