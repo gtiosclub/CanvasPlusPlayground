@@ -20,22 +20,28 @@ struct CourseView: View {
         @Bindable var navigationModel = navigationModel
 
         List(coursePages, id: \.self, selection: $navigationModel.selectedCoursePage) { page in
-            NavigationLink(value: page.destination) {
+            NavigationLink(value: NavigationModel.Destination.coursePage(page)) {
                 Label(page.title, systemImage: page.systemImageIcon)
             }
+            .tag(page)
         }
+        #if os(iOS)
+        .onAppear {
+            navigationModel.selectedCoursePage = nil
+        }
+        #endif
         .tint(course.rgbColors?.color)
         .navigationTitle(course.displayName)
         .navigationDestination(for: NavigationModel.Destination.self) { destination in
             switch destination {
-            case .announcements:
-                CourseAnnouncementsView(course: course)
+            case .coursePage(let coursePage):
+                CourseDetailView(course: course, coursePage: coursePage)
             case .announcement(let announcement):
                 CourseAnnouncementDetailView(announcement: announcement)
-            case .assignments:
-                CourseAssignmentsView(course: course)
             case .assignment(let assignment):
                 AssignmentDetailView(assignment: assignment)
+            case .page(let page):
+                PageView(page: page)
             }
         }
     }
