@@ -12,10 +12,8 @@ import Foundation
 /// It includes codes from IETF internet standards, other IETF RFCs, other specifications, and some additional commonly used codes.
 /// The first digit of the status code specifies one of five classes of response; an HTTP client must recognise these five classes at a minimum.
 enum HTTPStatusCode: Int, Error {
-
     /// The response class representation of status codes, these get grouped by their first digit.
     enum ResponseType {
-
         /// - informational: This class of status code indicates a provisional response, consisting only of the Status-Line and optional headers, and is terminated by an empty line.
         case informational
 
@@ -118,7 +116,6 @@ enum HTTPStatusCode: Int, Error {
     //
     // Client Error - 4xx
     //
-
 
     /// - badRequest: The server cannot or will not process the request due to an apparent client error.
     case badRequest = 400
@@ -258,9 +255,7 @@ enum HTTPStatusCode: Int, Error {
 
     /// The class (or group) which the status code belongs to.
     var responseType: ResponseType {
-
         switch self.rawValue {
-
         case 100..<200:
             return .informational
 
@@ -278,17 +273,12 @@ enum HTTPStatusCode: Int, Error {
 
         default:
             return .undefined
-
         }
-
     }
-
 }
 
 extension HTTPURLResponse {
-
     var status: HTTPStatusCode? {
-        return HTTPStatusCode(rawValue: statusCode)
+        HTTPStatusCode(rawValue: statusCode)
     }
-
 }
