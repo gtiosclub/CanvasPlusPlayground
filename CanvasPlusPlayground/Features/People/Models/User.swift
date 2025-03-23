@@ -55,11 +55,15 @@ class User: Cacheable {
         self.name = other.name
         self.sortableName = other.sortableName
         self.shortName = other.shortName
-        self.avatarURL = other.avatarURL
-        self.email = other.email
-        self.pronouns = other.pronouns
-        self.role = other.role
-        self.enrollments = other.enrollments
+        self.avatarURL = other.avatarURL ?? self.avatarURL
+        self.email = other.email ?? self.email
+        self.pronouns = other.pronouns ?? self.pronouns
+        self.role = other.role ?? self.role
+
+        // this logic is wrong, we should make `enrollments` optional and check if it's nil in `other`. for now ill keep it.
+        if !other.enrollments.isEmpty {
+            self.enrollments = other.enrollments
+        }
     }
 
     var hasAvatar: Bool {
