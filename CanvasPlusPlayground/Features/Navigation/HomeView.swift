@@ -90,7 +90,9 @@ struct HomeView: View {
 
     @ViewBuilder
     private var contentView: some View {
-        NavigationStack {
+        @Bindable var navigationModel = navigationModel
+
+        NavigationStack(path: $navigationModel.navigationPath) {
             if let selectedCourse {
                 CourseView(course: selectedCourse)
             } else if let selectedNavigationPage {

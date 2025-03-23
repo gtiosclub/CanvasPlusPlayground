@@ -97,6 +97,7 @@ class NavigationModel {
         case page(Page)
     }
 
+    var navigationPath = NavigationPath()
     var selectedNavigationPage: NavigationPage? {
         didSet {
             selectedCoursePage = nil
