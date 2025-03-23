@@ -87,16 +87,19 @@ extension APIRequest {
 
         urlRequest.httpMethod = self.method.rawValue
 
-        do {
-            let (data, response) = try await URLSession.shared.data(for: urlRequest)
+        let (data, response) = try await URLSession.shared.data(for: urlRequest)
 
-            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-                LoggerService.main.error("HTTP error: $\(response)$")
-                throw URLError(.badServerResponse)
-            }
-
-            return (data, response)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            LoggerService.main.error("HTTP error: $\(response)$")
+            throw URLError(.cannotParseResponse)
         }
+
+        guard httpResponse.status?.responseType == .success else {
+            LoggerService.main.error("HTTP error: $\(httpResponse)$")
+            throw httpResponse.status ?? .unknown
+        }
+
+        return (data, response)
     }
 
     func fetchPages(
