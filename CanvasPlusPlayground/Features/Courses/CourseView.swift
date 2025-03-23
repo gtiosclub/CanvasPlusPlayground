@@ -33,16 +33,7 @@ struct CourseView: View {
         .tint(course.rgbColors?.color)
         .navigationTitle(course.displayName)
         .navigationDestination(for: NavigationModel.Destination.self) { destination in
-            switch destination {
-            case .coursePage(let coursePage):
-                CourseDetailView(course: course, coursePage: coursePage)
-            case .announcement(let announcement):
-                CourseAnnouncementDetailView(announcement: announcement)
-            case .assignment(let assignment):
-                AssignmentDetailView(assignment: assignment)
-            case .page(let page):
-                PageView(page: page)
-            }
+            destination.destinationView(for: course)
         }
     }
 }
