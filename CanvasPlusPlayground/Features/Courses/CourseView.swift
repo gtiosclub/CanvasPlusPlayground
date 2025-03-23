@@ -29,6 +29,9 @@ struct CourseView: View {
         .onAppear {
             navigationModel.selectedCoursePage = nil
         }
+        .listStyle(.insetGrouped)
+        #else
+        .listStyle(.sidebar)
         #endif
         .tint(course.rgbColors?.color)
         .navigationTitle(course.displayName)

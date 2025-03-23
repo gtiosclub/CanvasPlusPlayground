@@ -26,10 +26,7 @@ struct Sidebar: View {
 
             Section {
                 ForEach(courseManager.userCourses) { course in
-                    NavigationLink(value: NavigationPage.course(id: course.id)) {
-                        CourseListCell(course: course)
-                    }
-                    .listItemTint(.fixed(course.rgbColors?.color ?? .accentColor))
+                    SidebarCourseCell(course: course)
                 }
             } header: {
                 SidebarHeader(text: "Courses")
@@ -38,10 +35,7 @@ struct Sidebar: View {
             if !courseManager.hiddenCourses.isEmpty {
                 Section(isExpanded: $isHiddenSectionExpanded) {
                     ForEach(courseManager.hiddenCourses) { course in
-                        NavigationLink(value: NavigationPage.course(id: course.id)) {
-                            CourseListCell(course: course)
-                        }
-                        .listItemTint(.fixed(course.rgbColors?.color ?? .accentColor))
+                        SidebarCourseCell(course: course)
                     }
                 } header: {
                     SidebarHeader(text: "Hidden")
@@ -95,6 +89,21 @@ private struct SidebarHeader: View {
             .textCase(nil)
             #endif
             .padding(.bottom, 4)
+    }
+}
+
+private struct SidebarCourseCell: View {
+    typealias NavigationPage = NavigationModel.NavigationPage
+
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+
+    let course: Course
+
+    var body: some View {
+        NavigationLink(value: NavigationPage.course(id: course.id)) {
+            CourseListCell(course: course)
+        }
+        .listItemTint(.fixed(course.rgbColors?.color ?? .accentColor))
     }
 }
 
