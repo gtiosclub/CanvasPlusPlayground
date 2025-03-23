@@ -15,10 +15,10 @@ public class AssignmentSubmissionManager {
     }
 
     func submitAssignment(withText text: String) async throws {
-        // make and send submission request
         guard let courseID = assignment.courseId?.asString else {
             throw AssignmentSubmissionError.missingCourseID
         }
+        LoggerService.main.log("Submitting assignment with text: \(text).")
         let request = CanvasRequest.submitAssignment(
             courseID: courseID,
             assignmentID: assignment.id,
@@ -28,7 +28,24 @@ public class AssignmentSubmissionManager {
         try await CanvasService.shared.fetch(request)
     }
 
+    func submitAssignment(withURL url: String) async throws {
+        LoggerService.main.info("Submitting assignment with URL: \(url). Assignment name: \(self.assignment.name)")
+        // make and send submission request
+        guard let courseID = assignment.courseId?.asString else {
+            throw AssignmentSubmissionError.missingCourseID
+        }
+        let request = CanvasRequest.submitAssignment(
+            courseID: courseID,
+            assignmentID: assignment.id,
+            submissionType: .onlineUrl,
+            url: url
+        )
+        try await CanvasService.shared.fetch(request)
+    }
+
     func submitFileAssignment(forFiles urls: [URL]) async throws {
+        LoggerService.main.info("Submitting assignment with files: \(urls).")
+
         guard let courseID = assignment.courseId?.asString else {
             throw AssignmentSubmissionError.missingCourseID
         }
@@ -67,6 +84,7 @@ public class AssignmentSubmissionManager {
 
     // Returns fileID
     func uploadFile(fileURL url: URL) async throws -> Int {
+        LoggerService.main.log("Attempting to upload file to canvas File URL: \(url)")
         let filename = url.lastPathComponent
         let fileData = try Data(contentsOf: url)
         let size = fileData.count
@@ -75,7 +93,7 @@ public class AssignmentSubmissionManager {
             // TODO: Error handle
             return -1
         }
-
+        LoggerService.main.log("Notifying canvas upload size \(filename) and size \(size)")
         let notificationRequest = CanvasRequest.notifyFileUpload(
             courseID: courseID,
             assignmentID: assignment.id,
@@ -88,7 +106,7 @@ public class AssignmentSubmissionManager {
         }
 
         let mime: MimeType = url.pathExtension.lowercased() == "txt" ? .txt : .other
-
+        LoggerService.main.log("File upload path:\(notificationResponse.uploadURL) key values: \(notificationResponse.uploadParams) filename \(filename) datasize: \(fileData.count) mimetype: \(mime.rawValue)")
         let uploadRequest = CanvasRequest.performFileUpload(
             path: notificationResponse.uploadURL,
             keyValues: notificationResponse.uploadParams,
@@ -105,8 +123,10 @@ public class AssignmentSubmissionManager {
         }
 
         let confirmationRequest = CanvasRequest.confirmFileUpload(path: locationString)
+        LoggerService.main.log("File confirmation request path: \(locationString)")
         let (finalData, _) = try await CanvasService.shared.fetchResponse(confirmationRequest)
         let finalResponseStruct = try JSONDecoder().decode(UploadFileConfirmationResponse.self, from: finalData)
+        LoggerService.main.log("File final response: type \(finalResponseStruct.contentType) displayname \(finalResponseStruct.displayName) size  \(finalResponseStruct.size)  url: \(finalResponseStruct.url)")
         return finalResponseStruct.id
     }
 }

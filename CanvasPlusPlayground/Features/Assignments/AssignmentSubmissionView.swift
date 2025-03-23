@@ -37,8 +37,10 @@ struct AssignmentSubmissionView: View {
                     switch selectedSubmissionType {
                     case .none, .onPaper:
                         noSubmissionView
-                    case .onlineUrl, .onlineTextEntry:
+                    case .onlineTextEntry:
                         textSubmissionView
+                    case .onlineUrl:
+                        urlSubmissionView
                     case .onlineUpload:
                         fileUploadView
                     default:
@@ -70,6 +72,8 @@ struct AssignmentSubmissionView: View {
                                 switch selectedSubmissionType {
                                 case .onlineUrl:
                                     try await manager.submitAssignment(withText: textbox)
+                                case .onlineTextEntry:
+                                    try await manager.submitAssignment(withURL: urlTextField)
                                 case .onlineUpload:
                                     try await manager.submitFileAssignment(forFiles: selectedURLs)
                                 default:
