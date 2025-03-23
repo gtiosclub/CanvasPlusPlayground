@@ -23,7 +23,7 @@ class PickerService {
         }
     }
 
-    var pickedItem: PickableItem?
+    var pickedItem: (any PickableItem)?
 
     var supportedPickerViews: [NavigationModel.CoursePage] = [
         .announcements,
@@ -32,7 +32,7 @@ class PickerService {
         // TODO: Add more supported picker pages.
     ]
 
-    func validatePickedItem() throws -> Bool {
+    func validatePickedItem() throws {
         guard let pickedItem else { throw PickerServiceError.emptySelection }
 
         if let file = pickedItem as? File, let ext = file.localURL?.pathExtension {
@@ -40,7 +40,5 @@ class PickerService {
                 throw PickerServiceError.invalidSelection
             }
         }
-
-        return true
     }
 }

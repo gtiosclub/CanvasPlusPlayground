@@ -10,7 +10,7 @@ import SwiftUI
 private struct PickerServiceViewModifier: ViewModifier {
     @Environment(PickerService.self) private var pickerService: PickerService?
 
-    var item: PickableItem?
+    var item: (any PickableItem)?
 
     func body(content: Content) -> some View {
         content
@@ -21,7 +21,7 @@ private struct PickerServiceViewModifier: ViewModifier {
 }
 
 extension View {
-    func pickedItem(_ item: PickableItem?) -> some View {
+    func pickedItem(_ item: (any PickableItem)?) -> some View {
         modifier(PickerServiceViewModifier(item: item))
     }
 }

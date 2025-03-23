@@ -94,9 +94,8 @@ struct CourseItemPicker: View {
     private var confirmButton: some View {
         Button("Choose") {
             do {
-                if try service.validatePickedItem() {
-                    dismiss()
-                }
+                try service.validatePickedItem()
+                dismiss()
             } catch {
                 self.error = error as? PickerService.PickerServiceError
             }

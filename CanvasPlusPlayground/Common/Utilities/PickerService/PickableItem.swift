@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol PickableItem {
+protocol PickableItem: Equatable {
     var contents: String { get }
 }
 
