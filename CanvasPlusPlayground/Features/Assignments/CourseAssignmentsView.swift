@@ -35,6 +35,11 @@ struct CourseAssignmentsView: View {
 
     var body: some View {
         mainbody
+            #if os(iOS)
+            .onAppear {
+                selectedAssignment = nil
+            }
+            #endif
     }
 
     var mainbody: some View {
@@ -111,15 +116,6 @@ struct CourseAssignmentsView: View {
             #endif
         }
         .environment(gradeCalculator)
-        #if os(macOS)
-        .navigationDestination(for: Assignment.self) { assignment in
-            AssignmentDetailView(assignment: assignment)
-        }
-        #else
-        .navigationDestination(item: $selectedAssignment) { assignment in
-            AssignmentDetailView(assignment: assignment)
-        }
-        #endif
     }
 
     private func loadAssignments() async {
@@ -145,9 +141,12 @@ private struct AssignmentRow: View {
 
     var body: some View {
         if !showGrades {
-            NavigationLink(value: assignment) {
+            NavigationLink(
+                value: NavigationModel.Destination.assignment(assignment)
+            ) {
                 bodyContents
             }
+            .tag(assignment)
         } else {
             bodyContents
         }

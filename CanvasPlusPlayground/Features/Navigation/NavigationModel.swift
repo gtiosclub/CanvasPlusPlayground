@@ -87,6 +87,22 @@ class NavigationModel {
                 "doc.text.fill"
             }
         }
+
+        var destination: Destination {
+            switch self {
+            case .announcements: .announcements
+            case .assignments: .assignments
+            default: .announcements
+            }
+        }
+    }
+
+    enum Destination: Hashable {
+        case announcements
+        case announcement(DiscussionTopic)
+
+        case assignments
+        case assignment(Assignment)
     }
 
     var selectedNavigationPage: NavigationPage? {
