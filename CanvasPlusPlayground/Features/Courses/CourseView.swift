@@ -25,10 +25,10 @@ struct CourseView: View {
             }
             .tag(page)
         }
-        #if os(iOS)
         .onAppear {
             navigationModel.selectedCoursePage = nil
         }
+        #if os(iOS)
         .listStyle(.insetGrouped)
         #else
         .listStyle(.sidebar)

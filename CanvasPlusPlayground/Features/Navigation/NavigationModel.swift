@@ -112,7 +112,7 @@ class NavigationModel {
         }
     }
 
-    var navigationPath = NavigationPath()
+    var navigationPath = [Destination]()
     var selectedNavigationPage: NavigationPage? {
         didSet {
             selectedCoursePage = nil
