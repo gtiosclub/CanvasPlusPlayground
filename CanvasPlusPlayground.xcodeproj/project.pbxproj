@@ -157,6 +157,10 @@
 		B7C0A3CD2D3023CA003E5A36 /* PinnedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0A3CC2D3023CA003E5A36 /* PinnedItem.swift */; };
 		B7C0A3CF2D31F339003E5A36 /* PinnedItemCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0A3CE2D31F339003E5A36 /* PinnedItemCard.swift */; };
 		B7CC4D3C2D8DB87200254F55 /* URL+AppRootURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D3B2D8DB86E00254F55 /* URL+AppRootURL.swift */; };
+		B7CC4D3F2D8DFAEC00254F55 /* PickerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D3E2D8DFAE900254F55 /* PickerService.swift */; };
+		B7CC4D412D8DFB7300254F55 /* PickableItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D402D8DFB7300254F55 /* PickableItem.swift */; };
+		B7CC4D432D8DFF0A00254F55 /* PickerServiceViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D422D8DFF0A00254F55 /* PickerServiceViewModifier.swift */; };
+		B7CC4D462D8DFFA500254F55 /* CourseItemPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D452D8DFFA000254F55 /* CourseItemPicker.swift */; };
 		B7D7512B2D3D5D8000F7B8B8 /* AllAnnouncementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D7512A2D3D5D7700F7B8B8 /* AllAnnouncementsView.swift */; };
 		B7D7512D2D3D652300F7B8B8 /* GetAnnouncementsBatchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D7512C2D3D652300F7B8B8 /* GetAnnouncementsBatchRequest.swift */; };
 		B7D7512F2D3D660B00F7B8B8 /* AllAnnouncementsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D7512E2D3D660B00F7B8B8 /* AllAnnouncementsManager.swift */; };
@@ -326,6 +330,10 @@
 		B7C0A3CC2D3023CA003E5A36 /* PinnedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedItem.swift; sourceTree = "<group>"; };
 		B7C0A3CE2D31F339003E5A36 /* PinnedItemCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedItemCard.swift; sourceTree = "<group>"; };
 		B7CC4D3B2D8DB86E00254F55 /* URL+AppRootURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+AppRootURL.swift"; sourceTree = "<group>"; };
+		B7CC4D3E2D8DFAE900254F55 /* PickerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerService.swift; sourceTree = "<group>"; };
+		B7CC4D402D8DFB7300254F55 /* PickableItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickableItem.swift; sourceTree = "<group>"; };
+		B7CC4D422D8DFF0A00254F55 /* PickerServiceViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerServiceViewModifier.swift; sourceTree = "<group>"; };
+		B7CC4D452D8DFFA000254F55 /* CourseItemPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseItemPicker.swift; sourceTree = "<group>"; };
 		B7D7512A2D3D5D7700F7B8B8 /* AllAnnouncementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllAnnouncementsView.swift; sourceTree = "<group>"; };
 		B7D7512C2D3D652300F7B8B8 /* GetAnnouncementsBatchRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAnnouncementsBatchRequest.swift; sourceTree = "<group>"; };
 		B7D7512E2D3D660B00F7B8B8 /* AllAnnouncementsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllAnnouncementsManager.swift; sourceTree = "<group>"; };
@@ -450,6 +458,7 @@
 				A373DC182D1A40EC00215019 /* Models */,
 				B76454F62C8DF61B002DF00E /* CourseView.swift */,
 				B76454FC2C8DF61B002DF00E /* CourseManager.swift */,
+				B7CC4D452D8DFFA000254F55 /* CourseItemPicker.swift */,
 			);
 			path = Courses;
 			sourceTree = "<group>";
@@ -485,6 +494,7 @@
 			isa = PBXGroup;
 			children = (
 				B7CC4D3B2D8DB86E00254F55 /* URL+AppRootURL.swift */,
+				B7CC4D442D8DFF1500254F55 /* PickerService */,
 				9B07E7112D779CA500359B69 /* Date+RelativeDates.swift */,
 				B7725D642D7387D300D64ED8 /* AccessoryBar.swift */,
 				A373DC0E2D19F71600215019 /* TypeSafeCodable.swift */,
@@ -807,6 +817,16 @@
 			path = "Pinned Items";
 			sourceTree = "<group>";
 		};
+		B7CC4D442D8DFF1500254F55 /* PickerService */ = {
+			isa = PBXGroup;
+			children = (
+				B7CC4D3E2D8DFAE900254F55 /* PickerService.swift */,
+				B7CC4D422D8DFF0A00254F55 /* PickerServiceViewModifier.swift */,
+				B7CC4D402D8DFB7300254F55 /* PickableItem.swift */,
+			);
+			path = PickerService;
+			sourceTree = "<group>";
+		};
 		B7D95DB52D0A8D6A002AD955 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -980,6 +1000,7 @@
 				B7D95D772D07C3D3002AD955 /* ICSParser.swift in Sources */,
 				A3CF88D32D18E6BB000ACDF3 /* ParentKeyPath.swift in Sources */,
 				B7F9503B2D127AD0004BB470 /* ProfileAPI.swift in Sources */,
+				B7CC4D3F2D8DFAEC00254F55 /* PickerService.swift in Sources */,
 				A352AD1C2D3EF206007EE6FC /* User.swift in Sources */,
 				B76455012C8DF61B002DF00E /* StorageKeys.swift in Sources */,
 				A3FFD03A2CDEC2AC006BAB51 /* LookupCondition.swift in Sources */,
@@ -1012,6 +1033,7 @@
 				B5894F132D6EBD8C00E8F527 /* Page.swift in Sources */,
 				A373DC2B2D23EB3D00215019 /* Submission.swift in Sources */,
 				B7E59A122D20046B001836FE /* SidebarTile.swift in Sources */,
+				B7CC4D412D8DFB7300254F55 /* PickableItem.swift in Sources */,
 				9B92A4252C93856100C21CFC /* CourseAnnouncementManager.swift in Sources */,
 				A35191432D28ED48001E415F /* GetModuleItemsRequest.swift in Sources */,
 				B76455052C8DF61B002DF00E /* SetupView.swift in Sources */,
@@ -1025,6 +1047,7 @@
 				A3049B832D161432002F3166 /* GetAssignmentsRequest.swift in Sources */,
 				B7F9503D2D12ADAE004BB470 /* SubmissionAPI.swift in Sources */,
 				B7E59A102D2002A5001836FE /* Sidebar.swift in Sources */,
+				B7CC4D462D8DFFA500254F55 /* CourseItemPicker.swift in Sources */,
 				B7AD54F62CD41D7900FB09BB /* DeviceStat.swift in Sources */,
 				A3049B812D160F6B002F3166 /* GetAnnouncementsRequest.swift in Sources */,
 				A373DC332D2819F700215019 /* APIModuleItem.swift in Sources */,
@@ -1096,6 +1119,7 @@
 				A3D161512D178615004055FB /* GetUserProfileRequest.swift in Sources */,
 				A3D161492D169C23004055FB /* CacheableAPIRequest+Storage.swift in Sources */,
 				9B6663E32C9853BC0060990E /* HTMLTextView.swift in Sources */,
+				B7CC4D432D8DFF0A00254F55 /* PickerServiceViewModifier.swift in Sources */,
 				B73AE0BD2D4FB68B007094A8 /* Profile.swift in Sources */,
 				B7AD550C2CD4257B00FB09BB /* IntelligenceOnboardingView.swift in Sources */,
 				B7D751312D3D688C00F7B8B8 /* AnnouncementRow.swift in Sources */,

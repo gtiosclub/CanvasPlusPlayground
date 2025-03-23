@@ -46,6 +46,7 @@ struct CourseAnnouncementsView: View {
         .navigationDestination(item: $selectedAnnouncement) { announcement in
             CourseAnnouncementDetailView(announcement: announcement)
         }
+        .pickedItem(selectedAnnouncement)
     }
 
     private func loadAnnouncements() async {
