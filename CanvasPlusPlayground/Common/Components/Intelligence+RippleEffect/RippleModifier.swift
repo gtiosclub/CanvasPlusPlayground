@@ -61,7 +61,15 @@ struct RippleEffect<T: Equatable>: ViewModifier {
     var speed: Double
     var effectValue: Double
 
-    init(at origin: CGPoint, trigger: T, amplitude: Double = 12, frequency: Double = 15, decay: Double = 8, speed: Double = 1200, effectValue: Double = 0) {
+    init(
+        at origin: CGPoint,
+        trigger: T,
+        amplitude: Double = 12,
+        frequency: Double = 15,
+        decay: Double = 8,
+        speed: Double = 1200,
+        effectValue: Double = 0
+    ) {
         self.origin = origin
         self.trigger = trigger
         self.amplitude = amplitude
