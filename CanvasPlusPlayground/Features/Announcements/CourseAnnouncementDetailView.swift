@@ -70,10 +70,14 @@ private struct SummarySection: View {
     let announcement: DiscussionTopic
 
     @State private var loadingSummary = false
+    @State private var updateView = false
 
     var body: some View {
         VStack {
-            IntelligenceContentView(condition: announcement.summary != nil) {
+            IntelligenceContentView(
+                condition: updateView,
+                isOutline: announcement.summary != nil
+            ) {
                 VStack(alignment: .leading, spacing: 16) {
                     header
 
@@ -109,6 +113,9 @@ private struct SummarySection: View {
         }
         .disabled(intelligenceManager.currentModelName == nil)
         .animation(.default, value: announcement.summary != nil)
+        .onChange(of: announcement.summary) { _ in
+            updateView.toggle()
+        }
     }
 
     private var header: some View {

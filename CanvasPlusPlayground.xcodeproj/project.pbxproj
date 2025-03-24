@@ -525,7 +525,7 @@
 		A324BA562D0796C3005F53FA /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				B7CC4D5D2D90C03C00254F55 /* Intelligence+RippleEffect */,
+				B7CC4D5D2D90C03C00254F55 /* Intelligence */,
 				B7CC4D442D8DFF1500254F55 /* PickerService */,
 				B7C0A3C82D2F87E9003E5A36 /* AsyncView.swift */,
 				B7F950332D11A00F004BB470 /* StatusToolbarItem.swift */,
@@ -809,11 +809,11 @@
 		B7AD54EE2CD41D5200FB09BB /* Intelligence */ = {
 			isa = PBXGroup;
 			children = (
+				B7CC4D652D90FDEA00254F55 /* Views */,
 				B7AD54EF2CD41D7900FB09BB /* IntelligenceManager.swift */,
 				B7AD54F02CD41D7900FB09BB /* DeviceStat.swift */,
 				B7AD54F12CD41D7900FB09BB /* LLMEvaluator.swift */,
 				B7AD54F22CD41D7900FB09BB /* ModelConfiguration.swift */,
-				B7AD550B2CD4257400FB09BB /* IntelligenceOnboardingView.swift */,
 			);
 			path = Intelligence;
 			sourceTree = "<group>";
@@ -841,15 +841,14 @@
 			path = PickerService;
 			sourceTree = "<group>";
 		};
-		B7CC4D5D2D90C03C00254F55 /* Intelligence+RippleEffect */ = {
+		B7CC4D5D2D90C03C00254F55 /* Intelligence */ = {
 			isa = PBXGroup;
 			children = (
-				B7CC4D622D90C8D500254F55 /* ShapeStyle+Gradient.swift */,
 				B7CC4D642D90E87600254F55 /* Shaders */,
+				B7CC4D622D90C8D500254F55 /* ShapeStyle+Gradient.swift */,
 				B7CC4D592D90BF6C00254F55 /* RippleModifier.swift */,
-				B7CC4D552D90BF1F00254F55 /* IntelligenceContentView.swift */,
 			);
-			path = "Intelligence+RippleEffect";
+			path = Intelligence;
 			sourceTree = "<group>";
 		};
 		B7CC4D642D90E87600254F55 /* Shaders */ = {
@@ -859,6 +858,15 @@
 				B7CC4D572D90BF4A00254F55 /* Ripple.metal */,
 			);
 			path = Shaders;
+			sourceTree = "<group>";
+		};
+		B7CC4D652D90FDEA00254F55 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B7CC4D552D90BF1F00254F55 /* IntelligenceContentView.swift */,
+				B7AD550B2CD4257400FB09BB /* IntelligenceOnboardingView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		B7D95DB52D0A8D6A002AD955 /* Settings */ = {

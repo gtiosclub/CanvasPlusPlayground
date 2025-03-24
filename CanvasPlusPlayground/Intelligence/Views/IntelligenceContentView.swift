@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// A view designated for promoting intelligence features within the app.
 struct IntelligenceContentView<V: View>: View {
     @Namespace private var namespace
 
@@ -66,6 +67,7 @@ struct IntelligenceContentView<V: View>: View {
                         )
                     )
                     .matchedGeometryEffect(id: "background", in: namespace)
+                    .overlay(.thinMaterial, in: .rect(cornerRadius: 8.0))
             } else {
                 RoundedRectangle(cornerRadius: 8.0)
                     .strokeBorder(

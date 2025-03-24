@@ -16,4 +16,14 @@ extension ShapeStyle where Self == AnyShapeStyle {
             .colorArray(colors)
         ))
     }
+
+    static func intelligenceGradient() -> Self {
+        AnyShapeStyle(
+            LinearGradient(
+                colors: IntelligenceManager.gradientColors,
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        )
+    }
 }

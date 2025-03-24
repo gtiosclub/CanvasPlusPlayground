@@ -93,24 +93,12 @@ struct IntelligenceOnboardingView: View {
     private var header: some View {
         Image(systemName: "wand.and.stars")
             .font(.system(size: 70))
-            .foregroundStyle(
-                .linearGradient(
-                    colors: IntelligenceManager.gradientColors,
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-            )
+            .foregroundStyle(.intelligenceGradient())
 
         Group {
             Text("Canvas Plus ") +
             Text("Intelligence")
-                .foregroundStyle(
-                    .linearGradient(
-                        colors: IntelligenceManager.gradientColors,
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
+                .foregroundStyle(.intelligenceGradient())
         }
         .font(.largeTitle)
         .fontDesign(.rounded)
