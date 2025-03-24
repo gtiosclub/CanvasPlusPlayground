@@ -10,6 +10,8 @@ import Foundation
 // swiftlint:disable identifier_name
 
 struct APIGroup: APIResponse {
+    typealias Model = CanvasGroup
+
     let id: Int
     let name: String
     let description: String?
@@ -30,10 +32,10 @@ struct APIGroup: APIResponse {
     }
 
     struct GroupCategory: Codable {
-        let id: Int
-        let name: String
-        let group_limit: Int
-        let allows_multiple_memberships: Bool
+        let id: Int?
+        let name: String?
+        let group_limit: Int?
+        let allows_multiple_memberships: Bool?
     }
 
     struct Permissions: Codable {

@@ -10,8 +10,19 @@ import SwiftUI
 struct CourseGroupsView: View {
     let course: Course
 
+    @State private var courseGroupsVM: CourseGroupsViewModel
+
+    init(course: Course) {
+        self.course = course
+        self._courseGroupsVM = State(initialValue: CourseGroupsViewModel(courseId: self.course.id))
+    }
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+            GroupsListView(groups: courseGroupsVM.displayedGroups)
+
+        .task {
+            await courseGroupsVM.fetchGroups()
+        }
     }
 }
 

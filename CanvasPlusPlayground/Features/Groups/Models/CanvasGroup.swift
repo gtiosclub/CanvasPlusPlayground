@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-class CanvasGroup: Cacheable {
+class CanvasGroup: Cacheable, Hashable {
     var id: String
     var name: String
     var groupDescription: String?
@@ -22,7 +22,7 @@ class CanvasGroup: Cacheable {
     var allowsMultipleMemberships: Bool?
     var storageQuotaMb: Int?
     var isPublic: Bool
-    var users: [User]?
+    var users: [UserAPI]?
     var joinLevel: GroupJoinLevel?
     var avatarUrl: URL?
 
@@ -50,12 +50,8 @@ class CanvasGroup: Cacheable {
         self.storageQuotaMb = api.storage_quota_mb
         self.isPublic = api.is_public
 
-        self.users = api.users?.map {
-            let user = User(from: $0)
-            ModelContext.shared.insert(user)
-
-            return user
-        }
+        // TODO: use user api instead
+        self.users = api.users
 
         self.joinLevel = api.join_level
         self.avatarUrl = api.avatar_url

@@ -216,4 +216,14 @@ enum CanvasRequest {
             perPage: perPage
         )
     }
+
+    static func getCourseGroups(
+        courseId: String,
+        onlyOwnGroups: Bool = false,
+        collaborationState: GetCourseGroupsRequest.CollaborationState = .all,
+        include: [GetCourseGroupsRequest.Include] = [.permissions, .groupCategory, .users],
+        perPage: Int = 100
+    ) -> GetCourseGroupsRequest {
+        GetCourseGroupsRequest(courseId: courseId, onlyOwnGroups: onlyOwnGroups, include: include, collaborationState: collaborationState, perPage: perPage)
+    }
 }
