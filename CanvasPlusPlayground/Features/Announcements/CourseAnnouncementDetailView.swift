@@ -64,21 +64,16 @@ struct CourseAnnouncementDetailView: View {
 }
 
 private struct SummarySection: View {
-    @Namespace private var namespace
-
     @EnvironmentObject private var llmEvaluator: LLMEvaluator
     @EnvironmentObject private var intelligenceManager: IntelligenceManager
 
     let announcement: DiscussionTopic
 
     @State private var loadingSummary = false
-    @State private var startTime = Date.now
-
-    private let colors: [Color] = IntelligenceManager.gradientColors
 
     var body: some View {
         VStack {
-            RippleView(condition: announcement.summary != nil) {
+            IntelligenceContentView(condition: announcement.summary != nil) {
                 VStack(alignment: .leading, spacing: 16) {
                     header
 
@@ -89,9 +84,6 @@ private struct SummarySection: View {
                 )
                 .frame(maxWidth: .infinity)
                 .padding(8)
-                .background {
-                    cardBackground
-                }
             }
 
             HStack {
@@ -136,33 +128,6 @@ private struct SummarySection: View {
         } else {
             Text("Summarize this announcement using on-device intelligence.")
                 .font(.caption)
-        }
-    }
-
-    private var cardBackground: some View {
-        TimelineView(.animation) { _ in
-            let elapsedTime = startTime.distance(to: Date.now)
-
-            if announcement.summary == nil {
-                RoundedRectangle(cornerRadius: 8.0)
-                    .fill(
-                        .animatedGradient(
-                            time: elapsedTime,
-                            colors: colors
-                        )
-                    )
-                    .matchedGeometryEffect(id: "background", in: namespace)
-            } else {
-                RoundedRectangle(cornerRadius: 8.0)
-                    .strokeBorder(
-                        .animatedGradient(
-                            time: elapsedTime,
-                            colors: colors
-                        ),
-                        lineWidth: 2.0
-                    )
-                    .matchedGeometryEffect(id: "background", in: namespace)
-            }
         }
     }
 

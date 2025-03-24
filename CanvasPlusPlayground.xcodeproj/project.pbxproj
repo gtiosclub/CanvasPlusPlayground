@@ -161,7 +161,7 @@
 		B7CC4D412D8DFB7300254F55 /* PickableItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D402D8DFB7300254F55 /* PickableItem.swift */; };
 		B7CC4D432D8DFF0A00254F55 /* PickerServiceViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D422D8DFF0A00254F55 /* PickerServiceViewModifier.swift */; };
 		B7CC4D462D8DFFA500254F55 /* CourseItemPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D452D8DFFA000254F55 /* CourseItemPicker.swift */; };
-		B7CC4D562D90BF3400254F55 /* RippleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D552D90BF1F00254F55 /* RippleView.swift */; };
+		B7CC4D562D90BF3400254F55 /* IntelligenceContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D552D90BF1F00254F55 /* IntelligenceContentView.swift */; };
 		B7CC4D582D90BF4A00254F55 /* Ripple.metal in Resources */ = {isa = PBXBuildFile; fileRef = B7CC4D572D90BF4A00254F55 /* Ripple.metal */; };
 		B7CC4D5A2D90BF6C00254F55 /* RippleModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D592D90BF6C00254F55 /* RippleModifier.swift */; };
 		B7CC4D5C2D90C00B00254F55 /* CGSize+Center.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D5B2D90C00800254F55 /* CGSize+Center.swift */; };
@@ -340,7 +340,7 @@
 		B7CC4D402D8DFB7300254F55 /* PickableItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickableItem.swift; sourceTree = "<group>"; };
 		B7CC4D422D8DFF0A00254F55 /* PickerServiceViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerServiceViewModifier.swift; sourceTree = "<group>"; };
 		B7CC4D452D8DFFA000254F55 /* CourseItemPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseItemPicker.swift; sourceTree = "<group>"; };
-		B7CC4D552D90BF1F00254F55 /* RippleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RippleView.swift; sourceTree = "<group>"; };
+		B7CC4D552D90BF1F00254F55 /* IntelligenceContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntelligenceContentView.swift; sourceTree = "<group>"; };
 		B7CC4D572D90BF4A00254F55 /* Ripple.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Ripple.metal; sourceTree = "<group>"; };
 		B7CC4D592D90BF6C00254F55 /* RippleModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RippleModifier.swift; sourceTree = "<group>"; };
 		B7CC4D5B2D90C00800254F55 /* CGSize+Center.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGSize+Center.swift"; sourceTree = "<group>"; };
@@ -848,7 +848,7 @@
 				B7CC4D5E2D90C86C00254F55 /* Gradient.metal */,
 				B7CC4D572D90BF4A00254F55 /* Ripple.metal */,
 				B7CC4D592D90BF6C00254F55 /* RippleModifier.swift */,
-				B7CC4D552D90BF1F00254F55 /* RippleView.swift */,
+				B7CC4D552D90BF1F00254F55 /* IntelligenceContentView.swift */,
 			);
 			path = "Intelligence+RippleEffect";
 			sourceTree = "<group>";
@@ -1081,7 +1081,7 @@
 				B7AD54F62CD41D7900FB09BB /* DeviceStat.swift in Sources */,
 				A3049B812D160F6B002F3166 /* GetAnnouncementsRequest.swift in Sources */,
 				A373DC332D2819F700215019 /* APIModuleItem.swift in Sources */,
-				B7CC4D562D90BF3400254F55 /* RippleView.swift in Sources */,
+				B7CC4D562D90BF3400254F55 /* IntelligenceContentView.swift in Sources */,
 				A373DC162D1A3C8700215019 /* RequestMethod.swift in Sources */,
 				A324BA682D07C2E9005F53FA /* FileViewer.swift in Sources */,
 				B7E59A162D200775001836FE /* CourseDetailView.swift in Sources */,
