@@ -845,12 +845,20 @@
 			isa = PBXGroup;
 			children = (
 				B7CC4D622D90C8D500254F55 /* ShapeStyle+Gradient.swift */,
-				B7CC4D5E2D90C86C00254F55 /* Gradient.metal */,
-				B7CC4D572D90BF4A00254F55 /* Ripple.metal */,
+				B7CC4D642D90E87600254F55 /* Shaders */,
 				B7CC4D592D90BF6C00254F55 /* RippleModifier.swift */,
 				B7CC4D552D90BF1F00254F55 /* IntelligenceContentView.swift */,
 			);
 			path = "Intelligence+RippleEffect";
+			sourceTree = "<group>";
+		};
+		B7CC4D642D90E87600254F55 /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				B7CC4D5E2D90C86C00254F55 /* Gradient.metal */,
+				B7CC4D572D90BF4A00254F55 /* Ripple.metal */,
+			);
+			path = Shaders;
 			sourceTree = "<group>";
 		};
 		B7D95DB52D0A8D6A002AD955 /* Settings */ = {
