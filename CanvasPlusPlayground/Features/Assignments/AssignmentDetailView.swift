@@ -8,9 +8,14 @@
 import SwiftUI
 
 struct AssignmentDetailView: View {
-    let assignment: Assignment
+    @State private var assignment: Assignment
     @State private var submission: Submission?
     @State private var showSubmissionPopUp: Bool = false
+
+    init(assignment: Assignment) {
+        self.assignment = assignment
+    }
+
     var body: some View {
         if assignment.isOnlineQuiz {
             if let url = URL(string: assignment.htmlUrl ?? "gatech.edu") {
@@ -95,6 +100,16 @@ struct AssignmentDetailView: View {
             }
             .task {
                 submission = assignment.submission?.createModel()
+
+//                guard let courseID = assignment.courseId else { return }
+//                let request = CanvasRequest.getAssignment(id: assignment.id, courseId: courseID.asString, include: [.canSubmit])
+//                
+//                do {
+//                    let fetched = try await CanvasService.shared.fetch(request).first!
+//                    self.assignment = Assignment(from: fetched)
+//                } catch {
+//                    LoggerService.main.error("Failed to fetch assignment \(request)")
+//                }
             }
             .sheet(isPresented: $showSubmissionPopUp) {
                 AssignmentSubmissionView(assignment: assignment)

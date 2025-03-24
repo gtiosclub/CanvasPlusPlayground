@@ -106,8 +106,16 @@ public class AssignmentSubmissionManager {
         }
 
         let mime: MimeType = url.pathExtension.lowercased() == "txt" ? .txt : .other
-        LoggerService.main.log("File upload path:\(notificationResponse.uploadURL) key values: \(notificationResponse.uploadParams) filename \(filename) datasize: \(fileData.count) mimetype: \(mime.rawValue)")
-        let uploadRequest = CanvasRequest.performFileUpload(
+        LoggerService.main.log(
+            """
+                "File upload path:\(notificationResponse.uploadURL)
+                 key values: \(notificationResponse.uploadParams)
+                 filename \(filename)
+                 datasize: \(fileData.count)
+                 mimetype: \(mime.rawValue)
+            """
+        )
+        let uploadRequest = CanvasRequest.transmitFileUpload(
             path: notificationResponse.uploadURL,
             keyValues: notificationResponse.uploadParams,
             filename: filename,
@@ -126,7 +134,14 @@ public class AssignmentSubmissionManager {
         LoggerService.main.log("File confirmation request path: \(locationString)")
         let (finalData, _) = try await CanvasService.shared.fetchResponse(confirmationRequest)
         let finalResponseStruct = try JSONDecoder().decode(UploadFileConfirmationResponse.self, from: finalData)
-        LoggerService.main.log("File final response: type \(finalResponseStruct.contentType) displayname \(finalResponseStruct.displayName) size  \(finalResponseStruct.size)  url: \(finalResponseStruct.url)")
+        LoggerService.main.log(
+            """
+                File final response: type \(finalResponseStruct.contentType)
+                displayname \(finalResponseStruct.displayName)
+                size \(finalResponseStruct.size)
+                url: \(finalResponseStruct.url)
+            """
+            )
         return finalResponseStruct.id
     }
 }

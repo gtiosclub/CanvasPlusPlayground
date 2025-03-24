@@ -48,14 +48,14 @@ enum CanvasRequest {
         )
     }
 
-    static func performFileUpload(
+    static func transmitFileUpload(
         path: String,
         keyValues: [String: String?],
         filename: String,
         fileData: Data,
         mimeType: MimeType
-    ) -> UploadFileUploadRequest {
-        UploadFileUploadRequest(path: path, keyValues: keyValues, filename: filename, fileData: fileData, mimeType: mimeType.rawValue)
+    ) -> UploadFileTransmissionRequest {
+        UploadFileTransmissionRequest(path: path, keyValues: keyValues, filename: filename, fileData: fileData, mimeType: mimeType.rawValue)
     }
 
     static func confirmFileUpload(
