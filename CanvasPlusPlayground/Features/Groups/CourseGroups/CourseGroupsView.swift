@@ -11,6 +11,7 @@ struct CourseGroupsView: View {
     let course: Course
 
     @State private var courseGroupsVM: CourseGroupsViewModel
+    @State private var isLoading: Bool = false
 
     init(course: Course) {
         self.course = course
@@ -18,14 +19,12 @@ struct CourseGroupsView: View {
     }
 
     var body: some View {
-            GroupsListView(groups: courseGroupsVM.displayedGroups)
-
-        .task {
-            await courseGroupsVM.fetchGroups()
-        }
+        GroupsListView(groups: courseGroupsVM.groups)
+            .task {
+                isLoading = true
+                await courseGroupsVM.fetchGroups()
+                isLoading = false
+            }
+            .statusToolbarItem("Groups", isVisible: isLoading)
     }
-}
-
-#Preview {
-    CourseGroupsView(course: .sample)
 }

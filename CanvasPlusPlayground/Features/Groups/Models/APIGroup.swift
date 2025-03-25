@@ -43,6 +43,35 @@ struct APIGroup: APIResponse {
         let join: Bool
         let create_announcement: Bool
     }
+
+    static let sample1 = APIGroup(
+        id: 12345,
+        name: "iOS Development Team",
+        description: "A group for students working on the final iOS project",
+        concluded: false,
+        members_count: 6,
+        course_id: 9876,
+        group_category: APIGroup.GroupCategory(
+            id: 42,
+            name: "Project Teams",
+            group_limit: 8,
+            allows_multiple_memberships: false
+        ),
+        storage_quota_mb: 1024,
+        is_public: false,
+        users: [
+            .sample1,
+            .sample2
+        ],
+        permissions: APIGroup.Permissions(
+            create_discussion_topic: true,
+            join: false,
+            create_announcement: true
+        ),
+        join_level: .invitationOnly,
+        avatar_url: URL(string: "https://canvas.example.edu/groups/12345/avatar.png"),
+        max_membership: 8
+    )
 }
 
 enum GroupJoinLevel: String, Codable {

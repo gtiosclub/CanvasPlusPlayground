@@ -79,6 +79,8 @@
 		A372D10A2D90DA7A005E94CA /* GetCourseGroupsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A372D1092D90DA7A005E94CA /* GetCourseGroupsRequest.swift */; };
 		A372D10C2D90E875005E94CA /* GroupsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A372D10B2D90E875005E94CA /* GroupsListView.swift */; };
 		A372D10E2D90F505005E94CA /* CourseGroupsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A372D10D2D90F505005E94CA /* CourseGroupsViewModel.swift */; };
+		A372D1102D91D1A1005E94CA /* GroupDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A372D10F2D91D1A1005E94CA /* GroupDetailView.swift */; };
+		A372D1142D91D2B9005E94CA /* String+SFSymbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = A372D1132D91D2B9005E94CA /* String+SFSymbols.swift */; };
 		A373DC0D2D19F65700215019 /* APIGradingPeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC0C2D19F65700215019 /* APIGradingPeriod.swift */; };
 		A373DC0F2D19F71600215019 /* TypeSafeCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC0E2D19F71600215019 /* TypeSafeCodable.swift */; };
 		A373DC142D19FA2A00215019 /* APICourseSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC132D19FA2A00215019 /* APICourseSection.swift */; };
@@ -261,6 +263,8 @@
 		A372D1092D90DA7A005E94CA /* GetCourseGroupsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetCourseGroupsRequest.swift; sourceTree = "<group>"; };
 		A372D10B2D90E875005E94CA /* GroupsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsListView.swift; sourceTree = "<group>"; };
 		A372D10D2D90F505005E94CA /* CourseGroupsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseGroupsViewModel.swift; sourceTree = "<group>"; };
+		A372D10F2D91D1A1005E94CA /* GroupDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupDetailView.swift; sourceTree = "<group>"; };
+		A372D1132D91D2B9005E94CA /* String+SFSymbols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+SFSymbols.swift"; sourceTree = "<group>"; };
 		A373DC0C2D19F65700215019 /* APIGradingPeriod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIGradingPeriod.swift; sourceTree = "<group>"; };
 		A373DC0E2D19F71600215019 /* TypeSafeCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeSafeCodable.swift; sourceTree = "<group>"; };
 		A373DC132D19FA2A00215019 /* APICourseSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICourseSection.swift; sourceTree = "<group>"; };
@@ -527,6 +531,7 @@
 				A3D022582D6A5BC500F8068C /* Data+Empty.swift */,
 				9A977E822D6C322F001D7F0A /* LoggerService.swift */,
 				A372D0FA2D90A709005E94CA /* HTTPURLResponse+Codes.swift */,
+				A372D1132D91D2B9005E94CA /* String+SFSymbols.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -637,10 +642,11 @@
 		A372D0FD2D90BA96005E94CA /* Groups */ = {
 			isa = PBXGroup;
 			children = (
+				A372D1122D91D1B0005E94CA /* AllGroups */,
+				A372D1112D91D1A8005E94CA /* CourseGroups */,
 				A372D1002D90BE72005E94CA /* Models */,
-				A372D0FE2D90BAB6005E94CA /* CourseGroupsView.swift */,
 				A372D10B2D90E875005E94CA /* GroupsListView.swift */,
-				A372D10D2D90F505005E94CA /* CourseGroupsViewModel.swift */,
+				A372D10F2D91D1A1005E94CA /* GroupDetailView.swift */,
 			);
 			path = Groups;
 			sourceTree = "<group>";
@@ -654,6 +660,22 @@
 				A372D1072D90CEFE005E94CA /* APIGroupMembership.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		A372D1112D91D1A8005E94CA /* CourseGroups */ = {
+			isa = PBXGroup;
+			children = (
+				A372D0FE2D90BAB6005E94CA /* CourseGroupsView.swift */,
+				A372D10D2D90F505005E94CA /* CourseGroupsViewModel.swift */,
+			);
+			path = CourseGroups;
+			sourceTree = "<group>";
+		};
+		A372D1122D91D1B0005E94CA /* AllGroups */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = AllGroups;
 			sourceTree = "<group>";
 		};
 		A373DC182D1A40EC00215019 /* Models */ = {
@@ -996,7 +1018,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n    swiftlint lint --fix\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "#if [[ \"$(uname -m)\" == arm64 ]]; then\n #   export PATH=\"/opt/homebrew/bin:$PATH\"\n#fi\n\n#if which swiftlint > /dev/null; then\n #   swiftlint lint --fix\n#else\n #   echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n#fi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1060,6 +1082,7 @@
 				B76455022C8DF61B002DF00E /* CourseFilesView.swift in Sources */,
 				B76455032C8DF61B002DF00E /* HomeView.swift in Sources */,
 				A3269E8E2CD5533F006F7D14 /* CanvasRepository.swift in Sources */,
+				A372D1142D91D2B9005E94CA /* String+SFSymbols.swift in Sources */,
 				B7460A962D6CCD730069CF5B /* GradeCalculatorView.swift in Sources */,
 				A3049B5B2D0E5C18002F3166 /* QuizPermissions.swift in Sources */,
 				B7C0A3C52D2F4C19003E5A36 /* GetAssignmentRequest.swift in Sources */,
@@ -1175,6 +1198,7 @@
 				B73AE0BD2D4FB68B007094A8 /* Profile.swift in Sources */,
 				B7AD550C2CD4257B00FB09BB /* IntelligenceOnboardingView.swift in Sources */,
 				B7D751312D3D688C00F7B8B8 /* AnnouncementRow.swift in Sources */,
+				A372D1102D91D1A1005E94CA /* GroupDetailView.swift in Sources */,
 				A3049B792D15E162002F3166 /* GetCourseRootFolderRequest.swift in Sources */,
 				7F8535742C98DE3C0023E384 /* CourseGradeView.swift in Sources */,
 				A3049B7F2D160C03002F3166 /* GetTabsRequest.swift in Sources */,

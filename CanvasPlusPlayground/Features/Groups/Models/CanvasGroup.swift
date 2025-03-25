@@ -35,6 +35,22 @@ class CanvasGroup: Cacheable, Hashable {
     var usersIsIncomplete: Bool {
         membersCount > users?.count ?? 0
     }
+    var availableAction: GroupAction? {
+        guard membersCount < groupLimit && canJoin == true && !concluded else { return nil } // no action can be taken
+
+        return switch currUserStatus {
+        case .accepted:
+            .leave
+        case .invited:
+            .accept
+        case .requested:
+            .cancelRequest
+        case nil:
+            .join
+        }
+        // TODO: verify action logic
+    }
+    var currUserStatus: GroupMembershipState? // should update by fetching GroupMembership of `self`
 
     init(from api: APIGroup) {
         self.id = api.id.asString
@@ -82,4 +98,12 @@ class CanvasGroup: Cacheable, Hashable {
         self.canJoin = other.canJoin ?? self.canJoin
         self.canCreateAnnouncement = other.canCreateAnnouncement ?? self.canCreateAnnouncement
     }
+
+    static let sample = CanvasGroup(
+        from: .sample1
+    )
+}
+
+enum GroupAction: String {
+    case join = "Join", leave = "Leave", accept = "Accept", cancelRequest = "Cancel request"
 }

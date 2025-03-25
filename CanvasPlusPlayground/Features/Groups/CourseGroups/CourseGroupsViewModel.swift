@@ -10,11 +10,7 @@ import Foundation
 @Observable
 class CourseGroupsViewModel {
     let courseId: String
-    var groups = Set<CanvasGroup>()
-
-    var displayedGroups: [CanvasGroup] {
-        Array(groups)
-    }
+    var groups = [CanvasGroup]()
 
     init(courseId: String) {
         self.courseId = courseId
@@ -35,13 +31,17 @@ class CourseGroupsViewModel {
                 })
             )
         } catch {
-            LoggerService.main.error("[CourseGroupsViewModel] Group fetch failed: \(error)")
+            LoggerService.main.error("[CourseGroupsViewModel] Groups fetch failed: \(error)")
         }
     }
 
     func insertGroups(_ groups: [CanvasGroup]) {
+        let newGroups = groups.filter {
+            !self.groups.contains($0)
+        }
+
         DispatchQueue.main.async {
-            self.groups.formUnion(groups)
+            self.groups.append(contentsOf: newGroups)
         }
     }
 }

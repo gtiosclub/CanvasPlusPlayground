@@ -10,31 +10,99 @@ import SwiftUI
 struct GroupsListView: View {
     let groups: [CanvasGroup]
 
+    @State private var selectedGroupDetail: CanvasGroup?
+
     var body: some View {
         List(groups) { group in
-            GroupRowView(group: group)
+            GroupRowView(group: group, selectedGroupDetail: $selectedGroupDetail)
                 .onAppear {
-                    // TODO: fetch current user membership status
+                    // TODO: fetch and set current user membership status
                 }
+        }
+        .sheet(item: $selectedGroupDetail) {
+            GroupDetailView(group: $0)
+                .frame(minHeight: 500)
         }
     }
 }
 
 struct GroupRowView: View {
     let group: CanvasGroup
+    @Binding var selectedGroupDetail: CanvasGroup?
+
+    var membersLimit: String {
+        group.groupLimit == .max ? "∞" : String(group.groupLimit)
+    }
 
     var body: some View {
         VStack {
             HStack {
-                Text(group.name + " (\(group.groupCategoryName ?? "Unknown Category"))")
-                    .font(.title)
+                Text(group.name)
+                    .font(.headline)
+
+                numMembersLabel
+                moreDetailsButton
 
                 Spacer()
 
-                Text("\(group.membersCount)/\(group.groupLimit)" )
+                if let action = group.availableAction {
+                    groupActionButton(for: action)
+                } else {
+                    lockStatusLabel
+                }
             }
-            Text((group.users ?? []).map { $0.name }.joined(separator: ", "))
-                .font(.caption)
+            .font(.subheadline)
         }
     }
+
+    var moreDetailsButton: some View {
+        Button {
+            selectedGroupDetail = group
+        } label: {
+            Image(systemName: .infoCircle)
+        }
+        .buttonStyle(.plain)
+#if os(macOS)
+        .foregroundStyle(.secondary)
+#else
+        .foregroundStyle(.blue)
+#endif
+    }
+
+    var numMembersLabel: some View {
+        Text("\(group.membersCount)/\(membersLimit)" )
+            .foregroundStyle(.secondary)
+    }
+
+    var categoryLabel: some View {
+        Text(group.groupCategoryName ?? "Unknown Category")
+    }
+
+    var lockStatusLabel: Image {
+#if os(macOS)
+        Image(systemName: .lock)
+#else
+        Image(systemName: .lockFilled)
+#endif
+    }
+
+    func groupActionButton(for action: GroupAction) -> some View {
+        Button("Join") {
+            // TODO: join/leave action here
+            switch action {
+            case .join:
+                break
+            case .leave:
+                break
+            case .cancelRequest:
+                break
+            case .accept:
+                break
+            }
+        }
+    }
+}
+
+#Preview {
+    GroupsListView(groups: [.sample, .sample])
 }

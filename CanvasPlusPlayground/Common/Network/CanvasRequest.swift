@@ -222,8 +222,14 @@ enum CanvasRequest {
         onlyOwnGroups: Bool = false,
         collaborationState: GetCourseGroupsRequest.CollaborationState = .all,
         include: [GetCourseGroupsRequest.Include] = [.permissions, .groupCategory, .users],
-        perPage: Int = 100
+        perPage: Int = 50
     ) -> GetCourseGroupsRequest {
-        GetCourseGroupsRequest(courseId: courseId, onlyOwnGroups: onlyOwnGroups, include: include, collaborationState: collaborationState, perPage: perPage)
+        GetCourseGroupsRequest(
+            courseId: courseId,
+            onlyOwnGroups: onlyOwnGroups,
+            include: include,
+            collaborationState: collaborationState,
+            perPage: perPage
+        )
     }
 }
