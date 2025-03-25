@@ -38,14 +38,6 @@ struct SettingsView: View {
                 SetupView()
             }
         }
-        .sheet(isPresented: $navigationModel.showInstallIntelligenceSheet, content: {
-            NavigationStack {
-                IntelligenceOnboardingView()
-            }
-            .environmentObject(llmEvaluator)
-            .environmentObject(intelligenceManager)
-            .interactiveDismissDisabled()
-        })
     }
 
     private var mainBody: some View {

@@ -64,6 +64,7 @@ struct CourseAnnouncementDetailView: View {
 }
 
 private struct SummarySection: View {
+    @Environment(NavigationModel.self) private var navigationModel
     @EnvironmentObject private var llmEvaluator: LLMEvaluator
     @EnvironmentObject private var intelligenceManager: IntelligenceManager
 
@@ -98,12 +99,20 @@ private struct SummarySection: View {
                         .controlSize(.small)
                 }
 
-                Button("Summarize" + (announcement.summary != nil ? " Again" : "")) {
-                    Task {
-                        await summarize()
+                Group {
+                    if intelligenceManager.installedModels.isEmpty {
+                        Button("Install Intelligence...") {
+                            navigationModel.showInstallIntelligenceSheet = true
+                        }
+                    } else {
+                        Button("Summarize" + (announcement.summary != nil ? " Again" : "")) {
+                            Task {
+                                await summarize()
+                            }
+                        }
+                        .disabled(loadingSummary)
                     }
                 }
-                .disabled(loadingSummary)
                 #if os(macOS)
                 // The Button would otherwise be bold since it's in a
                 // Section header
