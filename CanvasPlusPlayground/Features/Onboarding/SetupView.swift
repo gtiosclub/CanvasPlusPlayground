@@ -49,7 +49,7 @@ struct SetupView: View {
         .fontDesign(.rounded)
         .padding()
         .onAppear {
-            tempAccessKey = StorageKeys.accessTokenValue
+            tempAccessKey = StorageKeys.accessTokenValue.trimmingCharacters(in: .whitespacesAndNewlines)
         }
         .onDisappear {
             Task {
