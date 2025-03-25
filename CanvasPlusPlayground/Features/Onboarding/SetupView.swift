@@ -53,7 +53,7 @@ struct SetupView: View {
         }
         .onDisappear {
             Task {
-                StorageKeys.accessTokenValue = tempAccessKey
+                StorageKeys.accessTokenValue = tempAccessKey.trimmingCharacters(in: .whitespacesAndNewlines)
                 await courseManager.getCourses()
                 await profileManager.getCurrentUserAndProfile()
             }
