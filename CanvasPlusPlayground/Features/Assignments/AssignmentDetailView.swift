@@ -9,7 +9,9 @@ import SwiftUI
 
 struct AssignmentDetailView: View {
     @State private var assignment: Assignment
-    @State private var submission: Submission?
+    private var submission: Submission? {
+        assignment.submission?.createModel()
+    }
     @State private var showSubmissionPopUp: Bool = false
 
     init(assignment: Assignment) {
@@ -73,6 +75,13 @@ struct AssignmentDetailView: View {
                             value: workflowState.displayValue
                         )
                     }
+                    
+                    if let submittedAt = submission?.submittedAt {
+                        LabeledContent(
+                            "Submitted at",
+                            value: submittedAt
+                        )
+                    }
                     LabeledContent(
                         "Grade",
                         value: assignment.formattedGrade + "/" + assignment.formattedPointsPossible
@@ -99,20 +108,19 @@ struct AssignmentDetailView: View {
                 ReminderButton(item: .assignment(assignment))
             }
             .task {
-                submission = assignment.submission?.createModel()
-
+//                submission = assignment.submission?.createModel()
 //                guard let courseID = assignment.courseId else { return }
 //                let request = CanvasRequest.getAssignment(id: assignment.id, courseId: courseID.asString, include: [.canSubmit])
-//                
+//
 //                do {
 //                    let fetched = try await CanvasService.shared.fetch(request).first!
-//                    self.assignment = Assignment(from: fetched)
+//                    assignment = Assignment(from: fetched)
 //                } catch {
 //                    LoggerService.main.error("Failed to fetch assignment \(request)")
 //                }
             }
             .sheet(isPresented: $showSubmissionPopUp) {
-                AssignmentSubmissionView(assignment: assignment)
+                AssignmentSubmissionView(assignment: $assignment)
                     .environment(AssignmentSubmissionManager(assignment: assignment))
             }
         }

@@ -14,7 +14,7 @@ public class AssignmentSubmissionManager {
         self.assignment = assignment
     }
 
-    func submitAssignment(withText text: String) async throws {
+    func submitAssignment(withText text: String) async throws -> SubmissionAPI? {
         guard let courseID = assignment.courseId?.asString else {
             throw AssignmentSubmissionError.missingCourseID
         }
@@ -25,10 +25,12 @@ public class AssignmentSubmissionManager {
             submissionType: .onlineTextEntry,
             submissionBody: text
         )
-        try await CanvasService.shared.fetch(request)
+        let response = try await CanvasService.shared.fetch(request).first
+        LoggerService.main.info("returning text submission: \(response.debugDescription)")
+        return response
     }
 
-    func submitAssignment(withURL url: String) async throws {
+    func submitAssignment(withURL url: String) async throws -> SubmissionAPI? {
         LoggerService.main.info("Submitting assignment with URL: \(url). Assignment name: \(self.assignment.name)")
         // make and send submission request
         guard let courseID = assignment.courseId?.asString else {
@@ -40,50 +42,59 @@ public class AssignmentSubmissionManager {
             submissionType: .onlineUrl,
             url: url
         )
-        try await CanvasService.shared.fetch(request)
+        let response = try await CanvasService.shared.fetch(request).first
+        LoggerService.main.info("returning text submission: \(response.debugDescription)")
+        return response
     }
 
-    func submitFileAssignment(forFiles urls: [URL]) async throws {
+    func submitFileAssignment(forFiles urls: [URL]) async throws -> SubmissionAPI? {
         LoggerService.main.info("Submitting assignment with files: \(urls).")
 
         guard let courseID = assignment.courseId?.asString else {
             throw AssignmentSubmissionError.missingCourseID
         }
 
-        let fileIDs = await withTaskGroup(of: Int.self, returning: [Int].self) { taskGroup in
+        let fileIDs = await withTaskGroup(of: Int?.self, returning: [Int?].self) { taskGroup in
             for url in urls {
                 taskGroup.addTask {
                     do {
                         return try await self.uploadFile(fileURL: url)
                     } catch {
                         LoggerService.main.error("Error uploading file: \(url)\n \(error)")
-                        return -1
+                        return nil
                     }
                 }
             }
 
-            var fileids = [Int]()
+            var fileids = [Int?]()
             for await result in taskGroup {
                 fileids.append(result)
             }
             return fileids
         }
-
+        // we only want to go through with a submission if all files are successfully uploaded
+        if fileIDs.contains(nil) {
+            throw AssignmentSubmissionError.errorUploadingFiles
+        }
+        
         let submissionRequest = CanvasRequest.submitAssignment(
             courseID: courseID,
             assignmentID: assignment.id,
             submissionType: .onlineUpload,
-            fileIDs: fileIDs.filter { $0 != -1 }
+            fileIDs: fileIDs.compactMap { $0 }
         )
         do {
-            try await CanvasService.shared.fetch(submissionRequest)
+            let response = try await CanvasService.shared.fetch(submissionRequest).first
+            LoggerService.main.info("returning text submission: \(response.debugDescription)")
+            return response
         } catch {
             LoggerService.main.error("Error creating submission file for assignment: \(self.assignment.name)\n \(error)")
+            return nil
         }
     }
 
     // Returns fileID
-    func uploadFile(fileURL url: URL) async throws -> Int {
+    func uploadFile(fileURL url: URL) async throws -> Int? {
         LoggerService.main.log("Attempting to upload file to canvas File URL: \(url)")
         let filename = url.lastPathComponent
         let fileData = try Data(contentsOf: url)
@@ -91,7 +102,7 @@ public class AssignmentSubmissionManager {
 
         guard let courseID = assignment.courseId?.asString else {
             // TODO: Error handle
-            return -1
+            return nil
         }
         LoggerService.main.log("Notifying canvas upload size \(filename) and size \(size)")
         let notificationRequest = CanvasRequest.notifyFileUpload(
@@ -160,5 +171,5 @@ enum MimeType: String {
 }
 
 enum AssignmentSubmissionError: Error {
-    case missingCourseID, notificationResponseFailure, uploadResponseLocationMissing
+    case missingCourseID, notificationResponseFailure, uploadResponseLocationMissing, errorUploadingFiles
 }

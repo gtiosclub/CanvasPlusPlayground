@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct SubmitAssignmentRequest: NoReturnAPIRequest {
+struct SubmitAssignmentRequest: APIRequest {
+    typealias Subject = SubmissionAPI
     let courseID: String
     let assignmentID: String
 

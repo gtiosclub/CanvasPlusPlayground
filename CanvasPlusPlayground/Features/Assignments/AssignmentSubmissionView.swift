@@ -10,7 +10,7 @@ import UniformTypeIdentifiers
 
 struct AssignmentSubmissionView: View {
     @Environment(AssignmentSubmissionManager.self) private var manager
-    let assignment: Assignment
+    @Binding var assignment: Assignment
     @State private var selectedSubmissionType: SubmissionType?
     // TODO: Expand supported types beyond [.onlineUrl, .onlineUpload, .onlineTextEntry, .onPaper]
     var submissionTypes: [SubmissionType] {
@@ -71,11 +71,11 @@ struct AssignmentSubmissionView: View {
                                 showSubmissionUploadProgress = true
                                 switch selectedSubmissionType {
                                 case .onlineUrl:
-                                    try await manager.submitAssignment(withText: textbox)
+                                    assignment.submission = try await manager.submitAssignment(withText: textbox)
                                 case .onlineTextEntry:
-                                    try await manager.submitAssignment(withURL: urlTextField)
+                                    assignment.submission = try await manager.submitAssignment(withURL: urlTextField)
                                 case .onlineUpload:
-                                    try await manager.submitFileAssignment(forFiles: selectedURLs)
+                                    assignment.submission = try await manager.submitFileAssignment(forFiles: selectedURLs)
                                 default:
                                     LoggerService.main.error("User attempted to submit unimlemented assignment type")
                                 }

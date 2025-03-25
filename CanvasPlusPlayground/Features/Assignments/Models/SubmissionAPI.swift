@@ -8,7 +8,7 @@
 import Foundation
 
 // swiftlint:disable identifier_name
-struct SubmissionAPI: APIResponse {
+struct SubmissionAPI: APIResponse, Identifiable, Hashable {
     typealias Model = Submission
 
     // API docs: "the submission id in these URLs is the id of the student in the course, there is no separate submission id exposed in these APIs."
@@ -26,7 +26,7 @@ struct SubmissionAPI: APIResponse {
     let html_url: URL?
     let preview_url: URL?
     let score: Double?
-    let submission_comments: String?
+//    let submission_comments: [SubmissionComment?]
     let submission_type: String?
     let submitted_at: String?
     let url: String?
@@ -53,6 +53,15 @@ struct SubmissionAPI: APIResponse {
     }
 }
 
+struct SubmissionComment: Codable {
+    let id: Int
+    let author_id: Int
+    let author_name: String
+    let author: UserAPI
+    let comment: String
+    let createdAt: String
+    let editedAt: String?
+}
 /*
 {
   // The submission's assignment id
