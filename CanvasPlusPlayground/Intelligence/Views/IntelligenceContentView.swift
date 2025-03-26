@@ -9,6 +9,7 @@ import SwiftUI
 
 /// A view designated for promoting intelligence features within the app.
 struct IntelligenceContentView<V: View>: View {
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
     @Namespace private var namespace
 
     /// This view ripples upon change of this condition
@@ -55,7 +56,7 @@ struct IntelligenceContentView<V: View>: View {
 
             if !isOutline {
                 RoundedRectangle(cornerRadius: 8.0)
-                    .fill(
+                    .fill(reduceTransparency ? .intelligenceGradient() :
                         .animatedGradient(
                             time: elapsedTime,
                             colors: IntelligenceManager.gradientColors
