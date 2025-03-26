@@ -72,9 +72,9 @@ struct AssignmentSubmissionView: View {
                             do {
                                 showSubmissionUploadProgress = true
                                 switch selectedSubmissionType {
-                                case .onlineUrl:
-                                    assignment.submission = try await manager.submitAssignment(withText: textbox)
                                 case .onlineTextEntry:
+                                    assignment.submission = try await manager.submitAssignment(withText: textbox)
+                                case .onlineUrl:
                                     assignment.submission = try await manager.submitAssignment(withURL: urlTextField)
                                 case .onlineUpload:
                                     assignment.submission = try await manager.submitFileAssignment(forFiles: selectedURLs)
