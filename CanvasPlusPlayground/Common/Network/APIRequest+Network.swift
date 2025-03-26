@@ -94,7 +94,7 @@ extension APIRequest {
             let (data, response) = try await URLSession.shared.data(for: urlRequest)
 
             guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-                LoggerService.main.error("HTTP error: $\(response)$")
+                LoggerService.main.error("HTTP error: $\(response)$ data $\(String(data: data, encoding: .utf8) ?? "not text")$")
                 throw URLError(.badServerResponse)
             }
 
