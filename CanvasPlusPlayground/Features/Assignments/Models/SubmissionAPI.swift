@@ -26,7 +26,6 @@ struct SubmissionAPI: APIResponse, Identifiable, Hashable {
     let html_url: URL?
     let preview_url: URL?
     let score: Double?
-//    let submission_comments: [SubmissionComment?]
     let submission_type: String?
     let submitted_at: String?
     let url: String?

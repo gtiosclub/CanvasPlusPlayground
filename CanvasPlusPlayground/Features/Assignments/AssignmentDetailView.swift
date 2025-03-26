@@ -13,7 +13,7 @@ struct AssignmentDetailView: View {
         assignment.submission?.createModel()
     }
     @State private var showSubmissionPopUp: Bool = false
-
+    @State private var canSubmit = false
     init(assignment: Assignment) {
         self.assignment = assignment
     }
@@ -86,7 +86,7 @@ struct AssignmentDetailView: View {
                         "Grade",
                         value: assignment.formattedGrade + "/" + assignment.formattedPointsPossible
                     )
-                    if assignment.canSubmit ?? true {
+                    if canSubmit {
                         LabeledContent("Create submission") {
                             Button("Create Submission...") {
                                 showSubmissionPopUp.toggle()
@@ -108,16 +108,16 @@ struct AssignmentDetailView: View {
                 ReminderButton(item: .assignment(assignment))
             }
             .task {
-//                submission = assignment.submission?.createModel()
-//                guard let courseID = assignment.courseId else { return }
-//                let request = CanvasRequest.getAssignment(id: assignment.id, courseId: courseID.asString, include: [.canSubmit])
-//
-//                do {
-//                    let fetched = try await CanvasService.shared.fetch(request).first!
-//                    assignment = Assignment(from: fetched)
-//                } catch {
-//                    LoggerService.main.error("Failed to fetch assignment \(request)")
-//                }
+                guard let courseID = assignment.courseId else { return }
+                let request = CanvasRequest.getAssignment(id: assignment.id, courseId: courseID.asString, include: [.canSubmit])
+
+                do {
+                    if let fetched = try await CanvasService.shared.fetch(request).first {
+                        canSubmit = Assignment(from: fetched).canSubmit ?? false
+                    }
+                } catch {
+                    LoggerService.main.error("Failed to fetch assignment \(error)")
+                }
             }
             .sheet(isPresented: $showSubmissionPopUp) {
                 AssignmentSubmissionView(assignment: $assignment)
