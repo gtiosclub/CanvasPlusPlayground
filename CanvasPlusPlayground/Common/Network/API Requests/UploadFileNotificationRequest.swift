@@ -39,7 +39,7 @@ struct UploadFileNotificationRequest: APIRequest {
         // Append name field
         body.append(Data("--\(boundary)\r\n".utf8))
         body.append(Data("Content-Disposition: form-data; name=\"name\"\r\n\r\n".utf8))
-        body.append(Data("testsubmission.pdf\r\n".utf8))
+        body.append(Data("\(name)\r\n".utf8))
         // Append size field
         body.append(Data("--\(boundary)\r\n".utf8))
         body.append(Data("Content-Disposition: form-data; name=\"size\"\r\n\r\n".utf8))

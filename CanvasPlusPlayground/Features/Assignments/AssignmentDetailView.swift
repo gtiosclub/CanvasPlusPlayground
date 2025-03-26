@@ -78,9 +78,13 @@ struct AssignmentDetailView: View {
 
                     if let submittedAt = submission?.submittedAt {
                         LabeledContent(
-                            "Submitted at",
-                            value: submittedAt
-                        )
+                            "Submitted at"
+                        ) {
+                            let submissionTime = Date.from(submittedAt)
+                            Text(submissionTime, style: .time)
+                            + Text(" on ") +
+                            Text(submissionTime, style: .date)
+                        }
                     }
                     LabeledContent(
                         "Grade",
