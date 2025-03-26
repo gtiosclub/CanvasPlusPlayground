@@ -19,29 +19,35 @@ import Foundation
 // MARK: First, notify Canvas of intentions to upload a file
 
 struct UploadFileNotificationRequest: APIRequest {
-    var path: String { "courses/\(courseID)/assignments/\(assignmentID)/submissions/self/files" }
-    var queryParameters: [QueryParameter] = []
-    typealias Subject = UploadFileNotificationResponse
+    // User provided parameters
     let courseID: String
     let assignmentID: String
-    var method:RequestMethod { .POST }
-
-    // Parameters
     let name: String // name of file
     let size: Int // Size in bytes
-    let contentType: String? // if not provided, guesses based on file extension
-    let onDuplicate: DuplicateCondition?
+
+    typealias Subject = UploadFileNotificationResponse
+    var method: RequestMethod { .POST }
+    var path: String { "courses/\(courseID)/assignments/\(assignmentID)/submissions/self/files" }
+    var queryParameters: [QueryParameter] = []
+    let boundary = UUID().uuidString
+    var contentType: String? { "multipart/form-data; boundary=\(boundary)" }
+
     var body: Data? {
-        let dict:[String: Any] = [
-            "name": name,
-            "size": size,
-            "content_type": contentType as Any,
-            "on_duplicate": onDuplicate?.rawValue as Any
-        ]
-        if let jsonData = try? JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted) {
-            return jsonData
-        }
-        return nil
+        // Create the multipart body
+        var body = Data()
+
+        // Append name field
+        body.append(Data("--\(boundary)\r\n".utf8))
+        body.append(Data("Content-Disposition: form-data; name=\"name\"\r\n\r\n".utf8))
+        body.append(Data("testsubmission.pdf\r\n".utf8))
+        // Append size field
+        body.append(Data("--\(boundary)\r\n".utf8))
+        body.append(Data("Content-Disposition: form-data; name=\"size\"\r\n\r\n".utf8))
+        body.append(Data("\(size)\r\n".utf8))
+        // Close the body with boundary
+        body.append(Data("--\(boundary)--\r\n".utf8))
+
+        return body
     }
 
     enum DuplicateCondition: String {

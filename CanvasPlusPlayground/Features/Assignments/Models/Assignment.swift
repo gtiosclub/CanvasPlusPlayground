@@ -251,6 +251,7 @@ class Assignment: Cacheable {
         self.restrictQuantitativeData = other.restrictQuantitativeData
         self.allowedExtensions = other.allowedExtensions
         self.submission = other.submission
+        self.canSubmit = other.canSubmit
     }
 
     enum GradingType: String, Codable {

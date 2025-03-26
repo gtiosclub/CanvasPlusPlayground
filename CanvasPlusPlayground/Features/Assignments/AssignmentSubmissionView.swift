@@ -19,6 +19,8 @@ struct AssignmentSubmissionView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var showSubmissionUploadProgress = false
     @State private var showSubmissionErrorAlert: Bool = false
+    @State private var alertText:String = ""
+
     @State private var isFileHover: Bool = false
     var body: some View {
         NavigationStack {
@@ -79,12 +81,15 @@ struct AssignmentSubmissionView: View {
                                 default:
                                     LoggerService.main.error("User attempted to submit unimlemented assignment type")
                                 }
+                                showSubmissionUploadProgress = false
+                                dismiss()
                             } catch {
                                 // TODO: We could display error information to the user here
                                 LoggerService.main.error("Error submitting assignment: \(error.localizedDescription)")
+                                alertText = error.localizedDescription
+                                showSubmissionErrorAlert = true
+                                showSubmissionUploadProgress = false
                             }
-                            showSubmissionUploadProgress = false
-                            dismiss()
                         }
                     }
                     .disabled(submitButtonDisabled)
@@ -99,6 +104,8 @@ struct AssignmentSubmissionView: View {
         }
         .alert("Error submitting assignment", isPresented: $showSubmissionErrorAlert) {
             Button("Dismiss") { }
+        } message: {
+            Text(alertText)
         }
         .overlay {
             if isFileHover {

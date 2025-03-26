@@ -76,7 +76,7 @@ public class AssignmentSubmissionManager {
         if fileIDs.contains(nil) {
             throw AssignmentSubmissionError.errorUploadingFiles
         }
-        
+
         let submissionRequest = CanvasRequest.submitAssignment(
             courseID: courseID,
             assignmentID: assignment.id,
@@ -85,11 +85,11 @@ public class AssignmentSubmissionManager {
         )
         do {
             let response = try await CanvasService.shared.fetch(submissionRequest).first
-            LoggerService.main.info("returning text submission: \(response.debugDescription)")
+            LoggerService.main.info("returning file submission: \(response.debugDescription)")
             return response
         } catch {
-            LoggerService.main.error("Error creating submission file for assignment: \(self.assignment.name)\n \(error)")
-            return nil
+            LoggerService.main.error("Error submitting assignment: \(error)")
+            throw error
         }
     }
 
@@ -105,6 +105,8 @@ public class AssignmentSubmissionManager {
             return nil
         }
         LoggerService.main.log("Notifying canvas upload size \(filename) and size \(size)")
+        let mime: MimeType = url.pathExtension.lowercased() == "txt" ? .txt : .other
+
         let notificationRequest = CanvasRequest.notifyFileUpload(
             courseID: courseID,
             assignmentID: assignment.id,
@@ -116,7 +118,6 @@ public class AssignmentSubmissionManager {
             throw AssignmentSubmissionError.notificationResponseFailure
         }
 
-        let mime: MimeType = url.pathExtension.lowercased() == "txt" ? .txt : .other
         LoggerService.main.log(
             """
                 "File upload path:\(notificationResponse.uploadURL)

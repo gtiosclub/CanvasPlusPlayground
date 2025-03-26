@@ -75,7 +75,7 @@ struct AssignmentDetailView: View {
                             value: workflowState.displayValue
                         )
                     }
-                    
+
                     if let submittedAt = submission?.submittedAt {
                         LabeledContent(
                             "Submitted at",

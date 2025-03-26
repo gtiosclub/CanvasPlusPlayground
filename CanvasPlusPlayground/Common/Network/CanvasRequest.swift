@@ -42,9 +42,7 @@ enum CanvasRequest {
             courseID: courseID,
             assignmentID: assignmentID,
             name: filename,
-            size: size,
-            contentType: nil,
-            onDuplicate: .overwrite
+            size: size
         )
     }
 
