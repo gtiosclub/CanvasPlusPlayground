@@ -132,9 +132,7 @@ struct FoldersPageView: View {
 
     @ViewBuilder
     func folderRow(for subFolder: Folder) -> some View {
-        NavigationLink(value: subFolder) {
-            FolderRow(folder: subFolder)
-        }
+        FolderRow(folder: subFolder)
     }
 
     @ViewBuilder

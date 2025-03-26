@@ -80,6 +80,14 @@ struct HomeView: View {
                 }
             }
         }
+        .sheet(isPresented: $navigationModel.showInstallIntelligenceSheet, content: {
+            NavigationStack {
+                IntelligenceOnboardingView()
+            }
+            .environmentObject(llmEvaluator)
+            .environmentObject(intelligenceManager)
+            .interactiveDismissDisabled()
+        })
         #if os(iOS)
         .sheet(isPresented: $navigationModel.showSettingsSheet) {
             SettingsView()
@@ -90,7 +98,9 @@ struct HomeView: View {
 
     @ViewBuilder
     private var contentView: some View {
-        NavigationStack {
+        @Bindable var navigationModel = navigationModel
+
+        NavigationStack(path: $navigationModel.navigationPath) {
             if let selectedCourse {
                 CourseView(course: selectedCourse)
             } else if let selectedNavigationPage {

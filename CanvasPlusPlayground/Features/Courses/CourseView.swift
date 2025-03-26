@@ -20,28 +20,23 @@ struct CourseView: View {
         @Bindable var navigationModel = navigationModel
 
         List(coursePages, id: \.self, selection: $navigationModel.selectedCoursePage) { page in
-            NavigationLink(value: page) {
+            NavigationLink(value: NavigationModel.Destination.coursePage(page)) {
                 Label(page.title, systemImage: page.systemImageIcon)
             }
+            .tag(page)
         }
-        .tint(course.rgbColors?.color)
-        .navigationTitle(course.displayName)
+        .onAppear {
+            navigationModel.selectedCoursePage = nil
+        }
         #if os(iOS)
         .listStyle(.insetGrouped)
-        .navigationDestination(item: $navigationModel.selectedCoursePage) { coursePage in
-            CourseDetailView(
-                course: course,
-                coursePage: coursePage
-            )
-        }
         #else
         .listStyle(.sidebar)
-        .navigationDestination(for: NavigationModel.CoursePage.self) { coursePage in
-            CourseDetailView(
-                course: course,
-                coursePage: coursePage
-            )
-        }
         #endif
+        .tint(course.rgbColors?.color)
+        .navigationTitle(course.displayName)
+        .navigationDestination(for: NavigationModel.Destination.self) { destination in
+            destination.destinationView(for: course)
+        }
     }
 }

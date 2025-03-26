@@ -52,7 +52,7 @@ struct SidebarTile: View {
                 Spacer()
             }
             Text(title)
-                .foregroundStyle(isSelected ? .white : color)
+                .foregroundStyle(isSelected ? .white : .primary)
                 .bold()
                 .lineLimit(1)
         }

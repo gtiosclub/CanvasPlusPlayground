@@ -19,10 +19,16 @@ struct PagesListView: View {
 
     var body: some View {
         List(pagesManager.pages, id: \.id, selection: $selectedPage) { page in
-            NavigationLink(value: page) {
+            NavigationLink(value: NavigationModel.Destination.page(page)) {
                 Text(page.title ?? "Untitled")
             }
+            .tag(page)
         }
+        #if os(iOS)
+        .onAppear {
+            selectedPage = nil
+        }
+        #endif
         .overlay {
             if pagesManager.pages.isEmpty {
                 ContentUnavailableView("No pages available", systemImage: "exclamationmark.bubble.fill")
@@ -41,9 +47,6 @@ struct PagesListView: View {
             isVisible: isLoadingPages
         )
         .navigationTitle("Pages")
-        .navigationDestination(item: $selectedPage) { page in
-            PageView(page: page)
-        }
         .pickedItem(selectedPage)
     }
 

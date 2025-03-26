@@ -93,7 +93,7 @@ struct AnnouncementRow: View {
                 if let summary = announcement.summary {
                     Text(Image(systemName: "wand.and.sparkles"))
                         .foregroundStyle(
-                            course?.rgbColors?.color ?? .accentColor
+                            .intelligenceGradient()
                         )
                     +
                     Text(summary)
