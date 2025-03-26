@@ -95,8 +95,6 @@ private struct SidebarHeader: View {
 private struct SidebarCourseCell: View {
     typealias NavigationPage = NavigationModel.NavigationPage
 
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-
     let course: Course
 
     var body: some View {

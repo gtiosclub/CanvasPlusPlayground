@@ -110,3 +110,9 @@ struct RippleEffect<T: Equatable>: ViewModifier {
 
     var duration: TimeInterval { 3 }
 }
+
+extension View {
+    func rippleEffect(origin: CGPoint, condition: Bool) -> some View {
+        modifier(RippleEffect(at: origin, trigger: condition))
+    }
+}

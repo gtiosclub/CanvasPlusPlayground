@@ -71,12 +71,12 @@ private struct SummarySection: View {
     let announcement: DiscussionTopic
 
     @State private var loadingSummary = false
-    @State private var updateView = false
+    @State private var rippleView = false
 
     var body: some View {
         VStack {
             IntelligenceContentView(
-                condition: updateView,
+                condition: rippleView,
                 isOutline: announcement.summary != nil
             ) {
                 VStack(alignment: .leading, spacing: 16) {
@@ -122,8 +122,8 @@ private struct SummarySection: View {
         }
         .disabled(intelligenceManager.currentModelName == nil)
         .animation(.default, value: announcement.summary != nil)
-        .onChange(of: announcement.summary) { _ in
-            updateView.toggle()
+        .onChange(of: announcement.summary) { _, _ in
+            rippleView.toggle()
         }
     }
 

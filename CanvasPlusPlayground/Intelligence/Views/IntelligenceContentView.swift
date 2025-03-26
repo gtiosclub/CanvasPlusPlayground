@@ -46,12 +46,7 @@ struct IntelligenceContentView<V: View>: View {
                         center = newValue.center
                     }
             }
-            .modifier(
-                RippleEffect(
-                    at: center,
-                    trigger: condition
-                )
-            )
+            .rippleEffect(origin: center, condition: condition)
     }
 
     private var cardBackground: some View {
