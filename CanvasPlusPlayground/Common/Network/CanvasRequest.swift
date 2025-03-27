@@ -37,8 +37,8 @@ enum CanvasRequest {
         assignmentID: String,
         filename: String,
         fileSizeInBytes size: Int
-    ) -> UploadFileNotificationRequest {
-        UploadFileNotificationRequest(
+    ) -> UploadAssignmentFileNotificationRequest {
+        UploadAssignmentFileNotificationRequest(
             courseID: courseID,
             assignmentID: assignmentID,
             name: filename,
@@ -52,14 +52,14 @@ enum CanvasRequest {
         filename: String,
         fileData: Data,
         mimeType: MimeType
-    ) -> UploadFileTransmissionRequest {
-        UploadFileTransmissionRequest(path: path, keyValues: keyValues, filename: filename, fileData: fileData, mimeType: mimeType.rawValue)
+    ) -> UploadAssignmentFileTransmissionRequest {
+        UploadAssignmentFileTransmissionRequest(path: path, keyValues: keyValues, filename: filename, fileData: fileData, mimeType: mimeType.rawValue)
     }
 
     static func confirmFileUpload(
         path: String
-    ) -> UploadFileConfirmationRequest {
-        UploadFileConfirmationRequest(path: path)
+    ) -> UploadAssignmentFileConfirmationRequest {
+        UploadAssignmentFileConfirmationRequest(path: path)
     }
 
     static func getTabs(courseId: String) -> GetTabsRequest {

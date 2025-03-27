@@ -53,7 +53,7 @@ public class AssignmentSubmissionManager {
     }
 
     /// This function makes an API request to create and upload a file-based submission to the corresponding assignment.
-    func submitFileAssignment(forFiles urls: [URL]) async throws -> SubmissionAPI? {
+    func submitFileAssignment(forFiles urls: Set<URL>) async throws -> SubmissionAPI? {
         LoggerService.main.info("Submitting assignment with files: \(urls).")
 
         guard let courseID = assignment.courseId?.asString else {
@@ -148,14 +148,12 @@ public class AssignmentSubmissionManager {
         let (_, uploadResponse) = try await CanvasService.shared.fetchResponse(uploadRequest)
 
         let httpResponse = uploadResponse as! HTTPURLResponse
-        guard let locationString = httpResponse.value(forHTTPHeaderField: "Location") else {
-            throw AssignmentSubmissionError.uploadResponseLocationMissing
-        }
+        let locationString = httpResponse.value(forHTTPHeaderField: "Location")!
 
         let confirmationRequest = CanvasRequest.confirmFileUpload(path: locationString)
         LoggerService.main.log("File confirmation request path: \(locationString)")
         let (finalData, _) = try await CanvasService.shared.fetchResponse(confirmationRequest)
-        let finalResponseStruct = try JSONDecoder().decode(UploadFileConfirmationResponse.self, from: finalData)
+        let finalResponseStruct = try JSONDecoder().decode(UploadAssignmentFileConfirmationResponse.self, from: finalData)
         LoggerService.main.log(
             """
                 File final response: type \(finalResponseStruct.contentType)
@@ -183,11 +181,6 @@ public class AssignmentSubmissionManager {
             }
         }
     }
-}
-
-struct FileWrapper: Codable {
-    let key: String
-    let data: Data
 }
 
 enum MimeType: String {

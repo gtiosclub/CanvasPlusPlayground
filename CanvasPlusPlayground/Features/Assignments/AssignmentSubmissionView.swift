@@ -36,11 +36,11 @@ struct AssignmentSubmissionView: View {
         self.assignment = assignment
         self.manager = AssignmentSubmissionManager(assignment: assignment)
     }
-    
+
     // All the state variables corresponding to the data for each type
-    @State var urlTextField: String = ""
-    @State var textbox: String = ""
-    @State var selectedURLs: [URL] = []
+    @State private var urlTextField: String = ""
+    @State private var textbox: String = ""
+    @State private var selectedURLs: [URL] = []
     var body: some View {
         NavigationStack {
             Form {
@@ -162,7 +162,7 @@ struct AssignmentSubmissionView: View {
             return true
         }
     }
-    
+
     // MARK: Paper/No submission subview
     private struct NoSubmissionView: View {
         var body: some View {
@@ -171,8 +171,6 @@ struct AssignmentSubmissionView: View {
             }
         }
     }
-    
-    
 
     // MARK: Text submission subview
     private struct TextSubmissionView: View {
@@ -185,7 +183,7 @@ struct AssignmentSubmissionView: View {
             }
         }
     }
-    
+
     var textSubmissionValid: Bool {
         !textbox.isEmpty
     }
@@ -236,24 +234,24 @@ struct AssignmentSubmissionView: View {
                 .fileImporter(isPresented: $showPicker, allowedContentTypes: [.item], allowsMultipleSelection: true) { result in
                     switch result {
                     case .success(let urls):
-                        
+
                         selectedURLs = Array(Set(selectedURLs).union(urls))
-                        
+
                     case .failure(let error):
                         LoggerService.main.log("Error: \(error)")
                     }
                 }
             }
         }
-        
+
         private struct FileRow: View {
             let url: URL
-            
+
             let onDelete: () -> Void
             var body: some View {
                 HStack {
                     Text(url.lastPathComponent)
-                    
+
                     // The trashcan icon can just be a macOS thing. For iOS, use swipe to delete
 #if os(macOS)
                     Spacer()
@@ -273,10 +271,10 @@ struct AssignmentSubmissionView: View {
     var fileSubmissionValid: Bool {
         !selectedURLs.isEmpty
     }
-    
+
     private struct UnsupportedSubmissionView: View {
         let selectedSubmissionType: SubmissionType
-        
+
         var body: some View {
             Section {
                 Text("\(selectedSubmissionType.rawValue) submissions not supported")

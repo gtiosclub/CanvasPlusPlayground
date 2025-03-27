@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct UploadFileConfirmationRequest: APIRequest {
-    typealias Subject = UploadFileConfirmationResponse
+struct UploadAssignmentFileConfirmationRequest: APIRequest {
+    typealias Subject = UploadAssignmentFileConfirmationResponse
 
     var path: String
     var queryParameters: [QueryParameter] = []
@@ -17,7 +17,7 @@ struct UploadFileConfirmationRequest: APIRequest {
     var contentLength: String? { "0" }
 }
 
-struct UploadFileConfirmationResponse: APIResponse {
+struct UploadAssignmentFileConfirmationResponse: APIResponse {
     let id: Int
     let url: String
     let contentType: String

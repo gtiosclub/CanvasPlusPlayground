@@ -18,8 +18,8 @@ import Foundation
 
 // MARK: First, notify Canvas of intentions to upload a file
 
-struct UploadFileNotificationRequest: APIRequest {
-    typealias Subject = UploadFileNotificationResponse
+struct UploadAssignmentFileNotificationRequest: APIRequest {
+    typealias Subject = UploadAssignmentFileNotificationResponse
     // User provided parameters
     let courseID: String
     let assignmentID: String
@@ -55,7 +55,7 @@ struct UploadFileNotificationRequest: APIRequest {
     }
 }
 
-struct UploadFileNotificationResponse: APIResponse {
+struct UploadAssignmentFileNotificationResponse: APIResponse {
     let uploadURL: String
     let uploadParams: [String: String?]
 

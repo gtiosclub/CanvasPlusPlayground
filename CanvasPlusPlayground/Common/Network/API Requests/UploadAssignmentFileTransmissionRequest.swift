@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct UploadFileTransmissionRequest: APIRequest {
-    typealias Subject = UploadFileConfirmationResponse
+struct UploadAssignmentFileTransmissionRequest: APIRequest {
+    typealias Subject = UploadAssignmentFileConfirmationResponse
 
     var path: String
     var queryParameters: [QueryParameter] = []
