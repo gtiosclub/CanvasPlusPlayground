@@ -224,7 +224,9 @@ struct AssignmentSubmissionView: View {
             .fileImporter(isPresented: $showPicker, allowedContentTypes: [.item], allowsMultipleSelection: true) { result in
                 switch result {
                 case .success(let urls):
-                    selectedURLs.append(contentsOf: urls)
+                    
+                    selectedURLs = Array(Set(selectedURLs).union(urls))
+                    
                 case .failure(let error):
                     LoggerService.main.log("Error: \(error)")
                 }
