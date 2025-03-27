@@ -89,12 +89,37 @@ class NavigationModel {
         }
     }
 
+    enum Destination: Hashable {
+        case coursePage(CoursePage)
+
+        case announcement(DiscussionTopic)
+        case assignment(Assignment)
+        case page(Page)
+        // TODO: Add specific course items as needed.
+
+        @ViewBuilder
+        func destinationView(for course: Course) -> some View {
+            switch self {
+            case .coursePage(let coursePage):
+                CourseDetailView(course: course, coursePage: coursePage)
+            case .announcement(let announcement):
+                CourseAnnouncementDetailView(announcement: announcement)
+            case .assignment(let assignment):
+                AssignmentDetailView(assignment: assignment)
+            case .page(let page):
+                PageView(page: page)
+            }
+        }
+    }
+
+    var navigationPath = NavigationPath()
     var selectedNavigationPage: NavigationPage? {
         didSet {
             selectedCoursePage = nil
         }
     }
     var selectedCoursePage: CoursePage?
+    var selectedCourseForItemPicker: Course?
     var showInstallIntelligenceSheet = false
     var showAuthorizationSheet = false
     var showProfileSheet = false

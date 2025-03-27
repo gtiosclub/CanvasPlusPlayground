@@ -48,24 +48,26 @@ struct SidebarTile: View {
                     .font(.title)
                     .tint(isSelected ? .white : color)
                     .foregroundStyle(.tint)
+
                 Spacer()
             }
             Text(title)
                 .foregroundStyle(isSelected ? .white : .primary)
+                .bold()
                 .lineLimit(1)
         }
         .padding(8)
         .background(
             RoundedRectangle(cornerRadius: 12)
             #if os(iOS)
-                .fill(isSelected ? color : Color(uiColor: .secondarySystemGroupedBackground))
+                .fill(isSelected ? color : Color(uiColor: .tertiarySystemBackground))
             #else
                 .fill(isSelected ? color : .gray.opacity(0.2))
             #endif
         )
         #if os(iOS)
         .padding(2)
-        .frame(minWidth: 150)
+        .frame(minWidth: 140)
         #else
         .frame(minWidth: 90)
         #endif

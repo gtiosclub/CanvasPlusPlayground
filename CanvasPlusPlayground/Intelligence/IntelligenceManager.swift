@@ -6,10 +6,16 @@ import SwiftData
 import SwiftUI
 
 class IntelligenceManager: ObservableObject {
+    static let gradientColors: [Color] = [
+        .c1, .c2, .c3,
+        .c4, .c2, .c4,
+        .c3, .c2, .c3
+    ]
+
     @AppStorage("systemPrompt") var systemPrompt = "you are a helpful assistant"
     @AppStorage("currentModelName") var currentModelName: String?
 
-    private let installedModelsKey = "installedModels"
+    private let installedModelsKey = StorageKeys.installedModels
 
     @Published var installedModels: [String] = [] {
         didSet {

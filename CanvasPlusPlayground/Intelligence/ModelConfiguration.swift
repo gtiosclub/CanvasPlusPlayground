@@ -10,28 +10,24 @@ extension ModelConfiguration: @retroactive Equatable {
         lhs.name == rhs.name
     }
 
-    public static let llama321B4bit = ModelConfiguration(
-        id: "mlx-community/Llama-3.2-1B-Instruct-4bit"
-    )
-
     public static let llama323b4bit = ModelConfiguration(
         id: "mlx-community/Llama-3.2-3B-Instruct-4bit"
     )
 
+    // TODO: Experiment with different models here.
     public static var availableModels: [ModelConfiguration] = [
-        llama321B4bit,
         llama323b4bit
     ]
 
     public static var defaultModel: ModelConfiguration {
-        llama321B4bit
+        llama323b4bit
     }
 
     func getPromptHistory(thread: Thread, systemPrompt: String) -> String {
         var history = ""
 
         switch self {
-        case .llama321B4bit, .llama323b4bit:
+        case .llama323b4bit:
             history = "<|begin_of_text|>"
             history += "<|start_header_id|>system<|end_header_id|>\n\(systemPrompt)"
 

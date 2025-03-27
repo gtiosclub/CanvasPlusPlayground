@@ -9,6 +9,7 @@ import Foundation
 
 enum StorageKeys {
     static let accessToken = "com.canvasPlus.AccessToken"
+    static let installedModels = "com.canvasPlus.installedModels"
 
     static var accessTokenValue: String {
         get {

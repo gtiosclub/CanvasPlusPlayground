@@ -10,7 +10,11 @@ import SwiftUI
 struct SettingsView: View {
     #if DEBUG
     @Environment(PinnedItemsManager.self) private var pinnedItemManager
+    @Environment(CourseManager.self) private var courseManager
+
+    @State private var selectedItem: (any PickableItem)?
     #endif
+
     @Environment(NavigationModel.self) private var navigationModel
     @EnvironmentObject private var llmEvaluator: LLMEvaluator
     @EnvironmentObject private var intelligenceManager: IntelligenceManager
@@ -24,19 +28,16 @@ struct SettingsView: View {
         NavigationStack {
             mainBody
         }
+        #if DEBUG
+        .sheet(item: $navigationModel.selectedCourseForItemPicker) {
+            CourseItemPicker(course: $0, selectedItem: $selectedItem)
+        }
+        #endif
         .sheet(isPresented: $showChangeAccessToken) {
             NavigationStack {
                 SetupView()
             }
         }
-        .sheet(isPresented: $navigationModel.showInstallIntelligenceSheet, content: {
-            NavigationStack {
-                IntelligenceOnboardingView()
-            }
-            .environmentObject(llmEvaluator)
-            .environmentObject(intelligenceManager)
-            .interactiveDismissDisabled()
-        })
     }
 
     private var mainBody: some View {
@@ -73,24 +74,24 @@ struct SettingsView: View {
             Button {
                 navigationModel.showInstallIntelligenceSheet = true
             } label: {
-                Label("Download & Install Models", systemImage: "square.and.arrow.down")
+                Label("Setup Intelligence", systemImage: "square.and.arrow.down")
             }
             .foregroundStyle(.blue)
         } header: {
             Label("Intelligence", systemImage: "wand.and.stars")
         } footer: {
-            #if targetEnvironment(simulator)
-            Text("Intelligence features are not supported on simulator")
-            #else
-            if intelligenceManager.installedModels.isEmpty {
-                Text("Install models to use the intelligence features.")
-            } else {
-                let count = intelligenceManager.installedModels.count
-                Text(
-                    "You have \(count) installed \(count == 1 ? "model" : "models")"
-                )
+            Group {
+                #if targetEnvironment(simulator)
+                Text("Intelligence features are not supported on simulator.")
+                #else
+                if intelligenceManager.installedModels.isEmpty {
+                    Text("Intelligence is not installed yet.")
+                } else {
+                    Text("Intelligence is setup.")
+                }
+                #endif
             }
-            #endif
+            .font(.caption)
         }
         #if targetEnvironment(simulator)
         .disabled(true)
@@ -98,9 +99,16 @@ struct SettingsView: View {
     }
 
     #if DEBUG
+    @ViewBuilder
     private var debugSettings: some View {
+        @Bindable var navigationModel = navigationModel
+
         Section {
             Group {
+                Button("View Item Picker", systemImage: "filemenu.and.selection") {
+                    navigationModel.selectedCourseForItemPicker = courseManager.userCourses.first
+                }
+
                 Button("Clear Pinned Items", systemImage: "trash") {
                     pinnedItemManager.clearAllPinnedItems()
                 }
@@ -120,6 +128,9 @@ struct SettingsView: View {
                 Button("Show files in Finder", systemImage: "folder.badge.person.crop") {
                     CourseFileService.showInFinder()
                 }
+                #if os(iOS)
+                .disabled(true)
+                #endif
             }
             .foregroundStyle(.red)
         } header: {

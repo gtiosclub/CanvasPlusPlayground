@@ -24,40 +24,29 @@ struct Sidebar: View {
                 SidebarTiles()
             }
 
-            Section("Favorites") {
-                ForEach(courseManager.userFavCourses) { course in
-                    NavigationLink(
-                        value: NavigationPage.course(id: course.id)
-                    ) {
-                        CourseListCell(course: course)
-                    }
-                    .listItemTint(.fixed(course.rgbColors?.color ?? .accentColor))
+            Section {
+                ForEach(courseManager.userCourses) { course in
+                    SidebarCourseCell(course: course)
                 }
+            } header: {
+                SidebarHeader(text: "Courses")
             }
 
-            Section("My Courses") {
-                ForEach(courseManager.userOtherCourses) { course in
-                    NavigationLink(value: NavigationPage.course(id: course.id)) {
-                        CourseListCell(course: course)
+            if !courseManager.hiddenCourses.isEmpty {
+                Section(isExpanded: $isHiddenSectionExpanded) {
+                    ForEach(courseManager.hiddenCourses) { course in
+                        SidebarCourseCell(course: course)
                     }
-                    .listItemTint(.fixed(course.rgbColors?.color ?? .accentColor))
-                }
-            }
-
-            if !courseManager.userHiddenCourses.isEmpty {
-                Section("Hidden", isExpanded: $isHiddenSectionExpanded) {
-                    ForEach(courseManager.userHiddenCourses) { course in
-                        NavigationLink(value: NavigationPage.course(id: course.id)) {
-                            CourseListCell(course: course)
-                        }
-                        .listItemTint(.fixed(course.rgbColors?.color ?? .accentColor))
-                    }
+                } header: {
+                    SidebarHeader(text: "Hidden")
                 }
             }
         }
         .navigationTitle("Home")
         #if os(macOS)
-        .navigationSplitViewColumnWidth(min: 275, ideal: 275)
+        .navigationSplitViewColumnWidth(min: 285, ideal: 285, max: 350)
+        #else
+        .navigationSplitViewColumnWidth(min: 350, ideal: 350)
         #endif
         .listStyle(.sidebar)
         #if os(iOS)
@@ -84,6 +73,35 @@ struct Sidebar: View {
                 }
             }
         }
+    }
+}
+
+private struct SidebarHeader: View {
+    let text: String
+
+    var body: some View {
+        Text(text)
+            .font(.title3)
+            .fontWeight(.semibold)
+            .fontDesign(.rounded)
+            .foregroundStyle(.primary)
+            #if os(iOS)
+            .textCase(nil)
+            #endif
+            .padding(.bottom, 4)
+    }
+}
+
+private struct SidebarCourseCell: View {
+    typealias NavigationPage = NavigationModel.NavigationPage
+
+    let course: Course
+
+    var body: some View {
+        NavigationLink(value: NavigationPage.course(id: course.id)) {
+            CourseListCell(course: course)
+        }
+        .listItemTint(.fixed(course.rgbColors?.color ?? .accentColor))
     }
 }
 

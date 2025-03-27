@@ -11,26 +11,14 @@ import SwiftUI
 class CourseManager {
     var allCourses = [Course]()
 
-    var displayedCourses: [Course] {
+    /// This list is used in `PeopleCommonView` and `AllAnnouncements`.
+    var userCourses: [Course] {
         allCourses
             .filter { !($0.isHidden ?? false) }
-    }
-
-    var userFavCourses: [Course] {
-        allCourses
-            .filter { !($0.isHidden ?? false) }
-            .filter { $0.isFavorite }
             .sorted { $0.name ?? "" < $1.name ?? "" }
     }
 
-    var userOtherCourses: [Course] {
-        allCourses
-            .filter { !($0.isHidden ?? false) }
-            .filter { !($0.isFavorite) }
-            .sorted { $0.name ?? "" < $1.name ?? "" }
-    }
-
-    var userHiddenCourses: [Course] {
+    var hiddenCourses: [Course] {
         allCourses
             .filter { $0.isHidden ?? false }
             .sorted { $0.name ?? "" < $1.name ?? "" }

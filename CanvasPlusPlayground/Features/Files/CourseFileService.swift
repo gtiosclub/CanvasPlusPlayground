@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import PDFKit
 #if os(macOS)
 import AppKit
 #endif
@@ -14,26 +15,11 @@ struct CourseFileService {
     static let shared: CourseFileService = .init()
 
     private static let fileManager: FileManager = .default
-    private static var rootURL: URL? {
-        if let bundleId = Bundle.main.bundleIdentifier {
-            let root = URL.applicationSupportDirectory.appendingPathComponent(bundleId)
 
-            if fileManager.fileExists(atPath: root.path) {
-                return root
-            } else {
-                do {
-                    try fileManager.createDirectory(at: root, withIntermediateDirectories: true, attributes: nil)
-                    return root
-                } catch {
-                    LoggerService.main.error("Failure creating directory to root.")
-                    return nil
-                }
-            }
-        } else {
-            LoggerService.main.error("Failure getting bundle identifier")
-            return nil
-        }
+    private static var rootURL: URL? {
+        URL.appRootURL
     }
+
     private static var coursesURL: URL? {
         rootURL?
             .appendingPathComponent(StorageKeys.accessTokenValue)
@@ -142,6 +128,52 @@ struct CourseFileService {
     }
 
     // MARK: Global
+
+    /// Get the string contents of a file. Supported types: doc, docx, txt.
+    static func getContentsOfFile(at localURL: URL?) -> String {
+        guard let localURL else { return "" }
+
+        let fileExtension = localURL.pathExtension
+
+        guard File.supportedPickableTypes.contains(fileExtension) else {
+            return ""
+        }
+
+        if fileExtension == "pdf" {
+            let pdf = PDFDocument(url: localURL)
+            return pdf?.string ?? ""
+        }
+
+        let documentType = switch fileExtension {
+        #if os(macOS)
+        case "docx":
+            NSAttributedString.DocumentType.officeOpenXML
+        case "doc":
+            NSAttributedString.DocumentType.docFormat
+        #endif
+        case "html":
+            NSAttributedString.DocumentType.html
+        default:
+            NSAttributedString.DocumentType.plain
+        }
+
+        var text = ""
+
+        if let data = try? Data(contentsOf: localURL) {
+            if let attrString = try? NSAttributedString(
+                data: data,
+                options: [
+                    .documentType: documentType,
+                    .characterEncoding: String.Encoding.utf8.rawValue
+                ],
+                documentAttributes: nil
+            ) {
+                text = attrString.string
+            }
+        }
+
+        return text
+    }
 
     static func clearAllFiles() throws {
         guard let fileURL = coursesURL else {

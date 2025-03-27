@@ -36,31 +36,29 @@ struct PeopleView: View {
     }
 
     var body: some View {
-        NavigationStack {
-            mainBody
-        }
-        .refreshable {
-            currentSearchTask?.cancel()
-            await newQuery() // don't use `newQueryAsync` to allow the refresh animation to persist until query finished
-        }
-        .sheet(item: $selectedUser) { user in
-            #if os(iOS)
-            if #available(iOS 18.0, *) {
+        mainBody
+            .refreshable {
+                currentSearchTask?.cancel()
+                await newQuery() // don't use `newQueryAsync` to allow the refresh animation to persist until query finished
+            }
+            .sheet(item: $selectedUser) { user in
+                #if os(iOS)
+                if #available(iOS 18.0, *) {
+                    NavigationStack {
+                        ProfileView(user: user)
+                    }
+                    .navigationTransition(.zoom(sourceID: user.id, in: namespace))
+                } else {
+                    NavigationStack {
+                        ProfileView(user: user)
+                    }
+                }
+                #else
                 NavigationStack {
                     ProfileView(user: user)
                 }
-                .navigationTransition(.zoom(sourceID: user.id, in: namespace))
-            } else {
-                NavigationStack {
-                    ProfileView(user: user)
-                }
+                #endif
             }
-            #else
-            NavigationStack {
-                ProfileView(user: user)
-            }
-            #endif
-        }
     }
 
     private var mainBody: some View {

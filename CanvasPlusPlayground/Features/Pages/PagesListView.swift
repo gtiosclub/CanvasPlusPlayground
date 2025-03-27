@@ -11,38 +11,43 @@ struct PagesListView: View {
     @State private var pagesManager: PagesManager
     @State private var isLoadingPages: Bool = true
 
+    @State private var selectedPage: Page?
+
     init(courseId: String) {
         _pagesManager = State(initialValue: PagesManager(courseID: courseId))
     }
 
     var body: some View {
-        NavigationStack {
-            List(pagesManager.pages, id: \.id) { page in
-                NavigationLink {
-                    PageView(page: page)
-                } label: {
-                    Text(page.title ?? "Untitled")
-                }
+        List(pagesManager.pages, id: \.id, selection: $selectedPage) { page in
+            NavigationLink(value: NavigationModel.Destination.page(page)) {
+                Text(page.title ?? "Untitled")
             }
-            .overlay {
-                if pagesManager.pages.isEmpty {
-                    ContentUnavailableView("No pages available", systemImage: "exclamationmark.bubble.fill")
-                } else {
-                    EmptyView()
-                }
-            }
-            .task {
-                await loadPages()
-            }
-            .refreshable {
-                await loadPages()
-            }
-            .statusToolbarItem(
-                "Pages",
-                isVisible: isLoadingPages
-            )
-            .navigationTitle("Pages")
+            .tag(page)
         }
+        #if os(iOS)
+        .onAppear {
+            selectedPage = nil
+        }
+        #endif
+        .overlay {
+            if pagesManager.pages.isEmpty {
+                ContentUnavailableView("No pages available", systemImage: "exclamationmark.bubble.fill")
+            } else {
+                EmptyView()
+            }
+        }
+        .task {
+            await loadPages()
+        }
+        .refreshable {
+            await loadPages()
+        }
+        .statusToolbarItem(
+            "Pages",
+            isVisible: isLoadingPages
+        )
+        .navigationTitle("Pages")
+        .pickedItem(selectedPage)
     }
 
     private func loadPages() async {

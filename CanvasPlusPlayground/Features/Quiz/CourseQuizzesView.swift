@@ -17,17 +17,15 @@ struct CourseQuizzesView: View {
     }
 
     var body: some View {
-        NavigationStack {
-            List {
-                ForEach(quizzesVM.sections) { section in
-                    quizSection(for: section)
-                }
+        List {
+            ForEach(quizzesVM.sections) { section in
+                quizSection(for: section)
             }
-            .task {
-                await loadQuizzes()
-            }
-            .statusToolbarItem("Quizzes", isVisible: isLoadingQuizzes)
         }
+        .task {
+            await loadQuizzes()
+        }
+        .statusToolbarItem("Quizzes", isVisible: isLoadingQuizzes)
     }
 
     @ViewBuilder

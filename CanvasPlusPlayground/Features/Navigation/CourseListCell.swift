@@ -18,10 +18,6 @@ struct CourseListCell: View {
     @State private var showRenameTextField = false
     @State private var renameCourseFieldText: String = ""
 
-    private var wrappedCourseIsFavorite: Bool {
-        course.isFavorite
-    }
-
     private var wrappedCourseIsHidden: Bool {
         course.isHidden ?? false
     }
@@ -30,11 +26,11 @@ struct CourseListCell: View {
         Label(course.displayName, systemImage: "book.pages")
             .frame(alignment: .leading)
             .multilineTextAlignment(.leading)
+            #if os(macOS)
+            .padding(.vertical, 4)
+            #endif
             .onAppear {
                 resolvedCourseColor = course.rgbColors?.color ?? .accentColor
-            }
-            .swipeActions(edge: .leading) {
-                favoriteButton
             }
             .swipeActions(edge: .trailing) {
                 hideCourseButton
@@ -44,29 +40,23 @@ struct CourseListCell: View {
                     showColorPicker = true
                 }
 
-                favoriteButton
                 hideCourseButton
 
-                Button("Rename \(course.name ?? "")...", systemImage: "character.cursor.ibeam") {
+                Button("Rename Course...", systemImage: "character.cursor.ibeam") {
                     renameCourseFieldText = course.nickname ?? ""
                     showRenameTextField = true
                 }
             }
-            .alert("Rename Course?", isPresented: $showRenameTextField) {
-                TextField(course.name ?? "MISSING NAME", text: $renameCourseFieldText)
-                    Button("OK") {
-                        if renameCourseFieldText.isEmpty {
-                            course.nickname = nil
-                        } else {
-                            course.nickname = renameCourseFieldText
-                            renameCourseFieldText = ""
-                        }
-                    }
-                Button("Dismiss", role: .cancel) {
+            .alert("Rename Course", isPresented: $showRenameTextField) {
+                TextField(course.name ?? "", text: $renameCourseFieldText)
+
+                Button("OK") { renameCourse() }
+
+                Button("Cancel", role: .cancel) {
                     renameCourseFieldText = ""
                 }
             } message: {
-                Text("Rename \(course.name ?? "MISSING NAME")?")
+                Text("Rename \(course.name ?? "")?")
             }
             #if os(macOS)
             .popover(isPresented: $showColorPicker) {
@@ -98,16 +88,12 @@ struct CourseListCell: View {
         .tint(.gray)
     }
 
-    private var favoriteButton: some View {
-        Button(
-            wrappedCourseIsFavorite ? "Unfavorite Course" : "Favorite Course",
-            systemImage: "star"
-        ) {
-            withAnimation {
-                course.isFavorite = !wrappedCourseIsFavorite
-            }
+    private func renameCourse() {
+        if renameCourseFieldText.isEmpty {
+            course.nickname = nil
+        } else {
+            course.nickname = renameCourseFieldText
+            renameCourseFieldText = ""
         }
-        .symbolVariant(wrappedCourseIsFavorite ? .slash : .none)
-        .tint(.orange)
     }
 }
