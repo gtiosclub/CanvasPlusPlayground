@@ -9,19 +9,34 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct AssignmentSubmissionView: View {
-    @Environment(AssignmentSubmissionManager.self) private var manager
-    @Binding var assignment: Assignment
+    @State private var manager: AssignmentSubmissionManager
+    var assignment: Assignment
     @State private var selectedSubmissionType: SubmissionType?
-    // TODO: Expand supported types beyond [.onlineUrl, .onlineUpload, .onlineTextEntry, .onPaper]
     var submissionTypes: [SubmissionType] {
-        assignment.submissionTypes ?? []
+        [.onlineUrl, .onlineUpload, .onlineTextEntry]
     }
     @Environment(\.dismiss) private var dismiss
     @State private var showSubmissionUploadProgress = false
-    @State private var showSubmissionErrorAlert: Bool = false
-    @State private var alertText:String = ""
-
     @State private var isFileHover: Bool = false
+
+    @State private var error: AssignmentSubmissionManager.AssignmentSubmissionError?
+
+    private var showErrorAlert: Binding<Bool> {
+        Binding<Bool>(
+            get: { error != nil },
+            set: {
+                if !$0 {
+                    error = nil
+                }
+            }
+        )
+    }
+
+    init(assignment: Assignment) {
+        self.assignment = assignment
+        self.manager = AssignmentSubmissionManager(assignment: assignment)
+    }
+
     var body: some View {
         NavigationStack {
             Form {
@@ -69,27 +84,7 @@ struct AssignmentSubmissionView: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Submit") {
                         Task {
-                            do {
-                                showSubmissionUploadProgress = true
-                                switch selectedSubmissionType {
-                                case .onlineTextEntry:
-                                    assignment.submission = try await manager.submitAssignment(withText: textbox)
-                                case .onlineUrl:
-                                    assignment.submission = try await manager.submitAssignment(withURL: urlTextField)
-                                case .onlineUpload:
-                                    assignment.submission = try await manager.submitFileAssignment(forFiles: selectedURLs)
-                                default:
-                                    LoggerService.main.error("User attempted to submit unimlemented assignment type")
-                                }
-                                showSubmissionUploadProgress = false
-                                dismiss()
-                            } catch {
-                                // TODO: We could display error information to the user here
-                                LoggerService.main.error("Error submitting assignment: \(error.localizedDescription)")
-                                alertText = error.localizedDescription
-                                showSubmissionErrorAlert = true
-                                showSubmissionUploadProgress = false
-                            }
+                            await submitAssignment()
                         }
                     }
                     .disabled(submitButtonDisabled)
@@ -102,16 +97,37 @@ struct AssignmentSubmissionView: View {
         .onAppear {
             selectedSubmissionType = submissionTypes.first
         }
-        .alert("Error submitting assignment", isPresented: $showSubmissionErrorAlert) {
-            Button("Dismiss") { }
-        } message: {
-            Text(alertText)
+        .alert(isPresented: showErrorAlert, error: error) { _ in
+            Button("OK") { showErrorAlert.wrappedValue = false }
+        } message: { _ in
+            Text("Error submitting assignment.")
         }
         .overlay {
             if isFileHover {
                 RoundedRectangle(cornerRadius: 12)
                     .stroke(Color.accentColor, lineWidth: 4)
             }
+        }
+    }
+
+    private func submitAssignment() async {
+        do {
+            showSubmissionUploadProgress = true
+            switch selectedSubmissionType {
+            case .onlineTextEntry:
+                assignment.submission = try await manager.submitAssignment(withText: textbox)
+            case .onlineUrl:
+                assignment.submission = try await manager.submitAssignment(withURL: urlTextField)
+            case .onlineUpload:
+                assignment.submission = try await manager.submitFileAssignment(forFiles: selectedURLs)
+            default:
+                LoggerService.main.error("User attempted to submit unimlemented assignment type")
+            }
+            showSubmissionUploadProgress = false
+            dismiss()
+        } catch {
+            LoggerService.main.error("Error submitting assignment: \(error.localizedDescription)")
+            showSubmissionUploadProgress = false
         }
     }
 
@@ -159,7 +175,6 @@ struct AssignmentSubmissionView: View {
             TextEditor(text: $textbox)
                 .frame(minHeight: 200)
                 .lineLimit(5...10)
-                .padding()
         }
     }
     var textSubmissionValid: Bool {
@@ -178,38 +193,64 @@ struct AssignmentSubmissionView: View {
 
     // MARK: File upload submission subview
     @State private var selectedURLs: [URL] = []
-    @State private var iosPicker = false
+    @State private var showPicker = false
+    #if os(iOS)
+    @State private var editMode: EditMode = .active
+    #endif
     var fileUploadView: some View {
         Section("File upload") {
-            ForEach(selectedURLs, id: \.self) { fileURL in
-                HStack {
-                    Text(fileURL.lastPathComponent)
-                    Spacer()
-                    Button("Remove file", systemImage: "trash") {
+            List {
+                ForEach(selectedURLs, id: \.self) { fileURL in
+                    FileRow(url: fileURL) {
                         withAnimation {
                             selectedURLs.removeAll { url in
                                 url == fileURL
                             }
                         }
                     }
-                    .labelStyle(.iconOnly)
-                    .buttonStyle(.borderless)
+                }
+                .onDelete { indices in
+                    selectedURLs.remove(atOffsets: indices)
                 }
             }
+            #if os(iOS)
+            .environment(\.editMode, $editMode)
+            #endif
             Button("Pick files...", systemImage: "plus") {
-                iosPicker = true
+                showPicker = true
             }
-            .buttonStyle(.borderless)
             .tint(.accentColor)
             // TODO: Add dragging and dropping file to view
-            .fileImporter(isPresented: $iosPicker, allowedContentTypes: [.item], allowsMultipleSelection: true) { result in
+            .fileImporter(isPresented: $showPicker, allowedContentTypes: [.item], allowsMultipleSelection: true) { result in
                 switch result {
                 case .success(let urls):
                     selectedURLs.append(contentsOf: urls)
                 case .failure(let error):
                     LoggerService.main.log("Error: \(error)")
-                    showSubmissionErrorAlert = true
                 }
+            }
+        }
+    }
+
+    private struct FileRow: View {
+        let url: URL
+
+        let onDelete: () -> Void
+        var body: some View {
+            HStack {
+                Text(url.lastPathComponent)
+
+                // The trashcan icon can just be a macOS thing. For iOS, use swipe to delete
+                #if os(macOS)
+                Spacer()
+                Button("Remove file", systemImage: "trash") {
+                    withAnimation {
+                        onDelete()
+                    }
+                }
+                .labelStyle(.iconOnly)
+                .buttonStyle(.borderless)
+                #endif
             }
         }
     }

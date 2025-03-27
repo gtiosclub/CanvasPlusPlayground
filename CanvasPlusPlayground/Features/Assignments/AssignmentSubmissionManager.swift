@@ -14,6 +14,9 @@ public class AssignmentSubmissionManager {
         self.assignment = assignment
     }
 
+    /// This function makes an API request to create and upload a text submission to the corresponding assignment.
+    /// The user can pass in text as plaintext or as an HTML document snippet. Note: The HTML snippet will be sanitized
+    /// using the same ruleset as the Canvas Web UI
     func submitAssignment(withText text: String) async throws -> SubmissionAPI? {
         guard let courseID = assignment.courseId?.asString else {
             throw AssignmentSubmissionError.missingCourseID
@@ -29,7 +32,9 @@ public class AssignmentSubmissionManager {
         LoggerService.main.info("returning text submission: \(response.debugDescription)")
         return response
     }
-
+    /// This function makes an API request to create and upload a URL submission to the corresponding assignment.
+    /// The user can pass the URL as plaintext. The URL scheme must be “http” or “https”, no “ftp” or other URL schemes
+    /// are allowed. If no scheme is given (e.g. “www.example.com”) then “http” will be assumed.
     func submitAssignment(withURL url: String) async throws -> SubmissionAPI? {
         LoggerService.main.info("Submitting assignment with URL: \(url). Assignment name: \(self.assignment.name)")
         // make and send submission request
@@ -47,6 +52,7 @@ public class AssignmentSubmissionManager {
         return response
     }
 
+    /// This function makes an API request to create and upload a file-based submission to the corresponding assignment.
     func submitFileAssignment(forFiles urls: [URL]) async throws -> SubmissionAPI? {
         LoggerService.main.info("Submitting assignment with files: \(urls).")
 
@@ -54,6 +60,7 @@ public class AssignmentSubmissionManager {
             throw AssignmentSubmissionError.missingCourseID
         }
 
+        // Before we can submit the assignment, we must first upload all files to canvas with uploadFile().
         let fileIDs = await withTaskGroup(of: Int?.self, returning: [Int?].self) { taskGroup in
             for url in urls {
                 taskGroup.addTask {
@@ -72,11 +79,12 @@ public class AssignmentSubmissionManager {
             }
             return fileids
         }
-        // we only want to go through with a submission if all files are successfully uploaded
+        // If any of the uploaded files error-ed out, then we want to display an error to the user
         if fileIDs.contains(nil) {
             throw AssignmentSubmissionError.errorUploadingFiles
         }
 
+        // Once we have all the file IDs, we can go ahead and make the submission request
         let submissionRequest = CanvasRequest.submitAssignment(
             courseID: courseID,
             assignmentID: assignment.id,
@@ -93,7 +101,8 @@ public class AssignmentSubmissionManager {
         }
     }
 
-    // Returns fileID
+    /// The function uses the File Upload API. Provide the URL and the function will return the file ID
+    /// If there is an error uploading the file, the error will be thrown.
     func uploadFile(fileURL url: URL) async throws -> Int? {
         LoggerService.main.log("Attempting to upload file to canvas File URL: \(url)")
         let filename = url.lastPathComponent
@@ -102,8 +111,9 @@ public class AssignmentSubmissionManager {
 
         guard let courseID = assignment.courseId?.asString else {
             // TODO: Error handle
-            return nil
+            throw AssignmentSubmissionError.missingCourseID
         }
+
         LoggerService.main.log("Notifying canvas upload size \(filename) and size \(size)")
         let mime: MimeType = url.pathExtension.lowercased() == "txt" ? .txt : .other
 
@@ -156,10 +166,23 @@ public class AssignmentSubmissionManager {
             )
         return finalResponseStruct.id
     }
-}
 
-enum SubmissionError: Error {
-    case unsupported, invalidType
+    enum AssignmentSubmissionError: LocalizedError {
+        case missingCourseID, notificationResponseFailure, uploadResponseLocationMissing, errorUploadingFiles
+
+        var errorDescription: String? {
+            switch self {
+            case .missingCourseID:
+                return "Assignment has missing course ID."
+            case .notificationResponseFailure:
+                return "Failed to notify server of file upload."
+            case .uploadResponseLocationMissing:
+                return "Upload response missing location in header."
+            case .errorUploadingFiles:
+                return "Error uploading files."
+            }
+        }
+    }
 }
 
 struct FileWrapper: Codable {
@@ -169,8 +192,4 @@ struct FileWrapper: Codable {
 
 enum MimeType: String {
     case txt = "text/plain", other = "application/octet-stream"
-}
-
-enum AssignmentSubmissionError: Error {
-    case missingCourseID, notificationResponseFailure, uploadResponseLocationMissing, errorUploadingFiles
 }

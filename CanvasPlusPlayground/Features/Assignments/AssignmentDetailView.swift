@@ -8,15 +8,12 @@
 import SwiftUI
 
 struct AssignmentDetailView: View {
-    @State private var assignment: Assignment
+    var assignment: Assignment
     private var submission: Submission? {
         assignment.submission?.createModel()
     }
     @State private var showSubmissionPopUp: Bool = false
-    @State private var canSubmit = false
-    init(assignment: Assignment) {
-        self.assignment = assignment
-    }
+    @State private var canSubmit: Bool?
 
     var body: some View {
         if assignment.isOnlineQuiz {
@@ -90,10 +87,15 @@ struct AssignmentDetailView: View {
                         "Grade",
                         value: assignment.formattedGrade + "/" + assignment.formattedPointsPossible
                     )
-                    if canSubmit {
-                        LabeledContent("Create submission") {
-                            Button("Create Submission...") {
+
+                    LabeledContent("Create submission") {
+                        HStack {
+                            Button("New Submission...") {
                                 showSubmissionPopUp.toggle()
+                            }
+                            .disabled(!(canSubmit ?? false))
+                            if canSubmit == nil {
+                                ProgressView()
                             }
                         }
                     }
@@ -112,21 +114,24 @@ struct AssignmentDetailView: View {
                 ReminderButton(item: .assignment(assignment))
             }
             .task {
-                guard let courseID = assignment.courseId else { return }
-                let request = CanvasRequest.getAssignment(id: assignment.id, courseId: courseID.asString, include: [.canSubmit])
-
-                do {
-                    if let fetched = try await CanvasService.shared.fetch(request).first {
-                        canSubmit = Assignment(from: fetched).canSubmit ?? false
-                    }
-                } catch {
-                    LoggerService.main.error("Failed to fetch assignment \(error)")
-                }
+                await fetchCanSubmitStatus()
             }
             .sheet(isPresented: $showSubmissionPopUp) {
-                AssignmentSubmissionView(assignment: $assignment)
-                    .environment(AssignmentSubmissionManager(assignment: assignment))
+                AssignmentSubmissionView(assignment: assignment)
             }
+        }
+    }
+
+    private func fetchCanSubmitStatus() async {
+        guard let courseID = assignment.courseId else { return }
+        let request = CanvasRequest.getAssignment(id: assignment.id, courseId: courseID.asString, include: [.canSubmit])
+
+        do {
+            if let fetched = try await CanvasService.shared.fetch(request).first {
+                canSubmit = Assignment(from: fetched).canSubmit ?? false
+            }
+        } catch {
+            LoggerService.main.error("Failed to fetch assignment \(error)")
         }
     }
 

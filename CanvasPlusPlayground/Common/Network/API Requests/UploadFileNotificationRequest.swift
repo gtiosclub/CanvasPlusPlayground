@@ -19,13 +19,13 @@ import Foundation
 // MARK: First, notify Canvas of intentions to upload a file
 
 struct UploadFileNotificationRequest: APIRequest {
+    typealias Subject = UploadFileNotificationResponse
     // User provided parameters
     let courseID: String
     let assignmentID: String
     let name: String // name of file
     let size: Int // Size in bytes
 
-    typealias Subject = UploadFileNotificationResponse
     var method: RequestMethod { .POST }
     var path: String { "courses/\(courseID)/assignments/\(assignmentID)/submissions/self/files" }
     var queryParameters: [QueryParameter] = []
