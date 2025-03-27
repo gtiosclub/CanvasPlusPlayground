@@ -1,4 +1,4 @@
-# Canvas Plus (iOS)
+# Canvas Plus
 A multi-semester iOS Club initiative, working towards a better iOS client for students using Canvas.
 
 ### Feature Database
