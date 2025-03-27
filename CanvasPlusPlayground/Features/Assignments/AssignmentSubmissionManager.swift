@@ -53,7 +53,7 @@ public class AssignmentSubmissionManager {
     }
 
     /// This function makes an API request to create and upload a file-based submission to the corresponding assignment.
-    func submitFileAssignment(forFiles urls: Set<URL>) async throws -> SubmissionAPI? {
+    func submitFileAssignment(forFiles urls: [URL]) async throws -> SubmissionAPI? {
         LoggerService.main.info("Submitting assignment with files: \(urls).")
 
         guard let courseID = assignment.courseId?.asString else {
