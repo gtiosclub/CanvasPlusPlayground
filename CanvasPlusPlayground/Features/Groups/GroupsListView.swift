@@ -19,10 +19,42 @@ struct GroupsListView: View {
                     // TODO: fetch and set current user membership status
                 }
         }
-        .sheet(item: $selectedGroupDetail) {
-            GroupDetailView(group: $0)
-                .frame(minHeight: 500)
+        .sheet(item: $selectedGroupDetail) { group in
+            NavigationStack {
+                groupDetail(for: group)
+                    .navigationTitle("Details")
+            }
+            .frame(minHeight: 600)
         }
+    }
+
+    @ViewBuilder
+    func groupDetail(for group: CanvasGroup) -> some View {
+#if os(macOS)
+        GroupDetailView(group: group)
+
+        Divider()
+
+        HStack {
+            Spacer()
+            Button("Done") {
+                selectedGroupDetail = nil
+            }
+            .buttonStyle(.borderedProminent)
+            .controlSize(.extraLarge)
+            .keyboardShortcut(.return)
+        }
+        .padding()
+#else
+        GroupDetailView(group: group)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") {
+                        selectedGroupDetail = nil
+                    }
+                }
+            }
+#endif
     }
 }
 
