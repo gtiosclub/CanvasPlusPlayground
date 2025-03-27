@@ -189,6 +189,11 @@
 		B7CC4D5C2D90C00B00254F55 /* CGSize+Center.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D5B2D90C00800254F55 /* CGSize+Center.swift */; };
 		B7CC4D5F2D90C86C00254F55 /* Gradient.metal in Resources */ = {isa = PBXBuildFile; fileRef = B7CC4D5E2D90C86C00254F55 /* Gradient.metal */; };
 		B7CC4D632D90C8DB00254F55 /* ShapeStyle+Gradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D622D90C8D500254F55 /* ShapeStyle+Gradient.swift */; };
+		B7CC4D672D91AF4300254F55 /* GetUserTodoItemsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D662D91AF3B00254F55 /* GetUserTodoItemsRequest.swift */; };
+		B7CC4D6A2D91AF8200254F55 /* ToDoItemAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D692D91AF7500254F55 /* ToDoItemAPI.swift */; };
+		B7CC4D6E2D91B27200254F55 /* ToDoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D6D2D91B26F00254F55 /* ToDoItem.swift */; };
+		B7CC4D712D91C9FB00254F55 /* ToDoListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D702D91C9EE00254F55 /* ToDoListManager.swift */; };
+		B7CC4D732D91D14600254F55 /* ToDoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D722D91D14300254F55 /* ToDoListView.swift */; };
 		B7D7512B2D3D5D8000F7B8B8 /* AllAnnouncementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D7512A2D3D5D7700F7B8B8 /* AllAnnouncementsView.swift */; };
 		B7D7512D2D3D652300F7B8B8 /* GetAnnouncementsBatchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D7512C2D3D652300F7B8B8 /* GetAnnouncementsBatchRequest.swift */; };
 		B7D7512F2D3D660B00F7B8B8 /* AllAnnouncementsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D7512E2D3D660B00F7B8B8 /* AllAnnouncementsManager.swift */; };
@@ -391,6 +396,11 @@
 		B7CC4D5B2D90C00800254F55 /* CGSize+Center.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGSize+Center.swift"; sourceTree = "<group>"; };
 		B7CC4D5E2D90C86C00254F55 /* Gradient.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Gradient.metal; sourceTree = "<group>"; };
 		B7CC4D622D90C8D500254F55 /* ShapeStyle+Gradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShapeStyle+Gradient.swift"; sourceTree = "<group>"; };
+		B7CC4D662D91AF3B00254F55 /* GetUserTodoItemsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetUserTodoItemsRequest.swift; sourceTree = "<group>"; };
+		B7CC4D692D91AF7500254F55 /* ToDoItemAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoItemAPI.swift; sourceTree = "<group>"; };
+		B7CC4D6D2D91B26F00254F55 /* ToDoItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoItem.swift; sourceTree = "<group>"; };
+		B7CC4D702D91C9EE00254F55 /* ToDoListManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoListManager.swift; sourceTree = "<group>"; };
+		B7CC4D722D91D14300254F55 /* ToDoListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoListView.swift; sourceTree = "<group>"; };
 		B7D7512A2D3D5D7700F7B8B8 /* AllAnnouncementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllAnnouncementsView.swift; sourceTree = "<group>"; };
 		B7D7512C2D3D652300F7B8B8 /* GetAnnouncementsBatchRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAnnouncementsBatchRequest.swift; sourceTree = "<group>"; };
 		B7D7512E2D3D660B00F7B8B8 /* AllAnnouncementsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllAnnouncementsManager.swift; sourceTree = "<group>"; };
@@ -443,6 +453,7 @@
 		A3049B732D15DBEE002F3166 /* API Requests */ = {
 			isa = PBXGroup;
 			children = (
+				B7CC4D662D91AF3B00254F55 /* GetUserTodoItemsRequest.swift */,
 				B7A12F3E2D69440F00EDFA0A /* GetAssignmentGroupsRequest.swift */,
 				B7D7512C2D3D652300F7B8B8 /* GetAnnouncementsBatchRequest.swift */,
 				A3049B762D15DC36002F3166 /* GetCourseRequest.swift */,
@@ -482,6 +493,7 @@
 		A324BA502D07963D005F53FA /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				B7CC4D682D91AF5800254F55 /* ToDoItems */,
 				9BF228C62D6CD1DF000676F2 /* Reminders */,
 				A373DC2E2D28174700215019 /* Modules */,
 				B7C5532A2D2D5AEB009CF4F0 /* Pinned Items */,
@@ -961,6 +973,25 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		B7CC4D682D91AF5800254F55 /* ToDoItems */ = {
+			isa = PBXGroup;
+			children = (
+				B7CC4D6F2D91C9C600254F55 /* Models */,
+				B7CC4D702D91C9EE00254F55 /* ToDoListManager.swift */,
+				B7CC4D722D91D14300254F55 /* ToDoListView.swift */,
+			);
+			path = ToDoItems;
+			sourceTree = "<group>";
+		};
+		B7CC4D6F2D91C9C600254F55 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B7CC4D692D91AF7500254F55 /* ToDoItemAPI.swift */,
+				B7CC4D6D2D91B26F00254F55 /* ToDoItem.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		B7D95DB52D0A8D6A002AD955 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -1163,6 +1194,8 @@
 				A3049B5B2D0E5C18002F3166 /* QuizPermissions.swift in Sources */,
 				B7C0A3C52D2F4C19003E5A36 /* GetAssignmentRequest.swift in Sources */,
 				A37AB4A92D9867D600610639 /* UpdateGroupMembershipRequest.swift in Sources */,
+				B7CC4D6A2D91AF8200254F55 /* ToDoItemAPI.swift in Sources */,
+				A3FFD03E2CE0065A006BAB51 /* NetworkError.swift in Sources */,
 				B7E59A142D2004A4001836FE /* CourseListCell.swift in Sources */,
 				B53D95A22CA0A22A00647EE9 /* PeopleView.swift in Sources */,
 				A373DC312D28176100215019 /* APIModule.swift in Sources */,
@@ -1214,6 +1247,8 @@
 				9B9C2E042C93F6CD00E4B16B /* CourseAnnouncementsView.swift in Sources */,
 				B77FD0022D52A0D60049AA5E /* ProfileView.swift in Sources */,
 				9A977E8B2D6C375E001D7F0A /* ColorPickerSheet.swift in Sources */,
+				B7CC4D712D91C9FB00254F55 /* ToDoListManager.swift in Sources */,
+				B7CC4D732D91D14600254F55 /* ToDoListView.swift in Sources */,
 				192EC04C2C963EE600AF8528 /* CourseAssignmentsView.swift in Sources */,
 				A372D10C2D90E875005E94CA /* GroupsListView.swift in Sources */,
 				A3FFD03C2CDED67C006BAB51 /* String+Numbers.swift in Sources */,
@@ -1234,6 +1269,7 @@
 				A35191412D283589001E415F /* ModulesViewModel.swift in Sources */,
 				A3E7F3912C99317100DC4300 /* CourseTabsManager.swift in Sources */,
 				A372D0FF2D90BAB6005E94CA /* CourseGroupsView.swift in Sources */,
+				B7CC4D672D91AF4300254F55 /* GetUserTodoItemsRequest.swift in Sources */,
 				9B6D4F802D6E48340033044F /* ReminderButton.swift in Sources */,
 				A3E7F38F2C96C1CE00DC4300 /* CourseTabsView.swift in Sources */,
 				B76455062C8DF61B002DF00E /* CanvasPlusPlaygroundApp.swift in Sources */,
@@ -1253,6 +1289,7 @@
 				A351913F2D283556001E415F /* ModulesListView.swift in Sources */,
 				A3CF88DF2D1921B5000ACDF3 /* FileAPI.swift in Sources */,
 				B7CC4D3C2D8DB87200254F55 /* URL+AppRootURL.swift in Sources */,
+				B7CC4D6E2D91B27200254F55 /* ToDoItem.swift in Sources */,
 				A3CF88DD2D1921A7000ACDF3 /* QuizAPI.swift in Sources */,
 				A3049B532D0E5241002F3166 /* Quiz.swift in Sources */,
 				A3049B872D16146D002F3166 /* GetQuizzesRequest.swift in Sources */,
