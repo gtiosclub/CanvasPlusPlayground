@@ -16,6 +16,12 @@ enum CanvasRequest {
         GetCourseRequest(courseId: id)
     }
 
+    static func getToDoItems(
+        include: [GetUserTodoItemsRequest.Include] = []
+    ) -> GetUserTodoItemsRequest {
+        GetUserTodoItemsRequest(include: include)
+    }
+
     static func getCourseRootFolder(courseId: String) -> GetCourseRootFolderRequest {
         GetCourseRootFolderRequest(courseId: courseId)
     }
