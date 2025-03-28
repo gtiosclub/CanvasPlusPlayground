@@ -30,12 +30,9 @@ struct CourseView: View {
             }
         )
 
-        // add to requiredTabs to always include the specific tab
-        let requiredTabs: Set<NavigationModel.CoursePage> = [
-            .tabs
-        ]
-
-        return NavigationModel.CoursePage.allCases.filter { availableTabs.contains($0) || requiredTabs.contains($0) }
+        return NavigationModel.CoursePage.allCases.filter {
+            availableTabs.contains($0) || NavigationModel.CoursePage.requiredTabs.contains($0)
+        }
     }
 
     var body: some View {
