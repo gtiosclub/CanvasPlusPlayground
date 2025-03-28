@@ -20,6 +20,7 @@ struct AssignmentSubmissionView: View {
     @State private var selectedSubmissionType: SubmissionType?
     @State private var showSubmissionUploadProgress = false
     @State private var isFileHover: Bool = false
+    @State private var showFilePicker = false
 
     // All the state variables corresponding to the data for each type
     @State private var urlTextField: String = ""
@@ -70,7 +71,10 @@ struct AssignmentSubmissionView: View {
                     case .onlineUrl:
                         URLSubmissionView(urlTextField: $urlTextField)
                     case .onlineUpload:
-                        FileUploadView(selectedURLs: $selectedURLs)
+                        FileUploadView(
+                            selectedURLs: $selectedURLs,
+                            showPicker: $showFilePicker
+                        )
                     default:
                         UnsupportedSubmissionView(selectedSubmissionType: selectedSubmissionType)
                         // TODO: implement .discussionTopic, .onlineQuiz, .externalTool, .mediaRecording, and .studentAnnotation
@@ -78,7 +82,7 @@ struct AssignmentSubmissionView: View {
                 }
             }
             .formStyle(.grouped)
-            .navigationTitle("Create submission")
+            .navigationTitle("Create Submission")
             .overlay {
                 if showSubmissionUploadProgress {
                     ProgressView()
@@ -108,13 +112,21 @@ struct AssignmentSubmissionView: View {
         }
         .alert(isPresented: showErrorAlert, error: error) { _ in
             Button("OK") { showErrorAlert.wrappedValue = false }
-        } message: { _ in
-            Text("Error submitting assignment.")
+        } message: { error in
+            Text("Error submitting assignment: \(error.localizedDescription)")
         }
         .overlay {
             if isFileHover {
                 RoundedRectangle(cornerRadius: 12)
                     .stroke(Color.accentColor, lineWidth: 4)
+            }
+        }
+        .fileImporter(isPresented: $showFilePicker, allowedContentTypes: [.item], allowsMultipleSelection: true) { result in
+            switch result {
+            case .success(let urls):
+                selectedURLs = Array(Set(selectedURLs).union(urls))
+            case .failure(let error):
+                LoggerService.main.log("Error: \(error)")
             }
         }
     }
@@ -255,8 +267,8 @@ private struct UnsupportedSubmissionView: View {
 // MARK: - File upload submission subview
 private struct FileUploadView: View {
     @Binding var selectedURLs: [URL]
+    @Binding var showPicker: Bool
 
-    @State private var showPicker = false
     #if os(iOS)
     @State private var editMode: EditMode = .active
     #endif
@@ -286,16 +298,6 @@ private struct FileUploadView: View {
             #if os(iOS)
             .environment(\.editMode, $editMode)
             #endif
-            .fileImporter(isPresented: $showPicker, allowedContentTypes: [.item], allowsMultipleSelection: true) { result in
-                switch result {
-                case .success(let urls):
-
-                    selectedURLs = Array(Set(selectedURLs).union(urls))
-
-                case .failure(let error):
-                    LoggerService.main.log("Error: \(error)")
-                }
-            }
         }
     }
 

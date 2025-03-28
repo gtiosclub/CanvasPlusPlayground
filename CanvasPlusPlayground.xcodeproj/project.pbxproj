@@ -388,13 +388,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		9B07E7142D77BF1700359B69 /* Recovered References */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "Recovered References";
-			sourceTree = "<group>";
-		};
 		9BF228C62D6CD1DF000676F2 /* Reminders */ = {
 			isa = PBXGroup;
 			children = (
@@ -799,7 +792,6 @@
 			children = (
 				B76454FD2C8DF61B002DF00E /* CanvasPlusPlayground */,
 				B76454652C8BBC7F002DF00E /* Products */,
-				9B07E7142D77BF1700359B69 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};

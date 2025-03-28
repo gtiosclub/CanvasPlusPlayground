@@ -116,6 +116,7 @@ struct AssignmentDetailView: View {
                     }
                 }
             }
+            .navigationTitle("Assignment Details")
             .formStyle(.grouped)
             .toolbar {
                 ReminderButton(item: .assignment(assignment))
