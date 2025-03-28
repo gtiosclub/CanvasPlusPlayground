@@ -15,7 +15,7 @@ struct CourseView: View {
 
     init(course: Course) {
         self.course = course
-        self.tabsManager = CourseTabsManager(course: course)
+        self._tabsManager = State(wrappedValue: CourseTabsManager(course: course))
     }
 
     private var coursePages: [NavigationModel.CoursePage] {

@@ -63,6 +63,10 @@ class NavigationModel {
             rawValue.capitalized
         }
 
+        static let requiredTabs: Set<CoursePage> = [
+            .tabs, .people
+        ]
+
         var systemImageIcon: String {
             switch self {
             case .files:
