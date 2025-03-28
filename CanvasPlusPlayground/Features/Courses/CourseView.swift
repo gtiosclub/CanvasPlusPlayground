@@ -10,10 +10,29 @@ import SwiftUI
 struct CourseView: View {
     @Environment(PickerService.self) private var pickerService: PickerService?
     @Environment(NavigationModel.self) private var navigationModel
+    @State private var tabsManager: CourseTabsManager
     let course: Course
 
+    init(course: Course) {
+        self.course = course
+        self._tabsManager = State(wrappedValue: CourseTabsManager(course: course))
+    }
+
     private var coursePages: [NavigationModel.CoursePage] {
-        pickerService?.supportedPickerViews ?? NavigationModel.CoursePage.allCases
+        guard !tabsManager.tabs.isEmpty else {
+                return []
+            }
+
+        let availableTabs = Set<NavigationModel.CoursePage>(
+            tabsManager.tabs.compactMap { tab in
+                guard let label = tab.label else { return nil }
+                return NavigationModel.CoursePage(rawValue: label.lowercased())
+            }
+        )
+
+        return NavigationModel.CoursePage.allCases.filter {
+            availableTabs.contains($0) || NavigationModel.CoursePage.requiredTabs.contains($0)
+        }
     }
 
     var body: some View {
@@ -27,6 +46,15 @@ struct CourseView: View {
         }
         .onAppear {
             navigationModel.selectedCoursePage = nil
+            Task {
+                await tabsManager.fetchTabs()
+            }
+        }
+        .onChange(of: course) { _, newCourse in
+            tabsManager = CourseTabsManager(course: newCourse)
+            Task {
+                await tabsManager.fetchTabs()
+            }
         }
         #if os(iOS)
         .listStyle(.insetGrouped)
