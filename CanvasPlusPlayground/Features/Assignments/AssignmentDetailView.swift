@@ -9,10 +9,13 @@ import SwiftUI
 
 struct AssignmentDetailView: View {
     var assignment: Assignment
+
     private var submission: Submission? {
         assignment.submission?.createModel()
     }
+
     @State private var showSubmissionPopUp: Bool = false
+    @State private var fetchingCanSubmitStatus: Bool = false
     @State private var canSubmit: Bool?
 
     var body: some View {
@@ -88,15 +91,19 @@ struct AssignmentDetailView: View {
                         value: assignment.formattedGrade + "/" + assignment.formattedPointsPossible
                     )
 
-                    LabeledContent("Create submission") {
-                        HStack {
-                            Button("New Submission...") {
-                                showSubmissionPopUp.toggle()
-                            }
-                            .disabled(!(canSubmit ?? false))
-                            if canSubmit == nil {
-                                ProgressView()
-                            }
+                    HStack {
+                        #if os(macOS)
+                        Spacer()
+                        #endif
+
+                        Button("New Submission...") {
+                            showSubmissionPopUp.toggle()
+                        }
+                        .disabled(!(canSubmit ?? false))
+
+                        if fetchingCanSubmitStatus {
+                            ProgressView()
+                                .controlSize(.small)
                         }
                     }
                 }
@@ -124,6 +131,8 @@ struct AssignmentDetailView: View {
 
     private func fetchCanSubmitStatus() async {
         guard let courseID = assignment.courseId else { return }
+
+        fetchingCanSubmitStatus = true
         let request = CanvasRequest.getAssignment(id: assignment.id, courseId: courseID.asString, include: [.canSubmit])
 
         do {
@@ -133,6 +142,8 @@ struct AssignmentDetailView: View {
         } catch {
             LoggerService.main.error("Failed to fetch assignment \(error)")
         }
+
+        fetchingCanSubmitStatus = false
     }
 
     private var pointsPossible: String {

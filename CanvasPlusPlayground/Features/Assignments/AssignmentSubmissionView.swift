@@ -9,17 +9,28 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct AssignmentSubmissionView: View {
-    @State private var manager: AssignmentSubmissionManager
-    var assignment: Assignment
-    @State private var selectedSubmissionType: SubmissionType?
-    var submissionTypes: [SubmissionType] {
-        assignment.submissionTypes ?? []
-    }
+    typealias AssignmentSubmissionError = AssignmentSubmissionManager.AssignmentSubmissionError
+
     @Environment(\.dismiss) private var dismiss
+
+    @State private var manager: AssignmentSubmissionManager
+
+    let assignment: Assignment
+
+    @State private var selectedSubmissionType: SubmissionType?
     @State private var showSubmissionUploadProgress = false
     @State private var isFileHover: Bool = false
 
-    @State private var error: AssignmentSubmissionManager.AssignmentSubmissionError?
+    // All the state variables corresponding to the data for each type
+    @State private var urlTextField: String = ""
+    @State private var textbox: String = ""
+    @State private var selectedURLs: [URL] = []
+
+    @State private var error: AssignmentSubmissionError?
+
+    var submissionTypes: [SubmissionType] {
+        assignment.submissionTypes ?? []
+    }
 
     private var showErrorAlert: Binding<Bool> {
         Binding<Bool>(
@@ -37,10 +48,6 @@ struct AssignmentSubmissionView: View {
         self.manager = AssignmentSubmissionManager(assignment: assignment)
     }
 
-    // All the state variables corresponding to the data for each type
-    @State private var urlTextField: String = ""
-    @State private var textbox: String = ""
-    @State private var selectedURLs: [URL] = []
     var body: some View {
         NavigationStack {
             Form {
@@ -129,6 +136,11 @@ struct AssignmentSubmissionView: View {
             dismiss()
         } catch {
             LoggerService.main.error("Error submitting assignment: \(error.localizedDescription)")
+
+            if let error = error as? AssignmentSubmissionError {
+                self.error = error
+            }
+
             showSubmissionUploadProgress = false
         }
     }
@@ -163,123 +175,15 @@ struct AssignmentSubmissionView: View {
         }
     }
 
-    // MARK: Paper/No submission subview
-    private struct NoSubmissionView: View {
-        var body: some View {
-            Section {
-                Text("No submission/paper submission")
-            }
-        }
-    }
-
-    // MARK: Text submission subview
-    private struct TextSubmissionView: View {
-        @Binding var textbox: String
-        var body: some View {
-            Section("Add text") {
-                TextEditor(text: $textbox)
-                    .frame(minHeight: 200)
-                    .lineLimit(5...10)
-            }
-        }
-    }
-
     var textSubmissionValid: Bool {
         !textbox.isEmpty
     }
 
-    // MARK: URL submission subview
-    private struct URLSubmissionView: View {
-        @Binding var urlTextField: String
-        var body: some View {
-            Section("Add URL") {
-                TextField("url", text: $urlTextField)
-            }
-        }
-    }
     // TODO: Parse url to make sure it's a valid web url
     var urlSubmissionValid: Bool { !urlTextField.isEmpty }
 
-    // MARK: File upload submission subview
-    private struct FileUploadView: View {
-        @Binding var selectedURLs: [URL]
-        @State private var showPicker = false
-#if os(iOS)
-        @State private var editMode: EditMode = .active
-#endif
-        var body: some View {
-            Section("File upload") {
-                List {
-                    ForEach(selectedURLs, id: \.self) { fileURL in
-                        FileRow(url: fileURL) {
-                            withAnimation {
-                                selectedURLs.removeAll { url in
-                                    url == fileURL
-                                }
-                            }
-                        }
-                    }
-                    .onDelete { indices in
-                        selectedURLs.remove(atOffsets: indices)
-                    }
-                }
-#if os(iOS)
-                .environment(\.editMode, $editMode)
-#endif
-                Button("Pick files...", systemImage: "plus") {
-                    showPicker = true
-                }
-                .tint(.accentColor)
-                // TODO: Add dragging and dropping file to view
-                .fileImporter(isPresented: $showPicker, allowedContentTypes: [.item], allowsMultipleSelection: true) { result in
-                    switch result {
-                    case .success(let urls):
-
-                        selectedURLs = Array(Set(selectedURLs).union(urls))
-
-                    case .failure(let error):
-                        LoggerService.main.log("Error: \(error)")
-                    }
-                }
-            }
-        }
-
-        private struct FileRow: View {
-            let url: URL
-
-            let onDelete: () -> Void
-            var body: some View {
-                HStack {
-                    Text(url.lastPathComponent)
-
-                    // The trashcan icon can just be a macOS thing. For iOS, use swipe to delete
-#if os(macOS)
-                    Spacer()
-                    Button("Remove file", systemImage: "trash") {
-                        withAnimation {
-                            onDelete()
-                        }
-                    }
-                    .labelStyle(.iconOnly)
-                    .buttonStyle(.borderless)
-#endif
-                }
-            }
-        }
-    }
-
     var fileSubmissionValid: Bool {
         !selectedURLs.isEmpty
-    }
-
-    private struct UnsupportedSubmissionView: View {
-        let selectedSubmissionType: SubmissionType
-
-        var body: some View {
-            Section {
-                Text("\(selectedSubmissionType.rawValue) submissions not supported")
-            }
-        }
     }
 
     private func handleDrop(providers: [NSItemProvider]) -> Bool {
@@ -297,5 +201,125 @@ struct AssignmentSubmissionView: View {
             return true
         }
         return false
+    }
+}
+
+// MARK: - URL submission subview
+private struct URLSubmissionView: View {
+    @Binding var urlTextField: String
+
+    var body: some View {
+        Section("Add URL") {
+            TextField("url", text: $urlTextField)
+        }
+    }
+}
+
+// MARK: - Paper/No submission subview
+private struct NoSubmissionView: View {
+    var body: some View {
+        ContentUnavailableView(
+            "Unsupported Submission Type",
+            systemImage: "doc.fill",
+            description: Text("No Submission or Paper Submission")
+        )
+    }
+}
+
+// MARK: - Text submission subview
+private struct TextSubmissionView: View {
+    @Binding var textbox: String
+
+    var body: some View {
+        Section("Add text") {
+            TextEditor(text: $textbox)
+                .frame(minHeight: 200)
+                .lineLimit(5...10)
+        }
+    }
+}
+
+// MARK: - Unsupported submission subview
+private struct UnsupportedSubmissionView: View {
+    let selectedSubmissionType: SubmissionType
+
+    var body: some View {
+        ContentUnavailableView(
+            "Unsupported Submission Type",
+            systemImage: "doc.questionmark.fill",
+            description: Text("\(selectedSubmissionType.displayName) submissions not supported")
+        )
+    }
+}
+
+// MARK: - File upload submission subview
+private struct FileUploadView: View {
+    @Binding var selectedURLs: [URL]
+
+    @State private var showPicker = false
+    #if os(iOS)
+    @State private var editMode: EditMode = .active
+    #endif
+
+    var body: some View {
+        Section("File upload") {
+            List {
+                ForEach(selectedURLs, id: \.self) { fileURL in
+                    FileRow(url: fileURL) {
+                        withAnimation {
+                            selectedURLs.removeAll { url in
+                                url == fileURL
+                            }
+                        }
+                    }
+                }
+                .onDelete { indices in
+                    selectedURLs.remove(atOffsets: indices)
+                }
+
+                Button("Pick files...", systemImage: "plus") {
+                    showPicker = true
+                }
+                .tint(.accentColor)
+                .padding(.vertical, 2)
+            }
+            #if os(iOS)
+            .environment(\.editMode, $editMode)
+            #endif
+            .fileImporter(isPresented: $showPicker, allowedContentTypes: [.item], allowsMultipleSelection: true) { result in
+                switch result {
+                case .success(let urls):
+
+                    selectedURLs = Array(Set(selectedURLs).union(urls))
+
+                case .failure(let error):
+                    LoggerService.main.log("Error: \(error)")
+                }
+            }
+        }
+    }
+
+    private struct FileRow: View {
+        let url: URL
+        let onDelete: () -> Void
+
+        var body: some View {
+            HStack {
+                Text(url.lastPathComponent)
+
+                // The trashcan icon can just be a macOS thing. For iOS, use swipe to delete
+                #if os(macOS)
+                Spacer()
+                Button("Remove file", systemImage: "trash") {
+                    withAnimation {
+                        onDelete()
+                    }
+                }
+                .labelStyle(.iconOnly)
+                .buttonStyle(.borderless)
+                #endif
+            }
+            .padding(.vertical, 2)
+        }
     }
 }
