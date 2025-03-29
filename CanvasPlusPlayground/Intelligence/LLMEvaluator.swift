@@ -21,11 +21,6 @@ class LLMEvaluator: ObservableObject {
         }
     }
 
-    private static var llmDownloadBase: URL? {
-        URL.appRootURL?
-            .appending(component: "intelligence")
-    }
-
     var running = false
     var output = ""
     var modelInfo = ""
@@ -70,7 +65,6 @@ class LLMEvaluator: ObservableObject {
             MLX.GPU.set(cacheLimit: 20 * 1024 * 1024)
 
             let modelContainer = try await MLXLLM.loadModelContainer(
-                hub: .init(downloadBase: Self.llmDownloadBase),
                 configuration: model
             ) { [modelConfiguration] progress in
                 Task { @MainActor in
