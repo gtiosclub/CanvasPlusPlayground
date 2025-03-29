@@ -29,6 +29,10 @@ enum CanvasRequest {
         GetUserTodoItemCountRequest(include: include)
     }
 
+    static func ignoreToDoItem(ignoreURL: String) -> IgnoreToDoItemRequest {
+        IgnoreToDoItemRequest(ignoreURL: ignoreURL)
+    }
+
     static func getCourseRootFolder(courseId: String) -> GetCourseRootFolderRequest {
         GetCourseRootFolderRequest(courseId: courseId)
     }

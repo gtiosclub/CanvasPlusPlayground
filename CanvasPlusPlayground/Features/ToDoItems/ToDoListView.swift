@@ -30,7 +30,11 @@ struct ToDoListView: View {
     var body: some View {
         List(displayedResults, selection: $selectedItem) { item in
             NavigationLink(value: itemTypeToDestination(for: item)) {
-                ToDoItemRow(item: item)
+                ToDoItemRow(item: item) {
+                    Task {
+                        await loadItems()
+                    }
+                }
             }
             .tag(item)
         }
@@ -47,18 +51,25 @@ struct ToDoListView: View {
         .refreshable {
             await loadItems()
         }
+        .overlay {
+            if displayedResults.isEmpty {
+                ContentUnavailableView("No To-Do Items", systemImage: "checklist.checked")
+            }
+        }
         .toolbar {
-            ToolbarItem(placement: .confirmationAction) {
-                #if os(iOS)
-                Menu {
+            if !displayedResults.isEmpty {
+                ToolbarItem(placement: .confirmationAction) {
+                    #if os(iOS)
+                    Menu {
+                        courseFilterPicker
+                    } label: {
+                        Image(systemName: "line.3.horizontal.decrease.circle")
+                            .symbolVariant(filterCourse != nil ? .fill : .none)
+                    }
+                    #else
                     courseFilterPicker
-                } label: {
-                    Image(systemName: "line.3.horizontal.decrease.circle")
-                        .symbolVariant(filterCourse != nil ? .fill : .none)
+                    #endif
                 }
-                #else
-                courseFilterPicker
-                #endif
             }
         }
         .statusToolbarItem("To-Dos", isVisible: isLoading)
@@ -92,7 +103,7 @@ struct ToDoListView: View {
             switch type {
             case .assignment(let assignment):
                 return .assignment(assignment)
-            case .quiz(let _):
+            case .quiz:
                 // TODO: Support Quiz Detail View
                 return nil
             }
@@ -103,8 +114,11 @@ struct ToDoListView: View {
 }
 
 private struct ToDoItemRow: View {
+    @Environment(ToDoListManager.self) private var listManager
     @Environment(NavigationModel.self) private var navigationModel
+
     let item: ToDoItem
+    let onIgnoreItem: () -> Void
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -132,6 +146,11 @@ private struct ToDoItemRow: View {
                     )
                 }
             }
+
+            ignoreItemButton
+        }
+        .swipeActions(edge: .trailing) {
+            ignoreItemButton
         }
     }
 
@@ -139,5 +158,11 @@ private struct ToDoItemRow: View {
         Text(item.course?.displayName.uppercased() ?? "")
             .font(.caption)
             .foregroundStyle(item.course?.rgbColors?.color ?? .accentColor)
+    }
+
+    private var ignoreItemButton: some View {
+        Button("Ignore Item", systemImage: "trash", role: .destructive) {
+            onIgnoreItem()
+        }
     }
 }
