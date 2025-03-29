@@ -16,6 +16,20 @@ struct CreateGroupMembershipRequest: CacheableAPIRequest {
     var method: RequestMethod { .POST }
 
     let groupId: String
+    let userId = "self"
+
+    let boundary = UUID().uuidString
+    var body: Data? {
+        var body = Data()
+
+        body.append(Data("--\(boundary)\r\n".utf8))
+        body.append(Data("Content-Disposition: form-data; name=\"user_id\"\r\n\r\n".utf8))
+        body.append(Data("\(userId)\r\n".utf8))
+        body.append(Data("--\(boundary)--\r\n".utf8))
+
+        return body
+    }
+    var contentType: String? { "multipart/form-data; boundary=\(boundary)" }
 
     var requestId: Int {
         groupId.asInt ?? -1

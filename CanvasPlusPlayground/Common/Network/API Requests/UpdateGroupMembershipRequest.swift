@@ -22,7 +22,7 @@ struct UpdateGroupMembershipRequest: CacheableAPIRequest {
 
     let groupId: String
     let toState: NewMembershipState
-    // let moderator_id: String // For adding/removing moderator rights
+    // let moderator_id: String = "" // For adding/removing moderator rights (true or false)
     let via: Via
 
     var requestId: String {

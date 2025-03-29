@@ -99,15 +99,11 @@ extension APIRequest {
         }
 
         guard httpResponse.status?.responseType == .success else {
-            LoggerService.main.error("HTTP error: $\(httpResponse)$")
-            throw httpResponse.status ?? .unknown
+           LoggerService.main.error("HTTP error: $\(httpResponse)$")
+           throw httpResponse.status ?? .unknown
         }
 
-        return (data, response)
-            throw httpResponse.status ?? .unknown
-        }
-
-        return (data, response)
+       return (data, response)
     }
 
     func fetchPages(
