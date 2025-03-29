@@ -209,7 +209,6 @@ extension CanvasGroup {
     }
 }
 
-
 // MARK: Preview
 extension CanvasGroup {
     static let sample = CanvasGroup(
