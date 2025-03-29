@@ -11,6 +11,6 @@ extension GradeCalculator {
     /// Indicates whether this Course would benefit by using Intelligence.
     /// e.g. if groups are unweighted or there are no assignment groups.
     var canUseIntelligenceAssistance: Bool {
-        true
+        !gradeGroups.isEmpty && gradeGroups.reduce(0.0) { $0 + $1.weight } == 0.0
     }
 }

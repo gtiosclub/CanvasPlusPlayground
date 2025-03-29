@@ -124,6 +124,7 @@ struct CourseAssignmentsView: View {
             #endif
         }
         .environment(gradeCalculator)
+        .animation(.default, value: gradeCalculator.canUseIntelligenceAssistance)
     }
 
     private var intelligentGradeCalcTipBox: some View {
