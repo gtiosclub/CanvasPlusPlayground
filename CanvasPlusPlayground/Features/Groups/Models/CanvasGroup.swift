@@ -36,7 +36,10 @@ class CanvasGroup: Cacheable, Hashable {
         membersCount > users?.count ?? 0
     }
     var availableAction: GroupAction? {
-        guard membersCount < groupLimit && canJoin == true && !concluded else { return nil } // no action can be taken
+        guard canJoin == true && !concluded else { return nil } // no action can be taken
+
+        // make sure group has space to join OR user is already in group OR user already has request in progress. otherwise lock action.
+        guard membersCount < groupLimit || currUserStatus == .accepted || currUserStatus == .requested else { return nil }
 
         return switch currUserStatus {
         case .accepted:
@@ -77,6 +80,49 @@ class CanvasGroup: Cacheable, Hashable {
         self.canCreateAnnouncement = api.permissions?.create_announcement
     }
 
+    func updateMembershipState() async {
+        let req = CanvasRequest.getSingleGroupMembership(groupId: self.id, via: .users(userId: "self"))
+
+        do {
+            let membershipRes = try await CanvasService.shared.syncWithAPI(req)
+
+            guard let membership = membershipRes.first else {
+                throw HTTPStatusCode.notFound
+            }
+
+            await MainActor.run {
+                self.currUserStatus = membership.workflowState
+            }
+            LoggerService.main.debug(
+            """
+            [GroupsListView] Membership state update for \(self.name) succeeded: 
+            \(self.currUserStatus?.rawValue ?? "nil"), \(self.availableAction?.rawValue ?? "nil")
+            """
+            )
+        } catch {
+            LoggerService.main.error("[GroupsListView] Membership state update failed: \(error)")
+
+            // If 404 (not found) -> user is not in group, reset status
+            if let error = error as? HTTPStatusCode, error == .notFound {
+                await MainActor.run {
+                    self.currUserStatus = nil
+                }
+            }
+            // TODO: share error above
+        }
+    }
+}
+
+enum GroupAction: String {
+    case join = "Join", leave = "Leave", accept = "Accept", cancelRequest = "Cancel request"
+
+    var label: String {
+        self.rawValue
+    }
+}
+
+// MARK: Cacheable
+extension CanvasGroup {
     func merge(with other: CanvasGroup) {
         self.name = other.name
         self.concluded = other.concluded
@@ -98,12 +144,11 @@ class CanvasGroup: Cacheable, Hashable {
         self.canJoin = other.canJoin ?? self.canJoin
         self.canCreateAnnouncement = other.canCreateAnnouncement ?? self.canCreateAnnouncement
     }
+}
 
+// MARK: Preview
+extension CanvasGroup {
     static let sample = CanvasGroup(
         from: .sample1
     )
-}
-
-enum GroupAction: String {
-    case join = "Join", leave = "Leave", accept = "Accept", cancelRequest = "Cancel request"
 }

@@ -9,15 +9,10 @@ import Foundation
 
 @Observable
 class CourseGroupsViewModel {
-    let courseId: String
     var groups = [CanvasGroup]()
 
-    init(courseId: String) {
-        self.courseId = courseId
-    }
-
-    func fetchGroups() async {
-        let req = CanvasRequest.getCourseGroups(courseId: courseId)
+    func fetchGroups(for courseId: String) async {
+        let req = CanvasRequest.getCourseGroups(courseId: courseId, perPage: 30)
 
         do {
             try await CanvasService.shared.loadAndSync(
@@ -33,6 +28,10 @@ class CourseGroupsViewModel {
         } catch {
             LoggerService.main.error("[CourseGroupsViewModel] Groups fetch failed: \(error)")
         }
+    }
+
+    func fetchAllGroups() async {
+        // TODO: in the future when implementing generic Groups tab
     }
 
     func insertGroups(_ groups: [CanvasGroup]) {

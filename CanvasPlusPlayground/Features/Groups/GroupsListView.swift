@@ -15,8 +15,8 @@ struct GroupsListView: View {
     var body: some View {
         List(groups) { group in
             GroupRowView(group: group, selectedGroupDetail: $selectedGroupDetail)
-                .onAppear {
-                    // TODO: fetch and set current user membership status
+                .task {
+                    await group.updateMembershipState()
                 }
         }
         .sheet(item: $selectedGroupDetail) { group in
@@ -119,7 +119,7 @@ struct GroupRowView: View {
     }
 
     func groupActionButton(for action: GroupAction) -> some View {
-        Button("Join") {
+        Button(action.label) {
             // TODO: join/leave action here
             switch action {
             case .join:

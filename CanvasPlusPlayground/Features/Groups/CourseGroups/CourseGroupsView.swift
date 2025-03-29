@@ -15,14 +15,14 @@ struct CourseGroupsView: View {
 
     init(course: Course) {
         self.course = course
-        self._courseGroupsVM = State(initialValue: CourseGroupsViewModel(courseId: self.course.id))
+        self._courseGroupsVM = State(initialValue: CourseGroupsViewModel())
     }
 
     var body: some View {
         GroupsListView(groups: courseGroupsVM.groups)
             .task {
                 isLoading = true
-                await courseGroupsVM.fetchGroups()
+                await courseGroupsVM.fetchGroups(for: course.id)
                 isLoading = false
             }
             .statusToolbarItem("Groups", isVisible: isLoading)

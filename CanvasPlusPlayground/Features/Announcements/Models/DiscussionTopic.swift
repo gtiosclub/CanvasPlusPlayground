@@ -215,6 +215,7 @@ extension DiscussionTopic {
 
 // MARK: Read Marking
 extension DiscussionTopic {
+    @MainActor
     func markReadStatus(_ isRead: Bool) async throws {
         guard let courseId = self.courseId else {
             LoggerService.main.debug("[markAsRead] Course id missing")
@@ -232,6 +233,7 @@ extension DiscussionTopic {
         }
     }
 
+    @MainActor
     func toggleReadState() async throws {
         if self.isRead {
             try await self.markReadStatus(true)

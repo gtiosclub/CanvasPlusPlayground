@@ -232,4 +232,11 @@ enum CanvasRequest {
             perPage: perPage
         )
     }
+
+    static func getSingleGroupMembership(
+        groupId: String,
+        via: GetGroupMembershipRequest.Via
+    ) -> GetGroupMembershipRequest {
+        GetGroupMembershipRequest(groupId: groupId, via: via)
+    }
 }
