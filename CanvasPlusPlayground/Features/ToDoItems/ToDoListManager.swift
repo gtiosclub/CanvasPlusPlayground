@@ -13,7 +13,9 @@ class ToDoListManager {
     var toDoItemCount: Int?
 
     func fetchToDoItemCount() async {
-        let request = CanvasRequest.getToDoItemCount()
+        let request = CanvasRequest.getToDoItemCount(
+            include: [.ungradedQuizzes]
+        )
 
         do {
             let count: [ToDoItemCount]? = try await CanvasService.shared
@@ -32,7 +34,7 @@ class ToDoListManager {
     }
 
     func fetchToDoItems(courses: [Course]) async {
-        let request = CanvasRequest.getToDoItems()
+        let request = CanvasRequest.getToDoItems(include: [.ungradedQuizzes])
 
         var newItems = [ToDoItem]()
 
