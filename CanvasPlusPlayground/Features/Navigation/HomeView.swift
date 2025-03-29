@@ -10,6 +10,7 @@ import SwiftUI
 struct HomeView: View {
     typealias NavigationPage = NavigationModel.NavigationPage
 
+    @Environment(ToDoListManager.self) private var toDoListManager
     @Environment(ProfileManager.self) private var profileManager
     @Environment(CourseManager.self) private var courseManager
     @Environment(NavigationModel.self) private var navigationModel
@@ -129,6 +130,7 @@ struct HomeView: View {
         isLoadingCourses = true
         await courseManager.getCourses()
         await profileManager.getCurrentUserAndProfile()
+        await toDoListManager.fetchToDoItemCount()
         isLoadingCourses = false
     }
 }
