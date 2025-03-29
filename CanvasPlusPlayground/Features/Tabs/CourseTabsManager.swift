@@ -9,21 +9,18 @@ import Foundation
 
 @Observable
 class CourseTabsManager {
-    let course: Course
     var tabs = [TabAPI]()
 
     var tabLabels: [String] {
         tabs.map(\.label).compactMap { $0 }
     }
 
-    init(course: Course) {
-        self.course = course
-    }
-
-    func fetchTabs() async {
+    func fetchTabs(course: Course) async {
         let courseId = course.id
+
         guard let (data, _) = try? await CanvasService.shared.fetchResponse(CanvasRequest.getTabs(courseId: courseId)) else {
             LoggerService.main.error("Unable to fetch tabs.")
+            self.tabs = []
             return
         }
 
