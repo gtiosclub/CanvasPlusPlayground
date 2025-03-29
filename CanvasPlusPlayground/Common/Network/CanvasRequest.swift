@@ -278,4 +278,8 @@ enum CanvasRequest {
             perPage: perPage
         )
     }
+
+    static func ignoreToDoItem(ignoreURL: String) -> IgnoreToDoItemRequest {
+        IgnoreToDoItemRequest(ignoreURL: ignoreURL)
+    }
 }

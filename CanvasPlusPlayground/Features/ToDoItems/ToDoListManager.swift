@@ -58,4 +58,14 @@ class ToDoListManager {
 
         toDoItems = newItems
     }
+
+    func ignoreToDoItem(_ item: ToDoItem) async {
+        let request = CanvasRequest.ignoreToDoItem(ignoreURL: item.ignoreURL)
+
+        do {
+            try await CanvasService.shared.fetch(request)
+        } catch {
+            LoggerService.main.error("Failed to ignore todo item: \(error)")
+        }
+    }
 }
