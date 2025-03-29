@@ -28,7 +28,9 @@ class CanvasRepository {
             User.self,
             Profile.self,
             DiscussionTopic.self,
-            Page.self
+            Page.self,
+            ToDoItem.self,
+            ToDoItemCount.self
             // TODO: Add cacheable models here
         )
         self.modelContext = ModelContext(modelContainer)
