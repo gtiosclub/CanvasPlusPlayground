@@ -233,7 +233,6 @@ extension DiscussionTopic {
         }
     }
 
-    @MainActor
     func toggleReadState() async throws {
         if self.isRead {
             try await self.markReadStatus(true)

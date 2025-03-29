@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-class GroupMembership: Cacheable {
+class GroupMembership: Cacheable, Hashable {
     var id: String
     var groupId: Int
     var userId: Int

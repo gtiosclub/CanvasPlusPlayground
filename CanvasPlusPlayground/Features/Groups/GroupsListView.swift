@@ -15,6 +15,7 @@ struct GroupsListView: View {
     var body: some View {
         List(groups) { group in
             GroupRowView(group: group, selectedGroupDetail: $selectedGroupDetail)
+                .frame(height: 40)
                 .task {
                     await group.updateMembershipState()
                 }
@@ -70,20 +71,24 @@ struct GroupRowView: View {
         VStack {
             HStack {
                 Text(group.name)
-                    .font(.headline)
 
                 numMembersLabel
+                    .font(.subheadline)
+
                 moreDetailsButton
 
                 Spacer()
 
-                if let action = group.availableAction {
+                if group.isLoadingMembership {
+                    ProgressView()
+                } else if let action = group.availableAction {
                     groupActionButton(for: action)
+                        .font(.subheadline)
                 } else {
                     lockStatusLabel
                 }
             }
-            .font(.subheadline)
+            .font(.headline)
         }
     }
 
@@ -102,7 +107,7 @@ struct GroupRowView: View {
     }
 
     var numMembersLabel: some View {
-        Text("\(group.membersCount)/\(membersLimit)" )
+        Text("(\(group.membersCount)/\(membersLimit))" )
             .foregroundStyle(.secondary)
     }
 

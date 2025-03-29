@@ -26,7 +26,7 @@ struct GroupDetailView: View {
                 row(label: "Category Allows Multiple Memberships?", value: group.allowsMultipleMemberships?.description ?? "N/A")
                 row(label: "Storage Quota (MB)", value: group.storageQuotaMb?.asString ?? "N/A")
                 row(label: "Is Public?", value: group.isPublic.description)
-                row(label: "Membership Status", value: group.currUserStatus?.rawValue ?? "No action")
+                row(label: "Membership Status", value: group.currUserStatus?.rawValue ?? "No status (probs not a member)")
             }
 
             Section(header: Text("Description")) {

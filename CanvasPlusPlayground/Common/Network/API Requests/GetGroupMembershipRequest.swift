@@ -21,17 +21,18 @@ struct GetGroupMembershipRequest: CacheableAPIRequest {
     }
     var requestIdKey: ParentKeyPath<GroupMembership, String> {
         switch via {
-            case .users:
+        case .users:
             return .createReadable(\.userId.asString)
-            case .memberships:
+        case .memberships:
             return .createReadable(\.id)
         }
     }
     var idPredicate: Predicate<GroupMembership> {
         switch via {
-            case .users:
-            return #Predicate { requestId == $0.userId.asString }
-            case .memberships:
+        case .users:
+            let requestIdInt = requestId.asInt ?? -1
+            return #Predicate { requestIdInt == $0.userId }
+        case .memberships:
             return #Predicate { requestId == $0.id }
         }
     }

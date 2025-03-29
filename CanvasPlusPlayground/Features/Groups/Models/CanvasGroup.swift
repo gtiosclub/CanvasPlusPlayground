@@ -53,7 +53,9 @@ class CanvasGroup: Cacheable, Hashable {
         }
         // TODO: verify action logic
     }
+    // TODO: store GroupMembership as relationship instead
     var currUserStatus: GroupMembershipState? // should update by fetching GroupMembership of `self`
+    @Attribute(.ephemeral) var isLoadingMembership: Bool = false
 
     init(from api: APIGroup) {
         self.id = api.id.asString
@@ -80,9 +82,12 @@ class CanvasGroup: Cacheable, Hashable {
         self.canCreateAnnouncement = api.permissions?.create_announcement
     }
 
+    @MainActor
     func updateMembershipState() async {
-        let req = CanvasRequest.getSingleGroupMembership(groupId: self.id, via: .users(userId: "self"))
+        isLoadingMembership = true
+        defer { isLoadingMembership = false }
 
+        let req = CanvasRequest.getSingleGroupMembership(groupId: self.id, via: .users(userId: "self"))
         do {
             let membershipRes = try await CanvasService.shared.syncWithAPI(req)
 
@@ -90,23 +95,19 @@ class CanvasGroup: Cacheable, Hashable {
                 throw HTTPStatusCode.notFound
             }
 
-            await MainActor.run {
-                self.currUserStatus = membership.workflowState
-            }
+            self.currUserStatus = membership.workflowState
             LoggerService.main.debug(
             """
-            [GroupsListView] Membership state update for \(self.name) succeeded: 
+            [GroupsListView] Membership state update for \(self.name) succeeded:
             \(self.currUserStatus?.rawValue ?? "nil"), \(self.availableAction?.rawValue ?? "nil")
             """
             )
         } catch {
             LoggerService.main.error("[GroupsListView] Membership state update failed: \(error)")
 
-            // If 404 (not found) -> user is not in group, reset status
+            // If 404 (not found) -> means user is not in group, so we reset status
             if let error = error as? HTTPStatusCode, error == .notFound {
-                await MainActor.run {
-                    self.currUserStatus = nil
-                }
+                self.currUserStatus = nil
             }
             // TODO: share error above
         }

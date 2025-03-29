@@ -11,6 +11,16 @@ import Foundation
 class CourseGroupsViewModel {
     var groups = [CanvasGroup]()
 
+    var groupsDisplayed: [CanvasGroup] {
+        groups
+            .sorted { // sort priority: (1) category name (2) group name
+                guard $0.groupCategoryName != $1.groupCategoryName else {
+                    return $0.name < $1.name
+                }
+                return ($0.groupCategoryName ?? "") < ($1.groupCategoryName ?? "")
+            }
+    }
+
     func fetchGroups(for courseId: String) async {
         let req = CanvasRequest.getCourseGroups(courseId: courseId, perPage: 30)
 
@@ -30,11 +40,19 @@ class CourseGroupsViewModel {
         }
     }
 
+    func leaveGroup(_ group: CanvasGroup) async {
+
+    }
+
+    func joinGroup(_ group: CanvasGroup) async {
+        
+    }
+
     func fetchAllGroups() async {
         // TODO: in the future when implementing generic Groups tab
     }
 
-    func insertGroups(_ groups: [CanvasGroup]) {
+    private func insertGroups(_ groups: [CanvasGroup]) {
         let newGroups = groups.filter {
             !self.groups.contains($0)
         }

@@ -26,8 +26,8 @@ extension ModelContext {
             Profile.self,
             DiscussionTopic.self,
             Page.self,
-            CanvasGroup.self
-
+            CanvasGroup.self,
+            GroupMembership.self
             // TODO: Add cacheable models here
         )
         return ModelContext(modelContainer)
