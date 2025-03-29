@@ -60,6 +60,10 @@ class ToDoListManager {
     }
 
     func ignoreToDoItem(_ item: ToDoItem) async {
+        // We can either use the ignoreURL or the ignorePermanentlyURL.
+        // ignoreURL will add the item back if the item is updated in the future.
+        // ignorePermanentlyURL will remove the item from the list forever.
+
         let request = CanvasRequest.ignoreToDoItem(ignoreURL: item.ignoreURL)
 
         do {
