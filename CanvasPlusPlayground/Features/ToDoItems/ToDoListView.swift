@@ -9,8 +9,8 @@ import SwiftUI
 
 struct ToDoListView: View {
     @Environment(CourseManager.self) private var courseManager
+    @Environment(ToDoListManager.self) private var listManager
 
-    @State private var listManager = ToDoListManager()
     @State private var selectedItem: ToDoItem?
     @State private var isLoading = false
     @State private var filterCourse: Course?
@@ -82,6 +82,7 @@ struct ToDoListView: View {
 
     private func loadItems() async {
         isLoading = true
+        await listManager.fetchToDoItemCount()
         await listManager.fetchToDoItems(courses: courseManager.allCourses)
         isLoading = false
     }

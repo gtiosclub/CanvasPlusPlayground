@@ -11,6 +11,7 @@ struct SidebarTile: View {
     @Environment(NavigationModel.self) private var navigationModel
 
     let title: String
+    let count: Int?
     let systemIcon: String
     let color: Color
     let page: NavigationModel.NavigationPage
@@ -18,12 +19,14 @@ struct SidebarTile: View {
 
     init(
         _ title: String,
+        count: Int? = nil,
         systemIcon: String,
         color: Color,
         page: NavigationModel.NavigationPage,
         action: @escaping () -> Void
     ) {
         self.title = title
+        self.count = count
         self.systemIcon = systemIcon
         self.color = color
         self.page = page
@@ -50,6 +53,15 @@ struct SidebarTile: View {
                     .foregroundStyle(.tint)
 
                 Spacer()
+
+                if let count {
+                    Text("\(count)")
+                        .font(.title3)
+                        .fontDesign(.rounded)
+                        .bold()
+                        .foregroundStyle(isSelected ? .white : .primary)
+                        .contentTransition(.numericText())
+                }
             }
             Text(title)
                 .foregroundStyle(isSelected ? .white : .primary)
@@ -72,5 +84,6 @@ struct SidebarTile: View {
         .frame(minWidth: 90)
         #endif
         .tint(color)
+        .animation(.default, value: count)
     }
 }

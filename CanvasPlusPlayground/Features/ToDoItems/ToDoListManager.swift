@@ -10,6 +10,26 @@ import SwiftUI
 @Observable
 class ToDoListManager {
     var toDoItems: [ToDoItem] = []
+    var toDoItemCount: Int?
+
+    func fetchToDoItemCount() async {
+        let request = CanvasRequest.getToDoItemCount()
+
+        do {
+            let count: [ToDoItemCount]? = try await CanvasService.shared
+                .loadAndSync(
+                    request,
+                    onCacheReceive: { cached in
+                        guard let cached = cached?.first else { return }
+                        self.toDoItemCount = cached.assignmentsNeedingSubmitting
+                    }
+                )
+
+            self.toDoItemCount = count?.first?.assignmentsNeedingSubmitting
+        } catch {
+            LoggerService.main.error("Failed to fetch to-do item count: \(error)")
+        }
+    }
 
     func fetchToDoItems(courses: [Course]) async {
         let request = CanvasRequest.getToDoItems()
