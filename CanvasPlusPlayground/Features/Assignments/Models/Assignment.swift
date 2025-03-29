@@ -78,7 +78,7 @@ class Assignment: Cacheable {
     var restrictQuantitativeData: Bool?
     var allowedExtensions: [String]?
     var submission: SubmissionAPI?
-
+    var canSubmit: Bool?
     // MARK: Custom Properties
     var dueDate: Date? {
         ISO8601DateFormatter().date(from: dueAt ?? "2024-12-12T19:06:20Z")
@@ -182,6 +182,7 @@ class Assignment: Cacheable {
         self.restrictQuantitativeData = assignmentAPI.restrict_quantitative_data
         self.allowedExtensions = assignmentAPI.allowed_extensions
         self.submission = assignmentAPI.submission
+        self.canSubmit = assignmentAPI.can_submit
     }
 
     // swiftlint:disable:next function_body_length
@@ -250,19 +251,7 @@ class Assignment: Cacheable {
         self.restrictQuantitativeData = other.restrictQuantitativeData
         self.allowedExtensions = other.allowedExtensions
         self.submission = other.submission
-    }
-
-    enum SubmissionType: String, Codable {
-        case discussionTopic = "discussion_topic"
-        case onlineQuiz = "online_quiz"
-        case onPaper = "on_paper"
-        case none = "none"
-        case externalTool = "external_tool"
-        case onlineTextEntry = "online_text_entry"
-        case onlineUrl = "online_url"
-        case onlineUpload = "online_upload"
-        case mediaRecording = "media_recording"
-        case studentAnnotation = "student_annotation"
+        self.canSubmit = other.canSubmit
     }
 
     enum GradingType: String, Codable {
@@ -274,4 +263,23 @@ class Assignment: Cacheable {
     }
 
     static let example = Assignment(from: .example)
+}
+
+enum SubmissionType: String, Codable {
+    case discussionTopic = "discussion_topic"
+    case onlineQuiz = "online_quiz"
+    case onPaper = "on_paper"
+    case none = "none"
+    case externalTool = "external_tool"
+    case onlineTextEntry = "online_text_entry"
+    case onlineUrl = "online_url"
+    case onlineUpload = "online_upload"
+    case mediaRecording = "media_recording"
+    case studentAnnotation = "student_annotation"
+
+    var displayName: String {
+        rawValue
+            .replacingOccurrences(of: "_", with: " ")
+            .capitalized
+    }
 }

@@ -41,3 +41,27 @@ extension Date {
         return calendar.date(bySettingHour: 8, minute: 0, second: 0, of: nextDay) ?? Date.now
     }
 }
+
+extension Date {
+    static func timeDeltaString(from startDate: Date, to endDate: Date) -> String {
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .full // Use .short or .abbreviated for different styles
+        formatter.allowedUnits = [.day, .hour]
+        return formatter.string(from: startDate, to: endDate) ?? "N/A"
+    }
+}
+
+extension Date {
+    static func from(_ dateString: String, format: String = "yyyy-MM-dd'T'HH:mm:ssZ") -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+        dateFormatter.dateFormat = format
+
+        if let date = dateFormatter.date(from: dateString) {
+            return date
+        } else {
+            return Date(timeIntervalSince1970: 0) // Unix epoch
+        }
+    }
+}

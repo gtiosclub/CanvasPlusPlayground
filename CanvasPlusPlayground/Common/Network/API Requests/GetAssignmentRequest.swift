@@ -65,6 +65,7 @@ extension GetAssignmentRequest {
              observedUsers = "observed_users",
              canEdit = "can_edit",
              scoreStatistics = "score_statistics",
-             abGuid = "ab_guid"
+             abGuid = "ab_guid",
+             canSubmit = "can_submit"
     }
 }

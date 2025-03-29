@@ -32,6 +32,36 @@ enum CanvasRequest {
         GetFoldersInFolderRequest(folderId: folderId)
     }
 
+    static func notifyFileUpload(
+        courseID: String,
+        assignmentID: String,
+        filename: String,
+        fileSizeInBytes size: Int
+    ) -> UploadAssignmentFileNotificationRequest {
+        UploadAssignmentFileNotificationRequest(
+            courseID: courseID,
+            assignmentID: assignmentID,
+            name: filename,
+            size: size
+        )
+    }
+
+    static func transmitFileUpload(
+        path: String,
+        keyValues: [String: String?],
+        filename: String,
+        fileData: Data,
+        mimeType: MimeType
+    ) -> UploadAssignmentFileTransmissionRequest {
+        UploadAssignmentFileTransmissionRequest(path: path, keyValues: keyValues, filename: filename, fileData: fileData, mimeType: mimeType.rawValue)
+    }
+
+    static func confirmFileUpload(
+        path: String
+    ) -> UploadAssignmentFileConfirmationRequest {
+        UploadAssignmentFileConfirmationRequest(path: path)
+    }
+
     static func getTabs(courseId: String) -> GetTabsRequest {
         GetTabsRequest(courseId: courseId)
     }
@@ -201,6 +231,26 @@ enum CanvasRequest {
         discussionTopicId: String
     ) -> MarkCourseDiscussionTopicUnreadRequest {
         MarkCourseDiscussionTopicUnreadRequest(courseID: courseId, discussionID: discussionTopicId)
+    }
+
+    static func submitAssignment(
+        courseID: String,
+        assignmentID: String,
+        textComment: String? = nil,
+        submissionType: SubmissionType,
+        submissionBody: String? = nil,
+        url: String? = nil,
+        fileIDs: [Int]? = nil
+    ) -> SubmitAssignmentRequest {
+        SubmitAssignmentRequest(
+            courseID: courseID,
+            assignmentID: assignmentID,
+            textComment: textComment,
+            submissionType: submissionType,
+            submissionBody: submissionBody,
+            url: url,
+            fileIDs: fileIDs
+        )
     }
 
     static func getPages(
