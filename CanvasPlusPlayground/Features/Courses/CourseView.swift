@@ -10,18 +10,20 @@ import SwiftUI
 struct CourseView: View {
     @Environment(PickerService.self) private var pickerService: PickerService?
     @Environment(NavigationModel.self) private var navigationModel
-    @State private var tabsManager: CourseTabsManager
+
+    @State private var tabsManager = CourseTabsManager()
+    @State private var isLoadingTabs = false
+
     let course: Course
 
     init(course: Course) {
         self.course = course
-        self._tabsManager = State(wrappedValue: CourseTabsManager(course: course))
     }
 
     private var coursePages: [NavigationModel.CoursePage] {
         guard !tabsManager.tabs.isEmpty else {
-                return []
-            }
+            return []
+        }
 
         let availableTabs = Set<NavigationModel.CoursePage>(
             tabsManager.tabs.compactMap { tab in
@@ -31,7 +33,13 @@ struct CourseView: View {
         )
 
         return NavigationModel.CoursePage.allCases.filter {
-            availableTabs.contains($0) || NavigationModel.CoursePage.requiredTabs.contains($0)
+            var isAvailable = availableTabs.contains($0) || NavigationModel.CoursePage.requiredTabs.contains($0)
+
+            if let pickerService {
+                isAvailable = isAvailable && pickerService.supportedPickerViews.contains($0)
+            }
+
+            return isAvailable
         }
     }
 
@@ -44,17 +52,11 @@ struct CourseView: View {
             }
             .tag(page)
         }
+        .task(id: course.id) {
+            await fetchTabs()
+        }
         .onAppear {
             navigationModel.selectedCoursePage = nil
-            Task {
-                await tabsManager.fetchTabs()
-            }
-        }
-        .onChange(of: course) { _, newCourse in
-            tabsManager = CourseTabsManager(course: newCourse)
-            Task {
-                await tabsManager.fetchTabs()
-            }
         }
         #if os(iOS)
         .listStyle(.insetGrouped)
@@ -66,5 +68,13 @@ struct CourseView: View {
         .navigationDestination(for: NavigationModel.Destination.self) { destination in
             destination.destinationView(for: course)
         }
+        .disabled(isLoadingTabs)
+        .environment(tabsManager)
+    }
+
+    private func fetchTabs() async {
+        isLoadingTabs = true
+        await tabsManager.fetchTabs(course: course)
+        isLoadingTabs = false
     }
 }
