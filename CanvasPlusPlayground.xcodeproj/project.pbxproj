@@ -104,6 +104,7 @@
 		A37AB4A72D98670600610639 /* LeaveGroupRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37AB4A62D98670600610639 /* LeaveGroupRequest.swift */; };
 		A37AB4A92D9867D600610639 /* UpdateGroupMembershipRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37AB4A82D9867D600610639 /* UpdateGroupMembershipRequest.swift */; };
 		A37AB4AB2D988F5800610639 /* CreateGroupMembershipRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37AB4AA2D988F5800610639 /* CreateGroupMembershipRequest.swift */; };
+		A37AB4AD2D98B05E00610639 /* CanvasGroup+Memberships.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37AB4AC2D98B05E00610639 /* CanvasGroup+Memberships.swift */; };
 		A3CA02592D43294B00A9752B /* SearchResultsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CA02582D43294B00A9752B /* SearchResultsListView.swift */; };
 		A3CA025B2D432A8700A9752B /* SearchResultListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CA025A2D432A8700A9752B /* SearchResultListDataSource.swift */; };
 		A3CF88D12D18E61B000ACDF3 /* APIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CF88D02D18E61B000ACDF3 /* APIResponse.swift */; };
@@ -303,6 +304,7 @@
 		A37AB4A62D98670600610639 /* LeaveGroupRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaveGroupRequest.swift; sourceTree = "<group>"; };
 		A37AB4A82D9867D600610639 /* UpdateGroupMembershipRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateGroupMembershipRequest.swift; sourceTree = "<group>"; };
 		A37AB4AA2D988F5800610639 /* CreateGroupMembershipRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupMembershipRequest.swift; sourceTree = "<group>"; };
+		A37AB4AC2D98B05E00610639 /* CanvasGroup+Memberships.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CanvasGroup+Memberships.swift"; sourceTree = "<group>"; };
 		A3CA02582D43294B00A9752B /* SearchResultsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsListView.swift; sourceTree = "<group>"; };
 		A3CA025A2D432A8700A9752B /* SearchResultListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultListDataSource.swift; sourceTree = "<group>"; };
 		A3CF88D02D18E61B000ACDF3 /* APIResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIResponse.swift; sourceTree = "<group>"; };
@@ -700,6 +702,7 @@
 				A372D1032D90BEB4005E94CA /* CanvasGroup.swift */,
 				A372D1052D90CE7D005E94CA /* GroupMembership.swift */,
 				A372D1072D90CEFE005E94CA /* APIGroupMembership.swift */,
+				A37AB4AC2D98B05E00610639 /* CanvasGroup+Memberships.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1239,6 +1242,7 @@
 				A3E7F38F2C96C1CE00DC4300 /* CourseTabsView.swift in Sources */,
 				B76455062C8DF61B002DF00E /* CanvasPlusPlaygroundApp.swift in Sources */,
 				B7F950342D11A00F004BB470 /* StatusToolbarItem.swift in Sources */,
+				A37AB4AD2D98B05E00610639 /* CanvasGroup+Memberships.swift in Sources */,
 				A301EE0F2D612EA800D71139 /* DiscussionTopic.swift in Sources */,
 				9B07E7122D779CAB00359B69 /* Date+RelativeDates.swift in Sources */,
 				9B69FA4B2CC2CC7F006101F3 /* AggregatedAssignmentsView.swift in Sources */,
