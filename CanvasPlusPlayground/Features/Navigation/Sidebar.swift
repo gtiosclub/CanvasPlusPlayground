@@ -24,23 +24,21 @@ struct Sidebar: View {
                 SidebarTiles()
             }
 
-            Section("My Courses") {
+            Section {
                 ForEach(courseManager.userCourses) { course in
-                    NavigationLink(value: NavigationPage.course(id: course.id)) {
-                        CourseListCell(course: course)
-                    }
-                    .listItemTint(.fixed(course.rgbColors?.color ?? .accentColor))
+                    SidebarCourseCell(course: course)
                 }
+            } header: {
+                SidebarHeader(text: "Courses")
             }
 
             if !courseManager.hiddenCourses.isEmpty {
-                Section("Hidden", isExpanded: $isHiddenSectionExpanded) {
+                Section(isExpanded: $isHiddenSectionExpanded) {
                     ForEach(courseManager.hiddenCourses) { course in
-                        NavigationLink(value: NavigationPage.course(id: course.id)) {
-                            CourseListCell(course: course)
-                        }
-                        .listItemTint(.fixed(course.rgbColors?.color ?? .accentColor))
+                        SidebarCourseCell(course: course)
                     }
+                } header: {
+                    SidebarHeader(text: "Hidden")
                 }
             }
         }
@@ -75,6 +73,35 @@ struct Sidebar: View {
                 }
             }
         }
+    }
+}
+
+private struct SidebarHeader: View {
+    let text: String
+
+    var body: some View {
+        Text(text)
+            .font(.title3)
+            .fontWeight(.semibold)
+            .fontDesign(.rounded)
+            .foregroundStyle(.primary)
+            #if os(iOS)
+            .textCase(nil)
+            #endif
+            .padding(.bottom, 4)
+    }
+}
+
+private struct SidebarCourseCell: View {
+    typealias NavigationPage = NavigationModel.NavigationPage
+
+    let course: Course
+
+    var body: some View {
+        NavigationLink(value: NavigationPage.course(id: course.id)) {
+            CourseListCell(course: course)
+        }
+        .listItemTint(.fixed(course.rgbColors?.color ?? .accentColor))
     }
 }
 

@@ -8,8 +8,15 @@
 import SwiftUI
 
 struct AssignmentDetailView: View {
-    let assignment: Assignment
-    @State private var submission: Submission?
+    var assignment: Assignment
+
+    private var submission: Submission? {
+        assignment.submission?.createModel()
+    }
+
+    @State private var showSubmissionPopUp: Bool = false
+    @State private var fetchingCanSubmitStatus: Bool = false
+    @State private var canSubmit: Bool?
 
     var body: some View {
         if assignment.isOnlineQuiz {
@@ -69,10 +76,36 @@ struct AssignmentDetailView: View {
                         )
                     }
 
+                    if let submittedAt = submission?.submittedAt {
+                        LabeledContent(
+                            "Submitted at"
+                        ) {
+                            let submissionTime = Date.from(submittedAt)
+                            Text(submissionTime, style: .time)
+                            + Text(" on ") +
+                            Text(submissionTime, style: .date)
+                        }
+                    }
                     LabeledContent(
                         "Grade",
                         value: assignment.formattedGrade + "/" + assignment.formattedPointsPossible
                     )
+
+                    HStack {
+                        #if os(macOS)
+                        Spacer()
+                        #endif
+
+                        Button("New Submission...") {
+                            showSubmissionPopUp.toggle()
+                        }
+                        .disabled(!(canSubmit ?? false))
+
+                        if fetchingCanSubmitStatus {
+                            ProgressView()
+                                .controlSize(.small)
+                        }
+                    }
                 }
 
                 if let assignmentDescription = assignment.assignmentDescription {
@@ -83,14 +116,35 @@ struct AssignmentDetailView: View {
                     }
                 }
             }
+            .navigationTitle("Assignment Details")
             .formStyle(.grouped)
             .toolbar {
                 ReminderButton(item: .assignment(assignment))
             }
             .task {
-                submission = assignment.submission?.createModel()
+                await fetchCanSubmitStatus()
+            }
+            .sheet(isPresented: $showSubmissionPopUp) {
+                AssignmentSubmissionView(assignment: assignment)
             }
         }
+    }
+
+    private func fetchCanSubmitStatus() async {
+        guard let courseID = assignment.courseId else { return }
+
+        fetchingCanSubmitStatus = true
+        let request = CanvasRequest.getAssignment(id: assignment.id, courseId: courseID.asString, include: [.canSubmit])
+
+        do {
+            if let fetched = try await CanvasService.shared.fetch(request).first {
+                canSubmit = Assignment(from: fetched).canSubmit ?? false
+            }
+        } catch {
+            LoggerService.main.error("Failed to fetch assignment \(error)")
+        }
+
+        fetchingCanSubmitStatus = false
     }
 
     private var pointsPossible: String {

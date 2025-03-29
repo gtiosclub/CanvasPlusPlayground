@@ -9,16 +9,16 @@ import SwiftUI
 import WebKit
 
 struct CourseTabsView: View {
+    @Environment(CourseTabsManager.self) private var tabsManager
+
     let course: Course
     let baseURL: String
-    @State private var tabsManager: CourseTabsManager
 
     @State private var selectedURL: URL?
     @State private var showWebView = false
 
     init(course: Course) {
         self.course = course
-        self.tabsManager = CourseTabsManager(course: course)
         self.baseURL = "https://gatech.instructure.com/courses/\(String(course.id))"
     }
 
@@ -36,7 +36,7 @@ struct CourseTabsView: View {
         }
         .navigationTitle("Tabs")
         .task {
-            await tabsManager.fetchTabs()
+            await tabsManager.fetchTabs(course: course)
         }
         .sheet(isPresented: $showWebView) {
             NavigationStack {

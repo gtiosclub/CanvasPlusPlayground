@@ -86,16 +86,24 @@ extension APIRequest {
         var urlRequest = URLRequest(url: url)
 
         urlRequest.httpMethod = self.method.rawValue
+        urlRequest.httpBody = self.body
+        urlRequest.setValue(contentType, forHTTPHeaderField: "Content-Type")
+        urlRequest.setValue(contentLength, forHTTPHeaderField: "Content-Length")
+        urlRequest.setValue("Bearer \(StorageKeys.accessTokenValue)", forHTTPHeaderField: "Authorization")
 
         let (data, response) = try await URLSession.shared.data(for: urlRequest)
 
         guard let httpResponse = response as? HTTPURLResponse else {
             LoggerService.main.error("HTTP error: $\(response)$")
-            throw URLError(.cannotParseResponse)
+            throw URLError(.badServerResponse)
         }
 
         guard httpResponse.status?.responseType == .success else {
             LoggerService.main.error("HTTP error: $\(httpResponse)$")
+            throw httpResponse.status ?? .unknown
+        }
+
+        return (data, response)
             throw httpResponse.status ?? .unknown
         }
 

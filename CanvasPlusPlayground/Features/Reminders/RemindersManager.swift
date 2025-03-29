@@ -36,7 +36,7 @@ class RemindersManager: NSObject, UNUserNotificationCenterDelegate {
         switch item {
         case .assignment(let assignment):
             content.title = "REMINDER: \(assignment.name)"
-            // if the assignment has a due date, we want to let the user know how much time left
+            // we want to let the user know how much time left if the assignment has a due date
             if let dueDate = assignment.dueDate {
                 let deltaText = Date.timeDeltaString(from: dueDate, to: date)
                 content.body = "Assignment is due in \(deltaText)"
@@ -82,7 +82,8 @@ class RemindersManager: NSObject, UNUserNotificationCenterDelegate {
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         willPresent notification: UNNotification,
-        withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
+    ) {
         reminders.removeAll { request in
             notification.request.identifier == request.identifier
         }
@@ -97,15 +98,6 @@ enum ReminderType: Equatable {
         case .assignment(let assignment):
             return "assignment-\(assignment.id)"
         }
-    }
-}
-
-extension Date {
-    static func timeDeltaString(from startDate: Date, to endDate: Date) -> String {
-        let formatter = DateComponentsFormatter()
-        formatter.unitsStyle = .full // Use .short or .abbreviated for different styles
-        formatter.allowedUnits = [.day, .hour]
-        return formatter.string(from: startDate, to: endDate) ?? "N/A"
     }
 }
 

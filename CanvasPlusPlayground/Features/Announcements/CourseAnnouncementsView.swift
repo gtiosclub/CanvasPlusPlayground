@@ -20,11 +20,20 @@ struct CourseAnnouncementsView: View {
 
     var body: some View {
         List(announcementManager.displayedAnnouncements, id: \.id, selection: $selectedAnnouncement) { announcement in
-            NavigationLink(value: announcement) {
+            NavigationLink(
+                value: NavigationModel.Destination.announcement(announcement)
+            ) {
                 AnnouncementRow(course: course, announcement: announcement)
             }
             .tint(course.rgbColors?.color)
+            .tag(announcement)
         }
+        #if os(iOS)
+        .onAppear {
+            selectedAnnouncement = nil
+        }
+        #endif
+        .listStyle(.plain)
         .overlay {
             if announcementManager.announcements.isEmpty {
                 ContentUnavailableView("No announcements available", systemImage: "exclamationmark.bubble.fill")
@@ -43,9 +52,6 @@ struct CourseAnnouncementsView: View {
             isVisible: isLoadingAnnouncements
         )
         .navigationTitle("Announcements")
-        .navigationDestination(item: $selectedAnnouncement) { announcement in
-            CourseAnnouncementDetailView(announcement: announcement)
-        }
         .pickedItem(selectedAnnouncement)
     }
 

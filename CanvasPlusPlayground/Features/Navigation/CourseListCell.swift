@@ -26,6 +26,9 @@ struct CourseListCell: View {
         Label(course.displayName, systemImage: "book.pages")
             .frame(alignment: .leading)
             .multilineTextAlignment(.leading)
+            #if os(macOS)
+            .padding(.vertical, 4)
+            #endif
             .onAppear {
                 resolvedCourseColor = course.rgbColors?.color ?? .accentColor
             }
@@ -39,26 +42,21 @@ struct CourseListCell: View {
 
                 hideCourseButton
 
-                Button("Rename \(course.name ?? "")...", systemImage: "character.cursor.ibeam") {
+                Button("Rename Course...", systemImage: "character.cursor.ibeam") {
                     renameCourseFieldText = course.nickname ?? ""
                     showRenameTextField = true
                 }
             }
-            .alert("Rename Course?", isPresented: $showRenameTextField) {
-                TextField(course.name ?? "MISSING NAME", text: $renameCourseFieldText)
-                    Button("OK") {
-                        if renameCourseFieldText.isEmpty {
-                            course.nickname = nil
-                        } else {
-                            course.nickname = renameCourseFieldText
-                            renameCourseFieldText = ""
-                        }
-                    }
-                Button("Dismiss", role: .cancel) {
+            .alert("Rename Course", isPresented: $showRenameTextField) {
+                TextField(course.name ?? "", text: $renameCourseFieldText)
+
+                Button("OK") { renameCourse() }
+
+                Button("Cancel", role: .cancel) {
                     renameCourseFieldText = ""
                 }
             } message: {
-                Text("Rename \(course.name ?? "MISSING NAME")?")
+                Text("Rename \(course.name ?? "")?")
             }
             #if os(macOS)
             .popover(isPresented: $showColorPicker) {
@@ -88,5 +86,14 @@ struct CourseListCell: View {
         }
         .symbolVariant(wrappedCourseIsHidden ? .none : .slash)
         .tint(.gray)
+    }
+
+    private func renameCourse() {
+        if renameCourseFieldText.isEmpty {
+            course.nickname = nil
+        } else {
+            course.nickname = renameCourseFieldText
+            renameCourseFieldText = ""
+        }
     }
 }

@@ -24,7 +24,6 @@ class Submission: Cacheable {
     var htmlUrl: URL?
     var previewUrl: URL?
     var score: Double?
-    var submissionComments: String?
     var submissionType: String?
     var submittedAt: String?
     var url: String?
@@ -58,7 +57,6 @@ class Submission: Cacheable {
         self.htmlUrl = submissionAPI.html_url
         self.previewUrl = submissionAPI.preview_url
         self.score = submissionAPI.score
-        self.submissionComments = submissionAPI.submission_comments
         self.submissionType = submissionAPI.submission_type
         self.submittedAt = submissionAPI.submitted_at
         self.url = submissionAPI.url
@@ -96,7 +94,6 @@ class Submission: Cacheable {
         self.htmlUrl = other.htmlUrl
         self.previewUrl = other.previewUrl
         self.score = other.score
-        self.submissionComments = other.submissionComments
         self.submissionType = other.submissionType
         self.submittedAt = other.submittedAt
         self.url = other.url
