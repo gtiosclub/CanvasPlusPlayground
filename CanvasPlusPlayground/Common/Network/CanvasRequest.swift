@@ -239,4 +239,24 @@ enum CanvasRequest {
     ) -> GetGroupMembershipRequest {
         GetGroupMembershipRequest(groupId: groupId, via: via)
     }
+
+    static func leaveGroup(
+        groupId: String,
+        via: LeaveGroupRequest.Via
+    ) -> LeaveGroupRequest {
+        LeaveGroupRequest(groupId: groupId, via: via)
+    }
+
+    static func updateGroupMembership(
+        groupId: String,
+        via: UpdateGroupMembershipRequest.Via
+    ) -> UpdateGroupMembershipRequest {
+        UpdateGroupMembershipRequest(groupId: groupId, toState: .accepted, via: via)
+    }
+
+    static func createGroupMembership(
+        groupId: String
+    ) -> CreateGroupMembershipRequest {
+        CreateGroupMembershipRequest(groupId: groupId)
+    }
 }

@@ -22,7 +22,7 @@ class CourseGroupsViewModel {
     }
 
     func fetchGroups(for courseId: String) async {
-        let req = CanvasRequest.getCourseGroups(courseId: courseId, perPage: 30)
+        let req = CanvasRequest.getCourseGroups(courseId: courseId, perPage: 15)
 
         do {
             try await CanvasService.shared.loadAndSync(
@@ -40,12 +40,15 @@ class CourseGroupsViewModel {
         }
     }
 
-    func leaveGroup(_ group: CanvasGroup) async {
-
-    }
-
-    func joinGroup(_ group: CanvasGroup) async {
-        
+    func fetchAllGroupMembershipsFor(categoryId: Int, excluding groupId: String?) async throws {
+        await withThrowingTaskGroup(of: Void.self, body: { taskGroup in
+            for group in groupsDisplayed where group.groupCategoryId == categoryId && group.id != groupId {
+                taskGroup.addTask {
+                    try await group.fetchMembershipState()
+                    LoggerService.main.debug("[CourseGroupsViewModel] Leaving group: \(group.name)")
+                }
+            }
+        })
     }
 
     func fetchAllGroups() async {

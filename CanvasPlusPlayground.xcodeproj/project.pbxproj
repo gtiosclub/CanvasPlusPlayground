@@ -95,6 +95,9 @@
 		A373DC332D2819F700215019 /* APIModuleItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC322D2819F700215019 /* APIModuleItem.swift */; };
 		A373DC352D2824D700215019 /* Module.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC342D2824D700215019 /* Module.swift */; };
 		A373DC372D28285300215019 /* ModuleItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC362D28285300215019 /* ModuleItem.swift */; };
+		A37AB4A72D98670600610639 /* LeaveGroupRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37AB4A62D98670600610639 /* LeaveGroupRequest.swift */; };
+		A37AB4A92D9867D600610639 /* UpdateGroupMembershipRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37AB4A82D9867D600610639 /* UpdateGroupMembershipRequest.swift */; };
+		A37AB4AB2D988F5800610639 /* CreateGroupMembershipRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37AB4AA2D988F5800610639 /* CreateGroupMembershipRequest.swift */; };
 		A3CA02592D43294B00A9752B /* SearchResultsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CA02582D43294B00A9752B /* SearchResultsListView.swift */; };
 		A3CA025B2D432A8700A9752B /* SearchResultListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CA025A2D432A8700A9752B /* SearchResultListDataSource.swift */; };
 		A3CF88D12D18E61B000ACDF3 /* APIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CF88D02D18E61B000ACDF3 /* APIResponse.swift */; };
@@ -119,7 +122,6 @@
 		A3E7F3932C99338B00DC4300 /* TabAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E7F3922C99338B00DC4300 /* TabAPI.swift */; };
 		A3FFD03A2CDEC2AC006BAB51 /* LookupCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FFD0392CDEC2AC006BAB51 /* LookupCondition.swift */; };
 		A3FFD03C2CDED67C006BAB51 /* String+Numbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FFD03B2CDED67C006BAB51 /* String+Numbers.swift */; };
-		A3FFD03E2CE0065A006BAB51 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FFD03D2CE0065A006BAB51 /* NetworkError.swift */; };
 		B533C0BE2CADDDE700A74AF6 /* PeopleCommonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B533C0BD2CADDDE700A74AF6 /* PeopleCommonView.swift */; };
 		B53D95A02CA0953900647EE9 /* PeopleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D959F2CA0952F00647EE9 /* PeopleManager.swift */; };
 		B53D95A22CA0A22A00647EE9 /* PeopleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D95A12CA0A22A00647EE9 /* PeopleView.swift */; };
@@ -280,6 +282,9 @@
 		A373DC322D2819F700215019 /* APIModuleItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIModuleItem.swift; sourceTree = "<group>"; };
 		A373DC342D2824D700215019 /* Module.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Module.swift; sourceTree = "<group>"; };
 		A373DC362D28285300215019 /* ModuleItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleItem.swift; sourceTree = "<group>"; };
+		A37AB4A62D98670600610639 /* LeaveGroupRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaveGroupRequest.swift; sourceTree = "<group>"; };
+		A37AB4A82D9867D600610639 /* UpdateGroupMembershipRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateGroupMembershipRequest.swift; sourceTree = "<group>"; };
+		A37AB4AA2D988F5800610639 /* CreateGroupMembershipRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupMembershipRequest.swift; sourceTree = "<group>"; };
 		A3CA02582D43294B00A9752B /* SearchResultsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsListView.swift; sourceTree = "<group>"; };
 		A3CA025A2D432A8700A9752B /* SearchResultListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultListDataSource.swift; sourceTree = "<group>"; };
 		A3CF88D02D18E61B000ACDF3 /* APIResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIResponse.swift; sourceTree = "<group>"; };
@@ -304,7 +309,6 @@
 		A3E7F3922C99338B00DC4300 /* TabAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabAPI.swift; sourceTree = "<group>"; };
 		A3FFD0392CDEC2AC006BAB51 /* LookupCondition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookupCondition.swift; sourceTree = "<group>"; };
 		A3FFD03B2CDED67C006BAB51 /* String+Numbers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Numbers.swift"; sourceTree = "<group>"; };
-		A3FFD03D2CE0065A006BAB51 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		B533C0BD2CADDDE700A74AF6 /* PeopleCommonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleCommonView.swift; sourceTree = "<group>"; };
 		B53D959F2CA0952F00647EE9 /* PeopleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleManager.swift; sourceTree = "<group>"; };
 		B53D95A12CA0A22A00647EE9 /* PeopleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleView.swift; sourceTree = "<group>"; };
@@ -435,6 +439,9 @@
 				A301EE122D614A4100D71139 /* GetDiscussionTopicsRequest.swift */,
 				A372D1092D90DA7A005E94CA /* GetCourseGroupsRequest.swift */,
 				A33BE8742D97A6F7005C1D13 /* GetGroupMembershipRequest.swift */,
+				A37AB4A62D98670600610639 /* LeaveGroupRequest.swift */,
+				A37AB4A82D9867D600610639 /* UpdateGroupMembershipRequest.swift */,
+				A37AB4AA2D988F5800610639 /* CreateGroupMembershipRequest.swift */,
 			);
 			path = "API Requests";
 			sourceTree = "<group>";
@@ -563,7 +570,6 @@
 				A3CF88D02D18E61B000ACDF3 /* APIResponse.swift */,
 				A3049B732D15DBEE002F3166 /* API Requests */,
 				A3E7F38A2C9555B200DC4300 /* CanvasService.swift */,
-				A3FFD03D2CE0065A006BAB51 /* NetworkError.swift */,
 				A352AD172D3DA423007EE6FC /* LoadingMethod.swift */,
 			);
 			path = Network;
@@ -1075,6 +1081,7 @@
 				A352AD1C2D3EF206007EE6FC /* User.swift in Sources */,
 				A372D1082D90CEFE005E94CA /* APIGroupMembership.swift in Sources */,
 				B76455012C8DF61B002DF00E /* StorageKeys.swift in Sources */,
+				A37AB4A72D98670600610639 /* LeaveGroupRequest.swift in Sources */,
 				A3FFD03A2CDEC2AC006BAB51 /* LookupCondition.swift in Sources */,
 				B7D95DB72D0A8D78002AD955 /* SettingsView.swift in Sources */,
 				B7A12F3F2D69441500EDFA0A /* GetAssignmentGroupsRequest.swift in Sources */,
@@ -1090,7 +1097,7 @@
 				B7460A962D6CCD730069CF5B /* GradeCalculatorView.swift in Sources */,
 				A3049B5B2D0E5C18002F3166 /* QuizPermissions.swift in Sources */,
 				B7C0A3C52D2F4C19003E5A36 /* GetAssignmentRequest.swift in Sources */,
-				A3FFD03E2CE0065A006BAB51 /* NetworkError.swift in Sources */,
+				A37AB4A92D9867D600610639 /* UpdateGroupMembershipRequest.swift in Sources */,
 				B7E59A142D2004A4001836FE /* CourseListCell.swift in Sources */,
 				B53D95A22CA0A22A00647EE9 /* PeopleView.swift in Sources */,
 				A373DC312D28176100215019 /* APIModule.swift in Sources */,
@@ -1147,6 +1154,7 @@
 				B53D95A02CA0953900647EE9 /* PeopleManager.swift in Sources */,
 				B7C0A3CB2D2F919F003E5A36 /* PinButton.swift in Sources */,
 				B7F950392D1279A1004BB470 /* UserAPI.swift in Sources */,
+				A37AB4AB2D988F5800610639 /* CreateGroupMembershipRequest.swift in Sources */,
 				A3049B662D0F3E32002F3166 /* CourseQuizzesView.swift in Sources */,
 				B7D7512B2D3D5D8000F7B8B8 /* AllAnnouncementsView.swift in Sources */,
 				A3E7F3892C954E0500DC4300 /* CanvasRequest.swift in Sources */,

@@ -1,19 +1,28 @@
 //
-//  GetGroupMembershipRequest.swift
+//  UpdateGroupMembershipRequest.swift
 //  CanvasPlusPlayground
 //
-//  Created by Abdulaziz Albahar on 3/28/25.
+//  Created by Abdulaziz Albahar on 3/29/25.
 //
 
 import Foundation
 
-struct GetGroupMembershipRequest: CacheableAPIRequest {
+struct UpdateGroupMembershipRequest: CacheableAPIRequest {
     typealias Subject = APIGroupMembership
 
     var path: String { "groups/\(groupId)/\(via.pathComponent)" }
-    var queryParameters: [QueryParameter] { [] }
+    var queryParameters: [QueryParameter] {
+        [
+            ("workflow_state", toState.rawValue)
+            // ("moderator", moderator_id)
+        ]
+    }
+
+    var method: RequestMethod { .PUT }
 
     let groupId: String
+    let toState: NewMembershipState
+    // let moderator_id: String // For adding/removing moderator rights
     let via: Via
 
     var requestId: String {
@@ -47,7 +56,11 @@ struct GetGroupMembershipRequest: CacheableAPIRequest {
     var customPredicate: Predicate<GroupMembership> { .true }
 }
 
-extension GetGroupMembershipRequest {
+extension UpdateGroupMembershipRequest {
+    enum NewMembershipState: String {
+        case accepted
+    }
+
     enum Via {
         case users(userId: String = "self"), memberships(membershipId: String = "self")
 

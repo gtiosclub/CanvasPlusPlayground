@@ -16,6 +16,9 @@ class GroupMembership: Cacheable, Hashable {
     var workflowState: GroupMembershipState
     var isModerator: Bool?
 
+    // MARK: Custom
+    var tag: String = "" // for fetching from cache when `self` is passed as id
+
     init(from api: APIGroupMembership) {
         self.id = api.id.asString
         self.groupId = api.group_id

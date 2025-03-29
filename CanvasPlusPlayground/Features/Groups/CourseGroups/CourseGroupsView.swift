@@ -26,5 +26,6 @@ struct CourseGroupsView: View {
                 isLoading = false
             }
             .statusToolbarItem("Groups", isVisible: isLoading)
+            .environment(courseGroupsVM)
     }
 }

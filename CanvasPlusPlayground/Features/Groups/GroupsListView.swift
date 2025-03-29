@@ -17,7 +17,11 @@ struct GroupsListView: View {
             GroupRowView(group: group, selectedGroupDetail: $selectedGroupDetail)
                 .frame(height: 40)
                 .task {
-                    await group.updateMembershipState()
+                    do {
+                        try await group.fetchMembershipState()
+                    } catch {
+                        // TODO: indicate unknown status in UI
+                    }
                 }
         }
         .sheet(item: $selectedGroupDetail) { group in
@@ -60,35 +64,49 @@ struct GroupsListView: View {
 }
 
 struct GroupRowView: View {
+    @Environment(CourseGroupsViewModel.self) var courseGroupsVM
+
     let group: CanvasGroup
     @Binding var selectedGroupDetail: CanvasGroup?
+
+    @State private var error: Error?
+    private var showError: Binding<Bool> {
+        Binding {
+            error != nil
+        } set: { showErrorNew in
+            if !showErrorNew { error = nil }
+        }
+    }
 
     var membersLimit: String {
         group.groupLimit == .max ? "∞" : String(group.groupLimit)
     }
 
     var body: some View {
-        VStack {
-            HStack {
-                Text(group.name)
+        HStack {
+            Text(group.name)
 
-                numMembersLabel
+            numMembersLabel
+                .font(.subheadline)
+
+            moreDetailsButton
+
+            Spacer()
+
+            if group.isLoadingMembership {
+                ProgressView()
+            } else if let action = group.availableAction {
+                groupActionButton(for: action)
                     .font(.subheadline)
-
-                moreDetailsButton
-
-                Spacer()
-
-                if group.isLoadingMembership {
-                    ProgressView()
-                } else if let action = group.availableAction {
-                    groupActionButton(for: action)
-                        .font(.subheadline)
-                } else {
-                    lockStatusLabel
-                }
+            } else {
+                lockStatusLabel
             }
-            .font(.headline)
+        }
+        .font(.headline)
+        .alert("Failure", isPresented: showError) {
+            Button("Ok", role: .cancel) {
+                error = nil
+            }
         }
     }
 
@@ -125,17 +143,34 @@ struct GroupRowView: View {
 
     func groupActionButton(for action: GroupAction) -> some View {
         Button(action.label) {
-            // TODO: join/leave action here
+            Task {
+                await groupAction(action)
+            }
+        }
+    }
+
+    func groupAction(_ action: GroupAction) async {
+        do {
             switch action {
             case .join:
-                break
+                // TODO: must update existing groups upon success
+                try await group.joinGroup()
+                if let categoryId = group.groupCategoryId {
+                    try await courseGroupsVM.fetchAllGroupMembershipsFor(
+                        categoryId: categoryId,
+                        excluding: group.id
+                    )
+                }
             case .leave:
-                break
+                try await group.leaveGroup()
             case .cancelRequest:
+                // TODO: action here
                 break
             case .accept:
-                break
+                try await group.acceptInvite()
             }
+        } catch {
+            self.error = error
         }
     }
 }
