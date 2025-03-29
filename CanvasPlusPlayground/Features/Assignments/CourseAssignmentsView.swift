@@ -43,45 +43,53 @@ struct CourseAssignmentsView: View {
     }
 
     var mainbody: some View {
-        List(
-            assignmentManager.assignmentGroups,
-            selection: $selectedAssignment
-        ) { assignmentGroup in
-            Section {
-                let assignments = assignmentGroup.assignments ?? []
+        List(selection: $selectedAssignment) {
+            if showGrades, gradeCalculator.canUseIntelligenceAssistance {
+                intelligentGradeCalcTipBox
+                    .listRowInsets(EdgeInsets())
+                    .listRowSeparator(.hidden)
+                    .listRowBackground(Color.clear)
+            }
 
-                if assignments.isEmpty {
-                    Text("No Assignments")
-                        .foregroundStyle(.secondary)
-                } else {
-                    ForEach(assignments) { assignment in
-                        let assignmentModel = assignment.createModel()
-                        AssignmentRow(assignment: assignmentModel, showGrades: showGrades)
-                            .contextMenu {
-                                if !showGrades {
-                                    PinButton(
-                                        itemID: assignmentModel.id,
-                                        courseID: course.id,
-                                        type: .assignment
-                                    )
+            ForEach(
+                assignmentManager.assignmentGroups
+            ) { assignmentGroup in
+                Section {
+                    let assignments = assignmentGroup.assignments ?? []
+
+                    if assignments.isEmpty {
+                        Text("No Assignments")
+                            .foregroundStyle(.secondary)
+                    } else {
+                        ForEach(assignments) { assignment in
+                            let assignmentModel = assignment.createModel()
+                            AssignmentRow(assignment: assignmentModel, showGrades: showGrades)
+                                .contextMenu {
+                                    if !showGrades {
+                                        PinButton(
+                                            itemID: assignmentModel.id,
+                                            courseID: course.id,
+                                            type: .assignment
+                                        )
+                                    }
                                 }
-                            }
-                            .swipeActions(edge: .leading) {
-                                if !showGrades {
-                                    PinButton(
-                                        itemID: assignmentModel.id,
-                                        courseID: course.id,
-                                        type: .assignment
-                                    )
+                                .swipeActions(edge: .leading) {
+                                    if !showGrades {
+                                        PinButton(
+                                            itemID: assignmentModel.id,
+                                            courseID: course.id,
+                                            type: .assignment
+                                        )
+                                    }
                                 }
-                            }
+                        }
                     }
+                } header: {
+                    GroupHeader(
+                        assignmentGroup: assignmentGroup,
+                        showGrades: showGrades
+                    )
                 }
-            } header: {
-                GroupHeader(
-                    assignmentGroup: assignmentGroup,
-                    showGrades: showGrades
-                )
             }
         }
         .toolbar {
@@ -116,6 +124,41 @@ struct CourseAssignmentsView: View {
             #endif
         }
         .environment(gradeCalculator)
+    }
+
+    private var intelligentGradeCalcTipBox: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Label("Intelligent Grade Calculator", systemImage: "wand.and.stars")
+                .bold()
+
+            Text(intelligentGradeCalcDesc)
+                .foregroundColor(.secondary)
+                .multilineTextAlignment(.leading)
+                .padding(.bottom, 3)
+
+            HStack {
+                Spacer()
+                Button("Get Started") { }
+                    .padding([.bottom, .trailing], 2)
+            }
+        }
+        #if os(macOS)
+        .padding(2)
+        #else
+        .padding(4)
+        #endif
+        .background(
+            .intelligenceGradient().opacity(0.3),
+            in: .rect(cornerRadius: 8.0)
+        )
+    }
+
+    private var intelligentGradeCalcDesc: String {
+        """
+        Canvas Plus Intelligence can extract assignment group weights \
+        from course materials automatically, and \
+        use them to calculate your overall grade.
+        """
     }
 
     private func loadAssignments() async {
