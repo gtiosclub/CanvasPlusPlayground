@@ -65,5 +65,21 @@ struct GroupDetailView: View {
 }
 
 #Preview {
-    GroupDetailView(group: .sample)
+
+
+    VStack(spacing: 0) {
+        GroupDetailView(group: .sample)
+
+        Divider()
+        HStack {
+            Spacer()
+            Button("Done") {
+            }
+            .buttonStyle(.borderedProminent)
+            .controlSize(.extraLarge)
+            .keyboardShortcut(.return)
+        }
+        .padding()
+    }
+
 }

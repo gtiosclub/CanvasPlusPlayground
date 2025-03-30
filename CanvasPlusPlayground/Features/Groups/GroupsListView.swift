@@ -36,20 +36,22 @@ struct GroupsListView: View {
     @ViewBuilder
     func groupDetail(for group: CanvasGroup) -> some View {
 #if os(macOS)
-        GroupDetailView(group: group)
+        VStack(spacing: 0){
+            GroupDetailView(group: group)
 
-        Divider()
+            Divider()
 
-        HStack {
-            Spacer()
-            Button("Done") {
-                selectedGroupDetail = nil
+            HStack {
+                Spacer()
+                Button("Done") {
+                    selectedGroupDetail = nil
+                }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.extraLarge)
+                .keyboardShortcut(.return)
             }
-            .buttonStyle(.borderedProminent)
-            .controlSize(.extraLarge)
-            .keyboardShortcut(.return)
+            .padding()
         }
-        .padding()
 #else
         GroupDetailView(group: group)
             .toolbar {
