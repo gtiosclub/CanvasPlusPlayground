@@ -36,10 +36,9 @@ struct GetCourseGroupsRequest: CacheableArrayAPIRequest {
     }
     var customPredicate: Predicate<CanvasGroup> {
         if onlyOwnGroups {
-            let predicate = #Predicate<CanvasGroup> { $0.currUserStatus == GroupMembershipState.accepted }
-            return predicate
-        }
-        else { return .true }
+            let accepted = GroupMembershipState.accepted as GroupMembershipState?
+            return #Predicate<CanvasGroup> { $0.currUserStatus == accepted }
+        }else { return .true }
         // TODO: collab state filter
     }
 }
