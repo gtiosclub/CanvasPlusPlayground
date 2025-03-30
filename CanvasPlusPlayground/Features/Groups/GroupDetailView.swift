@@ -14,6 +14,7 @@ struct GroupDetailView: View {
 
     var body: some View {
         List {
+#if DEBUG
             Section(header: Text("Course Information")) {
                 row(label: "ID", value: group.id)
                 row(label: "Name", value: group.name)
@@ -39,6 +40,7 @@ struct GroupDetailView: View {
                 row(label: "Can join?", value: group.canJoin?.description ?? "N/A")
                 row(label: "Can create announcement?", value: group.canCreateAnnouncement?.description ?? "N/A")
             }
+#endif
 
             Section(header: Text("Users")) {
                 ForEach(group.users ?? []) {
