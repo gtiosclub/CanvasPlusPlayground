@@ -27,6 +27,7 @@ class ToDoListManager {
                     }
                 )
 
+            // TODO: If we support grading assignments, add that count
             self.toDoItemCount = count?.first?.assignmentsNeedingSubmitting
         } catch {
             LoggerService.main.error("Failed to fetch to-do item count: \(error)")
@@ -39,7 +40,7 @@ class ToDoListManager {
         var newItems = [ToDoItem]()
 
         do {
-            let items: [ToDoItem]? = try await CanvasService.shared
+            let _: [ToDoItem]? = try await CanvasService.shared
                 .loadAndSync(
                     request,
                     onCacheReceive: { cached in
@@ -47,15 +48,11 @@ class ToDoListManager {
                         toDoItems = cached
                     },
                     loadingMethod: .all(onNewPage: { items in
-                        newItems.append(contentsOf: items)
+                        self.addItems(items, to: &newItems, courses: courses)
                     })
                 )
         } catch {
             LoggerService.main.error("Failed to fetch to-do items: \(error)")
-        }
-
-        newItems.forEach { item in
-            item.course = courses.first { $0.id == item.courseID.asString }
         }
 
         toDoItems = newItems
@@ -73,5 +70,20 @@ class ToDoListManager {
         } catch {
             LoggerService.main.error("Failed to ignore todo item: \(error)")
         }
+    }
+
+    private func addItems(
+        _ newItems: [ToDoItem],
+        to items: inout [ToDoItem],
+        courses: [Course]
+    ) {
+        // TODO: If we support grading assignments, do not filter.
+        let newItems = newItems.filter { $0.type == .submitting }
+
+        newItems.forEach { item in
+            item.course = courses.first { $0.id == item.courseID.asString }
+        }
+
+        items.append(contentsOf: newItems)
     }
 }
