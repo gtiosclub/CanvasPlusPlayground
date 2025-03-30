@@ -32,7 +32,6 @@ struct GroupDetailView: View {
 
             Section(header: Text("Description")) {
                 Text(group.groupDescription ?? "N/A")
-                    .font(.body)
             }
 
             Section(header: Text("Permissions")) {

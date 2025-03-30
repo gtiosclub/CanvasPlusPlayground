@@ -43,7 +43,17 @@ struct APIGroup: APIResponse {
         let join: Bool
         let create_announcement: Bool
     }
+}
 
+enum GroupJoinLevel: String, Codable {
+    case invitationOnly = "invitation_only"
+    case parentContextRequest = "parent_context_request"
+    case parentContextAutoJoin = "parent_context_auto_join"
+}
+
+// MARK: Preview
+
+extension APIGroup {
     static let sample1 = APIGroup(
         id: 12345,
         name: "iOS Development Team",
@@ -72,10 +82,4 @@ struct APIGroup: APIResponse {
         avatar_url: URL(string: "https://canvas.example.edu/groups/12345/avatar.png"),
         max_membership: 8
     )
-}
-
-enum GroupJoinLevel: String, Codable {
-    case invitationOnly = "invitation_only"
-    case parentContextRequest = "parent_context_request"
-    case parentContextAutoJoin = "parent_context_auto_join"
 }

@@ -37,7 +37,10 @@ struct UserAPI: APIResponse, Identifiable {
     func createModel() -> User {
         User(from: self)
     }
+}
 
+// MARK: Preview
+extension UserAPI {
     static let sample1 = UserAPI(
         id: 1001,
         name: "Alex Chen",

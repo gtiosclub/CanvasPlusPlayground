@@ -229,7 +229,9 @@ final class Course: Cacheable {
 //        self.rgbColors = other.rgbColors
 //        self.nickname = other.nickname
     }
+}
 
+extension Course {
     static let sample = Course(
         CourseAPI(
             id: 0,

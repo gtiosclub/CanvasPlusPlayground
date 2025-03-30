@@ -86,12 +86,12 @@ extension CanvasGroup {
                 """
             )
         } catch {
-            LoggerService.main.error("[GroupsListView] Membership state fetch failed: \(error)")
-
             // If 404 (not found) -> means user is not in group, so we reset status.
             if let error = error as? HTTPStatusCode, error == .notFound {
                 self.currUserStatus = nil
+                LoggerService.main.error("[GroupsListView] Membership wansn't found. User is not part of group.")
             } else {
+                LoggerService.main.error("[GroupsListView] Membership state fetch failed: \(error)")
                 throw error
             }
         }

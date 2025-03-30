@@ -222,7 +222,7 @@ extension DiscussionTopic {
             throw Error.courseIdMissing
         }
 
-        self.isRead = true
+        self.isRead = isRead
 
         if isRead {
             let request = CanvasRequest.markCourseDiscussionTopicAsRead(courseId: courseId, discussionTopicId: self.id)
