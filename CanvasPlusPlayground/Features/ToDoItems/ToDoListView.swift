@@ -32,6 +32,7 @@ struct ToDoListView: View {
             NavigationLink(value: itemTypeToDestination(for: item)) {
                 ToDoItemRow(item: item) {
                     Task {
+                        await listManager.ignoreToDoItem(item)
                         await loadItems()
                     }
                 }
