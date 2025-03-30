@@ -15,8 +15,8 @@ struct ToDoListView: View {
     @State private var isLoading = false
     @State private var filterCourse: Course?
 
-    private var filterCourseOptions: [Course] {
-        listManager.toDoItems.compactMap(\.course)
+    private var filterCourseOptions: Set<Course> {
+        Set(listManager.toDoItems.compactMap(\.course))
     }
 
     private var displayedResults: [ToDoItem] {
@@ -81,7 +81,7 @@ struct ToDoListView: View {
         ) {
             Text("All Items").tag(Optional<Course>.none)
 
-            ForEach(filterCourseOptions) { course in
+            ForEach(Array(filterCourseOptions)) { course in
                 Text(course.displayName).tag(course)
             }
         } label: {

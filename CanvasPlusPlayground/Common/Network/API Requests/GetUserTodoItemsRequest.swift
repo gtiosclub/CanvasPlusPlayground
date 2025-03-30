@@ -15,7 +15,10 @@ struct GetUserTodoItemsRequest: CacheableArrayAPIRequest {
     }
 
     var queryParameters: [QueryParameter] {
-        include.map { ("include[]", $0.rawValue) }
+        [
+            ("per_page", 100)
+        ]
+        + include.map { ("include[]", $0.rawValue) }
     }
 
     // MARK: Query Params
