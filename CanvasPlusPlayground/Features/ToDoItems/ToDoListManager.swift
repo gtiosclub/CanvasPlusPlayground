@@ -9,8 +9,12 @@ import SwiftUI
 
 @Observable
 class ToDoListManager {
-    var toDoItems: [ToDoItem] = []
+    var toDoItems: Set<ToDoItem> = []
     var toDoItemCount: Int?
+
+    var displayedToDoItems: [ToDoItem] {
+        Array(toDoItems).sorted { $0.dueDate ?? Date() < $1.dueDate ?? Date() }
+    }
 
     func fetchToDoItemCount() async {
         let request = CanvasRequest.getToDoItemCount(
@@ -37,28 +41,29 @@ class ToDoListManager {
     func fetchToDoItems(courses: [Course]) async {
         let request = CanvasRequest.getToDoItems(include: [.ungradedQuizzes])
 
-        var newItems = [ToDoItem]()
-
         do {
-            let _: [ToDoItem]? = try await CanvasService.shared
+            let items: [ToDoItem] = try await CanvasService.shared
                 .loadAndSync(
                     request,
                     onCacheReceive: { cached in
                         guard let cached else { return }
-                        toDoItems = []
-                        self.addItems(cached, to: &toDoItems, courses: courses)
+                        Task { @MainActor in
+                            self.addItems(
+                                cached,
+                                courses: courses,
+                                replaceExisting: true
+                            )
+                        }
                     },
                     loadingMethod: .all(onNewPage: { items in
                         Task { @MainActor in
-                            self.addItems(items, to: &newItems, courses: courses)
+                            self.addItems(items, courses: courses)
                         }
                     })
                 )
         } catch {
             LoggerService.main.error("Failed to fetch to-do items: \(error)")
         }
-
-        toDoItems = newItems
     }
 
     func ignoreToDoItem(_ item: ToDoItem) async {
@@ -77,8 +82,8 @@ class ToDoListManager {
 
     private func addItems(
         _ newItems: [ToDoItem],
-        to items: inout [ToDoItem],
-        courses: [Course]
+        courses: [Course],
+        replaceExisting: Bool = false
     ) {
         // TODO: If we support grading assignments, do not filter.
         let newItems = newItems.filter { $0.type == .submitting }
@@ -87,6 +92,10 @@ class ToDoListManager {
             item.course = courses.first { $0.id == item.courseID.asString }
         }
 
-        items.append(contentsOf: newItems)
+        if replaceExisting {
+            self.toDoItems = Set(newItems)
+        } else {
+            self.toDoItems.formUnion(newItems)
+        }
     }
 }

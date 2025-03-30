@@ -15,15 +15,16 @@ struct ToDoListView: View {
     @State private var isLoading = false
     @State private var filterCourse: Course?
 
-    private var filterCourseOptions: Set<Course> {
+    private var filterCourseOptions: [Course] {
         Set(listManager.toDoItems.compactMap(\.course))
+            .sorted { $0.displayName < $1.displayName }
     }
 
     private var displayedResults: [ToDoItem] {
         if let filterCourse {
-            listManager.toDoItems.filter { $0.course == filterCourse }
+            listManager.displayedToDoItems.filter { $0.course == filterCourse }
         } else {
-            listManager.toDoItems
+            listManager.displayedToDoItems
         }
     }
 
@@ -82,7 +83,7 @@ struct ToDoListView: View {
         ) {
             Text("All Items").tag(Optional<Course>.none)
 
-            ForEach(Array(filterCourseOptions)) { course in
+            ForEach(filterCourseOptions) { course in
                 Text(course.displayName).tag(course)
             }
         } label: {
