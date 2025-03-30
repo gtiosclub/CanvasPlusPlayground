@@ -49,7 +49,9 @@ class ToDoListManager {
                         self.addItems(cached, to: &toDoItems, courses: courses)
                     },
                     loadingMethod: .all(onNewPage: { items in
-                        self.addItems(items, to: &newItems, courses: courses)
+                        Task { @MainActor in
+                            self.addItems(items, to: &newItems, courses: courses)
+                        }
                     })
                 )
         } catch {
