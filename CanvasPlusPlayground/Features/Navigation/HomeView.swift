@@ -10,6 +10,7 @@ import SwiftUI
 struct HomeView: View {
     typealias NavigationPage = NavigationModel.NavigationPage
 
+    @Environment(ToDoListManager.self) private var toDoListManager
     @Environment(ProfileManager.self) private var profileManager
     @Environment(CourseManager.self) private var courseManager
     @Environment(NavigationModel.self) private var navigationModel
@@ -101,21 +102,26 @@ struct HomeView: View {
         @Bindable var navigationModel = navigationModel
 
         NavigationStack(path: $navigationModel.navigationPath) {
-            if let selectedCourse {
-                CourseView(course: selectedCourse)
-            } else if let selectedNavigationPage {
-                switch selectedNavigationPage {
-                case .announcements:
-                    AllAnnouncementsView()
-                case .toDoList:
-                    AggregatedAssignmentsView()
-                case .pinned:
-                    PinnedItemsView()
-                default:
-                    EmptyView()
+            Group {
+                if let selectedCourse {
+                    CourseView(course: selectedCourse)
+                } else if let selectedNavigationPage {
+                    switch selectedNavigationPage {
+                    case .announcements:
+                        AllAnnouncementsView()
+                    case .toDoList:
+                        ToDoListView()
+                    case .pinned:
+                        PinnedItemsView()
+                    default:
+                        EmptyView()
+                    }
+                } else {
+                    ContentUnavailableView("Select a course", systemImage: "folder")
                 }
-            } else {
-                ContentUnavailableView("Select a course", systemImage: "folder")
+            }
+            .navigationDestination(for: NavigationModel.Destination.self) { destination in
+                destination.destinationView(for: selectedCourse)
             }
         }
     }
@@ -124,6 +130,7 @@ struct HomeView: View {
         isLoadingCourses = true
         await courseManager.getCourses()
         await profileManager.getCurrentUserAndProfile()
+        await toDoListManager.fetchToDoItemCount()
         isLoadingCourses = false
     }
 }
