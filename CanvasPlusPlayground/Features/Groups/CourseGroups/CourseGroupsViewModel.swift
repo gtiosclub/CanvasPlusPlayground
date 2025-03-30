@@ -14,10 +14,10 @@ class CourseGroupsViewModel {
     var groupsDisplayed: [CanvasGroup] {
         groups
             .sorted { // sort priority: (1) category name (2) group name
-                guard $0.groupCategoryName != $1.groupCategoryName else {
+                guard $0.groupCategoryId != $1.groupCategoryId else {
                     return $0.name < $1.name
                 }
-                return ($0.groupCategoryName ?? "") < ($1.groupCategoryName ?? "")
+                return ($0.groupCategoryId ?? -1) < ($1.groupCategoryId ?? -1)
             }
     }
 
@@ -48,6 +48,20 @@ class CourseGroupsViewModel {
                     LoggerService.main.debug("[CourseGroupsViewModel] Leaving group: \(group.name)")
                 }
             }
+        })
+    }
+
+    /// Whether joining this group is classified as a switch - joined groups from this category are left. Only use this with groups that have join status.
+    func canOnlySwitch(to group: CanvasGroup) -> Bool {
+        if group.allowsMultipleMemberships ?? false {
+            return false // if multiple memberships's are allowed, switch isn't necessary
+        }
+
+        let groupsInCategory = groups.filter { $0.groupCategoryId == group.groupCategoryId && $0.id != group.id }
+
+        // If another group in this category has this user
+        return groupsInCategory.contains(where: {
+            $0.currUserStatus == .accepted || $0.currUserStatus == .requested
         })
     }
 

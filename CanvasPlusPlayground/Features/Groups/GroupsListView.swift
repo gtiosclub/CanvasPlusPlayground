@@ -64,7 +64,7 @@ struct GroupsListView: View {
 }
 
 struct GroupRowView: View {
-    @Environment(CourseGroupsViewModel.self) var courseGroupsVM
+    @Environment(CourseGroupsViewModel.self) private var courseGroupsVM
 
     let group: CanvasGroup
     @Binding var selectedGroupDetail: CanvasGroup?
@@ -142,7 +142,11 @@ struct GroupRowView: View {
     }
 
     func groupActionButton(for action: GroupAction) -> some View {
-        Button(action.label) {
+        let label = if action == .join {
+            courseGroupsVM.canOnlySwitch(to: group) ? "Switch to" : action.label
+        } else { action.label }
+
+        return Button(label) {
             Task {
                 await groupAction(action)
             }
