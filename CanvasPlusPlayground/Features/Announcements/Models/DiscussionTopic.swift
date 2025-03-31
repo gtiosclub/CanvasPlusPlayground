@@ -235,9 +235,9 @@ extension DiscussionTopic {
 
     func toggleReadState() async throws {
         if self.isRead {
-            try await self.markReadStatus(true)
-        } else {
             try await self.markReadStatus(false)
+        } else {
+            try await self.markReadStatus(true)
         }
     }
 }
