@@ -30,7 +30,11 @@ extension ModelContext {
             GroupMembership.self
             // TODO: Add cacheable models here
         )
-        return ModelContext(modelContainer)
+
+        let modelContext = ModelContext(modelContainer)
+        modelContext.autosaveEnabled = true
+
+        return modelContext
     }()
 }
 
@@ -42,7 +46,6 @@ class CanvasRepository {
     init() {
         self.modelContext = ModelContext.shared
         self.modelContainer = modelContext.container
-        modelContext.autosaveEnabled = true
     }
 
     func insert<T>(_ item: T) where T: Cacheable {
