@@ -39,6 +39,54 @@ struct UserAPI: APIResponse, Identifiable {
     }
 }
 
+// MARK: Preview
+extension UserAPI {
+    static let sample1 = UserAPI(
+        id: 1001,
+        name: "Alex Chen",
+        sortable_name: "Chen, Alex",
+        last_name: "Chen",
+        first_name: "Alex",
+        short_name: "Alex",
+        sis_user_id: "AC1001",
+        sis_import_id: 5001,
+        integration_id: "INT-1001",
+        login_id: "achen",
+        avatar_url: URL(string: "https://canvas.example.edu/users/1001/avatar.png"),
+        avatar_state: "approved",
+        enrollments: nil,
+        email: "alex.chen@example.edu",
+        locale: "en",
+        last_login: "2025-03-20T14:30:45Z",
+        time_zone: "America/Los_Angeles",
+        bio: "Computer Science major with an interest in mobile app development.",
+        pronouns: "he/him",
+        role: "student"
+    )
+    static let sample2 = UserAPI(
+        id: 1002,
+        name: "Jamie Smith",
+        sortable_name: "Smith, Jamie",
+        last_name: "Smith",
+        first_name: "Jamie",
+        short_name: "Jamie",
+        sis_user_id: "JS1002",
+        sis_import_id: 5002,
+        integration_id: "INT-1002",
+        login_id: "jsmith",
+        avatar_url: URL(string: "https://canvas.example.edu/users/1002/avatar.png"),
+        avatar_state: "approved",
+        enrollments: nil,
+        email: "jamie.smith@example.edu",
+        locale: "en",
+        last_login: "2025-03-23T09:15:22Z",
+        time_zone: "America/Chicago",
+        bio: "Design student focusing on UI/UX for mobile applications.",
+        pronouns: "they/them",
+        role: "student"
+    )
+}
+
 /*
  // A Canvas user, e.g. a student, teacher, administrator, observer, etc.
  {

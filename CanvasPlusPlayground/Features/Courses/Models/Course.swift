@@ -230,3 +230,33 @@ final class Course: Cacheable {
 //        self.nickname = other.nickname
     }
 }
+
+extension Course {
+    static let sample = Course(
+        CourseAPI(
+            id: 0,
+            name: "alex",
+            course_code: "24242",
+            course_color: "",
+            workflow_state: .available,
+            account_id: nil,
+            start_at: nil,
+            end_at: nil,
+            locale: nil,
+            calendar: nil,
+            default_view: nil,
+            syllabus_body: nil,
+            term: nil,
+            permissions: nil,
+            hide_final_grades: nil,
+            homeroom_course: nil,
+            access_restricted_by_date: nil,
+            banner_image_download_url: nil,
+            image_download_url: nil,
+            sections: nil,
+            tabs: nil,
+            settings: nil,
+            grading_scheme: nil
+        )
+    )
+}

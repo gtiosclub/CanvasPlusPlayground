@@ -215,13 +215,14 @@ extension DiscussionTopic {
 
 // MARK: Read Marking
 extension DiscussionTopic {
+    @MainActor
     func markReadStatus(_ isRead: Bool) async throws {
         guard let courseId = self.courseId else {
             LoggerService.main.debug("[markAsRead] Course id missing")
             throw Error.courseIdMissing
         }
 
-        self.isRead = true
+        self.isRead = isRead
 
         if isRead {
             let request = CanvasRequest.markCourseDiscussionTopicAsRead(courseId: courseId, discussionTopicId: self.id)

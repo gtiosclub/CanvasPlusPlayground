@@ -266,4 +266,47 @@ enum CanvasRequest {
             perPage: perPage
         )
     }
+
+    static func getCourseGroups(
+        courseId: String,
+        onlyOwnGroups: Bool = false,
+        collaborationState: GetCourseGroupsRequest.CollaborationState = .all,
+        include: [GetCourseGroupsRequest.Include] = [.permissions, .groupCategory, .users],
+        perPage: Int = 50
+    ) -> GetCourseGroupsRequest {
+        GetCourseGroupsRequest(
+            courseId: courseId,
+            onlyOwnGroups: onlyOwnGroups,
+            include: include,
+            collaborationState: collaborationState,
+            perPage: perPage
+        )
+    }
+
+    static func getSingleGroupMembership(
+        groupId: String,
+        via: GetGroupMembershipRequest.Via
+    ) -> GetGroupMembershipRequest {
+        GetGroupMembershipRequest(groupId: groupId, via: via)
+    }
+
+    static func leaveGroup(
+        groupId: String,
+        via: LeaveGroupRequest.Via
+    ) -> LeaveGroupRequest {
+        LeaveGroupRequest(groupId: groupId, via: via)
+    }
+
+    static func updateGroupMembership(
+        groupId: String,
+        via: UpdateGroupMembershipRequest.Via
+    ) -> UpdateGroupMembershipRequest {
+        UpdateGroupMembershipRequest(groupId: groupId, toState: .accepted, via: via)
+    }
+
+    static func createGroupMembership(
+        groupId: String
+    ) -> CreateGroupMembershipRequest {
+        CreateGroupMembershipRequest(groupId: groupId)
+    }
 }

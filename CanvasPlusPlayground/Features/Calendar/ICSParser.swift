@@ -92,17 +92,16 @@ enum ICSParser {
             let (data, response) = try await URLSession.shared.data(from: url)
 
             guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-                throw NetworkError.fetchFailed(msg: response.description)
+                throw HTTPStatusCode.unknown
             }
 
             if let str = String(data: data, encoding: .utf8) {
                 return str
             } else {
-                throw NetworkError
-                    .failedToDecode(msg: "Could not convert data to string")
+                throw HTTPStatusCode.unknown
             }
         } catch {
-            throw NetworkError.fetchFailed(msg: error.localizedDescription)
+            throw HTTPStatusCode.unknown
         }
     }
 }

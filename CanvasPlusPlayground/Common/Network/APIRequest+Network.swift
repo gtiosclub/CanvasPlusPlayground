@@ -90,16 +90,20 @@ extension APIRequest {
         urlRequest.setValue(contentType, forHTTPHeaderField: "Content-Type")
         urlRequest.setValue(contentLength, forHTTPHeaderField: "Content-Length")
         urlRequest.setValue("Bearer \(StorageKeys.accessTokenValue)", forHTTPHeaderField: "Authorization")
-        do {
-            let (data, response) = try await URLSession.shared.data(for: urlRequest)
 
-            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-                LoggerService.main.error("HTTP error: $\(response)$ data $\(String(data: data, encoding: .utf8) ?? "not text")$")
-                throw URLError(.badServerResponse)
-            }
+        let (data, response) = try await URLSession.shared.data(for: urlRequest)
 
-            return (data, response)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            LoggerService.main.error("HTTP error: $\(response)$")
+            throw URLError(.badServerResponse)
         }
+
+        guard httpResponse.status?.responseType == .success else {
+           LoggerService.main.error("HTTP error: $\(httpResponse)$")
+           throw httpResponse.status ?? .unknown
+        }
+
+       return (data, response)
     }
 
     func fetchPages(

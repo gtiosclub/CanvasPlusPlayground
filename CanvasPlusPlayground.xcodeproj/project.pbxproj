@@ -70,12 +70,24 @@
 		A324BA6A2D0817AB005F53FA /* FoldersPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A324BA692D0817AB005F53FA /* FoldersPageView.swift */; };
 		A3269E8E2CD5533F006F7D14 /* CanvasRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3269E8D2CD5533F006F7D14 /* CanvasRepository.swift */; };
 		A3269E902CD57F75006F7D14 /* Cacheable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3269E8F2CD57F75006F7D14 /* Cacheable.swift */; };
+		A33BE8752D97A6F7005C1D13 /* GetGroupMembershipRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33BE8742D97A6F7005C1D13 /* GetGroupMembershipRequest.swift */; };
 		A351913F2D283556001E415F /* ModulesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A351913E2D283556001E415F /* ModulesListView.swift */; };
 		A35191412D283589001E415F /* ModulesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35191402D283589001E415F /* ModulesViewModel.swift */; };
 		A35191432D28ED48001E415F /* GetModuleItemsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35191422D28ED48001E415F /* GetModuleItemsRequest.swift */; };
 		A352AD182D3DA423007EE6FC /* LoadingMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = A352AD172D3DA423007EE6FC /* LoadingMethod.swift */; };
 		A352AD1A2D3EF1C1007EE6FC /* GetCourseUsersRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A352AD192D3EF1C1007EE6FC /* GetCourseUsersRequest.swift */; };
 		A352AD1C2D3EF206007EE6FC /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = A352AD1B2D3EF206007EE6FC /* User.swift */; };
+		A372D0FB2D90A709005E94CA /* HTTPURLResponse+Codes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A372D0FA2D90A709005E94CA /* HTTPURLResponse+Codes.swift */; };
+		A372D0FF2D90BAB6005E94CA /* CourseGroupsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A372D0FE2D90BAB6005E94CA /* CourseGroupsView.swift */; };
+		A372D1022D90BEA3005E94CA /* APIGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A372D1012D90BEA3005E94CA /* APIGroup.swift */; };
+		A372D1042D90BEB4005E94CA /* CanvasGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A372D1032D90BEB4005E94CA /* CanvasGroup.swift */; };
+		A372D1062D90CE7D005E94CA /* GroupMembership.swift in Sources */ = {isa = PBXBuildFile; fileRef = A372D1052D90CE7D005E94CA /* GroupMembership.swift */; };
+		A372D1082D90CEFE005E94CA /* APIGroupMembership.swift in Sources */ = {isa = PBXBuildFile; fileRef = A372D1072D90CEFE005E94CA /* APIGroupMembership.swift */; };
+		A372D10A2D90DA7A005E94CA /* GetCourseGroupsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A372D1092D90DA7A005E94CA /* GetCourseGroupsRequest.swift */; };
+		A372D10C2D90E875005E94CA /* GroupsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A372D10B2D90E875005E94CA /* GroupsListView.swift */; };
+		A372D10E2D90F505005E94CA /* CourseGroupsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A372D10D2D90F505005E94CA /* CourseGroupsViewModel.swift */; };
+		A372D1102D91D1A1005E94CA /* GroupDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A372D10F2D91D1A1005E94CA /* GroupDetailView.swift */; };
+		A372D1142D91D2B9005E94CA /* String+SFSymbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = A372D1132D91D2B9005E94CA /* String+SFSymbols.swift */; };
 		A373DC0D2D19F65700215019 /* APIGradingPeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC0C2D19F65700215019 /* APIGradingPeriod.swift */; };
 		A373DC0F2D19F71600215019 /* TypeSafeCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC0E2D19F71600215019 /* TypeSafeCodable.swift */; };
 		A373DC142D19FA2A00215019 /* APICourseSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC132D19FA2A00215019 /* APICourseSection.swift */; };
@@ -89,6 +101,11 @@
 		A373DC332D2819F700215019 /* APIModuleItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC322D2819F700215019 /* APIModuleItem.swift */; };
 		A373DC352D2824D700215019 /* Module.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC342D2824D700215019 /* Module.swift */; };
 		A373DC372D28285300215019 /* ModuleItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC362D28285300215019 /* ModuleItem.swift */; };
+		A37AB4A72D98670600610639 /* LeaveGroupRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37AB4A62D98670600610639 /* LeaveGroupRequest.swift */; };
+		A37AB4A92D9867D600610639 /* UpdateGroupMembershipRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37AB4A82D9867D600610639 /* UpdateGroupMembershipRequest.swift */; };
+		A37AB4AB2D988F5800610639 /* CreateGroupMembershipRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37AB4AA2D988F5800610639 /* CreateGroupMembershipRequest.swift */; };
+		A37AB4AD2D98B05E00610639 /* CanvasGroup+Memberships.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37AB4AC2D98B05E00610639 /* CanvasGroup+Memberships.swift */; };
+		A3C574D92D99F7DA002210FA /* GroupRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C574D82D99F7DA002210FA /* GroupRowView.swift */; };
 		A3CA02592D43294B00A9752B /* SearchResultsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CA02582D43294B00A9752B /* SearchResultsListView.swift */; };
 		A3CA025B2D432A8700A9752B /* SearchResultListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CA025A2D432A8700A9752B /* SearchResultListDataSource.swift */; };
 		A3CF88D12D18E61B000ACDF3 /* APIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CF88D02D18E61B000ACDF3 /* APIResponse.swift */; };
@@ -113,7 +130,6 @@
 		A3E7F3932C99338B00DC4300 /* TabAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E7F3922C99338B00DC4300 /* TabAPI.swift */; };
 		A3FFD03A2CDEC2AC006BAB51 /* LookupCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FFD0392CDEC2AC006BAB51 /* LookupCondition.swift */; };
 		A3FFD03C2CDED67C006BAB51 /* String+Numbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FFD03B2CDED67C006BAB51 /* String+Numbers.swift */; };
-		A3FFD03E2CE0065A006BAB51 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FFD03D2CE0065A006BAB51 /* NetworkError.swift */; };
 		B533C0BE2CADDDE700A74AF6 /* PeopleCommonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B533C0BD2CADDDE700A74AF6 /* PeopleCommonView.swift */; };
 		B53D95A02CA0953900647EE9 /* PeopleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D959F2CA0952F00647EE9 /* PeopleManager.swift */; };
 		B53D95A22CA0A22A00647EE9 /* PeopleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D95A12CA0A22A00647EE9 /* PeopleView.swift */; };
@@ -255,12 +271,24 @@
 		A324BA692D0817AB005F53FA /* FoldersPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoldersPageView.swift; sourceTree = "<group>"; };
 		A3269E8D2CD5533F006F7D14 /* CanvasRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasRepository.swift; sourceTree = "<group>"; };
 		A3269E8F2CD57F75006F7D14 /* Cacheable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cacheable.swift; sourceTree = "<group>"; };
+		A33BE8742D97A6F7005C1D13 /* GetGroupMembershipRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetGroupMembershipRequest.swift; sourceTree = "<group>"; };
 		A351913E2D283556001E415F /* ModulesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModulesListView.swift; sourceTree = "<group>"; };
 		A35191402D283589001E415F /* ModulesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModulesViewModel.swift; sourceTree = "<group>"; };
 		A35191422D28ED48001E415F /* GetModuleItemsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetModuleItemsRequest.swift; sourceTree = "<group>"; };
 		A352AD172D3DA423007EE6FC /* LoadingMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingMethod.swift; sourceTree = "<group>"; };
 		A352AD192D3EF1C1007EE6FC /* GetCourseUsersRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetCourseUsersRequest.swift; sourceTree = "<group>"; };
 		A352AD1B2D3EF206007EE6FC /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		A372D0FA2D90A709005E94CA /* HTTPURLResponse+Codes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HTTPURLResponse+Codes.swift"; sourceTree = "<group>"; };
+		A372D0FE2D90BAB6005E94CA /* CourseGroupsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseGroupsView.swift; sourceTree = "<group>"; };
+		A372D1012D90BEA3005E94CA /* APIGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIGroup.swift; sourceTree = "<group>"; };
+		A372D1032D90BEB4005E94CA /* CanvasGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasGroup.swift; sourceTree = "<group>"; };
+		A372D1052D90CE7D005E94CA /* GroupMembership.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMembership.swift; sourceTree = "<group>"; };
+		A372D1072D90CEFE005E94CA /* APIGroupMembership.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIGroupMembership.swift; sourceTree = "<group>"; };
+		A372D1092D90DA7A005E94CA /* GetCourseGroupsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetCourseGroupsRequest.swift; sourceTree = "<group>"; };
+		A372D10B2D90E875005E94CA /* GroupsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsListView.swift; sourceTree = "<group>"; };
+		A372D10D2D90F505005E94CA /* CourseGroupsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseGroupsViewModel.swift; sourceTree = "<group>"; };
+		A372D10F2D91D1A1005E94CA /* GroupDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupDetailView.swift; sourceTree = "<group>"; };
+		A372D1132D91D2B9005E94CA /* String+SFSymbols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+SFSymbols.swift"; sourceTree = "<group>"; };
 		A373DC0C2D19F65700215019 /* APIGradingPeriod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIGradingPeriod.swift; sourceTree = "<group>"; };
 		A373DC0E2D19F71600215019 /* TypeSafeCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeSafeCodable.swift; sourceTree = "<group>"; };
 		A373DC132D19FA2A00215019 /* APICourseSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICourseSection.swift; sourceTree = "<group>"; };
@@ -274,6 +302,11 @@
 		A373DC322D2819F700215019 /* APIModuleItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIModuleItem.swift; sourceTree = "<group>"; };
 		A373DC342D2824D700215019 /* Module.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Module.swift; sourceTree = "<group>"; };
 		A373DC362D28285300215019 /* ModuleItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleItem.swift; sourceTree = "<group>"; };
+		A37AB4A62D98670600610639 /* LeaveGroupRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaveGroupRequest.swift; sourceTree = "<group>"; };
+		A37AB4A82D9867D600610639 /* UpdateGroupMembershipRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateGroupMembershipRequest.swift; sourceTree = "<group>"; };
+		A37AB4AA2D988F5800610639 /* CreateGroupMembershipRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupMembershipRequest.swift; sourceTree = "<group>"; };
+		A37AB4AC2D98B05E00610639 /* CanvasGroup+Memberships.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CanvasGroup+Memberships.swift"; sourceTree = "<group>"; };
+		A3C574D82D99F7DA002210FA /* GroupRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupRowView.swift; sourceTree = "<group>"; };
 		A3CA02582D43294B00A9752B /* SearchResultsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsListView.swift; sourceTree = "<group>"; };
 		A3CA025A2D432A8700A9752B /* SearchResultListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultListDataSource.swift; sourceTree = "<group>"; };
 		A3CF88D02D18E61B000ACDF3 /* APIResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIResponse.swift; sourceTree = "<group>"; };
@@ -298,7 +331,6 @@
 		A3E7F3922C99338B00DC4300 /* TabAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabAPI.swift; sourceTree = "<group>"; };
 		A3FFD0392CDEC2AC006BAB51 /* LookupCondition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookupCondition.swift; sourceTree = "<group>"; };
 		A3FFD03B2CDED67C006BAB51 /* String+Numbers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Numbers.swift"; sourceTree = "<group>"; };
-		A3FFD03D2CE0065A006BAB51 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		B533C0BD2CADDDE700A74AF6 /* PeopleCommonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleCommonView.swift; sourceTree = "<group>"; };
 		B53D959F2CA0952F00647EE9 /* PeopleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleManager.swift; sourceTree = "<group>"; };
 		B53D95A12CA0A22A00647EE9 /* PeopleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleView.swift; sourceTree = "<group>"; };
@@ -434,6 +466,11 @@
 				A301EE082D61137400D71139 /* MarkCourseDiscussionTopicReadRequest.swift */,
 				A301EE0A2D61148C00D71139 /* MarkCourseDiscussionTopicUnreadRequest.swift */,
 				A301EE122D614A4100D71139 /* GetDiscussionTopicsRequest.swift */,
+				A372D1092D90DA7A005E94CA /* GetCourseGroupsRequest.swift */,
+				A33BE8742D97A6F7005C1D13 /* GetGroupMembershipRequest.swift */,
+				A37AB4A62D98670600610639 /* LeaveGroupRequest.swift */,
+				A37AB4A82D9867D600610639 /* UpdateGroupMembershipRequest.swift */,
+				A37AB4AA2D988F5800610639 /* CreateGroupMembershipRequest.swift */,
 				9B762BC82D7BF8E70051F1F6 /* SubmitAssignmentRequest.swift */,
 				9BFD457C2D80F6EB00BBAA01 /* UploadAssignmentFileNotificationRequest.swift */,
 				9BF8E4402D90DE5E00B5A50D /* UploadAssignmentFileConfirmationRequest.swift */,
@@ -456,6 +493,7 @@
 				A324BA5E2D079899005F53FA /* Calendar */,
 				A324BA5C2D0797D1005F53FA /* Tabs */,
 				A324BA5B2D0797B6005F53FA /* People */,
+				A372D0FD2D90BA96005E94CA /* Groups */,
 				A324BA5A2D0797A2005F53FA /* Assignments */,
 				A324BA592D079781005F53FA /* Onboarding */,
 				A324BA532D079685005F53FA /* Files */,
@@ -485,9 +523,9 @@
 			isa = PBXGroup;
 			children = (
 				A373DC182D1A40EC00215019 /* Models */,
-				B76454F62C8DF61B002DF00E /* CourseView.swift */,
 				B76454FC2C8DF61B002DF00E /* CourseManager.swift */,
 				B7CC4D452D8DFFA000254F55 /* CourseItemPicker.swift */,
+				B76454F62C8DF61B002DF00E /* CourseView.swift */,
 			);
 			path = Courses;
 			sourceTree = "<group>";
@@ -535,6 +573,8 @@
 				A3FFD0392CDEC2AC006BAB51 /* LookupCondition.swift */,
 				A3D022582D6A5BC500F8068C /* Data+Empty.swift */,
 				9A977E822D6C322F001D7F0A /* LoggerService.swift */,
+				A372D0FA2D90A709005E94CA /* HTTPURLResponse+Codes.swift */,
+				A372D1132D91D2B9005E94CA /* String+SFSymbols.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -565,7 +605,6 @@
 				A3CF88D02D18E61B000ACDF3 /* APIResponse.swift */,
 				A3049B732D15DBEE002F3166 /* API Requests */,
 				A3E7F38A2C9555B200DC4300 /* CanvasService.swift */,
-				A3FFD03D2CE0065A006BAB51 /* NetworkError.swift */,
 				A352AD172D3DA423007EE6FC /* LoadingMethod.swift */,
 			);
 			path = Network;
@@ -644,6 +683,39 @@
 				A31A81E62D0CCB69003C37EB /* GradesViewModel.swift */,
 			);
 			path = Grades;
+			sourceTree = "<group>";
+		};
+		A372D0FD2D90BA96005E94CA /* Groups */ = {
+			isa = PBXGroup;
+			children = (
+				A3C574D82D99F7DA002210FA /* GroupRowView.swift */,
+				A372D1112D91D1A8005E94CA /* CourseGroups */,
+				A372D1002D90BE72005E94CA /* Models */,
+				A372D10B2D90E875005E94CA /* GroupsListView.swift */,
+				A372D10F2D91D1A1005E94CA /* GroupDetailView.swift */,
+			);
+			path = Groups;
+			sourceTree = "<group>";
+		};
+		A372D1002D90BE72005E94CA /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A372D1012D90BEA3005E94CA /* APIGroup.swift */,
+				A372D1032D90BEB4005E94CA /* CanvasGroup.swift */,
+				A372D1052D90CE7D005E94CA /* GroupMembership.swift */,
+				A372D1072D90CEFE005E94CA /* APIGroupMembership.swift */,
+				A37AB4AC2D98B05E00610639 /* CanvasGroup+Memberships.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A372D1112D91D1A8005E94CA /* CourseGroups */ = {
+			isa = PBXGroup;
+			children = (
+				A372D0FE2D90BAB6005E94CA /* CourseGroupsView.swift */,
+				A372D10D2D90F505005E94CA /* CourseGroupsViewModel.swift */,
+			);
+			path = CourseGroups;
 			sourceTree = "<group>";
 		};
 		A373DC182D1A40EC00215019 /* Models */ = {
@@ -1017,7 +1089,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n    swiftlint lint --fix\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "#if [[ \"$(uname -m)\" == arm64 ]]; then\n #   export PATH=\"/opt/homebrew/bin:$PATH\"\n#fi\n\n#if which swiftlint > /dev/null; then\n #   swiftlint lint --fix\n#else\n #   echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n#fi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1033,6 +1105,7 @@
 				A3CA02592D43294B00A9752B /* SearchResultsListView.swift in Sources */,
 				A3D0225D2D6A711900F8068C /* GetPagesRequest.swift in Sources */,
 				B76454FE2C8DF61B002DF00E /* Course.swift in Sources */,
+				A372D1062D90CE7D005E94CA /* GroupMembership.swift in Sources */,
 				A324BA642D07AF0B005F53FA /* CourseFileService.swift in Sources */,
 				95BA93482C9CE20D00137A91 /* CalendarView.swift in Sources */,
 				B76454FF2C8DF61B002DF00E /* Enrollment.swift in Sources */,
@@ -1041,6 +1114,7 @@
 				B76455002C8DF61B002DF00E /* File.swift in Sources */,
 				A3049B7B2D15E2B7002F3166 /* GetFilesInFolderRequest.swift in Sources */,
 				A3CF88DB2D192194000ACDF3 /* EnrollmentAPI.swift in Sources */,
+				A372D0FB2D90A709005E94CA /* HTTPURLResponse+Codes.swift in Sources */,
 				B7F950322D118EAF004BB470 /* String+StripHTML.swift in Sources */,
 				B7D7512D2D3D652300F7B8B8 /* GetAnnouncementsBatchRequest.swift in Sources */,
 				A324BA6A2D0817AB005F53FA /* FoldersPageView.swift in Sources */,
@@ -1052,6 +1126,7 @@
 				B7926D162CE95CED00BFFBE1 /* RGBColors.swift in Sources */,
 				3DAE84FE2C9A0CE8008C22E7 /* CoursePDFView.swift in Sources */,
 				A3049B632D0E6154002F3166 /* ScoringPolicy.swift in Sources */,
+				A33BE8752D97A6F7005C1D13 /* GetGroupMembershipRequest.swift in Sources */,
 				B7C0A3C92D2F87EC003E5A36 /* AsyncView.swift in Sources */,
 				9B69FA4F2CC2CCCF006101F3 /* AggregatedAssignmentsListCell.swift in Sources */,
 				B7F950372D127869004BB470 /* ProfileManager.swift in Sources */,
@@ -1069,7 +1144,9 @@
 				B7F9503B2D127AD0004BB470 /* ProfileAPI.swift in Sources */,
 				B7CC4D3F2D8DFAEC00254F55 /* PickerService.swift in Sources */,
 				A352AD1C2D3EF206007EE6FC /* User.swift in Sources */,
+				A372D1082D90CEFE005E94CA /* APIGroupMembership.swift in Sources */,
 				B76455012C8DF61B002DF00E /* StorageKeys.swift in Sources */,
+				A37AB4A72D98670600610639 /* LeaveGroupRequest.swift in Sources */,
 				A3FFD03A2CDEC2AC006BAB51 /* LookupCondition.swift in Sources */,
 				B7D95DB72D0A8D78002AD955 /* SettingsView.swift in Sources */,
 				B7A12F3F2D69441500EDFA0A /* GetAssignmentGroupsRequest.swift in Sources */,
@@ -1081,10 +1158,11 @@
 				B76455022C8DF61B002DF00E /* CourseFilesView.swift in Sources */,
 				B76455032C8DF61B002DF00E /* HomeView.swift in Sources */,
 				A3269E8E2CD5533F006F7D14 /* CanvasRepository.swift in Sources */,
+				A372D1142D91D2B9005E94CA /* String+SFSymbols.swift in Sources */,
 				B7460A962D6CCD730069CF5B /* GradeCalculatorView.swift in Sources */,
 				A3049B5B2D0E5C18002F3166 /* QuizPermissions.swift in Sources */,
 				B7C0A3C52D2F4C19003E5A36 /* GetAssignmentRequest.swift in Sources */,
-				A3FFD03E2CE0065A006BAB51 /* NetworkError.swift in Sources */,
+				A37AB4A92D9867D600610639 /* UpdateGroupMembershipRequest.swift in Sources */,
 				B7E59A142D2004A4001836FE /* CourseListCell.swift in Sources */,
 				B53D95A22CA0A22A00647EE9 /* PeopleView.swift in Sources */,
 				A373DC312D28176100215019 /* APIModule.swift in Sources */,
@@ -1092,12 +1170,14 @@
 				B7D7512F2D3D660B00F7B8B8 /* AllAnnouncementsManager.swift in Sources */,
 				A3049B752D15DC1C002F3166 /* GetCoursesRequest.swift in Sources */,
 				B76455042C8DF61B002DF00E /* CourseView.swift in Sources */,
+				A372D1042D90BEB4005E94CA /* CanvasGroup.swift in Sources */,
 				A3049B682D0F3ECA002F3166 /* QuizzesViewModel.swift in Sources */,
 				A3CF88D12D18E61B000ACDF3 /* APIResponse.swift in Sources */,
 				A373DC352D2824D700215019 /* Module.swift in Sources */,
 				9BFD45812D811B1000BBAA01 /* AssignmentSubmissionManager.swift in Sources */,
 				B74688A32D63DB59007A27FD /* Assignment.swift in Sources */,
 				B5894F112D6EBD8C00E8F527 /* PageAPI.swift in Sources */,
+				A3C574D92D99F7DA002210FA /* GroupRowView.swift in Sources */,
 				B5894F122D6EBD8C00E8F527 /* PagesListView.swift in Sources */,
 				B5894F132D6EBD8C00E8F527 /* Page.swift in Sources */,
 				A373DC2B2D23EB3D00215019 /* Submission.swift in Sources */,
@@ -1106,6 +1186,7 @@
 				9B92A4252C93856100C21CFC /* CourseAnnouncementManager.swift in Sources */,
 				A35191432D28ED48001E415F /* GetModuleItemsRequest.swift in Sources */,
 				B76455052C8DF61B002DF00E /* SetupView.swift in Sources */,
+				A372D1022D90BEA3005E94CA /* APIGroup.swift in Sources */,
 				A3049B772D15DC36002F3166 /* GetCourseRequest.swift in Sources */,
 				B7AD54F32CD41D7900FB09BB /* LLMEvaluator.swift in Sources */,
 				B7AD54F42CD41D7900FB09BB /* ModelConfiguration.swift in Sources */,
@@ -1134,6 +1215,7 @@
 				B77FD0022D52A0D60049AA5E /* ProfileView.swift in Sources */,
 				9A977E8B2D6C375E001D7F0A /* ColorPickerSheet.swift in Sources */,
 				192EC04C2C963EE600AF8528 /* CourseAssignmentsView.swift in Sources */,
+				A372D10C2D90E875005E94CA /* GroupsListView.swift in Sources */,
 				A3FFD03C2CDED67C006BAB51 /* String+Numbers.swift in Sources */,
 				A301EE132D614A4100D71139 /* GetDiscussionTopicsRequest.swift in Sources */,
 				9A977E832D6C322F001D7F0A /* LoggerService.swift in Sources */,
@@ -1142,6 +1224,7 @@
 				9BF8E4412D90DE5E00B5A50D /* UploadAssignmentFileConfirmationRequest.swift in Sources */,
 				B7C0A3CB2D2F919F003E5A36 /* PinButton.swift in Sources */,
 				B7F950392D1279A1004BB470 /* UserAPI.swift in Sources */,
+				A37AB4AB2D988F5800610639 /* CreateGroupMembershipRequest.swift in Sources */,
 				A3049B662D0F3E32002F3166 /* CourseQuizzesView.swift in Sources */,
 				B7D7512B2D3D5D8000F7B8B8 /* AllAnnouncementsView.swift in Sources */,
 				A3E7F3892C954E0500DC4300 /* CanvasRequest.swift in Sources */,
@@ -1150,10 +1233,12 @@
 				B77FD0072D5309340049AA5E /* ProfilePicture.swift in Sources */,
 				A35191412D283589001E415F /* ModulesViewModel.swift in Sources */,
 				A3E7F3912C99317100DC4300 /* CourseTabsManager.swift in Sources */,
+				A372D0FF2D90BAB6005E94CA /* CourseGroupsView.swift in Sources */,
 				9B6D4F802D6E48340033044F /* ReminderButton.swift in Sources */,
 				A3E7F38F2C96C1CE00DC4300 /* CourseTabsView.swift in Sources */,
 				B76455062C8DF61B002DF00E /* CanvasPlusPlaygroundApp.swift in Sources */,
 				B7F950342D11A00F004BB470 /* StatusToolbarItem.swift in Sources */,
+				A37AB4AD2D98B05E00610639 /* CanvasGroup+Memberships.swift in Sources */,
 				A301EE0F2D612EA800D71139 /* DiscussionTopic.swift in Sources */,
 				9B07E7122D779CAB00359B69 /* Date+RelativeDates.swift in Sources */,
 				9B69FA4B2CC2CC7F006101F3 /* AggregatedAssignmentsView.swift in Sources */,
@@ -1184,6 +1269,8 @@
 				A373DC142D19FA2A00215019 /* APICourseSection.swift in Sources */,
 				A3E7F38B2C9555B200DC4300 /* CanvasService.swift in Sources */,
 				B72EA5702D5689B20013070E /* QuickLookPreview.swift in Sources */,
+				A372D10E2D90F505005E94CA /* CourseGroupsViewModel.swift in Sources */,
+				A372D10A2D90DA7A005E94CA /* GetCourseGroupsRequest.swift in Sources */,
 				B76455082C8DF61B002DF00E /* CourseManager.swift in Sources */,
 				A3CF88E12D1921C3000ACDF3 /* AnnouncementAPI.swift in Sources */,
 				A3D1614F2D1784E3004055FB /* GetUserRequest.swift in Sources */,
@@ -1196,6 +1283,7 @@
 				B73AE0BD2D4FB68B007094A8 /* Profile.swift in Sources */,
 				B7AD550C2CD4257B00FB09BB /* IntelligenceOnboardingView.swift in Sources */,
 				B7D751312D3D688C00F7B8B8 /* AnnouncementRow.swift in Sources */,
+				A372D1102D91D1A1005E94CA /* GroupDetailView.swift in Sources */,
 				A3049B792D15E162002F3166 /* GetCourseRootFolderRequest.swift in Sources */,
 				9BF8E43F2D90DE4F00B5A50D /* UploadAssignmentFileTransmissionRequest.swift in Sources */,
 				7F8535742C98DE3C0023E384 /* CourseGradeView.swift in Sources */,

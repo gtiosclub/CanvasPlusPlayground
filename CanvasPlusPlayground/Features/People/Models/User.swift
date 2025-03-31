@@ -26,12 +26,12 @@ class User: Cacheable {
     var enrollmentRoles: [EnrollmentType] {
         Array(
             Set(
-                enrollments.compactMap { EnrollmentType(rawValue: $0.type) }
+                enrollments?.compactMap { EnrollmentType(rawValue: $0.type) } ?? []
             )
         )
         .sorted { $0.rawValue < $1.rawValue }
     }
-    var enrollments: [EnrollmentAPI]
+    var enrollments: [EnrollmentAPI]?
 
     // MARK: Custom
     var courseId: String?
@@ -47,7 +47,7 @@ class User: Cacheable {
         self.email = userAPI.email
         self.pronouns = userAPI.pronouns
         self.role = userAPI.role
-        self.enrollments = userAPI.enrollments ?? []
+        self.enrollments = userAPI.enrollments
         self.tag = ""
     }
 
@@ -55,11 +55,12 @@ class User: Cacheable {
         self.name = other.name
         self.sortableName = other.sortableName
         self.shortName = other.shortName
-        self.avatarURL = other.avatarURL
-        self.email = other.email
-        self.pronouns = other.pronouns
-        self.role = other.role
-        self.enrollments = other.enrollments
+        self.avatarURL = other.avatarURL ?? self.avatarURL
+        self.email = other.email ?? self.email
+        self.pronouns = other.pronouns ?? self.pronouns
+        self.role = other.role ?? self.role
+
+        self.enrollments = other.enrollments ?? self.enrollments
     }
 
     var hasAvatar: Bool {
