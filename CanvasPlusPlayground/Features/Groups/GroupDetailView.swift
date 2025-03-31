@@ -14,26 +14,29 @@ struct GroupDetailView: View {
 
     var body: some View {
         List {
-#if DEBUG
             Section(header: Text("Course Information")) {
+#if DEBUG
                 row(label: "ID", value: group.id)
                 row(label: "Name", value: group.name)
                 row(label: "Concluded?", value: group.concluded.description)
-                row(label: "Members Count", value: group.membersCount.asString)
                 row(label: "Course ID", value: group.courseId?.asString ?? "N/A")
                 row(label: "Group Category ID", value: group.groupCategoryId?.asString ?? "N/A")
+#endif
                 row(label: "Group Category Name", value: group.groupCategoryName ?? "N/A")
-                row(label: "Group Limit", value: group.groupLimit.asString)
+                row(label: "Members Count", value: group.membersCount.asString)
+                row(label: "Group Limit", value: group.membersLimit)
                 row(label: "Category Allows Multiple Memberships?", value: group.allowsMultipleMemberships?.description ?? "N/A")
+#if DEBUG
                 row(label: "Storage Quota (MB)", value: group.storageQuotaMb?.asString ?? "N/A")
                 row(label: "Is Public?", value: group.isPublic.description)
                 row(label: "Membership Status", value: group.currUserStatus?.rawValue ?? "No status (probs not a member)")
+#endif
             }
 
             Section(header: Text("Description")) {
                 Text(group.groupDescription ?? "N/A")
             }
-
+#if DEBUG
             Section(header: Text("Permissions")) {
                 row(label: "Can create discussion?", value: group.canCreateDiscussionTopic?.description ?? "N/A")
                 row(label: "Can join?", value: group.canJoin?.description ?? "N/A")

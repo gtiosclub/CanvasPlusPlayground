@@ -22,10 +22,6 @@ struct GroupRowView: View {
         }
     }
 
-    var membersLimit: String {
-        group.groupLimit == .max ? "∞" : String(group.groupLimit)
-    }
-
     var body: some View {
         HStack {
             Text(group.name)
@@ -69,7 +65,7 @@ struct GroupRowView: View {
     }
 
     var numMembersLabel: some View {
-        Text("(\(group.membersCount)/\(membersLimit))" )
+        Text("(\(group.membersCount)/\(group.membersLimit))" )
             .foregroundStyle(.secondary)
     }
 

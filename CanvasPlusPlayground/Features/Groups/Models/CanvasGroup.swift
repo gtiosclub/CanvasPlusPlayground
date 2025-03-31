@@ -53,6 +53,9 @@ class CanvasGroup: Cacheable, Hashable {
         }
         // TODO: verify action logic + handle `Switch to`
     }
+    var membersLimit: String {
+        groupLimit == .max ? "∞" : String(groupLimit)
+    }
     // TODO: store GroupMembership as relationship instead
     var currUserStatus: GroupMembershipState? // should update by fetching GroupMembership of `self`
     @Attribute(.ephemeral) var isLoadingMembership: Bool = false

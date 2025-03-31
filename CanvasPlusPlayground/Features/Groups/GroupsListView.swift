@@ -29,7 +29,9 @@ struct GroupsListView: View {
                 groupDetail(for: group)
                     .navigationTitle("Details")
             }
+#if os(macOS)
             .frame(height: 600)
+#endif
         }
     }
 
