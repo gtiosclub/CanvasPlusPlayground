@@ -142,6 +142,7 @@ private struct SidebarTiles: View {
             ) {
                 navigationModel.selectedNavigationPage = .toDoList
             }
+            .disabled(true) // TODO: Re-enable with TODOs PR.
 
             SidebarTile(
                 "Pinned",
