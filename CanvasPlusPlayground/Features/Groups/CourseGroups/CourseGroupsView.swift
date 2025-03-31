@@ -19,7 +19,7 @@ struct CourseGroupsView: View {
     }
 
     var body: some View {
-        GroupsListView(groups: courseGroupsVM.groupsDisplayed)
+        GroupsListView()
             .task {
                 isLoading = true
                 await courseGroupsVM.fetchGroups(for: course.id)

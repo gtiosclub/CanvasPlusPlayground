@@ -65,8 +65,6 @@ struct GroupDetailView: View {
 }
 
 #Preview {
-
-
     VStack(spacing: 0) {
         GroupDetailView(group: .sample)
 
@@ -81,5 +79,4 @@ struct GroupDetailView: View {
         }
         .padding()
     }
-
 }

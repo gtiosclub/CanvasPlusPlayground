@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct GroupsListView: View {
-    let groups: [CanvasGroup]
+    @Environment(CourseGroupsViewModel.self) private var courseGroupsVM
 
     @State private var selectedGroupDetail: CanvasGroup?
 
     var body: some View {
-        List(groups) { group in
+        List(courseGroupsVM.groupsDisplayed) { group in
             GroupRowView(group: group, selectedGroupDetail: $selectedGroupDetail)
                 .frame(height: 40)
                 .task {
@@ -29,30 +29,12 @@ struct GroupsListView: View {
                 groupDetail(for: group)
                     .navigationTitle("Details")
             }
-            .frame(minHeight: 600)
+            .frame(height: 600)
         }
     }
 
     @ViewBuilder
     func groupDetail(for group: CanvasGroup) -> some View {
-#if os(macOS)
-        VStack(spacing: 0){
-            GroupDetailView(group: group)
-
-            Divider()
-
-            HStack {
-                Spacer()
-                Button("Done") {
-                    selectedGroupDetail = nil
-                }
-                .buttonStyle(.borderedProminent)
-                .controlSize(.extraLarge)
-                .keyboardShortcut(.return)
-            }
-            .padding()
-        }
-#else
         GroupDetailView(group: group)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
@@ -61,10 +43,16 @@ struct GroupsListView: View {
                     }
                 }
             }
-#endif
     }
 }
 
 #Preview {
-    GroupsListView(groups: [.sample, .sample])
+    var courseGroupVM = {
+        let vm = CourseGroupsViewModel()
+        vm.groups = [.sample, .sample]
+        return vm
+    }()
+
+    GroupsListView()
+        .environment(courseGroupVM)
 }
