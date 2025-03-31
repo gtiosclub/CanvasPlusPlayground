@@ -158,7 +158,7 @@ struct IntelligenceOnboardingView: View {
         case .readyToInstall:
             baseText
         case .installing:
-            baseText + "\n\nInstalling..."
+            baseText + "\n\nInstalling...\nPlease keep this view open while it downloads."
         case .installed:
             baseText + "\n\nIntelligence is installed."
         }
