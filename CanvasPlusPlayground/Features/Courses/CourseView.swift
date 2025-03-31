@@ -67,9 +67,9 @@ struct CourseView: View {
         .navigationTitle(course.displayName)
         .navigationDestination(for: NavigationModel.Destination.self) { destination in
             destination.destinationView(for: course)
+                .environment(tabsManager)
         }
         .disabled(isLoadingTabs)
-        .environment(tabsManager)
     }
 
     private func fetchTabs() async {
