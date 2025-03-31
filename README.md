@@ -33,4 +33,8 @@ To make your life easier, you can have Xcode automatically reformat after a part
 2. Go to Text Editing > Editing
 3. Turn on "Automatically reformat when completing code", "Automatically trim trailing whitespaces", and "Including whitespace-only lines"
 
+### Development Team
 
+In order to build the project with your development team, you need to:
+1. Fill in your development team ID in `CanvasPlusPlayground/Config.xcconfig`. This ID can be found on App Store Connect under Users -> General -> Team ID.
+2. Run the following command in Git to ignore changes to this file in the worktree `git update-index --skip-worktree CanvasPlusPlayground/Config.xcconfig`.
