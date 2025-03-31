@@ -366,6 +366,7 @@
 		B7A12F452D69448300EDFA0A /* AssignmentGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentGroup.swift; sourceTree = "<group>"; };
 		B7A12F472D69448C00EDFA0A /* AssignmentGroupAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentGroupAPI.swift; sourceTree = "<group>"; };
 		B7A26EE82CCB62A00084704A /* NavigationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationModel.swift; sourceTree = "<group>"; };
+		B7ABA62A2D9B2E8800937E59 /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
 		B7AD54EF2CD41D7900FB09BB /* IntelligenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntelligenceManager.swift; sourceTree = "<group>"; };
 		B7AD54F02CD41D7900FB09BB /* DeviceStat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceStat.swift; sourceTree = "<group>"; };
 		B7AD54F12CD41D7900FB09BB /* LLMEvaluator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLMEvaluator.swift; sourceTree = "<group>"; };
@@ -863,6 +864,7 @@
 		B764545B2C8BBC7F002DF00E = {
 			isa = PBXGroup;
 			children = (
+				B7ABA6292D9B2E4500937E59 /* ci_scripts */,
 				B76454FD2C8DF61B002DF00E /* CanvasPlusPlayground */,
 				B76454652C8BBC7F002DF00E /* Products */,
 			);
@@ -896,6 +898,14 @@
 				B76454FA2C8DF61B002DF00E /* CanvasPlusPlaygroundApp.swift */,
 			);
 			path = CanvasPlusPlayground;
+			sourceTree = "<group>";
+		};
+		B7ABA6292D9B2E4500937E59 /* ci_scripts */ = {
+			isa = PBXGroup;
+			children = (
+				B7ABA62A2D9B2E8800937E59 /* ci_post_clone.sh */,
+			);
+			path = ci_scripts;
 			sourceTree = "<group>";
 		};
 		B7AD54EE2CD41D5200FB09BB /* Intelligence */ = {
