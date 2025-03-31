@@ -94,3 +94,6 @@ fastlane/test_output
 iOSInjectionProject/
 
 .DS_Store
+
+# Config
+CanvasPlusPlayground/Config.xcconfig

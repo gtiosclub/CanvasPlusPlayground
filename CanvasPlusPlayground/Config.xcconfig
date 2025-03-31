@@ -1,0 +1,12 @@
+//
+//  Development.xcconfig
+//  CanvasPlusPlayground
+//
+//  Created by Matt Free on 3/31/25.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+// Fill this in with your development team
+DEVELOPMENT_TEAM = 
