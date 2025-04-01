@@ -10,8 +10,8 @@ import SwiftUI
 struct HomeView: View {
     typealias NavigationPage = NavigationModel.NavigationPage
 
-    @Environment(ProfileManager.self) var profileManager
-    @Environment(CourseManager.self) var courseManager
+    @Environment(ProfileManager.self) private var profileManager
+    @Environment(CourseManager.self) private var courseManager
 
     @State private var navigationModel = NavigationModel()
 
@@ -67,12 +67,6 @@ struct HomeView: View {
         .refreshable {
             await loadCourses()
         }
-//        .sheet(isPresented: $showAuthorization) {
-//            NavigationStack {
-//                SetupView()
-//            }
-//            .interactiveDismissDisabled()
-//        }
         .sheet(isPresented: $showSettings) {
             SettingsView()
         }
@@ -134,10 +128,14 @@ struct HomeView: View {
             CourseView(course: selectedCourse)
         } else if let selectedNavigationPage {
             switch selectedNavigationPage {
-            case .announcements: Text("All Announcements")
-            case .toDoList: AggregatedAssignmentsView()
-            case .pinned: Text("Pinned Items")
-            default: EmptyView()
+            case .announcements:
+                Text("All Announcements")
+            case .toDoList:
+                AggregatedAssignmentsView()
+            case .pinned:
+                Text("Pinned Items")
+            default:
+                EmptyView()
             }
         } else {
             ContentUnavailableView("Select a course", systemImage: "folder")
@@ -351,7 +349,7 @@ private struct CourseListCell: View {
         .alert("Rename Course?", isPresented: $showRenameTextField) {
             TextField(course.name ?? "MISSING NAME", text: $renameCourseFieldText)
                 Button("OK") {
-                    if renameCourseFieldText == "" {
+                    if renameCourseFieldText.isEmpty {
                         course.nickname = nil
                     } else {
                         course.nickname = renameCourseFieldText

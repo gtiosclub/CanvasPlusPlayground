@@ -34,17 +34,23 @@ class CourseFileManager {
         } else if let rootFolder: Folder = try? await CanvasService.shared.syncWithAPI(.getCourseRootFolder(courseId: courseID)).first {
             await fetchContent(in: rootFolder)
         } else {
-            print("Failed to fetch root folder.")
+            LoggerService.main.error("Failed to fetch root folder.")
         }
     }
 
     func fetchContent(in folder: Folder) async {
-        async let foldersInRootFolder: [Folder] = CanvasService.shared.loadAndSync(.getFoldersInFolder(folderId: folder.id), onCacheReceive: { folders in
-            self.folders = folders ?? []
-        })
-        async let filesInRootFolder: [File] = CanvasService.shared.loadAndSync(.getFilesInFolder(folderId: folder.id), onCacheReceive: { files in
-            self.files = files ?? []
-        })
+        async let foldersInRootFolder: [Folder] = CanvasService.shared.loadAndSync(
+            .getFoldersInFolder(folderId: folder.id),
+            onCacheReceive: { folders in
+                self.folders = folders ?? []
+            }
+        )
+        async let filesInRootFolder: [File] = CanvasService.shared.loadAndSync(
+            .getFilesInFolder(folderId: folder.id),
+            onCacheReceive: { files in
+                self.files = files ?? []
+            }
+        )
 
         let (folders, files) = await ((try? foldersInRootFolder), (try? filesInRootFolder))
 

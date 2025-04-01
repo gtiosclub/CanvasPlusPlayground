@@ -7,8 +7,7 @@
 
 import Foundation
 
-// swiftlint:disable identifier_name
-
+// swiftlint:disable commented_code identifier_name
 struct APIGroupMembership: APIResponse {
     typealias Model = GroupMembership
 

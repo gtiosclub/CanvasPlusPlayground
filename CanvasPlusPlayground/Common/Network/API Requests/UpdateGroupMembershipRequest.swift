@@ -7,6 +7,7 @@
 
 import Foundation
 
+// swiftlint:disable commented_code
 struct UpdateGroupMembershipRequest: CacheableAPIRequest {
     typealias Subject = APIGroupMembership
 

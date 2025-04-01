@@ -1001,10 +1001,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B76454722C8BBC81002DF00E /* Build configuration list for PBXNativeTarget "CanvasPlusPlayground" */;
 			buildPhases = (
+				9ACDA5E82D5F1DA2001F1F0A /* SwiftLint */,
 				B76454602C8BBC7F002DF00E /* Sources */,
 				B76454612C8BBC7F002DF00E /* Frameworks */,
 				B76454622C8BBC7F002DF00E /* Resources */,
-				9ACDA5E82D5F1DA2001F1F0A /* SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -1089,7 +1089,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#if [[ \"$(uname -m)\" == arm64 ]]; then\n #   export PATH=\"/opt/homebrew/bin:$PATH\"\n#fi\n\n#if which swiftlint > /dev/null; then\n #   swiftlint lint --fix\n#else\n #   echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n#fi\n";
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n    swiftlint lint\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
