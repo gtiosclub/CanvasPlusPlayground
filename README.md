@@ -33,4 +33,14 @@ To make your life easier, you can have Xcode automatically reformat after a part
 2. Go to Text Editing > Editing
 3. Turn on "Automatically reformat when completing code", "Automatically trim trailing whitespaces", and "Including whitespace-only lines"
 
+### Development Team
 
+After cloning, run these commands to set up Git filters for development team persistence:
+
+```bash
+chmod +x .git-filters/development-team
+git config filter.development-team.clean ".git-filters/development-team clean"
+git config filter.development-team.smudge ".git-filters/development-team smudge"
+```
+
+Then, modify your Development Team under Signing & Capabilities. Add this to the Git commit. It should now not appear on the Git log but will still persist and therefore cannot be committed.
