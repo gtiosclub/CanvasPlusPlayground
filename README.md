@@ -42,3 +42,5 @@ chmod +x .git-filters/development-team
 git config filter.development-team.clean ".git-filters/development-team clean"
 git config filter.development-team.smudge ".git-filters/development-team smudge"
 ```
+
+Then, modify your Development Team under Signing & Capabilities. Add this to the Git commit. It should now not appear on the Git log but will still persist and therefore cannot be committed.
