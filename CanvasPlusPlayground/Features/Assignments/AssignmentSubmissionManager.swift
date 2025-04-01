@@ -148,6 +148,7 @@ public class AssignmentSubmissionManager {
         let (_, uploadResponse) = try await CanvasService.shared.fetchResponse(uploadRequest)
 
         let httpResponse = uploadResponse as! HTTPURLResponse
+        // swiftlint:disable:next force_unwrapping
         let locationString = httpResponse.value(forHTTPHeaderField: "Location")!
 
         let confirmationRequest = CanvasRequest.confirmFileUpload(path: locationString)

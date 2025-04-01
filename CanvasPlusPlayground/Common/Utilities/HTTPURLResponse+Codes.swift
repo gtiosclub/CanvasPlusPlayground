@@ -7,6 +7,7 @@
 
 import Foundation
 
+// swiftlint:disable line_length
 /// From https://gist.github.com/ollieatkinson/322338df8a5220d649ac01ff11e7de12
 /// This is a list of Hypertext Transfer Protocol (HTTP) response status codes.
 /// It includes codes from IETF internet standards, other IETF RFCs, other specifications, and some additional commonly used codes.

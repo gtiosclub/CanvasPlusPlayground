@@ -56,11 +56,12 @@ struct IntelligenceContentView<V: View>: View {
 
             if !isOutline {
                 RoundedRectangle(cornerRadius: 8.0)
-                    .fill(reduceTransparency ? .intelligenceGradient() :
-                        .animatedGradient(
-                            time: elapsedTime,
-                            colors: IntelligenceManager.gradientColors
-                        )
+                    .fill(
+                        reduceTransparency ? .intelligenceGradient() :
+                                .animatedGradient(
+                                    time: elapsedTime,
+                                    colors: IntelligenceManager.gradientColors
+                                )
                     )
                     .matchedGeometryEffect(id: "background", in: namespace)
                     .overlay(.thinMaterial, in: .rect(cornerRadius: 8.0))

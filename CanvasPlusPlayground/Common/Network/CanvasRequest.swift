@@ -7,6 +7,7 @@
 
 import Foundation
 
+// swiftlint:disable:next type_body_length
 enum CanvasRequest {
     static func getCourses(enrollmentState: String, perPage: Int = 50) -> GetCoursesRequest {
         GetCoursesRequest(enrollmentState: enrollmentState, perPage: perPage)

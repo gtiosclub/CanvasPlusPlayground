@@ -51,7 +51,8 @@ class CourseGroupsViewModel {
         })
     }
 
-    /// Whether joining this group is classified as a switch - joined groups from this category are left. Only use this with groups that have join status.
+    /// Whether joining this group is classified as a switch - joined groups from this category are left.
+    /// Only use this with groups that have join status.
     func canOnlySwitch(to group: CanvasGroup) -> Bool {
         if group.allowsMultipleMemberships ?? false {
             return false // if multiple memberships's are allowed, switch isn't necessary
