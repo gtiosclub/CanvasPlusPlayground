@@ -167,7 +167,7 @@ public class AssignmentSubmissionManager {
     }
 
     enum AssignmentSubmissionError: LocalizedError {
-        case missingCourseID, notificationResponseFailure, uploadResponseLocationMissing, errorUploadingFiles
+        case missingCourseID, notificationResponseFailure, uploadResponseLocationMissing, errorUploadingFiles, invalidFileType
 
         var errorDescription: String? {
             switch self {
@@ -179,6 +179,8 @@ public class AssignmentSubmissionManager {
                 return "Upload response missing location in header."
             case .errorUploadingFiles:
                 return "Error uploading files."
+            case .invalidFileType:
+                return "Invalid file type."
             }
         }
     }
