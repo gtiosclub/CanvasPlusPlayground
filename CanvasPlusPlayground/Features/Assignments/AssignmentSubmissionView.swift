@@ -29,6 +29,10 @@ struct AssignmentSubmissionView: View {
 
     @State private var error: AssignmentSubmissionError?
 
+    var allowedFileTypes: [UTType] {
+        assignment.allowedExtensions?.compactMap { UTType(filenameExtension: $0) } ?? [.item]
+    }
+
     var submissionTypes: [SubmissionType] {
         assignment.submissionTypes ?? []
     }
@@ -121,7 +125,7 @@ struct AssignmentSubmissionView: View {
                     .stroke(Color.accentColor, lineWidth: 4)
             }
         }
-        .fileImporter(isPresented: $showFilePicker, allowedContentTypes: [.item], allowsMultipleSelection: true) { result in
+        .fileImporter(isPresented: $showFilePicker, allowedContentTypes: allowedFileTypes, allowsMultipleSelection: true) { result in
             switch result {
             case .success(let urls):
                 selectedURLs = Array(Set(selectedURLs).union(urls))
@@ -204,7 +208,17 @@ struct AssignmentSubmissionView: View {
                 if let data = item as? Data,
                    let url = URL(dataRepresentation: data, relativeTo: nil) {
                     DispatchQueue.main.async {
-                        selectedURLs.append(url)
+                        guard let type = UTType(filenameExtension: url.pathExtension) else {
+                            error = AssignmentSubmissionError.invalidFileType
+                            showErrorAlert.wrappedValue = true
+                            return
+                        }
+                        if allowedFileTypes.contains(type) {
+                            selectedURLs.append(url)
+                        } else {
+                            error = AssignmentSubmissionError.invalidFileType
+                            showErrorAlert.wrappedValue = true
+                        }
                     }
                 } else {
                     LoggerService.main.error("Failed to load file URL")
@@ -290,7 +304,7 @@ private struct FileUploadView: View {
                 }
 
                 Button("Pick files...", systemImage: "plus") {
-                    showPicker = true
+                    showPicker.toggle()
                 }
                 .tint(.accentColor)
                 .padding(.vertical, 2)
