@@ -51,6 +51,7 @@ final class Course: Cacheable {
     var hideFinalGrades: Bool?
 
     var accessRestrictedByDate: Bool?
+    var blueprint: Bool?
     var bannerImageDownloadURL: URL?
     var imageDownloadURL: URL?
     var isFavorite: Bool
@@ -118,6 +119,7 @@ final class Course: Cacheable {
         self.hideFinalGrades = courseAPI.hide_final_grades
 
         self.accessRestrictedByDate = courseAPI.access_restricted_by_date
+        self.blueprint = courseAPI.blueprint
         self.bannerImageDownloadURL = URL(string: courseAPI.banner_image_download_url ?? "")
         self.imageDownloadURL = URL(string: courseAPI.image_download_url ?? "")
 
@@ -126,7 +128,7 @@ final class Course: Cacheable {
         self.tabs = courseAPI.tabs ?? [] // TODO: make model
         self.settings = courseAPI.settings
         self.concluded = courseAPI.concluded
-        self.gradingScheme = self.gradingScheme
+        self.gradingScheme = courseAPI.grading_scheme?.compactMap { GradingSchemeEntry(courseGradingScheme: $0) } ?? []
         self.courseCode = courseAPI.course_code
         self.courseColor = courseAPI.course_color
         self.bannerImageDownloadURL = URL(string: courseAPI.banner_image_download_url ?? "")
@@ -177,6 +179,7 @@ final class Course: Cacheable {
         self.hideFinalGrades = other.hideFinalGrades
 
         self.accessRestrictedByDate = other.accessRestrictedByDate
+        self.blueprint = other.blueprint
         self.bannerImageDownloadURL = other.bannerImageDownloadURL
         self.imageDownloadURL = other.imageDownloadURL
         self.isFavorite = other.isFavorite

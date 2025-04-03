@@ -102,6 +102,7 @@
 		A3777E022D9F148300A8B00C /* CourseRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3777E012D9F148300A8B00C /* CourseRepository.swift */; };
 		A3777E042D9F14DD00A8B00C /* PageConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3777E032D9F14DD00A8B00C /* PageConfiguration.swift */; };
 		A3777E062D9F152400A8B00C /* CourseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3777E052D9F152400A8B00C /* CourseService.swift */; };
+		A3777E082D9F1B3700A8B00C /* CourseSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3777E072D9F1B3700A8B00C /* CourseSection.swift */; };
 		A37AB4A72D98670600610639 /* LeaveGroupRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37AB4A62D98670600610639 /* LeaveGroupRequest.swift */; };
 		A37AB4A92D9867D600610639 /* UpdateGroupMembershipRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37AB4A82D9867D600610639 /* UpdateGroupMembershipRequest.swift */; };
 		A37AB4AB2D988F5800610639 /* CreateGroupMembershipRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37AB4AA2D988F5800610639 /* CreateGroupMembershipRequest.swift */; };
@@ -304,6 +305,7 @@
 		A3777E012D9F148300A8B00C /* CourseRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseRepository.swift; sourceTree = "<group>"; };
 		A3777E032D9F14DD00A8B00C /* PageConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageConfiguration.swift; sourceTree = "<group>"; };
 		A3777E052D9F152400A8B00C /* CourseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseService.swift; sourceTree = "<group>"; };
+		A3777E072D9F1B3700A8B00C /* CourseSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseSection.swift; sourceTree = "<group>"; };
 		A37AB4A62D98670600610639 /* LeaveGroupRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaveGroupRequest.swift; sourceTree = "<group>"; };
 		A37AB4A82D9867D600610639 /* UpdateGroupMembershipRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateGroupMembershipRequest.swift; sourceTree = "<group>"; };
 		A37AB4AA2D988F5800610639 /* CreateGroupMembershipRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupMembershipRequest.swift; sourceTree = "<group>"; };
@@ -728,6 +730,7 @@
 			children = (
 				B76454ED2C8DF61B002DF00E /* Course.swift */,
 				A3CF88D82D192177000ACDF3 /* CourseAPI.swift */,
+				A3777E072D9F1B3700A8B00C /* CourseSection.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1007,12 +1010,10 @@
 				B76454602C8BBC7F002DF00E /* Sources */,
 				B76454612C8BBC7F002DF00E /* Frameworks */,
 				B76454622C8BBC7F002DF00E /* Resources */,
-				9ACDA5E82D5F1DA2001F1F0A /* SwiftLint */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				B7E59A202D217BCB001836FE /* PBXTargetDependency */,
 			);
 			name = CanvasPlusPlayground;
 			packageProductDependencies = (
@@ -1049,7 +1050,6 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				B785BE632CF592710094BF94 /* XCRemoteSwiftPackageReference "mlx-swift-examples" */,
-				B7E59A1C2D21551D001836FE /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */,
 			);
 			productRefGroup = B76454652C8BBC7F002DF00E /* Products */;
 			projectDirPath = "";
@@ -1073,28 +1073,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		9ACDA5E82D5F1DA2001F1F0A /* SwiftLint */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = SwiftLint;
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#if [[ \"$(uname -m)\" == arm64 ]]; then\n #   export PATH=\"/opt/homebrew/bin:$PATH\"\n#fi\n\n#if which swiftlint > /dev/null; then\n #   swiftlint lint --fix\n#else\n #   echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n#fi\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B76454602C8BBC7F002DF00E /* Sources */ = {
@@ -1150,6 +1128,7 @@
 				A352AD1C2D3EF206007EE6FC /* User.swift in Sources */,
 				A372D1082D90CEFE005E94CA /* APIGroupMembership.swift in Sources */,
 				B76455012C8DF61B002DF00E /* StorageKeys.swift in Sources */,
+				A3777E082D9F1B3700A8B00C /* CourseSection.swift in Sources */,
 				A37AB4A72D98670600610639 /* LeaveGroupRequest.swift in Sources */,
 				A3FFD03A2CDEC2AC006BAB51 /* LookupCondition.swift in Sources */,
 				B7D95DB72D0A8D78002AD955 /* SettingsView.swift in Sources */,
@@ -1299,13 +1278,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		B7E59A202D217BCB001836FE /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = B7E59A1F2D217BCB001836FE /* SwiftLintBuildToolPlugin */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		B76454702C8BBC81002DF00E /* Debug */ = {
@@ -1541,14 +1513,6 @@
 				minimumVersion = 1.18.1;
 			};
 		};
-		B7E59A1C2D21551D001836FE /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SimplyDanny/SwiftLintPlugins";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.57.1;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1556,11 +1520,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B785BE632CF592710094BF94 /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
 			productName = LLM;
-		};
-		B7E59A1F2D217BCB001836FE /* SwiftLintBuildToolPlugin */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B7E59A1C2D21551D001836FE /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */;
-			productName = "plugin:SwiftLintBuildToolPlugin";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

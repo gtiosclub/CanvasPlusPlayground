@@ -11,9 +11,10 @@ import SwiftData
 protocol CourseRepository {
     @MainActor
     func getCourses(
-        enrollmentType: String,
-        enrollmentRole: String,
-        courseState: [String],
+        enrollmentType: EnrollmentType?,
+        enrollmentState: GetCoursesRequest.StateFilter?,
+        excludeBlueprintCourses: Bool,
+        state: [CourseState],
         pageConfiguration: PageConfiguration
     ) -> [Course]
 
@@ -22,9 +23,10 @@ protocol CourseRepository {
 
     @MainActor
     func deleteCourses(
-        enrollmentType: String,
-        enrollmentRole: String,
-        courseState: [String],
+        enrollmentType: EnrollmentType?,
+        enrollmentState: GetCoursesRequest.StateFilter?,
+        excludeBlueprintCourses: Bool,
+        state: [CourseState],
         pageConfiguration: PageConfiguration
     )
 
@@ -33,23 +35,28 @@ protocol CourseRepository {
 }
 
 class CourseRepositoryImpl: CourseRepository {
+    
     @MainActor
     func getCourses(
-        enrollmentType: String,
-        enrollmentRole: String,
-        courseState: [String],
+        enrollmentType: EnrollmentType?,
+        enrollmentState: GetCoursesRequest.StateFilter?,
+        excludeBlueprintCourses: Bool,
+        state: [CourseState],
         pageConfiguration: PageConfiguration
     ) -> [Course] {
         let context = ModelContext.shared
 
-        let courseStates = courseState.map { CourseState(rawValue: $0) }
+        let enrollmentTypeRaw = enrollmentType?.rawValue ?? ""
+        let enrollmentStateRaw = enrollmentState?.rawValue ?? ""
+        let state = state as [CourseState?]
         var descriptor = FetchDescriptor(
             predicate: #Predicate<Course> {
-                $0.enrollmentRoleIds.contains(enrollmentRole) &&
-                courseStates.contains($0.workflowState) &&
-                $0.enrollmentTypesRaw.contains(enrollmentType)
+                $0.enrollmentTypesRaw.localizedStandardContains(enrollmentTypeRaw) &&
+                $0.enrollmentStatesRaw.localizedStandardContains(enrollmentStateRaw) &&
+                $0.blueprint == excludeBlueprintCourses &&
+                state.contains($0.workflowState)
             },
-            sortBy: [SortDescriptor(\.name)]
+            sortBy: [SortDescriptor(\.order)]
         )
         descriptor.fetchOffset = pageConfiguration.offset
         descriptor.fetchLimit = pageConfiguration.perPage
@@ -66,20 +73,23 @@ class CourseRepositoryImpl: CourseRepository {
 
     @MainActor
     func deleteCourses(
-        enrollmentType: String,
-        enrollmentRole: String,
-        courseState: [String],
+        enrollmentType: EnrollmentType?,
+        enrollmentState: GetCoursesRequest.StateFilter?,
+        excludeBlueprintCourses: Bool,
+        state: [CourseState],
         pageConfiguration: PageConfiguration
     ) {
         // TODO: delete by filter
-        let courseStates = courseState.map { CourseState(rawValue: $0) }
+        let enrollmentTypeRaw = enrollmentType?.rawValue ?? ""
+        let enrollmentStateRaw = enrollmentState?.rawValue ?? ""
+        let states = state as [CourseState?]
         var predicate = #Predicate<Course> {
-            $0.enrollmentRoleIds.localizedStandardContains(enrollmentRole) &&
-            $0.enrollmentTypesRaw.localizedStandardContains(enrollmentType) &&
-            ($0.order) >= pageConfiguration.offset && ($0.order) < pageConfiguration.orderMax
+            $0.enrollmentTypesRaw.localizedStandardContains(enrollmentTypeRaw) &&
+            $0.enrollmentStatesRaw.localizedStandardContains(enrollmentStateRaw) &&
+            $0.blueprint == excludeBlueprintCourses
         }
-        for state in courseStates {
-            predicate = #Predicate {
+        for state in states {
+            predicate = #Predicate<Course> {
                 predicate.evaluate($0) && $0.workflowState == state
             }
         }
@@ -94,9 +104,9 @@ class CourseRepositoryImpl: CourseRepository {
         let context = ModelContext.shared
         for (i, course) in courseModels.enumerated() {
             switch pageConfig {
-            case let .page(pageNum, perPage):
+            case .page:
                 course.order = pageConfig.offset + i
-            case .all(let perPage):
+            case .all:
                 course.order = i
             }
             context.insert(course)

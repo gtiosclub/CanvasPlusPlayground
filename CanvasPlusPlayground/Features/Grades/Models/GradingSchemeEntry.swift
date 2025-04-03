@@ -8,7 +8,7 @@
 import Foundation
 
 // https://github.com/instructure/canvas-ios/blob/master/Core/Core/Grades/Model/API/APIGradingSchemeEntry.swift
-struct GradingSchemeEntry: Identifiable {
+struct GradingSchemeEntry: Identifiable, Codable {
     var id: String
 
     let name: String

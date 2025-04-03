@@ -24,17 +24,17 @@ class CourseManager {
             .sorted { $0.name ?? "" < $1.name ?? "" }
     }
 
+    let courseService = CourseService()
+
     func getCourses() async {
         LoggerService.main.debug("Fetching courses")
         do {
-            let courses: [Course] = try await CanvasService.shared.loadAndSync(
-                CanvasRequest.getCourses(enrollmentState: "active"),
-                onCacheReceive: { cachedCourses in
-                    guard let cachedCourses else { return }
-                    Task { @MainActor in
-                        self.setCourses(cachedCourses)
-                    }
-                }
+            let courses = try await courseService.getCourses(
+                enrollmentType: nil,
+                enrollmentState: .active,
+                excludeBlueprintCourses: false,
+                state: [],
+                pageConfiguration: .all(perPage: 30)
             )
             LoggerService.main.debug("\(courses.map(\.name))")
 

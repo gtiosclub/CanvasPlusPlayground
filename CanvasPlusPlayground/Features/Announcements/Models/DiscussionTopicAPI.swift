@@ -58,7 +58,7 @@ struct DiscussionTopicAPI: APIResponse, Identifiable {
     let created_at: Date?
 
     // MARK: Includes
-    let sections: [APICourseSection]?
+    let sections: [CourseSection]?
 
     func createModel() -> DiscussionTopic {
         DiscussionTopic(from: self)

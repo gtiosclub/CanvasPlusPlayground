@@ -64,7 +64,7 @@ struct CourseAPI: APIResponse, Identifiable {
     // let course_format: String?
     let access_restricted_by_date: Bool?
     // let time_zone: TimeZone?
-    // let blueprint: Bool?
+    let blueprint: Bool?
     // let blueprint_restrictions: ?
     // let blueprint_restrictions_by_object_type: ?
     let banner_image_download_url: String?
@@ -99,6 +99,15 @@ struct CourseTeacher: Codable {
         case pronouns
     }
 
+    static let sample = CourseTeacher(
+        id: 54322,
+        anonymousId: "teacher_abc123",
+        displayName: "Jane Smith",
+        avatarImageUrl: URL(string: "https://canvas.example.edu/images/avatars/54322"),
+        htmlUrl: URL(string: "https://canvas.example.edu/courses/12345/users/54322"),
+        pronouns: "she/her"
+    )
+
 }
 
 struct CourseProgress: Codable {
@@ -129,6 +138,22 @@ struct CourseSectionRef: Codable {
         case startAt = "start_at"
         case enrollmentRole = "enrollment_role"
     }
+
+    static let sample = CourseSectionRef(
+        id: 5678,
+        startAt: Date.now.addingTimeInterval(-5184000),
+        endAt: Date.now.addingTimeInterval(5184000),
+        name: "Section A",
+        enrollmentRole: .student
+    )
+
+    static let sample2 = CourseSectionRef(
+        id: 5679,
+        startAt: Date.now.addingTimeInterval(-5184000),
+        endAt: Date.now.addingTimeInterval(5184000),
+        name: "Section B",
+        enrollmentRole: .student
+    )
 }
 
 struct CourseEnrollment: Codable {
@@ -275,14 +300,7 @@ extension CourseAPI {
             ),
             apply_assignment_group_weights: true,
             teachers: [
-                CourseTeacher(
-                    id: 54322,
-                    anonymousId: "teacher_abc123",
-                    displayName: "Jane Smith",
-                    avatarImageUrl: URL(string: "https://canvas.example.edu/images/avatars/54322"),
-                    htmlUrl: URL(string: "https://canvas.example.edu/courses/12345/users/54322"),
-                    pronouns: "she/her"
-                )
+                .sample
             ],
             permissions: CoursePermissions(
                 createAnnouncement: true,
@@ -293,29 +311,18 @@ extension CourseAPI {
             public_description: "An introductory course to computer science concepts and programming fundamentals.",
             hide_final_grades: false,
             access_restricted_by_date: false,
+            blueprint: false,
             banner_image_download_url: "https://canvas.example.edu/images/banners/cs101.jpg",
             image_download_url: "https://canvas.example.edu/images/courses/cs101.jpg",
             is_favorite: true,
             sections: [
-                CourseSectionRef(
-                    id: 5678,
-                    startAt: Date.now.addingTimeInterval(-5184000),
-                    endAt: Date.now.addingTimeInterval(5184000),
-                    name: "Section A",
-                    enrollmentRole: .student
-                ),
-                CourseSectionRef(
-                    id: 5679,
-                    startAt: Date.now.addingTimeInterval(-5184000),
-                    endAt: Date.now.addingTimeInterval(5184000),
-                    name: "Section B",
-                    enrollmentRole: .student
-                )
+                .sample,
+                .sample2
             ],
             tabs: [
-                TabAPI(id: "home", label: "Home", type: "internal", url: "/courses/12345"),
-                TabAPI(id: "modules", label: "Modules", type: "internal", url: "/courses/12345/modules"),
-                TabAPI(id: "assignments", label: "Assignments", type: "internal", url: "/courses/12345/assignments")
+                .sample1,
+                .sample2,
+                .sample3
             ],
             settings: CourseSettings(
                 usageRightsRequired: true,
@@ -324,18 +331,18 @@ extension CourseAPI {
             ),
             concluded: false,
             grading_scheme: [
-                [TypeSafeCodable(rawValue: "A"), TypeSafeCodable(rawValue: 0.94)],
-                [TypeSafeCodable(rawValue: "A-"), TypeSafeCodable(rawValue: 0.90)],
-                [TypeSafeCodable(rawValue: "B+"), TypeSafeCodable(rawValue: 0.87)],
-                [TypeSafeCodable(rawValue: "B"), TypeSafeCodable(rawValue: 0.84)],
-                [TypeSafeCodable(rawValue: "B-"), TypeSafeCodable(rawValue: 0.80)],
-                [TypeSafeCodable(rawValue: "C+"), TypeSafeCodable(rawValue: 0.77)],
-                [TypeSafeCodable(rawValue: "C"), TypeSafeCodable(rawValue: 0.74)],
-                [TypeSafeCodable(rawValue: "C-"), TypeSafeCodable(rawValue: 0.70)],
-                [TypeSafeCodable(rawValue: "D+"), TypeSafeCodable(rawValue: 0.67)],
-                [TypeSafeCodable(rawValue: "D"), TypeSafeCodable(rawValue: 0.64)],
-                [TypeSafeCodable(rawValue: "D-"), TypeSafeCodable(rawValue: 0.61)],
-                [TypeSafeCodable(rawValue: "F"), TypeSafeCodable(rawValue: 0.0)]
+                [TypeSafeCodable(value1: "A", value2: nil), TypeSafeCodable(value1: nil, value2: 0.94)],
+                [TypeSafeCodable(value1: "A-", value2: nil), TypeSafeCodable(value1: nil, value2: 0.90)],
+                [TypeSafeCodable(value1: "B+", value2: nil), TypeSafeCodable(value1: nil, value2: 0.87)],
+                [TypeSafeCodable(value1: "B", value2: nil), TypeSafeCodable(value1: nil, value2: 0.84)],
+                [TypeSafeCodable(value1: "B-", value2: nil), TypeSafeCodable(value1: nil, value2: 0.80)],
+                [TypeSafeCodable(value1: "C+", value2: nil), TypeSafeCodable(value1: nil, value2: 0.77)],
+                [TypeSafeCodable(value1: "C", value2: nil), TypeSafeCodable(value1: nil, value2: 0.74)],
+                [TypeSafeCodable(value1: "C-", value2: nil), TypeSafeCodable(value1: nil, value2: 0.70)],
+                [TypeSafeCodable(value1: "D+", value2: nil), TypeSafeCodable(value1: nil, value2: 0.67)],
+                [TypeSafeCodable(value1: "D", value2: nil), TypeSafeCodable(value1: nil, value2: 0.64)],
+                [TypeSafeCodable(value1: "D-", value2: nil), TypeSafeCodable(value1: nil, value2: 0.61)],
+                [TypeSafeCodable(value1: "F", value2: nil), TypeSafeCodable(value1: nil, value2: 0.0)]
             ]
         )
 
@@ -367,6 +374,7 @@ extension CourseAPI {
             public_description: nil,
             hide_final_grades: nil,
             access_restricted_by_date: nil,
+            blueprint: false,
             banner_image_download_url: nil,
             image_download_url: nil,
             is_favorite: false,

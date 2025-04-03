@@ -8,7 +8,7 @@
 import Foundation
 
 enum CanvasRequest {
-    static func getCourses(enrollmentState: String, perPage: Int = 50) -> GetCoursesRequest {
+    static func getCourses(enrollmentState: GetCoursesRequest.StateFilter, perPage: Int = 50) -> GetCoursesRequest {
         GetCoursesRequest(enrollmentState: enrollmentState, perPage: perPage)
     }
 

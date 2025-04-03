@@ -21,7 +21,39 @@ struct TabAPI: APIResponse, Identifiable {
     let label: String?
     let type: String?
     let url: String?
+}
 
-    // MARK: Custom for Model
-    // var courseId: String?
+extension TabAPI {
+    static let sample1 = TabAPI(
+        id: "home",
+        html_url: nil,
+        full_url: nil,
+        position: 0,
+        visibility: "public",
+        label: "Home",
+        type: "internal",
+        url: "/courses/12345"
+    )
+
+    static let sample2 = TabAPI(
+        id: "modules",
+        html_url: nil,
+        full_url: nil,
+        position: 1,
+        visibility: "public",
+        label: "Modules",
+        type: "internal",
+        url: "/courses/12345/modules"
+    )
+
+    static let sample3 = TabAPI(
+        id: "assignments",
+        html_url: nil,
+        full_url: nil,
+        position: 2,
+        visibility: "public",
+        label: "Assignments",
+        type: "internal",
+        url: "/courses/12345/assignments"
+    )
 }

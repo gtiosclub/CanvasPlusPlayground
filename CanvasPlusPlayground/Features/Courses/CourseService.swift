@@ -10,9 +10,10 @@ protocol CourseServicing {
     var courseRepository: CourseRepository { get set }
 
     func getCourses(
-        enrollmentType: String,
-        enrollmentRole: String,
-        courseState: [String],
+        enrollmentType: EnrollmentType?,
+        enrollmentState: GetCoursesRequest.StateFilter?,
+        excludeBlueprintCourses: Bool,
+        state: [CourseState],
         pageConfiguration: PageConfiguration
     ) async throws -> [Course]
 
@@ -27,16 +28,16 @@ class CourseService: CourseServicing {
     }
 
     func getCourses(
-        enrollmentType: String,
-        enrollmentRole: String,
-        courseState: [String],
+        enrollmentType: EnrollmentType?,
+        enrollmentState: GetCoursesRequest.StateFilter?,
+        excludeBlueprintCourses: Bool,
+        state: [CourseState],
         pageConfiguration: PageConfiguration
     ) async throws -> [Course] {
         let coursesRequest = GetCoursesRequest(
             enrollmentType: enrollmentType,
-            enrollmentRole: enrollmentRole,
-            enrollmentState: nil,
-            excludeBlueprintCourses: false,
+            enrollmentState: enrollmentState,
+            excludeBlueprintCourses: excludeBlueprintCourses,
             include: [
                 .favorites,
                 .courseImage,
@@ -54,14 +55,15 @@ class CourseService: CourseServicing {
                 .teachers,
                 .syllabusBody
             ],
-            state: courseState.compactMap { GetCoursesRequest.State(rawValue: $0) },
+            state: state,
             perPage: pageConfiguration.perPage
         )
 
         let dbCourses = await courseRepository.getCourses(
             enrollmentType: enrollmentType,
-            enrollmentRole: enrollmentRole,
-            courseState: courseState,
+            enrollmentState: enrollmentState,
+            excludeBlueprintCourses: excludeBlueprintCourses,
+            state: state,
             pageConfiguration: pageConfiguration
         )
 
@@ -82,8 +84,9 @@ class CourseService: CourseServicing {
             // TODO: delete old courses here correctly
             await self.courseRepository.deleteCourses(
                 enrollmentType: enrollmentType,
-                enrollmentRole: enrollmentRole,
-                courseState: courseState,
+                enrollmentState: enrollmentState,
+                excludeBlueprintCourses: excludeBlueprintCourses,
+                state: state,
                 pageConfiguration: pageConfiguration
             )
 

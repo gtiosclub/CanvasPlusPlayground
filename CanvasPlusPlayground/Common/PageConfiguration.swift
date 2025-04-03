@@ -8,9 +8,9 @@
 
 enum PageConfiguration {
     /// 1-indexed. Get a specific page from offset (perPage*(pageNum-1))
-    case page(pageNum: Int, perPage: Int)
+    case page(pageNum: Int, perPage: Int = 50)
     /// Avoid using this for possibly large network/storage queries
-    case all(perPage: Int)
+    case all(perPage: Int = 50)
 
     var perPage: Int {
         switch self {
@@ -39,7 +39,7 @@ enum PageConfiguration {
         case .all:
             Int.max
         case let .page(pageNum, perPage):
-            (pageNum * self.perPage)
+            (pageNum * perPage)
         }
     }
 }

@@ -28,7 +28,7 @@ class NavigationModel {
             }
         }
 
-        case course(id: Course.ID)
+        case course(id: String)
         case announcements
         case toDoList
         case pinned
