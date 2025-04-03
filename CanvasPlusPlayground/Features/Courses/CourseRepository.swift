@@ -15,15 +15,6 @@ enum PageConfiguration {
     /// Avoid using this for possibly large network/storage queries
     case all(perPage: Int)
 
-    var offset: Int {
-        switch self {
-        case let .page(pageNum, perPage):
-            return perPage * (pageNum - 1)
-        case .all:
-            return 0
-        }
-    }
-
     var perPage: Int {
         switch self {
         case let .page(_, perPage):
@@ -33,14 +24,19 @@ enum PageConfiguration {
         }
     }
 
-    var orderMin: Int {
+    var offset: Int {
         switch self {
-        case .all:
-            0
         case let .page(pageNum, perPage):
-            ((pageNum - 1) * self.perPage)
+            return perPage * (pageNum - 1)
+        case .all:
+            return 0
         }
     }
+
+    var orderMin: Int {
+        offset
+    }
+
     var orderMax: Int {
         switch self {
         case .all:
@@ -114,13 +110,12 @@ class CourseRepositoryImpl: CourseRepository {
         courseState: [String],
         pageConfiguration: PageConfiguration
     ) {
-
         // TODO: delete by filter
         let courseStates = courseState.map { CourseState(rawValue: $0) }
         var predicate = #Predicate<Course> {
             $0.enrollmentRoleIds.localizedStandardContains(enrollmentRole) &&
             $0.enrollmentTypesRaw.localizedStandardContains(enrollmentType) &&
-            ($0.order) >= pageConfiguration.orderMin && ($0.order) < pageConfiguration.orderMax
+            ($0.order) >= pageConfiguration.offset && ($0.order) < pageConfiguration.orderMax
         }
         for state in courseStates {
             predicate = #Predicate {
@@ -208,6 +203,13 @@ class CourseService: CourseServicing {
             perPage: pageConfiguration.perPage
         )
 
+        let dbCourses = await courseRepository.getCourses(
+            enrollmentType: enrollmentType,
+            enrollmentRole: enrollmentRole,
+            courseState: courseState,
+            pageConfiguration: pageConfiguration
+        )
+
         do {
             let courses = try await CanvasService.shared.fetch(
                 coursesRequest,
@@ -230,14 +232,9 @@ class CourseService: CourseServicing {
                 pageConfiguration: pageConfiguration
             )
 
-            return await self.courseRepository.syncCourses(courses, pageConfig: pageConfiguration) ?? []
+            return await self.courseRepository.syncCourses(courses, pageConfig: pageConfiguration)
         } catch {
-            return await courseRepository.getCourses(
-                enrollmentType: enrollmentType,
-                enrollmentRole: enrollmentRole,
-                courseState: courseState,
-                pageConfiguration: pageConfiguration
-            )
+            return dbCourses
         }
     }
 }
