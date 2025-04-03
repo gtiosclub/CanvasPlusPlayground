@@ -64,6 +64,14 @@ protocol CourseRepository {
     func deleteCourses(_ courses: [Course])
 
     @MainActor
+    func deleteCourses(
+        enrollmentType: String,
+        enrollmentRole: String,
+        courseState: [String],
+        pageConfiguration: PageConfiguration
+    )
+
+    @MainActor
     func syncCourses(_ courses: [CourseAPI], pageConfig: PageConfiguration) -> [Course]
 }
 
@@ -164,7 +172,7 @@ protocol CourseServicing {
 class CourseService: CourseServicing {
     var courseRepository: any CourseRepository
 
-    init(isTest: Bool) {
+    init(isTest: Bool = false) {
         self.courseRepository = CourseRepositoryImpl()
     }
 
@@ -179,7 +187,23 @@ class CourseService: CourseServicing {
             enrollmentRole: enrollmentRole,
             enrollmentState: nil,
             excludeBlueprintCourses: false,
-            include: [.favorites],
+            include: [
+                .favorites,
+                .courseImage,
+                .courseProgress,
+                .concluded,
+                .bannerImage,
+                .needsGradingCount,
+                .totalStudents,
+                .totalScores,
+                .sections,
+                .observedUsers,
+                .passbackStatus,
+                .postManually,
+                .term,
+                .teachers,
+                .syllabusBody
+            ],
             state: courseState.compactMap { GetCoursesRequest.State(rawValue: $0) },
             perPage: pageConfiguration.perPage
         )
@@ -198,9 +222,15 @@ class CourseService: CourseServicing {
                 }()
             )
 
-            // TODO: delete old courses here
+            // TODO: delete old courses here correctly
+            await self.courseRepository.deleteCourses(
+                enrollmentType: enrollmentType,
+                enrollmentRole: enrollmentRole,
+                courseState: courseState,
+                pageConfiguration: pageConfiguration
+            )
 
-            return await courseRepository.syncCourses(courses, pageConfig: pageConfiguration)
+            return await self.courseRepository.syncCourses(courses, pageConfig: pageConfiguration) ?? []
         } catch {
             return await courseRepository.getCourses(
                 enrollmentType: enrollmentType,
