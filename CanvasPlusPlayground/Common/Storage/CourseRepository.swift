@@ -8,24 +8,45 @@
 import Foundation
 import SwiftData
 
-// PageConfiguration.swift
-struct PageConfiguration {
-    var perPage: Int
-    var method: PaginationMethod // .page(pageNum:) OR .all
-
-    enum PaginationMethod {
-        /// 1-indexed. Get a specific page from offset (perPage*(pageNum-1))
-        case page(pageNum: Int)
-        /// Avoid using this for possibly large network/storage queries
-        case all
-    }
+// TODO: PageConfiguration.swift
+enum PageConfiguration {
+    /// 1-indexed. Get a specific page from offset (perPage*(pageNum-1))
+    case page(pageNum: Int, perPage: Int)
+    /// Avoid using this for possibly large network/storage queries
+    case all(perPage: Int)
 
     var offset: Int {
-        switch method {
-        case .page(pageNum: let pageNum):
+        switch self {
+        case let .page(pageNum, perPage):
             return perPage * (pageNum - 1)
         case .all:
             return 0
+        }
+    }
+
+    var perPage: Int {
+        switch self {
+        case let .page(_, perPage):
+            return perPage
+        case let .all(perPage):
+            return perPage
+        }
+    }
+
+    var orderMin: Int {
+        switch self {
+        case .all:
+            0
+        case let .page(pageNum, perPage):
+            ((pageNum - 1) * self.perPage)
+        }
+    }
+    var orderMax: Int {
+        switch self {
+        case .all:
+            Int.max
+        case let .page(pageNum, perPage):
+            (pageNum * self.perPage)
         }
     }
 }
@@ -47,7 +68,6 @@ protocol CourseRepository {
 }
 
 class CourseRepositoryImpl: CourseRepository {
-
     @MainActor
     func getCourses(
         enrollmentType: String,
@@ -57,11 +77,11 @@ class CourseRepositoryImpl: CourseRepository {
     ) -> [Course] {
         let context = ModelContext.shared
 
-        let courseStates = courseState.map { CourseWorkflowState(rawValue: $0) }
+        let courseStates = courseState.map { CourseState(rawValue: $0) }
         var descriptor = FetchDescriptor(
             predicate: #Predicate<Course> {
                 $0.enrollmentRoleIds.contains(enrollmentRole) &&
-                courseStates.contains($0.workFlowState) &&
+                courseStates.contains($0.workflowState) &&
                 $0.enrollmentTypesRaw.contains(enrollmentType)
             },
             sortBy: [SortDescriptor(\.name)]
@@ -86,30 +106,18 @@ class CourseRepositoryImpl: CourseRepository {
         courseState: [String],
         pageConfiguration: PageConfiguration
     ) {
-        let orderMin = {
-            switch pageConfiguration.method {
-            case .all:
-                0
-            case .page(pageNum: let pageNum):
-                ((pageNum - 1) * pageConfiguration.perPage)
-            }
-        }()
-
-        let orderMax = {
-            switch pageConfiguration.method {
-            case .all:
-                Int.max
-            case .page(pageNum: let pageNum):
-                (pageNum * pageConfiguration.perPage)
-            }
-        }()
 
         // TODO: delete by filter
-        let courseStates = courseState.map { CourseWorkflowState(rawValue: $0) }
-        let predicate = #Predicate<Course> {
-            $0.enrollmentRoleIds.contains(enrollmentRole) &&
-            courseStates.contains($0.workFlowState) &&
-            $0.enrollmentTypesRaw.contains(enrollmentType)
+        let courseStates = courseState.map { CourseState(rawValue: $0) }
+        var predicate = #Predicate<Course> {
+            $0.enrollmentRoleIds.localizedStandardContains(enrollmentRole) &&
+            $0.enrollmentTypesRaw.localizedStandardContains(enrollmentType) &&
+            ($0.order) >= pageConfiguration.orderMin && ($0.order) < pageConfiguration.orderMax
+        }
+        for state in courseStates {
+            predicate = #Predicate {
+                predicate.evaluate($0) && $0.workflowState == state
+            }
         }
 
         try? ModelContext.shared.delete(model: Course.self, where: predicate)
@@ -121,9 +129,10 @@ class CourseRepositoryImpl: CourseRepository {
 
         let context = ModelContext.shared
         for (i, course) in courseModels.enumerated() {
-            if case .page(let pageNum) = pageConfig.method {
+            switch pageConfig {
+            case let .page(pageNum, perPage):
                 course.order = pageConfig.offset + i
-            } else {
+            case .all(let perPage):
                 course.order = i
             }
             context.insert(course)
@@ -151,8 +160,6 @@ protocol CourseServicing {
 
     // ...
 }
-
-extension Course: @unchecked Sendable {}
 
 class CourseService: CourseServicing {
     var courseRepository: any CourseRepository
@@ -182,9 +189,10 @@ class CourseService: CourseServicing {
                 coursesRequest,
                 loadingMethod: { // TODO: pageConfiguration should directly go into `fetch`
                     // ideally we dont use `.all`
-                    if case .page(let pageNum) = pageConfiguration.method {
+                    switch pageConfiguration {
+                    case let .page(pageNum, perPage):
                         return .page(order: pageNum)
-                    } else {
+                    case .all(let perPage):
                         return .all(onNewPage: { _ in })
                     }
                 }()
@@ -202,6 +210,4 @@ class CourseService: CourseServicing {
             )
         }
     }
-    
-
 }

@@ -70,7 +70,7 @@ class User: Cacheable {
     }
 }
 
-enum EnrollmentType: String, CaseIterable {
+enum EnrollmentType: String, Codable, CaseIterable {
     case teacher = "TeacherEnrollment", student = "StudentEnrollment", taEnrollment = "TaEnrollment",
          observer = "ObserverEnrollment", designer = "DesignerEnrollment"
 
