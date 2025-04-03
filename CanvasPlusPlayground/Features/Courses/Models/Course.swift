@@ -56,6 +56,7 @@ final class Course: Cacheable {
     var gradingScheme: [APIGradingSchemeEntry]
     // var roles: String? (see enrollmentRolesRaw)
     var tabs: [TabAPI]
+    var workFlowState: CourseWorkflowState?
 
     var defaultView: CourseDefaultView? {
         get { CourseDefaultView(rawValue: defaultViewRaw ?? "") }
@@ -67,6 +68,7 @@ final class Course: Cacheable {
     var rgbColors: RGBColors?
     var nickname: String?
     var isHidden: Bool?
+    var order: Int?
 
     var displayName: String {
         nickname ?? name ?? "Unknown Name"
@@ -102,6 +104,7 @@ final class Course: Cacheable {
 //        }
 
         self.hideFinalGrades = courseAPI.hide_final_grades ?? false
+        self.workFlowState = courseAPI.workflow_state
         self.isCourseDeleted = courseAPI.workflow_state == .deleted
         self.isPastEnrollment = (
             courseAPI.workflow_state == .completed ||

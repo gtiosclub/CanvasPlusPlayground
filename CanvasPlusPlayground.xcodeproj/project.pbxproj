@@ -63,6 +63,7 @@
 		A3049B852D161455002F3166 /* GetEnrollmentsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3049B842D161455002F3166 /* GetEnrollmentsRequest.swift */; };
 		A3049B872D16146D002F3166 /* GetQuizzesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3049B862D16146D002F3166 /* GetQuizzesRequest.swift */; };
 		A306ED112CEAC09E00556D1E /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A306ED102CEAC09E00556D1E /* Folder.swift */; };
+		A30F3C2C2D9CE3BB007F0D43 /* CourseRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30F3C2B2D9CE3BB007F0D43 /* CourseRepository.swift */; };
 		A31A81E72D0CCB69003C37EB /* GradesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A31A81E62D0CCB69003C37EB /* GradesViewModel.swift */; };
 		A324BA642D07AF0B005F53FA /* CourseFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A324BA632D07AF0B005F53FA /* CourseFileService.swift */; };
 		A324BA662D07AFD5005F53FA /* FileType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A324BA652D07AFD5005F53FA /* FileType.swift */; };
@@ -264,6 +265,7 @@
 		A3049B842D161455002F3166 /* GetEnrollmentsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetEnrollmentsRequest.swift; sourceTree = "<group>"; };
 		A3049B862D16146D002F3166 /* GetQuizzesRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetQuizzesRequest.swift; sourceTree = "<group>"; };
 		A306ED102CEAC09E00556D1E /* Folder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Folder.swift; sourceTree = "<group>"; };
+		A30F3C2B2D9CE3BB007F0D43 /* CourseRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseRepository.swift; sourceTree = "<group>"; };
 		A31A81E62D0CCB69003C37EB /* GradesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradesViewModel.swift; sourceTree = "<group>"; };
 		A324BA632D07AF0B005F53FA /* CourseFileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseFileService.swift; sourceTree = "<group>"; };
 		A324BA652D07AFD5005F53FA /* FileType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileType.swift; sourceTree = "<group>"; };
@@ -616,6 +618,7 @@
 				A3269E8D2CD5533F006F7D14 /* CanvasRepository.swift */,
 				A3269E8F2CD57F75006F7D14 /* Cacheable.swift */,
 				B76454F02C8DF61B002DF00E /* StorageKeys.swift */,
+				A30F3C2B2D9CE3BB007F0D43 /* CourseRepository.swift */,
 			);
 			path = Storage;
 			sourceTree = "<group>";
@@ -1268,6 +1271,7 @@
 				A31A81E72D0CCB69003C37EB /* GradesViewModel.swift in Sources */,
 				A373DC142D19FA2A00215019 /* APICourseSection.swift in Sources */,
 				A3E7F38B2C9555B200DC4300 /* CanvasService.swift in Sources */,
+				A30F3C2C2D9CE3BB007F0D43 /* CourseRepository.swift in Sources */,
 				B72EA5702D5689B20013070E /* QuickLookPreview.swift in Sources */,
 				A372D10E2D90F505005E94CA /* CourseGroupsViewModel.swift in Sources */,
 				A372D10A2D90DA7A005E94CA /* GetCourseGroupsRequest.swift in Sources */,

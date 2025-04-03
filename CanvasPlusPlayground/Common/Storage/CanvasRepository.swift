@@ -9,6 +9,7 @@ import SwiftData
 import SwiftUI
 
 extension ModelContext {
+    @MainActor
     static var shared: ModelContext = {
         let modelContainer = try! ModelContainer(
             for: Course.self,
