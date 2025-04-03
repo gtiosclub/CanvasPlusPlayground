@@ -51,10 +51,10 @@ class CourseRepositoryImpl: CourseRepository {
         let state = state as [CourseState?]
         var descriptor = FetchDescriptor(
             predicate: #Predicate<Course> {
-                $0.enrollmentTypesRaw.localizedStandardContains(enrollmentTypeRaw) &&
-                $0.enrollmentStatesRaw.localizedStandardContains(enrollmentStateRaw) &&
-                $0.blueprint == excludeBlueprintCourses &&
-                state.contains($0.workflowState)
+                (enrollmentTypeRaw == "" || $0.enrollmentTypesRaw.localizedStandardContains(enrollmentTypeRaw)) &&
+                (enrollmentStateRaw == "" || $0.enrollmentStatesRaw.localizedStandardContains(enrollmentStateRaw)) &&
+                (!excludeBlueprintCourses || $0.blueprint == true) &&
+                (state.isEmpty || state.contains($0.workflowState))
             },
             sortBy: [SortDescriptor(\.order)]
         )
@@ -82,19 +82,20 @@ class CourseRepositoryImpl: CourseRepository {
         // TODO: delete by filter
         let enrollmentTypeRaw = enrollmentType?.rawValue ?? ""
         let enrollmentStateRaw = enrollmentState?.rawValue ?? ""
-        let states = state as [CourseState?]
-        var predicate = #Predicate<Course> {
-            $0.enrollmentTypesRaw.localizedStandardContains(enrollmentTypeRaw) &&
-            $0.enrollmentStatesRaw.localizedStandardContains(enrollmentStateRaw) &&
-            $0.blueprint == excludeBlueprintCourses
-        }
-        for state in states {
-            predicate = #Predicate<Course> {
-                predicate.evaluate($0) && $0.workflowState == state
-            }
+        let state = state as [CourseState?]
+        let predicate = #Predicate<Course> {
+            (enrollmentTypeRaw == "" || $0.enrollmentTypesRaw.localizedStandardContains(enrollmentTypeRaw)) &&
+            (enrollmentStateRaw == "" || $0.enrollmentStatesRaw.localizedStandardContains(enrollmentStateRaw)) &&
+            (!excludeBlueprintCourses || $0.blueprint == true) &&
+            (state.isEmpty || state.contains($0.workflowState))
         }
 
-        try? ModelContext.shared.delete(model: Course.self, where: predicate)
+        do {
+            try ModelContext.shared.delete(model: Course.self, where: predicate)
+            try ModelContext.shared.save()
+        } catch {
+            LoggerService.main.error("[CourseRepositoryImpl] Failure in deleting courses: \(error)")
+        }
     }
 
     @MainActor

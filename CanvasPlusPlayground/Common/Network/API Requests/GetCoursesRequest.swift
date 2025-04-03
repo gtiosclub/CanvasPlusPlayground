@@ -107,7 +107,7 @@ struct GetCoursesRequest: CacheableArrayAPIRequest {
 }
 
 extension GetCoursesRequest {
-    enum Include: String {
+    enum Include: String, CaseIterable {
         case needsGradingCount = "needs_grading_count",
              syllabusBody = "syllabus_body",
              publicDescription = "public_description",

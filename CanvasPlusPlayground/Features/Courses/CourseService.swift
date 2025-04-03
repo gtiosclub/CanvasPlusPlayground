@@ -38,33 +38,9 @@ class CourseService: CourseServicing {
             enrollmentType: enrollmentType,
             enrollmentState: enrollmentState,
             excludeBlueprintCourses: excludeBlueprintCourses,
-            include: [
-                .favorites,
-                .courseImage,
-                .courseProgress,
-                .concluded,
-                .bannerImage,
-                .needsGradingCount,
-                .totalStudents,
-                .totalScores,
-                .sections,
-                .observedUsers,
-                .passbackStatus,
-                .postManually,
-                .term,
-                .teachers,
-                .syllabusBody
-            ],
+            include: GetCoursesRequest.Include.allCases,
             state: state,
             perPage: pageConfiguration.perPage
-        )
-
-        let dbCourses = await courseRepository.getCourses(
-            enrollmentType: enrollmentType,
-            enrollmentState: enrollmentState,
-            excludeBlueprintCourses: excludeBlueprintCourses,
-            state: state,
-            pageConfiguration: pageConfiguration
         )
 
         do {
@@ -73,9 +49,9 @@ class CourseService: CourseServicing {
                 loadingMethod: { // TODO: pageConfiguration should directly go into `fetch`
                     // ideally we dont use `.all`
                     switch pageConfiguration {
-                    case let .page(pageNum, perPage):
+                    case let .page(pageNum, _):
                         return .page(order: pageNum)
-                    case .all(let perPage):
+                    case .all:
                         return .all(onNewPage: { _ in })
                     }
                 }()
@@ -92,7 +68,13 @@ class CourseService: CourseServicing {
 
             return await self.courseRepository.syncCourses(courses, pageConfig: pageConfiguration)
         } catch {
-            return dbCourses
+            return await courseRepository.getCourses(
+                enrollmentType: enrollmentType,
+                enrollmentState: enrollmentState,
+                excludeBlueprintCourses: excludeBlueprintCourses,
+                state: state,
+                pageConfiguration: pageConfiguration
+            )
         }
     }
 }
