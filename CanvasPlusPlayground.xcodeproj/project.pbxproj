@@ -99,6 +99,7 @@
 		A373DC332D2819F700215019 /* APIModuleItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC322D2819F700215019 /* APIModuleItem.swift */; };
 		A373DC352D2824D700215019 /* Module.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC342D2824D700215019 /* Module.swift */; };
 		A373DC372D28285300215019 /* ModuleItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC362D28285300215019 /* ModuleItem.swift */; };
+		A3777E022D9F148300A8B00C /* CourseRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3777E012D9F148300A8B00C /* CourseRepository.swift */; };
 		A37AB4A72D98670600610639 /* LeaveGroupRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37AB4A62D98670600610639 /* LeaveGroupRequest.swift */; };
 		A37AB4A92D9867D600610639 /* UpdateGroupMembershipRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37AB4A82D9867D600610639 /* UpdateGroupMembershipRequest.swift */; };
 		A37AB4AB2D988F5800610639 /* CreateGroupMembershipRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37AB4AA2D988F5800610639 /* CreateGroupMembershipRequest.swift */; };
@@ -298,6 +299,7 @@
 		A373DC322D2819F700215019 /* APIModuleItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIModuleItem.swift; sourceTree = "<group>"; };
 		A373DC342D2824D700215019 /* Module.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Module.swift; sourceTree = "<group>"; };
 		A373DC362D28285300215019 /* ModuleItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleItem.swift; sourceTree = "<group>"; };
+		A3777E012D9F148300A8B00C /* CourseRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseRepository.swift; sourceTree = "<group>"; };
 		A37AB4A62D98670600610639 /* LeaveGroupRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaveGroupRequest.swift; sourceTree = "<group>"; };
 		A37AB4A82D9867D600610639 /* UpdateGroupMembershipRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateGroupMembershipRequest.swift; sourceTree = "<group>"; };
 		A37AB4AA2D988F5800610639 /* CreateGroupMembershipRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupMembershipRequest.swift; sourceTree = "<group>"; };
@@ -522,6 +524,7 @@
 				B76454FC2C8DF61B002DF00E /* CourseManager.swift */,
 				B7CC4D452D8DFFA000254F55 /* CourseItemPicker.swift */,
 				B76454F62C8DF61B002DF00E /* CourseView.swift */,
+				A3777E012D9F148300A8B00C /* CourseRepository.swift */,
 			);
 			path = Courses;
 			sourceTree = "<group>";
@@ -1126,6 +1129,7 @@
 				A324BA662D07AFD5005F53FA /* FileType.swift in Sources */,
 				B7725D652D7387D600D64ED8 /* AccessoryBar.swift in Sources */,
 				192EC0482C963ACB00AF8528 /* CourseAssignmentManager.swift in Sources */,
+				A3777E022D9F148300A8B00C /* CourseRepository.swift in Sources */,
 				A373DC232D1D454000215019 /* GradingSchemeEntry.swift in Sources */,
 				A301EE0D2D612E7100D71139 /* DiscussionTopicAPI.swift in Sources */,
 				A373DC252D1D4BEC00215019 /* APIQuizSubmission.swift in Sources */,
