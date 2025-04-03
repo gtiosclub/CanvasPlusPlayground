@@ -100,6 +100,8 @@
 		A373DC352D2824D700215019 /* Module.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC342D2824D700215019 /* Module.swift */; };
 		A373DC372D28285300215019 /* ModuleItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A373DC362D28285300215019 /* ModuleItem.swift */; };
 		A3777E022D9F148300A8B00C /* CourseRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3777E012D9F148300A8B00C /* CourseRepository.swift */; };
+		A3777E042D9F14DD00A8B00C /* PageConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3777E032D9F14DD00A8B00C /* PageConfiguration.swift */; };
+		A3777E062D9F152400A8B00C /* CourseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3777E052D9F152400A8B00C /* CourseService.swift */; };
 		A37AB4A72D98670600610639 /* LeaveGroupRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37AB4A62D98670600610639 /* LeaveGroupRequest.swift */; };
 		A37AB4A92D9867D600610639 /* UpdateGroupMembershipRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37AB4A82D9867D600610639 /* UpdateGroupMembershipRequest.swift */; };
 		A37AB4AB2D988F5800610639 /* CreateGroupMembershipRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37AB4AA2D988F5800610639 /* CreateGroupMembershipRequest.swift */; };
@@ -300,6 +302,8 @@
 		A373DC342D2824D700215019 /* Module.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Module.swift; sourceTree = "<group>"; };
 		A373DC362D28285300215019 /* ModuleItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleItem.swift; sourceTree = "<group>"; };
 		A3777E012D9F148300A8B00C /* CourseRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseRepository.swift; sourceTree = "<group>"; };
+		A3777E032D9F14DD00A8B00C /* PageConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageConfiguration.swift; sourceTree = "<group>"; };
+		A3777E052D9F152400A8B00C /* CourseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseService.swift; sourceTree = "<group>"; };
 		A37AB4A62D98670600610639 /* LeaveGroupRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaveGroupRequest.swift; sourceTree = "<group>"; };
 		A37AB4A82D9867D600610639 /* UpdateGroupMembershipRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateGroupMembershipRequest.swift; sourceTree = "<group>"; };
 		A37AB4AA2D988F5800610639 /* CreateGroupMembershipRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupMembershipRequest.swift; sourceTree = "<group>"; };
@@ -520,11 +524,12 @@
 		A324BA522D079666005F53FA /* Courses */ = {
 			isa = PBXGroup;
 			children = (
+				A3777E012D9F148300A8B00C /* CourseRepository.swift */,
+				A3777E052D9F152400A8B00C /* CourseService.swift */,
 				A373DC182D1A40EC00215019 /* Models */,
 				B76454FC2C8DF61B002DF00E /* CourseManager.swift */,
 				B7CC4D452D8DFFA000254F55 /* CourseItemPicker.swift */,
 				B76454F62C8DF61B002DF00E /* CourseView.swift */,
-				A3777E012D9F148300A8B00C /* CourseRepository.swift */,
 			);
 			path = Courses;
 			sourceTree = "<group>";
@@ -548,6 +553,7 @@
 		A324BA542D0796B8005F53FA /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				A3777E032D9F14DD00A8B00C /* PageConfiguration.swift */,
 				A324BA582D079730005F53FA /* Storage */,
 				A324BA572D0796F6005F53FA /* Network */,
 				A324BA562D0796C3005F53FA /* Components */,
@@ -1139,6 +1145,7 @@
 				A3CF88D32D18E6BB000ACDF3 /* ParentKeyPath.swift in Sources */,
 				B7CC4D5A2D90BF6C00254F55 /* RippleModifier.swift in Sources */,
 				B7F9503B2D127AD0004BB470 /* ProfileAPI.swift in Sources */,
+				A3777E042D9F14DD00A8B00C /* PageConfiguration.swift in Sources */,
 				B7CC4D3F2D8DFAEC00254F55 /* PickerService.swift in Sources */,
 				A352AD1C2D3EF206007EE6FC /* User.swift in Sources */,
 				A372D1082D90CEFE005E94CA /* APIGroupMembership.swift in Sources */,
@@ -1265,6 +1272,7 @@
 				A31A81E72D0CCB69003C37EB /* GradesViewModel.swift in Sources */,
 				A3E7F38B2C9555B200DC4300 /* CanvasService.swift in Sources */,
 				B72EA5702D5689B20013070E /* QuickLookPreview.swift in Sources */,
+				A3777E062D9F152400A8B00C /* CourseService.swift in Sources */,
 				A372D10E2D90F505005E94CA /* CourseGroupsViewModel.swift in Sources */,
 				A372D10A2D90DA7A005E94CA /* GetCourseGroupsRequest.swift in Sources */,
 				B76455082C8DF61B002DF00E /* CourseManager.swift in Sources */,
