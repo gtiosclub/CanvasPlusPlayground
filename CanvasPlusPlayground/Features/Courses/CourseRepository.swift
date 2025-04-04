@@ -100,17 +100,26 @@ class CourseRepositoryImpl: CourseRepository {
 
     @MainActor
     func syncCourses(_ courses: [CourseAPI], pageConfig: PageConfiguration) -> [Course] {
-        let courseModels = courses.map { Course($0) }
+        var courseModels = courses.map { Course($0) }
 
         let context = ModelContext.shared
-        for (i, course) in courseModels.enumerated() {
+
+        courseModels = courseModels.enumerated().map { (i, course) in
+            if let dbCourse = ModelContext.shared.registeredModel(for: course.id) as Course? {
+                dbCourse.merge(with: course)
+                return dbCourse
+            }
+
             switch pageConfig {
             case .page:
                 course.order = pageConfig.offset + i
             case .all:
                 course.order = i
             }
+
             context.insert(course)
+            
+            return course
         }
 
         do {

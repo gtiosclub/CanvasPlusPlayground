@@ -47,7 +47,6 @@ class CourseService: CourseServicing {
             let courses = try await CanvasService.shared.fetch(
                 coursesRequest,
                 loadingMethod: { // TODO: pageConfiguration should directly go into `fetch`
-                    // ideally we dont use `.all`
                     switch pageConfiguration {
                     case let .page(pageNum, _):
                         return .page(order: pageNum)
@@ -55,15 +54,6 @@ class CourseService: CourseServicing {
                         return .all(onNewPage: { _ in })
                     }
                 }()
-            )
-
-            // TODO: delete old courses here correctly
-            await self.courseRepository.deleteCourses(
-                enrollmentType: enrollmentType,
-                enrollmentState: enrollmentState,
-                excludeBlueprintCourses: excludeBlueprintCourses,
-                state: state,
-                pageConfiguration: pageConfiguration
             )
 
             return await self.courseRepository.syncCourses(courses, pageConfig: pageConfiguration)
