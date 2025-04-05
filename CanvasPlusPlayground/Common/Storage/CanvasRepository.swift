@@ -11,6 +11,21 @@ import SwiftUI
 extension ModelContext {
     @MainActor
     static var shared: ModelContext = {
+        let modelContext = ModelContainer.shared.mainContext
+        modelContext.autosaveEnabled = true
+        return modelContext
+    }()
+
+    func existingModel<T: Cacheable>(forId id: String) -> T? {
+        try? self.fetch(
+            FetchDescriptor<T>(predicate: #Predicate { $0.id == id })
+        ).first
+    }
+}
+
+extension ModelContainer {
+    static var shared: ModelContainer = {
+        // TODO: show data corruption message with prompt to reset local storage if this fails.
         let modelContainer = try! ModelContainer(
             for: Course.self,
             Announcement.self,
@@ -32,10 +47,7 @@ extension ModelContext {
             // TODO: Add cacheable models here
         )
 
-        let modelContext = ModelContext(modelContainer)
-        modelContext.autosaveEnabled = true
-
-        return modelContext
+        return modelContainer
     }()
 }
 

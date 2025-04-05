@@ -9,6 +9,7 @@
 protocol CourseServicing {
     var courseRepository: CourseRepository { get set }
 
+    @MainActor
     func getCourses(
         enrollmentType: EnrollmentType?,
         enrollmentState: GetCoursesRequest.StateFilter?,
@@ -27,6 +28,7 @@ class CourseService: CourseServicing {
         self.courseRepository = CourseRepositoryImpl()
     }
 
+    @MainActor
     func getCourses(
         enrollmentType: EnrollmentType?,
         enrollmentState: GetCoursesRequest.StateFilter?,
@@ -56,9 +58,10 @@ class CourseService: CourseServicing {
                 }()
             )
 
-            return await self.courseRepository.syncCourses(courses, pageConfig: pageConfiguration)
+            return self.courseRepository.syncCourses(courses, pageConfig: pageConfiguration)
         } catch {
-            return await courseRepository.getCourses(
+            LoggerService.main.error("[CourseService] Network fetch for courses failed: \(error)")
+            return courseRepository.getCourses(
                 enrollmentType: enrollmentType,
                 enrollmentState: enrollmentState,
                 excludeBlueprintCourses: excludeBlueprintCourses,

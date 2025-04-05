@@ -103,6 +103,7 @@
 		A3777E042D9F14DD00A8B00C /* PageConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3777E032D9F14DD00A8B00C /* PageConfiguration.swift */; };
 		A3777E062D9F152400A8B00C /* CourseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3777E052D9F152400A8B00C /* CourseService.swift */; };
 		A3777E082D9F1B3700A8B00C /* CourseSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3777E072D9F1B3700A8B00C /* CourseSection.swift */; };
+		A3777E0A2DA0E25E00A8B00C /* StorageWriteHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3777E092DA0E25E00A8B00C /* StorageWriteHandler.swift */; };
 		A37AB4A72D98670600610639 /* LeaveGroupRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37AB4A62D98670600610639 /* LeaveGroupRequest.swift */; };
 		A37AB4A92D9867D600610639 /* UpdateGroupMembershipRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37AB4A82D9867D600610639 /* UpdateGroupMembershipRequest.swift */; };
 		A37AB4AB2D988F5800610639 /* CreateGroupMembershipRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37AB4AA2D988F5800610639 /* CreateGroupMembershipRequest.swift */; };
@@ -306,6 +307,7 @@
 		A3777E032D9F14DD00A8B00C /* PageConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageConfiguration.swift; sourceTree = "<group>"; };
 		A3777E052D9F152400A8B00C /* CourseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseService.swift; sourceTree = "<group>"; };
 		A3777E072D9F1B3700A8B00C /* CourseSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseSection.swift; sourceTree = "<group>"; };
+		A3777E092DA0E25E00A8B00C /* StorageWriteHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageWriteHandler.swift; sourceTree = "<group>"; };
 		A37AB4A62D98670600610639 /* LeaveGroupRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaveGroupRequest.swift; sourceTree = "<group>"; };
 		A37AB4A82D9867D600610639 /* UpdateGroupMembershipRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateGroupMembershipRequest.swift; sourceTree = "<group>"; };
 		A37AB4AA2D988F5800610639 /* CreateGroupMembershipRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupMembershipRequest.swift; sourceTree = "<group>"; };
@@ -623,6 +625,7 @@
 				A3269E8D2CD5533F006F7D14 /* CanvasRepository.swift */,
 				A3269E8F2CD57F75006F7D14 /* Cacheable.swift */,
 				B76454F02C8DF61B002DF00E /* StorageKeys.swift */,
+				A3777E092DA0E25E00A8B00C /* StorageWriteHandler.swift */,
 			);
 			path = Storage;
 			sourceTree = "<group>";
@@ -1199,6 +1202,7 @@
 				9A977E8B2D6C375E001D7F0A /* ColorPickerSheet.swift in Sources */,
 				192EC04C2C963EE600AF8528 /* CourseAssignmentsView.swift in Sources */,
 				A372D10C2D90E875005E94CA /* GroupsListView.swift in Sources */,
+				A3777E0A2DA0E25E00A8B00C /* StorageWriteHandler.swift in Sources */,
 				A3FFD03C2CDED67C006BAB51 /* String+Numbers.swift in Sources */,
 				A301EE132D614A4100D71139 /* GetDiscussionTopicsRequest.swift in Sources */,
 				9A977E832D6C322F001D7F0A /* LoggerService.swift in Sources */,
@@ -1451,7 +1455,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CanvasPlusPlayground/Preview Content\"";
-				DEVELOPMENT_TEAM = KJ7YS82G45;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
