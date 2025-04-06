@@ -143,9 +143,7 @@ private struct ToDoItemRow: View {
         .contextMenu {
             if let course = item.course {
                 Button("Go to Course...", systemImage: "folder") {
-                    navigationModel.navigationPath.append(
-                        NavigationModel.Destination.course(course)
-                    )
+                    navigationModel.selectedNavigationPage = .course(id: course.id)
                 }
             }
 
@@ -163,7 +161,7 @@ private struct ToDoItemRow: View {
     }
 
     private var ignoreItemButton: some View {
-        Button("Ignore Item", systemImage: "trash", role: .destructive) {
+        Button("Ignore Item", systemImage: "eye.slash", role: .destructive) {
             onIgnoreItem()
         }
     }

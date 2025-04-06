@@ -1207,7 +1207,6 @@
 				B7C0A3C52D2F4C19003E5A36 /* GetAssignmentRequest.swift in Sources */,
 				A37AB4A92D9867D600610639 /* UpdateGroupMembershipRequest.swift in Sources */,
 				B7CC4D6A2D91AF8200254F55 /* ToDoItemAPI.swift in Sources */,
-				A3FFD03E2CE0065A006BAB51 /* NetworkError.swift in Sources */,
 				B7E59A142D2004A4001836FE /* CourseListCell.swift in Sources */,
 				B53D95A22CA0A22A00647EE9 /* PeopleView.swift in Sources */,
 				A373DC312D28176100215019 /* APIModule.swift in Sources */,

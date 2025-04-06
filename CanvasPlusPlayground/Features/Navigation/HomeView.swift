@@ -102,10 +102,10 @@ struct HomeView: View {
         @Bindable var navigationModel = navigationModel
 
         NavigationStack(path: $navigationModel.navigationPath) {
-            Group {
-                if let selectedCourse {
-                    CourseView(course: selectedCourse)
-                } else if let selectedNavigationPage {
+            if let selectedCourse {
+                CourseView(course: selectedCourse)
+            } else if let selectedNavigationPage {
+                Group {
                     switch selectedNavigationPage {
                     case .announcements:
                         AllAnnouncementsView()
@@ -116,12 +116,12 @@ struct HomeView: View {
                     default:
                         EmptyView()
                     }
-                } else {
-                    ContentUnavailableView("Select a course", systemImage: "folder")
                 }
-            }
-            .navigationDestination(for: NavigationModel.Destination.self) { destination in
-                destination.destinationView(for: selectedCourse)
+                .navigationDestination(for: NavigationModel.Destination.self) { destination in
+                    destination.destinationView(for: selectedCourse)
+                }
+            } else {
+                ContentUnavailableView("Select a course", systemImage: "folder")
             }
         }
     }

@@ -61,6 +61,14 @@ class ToDoListManager {
                         }
                     })
                 )
+
+            Task { @MainActor in
+                self.addItems(
+                    items,
+                    courses: courses,
+                    replaceExisting: true
+                )
+            }
         } catch {
             LoggerService.main.error("Failed to fetch to-do items: \(error)")
         }
