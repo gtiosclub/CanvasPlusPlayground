@@ -24,11 +24,7 @@ class ToDoListManager {
         do {
             let count: [ToDoItemCount]? = try await CanvasService.shared
                 .loadAndSync(
-                    request,
-                    onCacheReceive: { cached in
-                        guard let cached = cached?.first else { return }
-                        self.toDoItemCount = cached.assignmentsNeedingSubmitting
-                    }
+                    request
                 )
 
             // TODO: If we support grading assignments, add that count
