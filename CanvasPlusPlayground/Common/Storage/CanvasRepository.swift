@@ -85,7 +85,9 @@ extension ModelContext {
             DiscussionTopic.self,
             Page.self,
             CanvasGroup.self,
-            GroupMembership.self
+            GroupMembership.self,
+            ToDoItem.self,
+            ToDoItemCount.self
             // TODO: Add cacheable models here
         )
 

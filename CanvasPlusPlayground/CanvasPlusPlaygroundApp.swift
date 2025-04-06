@@ -13,6 +13,7 @@ struct CanvasPlusPlaygroundApp: App {
     @State private var navigationModel = NavigationModel()
 
     // App
+    @State private var listManager = ToDoListManager()
     @State private var profileManager = ProfileManager()
     @State private var courseManager = CourseManager()
     @State private var pinnedItemsManager = PinnedItemsManager()
@@ -23,6 +24,7 @@ struct CanvasPlusPlaygroundApp: App {
     var body: some Scene {
         WindowGroup {
             HomeView()
+                .environment(listManager)
                 .environment(profileManager)
                 .environment(courseManager)
                 .environment(pinnedItemsManager)
