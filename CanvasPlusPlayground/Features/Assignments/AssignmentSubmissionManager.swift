@@ -106,7 +106,13 @@ public class AssignmentSubmissionManager {
     func uploadFile(fileURL url: URL) async throws -> Int? {
         LoggerService.main.log("Attempting to upload file to canvas File URL: \(url)")
         let filename = url.lastPathComponent
+
+        if url.startAccessingSecurityScopedResource() == false {
+            throw AssignmentSubmissionError.invalidFileType
+        }
         let fileData = try Data(contentsOf: url)
+        url.stopAccessingSecurityScopedResource()
+
         let size = fileData.count
 
         guard let courseID = assignment.courseId?.asString else {
@@ -167,7 +173,7 @@ public class AssignmentSubmissionManager {
     }
 
     enum AssignmentSubmissionError: LocalizedError {
-        case missingCourseID, notificationResponseFailure, uploadResponseLocationMissing, errorUploadingFiles, invalidFileType
+        case missingCourseID, notificationResponseFailure, uploadResponseLocationMissing, errorUploadingFiles, invalidFileType, insufficentPermissions
 
         var errorDescription: String? {
             switch self {
@@ -181,6 +187,8 @@ public class AssignmentSubmissionManager {
                 return "Error uploading files."
             case .invalidFileType:
                 return "Invalid file type."
+            case .insufficentPermissions:
+                return "Insufficent permissions to upload file."
             }
         }
     }
