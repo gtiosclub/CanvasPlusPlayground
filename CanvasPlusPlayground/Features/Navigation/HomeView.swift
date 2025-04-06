@@ -128,9 +128,13 @@ struct HomeView: View {
 
     private func loadCourses() async {
         isLoadingCourses = true
-        await courseManager.getCourses()
-        await profileManager.getCurrentUserAndProfile()
-        await toDoListManager.fetchToDoItemCount()
+
+        async let coursesTask: Void = courseManager.getCourses()
+        async let profileTask: Void = profileManager.getCurrentUserAndProfile()
+        async let todoTask: Void = toDoListManager.fetchToDoItemCount()
+
+        await (_, _, _) = (coursesTask, profileTask, todoTask)
+
         isLoadingCourses = false
     }
 }
