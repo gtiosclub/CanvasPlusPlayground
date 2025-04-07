@@ -118,7 +118,7 @@ struct HomeView: View {
                     }
                 }
                 .navigationDestination(for: NavigationModel.Destination.self) { destination in
-                    destination.destinationView(for: selectedCourse)
+                    destination.destinationView()
                 }
             } else {
                 ContentUnavailableView("Select a course", systemImage: "folder")
