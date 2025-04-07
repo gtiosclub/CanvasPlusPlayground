@@ -108,7 +108,7 @@ public class AssignmentSubmissionManager {
         let filename = url.lastPathComponent
 
         if url.startAccessingSecurityScopedResource() == false {
-            throw AssignmentSubmissionError.invalidFileType
+            throw AssignmentSubmissionError.insufficentPermissions
         }
         let fileData = try Data(contentsOf: url)
         url.stopAccessingSecurityScopedResource()
