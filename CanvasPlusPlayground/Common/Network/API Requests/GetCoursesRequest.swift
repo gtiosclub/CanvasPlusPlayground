@@ -66,6 +66,7 @@ extension GetCoursesRequest {
              favorites,
              teachers,
              observedUsers = "observed_users",
+             tabs,
              courseImage = "course_image",
              bannerImage = "banner_image",
              concluded,
