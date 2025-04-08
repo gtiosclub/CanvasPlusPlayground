@@ -1,14 +1,21 @@
 //
-//  StorageWriteHandler.swift
+//  StorageHandler.swift
 //  CanvasPlusPlayground
 //
 //  Created by Abdulaziz Albahar on 4/5/25.
 //
 
 import SwiftData
+import SwiftUI
 
 @ModelActor
-actor StorageWriteHandler {
+actor StorageHandler {
+
+    /// Must use this for all modifications to main-thread-bound models or reads. (e.g. even simple changes like MyModel.prop = false)
+    @MainActor
+    static var main = {
+        StorageHandler(modelContainer: .shared) // TODO: enable autosave
+    }()
 
     func save() throws {
         if modelContext.hasChanges {

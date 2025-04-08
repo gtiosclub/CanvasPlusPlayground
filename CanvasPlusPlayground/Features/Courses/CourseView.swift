@@ -27,8 +27,7 @@ struct CourseView: View {
 
         let availableTabs = Set<NavigationModel.CoursePage>(
             tabsManager.tabs.compactMap { tab in
-                guard let label = tab.label else { return nil }
-                return NavigationModel.CoursePage(rawValue: label.lowercased())
+                return NavigationModel.CoursePage(rawValue: tab.label.lowercased())
             }
         )
 

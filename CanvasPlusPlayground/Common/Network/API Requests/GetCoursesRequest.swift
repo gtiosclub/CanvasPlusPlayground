@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct GetCoursesRequest: CacheableArrayAPIRequest {
+struct GetCoursesRequest: ArrayAPIRequest {
     typealias Subject = CourseAPI
 
     var path: String { "courses" }
@@ -45,64 +45,6 @@ struct GetCoursesRequest: CacheableArrayAPIRequest {
         self.include = include
         self.state = state
         self.perPage = perPage
-    }
-
-    // MARK: request Id
-    var requestId: String { "courses_\(StorageKeys.accessTokenValue)" }
-    var requestIdKey: ParentKeyPath<Course, String> { .createWritable(\.parentId) }
-    var idPredicate: Predicate<Course> {
-        #Predicate<Course> { course in
-            course.parentId == requestId
-        }
-    }
-    var customPredicate: Predicate<Course> {
-//        let enrollmentTypePred: Predicate<Course>
-//        if let enrollmentType {
-//            enrollmentTypePred = #Predicate<Course> { course in
-//                course.enrollmentTypesRaw.localizedStandardContains(enrollmentType)
-//            }
-//        } else { enrollmentTypePred = Predicate<Course>.true }
-//
-//        let enrollmentRolePred: Predicate<Course>
-//        if let enrollmentRole {
-//            enrollmentRolePred = #Predicate<Course> { course in
-//                course.enrollmentRolesRaw.localizedStandardContains(enrollmentRole)
-//            }
-//        } else { enrollmentRolePred = .true }
-//
-//        let enrollmentRoleIdPred: Predicate<Course>
-//        if let enrollmentRoleId = enrollmentRoleId?.asString {
-//            enrollmentRoleIdPred = #Predicate<Course> { course in
-//                course.enrollmentRoleIds.localizedStandardContains(enrollmentRoleId)
-//            }
-//        } else { enrollmentRoleIdPred = .true }
-//
-//        let enrollmentStatePred: Predicate<Course>
-//        if let enrollmentState {
-//            enrollmentStatePred = #Predicate<Course> { course in
-//                course.enrollmentStatesRaw.localizedStandardContains(enrollmentState)
-//            }
-//        } else { enrollmentStatePred = .true }
-
-        // swiftlint:disable commented_code
-//        let excludeBluePrintPred = excludeBlueprintCourses == nil ? .true : #Predicate<Course> { course in
-//            !(course.blueprint == true)
-//        }
-
-//        let statePred = state.isEmpty ? .true : #Predicate<Course> { course in
-//            state.contains(course.workflowState)
-//        }
-
-        return #Predicate<Course> { course in
-            true
-//            enrollmentTypePred.evaluate(course)
-//            && enrollmentRolePred.evaluate(course)
-//            && enrollmentRoleIdPred.evaluate(course)
-//            && enrollmentStatePred.evaluate(course)
-//            && excludeBluePrintPred.evaluate(course)
-//            && statePred.evaluate(course)
-        }
-        // swiftlint:enable commented_code
     }
 }
 

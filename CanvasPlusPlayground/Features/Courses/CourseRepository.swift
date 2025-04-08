@@ -35,8 +35,8 @@ protocol CourseRepository {
 }
 
 extension CourseRepository {
-    var writeHandler: StorageWriteHandler {
-        StorageWriteHandler(modelContainer: .shared)
+    var writeHandler: StorageHandler {
+        StorageHandler(modelContainer: .shared)
     }
 }
 

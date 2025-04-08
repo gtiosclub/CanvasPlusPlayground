@@ -11,49 +11,61 @@ import Foundation
 // https://github.com/instructure/canvas-ios/blob/49a3e347116d623638c66b7adbcc946294faa212/Core/Core/Contexts/APITab.swift
 // https://canvas.instructure.com/doc/api/tabs.html
 struct TabAPI: APIResponse, Identifiable {
-    typealias Model = NoOpCacheable
+    typealias Model = CanvasTab
 
-    let id: String?
-    let html_url: String?
-    let full_url: String?
-    let position: Int?
+    let id: String
+    let html_url: URL
+    let full_url: URL?
+    let position: Int
     let visibility: String?
-    let label: String?
-    let type: String?
-    let url: String?
+    let label: String
+    let type: TabType
+    let hidden: Bool?
+    let url: URL?
+
+    func createModel() -> CanvasTab {
+        CanvasTab(from: self)
+    }
+}
+
+enum TabType: String, Codable {
+    case external, `internal`
 }
 
 extension TabAPI {
     static let sample1 = TabAPI(
         id: "home",
-        html_url: nil,
-        full_url: nil,
+        html_url: URL(string: "https://canvas.instructure.com/courses/12345")!,
+        full_url: URL(string: "https://canvas.instructure.com/courses/12345"),
         position: 0,
         visibility: "public",
         label: "Home",
-        type: "internal",
-        url: "/courses/12345"
+        type: .internal,
+        hidden: false,
+        url: URL(string: "/courses/12345")
     )
 
     static let sample2 = TabAPI(
         id: "modules",
-        html_url: nil,
-        full_url: nil,
+        html_url: URL(string: "https://canvas.instructure.com/courses/12345/modules")!,
+        full_url: URL(string: "https://canvas.instructure.com/courses/12345/modules"),
         position: 1,
         visibility: "public",
         label: "Modules",
-        type: "internal",
-        url: "/courses/12345/modules"
+        type: .internal,
+        hidden: false,
+        url: URL(string: "/courses/12345/modules")
     )
 
     static let sample3 = TabAPI(
         id: "assignments",
-        html_url: nil,
-        full_url: nil,
+        html_url: URL(string: "https://canvas.instructure.com/courses/12345/assignments")!,
+        full_url: URL(string: "https://canvas.instructure.com/courses/12345/assignments"),
         position: 2,
         visibility: "public",
         label: "Assignments",
-        type: "internal",
-        url: "/courses/12345/assignments"
+        type: .internal,
+        hidden: false,
+        url: URL(string: "/courses/12345/assignments")
     )
 }
