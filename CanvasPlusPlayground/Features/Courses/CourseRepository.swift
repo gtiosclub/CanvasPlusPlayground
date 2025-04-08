@@ -19,7 +19,7 @@ protocol CourseRepository {
     ) -> [Course]
 
     @MainActor
-    func getCourses(withIds ids: [PersistentIdentifier]) -> [Course]
+    func getCourses(withIds ids: [String]) -> [Course]
 
     func deleteCourses(_ persistentIds: [PersistentIdentifier]) async throws
 
@@ -31,7 +31,7 @@ protocol CourseRepository {
         pageConfiguration: PageConfiguration
     ) async
 
-    func syncCourses(_ courses: [CourseAPI], pageConfig: PageConfiguration) async -> [PersistentIdentifier]
+    func syncCourses(_ courses: [CourseAPI], pageConfig: PageConfiguration) async -> [String]
 }
 
 extension CourseRepository {
@@ -71,11 +71,11 @@ class CourseRepositoryImpl: CourseRepository {
     }
 
     @MainActor
-    func getCourses(withIds ids: [PersistentIdentifier]) -> [Course] {
+    func getCourses(withIds ids: [String]) -> [Course] {
         let mainContext = ModelContext.shared
 
         return ids.compactMap {
-            mainContext.registeredModel(for: $0)
+            mainContext.existingModel(forId: $0)
         }
     }
 
@@ -112,12 +112,12 @@ class CourseRepositoryImpl: CourseRepository {
         }
     }
 
-    func syncCourses(_ courses: [CourseAPI], pageConfig: PageConfiguration) async -> [PersistentIdentifier] {
+    func syncCourses(_ courses: [CourseAPI], pageConfig: PageConfiguration) async -> [String] {
         let writeHandler = writeHandler
 
         do {
             // All or nothing block to maintain consistency in `order` property
-            let courseIds: [PersistentIdentifier] = try await writeHandler.transaction { context in
+            let courseIds: [String] = try await writeHandler.transaction { context in
                 let courseModels = courses.map { Course($0) }
 
                 return courseModels.enumerated()
@@ -129,12 +129,7 @@ class CourseRepositoryImpl: CourseRepository {
                             course.order = i
                         }
 
-                        let courseId = course.id
-                        let dbCourse = try? context.fetch(
-                            FetchDescriptor<Course>(predicate: #Predicate { $0.id == courseId })
-                        ).first
-
-                        if let dbCourse {
+                        if let dbCourse = context.existingModel(forId: course.id) as Course? {
                             dbCourse.merge(with: course)
                             return dbCourse
                         }
@@ -144,7 +139,7 @@ class CourseRepositoryImpl: CourseRepository {
                         return course
                     }
             }
-            .map { $0.persistentModelID } // persistent ids are only save to use once their models are saved
+            .map { $0.id }
 
             return courseIds
         } catch {
