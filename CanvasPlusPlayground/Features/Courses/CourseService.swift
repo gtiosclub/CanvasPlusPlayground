@@ -9,6 +9,7 @@
 protocol CourseServicing {
     var courseRepository: CourseRepository { get set }
 
+    @MainActor
     func getCourses(
         enrollmentType: EnrollmentType?,
         enrollmentState: GetCoursesRequest.StateFilter?,
@@ -27,6 +28,7 @@ class CourseService: CourseServicing {
         self.courseRepository = CourseRepositoryImpl()
     }
 
+    @MainActor
     func getCourses(
         enrollmentType: EnrollmentType?,
         enrollmentState: GetCoursesRequest.StateFilter?,

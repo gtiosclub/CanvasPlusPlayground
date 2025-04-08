@@ -20,7 +20,7 @@ protocol CourseRepository {
 
     @MainActor
     func getCourses(withIds ids: [String]) -> [Course]
-
+  
     func deleteCourses(_ persistentIds: [PersistentIdentifier]) async throws
 
     func deleteCourses(
@@ -37,6 +37,13 @@ protocol CourseRepository {
 extension CourseRepository {
     var writeHandler: StorageWriteHandler {
         StorageWriteHandler(modelContainer: .shared)
+    }
+}
+
+extension CourseRepository {
+    @MainActor
+    var mainContext: ModelContext {
+        .shared
     }
 }
 

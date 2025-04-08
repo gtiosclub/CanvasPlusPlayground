@@ -8,6 +8,7 @@
 import SwiftUI
 
 @Observable
+@MainActor
 class CourseManager {
     var allCourses = [Course]()
 
@@ -38,13 +39,12 @@ class CourseManager {
             )
             LoggerService.main.debug("\(courses.map(\.name))")
 
-            await setCourses(courses)
+            setCourses(courses)
         } catch {
             LoggerService.main.error("Failed to fetch courses. \(error)")
         }
     }
 
-    @MainActor
     func setCourses(_ courses: [Course]) {
         self.allCourses = courses
     }
