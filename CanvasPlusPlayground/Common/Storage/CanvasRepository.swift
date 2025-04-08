@@ -17,7 +17,7 @@ extension ModelContext {
     }()
 
     func existingModel<T: Cacheable>(forId id: String) -> T? {
-        try? self.fetch(
+        try? fetch(
             FetchDescriptor<T>(predicate: #Predicate { $0.id == id })
         ).first
     }

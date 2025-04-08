@@ -19,12 +19,10 @@ protocol CourseRepository {
     ) -> [Course]
 
     @MainActor
-    func getCourses(withIds ids: [PersistentIdentifier]) -> [Course]
-
-    @MainActor
+    func getCourses(withIds ids: [String]) -> [Course]
+  
     func deleteCourses(_ persistentIds: [PersistentIdentifier]) async throws
 
-    @MainActor
     func deleteCourses(
         enrollmentType: EnrollmentType?,
         enrollmentState: GetCoursesRequest.StateFilter?,
@@ -33,8 +31,13 @@ protocol CourseRepository {
         pageConfiguration: PageConfiguration
     ) async
 
-    @MainActor
-    func syncCourses(_ courses: [CourseAPI], pageConfig: PageConfiguration) -> [Course]
+    func syncCourses(_ courses: [CourseAPI], pageConfig: PageConfiguration) async -> [String]
+}
+
+extension CourseRepository {
+    var writeHandler: StorageWriteHandler {
+        StorageWriteHandler(modelContainer: .shared)
+    }
 }
 
 extension CourseRepository {
@@ -54,6 +57,8 @@ class CourseRepositoryImpl: CourseRepository {
         state: [CourseState],
         pageConfiguration: PageConfiguration
     ) -> [Course] {
+        let mainContext = ModelContext.shared
+
         let enrollmentTypeRaw = enrollmentType?.rawValue ?? ""
         let enrollmentStateRaw = enrollmentState?.rawValue ?? ""
         let state = state as [CourseState?]
@@ -73,20 +78,20 @@ class CourseRepositoryImpl: CourseRepository {
     }
 
     @MainActor
-    func getCourses(withIds ids: [PersistentIdentifier]) -> [Course] {
+    func getCourses(withIds ids: [String]) -> [Course] {
+        let mainContext = ModelContext.shared
+
         return ids.compactMap {
-            mainContext.registeredModel(for: $0)
+            mainContext.existingModel(forId: $0)
         }
     }
 
-    @MainActor
     func deleteCourses(_ persistentIds: [PersistentIdentifier]) async throws {
-        try mainContext.transaction {
-            try mainContext.delete(model: Course.self, where: #Predicate<Course> { persistentIds.contains($0.persistentModelID) })
+        try await writeHandler.transaction { context in
+            try context.delete(model: Course.self, where: #Predicate<Course> { persistentIds.contains($0.persistentModelID) })
         }
     }
 
-    @MainActor
     func deleteCourses(
         enrollmentType: EnrollmentType?,
         enrollmentState: GetCoursesRequest.StateFilter?,
@@ -106,23 +111,23 @@ class CourseRepositoryImpl: CourseRepository {
         }
 
         do {
-            try mainContext.transaction {
-                try mainContext.delete(model: Course.self, where: predicate)
+            try await writeHandler.transaction { context in
+                try context.delete(model: Course.self, where: predicate)
             }
         } catch {
             LoggerService.main.error("[CourseRepositoryImpl] Failure in deleting courses: \(error)")
         }
     }
 
-    @MainActor
-    func syncCourses(_ courses: [CourseAPI], pageConfig: PageConfiguration) -> [Course] {
+    func syncCourses(_ courses: [CourseAPI], pageConfig: PageConfiguration) async -> [String] {
+        let writeHandler = writeHandler
+
         do {
-            var coursesRes = [Course]()
             // All or nothing block to maintain consistency in `order` property
-            try mainContext.transaction {
+            let courseIds: [String] = try await writeHandler.transaction { context in
                 let courseModels = courses.map { Course($0) }
 
-                coursesRes = courseModels.enumerated()
+                return courseModels.enumerated()
                     .map { (i, course) in
                         switch pageConfig {
                         case .page:
@@ -131,18 +136,19 @@ class CourseRepositoryImpl: CourseRepository {
                             course.order = i
                         }
 
-                        if let dbCourse = mainContext.existingModel(forId: course.id) as Course? {
+                        if let dbCourse = context.existingModel(forId: course.id) as Course? {
                             dbCourse.merge(with: course)
                             return dbCourse
                         }
 
-                        mainContext.insert(course)
+                        context.insert(course)
 
                         return course
                     }
             }
+            .map { $0.id }
 
-            return coursesRes
+            return courseIds
         } catch {
             LoggerService.main.error("Failed to persist courses: \(error)")
 

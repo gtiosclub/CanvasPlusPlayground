@@ -58,10 +58,11 @@ class CourseService: CourseServicing {
                 }()
             )
 
-            return self.courseRepository.syncCourses(courses, pageConfig: pageConfiguration)
+            let courseIds = await self.courseRepository.syncCourses(courses, pageConfig: pageConfiguration)
+            return await courseRepository.getCourses(withIds: courseIds)
         } catch {
             LoggerService.main.error("[CourseService] Network fetch for courses failed: \(error)")
-            return courseRepository.getCourses(
+            return await courseRepository.getCourses(
                 enrollmentType: enrollmentType,
                 enrollmentState: enrollmentState,
                 excludeBlueprintCourses: excludeBlueprintCourses,
