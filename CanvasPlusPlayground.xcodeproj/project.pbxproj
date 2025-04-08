@@ -70,6 +70,8 @@
 		A324BA6A2D0817AB005F53FA /* FoldersPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A324BA692D0817AB005F53FA /* FoldersPageView.swift */; };
 		A3269E8E2CD5533F006F7D14 /* CanvasRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3269E8D2CD5533F006F7D14 /* CanvasRepository.swift */; };
 		A3269E902CD57F75006F7D14 /* Cacheable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3269E8F2CD57F75006F7D14 /* Cacheable.swift */; };
+		A330B8892DA4D78E00D6C1C3 /* CanvasTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = A330B8882DA4D78D00D6C1C3 /* CanvasTab.swift */; };
+		A330B88B2DA5663700D6C1C3 /* ModelContext+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = A330B88A2DA5663700D6C1C3 /* ModelContext+Utilities.swift */; };
 		A33BE8752D97A6F7005C1D13 /* GetGroupMembershipRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33BE8742D97A6F7005C1D13 /* GetGroupMembershipRequest.swift */; };
 		A351913F2D283556001E415F /* ModulesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A351913E2D283556001E415F /* ModulesListView.swift */; };
 		A35191412D283589001E415F /* ModulesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35191402D283589001E415F /* ModulesViewModel.swift */; };
@@ -103,7 +105,7 @@
 		A3777E042D9F14DD00A8B00C /* PageConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3777E032D9F14DD00A8B00C /* PageConfiguration.swift */; };
 		A3777E062D9F152400A8B00C /* CourseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3777E052D9F152400A8B00C /* CourseService.swift */; };
 		A3777E082D9F1B3700A8B00C /* CourseSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3777E072D9F1B3700A8B00C /* CourseSection.swift */; };
-		A3777E0A2DA0E25E00A8B00C /* StorageWriteHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3777E092DA0E25E00A8B00C /* StorageWriteHandler.swift */; };
+		A3777E0A2DA0E25E00A8B00C /* StorageHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3777E092DA0E25E00A8B00C /* StorageHandler.swift */; };
 		A37AB4A72D98670600610639 /* LeaveGroupRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37AB4A62D98670600610639 /* LeaveGroupRequest.swift */; };
 		A37AB4A92D9867D600610639 /* UpdateGroupMembershipRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37AB4A82D9867D600610639 /* UpdateGroupMembershipRequest.swift */; };
 		A37AB4AB2D988F5800610639 /* CreateGroupMembershipRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37AB4AA2D988F5800610639 /* CreateGroupMembershipRequest.swift */; };
@@ -274,6 +276,8 @@
 		A324BA692D0817AB005F53FA /* FoldersPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoldersPageView.swift; sourceTree = "<group>"; };
 		A3269E8D2CD5533F006F7D14 /* CanvasRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasRepository.swift; sourceTree = "<group>"; };
 		A3269E8F2CD57F75006F7D14 /* Cacheable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cacheable.swift; sourceTree = "<group>"; };
+		A330B8882DA4D78D00D6C1C3 /* CanvasTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasTab.swift; sourceTree = "<group>"; };
+		A330B88A2DA5663700D6C1C3 /* ModelContext+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ModelContext+Utilities.swift"; sourceTree = "<group>"; };
 		A33BE8742D97A6F7005C1D13 /* GetGroupMembershipRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetGroupMembershipRequest.swift; sourceTree = "<group>"; };
 		A351913E2D283556001E415F /* ModulesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModulesListView.swift; sourceTree = "<group>"; };
 		A35191402D283589001E415F /* ModulesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModulesViewModel.swift; sourceTree = "<group>"; };
@@ -307,7 +311,7 @@
 		A3777E032D9F14DD00A8B00C /* PageConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageConfiguration.swift; sourceTree = "<group>"; };
 		A3777E052D9F152400A8B00C /* CourseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseService.swift; sourceTree = "<group>"; };
 		A3777E072D9F1B3700A8B00C /* CourseSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseSection.swift; sourceTree = "<group>"; };
-		A3777E092DA0E25E00A8B00C /* StorageWriteHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageWriteHandler.swift; sourceTree = "<group>"; };
+		A3777E092DA0E25E00A8B00C /* StorageHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageHandler.swift; sourceTree = "<group>"; };
 		A37AB4A62D98670600610639 /* LeaveGroupRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaveGroupRequest.swift; sourceTree = "<group>"; };
 		A37AB4A82D9867D600610639 /* UpdateGroupMembershipRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateGroupMembershipRequest.swift; sourceTree = "<group>"; };
 		A37AB4AA2D988F5800610639 /* CreateGroupMembershipRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupMembershipRequest.swift; sourceTree = "<group>"; };
@@ -625,7 +629,8 @@
 				A3269E8D2CD5533F006F7D14 /* CanvasRepository.swift */,
 				A3269E8F2CD57F75006F7D14 /* Cacheable.swift */,
 				B76454F02C8DF61B002DF00E /* StorageKeys.swift */,
-				A3777E092DA0E25E00A8B00C /* StorageWriteHandler.swift */,
+				A3777E092DA0E25E00A8B00C /* StorageHandler.swift */,
+				A330B88A2DA5663700D6C1C3 /* ModelContext+Utilities.swift */,
 			);
 			path = Storage;
 			sourceTree = "<group>";
@@ -671,6 +676,7 @@
 				A3E7F3922C99338B00DC4300 /* TabAPI.swift */,
 				A3E7F38E2C96C1CE00DC4300 /* CourseTabsView.swift */,
 				A3E7F3902C99317100DC4300 /* CourseTabsManager.swift */,
+				A330B8882DA4D78D00D6C1C3 /* CanvasTab.swift */,
 			);
 			path = Tabs;
 			sourceTree = "<group>";
@@ -1096,6 +1102,7 @@
 				A3049B5F2D0E6044002F3166 /* QuizHideResults.swift in Sources */,
 				9BA7C0F72D62DC92000F2918 /* PinnedItemDetailView.swift in Sources */,
 				B76455002C8DF61B002DF00E /* File.swift in Sources */,
+				A330B8892DA4D78E00D6C1C3 /* CanvasTab.swift in Sources */,
 				A3049B7B2D15E2B7002F3166 /* GetFilesInFolderRequest.swift in Sources */,
 				A3CF88DB2D192194000ACDF3 /* EnrollmentAPI.swift in Sources */,
 				A372D0FB2D90A709005E94CA /* HTTPURLResponse+Codes.swift in Sources */,
@@ -1135,6 +1142,7 @@
 				A37AB4A72D98670600610639 /* LeaveGroupRequest.swift in Sources */,
 				A3FFD03A2CDEC2AC006BAB51 /* LookupCondition.swift in Sources */,
 				B7D95DB72D0A8D78002AD955 /* SettingsView.swift in Sources */,
+				A330B88B2DA5663700D6C1C3 /* ModelContext+Utilities.swift in Sources */,
 				B7A12F3F2D69441500EDFA0A /* GetAssignmentGroupsRequest.swift in Sources */,
 				9BEB4ED02D56AF570013869D /* AssignmentDetailView.swift in Sources */,
 				A3049B592D0E5A96002F3166 /* LockInfo.swift in Sources */,
@@ -1202,7 +1210,7 @@
 				9A977E8B2D6C375E001D7F0A /* ColorPickerSheet.swift in Sources */,
 				192EC04C2C963EE600AF8528 /* CourseAssignmentsView.swift in Sources */,
 				A372D10C2D90E875005E94CA /* GroupsListView.swift in Sources */,
-				A3777E0A2DA0E25E00A8B00C /* StorageWriteHandler.swift in Sources */,
+				A3777E0A2DA0E25E00A8B00C /* StorageHandler.swift in Sources */,
 				A3FFD03C2CDED67C006BAB51 /* String+Numbers.swift in Sources */,
 				A301EE132D614A4100D71139 /* GetDiscussionTopicsRequest.swift in Sources */,
 				9A977E832D6C322F001D7F0A /* LoggerService.swift in Sources */,
@@ -1414,7 +1422,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CanvasPlusPlayground/Preview Content\"";
-				DEVELOPMENT_TEAM = KJ7YS82G45;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
