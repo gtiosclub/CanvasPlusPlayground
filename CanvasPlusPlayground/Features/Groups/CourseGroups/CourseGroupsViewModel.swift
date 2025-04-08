@@ -10,9 +10,13 @@ import Foundation
 @Observable
 class CourseGroupsViewModel {
     var groups = [CanvasGroup]()
-
+    var searchText: String = ""
     var groupsDisplayed: [CanvasGroup] {
         groups
+            .filter({ group in
+                guard !searchText.isEmpty else { return true }
+                return group.users?.contains { $0.name.localizedCaseInsensitiveContains(searchText) } ?? false
+            })
             .sorted { // sort priority: (1) category name (2) group name
                 guard $0.groupCategoryId != $1.groupCategoryId else {
                     return $0.name < $1.name

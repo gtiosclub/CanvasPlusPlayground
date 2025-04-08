@@ -27,5 +27,6 @@ struct CourseGroupsView: View {
             }
             .statusToolbarItem("Groups", isVisible: isLoading)
             .environment(courseGroupsVM)
+            .searchable(text: $courseGroupsVM.searchText)
     }
 }
