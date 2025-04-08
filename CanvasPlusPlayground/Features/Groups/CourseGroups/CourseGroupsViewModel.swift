@@ -15,6 +15,7 @@ class CourseGroupsViewModel {
         groups
             .filter({ group in
                 guard !searchText.isEmpty else { return true }
+                if group.name.localizedCaseInsensitiveContains(searchText) { return true }
                 return group.users?.contains { $0.name.localizedCaseInsensitiveContains(searchText) } ?? false
             })
             .sorted { // sort priority: (1) category name (2) group name

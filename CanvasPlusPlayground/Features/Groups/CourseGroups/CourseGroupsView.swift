@@ -27,6 +27,20 @@ struct CourseGroupsView: View {
             }
             .statusToolbarItem("Groups", isVisible: isLoading)
             .environment(courseGroupsVM)
-            .searchable(text: $courseGroupsVM.searchText)
+            #if os(iOS)
+            .searchable(
+                text: $courseGroupsVM.searchText,
+                placement:
+                        .navigationBarDrawer(
+                            displayMode: .always
+                        ),
+                prompt: "Search Groups..."
+            )
+            #else
+            .searchable(
+                text: $courseGroupsVM.searchText,
+                prompt: "Search Groups..."
+            )
+            #endif
     }
 }
