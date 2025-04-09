@@ -270,6 +270,16 @@ enum CanvasRequest {
         )
     }
 
+    static func getSinglePage(
+        courseId: String,
+        pageURL: String
+    ) -> GetSinglePageRequest {
+        GetSinglePageRequest(
+            courseId: courseId,
+            pageURL: pageURL
+        )
+    }
+
     static func getPages(
         courseId: String,
         perPage: Int = 50

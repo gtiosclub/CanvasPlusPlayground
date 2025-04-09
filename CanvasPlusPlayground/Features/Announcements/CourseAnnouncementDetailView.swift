@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct CourseAnnouncementDetailView: View {
+    @Environment(NavigationModel.self) private var navigationModel
+
     let announcement: DiscussionTopic
 
     var body: some View {

@@ -68,6 +68,21 @@ struct CourseView: View {
         .navigationDestination(for: NavigationModel.Destination.self) { destination in
             destination.destinationView()
                 .environment(tabsManager)
+                .environment(\.openURL, OpenURLAction { url in
+                    guard let urlServiceResult = CanvasURLService.determineNavigationDestination(
+                        from: url
+                    ) else { return .discarded }
+
+                    Task {
+                        await navigationModel
+                            .handleURLSelection(
+                                result: urlServiceResult,
+                                courseID: course.id
+                            )
+                    }
+
+                    return .handled
+                })
         }
         .disabled(isLoadingTabs)
     }

@@ -10,6 +10,7 @@ import SwiftData
 
 @Model
 class Assignment: Cacheable {
+    typealias ID = String
     typealias ServerID = Int
 
     @Attribute(.unique) let id: String
