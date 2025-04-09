@@ -93,7 +93,6 @@ struct FoldersPageView: View {
         )
         .navigationTitle(folder?.name?.capitalized ?? "Course Files")
         .pickedItem(selectedItem?.pickedValue)
-        .openInCanvasWebToolbarButton(path: "courses/\(course.id)/files/folder/\(folder?.name ?? "")")
     }
 
     @ViewBuilder
