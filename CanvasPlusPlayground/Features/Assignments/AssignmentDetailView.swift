@@ -127,6 +127,7 @@ struct AssignmentDetailView: View {
             .sheet(isPresented: $showSubmissionPopUp) {
                 AssignmentSubmissionView(assignment: assignment)
             }
+            .openInCanvasWebToolbarButton(path: "/courses/\(assignment.courseId?.asString ?? "INVALID_COURSE_ID")/assignments/\(assignment.id)")
         }
     }
 

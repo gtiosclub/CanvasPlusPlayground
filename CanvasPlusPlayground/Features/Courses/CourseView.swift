@@ -70,6 +70,7 @@ struct CourseView: View {
                 .environment(tabsManager)
         }
         .disabled(isLoadingTabs)
+        .openInCanvasWebToolbarButton(path: "courses/\(course.id)")
     }
 
     private func fetchTabs() async {
