@@ -21,7 +21,7 @@ protocol CourseRepository {
     @MainActor
     func getCourses(withIds ids: [String]) -> [Course]
   
-    func deleteCourses(_ persistentIds: [PersistentIdentifier]) async throws
+    func deleteCourses(withIds ids: [String]) async throws
 
     func deleteCourses(
         enrollmentType: EnrollmentType?,
@@ -86,9 +86,9 @@ class CourseRepositoryImpl: CourseRepository {
         }
     }
 
-    func deleteCourses(_ persistentIds: [PersistentIdentifier]) async throws {
+    func deleteCourses(withIds ids: [String]) async throws {
         try await writeHandler.transaction { context in
-            try context.delete(model: Course.self, where: #Predicate<Course> { persistentIds.contains($0.persistentModelID) })
+            try context.delete(model: Course.self, where: #Predicate<Course> { ids.contains($0.id) })
         }
     }
 
@@ -125,26 +125,38 @@ class CourseRepositoryImpl: CourseRepository {
         do {
             // All or nothing block to maintain consistency in `order` property
             let courseIds: [String] = try await writeHandler.transaction { context in
-                let courseModels = courses.map { Course($0) }
+                return courses.enumerated().map { (i, courseApi) in
+                    let course = Course(courseApi)
 
-                return courseModels.enumerated()
-                    .map { (i, course) in
-                        switch pageConfig {
-                        case .page:
-                            course.order = pageConfig.offset + i
-                        case .all:
-                            course.order = i
+                    let newTabs: [CanvasTab] = courseApi.tabs?.compactMap { tabApi in
+                        if let existingTab = context.existingModel(forId: tabApi.id) as CanvasTab? {
+                            existingTab.merge(with: tabApi)
+                            if course.tabs.contains(existingTab) { return nil }
+                            else { return existingTab }
+                        } else {
+                            return CanvasTab(from: tabApi, tabOrigin: .course(id: course.id))
                         }
+                    } ?? []
 
-                        if let dbCourse = context.existingModel(forId: course.id) as Course? {
-                            dbCourse.merge(with: course)
-                            return dbCourse
-                        }
 
-                        context.insert(course)
-
-                        return course
+                    switch pageConfig {
+                    case .page:
+                        course.order = pageConfig.offset + i
+                    case .all:
+                        course.order = i
                     }
+
+                    if let dbCourse = context.existingModel(forId: course.id) as Course? {
+                        dbCourse.merge(with: course)
+                        dbCourse.tabs.append(contentsOf: newTabs)
+                        return dbCourse
+                    }
+
+                    context.insert(course)
+                    course.tabs.append(contentsOf: newTabs)
+
+                    return course
+                } as [Course]
             }
             .map { $0.id }
 

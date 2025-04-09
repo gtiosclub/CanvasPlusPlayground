@@ -30,9 +30,8 @@ struct CanvasPlusPlaygroundApp: App {
                 .environment(remindersManager)
                 .environmentObject(intelligenceManager)
                 .environmentObject(llmEvaluator)
-                .task {
+                .onAppear {
                     CanvasService.shared.setupStorage()
-                    await courseManager.getCourses()
                 }
         }
 

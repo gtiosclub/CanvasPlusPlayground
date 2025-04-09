@@ -56,7 +56,7 @@ final class Course: Cacheable {
     var imageDownloadURL: URL?
     var isFavorite: Bool
     var sections: [CourseSectionRef]
-    var tabs: [TabAPI]
+    @Relationship(deleteRule: .cascade) var tabs: [CanvasTab] = []
     var settings: CourseSettings?
     var concluded: Bool?
     var gradingScheme: [GradingSchemeEntry]
@@ -125,7 +125,7 @@ final class Course: Cacheable {
 
         self.isFavorite = courseAPI.is_favorite ?? false
         self.sections = courseAPI.sections ?? []
-        self.tabs = courseAPI.tabs ?? [] // TODO: make model
+        self.tabs = [] // NOTE: tabs should be filled via initializer since @Relationship objs only persist after the parent `Course` is inserted
         self.settings = courseAPI.settings
         self.concluded = courseAPI.concluded
         self.gradingScheme = courseAPI.grading_scheme?.compactMap { GradingSchemeEntry(courseGradingScheme: $0) } ?? []
@@ -184,7 +184,7 @@ final class Course: Cacheable {
         self.imageDownloadURL = other.imageDownloadURL
         self.isFavorite = other.isFavorite
         self.sections = other.sections
-        self.tabs = other.tabs
+        //self.tabs = other.tabs
         self.settings = other.settings
         self.concluded = other.concluded
         self.gradingScheme = other.gradingScheme

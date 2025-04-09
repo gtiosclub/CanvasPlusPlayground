@@ -10,7 +10,7 @@ import Foundation
 
 @Model
 class CanvasTab: Cacheable {
-    var id: String
+    @Attribute(.unique) var id: String
 
     var htmlRelativeUrl: URL
     var fullUrl: URL?
@@ -20,6 +20,8 @@ class CanvasTab: Cacheable {
     var type: TabType
     var hidden: Bool?
     var url: URL?
+
+    @Relationship var course: Course?
 
     var htmlAbsoluteUrl: URL {
         GetTabsRequest.baseURL.appendingPathComponent(htmlRelativeUrl.path)
@@ -39,6 +41,16 @@ class CanvasTab: Cacheable {
     func merge(with other: CanvasTab) {
         self.htmlRelativeUrl = other.htmlRelativeUrl
         self.fullUrl = other.fullUrl
+        self.position = other.position
+        self.visibility = other.visibility
+        self.label = other.label
+        self.type = other.type
+        self.url = other.url
+    }
+
+    func merge(with other: TabAPI) {
+        self.htmlRelativeUrl = other.html_url
+        self.fullUrl = other.full_url
         self.position = other.position
         self.visibility = other.visibility
         self.label = other.label

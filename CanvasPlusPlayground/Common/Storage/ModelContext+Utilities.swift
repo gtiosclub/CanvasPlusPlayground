@@ -7,6 +7,7 @@
 
 import SwiftData
 import SwiftUI
+import Combine
 
 extension ModelContext {
     /// Don't use for writes! Only reads. `StorageHandler.main` is meant for main thread writes - to serialize operations.
@@ -44,10 +45,18 @@ extension ModelContainer {
             DiscussionTopic.self,
             Page.self,
             CanvasGroup.self,
-            GroupMembership.self
+            GroupMembership.self,
+            CanvasTab.self
             // TODO: Add cacheable models here
         )
 
         return modelContainer
     }()
+}
+
+extension NotificationCenter {
+    /// To listen to DB changes from main thread (for debugging)
+    var managedObjectContextDidSavePublisher: Publishers.ReceiveOn<NotificationCenter.Publisher, DispatchQueue> {
+        return publisher(for: .NSManagedObjectContextDidSave).receive(on: DispatchQueue.main)
+    }
 }

@@ -11,13 +11,14 @@ struct CourseView: View {
     @Environment(PickerService.self) private var pickerService: PickerService?
     @Environment(NavigationModel.self) private var navigationModel
 
-    @State private var tabsManager = CourseTabsManager()
+    @State private var tabsManager: CourseTabsManager
     @State private var isLoadingTabs = false
 
     let course: Course
 
     init(course: Course) {
         self.course = course
+        self._tabsManager = State(initialValue: CourseTabsManager(forCourse: course))
     }
 
     private var coursePages: [NavigationModel.CoursePage] {
@@ -52,7 +53,7 @@ struct CourseView: View {
             .tag(page)
         }
         .task(id: course.id) {
-            await fetchTabs()
+            self.tabsManager = CourseTabsManager(forCourse: course)
         }
         .onAppear {
             navigationModel.selectedCoursePage = nil
@@ -69,11 +70,5 @@ struct CourseView: View {
                 .environment(tabsManager)
         }
         .disabled(isLoadingTabs)
-    }
-
-    private func fetchTabs() async {
-        isLoadingTabs = true
-        await tabsManager.fetchTabs(course: course)
-        isLoadingTabs = false
     }
 }
