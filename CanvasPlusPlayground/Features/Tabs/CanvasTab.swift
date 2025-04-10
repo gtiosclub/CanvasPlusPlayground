@@ -12,10 +12,12 @@ import Foundation
 class CanvasTab: Cacheable {
     @Attribute(.unique) var id: String
 
+    /// Doesn't contain the full url, just the path (e.g. /course/xyz/external/fwefw)
     var htmlRelativeUrl: URL
     var fullUrl: URL?
+    /// 1-indexed
     var position: Int
-    var visibility: String?
+    var visibility: TabVisibility?
     var label: String
     var type: TabType
     var hidden: Bool?

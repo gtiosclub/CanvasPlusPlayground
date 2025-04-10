@@ -17,7 +17,7 @@ struct TabAPI: APIResponse, Identifiable {
     let html_url: URL
     let full_url: URL?
     let position: Int
-    let visibility: String?
+    let visibility: TabVisibility?
     let label: String
     let type: TabType
     let hidden: Bool?
@@ -28,13 +28,17 @@ enum TabType: String, Codable {
     case external, `internal`
 }
 
+enum TabVisibility: String, Codable {
+    case `public`, members, admins, none
+}
+
 extension TabAPI {
     static let sample1 = TabAPI(
         id: "home",
         html_url: URL(string: "https://canvas.instructure.com/courses/12345")!,
         full_url: URL(string: "https://canvas.instructure.com/courses/12345"),
         position: 0,
-        visibility: "public",
+        visibility: .public,
         label: "Home",
         type: .internal,
         hidden: false,
@@ -46,7 +50,7 @@ extension TabAPI {
         html_url: URL(string: "https://canvas.instructure.com/courses/12345/modules")!,
         full_url: URL(string: "https://canvas.instructure.com/courses/12345/modules"),
         position: 1,
-        visibility: "public",
+        visibility: .public,
         label: "Modules",
         type: .internal,
         hidden: false,
@@ -58,7 +62,7 @@ extension TabAPI {
         html_url: URL(string: "https://canvas.instructure.com/courses/12345/assignments")!,
         full_url: URL(string: "https://canvas.instructure.com/courses/12345/assignments"),
         position: 2,
-        visibility: "public",
+        visibility: .public,
         label: "Assignments",
         type: .internal,
         hidden: false,

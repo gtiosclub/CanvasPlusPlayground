@@ -37,7 +37,7 @@ class CourseManager {
                 state: [],
                 pageConfiguration: .all(perPage: 30)
             )
-            LoggerService.main.debug("\(courses.map(\.name))")
+            LoggerService.main.debug("Fetched courses: \(courses.compactMap(\.name))")
 
             setCourses(courses)
         } catch {

@@ -70,7 +70,8 @@ extension GetCoursesRequest {
              courseImage = "course_image",
              bannerImage = "banner_image",
              concluded,
-             postManually = "post_manually"
+             postManually = "post_manually",
+             permissions
     }
 
     enum StateFilter: String {

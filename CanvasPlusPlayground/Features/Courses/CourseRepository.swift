@@ -38,9 +38,7 @@ extension CourseRepository {
     var writeHandler: StorageHandler {
         StorageHandler(modelContainer: .shared)
     }
-}
 
-extension CourseRepository {
     @MainActor
     var mainContext: ModelContext {
         .shared
@@ -125,7 +123,7 @@ class CourseRepositoryImpl: CourseRepository {
         do {
             // All or nothing block to maintain consistency in `order` property
             let courseIds: [String] = try await writeHandler.transaction { context in
-                return courses.enumerated().map { (i, courseApi) in
+                return (courses.enumerated().map { (i, courseApi) in
                     let course = Course(courseApi)
 
                     let newTabs: [CanvasTab] = courseApi.tabs?.compactMap { tabApi in
@@ -156,9 +154,9 @@ class CourseRepositoryImpl: CourseRepository {
                     course.tabs.append(contentsOf: newTabs)
 
                     return course
-                } as [Course]
+                } as [Course])
+                .map { $0.id }
             }
-            .map { $0.id }
 
             return courseIds
         } catch {

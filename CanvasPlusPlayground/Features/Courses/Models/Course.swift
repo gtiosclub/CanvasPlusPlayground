@@ -125,7 +125,7 @@ final class Course: Cacheable {
 
         self.isFavorite = courseAPI.is_favorite ?? false
         self.sections = courseAPI.sections ?? []
-        self.tabs = [] // NOTE: tabs should be filled via initializer since @Relationship objs only persist after the parent `Course` is inserted
+        self.tabs = [] // NOTE: tabs should not be filled via initializer since @Relationship objs only persist after the parent `Course` is inserted
         self.settings = courseAPI.settings
         self.concluded = courseAPI.concluded
         self.gradingScheme = courseAPI.grading_scheme?.compactMap { GradingSchemeEntry(courseGradingScheme: $0) } ?? []
@@ -133,7 +133,7 @@ final class Course: Cacheable {
         self.courseColor = courseAPI.course_color
         self.bannerImageDownloadURL = URL(string: courseAPI.banner_image_download_url ?? "")
 
-        // States as bool
+        // States as bool (business logic from https://github.com/instructure/canvas-ios/blob/master/Core/Core/Features/Courses/Course.swift)
         self.isCourseDeleted = courseAPI.workflow_state == .deleted
         self.isPastEnrollment = (
             courseAPI.workflow_state == .completed ||
@@ -207,5 +207,3 @@ extension Course {
     static let sample = Course(.sample)
     static let minimalSample = Course(.minimalSample)
 }
-
-extension Course: @unchecked Sendable {}
