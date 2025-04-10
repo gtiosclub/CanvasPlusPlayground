@@ -53,6 +53,7 @@ class PeopleManager: SearchResultListDataSource {
         self.courseID = courseID
     }
 
+    @MainActor
     func fetchPeople() async throws {
         guard let courseID else { return }
 
@@ -81,7 +82,7 @@ class PeopleManager: SearchResultListDataSource {
                 )
             }
 
-            await addNewUsers(users)
+            addNewUsers(users)
         } catch {
             // don't make offline query if request was cancelled
             if let error = error as? URLError, error.code == .cancelled {
@@ -90,7 +91,7 @@ class PeopleManager: SearchResultListDataSource {
             LoggerService.main.error("Error fetching users: \(error)")
 
             if queryMode == .live && page == 1 {
-                await setQueryMode(.offline)
+                setQueryMode(.offline)
                 try await fetchPeople()
             } else {
                 throw error
@@ -123,46 +124,40 @@ extension PeopleManager {
     static func fetchAllClassesWith(
         userID: String,
         activeCourses courses: [Course],
-        receivedNewCourse: @escaping (Course) -> Void = { _ in }
+        receivedNewCourse: @MainActor @escaping (Course) -> Void = { _ in }
     ) async {
-        let commonCoursesQueue = DispatchQueue(label: "com.CanvasPlus.commonCoursesQueue")
-
         await withTaskGroup(of: Void.self) { group in
-            for course in courses {
-                var didAlreadyAddCourse = false
-                let courseID = course.id
-                let request = CanvasRequest.getEnrollments(courseId: courseID, userId: userID)
-
-                func processEnrollments(_ enrollments: [Enrollment]) {
-                    guard !didAlreadyAddCourse else { return }
-
-                    let courseIsShared = enrollments.compactMap(\.user?.id.asString).contains(userID)
-                    if courseIsShared {
-                        // Found a Common Course
-
-                        didAlreadyAddCourse = true
-                        commonCoursesQueue.sync {
-                            receivedNewCourse(course)
-                        }
-                    }
+            let maxConcurrentTasks = 10 // too many concurrent requests causes immediate failure
+            for (i, course) in courses.enumerated() {
+                if i >= maxConcurrentTasks {
+                    await group.next()
                 }
 
                 group.addTask {
-                    // Get the enrollments of course
-                    // swiftlint:disable:next unused_optional_binding
-                    guard let _: [Enrollment] = try? await CanvasService.shared.loadAndSync(
-                        request,
-                        onCacheReceive: { cached in
-                            guard let cached else { return }
-
-                            processEnrollments(cached)
-                        }, loadingMethod: .all(onNewPage: processEnrollments)
-                    ) else {
-                        LoggerService.main.error("Couldn't fetch enrollment count for course \(course.name ?? "n/a")")
-                        return
+                    if await userIsInCourse(userId: userID, courseId: course.id) {
+                        await receivedNewCourse(course)
+                    } else {
+                        LoggerService.main.error("User \(userID) not found in course \(course.name ?? "N/A")")
                     }
                 }
+
             }
+        }
+    }
+
+    @MainActor
+    private static func userIsInCourse(userId: String, courseId: String) async -> Bool {
+        let request = CanvasRequest.getEnrollments(courseId: courseId, userId: userId)
+
+        // If user shared course is already known, move on
+        if let numEnrollments = try? await CanvasService.shared.loadCount(request), numEnrollments > 0  {
+            return true
+        }
+
+        if let enrollments = try? await CanvasService.shared.syncWithAPI(request), enrollments.count > 0 {
+            return true
+        } else {
+            return false
         }
     }
 }

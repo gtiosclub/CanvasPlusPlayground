@@ -28,7 +28,7 @@ class NavigationModel {
             }
         }
 
-        case course(id: String)
+        case course(id: Course.ID)
         case announcements
         case toDoList
         case pinned
@@ -65,7 +65,7 @@ class NavigationModel {
         }
 
         static let requiredTabs: Set<CoursePage> = [
-            .tabs, .people, .groups
+            .people, .groups
         ]
 
         var systemImageIcon: String {

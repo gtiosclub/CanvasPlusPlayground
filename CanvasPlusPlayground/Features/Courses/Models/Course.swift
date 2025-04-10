@@ -11,8 +11,10 @@ import SwiftData
 // swiftlint:disable commented_code
 @Model
 final class Course: Cacheable {
+    typealias ID = String
+
     // MARK: IDs
-    @Attribute(.unique) var id: String
+    @Attribute(.unique) var id: ID
     var parentId: String
 
     // MARK: Other

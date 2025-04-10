@@ -30,22 +30,24 @@ class CourseManager {
     func getCourses() async {
         LoggerService.main.debug("Fetching courses")
         do {
-            let courses = try await courseService.getCourses(
+            self.allCourses = courseService.courseRepository.getCourses(
                 enrollmentType: nil,
-                enrollmentState: .active,
+                enrollmentState: nil,
                 excludeBlueprintCourses: false,
                 state: [],
-                pageConfiguration: .all(perPage: 30)
+                pageConfiguration: .all(perPage: 40)
             )
-            LoggerService.main.debug("Fetched courses: \(courses.compactMap(\.name))")
 
-            setCourses(courses)
+            self.allCourses = try await courseService.getCourses(
+                enrollmentType: nil,
+                enrollmentState: nil,
+                excludeBlueprintCourses: false,
+                state: [],
+                pageConfiguration: .all(perPage: 40)
+            )
+            LoggerService.main.debug("Fetched courses: \(self.allCourses.compactMap(\.name))")
         } catch {
             LoggerService.main.error("Failed to fetch courses. \(error)")
         }
-    }
-
-    func setCourses(_ courses: [Course]) {
-        self.allCourses = courses
     }
 }

@@ -11,23 +11,21 @@ struct CourseView: View {
     @Environment(PickerService.self) private var pickerService: PickerService?
     @Environment(NavigationModel.self) private var navigationModel
 
-    @State private var tabsManager: CourseTabsManager
     @State private var isLoadingTabs = false
 
     let course: Course
 
-    init(course: Course) {
-        self.course = course
-        self._tabsManager = State(initialValue: CourseTabsManager(forCourse: course))
+    private var tabLabels: [String] {
+        course.tabs.map(\.label).compactMap { $0 }
     }
 
     private var coursePages: [NavigationModel.CoursePage] {
-        guard !tabsManager.tabs.isEmpty else {
+        guard !course.tabs.isEmpty else {
             return []
         }
 
         let availableTabs = Set<NavigationModel.CoursePage>(
-            tabsManager.tabs.compactMap { tab in
+            course.tabs.compactMap { tab in
                 return NavigationModel.CoursePage(rawValue: tab.label.lowercased())
             }
         )
@@ -52,9 +50,6 @@ struct CourseView: View {
             }
             .tag(page)
         }
-        .task(id: course.id) {
-            self.tabsManager = CourseTabsManager(forCourse: course)
-        }
         .onAppear {
             navigationModel.selectedCoursePage = nil
         }
@@ -67,7 +62,6 @@ struct CourseView: View {
         .navigationTitle(course.displayName)
         .navigationDestination(for: NavigationModel.Destination.self) { destination in
             destination.destinationView(for: course)
-                .environment(tabsManager)
         }
         .disabled(isLoadingTabs)
     }
