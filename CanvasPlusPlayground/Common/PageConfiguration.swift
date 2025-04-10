@@ -26,7 +26,7 @@ enum PageConfiguration {
         case let .page(pageNum, perPage):
             return perPage * (pageNum - 1)
         case .all:
-            return -1
+            return 0
         }
     }
 

@@ -47,6 +47,25 @@ extension CourseRepository {
 
 class CourseRepositoryImpl: CourseRepository {
 
+    private func predicate(
+        enrollmentType: EnrollmentType?,
+        enrollmentState: GetCoursesRequest.StateFilter?,
+        excludeBlueprintCourses: Bool,
+        state: [CourseState]
+    ) -> Predicate<Course> {
+        let enrollmentTypeRaw = enrollmentType?.rawValue ?? ""
+        let enrollmentStateRaw = enrollmentState?.rawValue ?? ""
+        let state = state as [CourseState?]
+        let predicate = #Predicate<Course> {
+            (enrollmentTypeRaw == "" || $0.enrollmentTypesRaw.localizedStandardContains(enrollmentTypeRaw)) &&
+            (enrollmentStateRaw == "" || $0.enrollmentStatesRaw.localizedStandardContains(enrollmentStateRaw)) &&
+            (!excludeBlueprintCourses || $0.blueprint != true) &&
+            (state.isEmpty || state.contains($0.workflowState))
+        }
+
+        return predicate
+    }
+
     @MainActor
     func getCourses(
         enrollmentType: EnrollmentType?,
@@ -57,16 +76,8 @@ class CourseRepositoryImpl: CourseRepository {
     ) -> [Course] {
         let mainContext = ModelContext.shared
 
-        let enrollmentTypeRaw = enrollmentType?.rawValue ?? ""
-        let enrollmentStateRaw = enrollmentState?.rawValue ?? ""
-        let state = state as [CourseState?]
         var descriptor = FetchDescriptor(
-            predicate: #Predicate<Course> {
-                (enrollmentTypeRaw == "" || $0.enrollmentTypesRaw.localizedStandardContains(enrollmentTypeRaw)) &&
-                (enrollmentStateRaw == "" || $0.enrollmentStatesRaw.localizedStandardContains(enrollmentStateRaw)) &&
-                (!excludeBlueprintCourses || $0.blueprint == true) &&
-                (state.isEmpty || state.contains($0.workflowState))
-            },
+            predicate: predicate(enrollmentType: enrollmentType, enrollmentState: enrollmentState, excludeBlueprintCourses: excludeBlueprintCourses, state: state),
             sortBy: [SortDescriptor(\.order)]
         )
         descriptor.fetchOffset = pageConfiguration.offset
@@ -98,19 +109,11 @@ class CourseRepositoryImpl: CourseRepository {
         pageConfiguration: PageConfiguration
     ) async {
         // TODO: delete by filter
-        let enrollmentTypeRaw = enrollmentType?.rawValue ?? ""
-        let enrollmentStateRaw = enrollmentState?.rawValue ?? ""
-        let state = state as [CourseState?]
-        let predicate = #Predicate<Course> {
-            (enrollmentTypeRaw == "" || $0.enrollmentTypesRaw.localizedStandardContains(enrollmentTypeRaw)) &&
-            (enrollmentStateRaw == "" || $0.enrollmentStatesRaw.localizedStandardContains(enrollmentStateRaw)) &&
-            (!excludeBlueprintCourses || $0.blueprint == true) &&
-            (state.isEmpty || state.contains($0.workflowState))
-        }
+
 
         do {
             try await writeHandler.transaction { context in
-                try context.delete(model: Course.self, where: predicate)
+                try context.delete(model: Course.self, where: predicate(enrollmentType: enrollmentType, enrollmentState: enrollmentState, excludeBlueprintCourses: excludeBlueprintCourses, state: state))
             }
         } catch {
             LoggerService.main.error("[CourseRepositoryImpl] Failure in deleting courses: \(error)")
