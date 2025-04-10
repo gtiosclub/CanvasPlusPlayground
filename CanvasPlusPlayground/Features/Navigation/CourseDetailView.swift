@@ -28,8 +28,6 @@ struct CourseDetailView: View {
                 PeopleView(courseID: course.id)
             case .groups:
                 CourseGroupsView(course: course)
-            case .tabs:
-                CourseTabsView(course: course)
             case .quizzes:
                 CourseQuizzesView(courseId: course.id)
             case .modules:
