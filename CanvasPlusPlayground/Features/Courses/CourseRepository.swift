@@ -108,9 +108,6 @@ class CourseRepositoryImpl: CourseRepository {
         state: [CourseState],
         pageConfiguration: PageConfiguration
     ) async {
-        // TODO: delete by filter
-
-
         do {
             try await writeHandler.transaction { context in
                 try context.delete(model: Course.self, where: predicate(enrollmentType: enrollmentType, enrollmentState: enrollmentState, excludeBlueprintCourses: excludeBlueprintCourses, state: state))

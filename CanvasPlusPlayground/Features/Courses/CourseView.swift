@@ -11,8 +11,6 @@ struct CourseView: View {
     @Environment(PickerService.self) private var pickerService: PickerService?
     @Environment(NavigationModel.self) private var navigationModel
 
-    @State private var isLoadingTabs = false
-
     let course: Course
 
     private var tabLabels: [String] {
@@ -63,6 +61,5 @@ struct CourseView: View {
         .navigationDestination(for: NavigationModel.Destination.self) { destination in
             destination.destinationView(for: course)
         }
-        .disabled(isLoadingTabs)
     }
 }
