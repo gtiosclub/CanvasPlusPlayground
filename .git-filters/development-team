@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# This script will handle the DEVELOPMENT_TEAM line in project.pbxproj
+# When cleaning (for commit), it will replace the development team ID with an empty string
+# When smudging (for checkout), it will pass through the content unchanged
+
+# When checking in, replace the development team ID with an empty string
+if [ "$1" = "clean" ]; then
+    perl -p -e 's/(DEVELOPMENT_TEAM = )[^;]+;/$1"";/g'
+fi
+
+# When checking out, do nothing - the development team line will be added by Xcode
+if [ "$1" = "smudge" ]; then
+    cat
+fi 

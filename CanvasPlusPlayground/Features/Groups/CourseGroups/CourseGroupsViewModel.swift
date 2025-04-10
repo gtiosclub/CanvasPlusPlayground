@@ -10,9 +10,14 @@ import Foundation
 @Observable
 class CourseGroupsViewModel {
     var groups = [CanvasGroup]()
-
+    var searchText: String = ""
     var groupsDisplayed: [CanvasGroup] {
         groups
+            .filter({ group in
+                guard !searchText.isEmpty else { return true }
+                if group.name.localizedCaseInsensitiveContains(searchText) { return true }
+                return group.users?.contains { $0.name.localizedCaseInsensitiveContains(searchText) } ?? false
+            })
             .sorted { // sort priority: (1) category name (2) group name
                 guard $0.groupCategoryId != $1.groupCategoryId else {
                     return $0.name < $1.name
@@ -51,7 +56,8 @@ class CourseGroupsViewModel {
         })
     }
 
-    /// Whether joining this group is classified as a switch - joined groups from this category are left. Only use this with groups that have join status.
+    /// Whether joining this group is classified as a switch - joined groups from this category are left.
+    /// Only use this with groups that have join status.
     func canOnlySwitch(to group: CanvasGroup) -> Bool {
         if group.allowsMultipleMemberships ?? false {
             return false // if multiple memberships's are allowed, switch isn't necessary

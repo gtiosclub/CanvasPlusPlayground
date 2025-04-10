@@ -43,7 +43,7 @@ struct CourseView: View {
         @Bindable var navigationModel = navigationModel
 
         List(coursePages, id: \.self, selection: $navigationModel.selectedCoursePage) { page in
-            NavigationLink(value: NavigationModel.Destination.coursePage(page)) {
+            NavigationLink(value: NavigationModel.Destination.coursePage(page, course)) {
                 Label(page.title, systemImage: page.systemImageIcon)
             }
             .tag(page)
@@ -59,7 +59,22 @@ struct CourseView: View {
         .tint(course.rgbColors?.color)
         .navigationTitle(course.displayName)
         .navigationDestination(for: NavigationModel.Destination.self) { destination in
-            destination.destinationView(for: course)
+            destination.destinationView()
+                .environment(\.openURL, OpenURLAction { url in
+                    guard let urlServiceResult = CanvasURLService.determineNavigationDestination(
+                        from: url
+                    ) else { return .discarded }
+
+                    Task {
+                        await navigationModel
+                            .handleURLSelection(
+                                result: urlServiceResult,
+                                courseID: course.id
+                            )
+                    }
+
+                    return .handled
+                })
         }
     }
 }

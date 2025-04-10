@@ -7,6 +7,7 @@
 
 import Foundation
 
+// swiftlint:disable:next type_body_length
 enum CanvasRequest {
     static func getCourses(enrollmentState: GetCoursesRequest.StateFilter, perPage: Int = 50) -> GetCoursesRequest {
         GetCoursesRequest(enrollmentState: enrollmentState, perPage: perPage)
@@ -14,6 +15,22 @@ enum CanvasRequest {
 
     static func getCourse(id: String) -> GetCourseRequest {
         GetCourseRequest(courseId: id)
+    }
+
+    static func getToDoItems(
+        include: [GetUserTodoItemsRequest.Include] = []
+    ) -> GetUserTodoItemsRequest {
+        GetUserTodoItemsRequest(include: include)
+    }
+
+    static func getToDoItemCount(
+        include: [GetUserTodoItemCountRequest.Include] = []
+    ) -> GetUserTodoItemCountRequest {
+        GetUserTodoItemCountRequest(include: include)
+    }
+
+    static func ignoreToDoItem(ignoreURL: String) -> IgnoreToDoItemRequest {
+        IgnoreToDoItemRequest(ignoreURL: ignoreURL)
     }
 
     static func getCourseRootFolder(courseId: String) -> GetCourseRootFolderRequest {
@@ -195,6 +212,18 @@ enum CanvasRequest {
         )
     }
 
+    static func getSingleDiscussionTopic(
+        courseId: String,
+        topicId: String,
+        include: [GetSingleDiscussionTopicRequest.Include] = []
+    ) -> GetSingleDiscussionTopicRequest {
+        GetSingleDiscussionTopicRequest(
+            courseId: courseId,
+            topicId: topicId,
+            include: include
+        )
+    }
+
     static func getDiscussionTopics(
         courseId: String,
         include: [GetDiscussionTopicsRequest.Include] = [],
@@ -250,6 +279,16 @@ enum CanvasRequest {
             submissionBody: submissionBody,
             url: url,
             fileIDs: fileIDs
+        )
+    }
+
+    static func getSinglePage(
+        courseId: String,
+        pageURL: String
+    ) -> GetSinglePageRequest {
+        GetSinglePageRequest(
+            courseId: courseId,
+            pageURL: pageURL
         )
     }
 

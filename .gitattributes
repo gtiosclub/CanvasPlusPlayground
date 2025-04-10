@@ -1,0 +1,2 @@
+# Ignore changes to development team in project.pbxproj
+*.xcodeproj/project.pbxproj filter=development-team

@@ -148,6 +148,10 @@
 		B7460A942D6BFB1A0069CF5B /* GradeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7460A932D6BFB1A0069CF5B /* GradeCalculator.swift */; };
 		B7460A962D6CCD730069CF5B /* GradeCalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7460A952D6CCD6E0069CF5B /* GradeCalculatorView.swift */; };
 		B74688A32D63DB59007A27FD /* Assignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74688A22D63DB59007A27FD /* Assignment.swift */; };
+		B75684F42DA5A6B2003B4A32 /* HTMLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75684F32DA5A6B2003B4A32 /* HTMLView.swift */; };
+		B75684F62DA5A7D3003B4A32 /* CanvasURLService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75684F52DA5A7CE003B4A32 /* CanvasURLService.swift */; };
+		B75684F82DA5F9F4003B4A32 /* GetSinglePageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75684F72DA5F9F4003B4A32 /* GetSinglePageRequest.swift */; };
+		B75684FA2DA7A080003B4A32 /* GetSingleDiscussionTopicRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75684F92DA7A080003B4A32 /* GetSingleDiscussionTopicRequest.swift */; };
 		B76454FE2C8DF61B002DF00E /* Course.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454ED2C8DF61B002DF00E /* Course.swift */; };
 		B76454FF2C8DF61B002DF00E /* Enrollment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454EE2C8DF61B002DF00E /* Enrollment.swift */; };
 		B76455002C8DF61B002DF00E /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454EF2C8DF61B002DF00E /* File.swift */; };
@@ -194,12 +198,21 @@
 		B7CC4D5C2D90C00B00254F55 /* CGSize+Center.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D5B2D90C00800254F55 /* CGSize+Center.swift */; };
 		B7CC4D5F2D90C86C00254F55 /* Gradient.metal in Resources */ = {isa = PBXBuildFile; fileRef = B7CC4D5E2D90C86C00254F55 /* Gradient.metal */; };
 		B7CC4D632D90C8DB00254F55 /* ShapeStyle+Gradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D622D90C8D500254F55 /* ShapeStyle+Gradient.swift */; };
+		B7CC4D672D91AF4300254F55 /* GetUserTodoItemsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D662D91AF3B00254F55 /* GetUserTodoItemsRequest.swift */; };
+		B7CC4D6A2D91AF8200254F55 /* ToDoItemAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D692D91AF7500254F55 /* ToDoItemAPI.swift */; };
+		B7CC4D6E2D91B27200254F55 /* ToDoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D6D2D91B26F00254F55 /* ToDoItem.swift */; };
+		B7CC4D712D91C9FB00254F55 /* ToDoListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D702D91C9EE00254F55 /* ToDoListManager.swift */; };
+		B7CC4D732D91D14600254F55 /* ToDoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D722D91D14300254F55 /* ToDoListView.swift */; };
 		B7D7512B2D3D5D8000F7B8B8 /* AllAnnouncementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D7512A2D3D5D7700F7B8B8 /* AllAnnouncementsView.swift */; };
 		B7D7512D2D3D652300F7B8B8 /* GetAnnouncementsBatchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D7512C2D3D652300F7B8B8 /* GetAnnouncementsBatchRequest.swift */; };
 		B7D7512F2D3D660B00F7B8B8 /* AllAnnouncementsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D7512E2D3D660B00F7B8B8 /* AllAnnouncementsManager.swift */; };
 		B7D751312D3D688C00F7B8B8 /* AnnouncementRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D751302D3D688C00F7B8B8 /* AnnouncementRow.swift */; };
 		B7D95D772D07C3D3002AD955 /* ICSParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D95D762D07C3D3002AD955 /* ICSParser.swift */; };
 		B7D95DB72D0A8D78002AD955 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D95DB62D0A8D75002AD955 /* SettingsView.swift */; };
+		B7E0735E2D986B2400A7E82F /* GetUserTodoItemCountRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E0735D2D986B1F00A7E82F /* GetUserTodoItemCountRequest.swift */; };
+		B7E073602D986D9800A7E82F /* ToDoItemCountAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E0735F2D986D9800A7E82F /* ToDoItemCountAPI.swift */; };
+		B7E073622D986DD300A7E82F /* ToDoItemCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E073612D986DCF00A7E82F /* ToDoItemCount.swift */; };
+		B7E073642D9872AE00A7E82F /* IgnoreToDoItemRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E073632D9872AE00A7E82F /* IgnoreToDoItemRequest.swift */; };
 		B7E59A102D2002A5001836FE /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E59A0F2D2002A3001836FE /* Sidebar.swift */; };
 		B7E59A122D20046B001836FE /* SidebarTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E59A112D20046B001836FE /* SidebarTile.swift */; };
 		B7E59A142D2004A4001836FE /* CourseListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E59A132D2004A4001836FE /* CourseListCell.swift */; };
@@ -354,6 +367,10 @@
 		B7460A932D6BFB1A0069CF5B /* GradeCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradeCalculator.swift; sourceTree = "<group>"; };
 		B7460A952D6CCD6E0069CF5B /* GradeCalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradeCalculatorView.swift; sourceTree = "<group>"; };
 		B74688A22D63DB59007A27FD /* Assignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assignment.swift; sourceTree = "<group>"; };
+		B75684F32DA5A6B2003B4A32 /* HTMLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLView.swift; sourceTree = "<group>"; };
+		B75684F52DA5A7CE003B4A32 /* CanvasURLService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasURLService.swift; sourceTree = "<group>"; };
+		B75684F72DA5F9F4003B4A32 /* GetSinglePageRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSinglePageRequest.swift; sourceTree = "<group>"; };
+		B75684F92DA7A080003B4A32 /* GetSingleDiscussionTopicRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSingleDiscussionTopicRequest.swift; sourceTree = "<group>"; };
 		B76454642C8BBC7F002DF00E /* CanvasPlusPlayground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CanvasPlusPlayground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B76454ED2C8DF61B002DF00E /* Course.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Course.swift; sourceTree = "<group>"; };
 		B76454EE2C8DF61B002DF00E /* Enrollment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enrollment.swift; sourceTree = "<group>"; };
@@ -401,12 +418,21 @@
 		B7CC4D5B2D90C00800254F55 /* CGSize+Center.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGSize+Center.swift"; sourceTree = "<group>"; };
 		B7CC4D5E2D90C86C00254F55 /* Gradient.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Gradient.metal; sourceTree = "<group>"; };
 		B7CC4D622D90C8D500254F55 /* ShapeStyle+Gradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShapeStyle+Gradient.swift"; sourceTree = "<group>"; };
+		B7CC4D662D91AF3B00254F55 /* GetUserTodoItemsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetUserTodoItemsRequest.swift; sourceTree = "<group>"; };
+		B7CC4D692D91AF7500254F55 /* ToDoItemAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoItemAPI.swift; sourceTree = "<group>"; };
+		B7CC4D6D2D91B26F00254F55 /* ToDoItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoItem.swift; sourceTree = "<group>"; };
+		B7CC4D702D91C9EE00254F55 /* ToDoListManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoListManager.swift; sourceTree = "<group>"; };
+		B7CC4D722D91D14300254F55 /* ToDoListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoListView.swift; sourceTree = "<group>"; };
 		B7D7512A2D3D5D7700F7B8B8 /* AllAnnouncementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllAnnouncementsView.swift; sourceTree = "<group>"; };
 		B7D7512C2D3D652300F7B8B8 /* GetAnnouncementsBatchRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAnnouncementsBatchRequest.swift; sourceTree = "<group>"; };
 		B7D7512E2D3D660B00F7B8B8 /* AllAnnouncementsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllAnnouncementsManager.swift; sourceTree = "<group>"; };
 		B7D751302D3D688C00F7B8B8 /* AnnouncementRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementRow.swift; sourceTree = "<group>"; };
 		B7D95D762D07C3D3002AD955 /* ICSParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICSParser.swift; sourceTree = "<group>"; };
 		B7D95DB62D0A8D75002AD955 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		B7E0735D2D986B1F00A7E82F /* GetUserTodoItemCountRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetUserTodoItemCountRequest.swift; sourceTree = "<group>"; };
+		B7E0735F2D986D9800A7E82F /* ToDoItemCountAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoItemCountAPI.swift; sourceTree = "<group>"; };
+		B7E073612D986DCF00A7E82F /* ToDoItemCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoItemCount.swift; sourceTree = "<group>"; };
+		B7E073632D9872AE00A7E82F /* IgnoreToDoItemRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IgnoreToDoItemRequest.swift; sourceTree = "<group>"; };
 		B7E59A0F2D2002A3001836FE /* Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.swift; sourceTree = "<group>"; };
 		B7E59A112D20046B001836FE /* SidebarTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarTile.swift; sourceTree = "<group>"; };
 		B7E59A132D2004A4001836FE /* CourseListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseListCell.swift; sourceTree = "<group>"; };
@@ -453,6 +479,9 @@
 		A3049B732D15DBEE002F3166 /* API Requests */ = {
 			isa = PBXGroup;
 			children = (
+				B7CC4D662D91AF3B00254F55 /* GetUserTodoItemsRequest.swift */,
+				B7E0735D2D986B1F00A7E82F /* GetUserTodoItemCountRequest.swift */,
+				B7E073632D9872AE00A7E82F /* IgnoreToDoItemRequest.swift */,
 				B7A12F3E2D69440F00EDFA0A /* GetAssignmentGroupsRequest.swift */,
 				B7D7512C2D3D652300F7B8B8 /* GetAnnouncementsBatchRequest.swift */,
 				A3049B762D15DC36002F3166 /* GetCourseRequest.swift */,
@@ -468,6 +497,7 @@
 				A3049B842D161455002F3166 /* GetEnrollmentsRequest.swift */,
 				A3049B862D16146D002F3166 /* GetQuizzesRequest.swift */,
 				A3D1614E2D1784E3004055FB /* GetUserRequest.swift */,
+				B75684F72DA5F9F4003B4A32 /* GetSinglePageRequest.swift */,
 				A3D0225C2D6A711900F8068C /* GetPagesRequest.swift */,
 				A3D161502D178615004055FB /* GetUserProfileRequest.swift */,
 				A373DC2C2D28172E00215019 /* GetModulesRequest.swift */,
@@ -476,6 +506,7 @@
 				A301EE082D61137400D71139 /* MarkCourseDiscussionTopicReadRequest.swift */,
 				A301EE0A2D61148C00D71139 /* MarkCourseDiscussionTopicUnreadRequest.swift */,
 				A301EE122D614A4100D71139 /* GetDiscussionTopicsRequest.swift */,
+				B75684F92DA7A080003B4A32 /* GetSingleDiscussionTopicRequest.swift */,
 				A372D1092D90DA7A005E94CA /* GetCourseGroupsRequest.swift */,
 				A33BE8742D97A6F7005C1D13 /* GetGroupMembershipRequest.swift */,
 				A37AB4A62D98670600610639 /* LeaveGroupRequest.swift */,
@@ -492,6 +523,7 @@
 		A324BA502D07963D005F53FA /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				B7CC4D682D91AF5800254F55 /* ToDoItems */,
 				9BF228C62D6CD1DF000676F2 /* Reminders */,
 				A373DC2E2D28174700215019 /* Modules */,
 				B7C5532A2D2D5AEB009CF4F0 /* Pinned Items */,
@@ -573,6 +605,7 @@
 		A324BA552D0796BE005F53FA /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				B75684F52DA5A7CE003B4A32 /* CanvasURLService.swift */,
 				B7CC4D5B2D90C00800254F55 /* CGSize+Center.swift */,
 				B7CC4D3B2D8DB86E00254F55 /* URL+AppRootURL.swift */,
 				9B07E7112D779CA500359B69 /* Date+RelativeDates.swift */,
@@ -598,6 +631,7 @@
 				B7CC4D5D2D90C03C00254F55 /* Intelligence */,
 				B7CC4D442D8DFF1500254F55 /* PickerService */,
 				B7C0A3C82D2F87E9003E5A36 /* AsyncView.swift */,
+				B75684F32DA5A6B2003B4A32 /* HTMLView.swift */,
 				B7F950332D11A00F004BB470 /* StatusToolbarItem.swift */,
 				9A977E8A2D6C375E001D7F0A /* ColorPickerSheet.swift */,
 				3DAE84FF2C9A0E4F008C22E7 /* BridgedPDFView.swift */,
@@ -976,6 +1010,27 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		B7CC4D682D91AF5800254F55 /* ToDoItems */ = {
+			isa = PBXGroup;
+			children = (
+				B7CC4D6F2D91C9C600254F55 /* Models */,
+				B7CC4D702D91C9EE00254F55 /* ToDoListManager.swift */,
+				B7CC4D722D91D14300254F55 /* ToDoListView.swift */,
+			);
+			path = ToDoItems;
+			sourceTree = "<group>";
+		};
+		B7CC4D6F2D91C9C600254F55 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B7E073612D986DCF00A7E82F /* ToDoItemCount.swift */,
+				B7E0735F2D986D9800A7E82F /* ToDoItemCountAPI.swift */,
+				B7CC4D692D91AF7500254F55 /* ToDoItemAPI.swift */,
+				B7CC4D6D2D91B26F00254F55 /* ToDoItem.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		B7D95DB52D0A8D6A002AD955 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -1016,6 +1071,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B76454722C8BBC81002DF00E /* Build configuration list for PBXNativeTarget "CanvasPlusPlayground" */;
 			buildPhases = (
+				9ACDA5E82D5F1DA2001F1F0A /* SwiftLint */,
 				B76454602C8BBC7F002DF00E /* Sources */,
 				B76454612C8BBC7F002DF00E /* Frameworks */,
 				B76454622C8BBC7F002DF00E /* Resources */,
@@ -1157,6 +1213,7 @@
 				A3049B5B2D0E5C18002F3166 /* QuizPermissions.swift in Sources */,
 				B7C0A3C52D2F4C19003E5A36 /* GetAssignmentRequest.swift in Sources */,
 				A37AB4A92D9867D600610639 /* UpdateGroupMembershipRequest.swift in Sources */,
+				B7CC4D6A2D91AF8200254F55 /* ToDoItemAPI.swift in Sources */,
 				B7E59A142D2004A4001836FE /* CourseListCell.swift in Sources */,
 				B53D95A22CA0A22A00647EE9 /* PeopleView.swift in Sources */,
 				A373DC312D28176100215019 /* APIModule.swift in Sources */,
@@ -1165,6 +1222,7 @@
 				A3049B752D15DC1C002F3166 /* GetCoursesRequest.swift in Sources */,
 				B76455042C8DF61B002DF00E /* CourseView.swift in Sources */,
 				A372D1042D90BEB4005E94CA /* CanvasGroup.swift in Sources */,
+				B75684FA2DA7A080003B4A32 /* GetSingleDiscussionTopicRequest.swift in Sources */,
 				A3049B682D0F3ECA002F3166 /* QuizzesViewModel.swift in Sources */,
 				A3CF88D12D18E61B000ACDF3 /* APIResponse.swift in Sources */,
 				A373DC352D2824D700215019 /* Module.swift in Sources */,
@@ -1208,6 +1266,8 @@
 				9B9C2E042C93F6CD00E4B16B /* CourseAnnouncementsView.swift in Sources */,
 				B77FD0022D52A0D60049AA5E /* ProfileView.swift in Sources */,
 				9A977E8B2D6C375E001D7F0A /* ColorPickerSheet.swift in Sources */,
+				B7CC4D712D91C9FB00254F55 /* ToDoListManager.swift in Sources */,
+				B7CC4D732D91D14600254F55 /* ToDoListView.swift in Sources */,
 				192EC04C2C963EE600AF8528 /* CourseAssignmentsView.swift in Sources */,
 				A372D10C2D90E875005E94CA /* GroupsListView.swift in Sources */,
 				A3777E0A2DA0E25E00A8B00C /* StorageHandler.swift in Sources */,
@@ -1225,15 +1285,19 @@
 				A3E7F3892C954E0500DC4300 /* CanvasRequest.swift in Sources */,
 				A352AD1A2D3EF1C1007EE6FC /* GetCourseUsersRequest.swift in Sources */,
 				B7460A942D6BFB1A0069CF5B /* GradeCalculator.swift in Sources */,
+				B7E073642D9872AE00A7E82F /* IgnoreToDoItemRequest.swift in Sources */,
 				B77FD0072D5309340049AA5E /* ProfilePicture.swift in Sources */,
 				A35191412D283589001E415F /* ModulesViewModel.swift in Sources */,
 				A3E7F3912C99317100DC4300 /* CourseTabsManager.swift in Sources */,
 				A372D0FF2D90BAB6005E94CA /* CourseGroupsView.swift in Sources */,
+				B75684F82DA5F9F4003B4A32 /* GetSinglePageRequest.swift in Sources */,
+				B7CC4D672D91AF4300254F55 /* GetUserTodoItemsRequest.swift in Sources */,
 				9B6D4F802D6E48340033044F /* ReminderButton.swift in Sources */,
 				A3E7F38F2C96C1CE00DC4300 /* CourseTabsView.swift in Sources */,
 				B76455062C8DF61B002DF00E /* CanvasPlusPlaygroundApp.swift in Sources */,
 				B7F950342D11A00F004BB470 /* StatusToolbarItem.swift in Sources */,
 				A37AB4AD2D98B05E00610639 /* CanvasGroup+Memberships.swift in Sources */,
+				B7E073602D986D9800A7E82F /* ToDoItemCountAPI.swift in Sources */,
 				A301EE0F2D612EA800D71139 /* DiscussionTopic.swift in Sources */,
 				9B07E7122D779CAB00359B69 /* Date+RelativeDates.swift in Sources */,
 				9B69FA4B2CC2CC7F006101F3 /* AggregatedAssignmentsView.swift in Sources */,
@@ -1248,6 +1312,8 @@
 				A351913F2D283556001E415F /* ModulesListView.swift in Sources */,
 				A3CF88DF2D1921B5000ACDF3 /* FileAPI.swift in Sources */,
 				B7CC4D3C2D8DB87200254F55 /* URL+AppRootURL.swift in Sources */,
+				B7CC4D6E2D91B27200254F55 /* ToDoItem.swift in Sources */,
+				B7E0735E2D986B2400A7E82F /* GetUserTodoItemCountRequest.swift in Sources */,
 				A3CF88DD2D1921A7000ACDF3 /* QuizAPI.swift in Sources */,
 				A3049B532D0E5241002F3166 /* Quiz.swift in Sources */,
 				A3049B872D16146D002F3166 /* GetQuizzesRequest.swift in Sources */,
@@ -1261,6 +1327,7 @@
 				B533C0BE2CADDDE700A74AF6 /* PeopleCommonView.swift in Sources */,
 				B7C0A3C72D2F4E82003E5A36 /* GetFileRequest.swift in Sources */,
 				A31A81E72D0CCB69003C37EB /* GradesViewModel.swift in Sources */,
+				B75684F62DA5A7D3003B4A32 /* CanvasURLService.swift in Sources */,
 				A3E7F38B2C9555B200DC4300 /* CanvasService.swift in Sources */,
 				B72EA5702D5689B20013070E /* QuickLookPreview.swift in Sources */,
 				A3777E062D9F152400A8B00C /* CourseService.swift in Sources */,
@@ -1277,6 +1344,7 @@
 				B7CC4D432D8DFF0A00254F55 /* PickerServiceViewModifier.swift in Sources */,
 				B73AE0BD2D4FB68B007094A8 /* Profile.swift in Sources */,
 				B7AD550C2CD4257B00FB09BB /* IntelligenceOnboardingView.swift in Sources */,
+				B75684F42DA5A6B2003B4A32 /* HTMLView.swift in Sources */,
 				B7D751312D3D688C00F7B8B8 /* AnnouncementRow.swift in Sources */,
 				A372D1102D91D1A1005E94CA /* GroupDetailView.swift in Sources */,
 				A3049B792D15E162002F3166 /* GetCourseRootFolderRequest.swift in Sources */,
@@ -1285,6 +1353,7 @@
 				A3049B7F2D160C03002F3166 /* GetTabsRequest.swift in Sources */,
 				A373DC372D28285300215019 /* ModuleItem.swift in Sources */,
 				A306ED112CEAC09E00556D1E /* Folder.swift in Sources */,
+				B7E073622D986DD300A7E82F /* ToDoItemCount.swift in Sources */,
 				A373DC272D1D4C4A00215019 /* QuizSubmissionWorkflowState.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

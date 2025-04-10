@@ -20,7 +20,7 @@ enum StorageKeys {
     static var accessTokenValue: String {
         get {
             // TODO: remove this block after April 10
-            // for beta users that have tokens in `UserDefaults`
+            // For beta users that have tokens in `UserDefaults`
             if let token = UserDefaults.standard.string(forKey: accessTokenKey) {
                 UserDefaults.standard.removeObject(forKey: accessTokenKey)
                 setNewAccessToken(token)

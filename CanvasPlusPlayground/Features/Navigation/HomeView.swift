@@ -10,6 +10,7 @@ import SwiftUI
 struct HomeView: View {
     typealias NavigationPage = NavigationModel.NavigationPage
 
+    @Environment(ToDoListManager.self) private var toDoListManager
     @Environment(ProfileManager.self) private var profileManager
     @Environment(CourseManager.self) private var courseManager
     @Environment(NavigationModel.self) private var navigationModel
@@ -104,15 +105,20 @@ struct HomeView: View {
             if let selectedCourse {
                 CourseView(course: selectedCourse)
             } else if let selectedNavigationPage {
-                switch selectedNavigationPage {
-                case .announcements:
-                    AllAnnouncementsView()
-                case .toDoList:
-                    AggregatedAssignmentsView()
-                case .pinned:
-                    PinnedItemsView()
-                default:
-                    EmptyView()
+                Group {
+                    switch selectedNavigationPage {
+                    case .announcements:
+                        AllAnnouncementsView()
+                    case .toDoList:
+                        ToDoListView()
+                    case .pinned:
+                        PinnedItemsView()
+                    default:
+                        EmptyView()
+                    }
+                }
+                .navigationDestination(for: NavigationModel.Destination.self) { destination in
+                    destination.destinationView()
                 }
             } else {
                 ContentUnavailableView("Select a course", systemImage: "folder")
@@ -122,8 +128,13 @@ struct HomeView: View {
 
     private func loadCourses() async {
         isLoadingCourses = true
-        await courseManager.getCourses()
-        await profileManager.getCurrentUserAndProfile()
+
+        async let coursesTask: Void = courseManager.getCourses()
+        async let profileTask: Void = profileManager.getCurrentUserAndProfile()
+        async let todoTask: Void = toDoListManager.fetchToDoItemCount()
+
+        await (_, _, _) = (coursesTask, profileTask, todoTask)
+
         isLoadingCourses = false
     }
 }

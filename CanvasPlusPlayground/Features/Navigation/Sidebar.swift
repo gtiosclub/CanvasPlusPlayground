@@ -106,6 +106,7 @@ private struct SidebarCourseCell: View {
 }
 
 private struct SidebarTiles: View {
+    @Environment(ToDoListManager.self) private var toDoListManager
     @Environment(NavigationModel.self) private var navigationModel
 
     var body: some View {
@@ -136,13 +137,13 @@ private struct SidebarTiles: View {
 
             SidebarTile(
                 "To-Do",
+                count: toDoListManager.toDoItemCount,
                 systemIcon: "list.bullet.circle.fill",
                 color: .red,
                 page: .toDoList
             ) {
                 navigationModel.selectedNavigationPage = .toDoList
             }
-            .disabled(true) // TODO: Re-enable with TODOs PR.
 
             SidebarTile(
                 "Pinned",

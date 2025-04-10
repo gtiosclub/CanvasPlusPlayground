@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import WebKit
 
 struct PageView: View {
     let page: Page
@@ -14,7 +13,7 @@ struct PageView: View {
     var body: some View {
         ZStack {
             if let htmlContent = page.body, !htmlContent.isEmpty {
-                HTMLView(html: htmlContent)
+                HTMLView(html: htmlContent, courseID: page.courseID)
             } else {
                 ContentUnavailableView("No pages available", systemImage: "exclamationmark.bubble.fill")
             }
@@ -22,34 +21,3 @@ struct PageView: View {
         .navigationTitle(page.title ?? "Untitled")
     }
 }
-
-#if os(iOS)
-import UIKit
-
-struct HTMLView: UIViewRepresentable {
-    let html: String
-
-    func makeUIView(context: Context) -> WKWebView {
-        WKWebView()
-    }
-
-    func updateUIView(_ uiView: WKWebView, context: Context) {
-        uiView.loadHTMLString(html, baseURL: nil)
-    }
-}
-
-#elseif os(macOS)
-import AppKit
-
-struct HTMLView: NSViewRepresentable {
-    let html: String
-
-    func makeNSView(context: Context) -> WKWebView {
-        WKWebView()
-    }
-
-    func updateNSView(_ nsView: WKWebView, context: Context) {
-        nsView.loadHTMLString(html, baseURL: nil)
-    }
-}
-#endif

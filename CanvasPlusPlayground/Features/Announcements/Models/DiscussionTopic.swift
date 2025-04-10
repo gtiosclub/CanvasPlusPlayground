@@ -11,6 +11,8 @@ import SwiftData
 // swiftlint:disable commented_code
 @Model
 class DiscussionTopic: Cacheable, Hashable, Equatable {
+    typealias ID = String
+
     var id: String
 
     // MARK: In Docs

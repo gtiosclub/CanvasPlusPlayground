@@ -94,7 +94,8 @@ class NavigationModel {
     }
 
     enum Destination: Hashable {
-        case coursePage(CoursePage)
+        case course(Course)
+        case coursePage(CoursePage, Course)
 
         case announcement(DiscussionTopic)
         case assignment(Assignment)
@@ -102,9 +103,11 @@ class NavigationModel {
         // TODO: Add specific course items as needed.
 
         @ViewBuilder
-        func destinationView(for course: Course) -> some View {
+        func destinationView() -> some View {
             switch self {
-            case .coursePage(let coursePage):
+            case .course(let course):
+                CourseView(course: course)
+            case .coursePage(let coursePage, let course):
                 CourseDetailView(course: course, coursePage: coursePage)
             case .announcement(let announcement):
                 CourseAnnouncementDetailView(announcement: announcement)
