@@ -13,6 +13,22 @@ enum CanvasURLService {
         case assignment(Assignment.ID)
         case file(File.ID)
         case page(Page.ID)
+
+        init?(pathType: String, id: String) {
+            switch pathType {
+            case "assignments":
+                self = .assignment(id)
+            case "discussion_topics", "announcements":
+                self = .announcement(id)
+            case "pages":
+                self = .page(id)
+            case "files":
+                // TODO: Support Files
+                return nil
+            default:
+                return nil
+            }
+        }
     }
 
     static func determineNavigationDestination(from url: URL) -> URLServiceResult? {
@@ -24,28 +40,12 @@ enum CanvasURLService {
         guard let path = components?.path else { return nil }
         let pathComponents = path.components(separatedBy: "/").filter { !$0.isEmpty }
 
-        guard pathComponents.count >= 3 else { return nil }
-
-        let type = pathComponents[2] // (assignments, files, etc)
-
         guard pathComponents.count >= 4 else { return nil }
 
+        let type = pathComponents[2] // (assignments, files, etc)
         let id = pathComponents[3]
 
-        switch type {
-        case "assignments":
-            return .assignment(id)
-        case "discussion_topics", "announcements":
-            return .announcement(id)
-        case "pages":
-            print(url)
-            return .page(id)
-        case "files":
-            // TODO: Support Files
-            return nil
-        default:
-            return nil
-        }
+        return .init(pathType: type, id: id)
     }
 }
 
@@ -67,10 +67,12 @@ extension NavigationModel.Destination {
         switch urlServiceResult {
         case .announcement(let id):
             let announcements = try? await CanvasService.shared.loadAndSync(
-                CanvasRequest.getDiscussionTopics(courseId: courseID)
+                CanvasRequest
+                    .getSingleDiscussionTopic(courseId: courseID, topicId: id)
             )
 
-            guard let announcement = announcements?.first(where: { $0.id == id }) else { return nil }
+            guard let announcement = announcements?.first else { return nil }
+
             return .announcement(announcement)
         case .assignment(let id):
             let assignments = try? await CanvasService.shared.loadAndSync(

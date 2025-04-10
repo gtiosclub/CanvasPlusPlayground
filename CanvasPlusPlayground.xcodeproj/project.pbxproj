@@ -146,6 +146,7 @@
 		B75684F42DA5A6B2003B4A32 /* HTMLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75684F32DA5A6B2003B4A32 /* HTMLView.swift */; };
 		B75684F62DA5A7D3003B4A32 /* CanvasURLService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75684F52DA5A7CE003B4A32 /* CanvasURLService.swift */; };
 		B75684F82DA5F9F4003B4A32 /* GetSinglePageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75684F72DA5F9F4003B4A32 /* GetSinglePageRequest.swift */; };
+		B75684FA2DA7A080003B4A32 /* GetSingleDiscussionTopicRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75684F92DA7A080003B4A32 /* GetSingleDiscussionTopicRequest.swift */; };
 		B76454FE2C8DF61B002DF00E /* Course.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454ED2C8DF61B002DF00E /* Course.swift */; };
 		B76454FF2C8DF61B002DF00E /* Enrollment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454EE2C8DF61B002DF00E /* Enrollment.swift */; };
 		B76455002C8DF61B002DF00E /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454EF2C8DF61B002DF00E /* File.swift */; };
@@ -359,6 +360,7 @@
 		B75684F32DA5A6B2003B4A32 /* HTMLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLView.swift; sourceTree = "<group>"; };
 		B75684F52DA5A7CE003B4A32 /* CanvasURLService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasURLService.swift; sourceTree = "<group>"; };
 		B75684F72DA5F9F4003B4A32 /* GetSinglePageRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSinglePageRequest.swift; sourceTree = "<group>"; };
+		B75684F92DA7A080003B4A32 /* GetSingleDiscussionTopicRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSingleDiscussionTopicRequest.swift; sourceTree = "<group>"; };
 		B76454642C8BBC7F002DF00E /* CanvasPlusPlayground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CanvasPlusPlayground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B76454ED2C8DF61B002DF00E /* Course.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Course.swift; sourceTree = "<group>"; };
 		B76454EE2C8DF61B002DF00E /* Enrollment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enrollment.swift; sourceTree = "<group>"; };
@@ -494,6 +496,7 @@
 				A301EE082D61137400D71139 /* MarkCourseDiscussionTopicReadRequest.swift */,
 				A301EE0A2D61148C00D71139 /* MarkCourseDiscussionTopicUnreadRequest.swift */,
 				A301EE122D614A4100D71139 /* GetDiscussionTopicsRequest.swift */,
+				B75684F92DA7A080003B4A32 /* GetSingleDiscussionTopicRequest.swift */,
 				A372D1092D90DA7A005E94CA /* GetCourseGroupsRequest.swift */,
 				A33BE8742D97A6F7005C1D13 /* GetGroupMembershipRequest.swift */,
 				A37AB4A62D98670600610639 /* LeaveGroupRequest.swift */,
@@ -1224,6 +1227,7 @@
 				A3049B752D15DC1C002F3166 /* GetCoursesRequest.swift in Sources */,
 				B76455042C8DF61B002DF00E /* CourseView.swift in Sources */,
 				A372D1042D90BEB4005E94CA /* CanvasGroup.swift in Sources */,
+				B75684FA2DA7A080003B4A32 /* GetSingleDiscussionTopicRequest.swift in Sources */,
 				A3049B682D0F3ECA002F3166 /* QuizzesViewModel.swift in Sources */,
 				A3CF88D12D18E61B000ACDF3 /* APIResponse.swift in Sources */,
 				A373DC352D2824D700215019 /* Module.swift in Sources */,

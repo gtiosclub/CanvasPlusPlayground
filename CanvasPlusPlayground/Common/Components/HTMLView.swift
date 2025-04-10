@@ -71,7 +71,7 @@ struct HTMLView: ViewRepresentable {
                         await onDestinationLink(potentialDestination)
                     } else {
                         #if os(iOS)
-                        UIApplication.shared.open(url)
+                        await UIApplication.shared.open(url)
                         #else
                         NSWorkspace.shared.open(url)
                         #endif
