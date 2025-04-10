@@ -55,7 +55,6 @@ class NavigationModel {
         case calendar
         case people
         case groups
-        case tabs
         case quizzes
         case modules
         case pages
@@ -65,7 +64,7 @@ class NavigationModel {
         }
 
         static let requiredTabs: Set<CoursePage> = [
-            .tabs, .people, .groups
+            .people, .groups
         ]
 
         var systemImageIcon: String {
@@ -76,8 +75,6 @@ class NavigationModel {
                 "circle.inset.filled"
             case .calendar:
                 "calendar"
-            case .tabs:
-                "tray.2"
             case .announcements:
                 "bubble"
             case .grades:

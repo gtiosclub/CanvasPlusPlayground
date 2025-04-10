@@ -45,12 +45,14 @@ protocol NoReturnAPIRequest: APIRequest {
 }
 
 extension APIRequest {
-    var baseURL: URL {
-        if let baseURL = URL(string: "https://gatech.instructure.com/api/v1") {
-            return baseURL
-        } else {
-            fatalError("Invalid base Canvas URL")
+    static var baseURL: URL {
+        guard let url = URL(string: "https://gatech.instructure.com/") else {
+            fatalError("Invalid base URL.")
         }
+        return url
+    }
+    static var baseApiURL: URL {
+        return baseURL.appendingPathComponent("api/v1")
     }
 
     var combinedQueryParams: [(String, String)] {
@@ -65,7 +67,7 @@ extension APIRequest {
 
     var url: URL {
         guard let url = forceURL else {
-            return baseURL
+            return Self.baseApiURL
                 .appendingPathComponent(path)
                 .appending(queryItems: combinedQueryParams.map { name, val in
                     URLQueryItem(name: name, value: "\(val)")

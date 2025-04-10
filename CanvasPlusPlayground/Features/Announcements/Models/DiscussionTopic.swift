@@ -60,7 +60,7 @@ class DiscussionTopic: Cacheable, Hashable, Equatable {
     var createdAt: Date?
 
     // MARK: Includes
-    var sections: [APICourseSection]
+    var sections: [CourseSection]
 
     // MARK: Custom
     var courseId: String?

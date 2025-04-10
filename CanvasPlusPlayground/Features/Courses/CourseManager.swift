@@ -8,6 +8,7 @@
 import SwiftUI
 
 @Observable
+@MainActor
 class CourseManager {
     var allCourses = [Course]()
 
@@ -24,28 +25,29 @@ class CourseManager {
             .sorted { $0.name ?? "" < $1.name ?? "" }
     }
 
+    let courseService = CourseService()
+
     func getCourses() async {
         LoggerService.main.debug("Fetching courses")
         do {
-            let courses: [Course] = try await CanvasService.shared.loadAndSync(
-                CanvasRequest.getCourses(enrollmentState: "active"),
-                onCacheReceive: { cachedCourses in
-                    guard let cachedCourses else { return }
-                    Task { @MainActor in
-                        self.setCourses(cachedCourses)
-                    }
-                }
+            self.allCourses = courseService.courseRepository.getCourses(
+                enrollmentType: nil,
+                enrollmentState: nil,
+                excludeBlueprintCourses: false,
+                state: [],
+                pageConfiguration: .all(perPage: 40)
             )
-            LoggerService.main.debug("\(courses.map(\.name))")
 
-            await setCourses(courses)
+            self.allCourses = try await courseService.getCourses(
+                enrollmentType: nil,
+                enrollmentState: nil,
+                excludeBlueprintCourses: false,
+                state: [],
+                pageConfiguration: .all(perPage: 40)
+            )
+            LoggerService.main.debug("Fetched courses: \(self.allCourses.compactMap(\.name))")
         } catch {
             LoggerService.main.error("Failed to fetch courses. \(error)")
         }
-    }
-
-    @MainActor
-    func setCourses(_ courses: [Course]) {
-        self.allCourses = courses
     }
 }

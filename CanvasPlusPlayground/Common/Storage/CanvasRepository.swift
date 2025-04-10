@@ -6,7 +6,6 @@
 //
 
 import SwiftData
-import SwiftUI
 
 @MainActor
 class CanvasRepository {
@@ -60,40 +59,4 @@ class CanvasRepository {
     func setAutosave(_ enabled: Bool) async {
         self.modelContext.autosaveEnabled = enabled
     }
-}
-
-enum CacheError: Error {
-    case encodingError, decodingError
-}
-
-extension ModelContext {
-    static var shared: ModelContext = {
-        let modelContainer = try! ModelContainer(
-            for: Course.self,
-            Announcement.self,
-            Assignment.self,
-            AssignmentGroup.self,
-            Enrollment.self,
-            File.self,
-            Folder.self,
-            Quiz.self,
-            Module.self,
-            ModuleItem.self,
-            Submission.self,
-            User.self,
-            Profile.self,
-            DiscussionTopic.self,
-            Page.self,
-            CanvasGroup.self,
-            GroupMembership.self,
-            ToDoItem.self,
-            ToDoItemCount.self
-            // TODO: Add cacheable models here
-        )
-
-        let modelContext = ModelContext(modelContainer)
-        modelContext.autosaveEnabled = true
-
-        return modelContext
-    }()
 }

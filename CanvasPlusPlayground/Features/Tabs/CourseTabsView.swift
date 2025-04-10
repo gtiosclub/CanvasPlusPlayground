@@ -35,9 +35,6 @@ struct CourseTabsView: View {
             }
         }
         .navigationTitle("Tabs")
-        .task {
-            await tabsManager.fetchTabs(course: course)
-        }
         .sheet(isPresented: $showWebView) {
             NavigationStack {
                 Group {
