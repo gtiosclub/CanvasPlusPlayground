@@ -212,6 +212,18 @@ enum CanvasRequest {
         )
     }
 
+    static func getSingleDiscussionTopic(
+        courseId: String,
+        topicId: String,
+        include: [GetSingleDiscussionTopicRequest.Include] = []
+    ) -> GetSingleDiscussionTopicRequest {
+        GetSingleDiscussionTopicRequest(
+            courseId: courseId,
+            topicId: topicId,
+            include: include
+        )
+    }
+
     static func getDiscussionTopics(
         courseId: String,
         include: [GetDiscussionTopicsRequest.Include] = [],
@@ -267,6 +279,16 @@ enum CanvasRequest {
             submissionBody: submissionBody,
             url: url,
             fileIDs: fileIDs
+        )
+    }
+
+    static func getSinglePage(
+        courseId: String,
+        pageURL: String
+    ) -> GetSinglePageRequest {
+        GetSinglePageRequest(
+            courseId: courseId,
+            pageURL: pageURL
         )
     }
 

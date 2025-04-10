@@ -143,6 +143,10 @@
 		B7460A942D6BFB1A0069CF5B /* GradeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7460A932D6BFB1A0069CF5B /* GradeCalculator.swift */; };
 		B7460A962D6CCD730069CF5B /* GradeCalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7460A952D6CCD6E0069CF5B /* GradeCalculatorView.swift */; };
 		B74688A32D63DB59007A27FD /* Assignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74688A22D63DB59007A27FD /* Assignment.swift */; };
+		B75684F42DA5A6B2003B4A32 /* HTMLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75684F32DA5A6B2003B4A32 /* HTMLView.swift */; };
+		B75684F62DA5A7D3003B4A32 /* CanvasURLService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75684F52DA5A7CE003B4A32 /* CanvasURLService.swift */; };
+		B75684F82DA5F9F4003B4A32 /* GetSinglePageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75684F72DA5F9F4003B4A32 /* GetSinglePageRequest.swift */; };
+		B75684FA2DA7A080003B4A32 /* GetSingleDiscussionTopicRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75684F92DA7A080003B4A32 /* GetSingleDiscussionTopicRequest.swift */; };
 		B76454FE2C8DF61B002DF00E /* Course.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454ED2C8DF61B002DF00E /* Course.swift */; };
 		B76454FF2C8DF61B002DF00E /* Enrollment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454EE2C8DF61B002DF00E /* Enrollment.swift */; };
 		B76455002C8DF61B002DF00E /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454EF2C8DF61B002DF00E /* File.swift */; };
@@ -353,6 +357,10 @@
 		B7460A932D6BFB1A0069CF5B /* GradeCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradeCalculator.swift; sourceTree = "<group>"; };
 		B7460A952D6CCD6E0069CF5B /* GradeCalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradeCalculatorView.swift; sourceTree = "<group>"; };
 		B74688A22D63DB59007A27FD /* Assignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assignment.swift; sourceTree = "<group>"; };
+		B75684F32DA5A6B2003B4A32 /* HTMLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLView.swift; sourceTree = "<group>"; };
+		B75684F52DA5A7CE003B4A32 /* CanvasURLService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasURLService.swift; sourceTree = "<group>"; };
+		B75684F72DA5F9F4003B4A32 /* GetSinglePageRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSinglePageRequest.swift; sourceTree = "<group>"; };
+		B75684F92DA7A080003B4A32 /* GetSingleDiscussionTopicRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSingleDiscussionTopicRequest.swift; sourceTree = "<group>"; };
 		B76454642C8BBC7F002DF00E /* CanvasPlusPlayground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CanvasPlusPlayground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B76454ED2C8DF61B002DF00E /* Course.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Course.swift; sourceTree = "<group>"; };
 		B76454EE2C8DF61B002DF00E /* Enrollment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enrollment.swift; sourceTree = "<group>"; };
@@ -479,6 +487,7 @@
 				A3049B842D161455002F3166 /* GetEnrollmentsRequest.swift */,
 				A3049B862D16146D002F3166 /* GetQuizzesRequest.swift */,
 				A3D1614E2D1784E3004055FB /* GetUserRequest.swift */,
+				B75684F72DA5F9F4003B4A32 /* GetSinglePageRequest.swift */,
 				A3D0225C2D6A711900F8068C /* GetPagesRequest.swift */,
 				A3D161502D178615004055FB /* GetUserProfileRequest.swift */,
 				A373DC2C2D28172E00215019 /* GetModulesRequest.swift */,
@@ -487,6 +496,7 @@
 				A301EE082D61137400D71139 /* MarkCourseDiscussionTopicReadRequest.swift */,
 				A301EE0A2D61148C00D71139 /* MarkCourseDiscussionTopicUnreadRequest.swift */,
 				A301EE122D614A4100D71139 /* GetDiscussionTopicsRequest.swift */,
+				B75684F92DA7A080003B4A32 /* GetSingleDiscussionTopicRequest.swift */,
 				A372D1092D90DA7A005E94CA /* GetCourseGroupsRequest.swift */,
 				A33BE8742D97A6F7005C1D13 /* GetGroupMembershipRequest.swift */,
 				A37AB4A62D98670600610639 /* LeaveGroupRequest.swift */,
@@ -582,6 +592,7 @@
 		A324BA552D0796BE005F53FA /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				B75684F52DA5A7CE003B4A32 /* CanvasURLService.swift */,
 				B7CC4D5B2D90C00800254F55 /* CGSize+Center.swift */,
 				B7CC4D3B2D8DB86E00254F55 /* URL+AppRootURL.swift */,
 				9B07E7112D779CA500359B69 /* Date+RelativeDates.swift */,
@@ -607,6 +618,7 @@
 				B7CC4D5D2D90C03C00254F55 /* Intelligence */,
 				B7CC4D442D8DFF1500254F55 /* PickerService */,
 				B7C0A3C82D2F87E9003E5A36 /* AsyncView.swift */,
+				B75684F32DA5A6B2003B4A32 /* HTMLView.swift */,
 				B7F950332D11A00F004BB470 /* StatusToolbarItem.swift */,
 				9A977E8A2D6C375E001D7F0A /* ColorPickerSheet.swift */,
 				3DAE84FF2C9A0E4F008C22E7 /* BridgedPDFView.swift */,
@@ -1215,6 +1227,7 @@
 				A3049B752D15DC1C002F3166 /* GetCoursesRequest.swift in Sources */,
 				B76455042C8DF61B002DF00E /* CourseView.swift in Sources */,
 				A372D1042D90BEB4005E94CA /* CanvasGroup.swift in Sources */,
+				B75684FA2DA7A080003B4A32 /* GetSingleDiscussionTopicRequest.swift in Sources */,
 				A3049B682D0F3ECA002F3166 /* QuizzesViewModel.swift in Sources */,
 				A3CF88D12D18E61B000ACDF3 /* APIResponse.swift in Sources */,
 				A373DC352D2824D700215019 /* Module.swift in Sources */,
@@ -1281,6 +1294,7 @@
 				A35191412D283589001E415F /* ModulesViewModel.swift in Sources */,
 				A3E7F3912C99317100DC4300 /* CourseTabsManager.swift in Sources */,
 				A372D0FF2D90BAB6005E94CA /* CourseGroupsView.swift in Sources */,
+				B75684F82DA5F9F4003B4A32 /* GetSinglePageRequest.swift in Sources */,
 				B7CC4D672D91AF4300254F55 /* GetUserTodoItemsRequest.swift in Sources */,
 				9B6D4F802D6E48340033044F /* ReminderButton.swift in Sources */,
 				A3E7F38F2C96C1CE00DC4300 /* CourseTabsView.swift in Sources */,
@@ -1318,6 +1332,7 @@
 				B7C0A3C72D2F4E82003E5A36 /* GetFileRequest.swift in Sources */,
 				A31A81E72D0CCB69003C37EB /* GradesViewModel.swift in Sources */,
 				A373DC142D19FA2A00215019 /* APICourseSection.swift in Sources */,
+				B75684F62DA5A7D3003B4A32 /* CanvasURLService.swift in Sources */,
 				A3E7F38B2C9555B200DC4300 /* CanvasService.swift in Sources */,
 				B72EA5702D5689B20013070E /* QuickLookPreview.swift in Sources */,
 				A372D10E2D90F505005E94CA /* CourseGroupsViewModel.swift in Sources */,
@@ -1333,6 +1348,7 @@
 				B7CC4D432D8DFF0A00254F55 /* PickerServiceViewModifier.swift in Sources */,
 				B73AE0BD2D4FB68B007094A8 /* Profile.swift in Sources */,
 				B7AD550C2CD4257B00FB09BB /* IntelligenceOnboardingView.swift in Sources */,
+				B75684F42DA5A6B2003B4A32 /* HTMLView.swift in Sources */,
 				B7D751312D3D688C00F7B8B8 /* AnnouncementRow.swift in Sources */,
 				A372D1102D91D1A1005E94CA /* GroupDetailView.swift in Sources */,
 				A3049B792D15E162002F3166 /* GetCourseRootFolderRequest.swift in Sources */,

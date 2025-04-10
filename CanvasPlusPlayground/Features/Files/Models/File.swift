@@ -48,6 +48,7 @@ import SwiftData
 
 @Model
 class File: Cacheable {
+    typealias ID = String
     typealias ServerID = Int
 
     // MARK: - Attributes
