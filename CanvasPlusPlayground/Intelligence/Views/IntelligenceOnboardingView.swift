@@ -147,7 +147,7 @@ struct IntelligenceOnboardingView: View {
 
     private var descriptionText: String {
         let baseText = """
-            Canvas Plus can leverage on-device LLMs to enable intelligence capabilities,\
+            Canvas Plus can leverage on-device LLMs to enable intelligence capabilities, \
             such as summarizing announcements, \
             performing intelligent grade calculations, \
             and more. \
