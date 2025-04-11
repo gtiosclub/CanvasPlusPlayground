@@ -51,6 +51,7 @@ struct FileViewer: View {
         .task {
             await loadContents()
         }
+        .navigationTitle(file.displayName)
         #if os(iOS)
         .navigationBarBackButtonHidden()
         #endif

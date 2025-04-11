@@ -30,8 +30,6 @@ struct FoldersPageView: View {
         }
     }
 
-    @Namespace private var namespace
-
     let course: Course
     @State private var folder: Folder?
     @State private var filesVM: CourseFileViewModel
@@ -100,19 +98,10 @@ struct FoldersPageView: View {
     @ViewBuilder
     func fileRow(for file: File) -> some View {
         if file.url != nil {
-            Group {
-                if #available(iOS 18.0, *) {
-                    FileRow(file: file, course: course)
-                        #if os(iOS)
-                        .matchedTransitionSource(id: file.id, in: namespace)
-                        #endif
-                } else {
-                    FileRow(file: file, course: course)
-                }
-            }
-            .environment(filesVM)
+            FileRow(file: file, course: course)
         } else {
             Label("File not available.", systemImage: "document")
+                .disabled(true)
         }
     }
 
@@ -143,7 +132,6 @@ struct FoldersPageView: View {
 }
 
 private struct FileRow: View {
-    @Environment(CourseFileViewModel.self) private var filesVM
     let file: File
     let course: Course
 
