@@ -38,7 +38,7 @@ class CourseManager {
         do {
             self.allCourses = courseService.courseRepository.getCourses(
                 enrollmentType: nil,
-                enrollmentState: nil,
+                enrollmentState: .active,
                 excludeBlueprintCourses: false,
                 state: [],
                 pageConfiguration: .all(perPage: 40)
@@ -46,7 +46,7 @@ class CourseManager {
 
             self.allCourses = try await courseService.getCourses(
                 enrollmentType: nil,
-                enrollmentState: nil,
+                enrollmentState: .active,
                 excludeBlueprintCourses: false,
                 state: [],
                 pageConfiguration: .all(perPage: 40)
