@@ -13,15 +13,21 @@ class CourseManager {
     var allCourses = [Course]()
 
     /// This list is used in `PeopleCommonView` and `AllAnnouncements`.
-    var userCourses: [Course] {
+    var activeCourses: [Course] {
         allCourses
-            .filter { !($0.isHidden ?? false) }
+            .filter { $0.hasActiveEnrollment }
             .sorted { $0.name ?? "" < $1.name ?? "" }
     }
 
-    var hiddenCourses: [Course] {
+    var favoritedCourses: [Course] {
         allCourses
-            .filter { $0.isHidden ?? false }
+            .filter { $0.canFavorite && $0.isFavorite }
+            .sorted { $0.name ?? "" < $1.name ?? "" }
+    }
+
+    var unfavoritedCourses: [Course] {
+        allCourses
+            .filter { !$0.isFavorite || !$0.canFavorite }
             .sorted { $0.name ?? "" < $1.name ?? "" }
     }
 

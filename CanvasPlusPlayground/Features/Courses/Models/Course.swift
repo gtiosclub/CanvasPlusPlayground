@@ -76,11 +76,17 @@ final class Course: Cacheable {
     // We cannot use `Color` directly because it needs to conform to `PersistentModel`
     var rgbColors: RGBColors?
     var nickname: String?
-    var isHidden: Bool?
     var order: Int = -1 // -1 necessary for predicate filtering
 
     var displayName: String {
         nickname ?? name ?? "Unknown Name"
+    }
+
+    var hasActiveEnrollment: Bool {
+        enrollments.contains { $0.enrollmentState == .active }
+    }
+    var canFavorite: Bool {
+        self.workflowState == .available && hasActiveEnrollment
     }
 
     init(_ courseAPI: CourseAPI) {

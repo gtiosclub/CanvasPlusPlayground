@@ -18,10 +18,6 @@ struct CourseListCell: View {
     @State private var showRenameTextField = false
     @State private var renameCourseFieldText: String = ""
 
-    private var wrappedCourseIsHidden: Bool {
-        course.isHidden ?? false
-    }
-
     var body: some View {
         Label(course.displayName, systemImage: "book.pages")
             .frame(alignment: .leading)
@@ -33,14 +29,14 @@ struct CourseListCell: View {
                 resolvedCourseColor = course.rgbColors?.color ?? .accentColor
             }
             .swipeActions(edge: .trailing) {
-                hideCourseButton
+                favCourseButton
             }
             .contextMenu {
                 Button("Change Color", systemImage: "paintbrush.fill") {
                     showColorPicker = true
                 }
 
-                hideCourseButton
+                favCourseButton
 
                 Button("Rename Course...", systemImage: "character.cursor.ibeam") {
                     renameCourseFieldText = course.nickname ?? ""
@@ -75,17 +71,21 @@ struct CourseListCell: View {
             #endif
     }
 
-    private var hideCourseButton: some View {
+    private var favCourseButton: some View {
         Button(
-            wrappedCourseIsHidden ? "Unhide Course" : "Hide Course",
+            course.isFavorite ? "Unfavorite Course" : "Favorite Course",
             systemImage: "eye"
         ) {
             withAnimation {
-                course.isHidden = !wrappedCourseIsHidden
+                // TODO: set and POST favorite
             }
         }
-        .symbolVariant(wrappedCourseIsHidden ? .none : .slash)
+        .symbolVariant(!course.isFavorite ? .none : .slash)
         .tint(.gray)
+    }
+
+    func markAsFavorite(_ favorite: Bool) {
+        // TODO: complete
     }
 
     private func renameCourse() {

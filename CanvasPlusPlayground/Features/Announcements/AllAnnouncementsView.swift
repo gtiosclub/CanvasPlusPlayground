@@ -47,7 +47,7 @@ struct AllAnnouncementsView: View {
     private func loadAnnouncements() async {
         isLoadingAnnouncements = true
         await announcementsManager
-            .fetchAnnouncements(courses: courseManager.userCourses)
+            .fetchAnnouncements(courses: courseManager.activeCourses)
         isLoadingAnnouncements = false
     }
 }
