@@ -117,8 +117,8 @@ class NavigationModel {
                 AssignmentDetailView(assignment: assignment)
             case .page(let page):
                 PageView(page: page)
-            case let .file(file, course):
-                FileViewer(courseID: course, file: file)
+            case let .file(file, courseID):
+                FileViewer(courseID: courseID, file: file)
             case let .folder(folder, course):
                 FoldersPageView(course: course, folder: folder)
             }

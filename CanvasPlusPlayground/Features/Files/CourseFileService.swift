@@ -37,7 +37,7 @@ struct CourseFileService {
             throw FileError.fileWasNil
         }
 
-        let fileURL = try self.pathWithFolders(courseId: courseId, fileId: file.id, type: .init(file: file))
+        let fileURL = try self.destinationPath(courseId: courseId, fileId: file.id, type: .init(file: file))
         let parentDirURL = fileURL.deletingLastPathComponent()
 
         try Self.fileManager.createDirectory(
@@ -66,7 +66,7 @@ struct CourseFileService {
     ) -> URL? {
         LoggerService.main.debug("Checking if \(file.displayName) exists")
 
-        let fileLoc = try? pathWithFolders(courseId: courseID, fileId: file.id, type: FileType(file: file))
+        let fileLoc = try? destinationPath(courseId: courseID, fileId: file.id, type: FileType(file: file))
 
         if let fileLoc, Self.fileManager
             .fileExists(atPath: fileLoc.path(percentEncoded: false)) {
@@ -214,7 +214,7 @@ struct CourseFileService {
         return tempUrl
     }
 
-    private func pathWithFolders(courseId: String, fileId: String, type: FileType?) throws -> URL {
+    private func destinationPath(courseId: String, fileId: String, type: FileType?) throws -> URL {
         guard let coursesURL = Self.coursesURL else {
             throw FileError.directoryInaccessible
         }
@@ -222,7 +222,6 @@ struct CourseFileService {
         var pathURL = coursesURL
             .appendingPathComponent(courseId)
             .appendingPathComponent("files")
-
 
         pathURL.appendPathComponent(fileId + (type?.formatExtension ?? ""))
 
