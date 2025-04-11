@@ -108,15 +108,21 @@ struct CourseFileService {
 
             let content = try Data(contentsOf: tempFileLoc)
 
+            defer {
+                // Remove the temporary file
+                do {
+                    try self.deleteFile(at: tempFileLoc)
+                } catch {
+                    LoggerService.main.error("Failed to delete temp file: \(error)")
+                }
+            }
+
             do {
                 guard let file else {
                     throw FileError.fileWasNil
                 }
                 let url = try self.saveCourseFile(courseId: courseID, file: file, content: content)
                 LoggerService.main.debug("File successfully saved at \(url.path())")
-
-                // Remove the temporary file
-                try self.deleteFile(at: tempFileLoc)
 
                 return (content, url)
             } catch {
