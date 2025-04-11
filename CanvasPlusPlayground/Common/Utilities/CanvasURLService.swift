@@ -13,6 +13,7 @@ enum CanvasURLService {
         case assignment(Assignment.ID)
         case file(File.ID)
         case page(Page.ID)
+        // TODO: Add items as needed.
 
         init?(pathType: String, id: String) {
             switch pathType {
@@ -23,8 +24,7 @@ enum CanvasURLService {
             case "pages":
                 self = .page(id)
             case "files":
-                // TODO: Support Files
-                return nil
+                self = .file(id)
             default:
                 return nil
             }
@@ -66,35 +66,78 @@ extension NavigationModel.Destination {
     static func destination(from urlServiceResult: CanvasURLService.URLServiceResult, for courseID: Course.ID) async -> Self? {
         switch urlServiceResult {
         case .announcement(let id):
+            var announcement: DiscussionTopic?
+
             let announcements = try? await CanvasService.shared.loadAndSync(
                 CanvasRequest
-                    .getSingleDiscussionTopic(courseId: courseID, topicId: id)
+                    .getSingleDiscussionTopic(courseId: courseID, topicId: id),
+                onCacheReceive: { cachedAnnouncements in
+                    announcement = cachedAnnouncements?.first
+                }
             )
 
-            guard let announcement = announcements?.first else { return nil }
+            if let announcements, !announcements.isEmpty {
+                announcement = announcements.first
+            }
+
+            guard let announcement else { return nil }
 
             return .announcement(announcement)
         case .assignment(let id):
+            var assignment: Assignment?
+
             let assignments = try? await CanvasService.shared.loadAndSync(
-                CanvasRequest.getAssignment(id: id, courseId: courseID)
+                CanvasRequest.getAssignment(id: id, courseId: courseID),
+                onCacheReceive: { cachedAssignments in
+                    assignment = cachedAssignments?.first
+                }
             )
 
-            guard let assignment = assignments?.first else { return nil }
+            if let assignments, !assignments.isEmpty {
+                assignment = assignments.first
+            }
+
+            guard let assignment else { return nil }
 
             return .assignment(assignment)
         case .page(let id):
+            var page: Page?
+
             let pages = try? await CanvasService.shared.loadAndSync(
-                CanvasRequest.getSinglePage(courseId: courseID, pageURL: id)
+                CanvasRequest.getSinglePage(courseId: courseID, pageURL: id),
+                onCacheReceive: { cachedPages in
+                    page = cachedPages?.first
+                }
             )
 
-            guard let page = pages?.first else {
+            if let pages, !pages.isEmpty {
+                page = pages.first
+            }
+
+            guard let page else {
                 return nil
             }
 
             return .page(page)
-        case .file:
-            // TODO: Support Files
-            return nil
+        case .file(let id):
+            var file: File?
+
+            let files = try? await CanvasService.shared.loadAndSync(
+                CanvasRequest.getFile(fileId: id),
+                onCacheReceive: { cachedFiles in
+                    file = cachedFiles?.first
+                }
+            )
+
+            if let files, !files.isEmpty {
+                file = files.first
+            }
+
+            guard let file else {
+                return nil
+            }
+
+            return .file(file, courseID)
         }
     }
 }

@@ -13,7 +13,6 @@ class CourseFileViewModel {
 
     var files = [File]()
     var folders = [Folder]()
-    var traversedFolderIDs: [String]
 
     var displayedFiles: [File] {
         files.sorted {
@@ -26,9 +25,8 @@ class CourseFileViewModel {
         }
     }
 
-    init(courseID: String, traversedFolderIDs: [String]) {
+    init(courseID: String) {
         self.courseID = courseID
-        self.traversedFolderIDs = traversedFolderIDs
     }
 
     func fetchRoot() async -> Folder? {
@@ -46,10 +44,6 @@ class CourseFileViewModel {
     }
 
     func fetchContent(in folder: Folder) async {
-        if !traversedFolderIDs.contains(folder.id) {
-            traversedFolderIDs.append(folder.id)
-        }
-
         async let foldersInRootFolder: [Folder] = CanvasService.shared.loadAndSync(
             CanvasRequest.getFoldersInFolder(folderId: folder.id),
             onCacheReceive: { folders in
