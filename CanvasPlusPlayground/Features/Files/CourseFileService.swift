@@ -101,7 +101,7 @@ struct CourseFileService {
 
         // Start downloading remote version
         if let urlStr = file.url, let url = URL(string: urlStr) {
-            LoggerService.main.debug("File doesn't exist! Downloading ...")
+            LoggerService.main.debug("Downloading latest version of file...")
 
             weak var file = file
             let tempFileLoc = try await self.downloadFile(from: url)
@@ -114,6 +114,9 @@ struct CourseFileService {
                 }
                 let url = try self.saveCourseFile(courseId: courseID, file: file, content: content)
                 LoggerService.main.debug("File successfully saved at \(url.path())")
+
+                // Remove the temporary file
+                try self.deleteFile(at: tempFileLoc)
 
                 return (content, url)
             } catch {
@@ -214,7 +217,7 @@ struct CourseFileService {
         return tempUrl
     }
 
-    private func destinationPath(courseId: String, fileId: String, type: FileType?) throws -> URL {
+    private func destinationPath(courseId: String, fileId: String, type: FileType) throws -> URL {
         guard let coursesURL = Self.coursesURL else {
             throw FileError.directoryInaccessible
         }
@@ -223,9 +226,23 @@ struct CourseFileService {
             .appendingPathComponent(courseId)
             .appendingPathComponent("files")
 
-        pathURL.appendPathComponent(fileId + (type?.formatExtension ?? ""))
+        pathURL.appendPathComponent(fileId + (type.formatExtension))
 
         return pathURL
+    }
+
+    private func deleteFile(at url: URL) throws {
+        guard Self.fileManager.fileExists(atPath: url.path(percentEncoded: false)) else {
+            throw FileError.directoryInaccessible
+        }
+
+        do {
+            try Self.fileManager.removeItem(at: url)
+            LoggerService.main.debug("Deleted file at \(url.path())")
+        } catch {
+            LoggerService.main.error("Failed to delete file: \(error.localizedDescription)")
+            throw error
+        }
     }
 }
 
