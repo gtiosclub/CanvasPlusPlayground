@@ -36,6 +36,7 @@ class PinnedItem: Identifiable, Codable, Equatable, Hashable {
     func itemData() async {
         do {
             try await fetchData()
+            // TODO: use new course infra
             try await CanvasService.shared.loadAndSync(
                 CanvasRequest.getCourse(id: courseID)
             ) { cachedCourse in

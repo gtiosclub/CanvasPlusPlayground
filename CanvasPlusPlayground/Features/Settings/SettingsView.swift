@@ -106,7 +106,7 @@ struct SettingsView: View {
         Section {
             Group {
                 Button("View Item Picker", systemImage: "filemenu.and.selection") {
-                    navigationModel.selectedCourseForItemPicker = courseManager.userCourses.first
+                    navigationModel.selectedCourseForItemPicker = courseManager.activeCourses.first
                 }
 
                 Button("Clear Pinned Items", systemImage: "trash") {
