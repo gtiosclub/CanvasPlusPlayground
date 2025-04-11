@@ -28,7 +28,6 @@ struct CourseFileService {
 
     func saveCourseFile(
         courseId: String,
-        folderIds: [String],
         file: File,
         content: Data
     ) throws -> URL {
@@ -38,7 +37,7 @@ struct CourseFileService {
             throw FileError.fileWasNil
         }
 
-        let fileURL = try self.pathWithFolders(foldersPath: folderIds, courseId: courseId, fileId: file.id, type: .init(file: file))
+        let fileURL = try self.pathWithFolders(courseId: courseId, fileId: file.id, type: .init(file: file))
         let parentDirURL = fileURL.deletingLastPathComponent()
 
         try Self.fileManager.createDirectory(
@@ -63,11 +62,11 @@ struct CourseFileService {
     @discardableResult
     func setLocationForCourseFile(
         _ file: File,
-        course: Course,
-        foldersPath: [String]
+        course: Course
     ) -> URL? {
         LoggerService.main.debug("Checking if \(file.displayName) exists")
-        let fileLoc = try? pathWithFolders(foldersPath: foldersPath, courseId: course.id, fileId: file.id, type: FileType(file: file))
+
+        let fileLoc = try? pathWithFolders(courseId: course.id, fileId: file.id, type: FileType(file: file))
 
         if let fileLoc, Self.fileManager
             .fileExists(atPath: fileLoc.path(percentEncoded: false)) {
@@ -92,11 +91,10 @@ struct CourseFileService {
     func courseFile(
         for file: File,
         course: Course,
-        foldersPath: [String],
         localCopyReceived: (Data?, URL) -> Void
     ) async throws -> (Data, URL) {
         // Provide local copy meanwhile
-        if let fileLoc = self.setLocationForCourseFile(file, course: course, foldersPath: foldersPath),
+        if let fileLoc = self.setLocationForCourseFile(file, course: course),
            let data = try? Data(contentsOf: fileLoc) {
             localCopyReceived(data, fileLoc)
         }
@@ -114,7 +112,7 @@ struct CourseFileService {
                 guard let file else {
                     throw FileError.fileWasNil
                 }
-                let url = try self.saveCourseFile(courseId: course.id, folderIds: foldersPath, file: file, content: content)
+                let url = try self.saveCourseFile(courseId: course.id, file: file, content: content)
                 LoggerService.main.debug("File successfully saved at \(url.path())")
 
                 return (content, url)
@@ -216,7 +214,7 @@ struct CourseFileService {
         return tempUrl
     }
 
-    private func pathWithFolders(foldersPath: [String], courseId: String, fileId: String, type: FileType?) throws -> URL {
+    private func pathWithFolders(courseId: String, fileId: String, type: FileType?) throws -> URL {
         guard let coursesURL = Self.coursesURL else {
             throw FileError.directoryInaccessible
         }
@@ -224,9 +222,8 @@ struct CourseFileService {
         var pathURL = coursesURL
             .appendingPathComponent(courseId)
             .appendingPathComponent("files")
-        for folderId in foldersPath {
-            pathURL.appendPathComponent(folderId)
-        }
+
+
         pathURL.appendPathComponent(fileId + (type?.formatExtension ?? ""))
 
         return pathURL

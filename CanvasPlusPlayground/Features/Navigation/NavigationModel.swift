@@ -100,6 +100,8 @@ class NavigationModel {
         case announcement(DiscussionTopic)
         case assignment(Assignment)
         case page(Page)
+        case file(File, Course)
+        case folder(Folder, Course)
         // TODO: Add specific course items as needed.
 
         @ViewBuilder
@@ -107,7 +109,7 @@ class NavigationModel {
             switch self {
             case .course(let course):
                 CourseView(course: course)
-            case .coursePage(let coursePage, let course):
+            case let .coursePage(coursePage, course):
                 CourseDetailView(course: course, coursePage: coursePage)
             case .announcement(let announcement):
                 CourseAnnouncementDetailView(announcement: announcement)
@@ -115,6 +117,10 @@ class NavigationModel {
                 AssignmentDetailView(assignment: assignment)
             case .page(let page):
                 PageView(page: page)
+            case let .file(file, course):
+                FileViewer(course: course, file: file)
+            case let .folder(folder, course):
+                FoldersPageView(course: course, folder: folder)
             }
         }
     }

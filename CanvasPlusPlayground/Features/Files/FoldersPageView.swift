@@ -39,11 +39,11 @@ struct FoldersPageView: View {
     @State private var isLoadingContents = true
     @State private var selectedItem: Selection?
 
-    init(course: Course, folder: Folder? = nil, traversedFolderIDs: [String] = []) {
+    init(course: Course, folder: Folder? = nil) {
         self.course = course
         self.folder = folder
 
-        _filesVM = .init(initialValue: CourseFileViewModel(courseID: course.id, traversedFolderIDs: traversedFolderIDs))
+        _filesVM = .init(initialValue: CourseFileViewModel(courseID: course.id))
     }
 
     var body: some View {
@@ -51,7 +51,9 @@ struct FoldersPageView: View {
             if !filesVM.displayedFiles.isEmpty {
                 Section("Files") {
                     ForEach(filesVM.displayedFiles, id: \.id) { file in
-                        NavigationLink(value: Selection.file(file)) {
+                        NavigationLink(
+                            value: NavigationModel.Destination.file(file, course)
+                        ) {
                             fileRow(for: file)
                         }
                         .tag(Selection.file(file))
@@ -63,7 +65,9 @@ struct FoldersPageView: View {
             if !filesVM.displayedFolders.isEmpty {
                 Section("Folders") {
                     ForEach(filesVM.displayedFolders, id: \.id) { subFolder in
-                        NavigationLink(value: Selection.folder(subFolder)) {
+                        NavigationLink(
+                            value: NavigationModel.Destination.folder(subFolder, course)
+                        ) {
                             folderRow(for: subFolder)
                         }
                         .tag(Selection.folder(subFolder))
@@ -72,42 +76,24 @@ struct FoldersPageView: View {
                 }
             }
         }
+        #if os(iOS)
+        .onAppear {
+            selectedItem = nil
+        }
+        #endif
         .task {
             await loadContents()
         }
-        #if os(iOS)
-        .navigationDestination(item: $selectedItem) { item in
-            if #available(iOS 18.0, *) {
-                destinationView(for: item)
-                    #if os(iOS)
-                    .navigationTransition(.zoom(sourceID: item.id, in: namespace))
-                    #endif
-            } else {
-                destinationView(for: item)
-            }
-        }
-        #else
-        .navigationDestination(for: Selection.self) { item in
-            if #available(iOS 18.0, *) {
-                destinationView(for: item)
-                    #if os(iOS)
-                    .navigationTransition(.zoom(sourceID: item.id, in: namespace))
-                    #endif
-            } else {
-                destinationView(for: item)
-            }
-        }
-        #endif
         .overlay {
             if !isLoadingContents && filesVM.displayedFiles.isEmpty && filesVM.displayedFolders.isEmpty {
                 ContentUnavailableView("This folder is empty.", systemImage: "folder")
             }
         }
         .statusToolbarItem(
-            folder?.name ?? "Files",
+            folder?.name ?? "Course Files",
             isVisible: isLoadingContents
         )
-        .navigationTitle(folder?.name?.capitalized ?? "Files")
+        .navigationTitle(folder?.name?.capitalized ?? "Course Files")
         .pickedItem(selectedItem?.pickedValue)
     }
 
@@ -140,9 +126,8 @@ struct FoldersPageView: View {
         switch item {
         case .file(let file):
             FileViewer(course: course, file: file)
-                .environment(filesVM)
         case .folder(let folder):
-            FoldersPageView(course: course, folder: folder, traversedFolderIDs: filesVM.traversedFolderIDs)
+            FoldersPageView(course: course, folder: folder)
         }
     }
 
@@ -192,8 +177,7 @@ private struct FileRow: View {
             CourseFileService.shared
                 .setLocationForCourseFile(
                     file,
-                    course: course,
-                    foldersPath: filesVM.traversedFolderIDs
+                    course: course
                 )
         }
     }
