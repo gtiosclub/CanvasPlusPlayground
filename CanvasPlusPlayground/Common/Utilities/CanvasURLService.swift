@@ -13,6 +13,7 @@ enum CanvasURLService {
         case assignment(Assignment.ID)
         case file(File.ID)
         case page(Page.ID)
+        // TODO: Add items as needed.
 
         init?(pathType: String, id: String) {
             switch pathType {
