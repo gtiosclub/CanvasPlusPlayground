@@ -23,8 +23,7 @@ enum CanvasURLService {
             case "pages":
                 self = .page(id)
             case "files":
-                // TODO: Support Files
-                return nil
+                self = .file(id)
             default:
                 return nil
             }
@@ -92,9 +91,16 @@ extension NavigationModel.Destination {
             }
 
             return .page(page)
-        case .file:
-            // TODO: Support Files
-            return nil
+        case .file(let id):
+            let files = try? await CanvasService.shared.loadAndSync(
+                CanvasRequest.getFile(fileId: id)
+            )
+
+            guard let file = files?.first else {
+                return nil
+            }
+
+            return .file(file, courseID)
         }
     }
 }

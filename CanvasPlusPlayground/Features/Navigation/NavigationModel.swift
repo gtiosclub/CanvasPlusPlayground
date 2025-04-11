@@ -100,7 +100,7 @@ class NavigationModel {
         case announcement(DiscussionTopic)
         case assignment(Assignment)
         case page(Page)
-        case file(File, Course)
+        case file(File, Course.ID)
         case folder(Folder, Course)
         // TODO: Add specific course items as needed.
 
@@ -118,7 +118,7 @@ class NavigationModel {
             case .page(let page):
                 PageView(page: page)
             case let .file(file, course):
-                FileViewer(course: course, file: file)
+                FileViewer(courseID: course, file: file)
             case let .folder(folder, course):
                 FoldersPageView(course: course, folder: folder)
             }

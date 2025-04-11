@@ -50,7 +50,7 @@ struct FoldersPageView: View {
                 Section("Files") {
                     ForEach(filesVM.displayedFiles, id: \.id) { file in
                         NavigationLink(
-                            value: NavigationModel.Destination.file(file, course)
+                            value: NavigationModel.Destination.file(file, course.id)
                         ) {
                             fileRow(for: file)
                         }
@@ -114,7 +114,7 @@ struct FoldersPageView: View {
     func destinationView(for item: Selection) -> some View {
         switch item {
         case .file(let file):
-            FileViewer(course: course, file: file)
+            FileViewer(courseID: course.id, file: file)
         case .folder(let folder):
             FoldersPageView(course: course, folder: folder)
         }
@@ -165,7 +165,7 @@ private struct FileRow: View {
             CourseFileService.shared
                 .setLocationForCourseFile(
                     file,
-                    course: course
+                    courseID: course.id
                 )
         }
     }

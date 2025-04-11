@@ -62,11 +62,11 @@ struct CourseFileService {
     @discardableResult
     func setLocationForCourseFile(
         _ file: File,
-        course: Course
+        courseID: Course.ID
     ) -> URL? {
         LoggerService.main.debug("Checking if \(file.displayName) exists")
 
-        let fileLoc = try? pathWithFolders(courseId: course.id, fileId: file.id, type: FileType(file: file))
+        let fileLoc = try? pathWithFolders(courseId: courseID, fileId: file.id, type: FileType(file: file))
 
         if let fileLoc, Self.fileManager
             .fileExists(atPath: fileLoc.path(percentEncoded: false)) {
@@ -90,11 +90,11 @@ struct CourseFileService {
 
     func courseFile(
         for file: File,
-        course: Course,
+        courseID: Course.ID,
         localCopyReceived: (Data?, URL) -> Void
     ) async throws -> (Data, URL) {
         // Provide local copy meanwhile
-        if let fileLoc = self.setLocationForCourseFile(file, course: course),
+        if let fileLoc = self.setLocationForCourseFile(file, courseID: courseID),
            let data = try? Data(contentsOf: fileLoc) {
             localCopyReceived(data, fileLoc)
         }
@@ -112,7 +112,7 @@ struct CourseFileService {
                 guard let file else {
                     throw FileError.fileWasNil
                 }
-                let url = try self.saveCourseFile(courseId: course.id, file: file, content: content)
+                let url = try self.saveCourseFile(courseId: courseID, file: file, content: content)
                 LoggerService.main.debug("File successfully saved at \(url.path())")
 
                 return (content, url)

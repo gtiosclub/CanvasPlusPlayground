@@ -10,7 +10,7 @@ import SwiftUI
 struct FileViewer: View {
     @Environment(\.dismiss) private var dismiss
 
-    let course: Course
+    let courseID: Course.ID
     let file: File
     let fileService = CourseFileService()
 
@@ -62,7 +62,7 @@ struct FileViewer: View {
         do {
             (_, self.url) = try await fileService.courseFile(
                 for: file,
-                course: course,
+                courseID: courseID,
                 localCopyReceived: { (_, url) = ($0, $1) }
             )
         } catch {
