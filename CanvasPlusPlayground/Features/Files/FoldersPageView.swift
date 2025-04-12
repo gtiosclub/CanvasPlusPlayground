@@ -160,14 +160,6 @@ private struct FileRow: View {
                 type: .file
             )
         }
-        .onAppear {
-            // Updates file.localURL if needed
-            CourseFileService.shared
-                .setLocationForCourseFile(
-                    file,
-                    courseID: course.id
-                )
-        }
     }
 
     private var mainContent: some View {

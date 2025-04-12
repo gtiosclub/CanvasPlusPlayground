@@ -60,7 +60,7 @@ struct CourseFileService {
     }
 
     @discardableResult
-    func setLocationForCourseFile(
+    func localURLForCourseFile(
         _ file: File,
         courseID: Course.ID
     ) -> URL? {
@@ -72,15 +72,7 @@ struct CourseFileService {
             .fileExists(atPath: fileLoc.path(percentEncoded: false)) {
             LoggerService.main.debug("File exists locally!\n")
 
-            if fileLoc != file.localURL {
-                LoggerService.main.debug("Updating File's localURL")
-                file.localURL = fileLoc
-            }
-
             return fileLoc
-        } else if file.localURL != nil {
-            LoggerService.main.debug("Updating File's localURL to nil since it no longer exists locally")
-            file.localURL = nil
         }
 
         LoggerService.main.debug("File does not exist locally")
@@ -94,8 +86,15 @@ struct CourseFileService {
         localCopyReceived: (Data?, URL) -> Void
     ) async throws -> (Data, URL) {
         // Provide local copy meanwhile
-        if let fileLoc = self.setLocationForCourseFile(file, courseID: courseID),
-           let data = try? Data(contentsOf: fileLoc) {
+        let fileLoc = self.localURLForCourseFile(file, courseID: courseID)
+
+        Task { @MainActor in
+            if file.localURL != fileLoc {
+                file.localURL = fileLoc
+            }
+        }
+
+        if let fileLoc, let data = try? Data(contentsOf: fileLoc) {
             localCopyReceived(data, fileLoc)
         }
 
@@ -123,6 +122,10 @@ struct CourseFileService {
                 }
                 let url = try self.saveCourseFile(courseId: courseID, file: file, content: content)
                 LoggerService.main.debug("File successfully saved at \(url.path())")
+
+                Task { @MainActor in
+                    file.localURL = url
+                }
 
                 return (content, url)
             } catch {
