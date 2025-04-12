@@ -30,8 +30,6 @@ struct FoldersPageView: View {
         }
     }
 
-    @Namespace private var namespace
-
     let course: Course
     @State private var folder: Folder?
     @State private var filesVM: CourseFileViewModel
@@ -39,11 +37,11 @@ struct FoldersPageView: View {
     @State private var isLoadingContents = true
     @State private var selectedItem: Selection?
 
-    init(course: Course, folder: Folder? = nil, traversedFolderIDs: [String] = []) {
+    init(course: Course, folder: Folder? = nil) {
         self.course = course
         self.folder = folder
 
-        _filesVM = .init(initialValue: CourseFileViewModel(courseID: course.id, traversedFolderIDs: traversedFolderIDs))
+        _filesVM = .init(initialValue: CourseFileViewModel(courseID: course.id))
     }
 
     var body: some View {
@@ -51,7 +49,9 @@ struct FoldersPageView: View {
             if !filesVM.displayedFiles.isEmpty {
                 Section("Files") {
                     ForEach(filesVM.displayedFiles, id: \.id) { file in
-                        NavigationLink(value: Selection.file(file)) {
+                        NavigationLink(
+                            value: NavigationModel.Destination.file(file, course.id)
+                        ) {
                             fileRow(for: file)
                         }
                         .tag(Selection.file(file))
@@ -63,7 +63,9 @@ struct FoldersPageView: View {
             if !filesVM.displayedFolders.isEmpty {
                 Section("Folders") {
                     ForEach(filesVM.displayedFolders, id: \.id) { subFolder in
-                        NavigationLink(value: Selection.folder(subFolder)) {
+                        NavigationLink(
+                            value: NavigationModel.Destination.folder(subFolder, course)
+                        ) {
                             folderRow(for: subFolder)
                         }
                         .tag(Selection.folder(subFolder))
@@ -72,61 +74,34 @@ struct FoldersPageView: View {
                 }
             }
         }
+        #if os(iOS)
+        .onAppear {
+            selectedItem = nil
+        }
+        #endif
         .task {
             await loadContents()
         }
-        #if os(iOS)
-        .navigationDestination(item: $selectedItem) { item in
-            if #available(iOS 18.0, *) {
-                destinationView(for: item)
-                    #if os(iOS)
-                    .navigationTransition(.zoom(sourceID: item.id, in: namespace))
-                    #endif
-            } else {
-                destinationView(for: item)
-            }
-        }
-        #else
-        .navigationDestination(for: Selection.self) { item in
-            if #available(iOS 18.0, *) {
-                destinationView(for: item)
-                    #if os(iOS)
-                    .navigationTransition(.zoom(sourceID: item.id, in: namespace))
-                    #endif
-            } else {
-                destinationView(for: item)
-            }
-        }
-        #endif
         .overlay {
             if !isLoadingContents && filesVM.displayedFiles.isEmpty && filesVM.displayedFolders.isEmpty {
                 ContentUnavailableView("This folder is empty.", systemImage: "folder")
             }
         }
         .statusToolbarItem(
-            folder?.name ?? "Files",
+            folder?.name ?? "Course Files",
             isVisible: isLoadingContents
         )
-        .navigationTitle(folder?.name?.capitalized ?? "Files")
+        .navigationTitle(folder?.name?.capitalized ?? "Course Files")
         .pickedItem(selectedItem?.pickedValue)
     }
 
     @ViewBuilder
     func fileRow(for file: File) -> some View {
         if file.url != nil {
-            Group {
-                if #available(iOS 18.0, *) {
-                    FileRow(file: file, course: course)
-                        #if os(iOS)
-                        .matchedTransitionSource(id: file.id, in: namespace)
-                        #endif
-                } else {
-                    FileRow(file: file, course: course)
-                }
-            }
-            .environment(filesVM)
+            FileRow(file: file, course: course)
         } else {
             Label("File not available.", systemImage: "document")
+                .disabled(true)
         }
     }
 
@@ -139,10 +114,9 @@ struct FoldersPageView: View {
     func destinationView(for item: Selection) -> some View {
         switch item {
         case .file(let file):
-            FileViewer(course: course, file: file)
-                .environment(filesVM)
+            FileViewer(courseID: course.id, file: file)
         case .folder(let folder):
-            FoldersPageView(course: course, folder: folder, traversedFolderIDs: filesVM.traversedFolderIDs)
+            FoldersPageView(course: course, folder: folder)
         }
     }
 
@@ -158,7 +132,6 @@ struct FoldersPageView: View {
 }
 
 private struct FileRow: View {
-    @Environment(CourseFileViewModel.self) private var filesVM
     let file: File
     let course: Course
 
@@ -186,15 +159,6 @@ private struct FileRow: View {
                 courseID: course.id,
                 type: .file
             )
-        }
-        .onAppear {
-            // Updates file.localURL if needed
-            CourseFileService.shared
-                .setLocationForCourseFile(
-                    file,
-                    course: course,
-                    foldersPath: filesVM.traversedFolderIDs
-                )
         }
     }
 

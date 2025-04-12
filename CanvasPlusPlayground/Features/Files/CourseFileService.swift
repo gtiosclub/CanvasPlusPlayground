@@ -28,7 +28,6 @@ struct CourseFileService {
 
     func saveCourseFile(
         courseId: String,
-        folderIds: [String],
         file: File,
         content: Data
     ) throws -> URL {
@@ -38,7 +37,7 @@ struct CourseFileService {
             throw FileError.fileWasNil
         }
 
-        let fileURL = try self.pathWithFolders(foldersPath: folderIds, courseId: courseId, fileId: file.id, type: .init(file: file))
+        let fileURL = try self.destinationPath(courseId: courseId, fileId: file.id, type: .init(file: file))
         let parentDirURL = fileURL.deletingLastPathComponent()
 
         try Self.fileManager.createDirectory(
@@ -61,27 +60,19 @@ struct CourseFileService {
     }
 
     @discardableResult
-    func setLocationForCourseFile(
+    func localURLForCourseFile(
         _ file: File,
-        course: Course,
-        foldersPath: [String]
+        courseID: Course.ID
     ) -> URL? {
         LoggerService.main.debug("Checking if \(file.displayName) exists")
-        let fileLoc = try? pathWithFolders(foldersPath: foldersPath, courseId: course.id, fileId: file.id, type: FileType(file: file))
+
+        let fileLoc = try? destinationPath(courseId: courseID, fileId: file.id, type: FileType(file: file))
 
         if let fileLoc, Self.fileManager
             .fileExists(atPath: fileLoc.path(percentEncoded: false)) {
             LoggerService.main.debug("File exists locally!\n")
 
-            if fileLoc != file.localURL {
-                LoggerService.main.debug("Updating File's localURL")
-                file.localURL = fileLoc
-            }
-
             return fileLoc
-        } else if file.localURL != nil {
-            LoggerService.main.debug("Updating File's localURL to nil since it no longer exists locally")
-            file.localURL = nil
         }
 
         LoggerService.main.debug("File does not exist locally")
@@ -91,31 +82,50 @@ struct CourseFileService {
 
     func courseFile(
         for file: File,
-        course: Course,
-        foldersPath: [String],
+        courseID: Course.ID,
         localCopyReceived: (Data?, URL) -> Void
     ) async throws -> (Data, URL) {
         // Provide local copy meanwhile
-        if let fileLoc = self.setLocationForCourseFile(file, course: course, foldersPath: foldersPath),
-           let data = try? Data(contentsOf: fileLoc) {
+        let fileLoc = self.localURLForCourseFile(file, courseID: courseID)
+
+        Task { @MainActor in
+            if file.localURL != fileLoc {
+                file.localURL = fileLoc
+            }
+        }
+
+        if let fileLoc, let data = try? Data(contentsOf: fileLoc) {
             localCopyReceived(data, fileLoc)
         }
 
         // Start downloading remote version
         if let urlStr = file.url, let url = URL(string: urlStr) {
-            LoggerService.main.debug("File doesn't exist! Downloading ...")
+            LoggerService.main.debug("Downloading latest version of file...")
 
             weak var file = file
             let tempFileLoc = try await self.downloadFile(from: url)
 
             let content = try Data(contentsOf: tempFileLoc)
 
+            defer {
+                // Remove the temporary file
+                do {
+                    try self.deleteFile(at: tempFileLoc)
+                } catch {
+                    LoggerService.main.error("Failed to delete temp file: \(error)")
+                }
+            }
+
             do {
                 guard let file else {
                     throw FileError.fileWasNil
                 }
-                let url = try self.saveCourseFile(courseId: course.id, folderIds: foldersPath, file: file, content: content)
+                let url = try self.saveCourseFile(courseId: courseID, file: file, content: content)
                 LoggerService.main.debug("File successfully saved at \(url.path())")
+
+                Task { @MainActor in
+                    file.localURL = url
+                }
 
                 return (content, url)
             } catch {
@@ -216,7 +226,7 @@ struct CourseFileService {
         return tempUrl
     }
 
-    private func pathWithFolders(foldersPath: [String], courseId: String, fileId: String, type: FileType?) throws -> URL {
+    private func destinationPath(courseId: String, fileId: String, type: FileType) throws -> URL {
         guard let coursesURL = Self.coursesURL else {
             throw FileError.directoryInaccessible
         }
@@ -224,12 +234,24 @@ struct CourseFileService {
         var pathURL = coursesURL
             .appendingPathComponent(courseId)
             .appendingPathComponent("files")
-        for folderId in foldersPath {
-            pathURL.appendPathComponent(folderId)
-        }
-        pathURL.appendPathComponent(fileId + (type?.formatExtension ?? ""))
+
+        pathURL.appendPathComponent(fileId + (type.formatExtension))
 
         return pathURL
+    }
+
+    private func deleteFile(at url: URL) throws {
+        guard Self.fileManager.fileExists(atPath: url.path(percentEncoded: false)) else {
+            throw FileError.directoryInaccessible
+        }
+
+        do {
+            try Self.fileManager.removeItem(at: url)
+            LoggerService.main.debug("Deleted file at \(url.path())")
+        } catch {
+            LoggerService.main.error("Failed to delete file: \(error.localizedDescription)")
+            throw error
+        }
     }
 }
 
