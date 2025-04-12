@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct OpenInCanvasWebButton: View {
+private struct OpenInCanvasWebButton: View {
     @Environment(\.openURL) private var openURL
     let path: String
 
@@ -26,7 +26,7 @@ struct OpenInCanvasWebButton: View {
     }
 }
 
-struct OpenInCanvasWebButtonModifier: ViewModifier {
+private struct OpenInCanvasWebButtonModifier: ViewModifier {
     let path: String
     func body(content: Content) -> some View {
         content
