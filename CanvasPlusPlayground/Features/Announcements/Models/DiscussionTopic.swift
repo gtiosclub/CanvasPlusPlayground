@@ -11,6 +11,8 @@ import SwiftData
 // swiftlint:disable commented_code
 @Model
 class DiscussionTopic: Cacheable, Hashable, Equatable {
+    typealias ID = String
+
     var id: String
 
     // MARK: In Docs
@@ -58,7 +60,7 @@ class DiscussionTopic: Cacheable, Hashable, Equatable {
     var createdAt: Date?
 
     // MARK: Includes
-    var sections: [APICourseSection]
+    var sections: [CourseSection]
 
     // MARK: Custom
     var courseId: String?

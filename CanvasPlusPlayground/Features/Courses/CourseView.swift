@@ -11,24 +11,20 @@ struct CourseView: View {
     @Environment(PickerService.self) private var pickerService: PickerService?
     @Environment(NavigationModel.self) private var navigationModel
 
-    @State private var tabsManager = CourseTabsManager()
-    @State private var isLoadingTabs = false
-
     let course: Course
 
-    init(course: Course) {
-        self.course = course
+    private var tabLabels: [String] {
+        course.tabs.map(\.label).compactMap { $0 }
     }
 
     private var coursePages: [NavigationModel.CoursePage] {
-        guard !tabsManager.tabs.isEmpty else {
+        guard !course.tabs.isEmpty else {
             return []
         }
 
         let availableTabs = Set<NavigationModel.CoursePage>(
-            tabsManager.tabs.compactMap { tab in
-                guard let label = tab.label else { return nil }
-                return NavigationModel.CoursePage(rawValue: label.lowercased())
+            course.tabs.compactMap { tab in
+                return NavigationModel.CoursePage(rawValue: tab.label.lowercased())
             }
         )
 
@@ -47,13 +43,10 @@ struct CourseView: View {
         @Bindable var navigationModel = navigationModel
 
         List(coursePages, id: \.self, selection: $navigationModel.selectedCoursePage) { page in
-            NavigationLink(value: NavigationModel.Destination.coursePage(page)) {
+            NavigationLink(value: NavigationModel.Destination.coursePage(page, course)) {
                 Label(page.title, systemImage: page.systemImageIcon)
             }
             .tag(page)
-        }
-        .task(id: course.id) {
-            await fetchTabs()
         }
         .onAppear {
             navigationModel.selectedCoursePage = nil
@@ -66,16 +59,21 @@ struct CourseView: View {
         .tint(course.rgbColors?.color)
         .navigationTitle(course.displayName)
         .navigationDestination(for: NavigationModel.Destination.self) { destination in
-            destination.destinationView(for: course)
-                .environment(tabsManager)
-        }
-        .disabled(isLoadingTabs)
-        .openInCanvasWebToolbarButton(path: "courses/\(course.id)")
-    }
+            destination.destinationView()
+                .environment(\.openURL, OpenURLAction { url in
+                    guard let urlServiceResult = CanvasURLService.determineNavigationDestination(
+                        from: url
+                    ) else { return .discarded }
 
-    private func fetchTabs() async {
-        isLoadingTabs = true
-        await tabsManager.fetchTabs(course: course)
-        isLoadingTabs = false
+                    Task {
+                        await navigationModel
+                            .handleURLSelection(
+                                result: urlServiceResult,
+                                courseID: course.id
+                            )
+                    }
+                    return .handled
+                })
+        }
     }
 }

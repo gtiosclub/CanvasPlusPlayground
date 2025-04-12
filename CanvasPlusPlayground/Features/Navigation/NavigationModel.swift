@@ -55,7 +55,6 @@ class NavigationModel {
         case calendar
         case people
         case groups
-        case tabs
         case quizzes
         case modules
         case pages
@@ -65,7 +64,7 @@ class NavigationModel {
         }
 
         static let requiredTabs: Set<CoursePage> = [
-            .tabs, .people, .groups
+            .people, .groups
         ]
 
         var systemImageIcon: String {
@@ -76,8 +75,6 @@ class NavigationModel {
                 "circle.inset.filled"
             case .calendar:
                 "calendar"
-            case .tabs:
-                "tray.2"
             case .announcements:
                 "bubble"
             case .grades:
@@ -98,28 +95,32 @@ class NavigationModel {
 
     enum Destination: Hashable {
         case course(Course)
-        case coursePage(CoursePage)
+        case coursePage(CoursePage, Course)
 
         case announcement(DiscussionTopic)
         case assignment(Assignment)
         case page(Page)
+        case file(File, Course.ID)
+        case folder(Folder, Course)
         // TODO: Add specific course items as needed.
 
         @ViewBuilder
-        func destinationView(for course: Course?) -> some View {
+        func destinationView() -> some View {
             switch self {
             case .course(let course):
                 CourseView(course: course)
-            case .coursePage(let coursePage):
-                if let course {
-                    CourseDetailView(course: course, coursePage: coursePage)
-                }
+            case let .coursePage(coursePage, course):
+                CourseDetailView(course: course, coursePage: coursePage)
             case .announcement(let announcement):
                 CourseAnnouncementDetailView(announcement: announcement)
             case .assignment(let assignment):
                 AssignmentDetailView(assignment: assignment)
             case .page(let page):
                 PageView(page: page)
+            case let .file(file, courseID):
+                FileViewer(courseID: courseID, file: file)
+            case let .folder(folder, course):
+                FoldersPageView(course: course, folder: folder)
             }
         }
     }

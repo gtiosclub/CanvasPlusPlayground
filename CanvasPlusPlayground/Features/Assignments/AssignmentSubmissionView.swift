@@ -213,7 +213,9 @@ struct AssignmentSubmissionView: View {
                             showErrorAlert.wrappedValue = true
                             return
                         }
-                        if allowedFileTypes.contains(type) {
+                        if allowedFileTypes.contains(where: { allowedType in
+                            type.conforms(to: allowedType)
+                        }) {
                             selectedURLs.append(url)
                         } else {
                             error = AssignmentSubmissionError.invalidFileType

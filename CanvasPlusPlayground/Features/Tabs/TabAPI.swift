@@ -13,15 +13,59 @@ import Foundation
 struct TabAPI: APIResponse, Identifiable {
     typealias Model = NoOpCacheable
 
-    let id: String?
-    let html_url: String?
-    let full_url: String?
-    let position: Int?
-    let visibility: String?
-    let label: String?
-    let type: String?
-    let url: String?
+    let id: String
+    let html_url: URL
+    let full_url: URL?
+    let position: Int
+    let visibility: TabVisibility?
+    let label: String
+    let type: TabType
+    let hidden: Bool?
+    let url: URL?
+}
 
-    // MARK: Custom for Model
-    // var courseId: String?
+enum TabType: String, Codable {
+    case external, `internal`
+}
+
+enum TabVisibility: String, Codable {
+    case `public`, members, admins, none
+}
+
+extension TabAPI {
+    static let sample1 = TabAPI(
+        id: "home",
+        html_url: URL(string: "https://canvas.instructure.com/courses/12345")!,
+        full_url: URL(string: "https://canvas.instructure.com/courses/12345"),
+        position: 0,
+        visibility: .public,
+        label: "Home",
+        type: .internal,
+        hidden: false,
+        url: URL(string: "/courses/12345")
+    )
+
+    static let sample2 = TabAPI(
+        id: "modules",
+        html_url: URL(string: "https://canvas.instructure.com/courses/12345/modules")!,
+        full_url: URL(string: "https://canvas.instructure.com/courses/12345/modules"),
+        position: 1,
+        visibility: .public,
+        label: "Modules",
+        type: .internal,
+        hidden: false,
+        url: URL(string: "/courses/12345/modules")
+    )
+
+    static let sample3 = TabAPI(
+        id: "assignments",
+        html_url: URL(string: "https://canvas.instructure.com/courses/12345/assignments")!,
+        full_url: URL(string: "https://canvas.instructure.com/courses/12345/assignments"),
+        position: 2,
+        visibility: .public,
+        label: "Assignments",
+        type: .internal,
+        hidden: false,
+        url: URL(string: "/courses/12345/assignments")
+    )
 }

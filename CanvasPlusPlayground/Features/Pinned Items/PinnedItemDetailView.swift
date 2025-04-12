@@ -17,11 +17,7 @@ struct PinnedItemDetailView: View {
                 case .announcement(let announcement):
                     CourseAnnouncementDetailView(announcement: announcement)
                 case .file(let file):
-                    if let url = file.localURL {
-                        QuickLookPreview(url: url) { }
-                    } else {
-                        ContentUnavailableView("Unable to preview file, please download first.", systemImage: "xmark.rectangle.fill")
-                    }
+                    FileViewer(courseID: item.courseID, file: file)
                 case .assignment(let assignment):
                     AssignmentDetailView(assignment: assignment)
                 }
