@@ -85,6 +85,7 @@ final class Course: Cacheable {
     var hasActiveEnrollment: Bool {
         enrollments.contains { $0.enrollmentState == .active }
     }
+    
     var canFavorite: Bool {
         self.workflowState == .available && hasActiveEnrollment
     }
