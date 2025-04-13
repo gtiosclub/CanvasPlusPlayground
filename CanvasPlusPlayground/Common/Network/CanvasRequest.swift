@@ -348,4 +348,11 @@ enum CanvasRequest {
     ) -> CreateGroupMembershipRequest {
         CreateGroupMembershipRequest(groupId: groupId)
     }
+
+    static func markCourseFavorite(
+        courseId: String,
+        markFavorite: Bool
+    ) -> MarkFavoriteRequest {
+        MarkFavoriteRequest(contextType: .course, contextId: courseId, markFavorite: markFavorite)
+    }
 }

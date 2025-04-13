@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftData
+import SwiftUI
 
 // swiftlint:disable commented_code
 @Model
@@ -76,11 +77,18 @@ final class Course: Cacheable {
     // We cannot use `Color` directly because it needs to conform to `PersistentModel`
     var rgbColors: RGBColors?
     var nickname: String?
-    var isHidden: Bool?
     var order: Int = -1 // -1 necessary for predicate filtering
 
     var displayName: String {
         nickname ?? name ?? "Unknown Name"
+    }
+
+    var hasActiveEnrollment: Bool {
+        enrollments.contains { $0.enrollmentState == .active }
+    }
+    
+    var canFavorite: Bool {
+        self.workflowState == .available && hasActiveEnrollment
     }
 
     init(_ courseAPI: CourseAPI) {
@@ -202,6 +210,24 @@ final class Course: Cacheable {
         // self.isHidden = other.isHidden
 
         self.order = other.order // assumes order is set before merging
+    }
+}
+
+extension Course {
+    @MainActor
+    func markIsFavorite(as isFavorite: Bool) async {
+        let markFavReq = CanvasRequest.markCourseFavorite(courseId: self.id, markFavorite: isFavorite)
+
+        do {
+            try await CanvasService.shared.fetch(markFavReq)
+
+            withAnimation {
+                self.isFavorite = isFavorite
+            }
+            LoggerService.main.debug("Marked course \(self.name ?? "unnamed") as favorite: \(isFavorite)")
+        } catch {
+            LoggerService.main.debug("Marking course \(self.name ?? "unnamed") favorite as \(isFavorite) failed: \(error)")
+        }
     }
 }
 

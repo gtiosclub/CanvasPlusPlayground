@@ -47,7 +47,7 @@ struct ToDoListView: View {
         #endif
         .navigationTitle("To-Do List")
         .listStyle(.inset)
-        .task(id: courseManager.allCourses) {
+        .task(id: courseManager.activeCourses) {
             await loadItems()
         }
         .refreshable {
@@ -96,7 +96,7 @@ struct ToDoListView: View {
     private func loadItems() async {
         isLoading = true
         await listManager.fetchToDoItemCount()
-        await listManager.fetchToDoItems(courses: courseManager.allCourses)
+        await listManager.fetchToDoItems(courses: courseManager.activeCourses)
         isLoading = false
     }
 

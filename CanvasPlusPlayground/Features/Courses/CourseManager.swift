@@ -10,18 +10,17 @@ import SwiftUI
 @Observable
 @MainActor
 class CourseManager {
-    var allCourses = [Course]()
+    var activeCourses = [Course]()
 
-    /// This list is used in `PeopleCommonView` and `AllAnnouncements`.
-    var userCourses: [Course] {
-        allCourses
-            .filter { !($0.isHidden ?? false) }
+    var favoritedCourses: [Course] {
+        activeCourses
+            .filter { $0.canFavorite && $0.isFavorite }
             .sorted { $0.name ?? "" < $1.name ?? "" }
     }
 
-    var hiddenCourses: [Course] {
-        allCourses
-            .filter { $0.isHidden ?? false }
+    var unfavoritedCourses: [Course] {
+        activeCourses
+            .filter { !$0.isFavorite || !$0.canFavorite }
             .sorted { $0.name ?? "" < $1.name ?? "" }
     }
 
@@ -30,22 +29,22 @@ class CourseManager {
     func getCourses() async {
         LoggerService.main.debug("Fetching courses")
         do {
-            self.allCourses = courseService.courseRepository.getCourses(
+            self.activeCourses = courseService.courseRepository.getCourses(
                 enrollmentType: nil,
-                enrollmentState: nil,
+                enrollmentState: .active,
                 excludeBlueprintCourses: false,
                 state: [],
                 pageConfiguration: .all(perPage: 40)
             )
 
-            self.allCourses = try await courseService.getCourses(
+            self.activeCourses = try await courseService.getCourses(
                 enrollmentType: nil,
-                enrollmentState: nil,
+                enrollmentState: .active,
                 excludeBlueprintCourses: false,
                 state: [],
                 pageConfiguration: .all(perPage: 40)
             )
-            LoggerService.main.debug("Fetched courses: \(self.allCourses.compactMap(\.name))")
+            LoggerService.main.debug("Fetched courses: \(self.activeCourses.compactMap(\.name))")
         } catch {
             LoggerService.main.error("Failed to fetch courses. \(error)")
         }

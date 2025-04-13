@@ -14,7 +14,7 @@ struct Sidebar: View {
     @Environment(CourseManager.self) private var courseManager
     @Environment(ProfileManager.self) private var profileManager
 
-    @State private var isHiddenSectionExpanded: Bool = false
+    @State private var isUnfavoritedSectionExpanded: Bool = false
 
     var body: some View {
         @Bindable var navigationModel = navigationModel
@@ -25,20 +25,20 @@ struct Sidebar: View {
             }
 
             Section {
-                ForEach(courseManager.userCourses) { course in
+                ForEach(courseManager.favoritedCourses) { course in
                     SidebarCourseCell(course: course)
                 }
             } header: {
-                SidebarHeader(text: "Courses")
+                SidebarHeader(text: "Favorites")
             }
 
-            if !courseManager.hiddenCourses.isEmpty {
-                Section(isExpanded: $isHiddenSectionExpanded) {
-                    ForEach(courseManager.hiddenCourses) { course in
+            if !courseManager.unfavoritedCourses.isEmpty {
+                Section(isExpanded: $isUnfavoritedSectionExpanded) {
+                    ForEach(courseManager.unfavoritedCourses) { course in
                         SidebarCourseCell(course: course)
                     }
                 } header: {
-                    SidebarHeader(text: "Hidden")
+                    SidebarHeader(text: "Other")
                 }
             }
         }
