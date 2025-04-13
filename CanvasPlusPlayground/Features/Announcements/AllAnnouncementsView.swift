@@ -37,7 +37,7 @@ struct AllAnnouncementsView: View {
         .refreshable {
             await loadAnnouncements()
         }
-        .onChange(of: courseManager.allCourses) { _, _ in
+        .onChange(of: courseManager.activeCourses) { _, _ in
             Task {
                 await loadAnnouncements()
             }
@@ -47,7 +47,7 @@ struct AllAnnouncementsView: View {
     private func loadAnnouncements() async {
         isLoadingAnnouncements = true
         await announcementsManager
-            .fetchAnnouncements(courses: courseManager.activeCourses)
+            .fetchAnnouncements(courses: courseManager.favoritedCourses)
         isLoadingAnnouncements = false
     }
 }

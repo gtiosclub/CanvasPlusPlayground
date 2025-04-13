@@ -10,23 +10,16 @@ import SwiftUI
 @Observable
 @MainActor
 class CourseManager {
-    var allCourses = [Course]()
-
-    /// This list is used in `PeopleCommonView` and `AllAnnouncements`.
-    var activeCourses: [Course] {
-        allCourses
-            .filter { $0.hasActiveEnrollment }
-            .sorted { $0.name ?? "" < $1.name ?? "" }
-    }
+    var activeCourses = [Course]()
 
     var favoritedCourses: [Course] {
-        allCourses
+        activeCourses
             .filter { $0.canFavorite && $0.isFavorite }
             .sorted { $0.name ?? "" < $1.name ?? "" }
     }
 
     var unfavoritedCourses: [Course] {
-        allCourses
+        activeCourses
             .filter { !$0.isFavorite || !$0.canFavorite }
             .sorted { $0.name ?? "" < $1.name ?? "" }
     }
@@ -36,7 +29,7 @@ class CourseManager {
     func getCourses() async {
         LoggerService.main.debug("Fetching courses")
         do {
-            self.allCourses = courseService.courseRepository.getCourses(
+            self.activeCourses = courseService.courseRepository.getCourses(
                 enrollmentType: nil,
                 enrollmentState: .active,
                 excludeBlueprintCourses: false,
@@ -44,14 +37,14 @@ class CourseManager {
                 pageConfiguration: .all(perPage: 40)
             )
 
-            self.allCourses = try await courseService.getCourses(
+            self.activeCourses = try await courseService.getCourses(
                 enrollmentType: nil,
                 enrollmentState: .active,
                 excludeBlueprintCourses: false,
                 state: [],
                 pageConfiguration: .all(perPage: 40)
             )
-            LoggerService.main.debug("Fetched courses: \(self.allCourses.compactMap(\.name))")
+            LoggerService.main.debug("Fetched courses: \(self.activeCourses.compactMap(\.name))")
         } catch {
             LoggerService.main.error("Failed to fetch courses. \(error)")
         }
