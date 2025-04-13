@@ -10,7 +10,7 @@ import Foundation
 struct APIFavorite: APIResponse {
     typealias Model = NoOpCacheable
 
-    let context_id: String
+    let context_id: Int
     let context_type: ContextType
 
     enum ContextType: String, Codable {
@@ -30,7 +30,7 @@ struct APIFavorite: APIResponse {
 struct MarkFavoriteRequest: APIRequest {
     typealias Subject = APIFavorite
 
-    var path: String { "/api/v1/users/self/favorites/\(contextType.pathComponent)/\(contextId)" }
+    var path: String { "users/self/favorites/\(contextType.pathComponent)/\(contextId)" }
 
     var method: RequestMethod { markFavorite ? .POST : .DELETE }
 

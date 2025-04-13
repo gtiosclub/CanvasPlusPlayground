@@ -18,6 +18,8 @@ struct CourseListCell: View {
     @State private var showRenameTextField = false
     @State private var renameCourseFieldText: String = ""
 
+    @State private var isLoadingFavorite: Bool = false
+
     var body: some View {
         Label(course.displayName, systemImage: "book.pages")
             .frame(alignment: .leading)
@@ -74,18 +76,15 @@ struct CourseListCell: View {
     private var favCourseButton: some View {
         Button(
             course.isFavorite ? "Unfavorite Course" : "Favorite Course",
-            systemImage: "eye"
+            systemImage: "star"
         ) {
-            withAnimation {
-                // TODO: set and POST favorite
+            Task {
+                await course.markIsFavorite(as: !course.isFavorite)
             }
+
         }
         .symbolVariant(!course.isFavorite ? .none : .slash)
         .tint(.gray)
-    }
-
-    func markAsFavorite(_ favorite: Bool) {
-        // TODO: complete
     }
 
     private func renameCourse() {
