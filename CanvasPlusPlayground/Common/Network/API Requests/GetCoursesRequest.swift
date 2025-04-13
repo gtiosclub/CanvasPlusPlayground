@@ -74,7 +74,7 @@ extension GetCoursesRequest {
              permissions
     }
 
-    enum StateFilter: String {
+    enum StateFilter: String, Codable {
         case active, invitedOrPending = "invited_or_pending", completed
     }
 
