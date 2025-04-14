@@ -7,6 +7,9 @@
 
 import Foundation
 
+
+let canvasURL = "https://gatech.instructure.com/"
+
 protocol APIRequest {
     associatedtype Subject: APIResponse
     associatedtype QueryResult: Codable = Subject
@@ -46,7 +49,7 @@ protocol NoReturnAPIRequest: APIRequest {
 
 extension APIRequest {
     static var baseURL: URL {
-        guard let url = URL(string: "https://gatech.instructure.com/") else {
+        guard let url = URL(string: canvasURL) else {
             fatalError("Invalid base URL.")
         }
         return url

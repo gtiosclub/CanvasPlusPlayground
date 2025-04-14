@@ -35,7 +35,7 @@ struct CourseGradeView: View {
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
             #endif
-            .openInCanvasWebToolbarButton(path: "courses/\(course.id)/grades")
+            .openInCanvasWebToolbarButton(.grades(gradesVM.courseId))
     }
 
     private var gradesAccessoryBar: some View {
