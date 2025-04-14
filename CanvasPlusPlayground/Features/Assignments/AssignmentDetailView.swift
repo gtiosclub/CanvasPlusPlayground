@@ -127,7 +127,7 @@ struct AssignmentDetailView: View {
             .sheet(isPresented: $showSubmissionPopUp) {
                 AssignmentSubmissionView(assignment: assignment)
             }
-            .openInCanvasWebToolbarButton(.assignment(assignment.courseId?.asString ?? "", assignment.id))
+            .openInCanvasWebToolbarButton(.assignment(assignment.courseId?.asString ?? "MISSING_COURSE_ID", assignment.id))
         }
     }
 

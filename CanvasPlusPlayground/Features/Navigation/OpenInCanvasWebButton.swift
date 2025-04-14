@@ -8,18 +8,13 @@
 import SwiftUI
 
 private struct OpenInCanvasWebButton: View {
-    @Environment(\.openURL) private var openURL
     let path: WebButtonType
-
+    
     var body: some View {
-        Button("Open in Web") {
-            if let url = path.url {
-                openURL(url)
-            } else {
-                LoggerService.main.error("Failed to go to web with path: \(path.urlString)")
-            }
-            
-        }
+        Link("Open in Web", destination: path.url)
+            .environment(\.openURL, OpenURLAction { url in
+                return .systemAction
+            })
     }
 }
 
@@ -70,8 +65,8 @@ enum WebButtonType {
         }()
     }
     
-    var url: URL? {
-        URL(string: urlString)
+    var url: URL {
+        URL(string: urlString) ?? URL(string: canvasURL)!
     }
     
 }
