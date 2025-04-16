@@ -50,21 +50,13 @@ struct IGCSetupView: View {
 
                 Spacer()
 
-                #if os(iOS)
                 nextButton
-                #endif
             }
             .padding()
             .navigationTitle("Choose File")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") { dismiss() }
-                }
-
-                ToolbarItem(placement: .confirmationAction) {
-                    #if os(macOS)
-                    nextButton
-                    #endif
                 }
             }
             #if os(iOS)
@@ -84,16 +76,12 @@ struct IGCSetupView: View {
             showingParserView = true
         } label: {
             Text("Next")
-                #if os(iOS)
                 .frame(maxWidth: .infinity)
                 .frame(height: 32)
                 .bold()
-                #endif
         }
         .disabled(selectedFile == nil)
-        #if os(iOS)
         .buttonStyle(.borderedProminent)
-        #endif
     }
 
     private var descText: String {
@@ -118,6 +106,8 @@ private struct IGCParsingView: View {
     @State private var didExtractWeights = false
     @State private var rippleCondition = false
 
+    @State private var showingGradeCalculator = false
+
     @State private var groups: [GradeCalculator.GradeGroup] = []
 
     var body: some View {
@@ -125,16 +115,40 @@ private struct IGCParsingView: View {
             if selectedItem != nil {
                 ScrollView {
                     VStack {
-                        IntelligenceContentView(
-                            rippleEffectIsEnabled: !isEditing,
-                            condition: rippleCondition,
-                            isOutline: true
-                        ) {
-                            weightsView
-                        }
-                        .frame(minWidth: 200)
+                        VStack(alignment: .center, spacing: 8) {
+                            Image(systemName: "wand.and.sparkles")
+                                .font(.largeTitle)
+                                .bold()
+                                .foregroundStyle(.intelligenceGradient())
 
-                        Spacer()
+                            Text("Extract Weights")
+                                .font(.title)
+                                .bold()
+                                .fontDesign(.rounded)
+
+                            Text("Select 'Analyze Document' to update assignment weights by analyzing the content from the selected file.")
+                                .multilineTextAlignment(.center)
+                        }
+
+                        VStack(alignment: .center, spacing: 4) {
+                            IntelligenceContentView(
+                                rippleEffectIsEnabled: !isEditing,
+                                condition: rippleCondition,
+                                isOutline: true
+                            ) {
+                                weightsView
+                            }
+                            .frame(minWidth: 200)
+
+                            Group {
+                                Text("Analyzed: ") +
+                                Text(didExtractWeights ? "Yes" : "No")
+                                    .fontWeight(.bold)
+                                    .foregroundStyle(didExtractWeights ? Color.green : Color.red)
+                            }
+                            .contentTransition(.numericText())
+                            .animation(.default, value: didExtractWeights)
+                        }
 
                         HStack {
                             if didExtractWeights {
@@ -144,18 +158,34 @@ private struct IGCParsingView: View {
                             }
 
                             Spacer()
+                        }
 
-                            if isLoading {
-                                ProgressView()
-                                    .controlSize(.small)
+                        Spacer()
+
+                        if didExtractWeights {
+                            Button {
+                                showingGradeCalculator = true
+                            } label: {
+                                Text("View in Grade Calculator")
+                                    .frame(maxWidth: .infinity)
+                                    .frame(height: 32)
+                                    .bold()
                             }
+                            .buttonStyle(.borderedProminent)
+                        } else {
+                            HStack {
+                                Button("Analyze Document") {
+                                    Task {
+                                        await extractWeights()
+                                    }
+                                }
+                                .disabled(isLoading)
 
-                            Button("Get Weights") {
-                                Task {
-                                    await extractWeights()
+                                if isLoading {
+                                    ProgressView()
+                                        .controlSize(.small)
                                 }
                             }
-                            .disabled(isLoading)
                         }
                     }
                     .padding()
@@ -175,6 +205,16 @@ private struct IGCParsingView: View {
                 rippleCondition.toggle()
             }
         }
+        .sheet(isPresented: $showingGradeCalculator) {
+            NavigationStack {
+                GradeCalculatorView(
+                    gradeGroups: groups
+                )
+            }
+            #if os(macOS)
+            .frame(width: 550, height: 650)
+            #endif
+        }
     }
 
     private var weightsView: some View {
@@ -182,7 +222,7 @@ private struct IGCParsingView: View {
             groups: $groups,
             isEnabled: isEditing
         )
-        .background(.secondary.opacity(0.1))
+        .background(.intelligenceGradient().opacity(0.2))
         .shadow(radius: 6)
     }
 

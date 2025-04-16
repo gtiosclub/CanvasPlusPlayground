@@ -13,11 +13,15 @@ extension GradeCalculator {
         let weight: Double
     }
 
+    struct GroupMatch: Codable {
+        let sourceGroup: String
+        let targetGroup: String
+    }
+
     /// Indicates whether this Course would benefit by using Intelligence.
     /// e.g. if groups are unweighted or there are no assignment groups.
     var canUseIntelligenceAssistance: Bool {
-        true
-        // !gradeGroups.isEmpty && gradeGroups.reduce(0.0) { $0 + $1.weight } == 0.0
+        !gradeGroups.isEmpty && gradeGroups.reduce(0.0) { $0 + $1.weight } == 0.0
     }
 
     func extractWeightsUsingFile(
@@ -55,38 +59,59 @@ extension GradeCalculator {
         Do not mention anything else other than directly answering the question.
         """
 
-        if let modelName = intelligenceManager.currentModelName {
-            let answerText = await llmEvaluator
+        guard let modelName = intelligenceManager.currentModelName,
+              let data = await llmEvaluator
                 .generate(
                     modelName: modelName,
                     message: prompt,
                     systemPrompt: intelligenceManager.systemPrompt
                 )
                 .trimmingCharacters(in: .whitespacesAndNewlines)
+                .data(using: .utf8),
+              let results = try? JSONDecoder().decode([IntelligenceResult].self, from: data) else {
+            return []
+        }
 
-            LoggerService.main.debug("Extracted weights: \(answerText)")
+        // Create new groups from results
+        var newGroups = results.map {
+            GradeGroup(
+                id: UUID().uuidString,
+                name: $0.name,
+                weight: $0.weight,
+                assignments: []
+            )
+        }
 
-            if let data = answerText.data(using: .utf8) {
-                if let results = try? JSONDecoder().decode(
-                    [IntelligenceResult].self,
-                    from: data
-                ) {
-                    return results.map {
-                        GradeGroup(
-                            id: UUID().uuidString,
-                            name: $0.name,
-                            weight: $0.weight,
-                            assignments: []
-                        )
-                    }
-                } else {
-                    print("Failed to decode")
+        // Match groups and transfer assignments
+        let matchingPrompt = """
+        I have two lists of group names that might be similar but named slightly differently.
+
+        Original groups: \(gradeGroups.map(\.name).joined(separator: ", "))
+        New groups: \(newGroups.map(\.name).joined(separator: ", "))
+
+        Return ONLY a JSON array of matches in the following format, where sourceGroup is from the original groups and targetGroup is from the new groups. DO NOT SAY ANYTHING ELSE, BEFORE OR AFTER THE JSON RESPONSE!! Match them based on similarity in meaning/naming:
+        ```[{"sourceGroup": "Original Name 1", "targetGroup": "New Name 1"}, ...]```
+        """
+
+        if let matchData = await llmEvaluator
+            .generate(
+                modelName: modelName,
+                message: matchingPrompt,
+                systemPrompt: intelligenceManager.systemPrompt
+            )
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .data(using: .utf8),
+            let matches = try? JSONDecoder().decode([GroupMatch].self, from: matchData) {
+
+            // Transfer assignments based on matches
+            for match in matches {
+                if let sourceGroup = gradeGroups.first(where: { $0.name == match.sourceGroup }),
+                   let targetGroupIndex = newGroups.firstIndex(where: { $0.name == match.targetGroup }) {
+                    newGroups[targetGroupIndex].assignments = sourceGroup.assignments
                 }
-            } else {
-                print("Failed to make data")
             }
         }
 
-        return []
+        return newGroups
     }
 }
