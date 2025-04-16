@@ -19,6 +19,8 @@ struct CourseAssignmentsView: View {
     @State private var showingGradeCalculator = false
     @State private var selectedAssignment: Assignment?
 
+    @State private var showingIGCSetup = false
+
     init(course: Course, showGrades: Bool = false) {
         self.course = course
         self.showGrades = showGrades
@@ -123,6 +125,13 @@ struct CourseAssignmentsView: View {
             .frame(width: 550, height: 650)
             #endif
         }
+        .sheet(isPresented: $showingIGCSetup) {
+            IGCSetupView(course: course)
+                .environment(gradeCalculator)
+                #if os(macOS)
+                .frame(width: 450, height: 450)
+                #endif
+        }
         .environment(gradeCalculator)
         .animation(.default, value: gradeCalculator.canUseIntelligenceAssistance)
     }
@@ -139,8 +148,10 @@ struct CourseAssignmentsView: View {
 
             HStack {
                 Spacer()
-                Button("Get Started") { }
-                    .padding([.bottom, .trailing], 2)
+                Button("Get Started") {
+                    showingIGCSetup = true
+                }
+                .padding([.bottom, .trailing], 2)
             }
         }
         #if os(macOS)

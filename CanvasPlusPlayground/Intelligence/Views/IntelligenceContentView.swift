@@ -12,6 +12,9 @@ struct IntelligenceContentView<V: View>: View {
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
     @Namespace private var namespace
 
+    /// If `false`, only the background style is applied to the view. If `true`, this view can ripple
+    /// upon `condition`.
+    let rippleEffectIsEnabled: Bool
     /// This view ripples upon change of this condition
     let condition: Bool
     /// This boolean determines whether the background of the view is an outline stroke or is filled.
@@ -24,11 +27,13 @@ struct IntelligenceContentView<V: View>: View {
 
     /// A view designated for promoting intelligence features within the app.
     /// - Parameters:
+    ///   - rippleEffectIsEnabled:If `false`, only the background style is applied to the view. If `true`, this view can ripple upon `condition`.
     ///   - condition: This view ripples upon change of this condition.
     ///   - isOutline: This boolean determines whether the background of the view is an outline stroke or is filled.
     ///   If `nil` is passed in, `condition` is used instead.
     ///   - content: The view's contents
-    init(condition: Bool, isOutline: Bool? = nil, @ViewBuilder content: @escaping () -> V) {
+    init(rippleEffectIsEnabled: Bool = true, condition: Bool, isOutline: Bool? = nil, @ViewBuilder content: @escaping () -> V) {
+        self.rippleEffectIsEnabled = rippleEffectIsEnabled
         self.condition = condition
         self.isOutline = isOutline ?? condition
         self.content = content()
@@ -36,6 +41,7 @@ struct IntelligenceContentView<V: View>: View {
 
     var body: some View {
         content
+            .clipShape(.rect(cornerRadius: 8.0))
             .background {
                 cardBackground
             }
@@ -47,7 +53,11 @@ struct IntelligenceContentView<V: View>: View {
                         center = newValue.center
                     }
             }
-            .rippleEffect(origin: center, condition: condition)
+            .rippleEffect(
+                isEnabled: rippleEffectIsEnabled,
+                origin: center,
+                condition: condition
+            )
     }
 
     private var cardBackground: some View {

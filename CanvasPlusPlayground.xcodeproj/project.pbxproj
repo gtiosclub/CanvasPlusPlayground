@@ -216,6 +216,9 @@
 		B7E073622D986DD300A7E82F /* ToDoItemCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E073612D986DCF00A7E82F /* ToDoItemCount.swift */; };
 		B7E073642D9872AE00A7E82F /* IgnoreToDoItemRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E073632D9872AE00A7E82F /* IgnoreToDoItemRequest.swift */; };
 		B7E073662D9885F200A7E82F /* GradeCalculator+Intelligence.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E073652D9885EC00A7E82F /* GradeCalculator+Intelligence.swift */; };
+		B7E073682D9892F900A7E82F /* IGCSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E073672D9892EE00A7E82F /* IGCSetupView.swift */; };
+		B7E0736A2D98AC5100A7E82F /* RAGSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E073692D98AC5100A7E82F /* RAGSystem.swift */; };
+		B7E0736C2D98B31300A7E82F /* GradeGroupWeightsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E0736B2D98B30A00A7E82F /* GradeGroupWeightsView.swift */; };
 		B7E59A102D2002A5001836FE /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E59A0F2D2002A3001836FE /* Sidebar.swift */; };
 		B7E59A122D20046B001836FE /* SidebarTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E59A112D20046B001836FE /* SidebarTile.swift */; };
 		B7E59A142D2004A4001836FE /* CourseListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E59A132D2004A4001836FE /* CourseListCell.swift */; };
@@ -439,6 +442,9 @@
 		B7E073612D986DCF00A7E82F /* ToDoItemCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoItemCount.swift; sourceTree = "<group>"; };
 		B7E073632D9872AE00A7E82F /* IgnoreToDoItemRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IgnoreToDoItemRequest.swift; sourceTree = "<group>"; };
 		B7E073652D9885EC00A7E82F /* GradeCalculator+Intelligence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GradeCalculator+Intelligence.swift"; sourceTree = "<group>"; };
+		B7E073672D9892EE00A7E82F /* IGCSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGCSetupView.swift; sourceTree = "<group>"; };
+		B7E073692D98AC5100A7E82F /* RAGSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGSystem.swift; sourceTree = "<group>"; };
+		B7E0736B2D98B30A00A7E82F /* GradeGroupWeightsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradeGroupWeightsView.swift; sourceTree = "<group>"; };
 		B7E59A0F2D2002A3001836FE /* Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.swift; sourceTree = "<group>"; };
 		B7E59A112D20046B001836FE /* SidebarTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarTile.swift; sourceTree = "<group>"; };
 		B7E59A132D2004A4001836FE /* CourseListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseListCell.swift; sourceTree = "<group>"; };
@@ -919,6 +925,8 @@
 		B7460A902D6BFB050069CF5B /* GradeCalculator */ = {
 			isa = PBXGroup;
 			children = (
+				B7E0736B2D98B30A00A7E82F /* GradeGroupWeightsView.swift */,
+				B7E073672D9892EE00A7E82F /* IGCSetupView.swift */,
 				B7460A952D6CCD6E0069CF5B /* GradeCalculatorView.swift */,
 				B7460A932D6BFB1A0069CF5B /* GradeCalculator.swift */,
 				B7E073652D9885EC00A7E82F /* GradeCalculator+Intelligence.swift */,
@@ -968,6 +976,7 @@
 			isa = PBXGroup;
 			children = (
 				B7CC4D652D90FDEA00254F55 /* Views */,
+				B7E073692D98AC5100A7E82F /* RAGSystem.swift */,
 				B7AD54EF2CD41D7900FB09BB /* IntelligenceManager.swift */,
 				B7AD54F02CD41D7900FB09BB /* DeviceStat.swift */,
 				B7AD54F12CD41D7900FB09BB /* LLMEvaluator.swift */,
@@ -1166,6 +1175,7 @@
 				9BFD457D2D80F6EB00BBAA01 /* UploadAssignmentFileNotificationRequest.swift in Sources */,
 				B7CC4D632D90C8DB00254F55 /* ShapeStyle+Gradient.swift in Sources */,
 				A3CA02592D43294B00A9752B /* SearchResultsListView.swift in Sources */,
+				B7E0736C2D98B31300A7E82F /* GradeGroupWeightsView.swift in Sources */,
 				A3D0225D2D6A711900F8068C /* GetPagesRequest.swift in Sources */,
 				B76454FE2C8DF61B002DF00E /* Course.swift in Sources */,
 				A372D1062D90CE7D005E94CA /* GroupMembership.swift in Sources */,
@@ -1270,6 +1280,7 @@
 				B7CC4D462D8DFFA500254F55 /* CourseItemPicker.swift in Sources */,
 				B7AD54F62CD41D7900FB09BB /* DeviceStat.swift in Sources */,
 				A3049B812D160F6B002F3166 /* GetAnnouncementsRequest.swift in Sources */,
+				B7E073682D9892F900A7E82F /* IGCSetupView.swift in Sources */,
 				A373DC332D2819F700215019 /* APIModuleItem.swift in Sources */,
 				B7CC4D562D90BF3400254F55 /* IntelligenceContentView.swift in Sources */,
 				A373DC162D1A3C8700215019 /* RequestMethod.swift in Sources */,
@@ -1280,6 +1291,7 @@
 				A3D1614D2D16ACB8004055FB /* CacheableAPIRequest+Sync.swift in Sources */,
 				A3049B562D0E541D002F3166 /* QuizType.swift in Sources */,
 				A3049B612D0E6110002F3166 /* QuizQuestionType.swift in Sources */,
+				B7E0736A2D98AC5100A7E82F /* RAGSystem.swift in Sources */,
 				A3CA025B2D432A8700A9752B /* SearchResultListDataSource.swift in Sources */,
 				9B9C2E042C93F6CD00E4B16B /* CourseAnnouncementsView.swift in Sources */,
 				B77FD0022D52A0D60049AA5E /* ProfileView.swift in Sources */,
@@ -1511,7 +1523,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CanvasPlusPlayground/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 6MTCHYNPAT;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1552,7 +1564,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CanvasPlusPlayground/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 6MTCHYNPAT;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
