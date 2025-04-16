@@ -12,7 +12,7 @@ struct GradeGroupWeightsView: View {
     let isEnabled: Bool
 
     var body: some View {
-        VStack(spacing: 3) {
+        VStack(spacing: 6) {
             ForEach($groups) { $group in
                 HStack {
                     Text(group.name)
@@ -42,6 +42,8 @@ struct GradeGroupWeightsView: View {
                     }
                 }
                 .padding(.horizontal, 3)
+                .padding(.vertical, 4)
+                .background(.secondary.opacity(0.1), in: .rect(cornerRadius: 6.0))
             }
         }
         .padding()
