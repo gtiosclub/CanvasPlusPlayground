@@ -128,7 +128,13 @@ private struct IGCParsingView: View {
 
                             Text("Select 'Analyze Document' to update assignment weights by analyzing the content from the selected file.")
                                 .multilineTextAlignment(.center)
+
+                            if let selectedItem {
+                                Text("Selected File: \(selectedItem.itemTitle)")
+                                    .foregroundStyle(.secondary)
+                            }
                         }
+                        .padding(.bottom, 6)
 
                         VStack(alignment: .center, spacing: 4) {
                             IntelligenceContentView(
