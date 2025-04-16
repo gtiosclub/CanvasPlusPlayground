@@ -21,6 +21,10 @@ struct GradeCalculatorView: View {
         )
     }
 
+    init(gradeGroups: [GradeCalculator.GradeGroup]) {
+        _calculator = .init(initialValue: .init(gradeGroups: gradeGroups))
+    }
+
     var body: some View {
         @Bindable var calculator = calculator
 
