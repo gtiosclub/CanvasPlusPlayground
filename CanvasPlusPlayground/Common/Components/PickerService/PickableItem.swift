@@ -48,6 +48,6 @@ extension Page: PickableItem {
     }
 
     var contents: String {
-        self.body ?? ""
+        NSAttributedString(string: self.body ?? "").string
     }
 }
