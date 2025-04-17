@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct CanvasPlusPlaygroundApp: App {
@@ -52,6 +53,15 @@ struct CanvasPlusPlaygroundApp: App {
     }
 
     init() {
-        LoggerService.main.debug("\(URL.applicationSupportDirectory.path(percentEncoded: false))")
+        #if DEBUG
+        LoggerService.main.debug("App Sandbox: \(URL.applicationSupportDirectory.path(percentEncoded: false))")
+        #endif
+
+        do {
+            try ModelContainer.setupSharedModelContainer()
+        } catch {
+            LoggerService.main.error("Model container init has failed: \(error)")
+            // TODO: show data corruption message with prompt to reset local storage
+        }
     }
 }

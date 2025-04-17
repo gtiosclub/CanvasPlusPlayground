@@ -72,40 +72,39 @@ extension CanvasSchemaV1 {
             return !avatarURL.absoluteString.hasSuffix("avatar-50.png")
         }
     }
+}
 
-    enum EnrollmentType: String, Codable, CaseIterable {
-        case teacher = "TeacherEnrollment", student = "StudentEnrollment", taEnrollment = "TaEnrollment",
-             observer = "ObserverEnrollment", designer = "DesignerEnrollment"
+enum EnrollmentType: String, Codable, CaseIterable {
+    case teacher = "TeacherEnrollment", student = "StudentEnrollment", taEnrollment = "TaEnrollment",
+         observer = "ObserverEnrollment", designer = "DesignerEnrollment"
 
-        var displayName: String {
-            switch self {
-            case .teacher:
-                "Teacher"
-            case .student:
-                "Student"
-            case .taEnrollment:
-                "TA"
-            case .observer:
-                "Observer"
-            case .designer:
-                "Designer"
-            }
-        }
-
-        var asFilter: String {
-            switch self {
-            case .teacher:
-                "teacher"
-            case .student:
-                "student"
-            case .taEnrollment:
-                "ta"
-            case .observer:
-                "observer"
-            case .designer:
-                "designer"
-            }
+    var displayName: String {
+        switch self {
+        case .teacher:
+            "Teacher"
+        case .student:
+            "Student"
+        case .taEnrollment:
+            "TA"
+        case .observer:
+            "Observer"
+        case .designer:
+            "Designer"
         }
     }
 
+    var asFilter: String {
+        switch self {
+        case .teacher:
+            "teacher"
+        case .student:
+            "student"
+        case .taEnrollment:
+            "ta"
+        case .observer:
+            "observer"
+        case .designer:
+            "designer"
+        }
+    }
 }

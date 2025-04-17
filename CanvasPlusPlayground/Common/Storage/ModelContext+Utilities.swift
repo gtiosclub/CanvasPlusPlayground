@@ -12,11 +12,11 @@ import Combine
 extension ModelContext {
     /// Don't use for writes! Only reads. `StorageHandler.main` is meant for main thread writes - to serialize operations.
     @MainActor
-    static var shared: ModelContext = {
+    static var shared: ModelContext {
         let modelContext = ModelContainer.shared.mainContext
         modelContext.autosaveEnabled = true
         return modelContext
-    }()
+    }
 
     func existingModel<T: Cacheable>(forId id: String) -> T? {
         try? fetch(
@@ -25,33 +25,25 @@ extension ModelContext {
     }
 }
 
+typealias SchemaLatest = CanvasSchemaV1
+
 extension ModelContainer {
-    static var shared: ModelContainer = {
-        // TODO: show data corruption message with prompt to reset local storage if this fails.
-        let modelContainer = try! ModelContainer(
-            for: Course.self,
-            Announcement.self,
-            Assignment.self,
-            AssignmentGroup.self,
-            Enrollment.self,
-            File.self,
-            Folder.self,
-            Quiz.self,
-            Module.self,
-            ModuleItem.self,
-            Submission.self,
-            User.self,
-            Profile.self,
-            DiscussionTopic.self,
-            Page.self,
-            CanvasGroup.self,
-            GroupMembership.self,
-            CanvasTab.self
-            // TODO: Add cacheable models here
+    static var shared: ModelContainer!
+
+    static func setupSharedModelContainer(
+        for schema: VersionedSchema.Type = SchemaLatest.self,
+        inMemory: Bool = false
+    ) throws {
+        let schema = Schema(versionedSchema: schema)
+        let modelConfig = ModelConfiguration(isStoredInMemoryOnly: inMemory)
+        let modelContainer = try ModelContainer(
+            for: schema,
+            migrationPlan: MigrationPlan.self,
+            configurations: modelConfig
         )
 
-        return modelContainer
-    }()
+        Self.shared = modelContainer
+    }
 }
 
 extension NotificationCenter {
