@@ -8,31 +8,36 @@
 import Foundation
 import SwiftData
 
-@Model
-class ToDoItemCount: Cacheable {
-    typealias ID = String
+typealias ToDoItemCount = CanvasSchemaV1.ToDoItemCount
 
-    @Attribute(.unique)
-    let id: String
-    var parentID: String
+extension CanvasSchemaV1 {
+    @Model
+    class ToDoItemCount: Cacheable {
+        typealias ID = String
 
-    var needsGradingCount: Int
-    var assignmentsNeedingSubmitting: Int
+        @Attribute(.unique)
+        let id: String
+        var parentID: String
 
-    init(from model: ToDoItemCountAPI) {
-        self.id = UUID().uuidString // not included with API
-        self.parentID = ""
-        self.needsGradingCount = model.needsGradingCount
-        self.assignmentsNeedingSubmitting = model.assignmentsNeedingSubmitting
-    }
+        var needsGradingCount: Int
+        var assignmentsNeedingSubmitting: Int
 
-    enum CodingKeys: String, CodingKey {
-        case needsGradingCount = "needs_grading_count"
-        case assignmentsNeedingSubmitting = "assignments_needing_submitting"
-    }
+        init(from model: ToDoItemCountAPI) {
+            self.id = UUID().uuidString // not included with API
+            self.parentID = ""
+            self.needsGradingCount = model.needsGradingCount
+            self.assignmentsNeedingSubmitting = model.assignmentsNeedingSubmitting
+        }
 
-    func merge(with other: ToDoItemCount) {
-        self.needsGradingCount = other.needsGradingCount
-        self.assignmentsNeedingSubmitting = other.assignmentsNeedingSubmitting
+        enum CodingKeys: String, CodingKey {
+            case needsGradingCount = "needs_grading_count"
+            case assignmentsNeedingSubmitting = "assignments_needing_submitting"
+        }
+
+        func merge(with other: ToDoItemCount) {
+            self.needsGradingCount = other.needsGradingCount
+            self.assignmentsNeedingSubmitting = other.assignmentsNeedingSubmitting
+        }
     }
 }
+

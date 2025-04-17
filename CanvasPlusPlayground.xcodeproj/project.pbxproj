@@ -72,6 +72,7 @@
 		A330B8892DA4D78E00D6C1C3 /* CanvasTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = A330B8882DA4D78D00D6C1C3 /* CanvasTab.swift */; };
 		A330B88B2DA5663700D6C1C3 /* ModelContext+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = A330B88A2DA5663700D6C1C3 /* ModelContext+Utilities.swift */; };
 		A330B89B2DA98D0D00D6C1C3 /* MarkFavoriteRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A330B89A2DA98D0D00D6C1C3 /* MarkFavoriteRequest.swift */; };
+		A339D3F92DB15DC500952536 /* CanvasSchemaV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = A339D3F82DB15DC500952536 /* CanvasSchemaV1.swift */; };
 		A33BE8752D97A6F7005C1D13 /* GetGroupMembershipRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33BE8742D97A6F7005C1D13 /* GetGroupMembershipRequest.swift */; };
 		A351913F2D283556001E415F /* ModulesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A351913E2D283556001E415F /* ModulesListView.swift */; };
 		A35191412D283589001E415F /* ModulesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35191402D283589001E415F /* ModulesViewModel.swift */; };
@@ -291,6 +292,7 @@
 		A330B8882DA4D78D00D6C1C3 /* CanvasTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasTab.swift; sourceTree = "<group>"; };
 		A330B88A2DA5663700D6C1C3 /* ModelContext+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ModelContext+Utilities.swift"; sourceTree = "<group>"; };
 		A330B89A2DA98D0D00D6C1C3 /* MarkFavoriteRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkFavoriteRequest.swift; sourceTree = "<group>"; };
+		A339D3F82DB15DC500952536 /* CanvasSchemaV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasSchemaV1.swift; sourceTree = "<group>"; };
 		A33BE8742D97A6F7005C1D13 /* GetGroupMembershipRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetGroupMembershipRequest.swift; sourceTree = "<group>"; };
 		A351913E2D283556001E415F /* ModulesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModulesListView.swift; sourceTree = "<group>"; };
 		A35191402D283589001E415F /* ModulesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModulesViewModel.swift; sourceTree = "<group>"; };
@@ -660,6 +662,7 @@
 		A324BA582D079730005F53FA /* Storage */ = {
 			isa = PBXGroup;
 			children = (
+				A339D3F72DB15DA100952536 /* Versioning */,
 				A3269E8D2CD5533F006F7D14 /* CanvasRepository.swift */,
 				A3269E8F2CD57F75006F7D14 /* Cacheable.swift */,
 				B76454F02C8DF61B002DF00E /* StorageKeys.swift */,
@@ -733,6 +736,14 @@
 				A31A81E62D0CCB69003C37EB /* GradesViewModel.swift */,
 			);
 			path = Grades;
+			sourceTree = "<group>";
+		};
+		A339D3F72DB15DA100952536 /* Versioning */ = {
+			isa = PBXGroup;
+			children = (
+				A339D3F82DB15DC500952536 /* CanvasSchemaV1.swift */,
+			);
+			path = Versioning;
 			sourceTree = "<group>";
 		};
 		A372D0FD2D90BA96005E94CA /* Groups */ = {
@@ -1071,7 +1082,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B76454722C8BBC81002DF00E /* Build configuration list for PBXNativeTarget "CanvasPlusPlayground" */;
 			buildPhases = (
-				9ACDA5E82D5F1DA2001F1F0A /* SwiftLint */,
+                9ACDA5E82D5F1DA2001F1F0A /* SwiftLint */,
 				B76454602C8BBC7F002DF00E /* Sources */,
 				B76454612C8BBC7F002DF00E /* Frameworks */,
 				B76454622C8BBC7F002DF00E /* Resources */,
@@ -1163,6 +1174,7 @@
 				A3CF88DB2D192194000ACDF3 /* EnrollmentAPI.swift in Sources */,
 				A372D0FB2D90A709005E94CA /* HTTPURLResponse+Codes.swift in Sources */,
 				B7F950322D118EAF004BB470 /* String+StripHTML.swift in Sources */,
+				A339D3F92DB15DC500952536 /* CanvasSchemaV1.swift in Sources */,
 				B7D7512D2D3D652300F7B8B8 /* GetAnnouncementsBatchRequest.swift in Sources */,
 				A324BA6A2D0817AB005F53FA /* FoldersPageView.swift in Sources */,
 				B7A26EE92CCB62A30084704A /* NavigationModel.swift in Sources */,

@@ -46,88 +46,93 @@
 import Foundation
 import SwiftData
 
-@Model
-class File: Cacheable {
-    typealias ID = String
-    typealias ServerID = Int
+typealias File = CanvasSchemaV1.File
 
-    // MARK: - Attributes
-    @Attribute(.unique) var id: String
+extension CanvasSchemaV1 {
+    @Model
+    class File: Cacheable {
+        typealias ID = String
+        typealias ServerID = Int
 
-    var uuid: String?
-    var folderId: Int? // parent
-    var displayName: String
-    var filename: String
-    var contentType: String?
-    var url: String?
-    var size: Int?
-    var createdAt: Date?
-    var updatedAt: Date?
-    var unlockAt: Date?
-    var locked: Bool?
-    var hidden: Bool?
-    var lockAt: Date?
-    var hiddenForUser: Bool?
-    var thumbnailUrl: String?
-    var modifiedAt: Date?
-    var mimeClass: String?
-    var mediaEntryID: String?
-    var lockedForUser: Bool?
-    var visibilityLevel: String?
+        // MARK: - Attributes
+        @Attribute(.unique) var id: String
 
-    // MARK: Custom Properties
-    var localURL: URL?
+        var uuid: String?
+        var folderId: Int? // parent
+        var displayName: String
+        var filename: String
+        var contentType: String?
+        var url: String?
+        var size: Int?
+        var createdAt: Date?
+        var updatedAt: Date?
+        var unlockAt: Date?
+        var locked: Bool?
+        var hidden: Bool?
+        var lockAt: Date?
+        var hiddenForUser: Bool?
+        var thumbnailUrl: String?
+        var modifiedAt: Date?
+        var mimeClass: String?
+        var mediaEntryID: String?
+        var lockedForUser: Bool?
+        var visibilityLevel: String?
 
-    init(api: FileAPI) {
-        self.id = api.id.asString
+        // MARK: Custom Properties
+        var localURL: URL?
 
-        self.uuid = api.uuid
-        self.folderId = api.folder_id
-        self.displayName = api.display_name
-        self.filename = api.filename
-        self.contentType = api.content_type
-        self.url = api.url
-        self.size = api.size
-        self.createdAt = api.created_at
-        self.updatedAt = api.updated_at
-        self.unlockAt = api.unlock_at
-        self.locked = api.locked
-        self.hidden = api.hidden
-        self.hidden = api.hidden
-        self.lockAt = api.lock_at
-        self.hiddenForUser = api.hidden_for_user
-        self.thumbnailUrl = api.thumbnail_url
-        self.modifiedAt = api.modified_at
-        self.mimeClass = api.mime_class
-        self.mediaEntryID = api.media_entry_id
-        self.lockedForUser = api.locked_for_user
-        self.visibilityLevel = api.visibility_level
-    }
+        init(api: FileAPI) {
+            self.id = api.id.asString
 
-    // MARK: - Merge
-    func merge(with other: File) {
-        self.uuid = other.uuid
-        self.folderId = other.folderId
-        self.displayName = other.displayName
-        self.filename = other.filename
-        self.contentType = other.contentType
-        self.url = other.url
-        self.size = other.size
-        self.createdAt = other.createdAt
-        self.updatedAt = other.updatedAt
-        self.unlockAt = other.unlockAt
-        self.locked = other.locked
-        self.hidden = other.hidden
-        self.lockAt = other.lockAt
-        self.hiddenForUser = other.hiddenForUser
-        self.thumbnailUrl = other.thumbnailUrl
-        self.modifiedAt = other.modifiedAt
-        self.mimeClass = other.mimeClass
-        self.mediaEntryID = other.mediaEntryID
-        self.lockedForUser = other.lockedForUser
-        self.visibilityLevel = other.visibilityLevel
+            self.uuid = api.uuid
+            self.folderId = api.folder_id
+            self.displayName = api.display_name
+            self.filename = api.filename
+            self.contentType = api.content_type
+            self.url = api.url
+            self.size = api.size
+            self.createdAt = api.created_at
+            self.updatedAt = api.updated_at
+            self.unlockAt = api.unlock_at
+            self.locked = api.locked
+            self.hidden = api.hidden
+            self.hidden = api.hidden
+            self.lockAt = api.lock_at
+            self.hiddenForUser = api.hidden_for_user
+            self.thumbnailUrl = api.thumbnail_url
+            self.modifiedAt = api.modified_at
+            self.mimeClass = api.mime_class
+            self.mediaEntryID = api.media_entry_id
+            self.lockedForUser = api.locked_for_user
+            self.visibilityLevel = api.visibility_level
+        }
+
+        // MARK: - Merge
+        func merge(with other: File) {
+            self.uuid = other.uuid
+            self.folderId = other.folderId
+            self.displayName = other.displayName
+            self.filename = other.filename
+            self.contentType = other.contentType
+            self.url = other.url
+            self.size = other.size
+            self.createdAt = other.createdAt
+            self.updatedAt = other.updatedAt
+            self.unlockAt = other.unlockAt
+            self.locked = other.locked
+            self.hidden = other.hidden
+            self.lockAt = other.lockAt
+            self.hiddenForUser = other.hiddenForUser
+            self.thumbnailUrl = other.thumbnailUrl
+            self.modifiedAt = other.modifiedAt
+            self.mimeClass = other.mimeClass
+            self.mediaEntryID = other.mediaEntryID
+            self.lockedForUser = other.lockedForUser
+            self.visibilityLevel = other.visibilityLevel
+        }
     }
 }
+
 
 fileprivate extension DateFormatter {
     static let apiDateFormatter: DateFormatter = {
