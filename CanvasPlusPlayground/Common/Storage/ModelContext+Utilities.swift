@@ -44,6 +44,17 @@ extension ModelContainer {
 
         Self.shared = modelContainer
     }
+
+    static func eraseSQLiteStore() throws {
+        let appSupportDir = URL.applicationSupportDirectory.path(percentEncoded: false)
+        let appSupportFiles = try FileManager.default.contentsOfDirectory(atPath: appSupportDir)
+
+        for file in appSupportFiles {
+            guard file.contains("default.store") else { continue }
+            let fileURL = URL(fileURLWithPath: appSupportDir.appending(file))
+            try FileManager.default.removeItem(at: fileURL)
+        }
+    }
 }
 
 extension NotificationCenter {
