@@ -90,8 +90,10 @@ class CourseRepositoryImpl: CourseRepository {
     func getCourses(withIds ids: [String]) -> [Course] {
         let mainContext = ModelContext.shared
 
-        return ids.compactMap {
-            mainContext.existingModel(forId: $0)
+        return ids.compactMap { id in
+            try? mainContext.fetch(
+                FetchDescriptor<Course>(predicate: #Predicate { $0.id == id })
+            ).first
         }
     }
 
@@ -127,7 +129,15 @@ class CourseRepositoryImpl: CourseRepository {
                     let course = Course(courseApi)
 
                     let newTabs: [CanvasTab] = courseApi.tabs?.compactMap { tabApi in
-                        if let existingTab = context.existingModel(forId: tabApi.id) as CanvasTab? {
+                        let fetchedTabs = try? context
+                            .fetch(
+                                FetchDescriptor(predicate: #Predicate<CanvasTab> { tab in
+                                        tab.id == tabApi.id
+                                    }
+                                )
+                            )
+
+                        if let existingTab = fetchedTabs?.first {
                             existingTab.merge(with: tabApi)
                             if course.tabs.contains(existingTab) { return nil }
                             else { return existingTab }
@@ -144,7 +154,16 @@ class CourseRepositoryImpl: CourseRepository {
                         course.order = i
                     }
 
-                    if let dbCourse = context.existingModel(forId: course.id) as Course? {
+                    let courseId = course.id
+                    let fetchedCourses = try? context
+                        .fetch(
+                            FetchDescriptor(predicate: #Predicate<Course> {
+                                    $0.id == courseId
+                                }
+                            )
+                        )
+
+                    if let dbCourse = fetchedCourses?.first {
                         dbCourse.merge(with: course)
                         dbCourse.tabs.append(contentsOf: newTabs)
                         return dbCourse

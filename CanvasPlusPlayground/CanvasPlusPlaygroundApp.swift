@@ -74,8 +74,13 @@ struct CanvasPlusPlaygroundApp: App {
 
     var launchFailurePage: some View {
         VStack {
+            Image(systemName: "externaldrive.fill.trianglebadge.exclamationmark")
+                .font(.largeTitle)
+                .foregroundStyle(.yellow)
+
             Text("Local Storage Failure")
-                .font(.title)
+                .font(.largeTitle)
+                .bold()
 
             Text(
                  """
@@ -83,6 +88,8 @@ struct CanvasPlusPlaygroundApp: App {
                  Note that this will only affect the data you have on-device (Pinned Items, Grade Calculator, etc.), and will not affect the server-side data.
                  """
             )
+
+            Spacer()
 
             Button("Reset local storage") {
                 do {
@@ -95,6 +102,7 @@ struct CanvasPlusPlaygroundApp: App {
                 }
             }
         }
+        .padding()
     }
 
     init() {
