@@ -50,7 +50,7 @@ typealias File = CanvasSchemaV1.File
 
 extension CanvasSchemaV1 {
     @Model
-    class File: Cacheable {
+    class File {
         typealias ID = String
         typealias ServerID = Int
 
@@ -106,30 +106,32 @@ extension CanvasSchemaV1 {
             self.lockedForUser = api.locked_for_user
             self.visibilityLevel = api.visibility_level
         }
+    }
+}
 
-        // MARK: - Merge
-        func merge(with other: File) {
-            self.uuid = other.uuid
-            self.folderId = other.folderId
-            self.displayName = other.displayName
-            self.filename = other.filename
-            self.contentType = other.contentType
-            self.url = other.url
-            self.size = other.size
-            self.createdAt = other.createdAt
-            self.updatedAt = other.updatedAt
-            self.unlockAt = other.unlockAt
-            self.locked = other.locked
-            self.hidden = other.hidden
-            self.lockAt = other.lockAt
-            self.hiddenForUser = other.hiddenForUser
-            self.thumbnailUrl = other.thumbnailUrl
-            self.modifiedAt = other.modifiedAt
-            self.mimeClass = other.mimeClass
-            self.mediaEntryID = other.mediaEntryID
-            self.lockedForUser = other.lockedForUser
-            self.visibilityLevel = other.visibilityLevel
-        }
+extension File: Cacheable {
+    // MARK: - Merge
+    func merge(with other: File) {
+        self.uuid = other.uuid
+        self.folderId = other.folderId
+        self.displayName = other.displayName
+        self.filename = other.filename
+        self.contentType = other.contentType
+        self.url = other.url
+        self.size = other.size
+        self.createdAt = other.createdAt
+        self.updatedAt = other.updatedAt
+        self.unlockAt = other.unlockAt
+        self.locked = other.locked
+        self.hidden = other.hidden
+        self.lockAt = other.lockAt
+        self.hiddenForUser = other.hiddenForUser
+        self.thumbnailUrl = other.thumbnailUrl
+        self.modifiedAt = other.modifiedAt
+        self.mimeClass = other.mimeClass
+        self.mediaEntryID = other.mediaEntryID
+        self.lockedForUser = other.lockedForUser
+        self.visibilityLevel = other.visibilityLevel
     }
 }
 

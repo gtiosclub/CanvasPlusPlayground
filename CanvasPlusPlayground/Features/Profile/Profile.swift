@@ -12,7 +12,7 @@ typealias Profile = CanvasSchemaV1.Profile
 
 extension CanvasSchemaV1 {
     @Model
-    class Profile: Cacheable {
+    class Profile {
         typealias ID = String
         typealias ServerID = Int
 
@@ -56,24 +56,26 @@ extension CanvasSchemaV1 {
             self.useClassicFontInK5 = profileAPI.use_classic_font_in_k5
             self.tag = ""
         }
-
-        func merge(with other: Profile) {
-            self.name = other.name
-            self.shortName = other.shortName
-            self.sortableName = other.sortableName
-            self.title = other.title
-            self.bio = other.bio
-            self.pronunciation = other.pronunciation
-            self.primaryEmail = other.primaryEmail
-            self.loginId = other.loginId
-            self.sisUserId = other.sisUserId
-            self.ltiUserId = other.ltiUserId
-            self.avatarUrl = other.avatarUrl
-            self.timeZone = other.timeZone
-            self.locale = other.locale
-            self.isK5User = other.isK5User
-            self.useClassicFontInK5 = other.useClassicFontInK5
-        }
     }
 
+}
+
+extension Profile: Cacheable {
+    func merge(with other: Profile) {
+        self.name = other.name
+        self.shortName = other.shortName
+        self.sortableName = other.sortableName
+        self.title = other.title
+        self.bio = other.bio
+        self.pronunciation = other.pronunciation
+        self.primaryEmail = other.primaryEmail
+        self.loginId = other.loginId
+        self.sisUserId = other.sisUserId
+        self.ltiUserId = other.ltiUserId
+        self.avatarUrl = other.avatarUrl
+        self.timeZone = other.timeZone
+        self.locale = other.locale
+        self.isK5User = other.isK5User
+        self.useClassicFontInK5 = other.useClassicFontInK5
+    }
 }

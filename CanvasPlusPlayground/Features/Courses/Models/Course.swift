@@ -13,7 +13,7 @@ typealias Course = CanvasSchemaV1.Course
 
 extension CanvasSchemaV1 {
     @Model
-    final class Course: Cacheable {
+    final class Course {
         typealias ID = String
 
         // MARK: IDs
@@ -154,65 +154,67 @@ extension CanvasSchemaV1 {
             )
             self.isPublished = courseAPI.workflow_state == .available || courseAPI.workflow_state == .completed
         }
+    }
+}
 
-        func merge(with other: Course) {
-            self.name = other.name
-            self.courseCode = other.courseCode
-            self.originalName = other.originalName
-            self.courseColor = other.courseColor
-            self.workflowState = other.workflowState
-            self.accountId = other.accountId
-            self.createdAt = other.createdAt
-            self.startAt = other.startAt
-            self.endAt = other.endAt
-            self.locale = other.locale
+extension Course: Cacheable {
+    func merge(with other: Course) {
+        self.name = other.name
+        self.courseCode = other.courseCode
+        self.originalName = other.originalName
+        self.courseColor = other.courseColor
+        self.workflowState = other.workflowState
+        self.accountId = other.accountId
+        self.createdAt = other.createdAt
+        self.startAt = other.startAt
+        self.endAt = other.endAt
+        self.locale = other.locale
 
-            // MARK: Enrollment info
-            self.enrollments = other.enrollments
-            self.enrollmentTypesRaw = other.enrollmentTypesRaw
-            self.enrollmentRolesRaw = other.enrollmentRolesRaw
-            self.enrollmentRoleIds = other.enrollmentRoleIds
-            self.enrollmentUserIds = other.enrollmentUserIds
-            self.enrollmentStatesRaw = other.enrollmentStatesRaw
+        // MARK: Enrollment info
+        self.enrollments = other.enrollments
+        self.enrollmentTypesRaw = other.enrollmentTypesRaw
+        self.enrollmentRolesRaw = other.enrollmentRolesRaw
+        self.enrollmentRoleIds = other.enrollmentRoleIds
+        self.enrollmentUserIds = other.enrollmentUserIds
+        self.enrollmentStatesRaw = other.enrollmentStatesRaw
 
-            self.totalStudents = other.totalStudents
-            self.calendarIcs = other.calendarIcs
-            self.defaultView = other.defaultView
-            self.syllabusBody = other.syllabusBody
-            self.term = other.term
-            self.courseProgress = other.courseProgress
-            self.applyAssignmentGroupWeights = other.applyAssignmentGroupWeights
-            self.teachers = other.teachers
-            self.canCreateAnnouncement = other.canCreateAnnouncement
-            self.canCreateDiscussionTopic = other.canCreateDiscussionTopic
-            self.isPublic = other.isPublic
-            self.isHomeroomCourse = other.isHomeroomCourse
-            self.publicDescription = other.publicDescription
-            self.hideFinalGrades = other.hideFinalGrades
+        self.totalStudents = other.totalStudents
+        self.calendarIcs = other.calendarIcs
+        self.defaultView = other.defaultView
+        self.syllabusBody = other.syllabusBody
+        self.term = other.term
+        self.courseProgress = other.courseProgress
+        self.applyAssignmentGroupWeights = other.applyAssignmentGroupWeights
+        self.teachers = other.teachers
+        self.canCreateAnnouncement = other.canCreateAnnouncement
+        self.canCreateDiscussionTopic = other.canCreateDiscussionTopic
+        self.isPublic = other.isPublic
+        self.isHomeroomCourse = other.isHomeroomCourse
+        self.publicDescription = other.publicDescription
+        self.hideFinalGrades = other.hideFinalGrades
 
-            self.accessRestrictedByDate = other.accessRestrictedByDate
-            self.blueprint = other.blueprint
-            self.bannerImageDownloadURL = other.bannerImageDownloadURL
-            self.imageDownloadURL = other.imageDownloadURL
-            self.isFavorite = other.isFavorite
-            self.sections = other.sections
-            //self.tabs = other.tabs
-            self.settings = other.settings
-            self.concluded = other.concluded
-            self.gradingScheme = other.gradingScheme
+        self.accessRestrictedByDate = other.accessRestrictedByDate
+        self.blueprint = other.blueprint
+        self.bannerImageDownloadURL = other.bannerImageDownloadURL
+        self.imageDownloadURL = other.imageDownloadURL
+        self.isFavorite = other.isFavorite
+        self.sections = other.sections
+        //self.tabs = other.tabs
+        self.settings = other.settings
+        self.concluded = other.concluded
+        self.gradingScheme = other.gradingScheme
 
-            // State properties
-            self.isCourseDeleted = other.isCourseDeleted
-            self.isPastEnrollment = other.isPastEnrollment
-            self.isPublished = other.isPublished
+        // State properties
+        self.isCourseDeleted = other.isCourseDeleted
+        self.isPastEnrollment = other.isPastEnrollment
+        self.isPublished = other.isPublished
 
-            // Note: These custom properties must NOT be merged.
-            // self.rgbColors = other.rgbColors
-            // self.nickname = other.nickname
-            // self.isHidden = other.isHidden
+        // Note: These custom properties must NOT be merged.
+        // self.rgbColors = other.rgbColors
+        // self.nickname = other.nickname
+        // self.isHidden = other.isHidden
 
-            self.order = other.order // assumes order is set before merging
-        }
+        self.order = other.order // assumes order is set before merging
     }
 }
 

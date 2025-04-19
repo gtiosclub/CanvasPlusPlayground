@@ -12,7 +12,7 @@ typealias AssignmentGroup = CanvasSchemaV1.AssignmentGroup
 
 extension CanvasSchemaV1 {
     @Model
-    class AssignmentGroup: Cacheable {
+    class AssignmentGroup {
         typealias ServerID = Int
 
         @Attribute(.unique) let id: String
@@ -38,13 +38,15 @@ extension CanvasSchemaV1 {
 
             self.tag = ""
         }
+    }
+}
 
-        func merge(with other: AssignmentGroup) {
-            self.name = other.name
-            self.position = other.position
-            self.groupWeight = other.groupWeight
-            self.rules = other.rules
-            self.assignments = other.assignments
-        }
+extension AssignmentGroup: Cacheable {
+    func merge(with other: AssignmentGroup) {
+        self.name = other.name
+        self.position = other.position
+        self.groupWeight = other.groupWeight
+        self.rules = other.rules
+        self.assignments = other.assignments
     }
 }

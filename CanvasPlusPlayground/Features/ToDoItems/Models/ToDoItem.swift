@@ -12,7 +12,7 @@ typealias ToDoItem = CanvasSchemaV1.ToDoItem
 
 extension CanvasSchemaV1 {
     @Model
-    class ToDoItem: Cacheable {
+    class ToDoItem {
         typealias ID = String
 
         @Attribute(.unique)
@@ -43,7 +43,7 @@ extension CanvasSchemaV1 {
             assignment?.dueDate ?? quiz?.dueAt
         }
 
-        var itemType: ItemType? {
+        var itemType: TodoItemType? {
             if let assignment {
                 return .assignment(assignment)
             } else if let quiz {
@@ -67,37 +67,26 @@ extension CanvasSchemaV1 {
             self.quiz = toDoItemAPI.quiz?.createModel()
             self.htmlURL = toDoItemAPI.htmlURL
         }
+    }
+}
 
-        enum CodingKeys: String, CodingKey {
-            case contextType = "context_type"
-            case courseID = "course_id"
-            case groupID = "group_id"
-            case contextName = "context_name"
-            case type
-            case ignoreURL = "ignore"
-            case ignorePermanentlyURL = "ignore_permanently"
-            case assignment
-            case quiz
-            case htmlURL = "html_url"
-        }
+enum TodoItemType {
+    case assignment(Assignment)
+    case quiz(Quiz)
+}
 
-        func merge(with other: ToDoItem) {
-            self.contextType = other.contextType
-            self.courseID = other.courseID
-            self.groupID = other.groupID
-            self.contextName = other.contextName
-            self.type = other.type
-            self.ignoreURL = other.ignoreURL
-            self.ignorePermanentlyURL = other.ignorePermanentlyURL
-            self.assignment = other.assignment
-            self.quiz = other.quiz
-            self.htmlURL = other.htmlURL
-        }
-
-        enum ItemType {
-            case assignment(Assignment)
-            case quiz(Quiz)
-        }
+extension ToDoItem: Cacheable {
+    func merge(with other: ToDoItem) {
+        self.contextType = other.contextType
+        self.courseID = other.courseID
+        self.groupID = other.groupID
+        self.contextName = other.contextName
+        self.type = other.type
+        self.ignoreURL = other.ignoreURL
+        self.ignorePermanentlyURL = other.ignorePermanentlyURL
+        self.assignment = other.assignment
+        self.quiz = other.quiz
+        self.htmlURL = other.htmlURL
     }
 }
 

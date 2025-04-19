@@ -12,7 +12,7 @@ typealias DiscussionTopic = CanvasSchemaV1.DiscussionTopic
 
 extension CanvasSchemaV1 {
     @Model
-    class DiscussionTopic: Cacheable, Hashable, Equatable {
+    class DiscussionTopic: Hashable, Equatable {
         typealias ID = String
 
         var id: String
@@ -124,65 +124,6 @@ extension CanvasSchemaV1 {
             self.createdAt = topicAPI.created_at
         }
 
-        func merge(with other: DiscussionTopic) {
-            author = other.author
-            title = other.title ?? title
-            message = other.message ?? message
-            htmlURL = other.htmlURL ?? htmlURL
-            postedAt = other.postedAt ?? postedAt
-            lastReplyAt = other.lastReplyAt ?? lastReplyAt
-            requireInitialPost = other.requireInitialPost
-            userCanSeePosts = other.userCanSeePosts
-            discussionSubentryCount = other.discussionSubentryCount
-            readState = other.readState ?? readState
-            unreadCount = other.unreadCount ?? unreadCount
-            subscribed = other.subscribed
-            subscriptionHold = other.subscriptionHold ?? subscriptionHold
-            assignmentId = other.assignmentId ?? assignmentId
-            delayedPostAt = other.delayedPostAt ?? delayedPostAt
-            published = other.published
-            lockAt = other.lockAt ?? lockAt
-            locked = other.locked
-            pinned = other.pinned
-            lockedForUser = other.lockedForUser
-            userName = other.userName ?? userName
-
-            if let otherGroupTopicChildren = other.groupTopicChildren {
-                groupTopicChildren = otherGroupTopicChildren
-            }
-
-            rootTopicId = other.rootTopicId ?? rootTopicId
-            podcastUrl = other.podcastUrl ?? podcastUrl
-            discussionType = other.discussionType ?? discussionType
-            groupCategoryId = other.groupCategoryId ?? groupCategoryId
-
-            if let otherAttachments = other.attachments {
-                attachments = otherAttachments
-            }
-
-            if let otherPermissions = other.permissions {
-                permissions = otherPermissions
-            }
-
-            // Rating-related properties
-            allowRating = other.allowRating
-            onlyGradersCanRate = other.onlyGradersCanRate
-            sortByRating = other.sortByRating
-
-            // Non-documented properties
-            contextCode = other.contextCode ?? contextCode
-            isAnnouncement = other.isAnnouncement
-            isSectionSpecific = other.isSectionSpecific
-            anonymousState = other.anonymousState ?? anonymousState
-            assignment = other.assignment
-            position = other.position ?? position
-
-            // Includes
-            if !other.sections.isEmpty {
-                sections = other.sections
-            }
-        }
-
         enum ReadState: String, Codable {
             case read, unread
 
@@ -208,6 +149,67 @@ extension CanvasSchemaV1 {
         }
     }
 
+}
+
+extension DiscussionTopic: Cacheable {
+    func merge(with other: DiscussionTopic) {
+        author = other.author
+        title = other.title ?? title
+        message = other.message ?? message
+        htmlURL = other.htmlURL ?? htmlURL
+        postedAt = other.postedAt ?? postedAt
+        lastReplyAt = other.lastReplyAt ?? lastReplyAt
+        requireInitialPost = other.requireInitialPost
+        userCanSeePosts = other.userCanSeePosts
+        discussionSubentryCount = other.discussionSubentryCount
+        readState = other.readState ?? readState
+        unreadCount = other.unreadCount ?? unreadCount
+        subscribed = other.subscribed
+        subscriptionHold = other.subscriptionHold ?? subscriptionHold
+        assignmentId = other.assignmentId ?? assignmentId
+        delayedPostAt = other.delayedPostAt ?? delayedPostAt
+        published = other.published
+        lockAt = other.lockAt ?? lockAt
+        locked = other.locked
+        pinned = other.pinned
+        lockedForUser = other.lockedForUser
+        userName = other.userName ?? userName
+
+        if let otherGroupTopicChildren = other.groupTopicChildren {
+            groupTopicChildren = otherGroupTopicChildren
+        }
+
+        rootTopicId = other.rootTopicId ?? rootTopicId
+        podcastUrl = other.podcastUrl ?? podcastUrl
+        discussionType = other.discussionType ?? discussionType
+        groupCategoryId = other.groupCategoryId ?? groupCategoryId
+
+        if let otherAttachments = other.attachments {
+            attachments = otherAttachments
+        }
+
+        if let otherPermissions = other.permissions {
+            permissions = otherPermissions
+        }
+
+        // Rating-related properties
+        allowRating = other.allowRating
+        onlyGradersCanRate = other.onlyGradersCanRate
+        sortByRating = other.sortByRating
+
+        // Non-documented properties
+        contextCode = other.contextCode ?? contextCode
+        isAnnouncement = other.isAnnouncement
+        isSectionSpecific = other.isSectionSpecific
+        anonymousState = other.anonymousState ?? anonymousState
+        assignment = other.assignment
+        position = other.position ?? position
+
+        // Includes
+        if !other.sections.isEmpty {
+            sections = other.sections
+        }
+    }
 }
 
 // MARK: Errors

@@ -12,7 +12,7 @@ typealias Assignment = CanvasSchemaV1.Assignment
 
 extension CanvasSchemaV1 {
     @Model
-    class Assignment: Cacheable {
+    class Assignment {
         typealias ID = String
         typealias ServerID = Int
 
@@ -189,75 +189,6 @@ extension CanvasSchemaV1 {
             self.canSubmit = assignmentAPI.can_submit
         }
 
-        // swiftlint:disable:next function_body_length
-        func merge(with other: Assignment) {
-            self.name = other.name
-            self.assignmentGroupId = other.assignmentGroupId
-            self.assignmentDescription = other.assignmentDescription
-            self.dueAt = other.dueAt
-            self.unlockAt = other.unlockAt
-            self.lockAt = other.lockAt
-            self.pointsPossible = other.pointsPossible
-            self.gradingType = other.gradingType
-            self.gradingStandardId = other.gradingStandardId
-            self.createdAt = other.createdAt
-            self.updatedAt = other.updatedAt
-            self.peerReviews = other.peerReviews
-            self.automaticPeerReviews = other.automaticPeerReviews
-            self.position = other.position
-            self.gradeGroupStudentsIndividually = other.gradeGroupStudentsIndividually
-            self.anonymousPeerReviews = other.anonymousPeerReviews
-            self.groupCategoryId = other.groupCategoryId
-            self.postToSis = other.postToSis
-            self.moderatedGrading = other.moderatedGrading
-            self.omitFromFinalGrade = other.omitFromFinalGrade
-            self.intraGroupPeerReviews = other.intraGroupPeerReviews
-            self.anonymousInstructorAnnotations = other.anonymousInstructorAnnotations
-            self.anonymousGrading = other.anonymousGrading
-            self.gradersAnonymousToGraders = other.gradersAnonymousToGraders
-            self.graderCount = other.graderCount
-            self.graderCommentsVisibleToGraders = other.graderCommentsVisibleToGraders
-            self.finalGraderId = other.finalGraderId
-            self.graderNamesVisibleToFinalGrader = other.graderNamesVisibleToFinalGrader
-            self.allowedAttempts = other.allowedAttempts
-            self.annotatableAttachmentId = other.annotatableAttachmentId
-            self.hideInGradebook = other.hideInGradebook
-            self.secureParams = other.secureParams
-            self.ltiContextId = other.ltiContextId
-            self.courseId = other.courseId
-            self.submissionTypes = other.submissionTypes
-            self.hasSubmittedSubmissions = other.hasSubmittedSubmissions
-            self.dueDateRequired = other.dueDateRequired
-            self.maxNameLength = other.maxNameLength
-            self.inClosedGradingPeriod = other.inClosedGradingPeriod
-            self.gradedSubmissionsExist = other.gradedSubmissionsExist
-            self.isQuizAssignment = other.isQuizAssignment
-            self.canDuplicate = other.canDuplicate
-            self.originalCourseId = other.originalCourseId
-            self.originalAssignmentId = other.originalAssignmentId
-            self.originalLtiResourceLinkId = other.originalLtiResourceLinkId
-            self.originalAssignmentName = other.originalAssignmentName
-            self.originalQuizId = other.originalQuizId
-            self.workflowState = other.workflowState
-            self.importantDates = other.importantDates
-            self.muted = other.muted
-            self.htmlUrl = other.htmlUrl
-            self.peerReviewCount = other.peerReviewCount
-            self.peerReviewsAssignAt = other.peerReviewsAssignAt
-            self.published = other.published
-            self.onlyVisibleToOverrides = other.onlyVisibleToOverrides
-            self.visibleToEveryone = other.visibleToEveryone
-            self.lockedForUser = other.lockedForUser
-            self.submissionsDownloadUrl = other.submissionsDownloadUrl
-            self.postManually = other.postManually
-            self.anonymizeStudents = other.anonymizeStudents
-            self.requireLockdownBrowser = other.requireLockdownBrowser
-            self.restrictQuantitativeData = other.restrictQuantitativeData
-            self.allowedExtensions = other.allowedExtensions
-            self.submission = other.submission
-            self.canSubmit = other.canSubmit
-        }
-
         enum GradingType: String, Codable {
             case passFail = "pass_fail"
             case percent = "percent"
@@ -268,6 +199,77 @@ extension CanvasSchemaV1 {
 
         static let example = Assignment(from: .example)
     }
+}
+
+extension Assignment: Cacheable {
+    func merge(with other: Assignment) {
+        self.name = other.name
+        self.assignmentGroupId = other.assignmentGroupId
+        self.assignmentDescription = other.assignmentDescription
+        self.dueAt = other.dueAt
+        self.unlockAt = other.unlockAt
+        self.lockAt = other.lockAt
+        self.pointsPossible = other.pointsPossible
+        self.gradingType = other.gradingType
+        self.gradingStandardId = other.gradingStandardId
+        self.createdAt = other.createdAt
+        self.updatedAt = other.updatedAt
+        self.peerReviews = other.peerReviews
+        self.automaticPeerReviews = other.automaticPeerReviews
+        self.position = other.position
+        self.gradeGroupStudentsIndividually = other.gradeGroupStudentsIndividually
+        self.anonymousPeerReviews = other.anonymousPeerReviews
+        self.groupCategoryId = other.groupCategoryId
+        self.postToSis = other.postToSis
+        self.moderatedGrading = other.moderatedGrading
+        self.omitFromFinalGrade = other.omitFromFinalGrade
+        self.intraGroupPeerReviews = other.intraGroupPeerReviews
+        self.anonymousInstructorAnnotations = other.anonymousInstructorAnnotations
+        self.anonymousGrading = other.anonymousGrading
+        self.gradersAnonymousToGraders = other.gradersAnonymousToGraders
+        self.graderCount = other.graderCount
+        self.graderCommentsVisibleToGraders = other.graderCommentsVisibleToGraders
+        self.finalGraderId = other.finalGraderId
+        self.graderNamesVisibleToFinalGrader = other.graderNamesVisibleToFinalGrader
+        self.allowedAttempts = other.allowedAttempts
+        self.annotatableAttachmentId = other.annotatableAttachmentId
+        self.hideInGradebook = other.hideInGradebook
+        self.secureParams = other.secureParams
+        self.ltiContextId = other.ltiContextId
+        self.courseId = other.courseId
+        self.submissionTypes = other.submissionTypes
+        self.hasSubmittedSubmissions = other.hasSubmittedSubmissions
+        self.dueDateRequired = other.dueDateRequired
+        self.maxNameLength = other.maxNameLength
+        self.inClosedGradingPeriod = other.inClosedGradingPeriod
+        self.gradedSubmissionsExist = other.gradedSubmissionsExist
+        self.isQuizAssignment = other.isQuizAssignment
+        self.canDuplicate = other.canDuplicate
+        self.originalCourseId = other.originalCourseId
+        self.originalAssignmentId = other.originalAssignmentId
+        self.originalLtiResourceLinkId = other.originalLtiResourceLinkId
+        self.originalAssignmentName = other.originalAssignmentName
+        self.originalQuizId = other.originalQuizId
+        self.workflowState = other.workflowState
+        self.importantDates = other.importantDates
+        self.muted = other.muted
+        self.htmlUrl = other.htmlUrl
+        self.peerReviewCount = other.peerReviewCount
+        self.peerReviewsAssignAt = other.peerReviewsAssignAt
+        self.published = other.published
+        self.onlyVisibleToOverrides = other.onlyVisibleToOverrides
+        self.visibleToEveryone = other.visibleToEveryone
+        self.lockedForUser = other.lockedForUser
+        self.submissionsDownloadUrl = other.submissionsDownloadUrl
+        self.postManually = other.postManually
+        self.anonymizeStudents = other.anonymizeStudents
+        self.requireLockdownBrowser = other.requireLockdownBrowser
+        self.restrictQuantitativeData = other.restrictQuantitativeData
+        self.allowedExtensions = other.allowedExtensions
+        self.submission = other.submission
+        self.canSubmit = other.canSubmit
+    }
+
 }
 
 enum SubmissionType: String, Codable {

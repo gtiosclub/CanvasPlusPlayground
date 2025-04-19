@@ -38,7 +38,7 @@ typealias Folder = CanvasSchemaV1.Folder
 
 extension CanvasSchemaV1 {
     @Model
-    class Folder: Cacheable {
+    class Folder {
         typealias ServerID = Int
 
         @Attribute(.unique) var id: String
@@ -90,30 +90,31 @@ extension CanvasSchemaV1 {
             self.forSubmissions = api.for_submissions
             self.canUpload = api.can_upload
         }
-
-        func merge(with other: Folder) {
-            self.name = other.name
-            self.fullName = other.fullName
-            self.contextId = other.contextId
-            self.contextType = other.contextType
-            self.parentFolderId = other.parentFolderId
-            self.createdAt = other.createdAt
-            self.updatedAt = other.updatedAt
-            self.lockAt = other.lockAt
-            self.unlockAt = other.unlockAt
-            self.position = other.position
-            self.locked = other.locked
-            self.foldersUrl = other.foldersUrl
-            self.filesUrl = other.filesUrl
-            self.filesCount = other.filesCount
-            self.foldersCount = other.foldersCount
-            self.hidden = other.hidden
-            self.lockedForUser = other.lockedForUser
-            self.hiddenForUser = other.hiddenForUser
-            self.forSubmissions = other.forSubmissions
-            self.canUpload = other.canUpload
-        }
     }
 
 }
 
+extension Folder: Cacheable {
+    func merge(with other: Folder) {
+        self.name = other.name
+        self.fullName = other.fullName
+        self.contextId = other.contextId
+        self.contextType = other.contextType
+        self.parentFolderId = other.parentFolderId
+        self.createdAt = other.createdAt
+        self.updatedAt = other.updatedAt
+        self.lockAt = other.lockAt
+        self.unlockAt = other.unlockAt
+        self.position = other.position
+        self.locked = other.locked
+        self.foldersUrl = other.foldersUrl
+        self.filesUrl = other.filesUrl
+        self.filesCount = other.filesCount
+        self.foldersCount = other.foldersCount
+        self.hidden = other.hidden
+        self.lockedForUser = other.lockedForUser
+        self.hiddenForUser = other.hiddenForUser
+        self.forSubmissions = other.forSubmissions
+        self.canUpload = other.canUpload
+    }
+}

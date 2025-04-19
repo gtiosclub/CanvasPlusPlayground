@@ -12,7 +12,7 @@ typealias Enrollment = CanvasSchemaV1.Enrollment
 
 extension CanvasSchemaV1 {
     @Model
-    final class Enrollment: Cacheable {
+    final class Enrollment {
         typealias ID = String
         typealias ServerID = Int
 
@@ -83,22 +83,24 @@ extension CanvasSchemaV1 {
             self.grades = enrollmentAPI.grades
             self.user = enrollmentAPI.user
         }
-
-        func merge(with other: Enrollment) {
-            self.courseID = other.courseID
-            self.courseSectionID = other.courseSectionID
-            self.state = other.state
-            self.type = other.type
-            self.userID = other.userID
-            self.associatedUserID = other.associatedUserID
-            self.role = other.role
-            self.roleID = other.roleID
-            self.startAt = other.startAt
-            self.endAt = other.endAt
-            self.lastActivityAt = other.lastActivityAt
-            self.grades = other.grades
-            self.user = other.user
-        }
     }
 
+}
+
+extension Enrollment: Cacheable {
+    func merge(with other: Enrollment) {
+        self.courseID = other.courseID
+        self.courseSectionID = other.courseSectionID
+        self.state = other.state
+        self.type = other.type
+        self.userID = other.userID
+        self.associatedUserID = other.associatedUserID
+        self.role = other.role
+        self.roleID = other.roleID
+        self.startAt = other.startAt
+        self.endAt = other.endAt
+        self.lastActivityAt = other.lastActivityAt
+        self.grades = other.grades
+        self.user = other.user
+    }
 }

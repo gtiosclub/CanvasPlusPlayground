@@ -12,7 +12,7 @@ typealias CanvasTab = CanvasSchemaV1.CanvasTab
 
 extension CanvasSchemaV1 {
     @Model
-    class CanvasTab: Cacheable {
+    class CanvasTab {
         @Attribute(.unique) var id: String
 
         /// Doesn't contain the full url, just the path (e.g. /course/xyz/external/fwefw)
@@ -42,41 +42,42 @@ extension CanvasSchemaV1 {
             self.type = tabApi.type
             self.url = tabApi.url
         }
+    }
+}
 
-        func merge(with other: CanvasTab) {
-            self.htmlRelativeUrl = other.htmlRelativeUrl
-            self.fullUrl = other.fullUrl
-            self.position = other.position
-            self.visibility = other.visibility
-            self.label = other.label
-            self.type = other.type
-            self.url = other.url
-        }
+enum TabOrigin {
+    case group(id: String), course(id: String)
 
-        func merge(with other: TabAPI) {
-            self.htmlRelativeUrl = other.html_url
-            self.fullUrl = other.full_url
-            self.position = other.position
-            self.visibility = other.visibility
-            self.label = other.label
-            self.type = other.type
-            self.url = other.url
-        }
-
-        enum TabOrigin {
-            case group(id: String), course(id: String)
-
-            var key: String {
-                switch self {
-                case .group(id: let id):
-                    return "group_\(id)"
-                case .course(id: let id):
-                    return "course_\(id)"
-                }
-            }
+    var key: String {
+        switch self {
+        case .group(id: let id):
+            return "group_\(id)"
+        case .course(id: let id):
+            return "course_\(id)"
         }
     }
+}
 
+extension CanvasTab: Cacheable {
+    func merge(with other: CanvasTab) {
+        self.htmlRelativeUrl = other.htmlRelativeUrl
+        self.fullUrl = other.fullUrl
+        self.position = other.position
+        self.visibility = other.visibility
+        self.label = other.label
+        self.type = other.type
+        self.url = other.url
+    }
+    
+    func merge(with other: TabAPI) {
+        self.htmlRelativeUrl = other.html_url
+        self.fullUrl = other.full_url
+        self.position = other.position
+        self.visibility = other.visibility
+        self.label = other.label
+        self.type = other.type
+        self.url = other.url
+    }
 }
 
 extension CanvasTab {

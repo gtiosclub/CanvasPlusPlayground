@@ -12,7 +12,7 @@ typealias ToDoItemCount = CanvasSchemaV1.ToDoItemCount
 
 extension CanvasSchemaV1 {
     @Model
-    class ToDoItemCount: Cacheable {
+    class ToDoItemCount {
         typealias ID = String
 
         @Attribute(.unique)
@@ -33,11 +33,13 @@ extension CanvasSchemaV1 {
             case needsGradingCount = "needs_grading_count"
             case assignmentsNeedingSubmitting = "assignments_needing_submitting"
         }
+    }
+}
 
-        func merge(with other: ToDoItemCount) {
-            self.needsGradingCount = other.needsGradingCount
-            self.assignmentsNeedingSubmitting = other.assignmentsNeedingSubmitting
-        }
+extension ToDoItemCount: Cacheable {
+    func merge(with other: ToDoItemCount) {
+        self.needsGradingCount = other.needsGradingCount
+        self.assignmentsNeedingSubmitting = other.assignmentsNeedingSubmitting
     }
 }
 

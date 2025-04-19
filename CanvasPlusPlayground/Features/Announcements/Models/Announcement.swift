@@ -12,7 +12,7 @@ typealias Announcement = CanvasSchemaV1.Announcement
 
 extension CanvasSchemaV1 {
     @Model
-    final class Announcement: Cacheable {
+    final class Announcement {
         typealias ID = String
         typealias ServerID = Int
 
@@ -35,13 +35,14 @@ extension CanvasSchemaV1 {
             self.message = api.message
             self.contextCode = api.context_code
         }
-
-        func merge(with other: Announcement) {
-            self.title = other.title
-            self.message = other.message
-            self.createdAt = other.createdAt
-            self.contextCode = other.contextCode
-        }
     }
+}
 
+extension Announcement: Cacheable {
+    func merge(with other: Announcement) {
+        self.title = other.title
+        self.message = other.message
+        self.createdAt = other.createdAt
+        self.contextCode = other.contextCode
+    }
 }

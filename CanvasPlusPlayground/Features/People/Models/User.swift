@@ -12,7 +12,7 @@ typealias User = CanvasSchemaV1.User
 
 extension CanvasSchemaV1 {
     @Model
-    class User: Cacheable {
+    class User {
         typealias ID = String
         typealias ServerID = Int
 
@@ -54,23 +54,25 @@ extension CanvasSchemaV1 {
             self.tag = ""
         }
 
-        func merge(with other: User) {
-            self.name = other.name
-            self.sortableName = other.sortableName
-            self.shortName = other.shortName
-            self.avatarURL = other.avatarURL ?? self.avatarURL
-            self.email = other.email ?? self.email
-            self.pronouns = other.pronouns ?? self.pronouns
-            self.role = other.role ?? self.role
-
-            self.enrollments = other.enrollments ?? self.enrollments
-        }
-
         var hasAvatar: Bool {
             guard let avatarURL else { return false }
 
             return !avatarURL.absoluteString.hasSuffix("avatar-50.png")
         }
+    }
+}
+
+extension User: Cacheable {
+    func merge(with other: User) {
+        self.name = other.name
+        self.sortableName = other.sortableName
+        self.shortName = other.shortName
+        self.avatarURL = other.avatarURL ?? self.avatarURL
+        self.email = other.email ?? self.email
+        self.pronouns = other.pronouns ?? self.pronouns
+        self.role = other.role ?? self.role
+
+        self.enrollments = other.enrollments ?? self.enrollments
     }
 }
 

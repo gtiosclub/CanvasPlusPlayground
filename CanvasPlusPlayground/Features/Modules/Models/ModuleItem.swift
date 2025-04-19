@@ -12,7 +12,7 @@ typealias ModuleItem = CanvasSchemaV1.ModuleItem
 
 extension CanvasSchemaV1 {
     @Model
-    class ModuleItem: Cacheable {
+    class ModuleItem {
         typealias ServerID = Int
 
         @Attribute(.unique) var id: String
@@ -56,22 +56,24 @@ extension CanvasSchemaV1 {
             self.published = itemAPI.published
             self.quizLti = itemAPI.quiz_lti
         }
-
-        func merge(with other: ModuleItem) {
-            self.moduleID = other.moduleID
-            self.position = other.position
-            self.title = other.title
-            self.indent = other.indent
-            self.type = other.type
-            self.htmlURL = other.htmlURL ?? self.htmlURL
-            self.url = other.url ?? self.url
-            self.completionRequirement = other.completionRequirement ?? self.completionRequirement
-            self.contentDetails = other.contentDetails ?? self.contentDetails
-            self.published = other.published ?? self.published
-            self.quizLti = other.quizLti ?? self.quizLti
-        }
     }
 
+}
+
+extension ModuleItem: Cacheable {
+    func merge(with other: ModuleItem) {
+        self.moduleID = other.moduleID
+        self.position = other.position
+        self.title = other.title
+        self.indent = other.indent
+        self.type = other.type
+        self.htmlURL = other.htmlURL ?? self.htmlURL
+        self.url = other.url ?? self.url
+        self.completionRequirement = other.completionRequirement ?? self.completionRequirement
+        self.contentDetails = other.contentDetails ?? self.contentDetails
+        self.published = other.published ?? self.published
+        self.quizLti = other.quizLti ?? self.quizLti
+    }
 }
 
 enum ModuleItemType: Equatable, Codable {

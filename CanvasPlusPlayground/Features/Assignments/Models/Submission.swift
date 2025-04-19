@@ -12,7 +12,7 @@ typealias Submission = CanvasSchemaV1.Submission
 
 extension CanvasSchemaV1 {
     @Model
-    class Submission: Cacheable {
+    class Submission {
         typealias ServerID = Int
 
         @Attribute(.unique) let id: String
@@ -41,7 +41,7 @@ extension CanvasSchemaV1 {
         var latePolicyStatus: String?
         var pointsDeducted: Double?
         var secondsLate: Int?
-        var workflowState: WorkflowState?
+        var workflowState: SubmissionWorkflowState?
         var extraAttempts: Int?
         var anonymousId: String?
         var postedAt: String?
@@ -75,7 +75,7 @@ extension CanvasSchemaV1 {
             self.pointsDeducted = submissionAPI.points_deducted
             self.secondsLate = submissionAPI.seconds_late
             if let workflowState = submissionAPI.workflow_state {
-                self.workflowState = WorkflowState(
+                self.workflowState = SubmissionWorkflowState(
                     rawValue: workflowState
                 )
             }
@@ -85,59 +85,61 @@ extension CanvasSchemaV1 {
             self.readStatus = submissionAPI.read_status
             self.redoRequest = submissionAPI.redo_request
         }
-
-        func merge(with other: Submission) {
-            self.assignmentId = other.assignmentId
-            self.assignment = other.assignment
-            self.course = other.course
-            self.attempt = other.attempt
-            self.body = other.body
-            self.grade = other.grade
-            self.gradeMatchesCurrentSubmission = other.gradeMatchesCurrentSubmission
-            self.htmlUrl = other.htmlUrl
-            self.previewUrl = other.previewUrl
-            self.score = other.score
-            self.submissionType = other.submissionType
-            self.submittedAt = other.submittedAt
-            self.url = other.url
-            self.userId = other.userId
-            self.graderId = other.graderId
-            self.gradedAt = other.gradedAt
-            self.user = other.user
-            self.late = other.late
-            self.assignmentVisible = other.assignmentVisible
-            self.excused = other.excused
-            self.missing = other.missing
-            self.latePolicyStatus = other.latePolicyStatus
-            self.pointsDeducted = other.pointsDeducted
-            self.secondsLate = other.secondsLate
-            self.workflowState = other.workflowState
-            self.extraAttempts = other.extraAttempts
-            self.anonymousId = other.anonymousId
-            self.postedAt = other.postedAt
-            self.readStatus = other.readStatus
-            self.redoRequest = other.redoRequest
-        }
-
-        enum WorkflowState: String, Codable {
-            case submitted
-            case unsubmitted
-            case graded
-            case pendingReview = "pending_review"
-
-            var displayValue: String {
-                switch self {
-                case .submitted:
-                    return "Submitted"
-                case .unsubmitted:
-                    return "Unsubmitted"
-                case .graded:
-                    return "Graded"
-                case .pendingReview:
-                    return "Pending Review"
-                }
-            }
-        }
     }
 
+}
+
+extension Submission: Cacheable {
+    func merge(with other: Submission) {
+        self.assignmentId = other.assignmentId
+        self.assignment = other.assignment
+        self.course = other.course
+        self.attempt = other.attempt
+        self.body = other.body
+        self.grade = other.grade
+        self.gradeMatchesCurrentSubmission = other.gradeMatchesCurrentSubmission
+        self.htmlUrl = other.htmlUrl
+        self.previewUrl = other.previewUrl
+        self.score = other.score
+        self.submissionType = other.submissionType
+        self.submittedAt = other.submittedAt
+        self.url = other.url
+        self.userId = other.userId
+        self.graderId = other.graderId
+        self.gradedAt = other.gradedAt
+        self.user = other.user
+        self.late = other.late
+        self.assignmentVisible = other.assignmentVisible
+        self.excused = other.excused
+        self.missing = other.missing
+        self.latePolicyStatus = other.latePolicyStatus
+        self.pointsDeducted = other.pointsDeducted
+        self.secondsLate = other.secondsLate
+        self.workflowState = other.workflowState
+        self.extraAttempts = other.extraAttempts
+        self.anonymousId = other.anonymousId
+        self.postedAt = other.postedAt
+        self.readStatus = other.readStatus
+        self.redoRequest = other.redoRequest
+    }
+}
+
+enum SubmissionWorkflowState: String, Codable {
+    case submitted
+    case unsubmitted
+    case graded
+    case pendingReview = "pending_review"
+
+    var displayValue: String {
+        switch self {
+        case .submitted:
+            return "Submitted"
+        case .unsubmitted:
+            return "Unsubmitted"
+        case .graded:
+            return "Graded"
+        case .pendingReview:
+            return "Pending Review"
+        }
+    }
 }

@@ -12,7 +12,7 @@ typealias Module = CanvasSchemaV1.Module
 
 extension CanvasSchemaV1 {
     @Model
-    class Module: Cacheable {
+    class Module {
         typealias ServerID = Int
 
         @Attribute(.unique) var id: String
@@ -61,24 +61,26 @@ extension CanvasSchemaV1 {
             self.completedAt = moduleApi.completed_at
             self.published = moduleApi.published
         }
-
-        func merge(with other: Module) {
-            self.workflowState = workflowState ?? self.workflowState
-            self.position = other.position
-            self.name = other.name
-            self.unlockAt = other.unlockAt ?? self.unlockAt
-            self.requiresSequentialProgress = other.requiresSequentialProgress
-            self.prerequisiteModuleIdsWrapped = other.prerequisiteModuleIdsWrapped
-            self.itemsCount = other.itemsCount
-            self.items = other.items ?? self.items
-            self.state = other.state ?? self.state
-            self.completedAt = other.completedAt ?? self.completedAt
-            self.published = other.published ?? self.published
-        }
-
-        struct ModuleID: Hashable, Identifiable, Codable {
-            let id: Int
-        }
     }
 
+}
+
+struct ModuleID: Hashable, Identifiable, Codable {
+    let id: Int
+}
+
+extension Module: Cacheable {
+    func merge(with other: Module) {
+        self.workflowState = workflowState ?? self.workflowState
+        self.position = other.position
+        self.name = other.name
+        self.unlockAt = other.unlockAt ?? self.unlockAt
+        self.requiresSequentialProgress = other.requiresSequentialProgress
+        self.prerequisiteModuleIdsWrapped = other.prerequisiteModuleIdsWrapped
+        self.itemsCount = other.itemsCount
+        self.items = other.items ?? self.items
+        self.state = other.state ?? self.state
+        self.completedAt = other.completedAt ?? self.completedAt
+        self.published = other.published ?? self.published
+    }
 }
