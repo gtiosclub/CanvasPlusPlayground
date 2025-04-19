@@ -29,7 +29,9 @@ enum CanvasSchemaV1: VersionedSchema {
             Page.self,
             CanvasGroup.self,
             GroupMembership.self,
-            CanvasTab.self
+            CanvasTab.self,
+            ToDoItem.self,
+            ToDoItemCount.self
         ]
     }
 }
