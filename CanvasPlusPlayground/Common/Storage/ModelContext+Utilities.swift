@@ -17,12 +17,6 @@ extension ModelContext {
         modelContext.autosaveEnabled = true
         return modelContext
     }
-
-    func existingModel<T: Cacheable>(forId id: String) -> T? {
-        try? fetch(
-            FetchDescriptor<T>(predicate: #Predicate { $0.id == id })
-        ).first
-    }
 }
 
 typealias SchemaLatest = CanvasSchemaV1
