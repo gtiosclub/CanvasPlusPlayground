@@ -34,60 +34,67 @@ import SwiftData
   }
  */
 
-@Model
-class Folder: Cacheable {
-    typealias ServerID = Int
+typealias Folder = CanvasSchemaV1.Folder
 
-    @Attribute(.unique) var id: String
+extension CanvasSchemaV1 {
+    @Model
+    class Folder {
+        typealias ServerID = Int
 
-    var name: String?
-    var fullName: String?
-    var contextId: Int?
-    var contextType: String?
-    var parentFolderId: Int? // folder
-    var createdAt: String?
-    var updatedAt: String?
-    var lockAt: String?
-    var unlockAt: String?
-    var position: Int?
-    var locked: Bool?
-    var foldersUrl: String?
-    var filesUrl: String?
-    var filesCount: Int?
-    var foldersCount: Int?
-    var hidden: Bool?
-    var lockedForUser: Bool?
-    var hiddenForUser: Bool?
-    var forSubmissions: Bool?
-    var canUpload: Bool?
+        @Attribute(.unique) var id: String
 
-    // MARK: Custom
-    var tag: String?
+        var name: String?
+        var fullName: String?
+        var contextId: Int?
+        var contextType: String?
+        var parentFolderId: Int? // folder
+        var createdAt: String?
+        var updatedAt: String?
+        var lockAt: String?
+        var unlockAt: String?
+        var position: Int?
+        var locked: Bool?
+        var foldersUrl: String?
+        var filesUrl: String?
+        var filesCount: Int?
+        var foldersCount: Int?
+        var hidden: Bool?
+        var lockedForUser: Bool?
+        var hiddenForUser: Bool?
+        var forSubmissions: Bool?
+        var canUpload: Bool?
 
-    init(api: FolderAPI) {
-        self.id = api.id.asString
-        self.name = api.name
-        self.fullName = api.full_name
-        self.contextId = api.context_id
-        self.contextType = api.context_type
-        self.parentFolderId = api.parent_folder_id
-        self.createdAt = api.created_at
-        self.updatedAt = api.updated_at
-        self.lockAt = api.lock_at
-        self.unlockAt = api.unlock_at
-        self.position = api.position
-        self.locked = api.locked
-        self.foldersUrl = api.folders_url
-        self.filesUrl = api.files_url
-        self.filesCount = api.files_count
-        self.foldersCount = api.folders_count
-        self.hidden = api.hidden
-        self.lockedForUser = api.locked_for_user
-        self.hiddenForUser = api.hidden_for_user
-        self.forSubmissions = api.for_submissions
-        self.canUpload = api.can_upload
+        // MARK: Custom
+        var tag: String?
+
+        init(api: FolderAPI) {
+            self.id = api.id.asString
+            self.name = api.name
+            self.fullName = api.full_name
+            self.contextId = api.context_id
+            self.contextType = api.context_type
+            self.parentFolderId = api.parent_folder_id
+            self.createdAt = api.created_at
+            self.updatedAt = api.updated_at
+            self.lockAt = api.lock_at
+            self.unlockAt = api.unlock_at
+            self.position = api.position
+            self.locked = api.locked
+            self.foldersUrl = api.folders_url
+            self.filesUrl = api.files_url
+            self.filesCount = api.files_count
+            self.foldersCount = api.folders_count
+            self.hidden = api.hidden
+            self.lockedForUser = api.locked_for_user
+            self.hiddenForUser = api.hidden_for_user
+            self.forSubmissions = api.for_submissions
+            self.canUpload = api.can_upload
+        }
     }
 
+}
+
+extension Folder: Cacheable {
     func merge(with other: Folder) {
         self.name = other.name
         self.fullName = other.fullName

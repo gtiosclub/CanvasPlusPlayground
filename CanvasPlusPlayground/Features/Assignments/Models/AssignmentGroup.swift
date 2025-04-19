@@ -8,34 +8,40 @@
 import Foundation
 import SwiftData
 
-@Model
-class AssignmentGroup: Cacheable {
-    typealias ServerID = Int
+typealias AssignmentGroup = CanvasSchemaV1.AssignmentGroup
 
-    @Attribute(.unique) let id: String
-    var name: String
-    var position: Int
-    var groupWeight: Double?
-    var assignments: [AssignmentAPI]?
+extension CanvasSchemaV1 {
+    @Model
+    class AssignmentGroup {
+        typealias ServerID = Int
 
-    // Rules
-    var rules: AssignmentGroupRules?
+        @Attribute(.unique) let id: String
+        var name: String
+        var position: Int
+        var groupWeight: Double?
+        var assignments: [AssignmentAPI]?
 
-    // MARK: Custom Properties
-    var tag: String
+        // Rules
+        var rules: AssignmentGroupRules?
 
-    init(from groupAPI: AssignmentGroupAPI) {
-        self.id = groupAPI.id.asString
-        self.name = groupAPI.name
-        self.position = groupAPI.position
-        self.groupWeight = groupAPI.group_weight
-        self.assignments = groupAPI.assignments
+        // MARK: Custom Properties
+        var tag: String
 
-        self.rules = groupAPI.rules
+        init(from groupAPI: AssignmentGroupAPI) {
+            self.id = groupAPI.id.asString
+            self.name = groupAPI.name
+            self.position = groupAPI.position
+            self.groupWeight = groupAPI.group_weight
+            self.assignments = groupAPI.assignments
 
-        self.tag = ""
+            self.rules = groupAPI.rules
+
+            self.tag = ""
+        }
     }
+}
 
+extension AssignmentGroup: Cacheable {
     func merge(with other: AssignmentGroup) {
         self.name = other.name
         self.position = other.position

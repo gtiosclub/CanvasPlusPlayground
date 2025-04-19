@@ -8,81 +8,85 @@
 import Foundation
 import SwiftData
 
-@Model
-class CanvasGroup: Cacheable, Hashable {
-    var id: String
-    var name: String
-    var groupDescription: String?
-    var concluded: Bool
-    var membersCount: Int
-    var courseId: Int?
-    var groupCategoryId: Int?
-    var groupCategoryName: String?
-    var groupLimit: Int
-    var allowsMultipleMemberships: Bool?
-    var storageQuotaMb: Int?
-    var isPublic: Bool
-    var users: [UserAPI]?
-    var joinLevel: GroupJoinLevel?
-    var avatarUrl: URL?
+typealias CanvasGroup = CanvasSchemaV1.CanvasGroup
 
-    // MARK: Permissions
-    var canCreateDiscussionTopic: Bool?
-    var canJoin: Bool?
-    var canCreateAnnouncement: Bool?
+extension CanvasSchemaV1 {
+    @Model
+    class CanvasGroup: Cacheable, Hashable {
+        var id: String
+        var name: String
+        var groupDescription: String?
+        var concluded: Bool
+        var membersCount: Int
+        var courseId: Int?
+        var groupCategoryId: Int?
+        var groupCategoryName: String?
+        var groupLimit: Int
+        var allowsMultipleMemberships: Bool?
+        var storageQuotaMb: Int?
+        var isPublic: Bool
+        var users: [UserAPI]?
+        var joinLevel: GroupJoinLevel?
+        var avatarUrl: URL?
 
-    // MARK: Custom
-    var usersIsIncomplete: Bool {
-        membersCount > users?.count ?? 0
-    }
-    var availableAction: GroupAction? {
-        guard canJoin == true && !concluded else { return nil } // no action can be taken
+        // MARK: Permissions
+        var canCreateDiscussionTopic: Bool?
+        var canJoin: Bool?
+        var canCreateAnnouncement: Bool?
 
-        // make sure group has space to join OR user is already in group OR user already has request in progress. otherwise lock action.
-        guard membersCount < groupLimit || currUserStatus == .accepted || currUserStatus == .requested else { return nil }
-
-        return switch currUserStatus {
-        case .accepted:
-            .leave
-        case .invited:
-            .accept
-        case .requested:
-            .cancelRequest
-        case nil:
-            .join
+        // MARK: Custom
+        var usersIsIncomplete: Bool {
+            membersCount > users?.count ?? 0
         }
-        // TODO: verify action logic + handle `Switch to`
-    }
-    var membersLimit: String {
-        groupLimit == .max ? "∞" : String(groupLimit)
-    }
-    // TODO: store GroupMembership as relationship instead
-    var currUserStatus: GroupMembershipState? // should update by fetching GroupMembership of `self`
-    @Attribute(.ephemeral) var isLoadingMembership: Bool = false
+        var availableAction: GroupAction? {
+            guard canJoin == true && !concluded else { return nil } // no action can be taken
 
-    init(from api: APIGroup) {
-        self.id = api.id.asString
-        self.name = api.name
-        self.groupDescription = api.description
-        self.concluded = api.concluded
-        self.membersCount = api.members_count
-        self.courseId = api.course_id
-        self.groupCategoryId = api.group_category?.id
-        self.groupCategoryName = api.group_category?.name
-        self.groupLimit = api.group_category?.group_limit ?? api.max_membership ?? .max
-        self.allowsMultipleMemberships = api.group_category?.allows_multiple_memberships
-        self.storageQuotaMb = api.storage_quota_mb
-        self.isPublic = api.is_public
+            // make sure group has space to join OR user is already in group OR user already has request in progress. otherwise lock action.
+            guard membersCount < groupLimit || currUserStatus == .accepted || currUserStatus == .requested else { return nil }
 
-        // TODO: use user api instead
-        self.users = api.users
+            return switch currUserStatus {
+            case .accepted:
+                .leave
+            case .invited:
+                .accept
+            case .requested:
+                .cancelRequest
+            case nil:
+                .join
+            }
+            // TODO: verify action logic + handle `Switch to`
+        }
+        var membersLimit: String {
+            groupLimit == .max ? "∞" : String(groupLimit)
+        }
+        // TODO: store GroupMembership as relationship instead
+        var currUserStatus: GroupMembershipState? // should update by fetching GroupMembership of `self`
+        @Attribute(.ephemeral) var isLoadingMembership: Bool = false
 
-        self.joinLevel = api.join_level
-        self.avatarUrl = api.avatar_url
+        init(from api: APIGroup) {
+            self.id = api.id.asString
+            self.name = api.name
+            self.groupDescription = api.description
+            self.concluded = api.concluded
+            self.membersCount = api.members_count
+            self.courseId = api.course_id
+            self.groupCategoryId = api.group_category?.id
+            self.groupCategoryName = api.group_category?.name
+            self.groupLimit = api.group_category?.group_limit ?? api.max_membership ?? .max
+            self.allowsMultipleMemberships = api.group_category?.allows_multiple_memberships
+            self.storageQuotaMb = api.storage_quota_mb
+            self.isPublic = api.is_public
 
-        self.canCreateDiscussionTopic = api.permissions?.create_discussion_topic
-        self.canJoin = api.permissions?.join
-        self.canCreateAnnouncement = api.permissions?.create_announcement
+            // TODO: use user api instead
+            self.users = api.users
+
+            self.joinLevel = api.join_level
+            self.avatarUrl = api.avatar_url
+
+            self.canCreateDiscussionTopic = api.permissions?.create_discussion_topic
+            self.canJoin = api.permissions?.join
+            self.canCreateAnnouncement = api.permissions?.create_announcement
+        }
     }
 }
 

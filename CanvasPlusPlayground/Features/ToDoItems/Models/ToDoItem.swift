@@ -8,76 +8,74 @@
 import Foundation
 import SwiftData
 
-@Model
-class ToDoItem: Cacheable {
-    typealias ID = String
+typealias ToDoItem = CanvasSchemaV1.ToDoItem
 
-    @Attribute(.unique)
-    let id: String
-    var parentID: String
+extension CanvasSchemaV1 {
+    @Model
+    class ToDoItem {
+        typealias ID = String
 
-    var contextType: ToDoItemContextType
-    var courseID: Int
-    var groupID: Int?
-    var contextName: String
-    var type: ToDoItemType
-    var ignoreURL: String
-    var ignorePermanentlyURL: String
-    var assignment: Assignment?
-    var quiz: Quiz?
-    var htmlURL: String
+        @Attribute(.unique)
+        let id: String
+        var parentID: String
 
-    // MARK: Custom Properties
-    @Transient
-    var course: Course?
+        var contextType: ToDoItemContextType
+        var courseID: Int
+        var groupID: Int?
+        var contextName: String
+        var type: ToDoItemType
+        var ignoreURL: String
+        var ignorePermanentlyURL: String
+        var assignment: Assignment?
+        var quiz: Quiz?
+        var htmlURL: String
 
-    // MARK: Computed Properties
-    var title: String {
-        assignment?.name ?? quiz?.title ?? "Unknown Item"
-    }
+        // MARK: Custom Properties
+        @Transient
+        var course: Course?
 
-    var dueDate: Date? {
-        assignment?.dueDate ?? quiz?.dueAt
-    }
-
-    var itemType: ItemType? {
-        if let assignment {
-            return .assignment(assignment)
-        } else if let quiz {
-            return .quiz(quiz)
+        // MARK: Computed Properties
+        var title: String {
+            assignment?.name ?? quiz?.title ?? "Unknown Item"
         }
 
-        return nil
-    }
+        var dueDate: Date? {
+            assignment?.dueDate ?? quiz?.dueAt
+        }
 
-    init(from toDoItemAPI: ToDoItemAPI) {
-        self.id = toDoItemAPI.id
-        self.parentID = ""
-        self.contextType = toDoItemAPI.contextType
-        self.courseID = toDoItemAPI.courseID
-        self.groupID = toDoItemAPI.groupID
-        self.contextName = toDoItemAPI.contextName
-        self.type = toDoItemAPI.type
-        self.ignoreURL = toDoItemAPI.ignoreURL
-        self.ignorePermanentlyURL = toDoItemAPI.ignorePermanentlyURL
-        self.assignment = toDoItemAPI.assignment?.createModel()
-        self.quiz = toDoItemAPI.quiz?.createModel()
-        self.htmlURL = toDoItemAPI.htmlURL
-    }
+        var itemType: TodoItemType? {
+            if let assignment {
+                return .assignment(assignment)
+            } else if let quiz {
+                return .quiz(quiz)
+            }
 
-    enum CodingKeys: String, CodingKey {
-        case contextType = "context_type"
-        case courseID = "course_id"
-        case groupID = "group_id"
-        case contextName = "context_name"
-        case type
-        case ignoreURL = "ignore"
-        case ignorePermanentlyURL = "ignore_permanently"
-        case assignment
-        case quiz
-        case htmlURL = "html_url"
-    }
+            return nil
+        }
 
+        init(from toDoItemAPI: ToDoItemAPI) {
+            self.id = toDoItemAPI.id
+            self.parentID = ""
+            self.contextType = toDoItemAPI.contextType
+            self.courseID = toDoItemAPI.courseID
+            self.groupID = toDoItemAPI.groupID
+            self.contextName = toDoItemAPI.contextName
+            self.type = toDoItemAPI.type
+            self.ignoreURL = toDoItemAPI.ignoreURL
+            self.ignorePermanentlyURL = toDoItemAPI.ignorePermanentlyURL
+            self.assignment = toDoItemAPI.assignment?.createModel()
+            self.quiz = toDoItemAPI.quiz?.createModel()
+            self.htmlURL = toDoItemAPI.htmlURL
+        }
+    }
+}
+
+enum TodoItemType {
+    case assignment(Assignment)
+    case quiz(Quiz)
+}
+
+extension ToDoItem: Cacheable {
     func merge(with other: ToDoItem) {
         self.contextType = other.contextType
         self.courseID = other.courseID
@@ -90,9 +88,5 @@ class ToDoItem: Cacheable {
         self.quiz = other.quiz
         self.htmlURL = other.htmlURL
     }
-
-    enum ItemType {
-        case assignment(Assignment)
-        case quiz(Quiz)
-    }
 }
+

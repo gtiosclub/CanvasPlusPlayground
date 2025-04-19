@@ -8,81 +8,88 @@
 import Foundation
 import SwiftData
 
-@Model
-class Submission: Cacheable {
-    typealias ServerID = Int
+typealias Submission = CanvasSchemaV1.Submission
 
-    @Attribute(.unique) let id: String
+extension CanvasSchemaV1 {
+    @Model
+    class Submission {
+        typealias ServerID = Int
 
-    var assignmentId: Int
-    var assignment: String?
-    var course: String?
-    var attempt: Int?
-    var body: String?
-    var grade: String?
-    var gradeMatchesCurrentSubmission: Bool?
-    var htmlUrl: URL?
-    var previewUrl: URL?
-    var score: Double?
-    var submissionType: String?
-    var submittedAt: String?
-    var url: String?
-    var userId: Int
-    var graderId: Int?
-    var gradedAt: String?
-    var user: String?
-    var late: Bool?
-    var assignmentVisible: Bool?
-    var excused: Bool?
-    var missing: Bool?
-    var latePolicyStatus: String?
-    var pointsDeducted: Double?
-    var secondsLate: Int?
-    var workflowState: WorkflowState?
-    var extraAttempts: Int?
-    var anonymousId: String?
-    var postedAt: String?
-    var readStatus: String?
-    var redoRequest: Bool?
+        @Attribute(.unique) let id: String
 
-    init(from submissionAPI: SubmissionAPI) {
-        self.id = submissionAPI.id
-        self.assignmentId = submissionAPI.assignment_id
-        self.assignment = submissionAPI.assignment
-        self.course = submissionAPI.course
-        self.attempt = submissionAPI.attempt
-        self.body = submissionAPI.body
-        self.grade = submissionAPI.grade
-        self.gradeMatchesCurrentSubmission = submissionAPI.grade_matches_current_submission
-        self.htmlUrl = submissionAPI.html_url
-        self.previewUrl = submissionAPI.preview_url
-        self.score = submissionAPI.score
-        self.submissionType = submissionAPI.submission_type
-        self.submittedAt = submissionAPI.submitted_at
-        self.url = submissionAPI.url
-        self.userId = submissionAPI.user_id
-        self.graderId = submissionAPI.grader_id
-        self.gradedAt = submissionAPI.graded_at
-        self.user = submissionAPI.user
-        self.late = submissionAPI.late
-        self.assignmentVisible = submissionAPI.assignment_visible
-        self.excused = submissionAPI.excused
-        self.missing = submissionAPI.missing
-        self.latePolicyStatus = submissionAPI.late_policy_status
-        self.pointsDeducted = submissionAPI.points_deducted
-        self.secondsLate = submissionAPI.seconds_late
-        if let workflowState = submissionAPI.workflow_state {
-            self.workflowState = WorkflowState(
-                rawValue: workflowState
-            )
+        var assignmentId: Int
+        var assignment: String?
+        var course: String?
+        var attempt: Int?
+        var body: String?
+        var grade: String?
+        var gradeMatchesCurrentSubmission: Bool?
+        var htmlUrl: URL?
+        var previewUrl: URL?
+        var score: Double?
+        var submissionType: String?
+        var submittedAt: String?
+        var url: String?
+        var userId: Int
+        var graderId: Int?
+        var gradedAt: String?
+        var user: String?
+        var late: Bool?
+        var assignmentVisible: Bool?
+        var excused: Bool?
+        var missing: Bool?
+        var latePolicyStatus: String?
+        var pointsDeducted: Double?
+        var secondsLate: Int?
+        var workflowState: SubmissionWorkflowState?
+        var extraAttempts: Int?
+        var anonymousId: String?
+        var postedAt: String?
+        var readStatus: String?
+        var redoRequest: Bool?
+
+        init(from submissionAPI: SubmissionAPI) {
+            self.id = submissionAPI.id
+            self.assignmentId = submissionAPI.assignment_id
+            self.assignment = submissionAPI.assignment
+            self.course = submissionAPI.course
+            self.attempt = submissionAPI.attempt
+            self.body = submissionAPI.body
+            self.grade = submissionAPI.grade
+            self.gradeMatchesCurrentSubmission = submissionAPI.grade_matches_current_submission
+            self.htmlUrl = submissionAPI.html_url
+            self.previewUrl = submissionAPI.preview_url
+            self.score = submissionAPI.score
+            self.submissionType = submissionAPI.submission_type
+            self.submittedAt = submissionAPI.submitted_at
+            self.url = submissionAPI.url
+            self.userId = submissionAPI.user_id
+            self.graderId = submissionAPI.grader_id
+            self.gradedAt = submissionAPI.graded_at
+            self.user = submissionAPI.user
+            self.late = submissionAPI.late
+            self.assignmentVisible = submissionAPI.assignment_visible
+            self.excused = submissionAPI.excused
+            self.missing = submissionAPI.missing
+            self.latePolicyStatus = submissionAPI.late_policy_status
+            self.pointsDeducted = submissionAPI.points_deducted
+            self.secondsLate = submissionAPI.seconds_late
+            if let workflowState = submissionAPI.workflow_state {
+                self.workflowState = SubmissionWorkflowState(
+                    rawValue: workflowState
+                )
+            }
+            self.extraAttempts = submissionAPI.extra_attempts
+            self.anonymousId = submissionAPI.anonymous_id
+            self.postedAt = submissionAPI.posted_at
+            self.readStatus = submissionAPI.read_status
+            self.redoRequest = submissionAPI.redo_request
         }
-        self.extraAttempts = submissionAPI.extra_attempts
-        self.anonymousId = submissionAPI.anonymous_id
-        self.postedAt = submissionAPI.posted_at
-        self.readStatus = submissionAPI.read_status
-        self.redoRequest = submissionAPI.redo_request
     }
 
+}
+
+extension Submission: Cacheable {
     func merge(with other: Submission) {
         self.assignmentId = other.assignmentId
         self.assignment = other.assignment
@@ -115,24 +122,24 @@ class Submission: Cacheable {
         self.readStatus = other.readStatus
         self.redoRequest = other.redoRequest
     }
+}
 
-    enum WorkflowState: String, Codable {
-        case submitted
-        case unsubmitted
-        case graded
-        case pendingReview = "pending_review"
+enum SubmissionWorkflowState: String, Codable {
+    case submitted
+    case unsubmitted
+    case graded
+    case pendingReview = "pending_review"
 
-        var displayValue: String {
-            switch self {
-            case .submitted:
-                return "Submitted"
-            case .unsubmitted:
-                return "Unsubmitted"
-            case .graded:
-                return "Graded"
-            case .pendingReview:
-                return "Pending Review"
-            }
+    var displayValue: String {
+        switch self {
+        case .submitted:
+            return "Submitted"
+        case .unsubmitted:
+            return "Unsubmitted"
+        case .graded:
+            return "Graded"
+        case .pendingReview:
+            return "Pending Review"
         }
     }
 }
