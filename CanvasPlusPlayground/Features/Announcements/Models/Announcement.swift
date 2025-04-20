@@ -8,31 +8,37 @@
 import Foundation
 import SwiftData
 
-@Model
-final class Announcement: Cacheable {
-    typealias ID = String
-    typealias ServerID = Int
+typealias Announcement = CanvasSchemaV1.Announcement
 
-    @Attribute(.unique) let id: String
-    var courseID: String?
+extension CanvasSchemaV1 {
+    @Model
+    final class Announcement {
+        typealias ID = String
+        typealias ServerID = Int
 
-    var title: String?
-    var createdAt: Date?
-    var message: String?
-    var contextCode: String?
+        @Attribute(.unique) let id: String
+        var courseID: String?
 
-    // MARK: Custom Properties
-    var isRead: Bool?
-    var summary: String?
+        var title: String?
+        var createdAt: Date?
+        var message: String?
+        var contextCode: String?
 
-    init(api: AnnouncementAPI) {
-        self.id = api.id.asString
-        self.title = api.title
-        self.createdAt = api.created_at
-        self.message = api.message
-        self.contextCode = api.context_code
+        // MARK: Custom Properties
+        var isRead: Bool?
+        var summary: String?
+
+        init(api: AnnouncementAPI) {
+            self.id = api.id.asString
+            self.title = api.title
+            self.createdAt = api.created_at
+            self.message = api.message
+            self.contextCode = api.context_code
+        }
     }
+}
 
+extension Announcement: Cacheable {
     func merge(with other: Announcement) {
         self.title = other.title
         self.message = other.message

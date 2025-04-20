@@ -32,7 +32,7 @@ struct HomeView: View {
             return nil
         }
 
-        return courseManager.allCourses.first(where: { $0.id == id })
+        return courseManager.activeCourses.first(where: { $0.id == id })
     }
 
     var body: some View {

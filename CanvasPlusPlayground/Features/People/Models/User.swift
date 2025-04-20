@@ -8,49 +8,61 @@
 import Foundation
 import SwiftData
 
-@Model
-class User: Cacheable {
-    typealias ID = String
-    typealias ServerID = Int
+typealias User = CanvasSchemaV1.User
 
-    @Attribute(.unique)
-    var id: String
-    var name: String
-    var sortableName: String
-    var shortName: String
-    var avatarURL: URL?
-    var email: String?
-    var pronouns: String?
-    var role: String?
+extension CanvasSchemaV1 {
+    @Model
+    class User {
+        typealias ID = String
+        typealias ServerID = Int
 
-    var enrollmentRoles: [EnrollmentType] {
-        Array(
-            Set(
-                enrollments?.compactMap { EnrollmentType(rawValue: $0.type) } ?? []
+        @Attribute(.unique)
+        var id: String
+        var name: String
+        var sortableName: String
+        var shortName: String
+        var avatarURL: URL?
+        var email: String?
+        var pronouns: String?
+        var role: String?
+
+        var enrollmentRoles: [EnrollmentType] {
+            Array(
+                Set(
+                    enrollments?.compactMap { EnrollmentType(rawValue: $0.type) } ?? []
+                )
             )
-        )
-        .sorted { $0.rawValue < $1.rawValue }
+            .sorted { $0.rawValue < $1.rawValue }
+        }
+        var enrollments: [EnrollmentAPI]?
+
+        // MARK: Custom
+        var courseId: String?
+        var tag: String
+        var avatarImageData: Data?
+
+        init(from userAPI: UserAPI) {
+            self.id = String(userAPI.id)
+            self.name = userAPI.name
+            self.shortName = userAPI.short_name
+            self.sortableName = userAPI.sortable_name
+            self.avatarURL = userAPI.avatar_url
+            self.email = userAPI.email
+            self.pronouns = userAPI.pronouns
+            self.role = userAPI.role
+            self.enrollments = userAPI.enrollments
+            self.tag = ""
+        }
+
+        var hasAvatar: Bool {
+            guard let avatarURL else { return false }
+
+            return !avatarURL.absoluteString.hasSuffix("avatar-50.png")
+        }
     }
-    var enrollments: [EnrollmentAPI]?
+}
 
-    // MARK: Custom
-    var courseId: String?
-    var tag: String
-    var avatarImageData: Data?
-
-    init(from userAPI: UserAPI) {
-        self.id = String(userAPI.id)
-        self.name = userAPI.name
-        self.shortName = userAPI.short_name
-        self.sortableName = userAPI.sortable_name
-        self.avatarURL = userAPI.avatar_url
-        self.email = userAPI.email
-        self.pronouns = userAPI.pronouns
-        self.role = userAPI.role
-        self.enrollments = userAPI.enrollments
-        self.tag = ""
-    }
-
+extension User: Cacheable {
     func merge(with other: User) {
         self.name = other.name
         self.sortableName = other.sortableName
@@ -61,12 +73,6 @@ class User: Cacheable {
         self.role = other.role ?? self.role
 
         self.enrollments = other.enrollments ?? self.enrollments
-    }
-
-    var hasAvatar: Bool {
-        guard let avatarURL else { return false }
-
-        return !avatarURL.absoluteString.hasSuffix("avatar-50.png")
     }
 }
 
