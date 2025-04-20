@@ -8,18 +8,14 @@
 import SwiftUI
 
 private struct OpenInCanvasWebButton: View {
-    @Environment(\.openURL) private var openURL
     let path: WebButtonType
-
+    
     var body: some View {
-        Button("Open in Web") {
-            if let url = path.url {
-                openURL(url)
-            } else {
-                LoggerService.main.error("Failed to go to web with path: \(path.urlString)")
-            }
-            
-        }
+        Link("Open in Web", destination: path.url)
+            .environment(\.openURL, OpenURLAction { url in
+                return .systemAction
+            })
+        
     }
 }
 
@@ -48,7 +44,7 @@ enum WebButtonType {
     case quizzes(String)
     case announcement(String, String)
     case assignment(String, String)
-    case folder(String, String)
+    
     var urlString: String {
         canvasURL + {
             switch self {
@@ -64,14 +60,11 @@ enum WebButtonType {
                 "courses/\(courseID)/discussion_topics/\(announcementID)"
             case .assignment(let courseID, let assignmentID):
                 "courses/\(courseID)/assignments/\(assignmentID)"
-            case .folder(let courseID, let filename):
-                "courses/\(courseID)/files/\(filename)"
             }
         }()
     }
     
-    var url: URL? {
-        URL(string: urlString)
+    var url: URL {
+        URL(string: urlString) ?? URL(string: canvasURL)!
     }
-    
 }

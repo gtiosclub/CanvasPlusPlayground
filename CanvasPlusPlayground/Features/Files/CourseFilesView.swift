@@ -12,6 +12,5 @@ struct CourseFilesView: View {
 
     var body: some View {
         FoldersPageView(course: course)
-            .openInCanvasWebToolbarButton(.files(course.id))
     }
 }
