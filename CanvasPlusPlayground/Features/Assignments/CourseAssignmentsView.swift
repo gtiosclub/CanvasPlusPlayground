@@ -129,7 +129,7 @@ struct CourseAssignmentsView: View {
             IGCSetupView(course: course)
                 .environment(gradeCalculator)
                 #if os(macOS)
-                .frame(width: 450, height: 450)
+                .frame(width: 550, height: 600)
                 #endif
         }
         .environment(gradeCalculator)

@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol PickableItem {
+protocol PickableItem: Hashable {
     var itemTitle: String { get }
     var contents: String { get }
 }
