@@ -13,8 +13,8 @@ enum CanvasRequest {
         GetCoursesRequest(enrollmentState: enrollmentState, perPage: perPage)
     }
 
-    static func getCourse(id: String) -> GetCourseRequest {
-        GetCourseRequest(courseId: id)
+    static func getCourse(id: String, include: [GetCourseRequest.Include] = [.favorites]) -> GetCourseRequest {
+        GetCourseRequest(courseId: id, include: include)
     }
 
     static func getToDoItems(
