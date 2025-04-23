@@ -46,7 +46,7 @@ enum WebButtonType {
     case assignment(String, String)
     
     var urlString: String {
-        canvasURL + {
+        CanvasService.canvasURL + {
             switch self {
             case .homepage(let courseID):
                 "courses/\(courseID)/"
@@ -65,6 +65,6 @@ enum WebButtonType {
     }
     
     var url: URL {
-        URL(string: urlString) ?? URL(string: canvasURL)!
+        URL(string: urlString) ?? URL(string: CanvasService.canvasURL)!
     }
 }

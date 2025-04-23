@@ -8,7 +8,6 @@
 import Foundation
 
 
-let canvasURL = "https://gatech.instructure.com/"
 
 protocol APIRequest {
     associatedtype Subject: APIResponse
@@ -49,7 +48,7 @@ protocol NoReturnAPIRequest: APIRequest {
 
 extension APIRequest {
     static var baseURL: URL {
-        guard let url = URL(string: canvasURL) else {
+        guard let url = URL(string: CanvasService.canvasURL) else {
             fatalError("Invalid base URL.")
         }
         return url
