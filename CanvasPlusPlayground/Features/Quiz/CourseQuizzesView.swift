@@ -26,6 +26,7 @@ struct CourseQuizzesView: View {
             await loadQuizzes()
         }
         .statusToolbarItem("Quizzes", isVisible: isLoadingQuizzes)
+        .openInCanvasWebToolbarButton(.quizzes(quizzesVM.courseId))
     }
 
     @ViewBuilder

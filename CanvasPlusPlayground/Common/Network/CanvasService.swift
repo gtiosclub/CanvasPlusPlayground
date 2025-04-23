@@ -9,6 +9,8 @@ import Foundation
 import SwiftData
 
 class CanvasService {
+
+    public static let canvasURL = "https://gatech.instructure.com/"
     static var shared = CanvasService()
 
     var repository: CanvasRepository?

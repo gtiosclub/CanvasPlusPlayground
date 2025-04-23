@@ -24,7 +24,7 @@ struct CourseView: View {
 
         let availableTabs = Set<NavigationModel.CoursePage>(
             course.tabs.compactMap { tab in
-                return NavigationModel.CoursePage(rawValue: tab.label.lowercased())
+                NavigationModel.CoursePage(rawValue: tab.label.lowercased())
             }
         )
 
@@ -51,11 +51,11 @@ struct CourseView: View {
         .onAppear {
             navigationModel.selectedCoursePage = nil
         }
-        #if os(iOS)
+#if os(iOS)
         .listStyle(.insetGrouped)
-        #else
+#else
         .listStyle(.sidebar)
-        #endif
+#endif
         .tint(course.rgbColors?.color)
         .navigationTitle(course.displayName)
         .navigationDestination(for: NavigationModel.Destination.self) { destination in
@@ -72,9 +72,9 @@ struct CourseView: View {
                                 courseID: course.id
                             )
                     }
-
                     return .handled
                 })
         }
+        .openInCanvasWebToolbarButton(.homepage(course.id))
     }
 }
