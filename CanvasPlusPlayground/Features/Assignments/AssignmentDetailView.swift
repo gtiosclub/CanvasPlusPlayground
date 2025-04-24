@@ -92,14 +92,15 @@ struct AssignmentDetailView: View {
                     )
 
                     HStack {
+                        let submissionsClosed = !(canSubmit ?? false)
                         #if os(macOS)
                         Spacer()
                         #endif
 
-                        Button("New Submission...") {
+                        Button(submissionsClosed ? "Submissions Closed" : "New Submission...") {
                             showSubmissionPopUp.toggle()
                         }
-                        .disabled(!(canSubmit ?? false))
+                        .disabled(submissionsClosed)
 
                         if fetchingCanSubmitStatus {
                             ProgressView()
