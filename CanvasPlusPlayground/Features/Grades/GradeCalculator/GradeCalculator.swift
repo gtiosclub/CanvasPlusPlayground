@@ -27,7 +27,7 @@ class GradeCalculator {
         }
     }
 
-    struct GradeGroup: Identifiable, Hashable {
+    struct GradeGroup: Identifiable, Hashable, Codable {
         let id: String
         var name: String
         var weight: Double
@@ -126,6 +126,10 @@ class GradeCalculator {
         resetGroups(assignmentGroups)
     }
 
+    init(gradeGroups: [GradeGroup]) {
+        resetGroups(gradeGroups)
+    }
+
     // MARK: - User Intents
     @discardableResult
     func createEmptyGroup() -> GradeGroup {
@@ -210,6 +214,15 @@ class GradeCalculator {
                 rules: group.rules
             )
         }
+
+        expandedAssignmentGroups = Dictionary(
+            uniqueKeysWithValues: gradeGroups.lazy
+                .map { ($0, $0.weightedScore != nil) }
+        )
+    }
+
+    func resetGroups(_ gradeGroups: [GradeGroup]) {
+        self.gradeGroups = gradeGroups
 
         expandedAssignmentGroups = Dictionary(
             uniqueKeysWithValues: gradeGroups.lazy

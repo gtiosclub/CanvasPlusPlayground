@@ -112,7 +112,12 @@ struct RippleEffect<T: Equatable>: ViewModifier {
 }
 
 extension View {
-    func rippleEffect(origin: CGPoint, condition: Bool) -> some View {
-        modifier(RippleEffect(at: origin, trigger: condition))
+    @ViewBuilder
+    func rippleEffect(isEnabled: Bool, origin: CGPoint, condition: Bool) -> some View {
+        if isEnabled {
+            self.modifier(RippleEffect(at: origin, trigger: condition))
+        } else {
+            self
+        }
     }
 }
