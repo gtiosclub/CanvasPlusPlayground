@@ -146,7 +146,8 @@
 		B5894F132D6EBD8C00E8F527 /* Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5894F0D2D6EBD8C00E8F527 /* Page.swift */; };
 		B5894F172D6EBEA100E8F527 /* PagesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5894F162D6EBEA100E8F527 /* PagesManager.swift */; };
 		B5894F192D6EC56000E8F527 /* PageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5894F182D6EC56000E8F527 /* PageView.swift */; };
-		B72D82C12E4B503B00BA1DAD /* CanvasIntelligenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72D82C02E4B503300BA1DAD /* CanvasIntelligenceService.swift */; };
+		B72D82C12E4B503B00BA1DAD /* AnnouncementSummaryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72D82C02E4B503300BA1DAD /* AnnouncementSummaryService.swift */; };
+		B72D82FE2E4B904100BA1DAD /* IntelligenceServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72D82FD2E4B903C00BA1DAD /* IntelligenceServiceProvider.swift */; };
 		B72EA5702D5689B20013070E /* QuickLookPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72EA56F2D5689B20013070E /* QuickLookPreview.swift */; };
 		B73AE0BD2D4FB68B007094A8 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73AE0BC2D4FB68B007094A8 /* Profile.swift */; };
 		B7460A942D6BFB1A0069CF5B /* GradeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7460A932D6BFB1A0069CF5B /* GradeCalculator.swift */; };
@@ -364,7 +365,8 @@
 		B5894F102D6EBD8C00E8F527 /* PagesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagesListView.swift; sourceTree = "<group>"; };
 		B5894F162D6EBEA100E8F527 /* PagesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagesManager.swift; sourceTree = "<group>"; };
 		B5894F182D6EC56000E8F527 /* PageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageView.swift; sourceTree = "<group>"; };
-		B72D82C02E4B503300BA1DAD /* CanvasIntelligenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasIntelligenceService.swift; sourceTree = "<group>"; };
+		B72D82C02E4B503300BA1DAD /* AnnouncementSummaryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementSummaryService.swift; sourceTree = "<group>"; };
+		B72D82FD2E4B903C00BA1DAD /* IntelligenceServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntelligenceServiceProvider.swift; sourceTree = "<group>"; };
 		B72EA56F2D5689B20013070E /* QuickLookPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookPreview.swift; sourceTree = "<group>"; };
 		B73AE0BC2D4FB68B007094A8 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		B7460A932D6BFB1A0069CF5B /* GradeCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradeCalculator.swift; sourceTree = "<group>"; };
@@ -959,8 +961,9 @@
 			isa = PBXGroup;
 			children = (
 				B7CC4D652D90FDEA00254F55 /* Views */,
-				B72D82C02E4B503300BA1DAD /* CanvasIntelligenceService.swift */,
 				B7AD54EF2CD41D7900FB09BB /* IntelligenceSupport.swift */,
+				B72D82FD2E4B903C00BA1DAD /* IntelligenceServiceProvider.swift */,
+				B72D82C02E4B503300BA1DAD /* AnnouncementSummaryService.swift */,
 			);
 			path = Intelligence;
 			sourceTree = "<group>";
@@ -1153,6 +1156,7 @@
 				9BFD457D2D80F6EB00BBAA01 /* UploadAssignmentFileNotificationRequest.swift in Sources */,
 				B7CC4D632D90C8DB00254F55 /* ShapeStyle+Gradient.swift in Sources */,
 				A3CA02592D43294B00A9752B /* SearchResultsListView.swift in Sources */,
+				B72D82FE2E4B904100BA1DAD /* IntelligenceServiceProvider.swift in Sources */,
 				A3D0225D2D6A711900F8068C /* GetPagesRequest.swift in Sources */,
 				B76454FE2C8DF61B002DF00E /* Course.swift in Sources */,
 				A372D1062D90CE7D005E94CA /* GroupMembership.swift in Sources */,
@@ -1226,7 +1230,7 @@
 				9B762BC92D7BF8E70051F1F6 /* SubmitAssignmentRequest.swift in Sources */,
 				B7D7512F2D3D660B00F7B8B8 /* AllAnnouncementsManager.swift in Sources */,
 				A3049B752D15DC1C002F3166 /* GetCoursesRequest.swift in Sources */,
-				B72D82C12E4B503B00BA1DAD /* CanvasIntelligenceService.swift in Sources */,
+				B72D82C12E4B503B00BA1DAD /* AnnouncementSummaryService.swift in Sources */,
 				B76455042C8DF61B002DF00E /* CourseView.swift in Sources */,
 				A372D1042D90BEB4005E94CA /* CanvasGroup.swift in Sources */,
 				B75684FA2DA7A080003B4A32 /* GetSingleDiscussionTopicRequest.swift in Sources */,

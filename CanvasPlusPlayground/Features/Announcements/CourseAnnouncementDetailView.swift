@@ -83,7 +83,7 @@ private struct SummarySection: View {
     @State private var loadingSummary = false
     @State private var rippleView = false
 
-    @State private var announcementSummaryService: CanvasIntelligenceService?
+    @State private var announcementSummaryService: AnnouncementSummaryService?
 
     var body: some View {
         VStack {
@@ -133,7 +133,7 @@ private struct SummarySection: View {
             rippleView.toggle()
         }
         .task {
-            announcementSummaryService = CanvasIntelligenceService()
+            announcementSummaryService = AnnouncementSummaryService()
         }
     }
 
@@ -170,7 +170,7 @@ private struct SummarySection: View {
 
         loadingSummary = true
         announcement.summary = try? await announcementSummaryService?
-            .summarizeAnnouncement(announcement)
+            .performRequest(for: announcement)
         loadingSummary = false
     }
 }

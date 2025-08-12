@@ -1,5 +1,5 @@
 //
-//  CanvasIntelligenceService.swift
+//  AnnouncementSummaryService.swift
 //  CanvasPlusPlayground
 //
 //  Created by Rahul on 8/12/25.
@@ -11,14 +11,22 @@ import SwiftUI
 @available(iOS 26.0, macOS 26.0, *)
 @MainActor
 @Observable
-final class CanvasIntelligenceService {
+final class AnnouncementSummaryService: IntelligenceServiceProvider {
+    typealias Input = DiscussionTopic
+    typealias Output = String
+
     enum IntelligenceServiceError: Error {
+        case sessionNotAvailable
         case announcementDetailsMissing
     }
 
-    private var session: LanguageModelSession
+    private var session: LanguageModelSession?
 
     init() {
+        setup()
+    }
+
+    func setup() {
         self.session = LanguageModelSession {
             """
             You are an intelligent assistant in an app called Canvas Plus, \
@@ -38,10 +46,14 @@ final class CanvasIntelligenceService {
             """
         }
 
-        session.prewarm()
+        session?.prewarm()
     }
 
-    func summarizeAnnouncement(_ announcement: DiscussionTopic) async throws -> String {
+    func performRequest(for announcement: DiscussionTopic) async throws -> String {
+        guard let session else {
+            throw IntelligenceServiceError.sessionNotAvailable
+        }
+        
         guard let title = announcement.title, let message = announcement.message else {
             throw IntelligenceServiceError.announcementDetailsMissing
         }
