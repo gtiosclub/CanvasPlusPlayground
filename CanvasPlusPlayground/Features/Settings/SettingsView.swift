@@ -16,7 +16,6 @@ struct SettingsView: View {
     #endif
 
     @Environment(NavigationModel.self) private var navigationModel
-    @EnvironmentObject private var llmEvaluator: LLMEvaluator
     @EnvironmentObject private var intelligenceManager: IntelligenceManager
     @Environment(\.dismiss) private var dismiss
 
@@ -84,7 +83,7 @@ struct SettingsView: View {
                 #if targetEnvironment(simulator)
                 Text("Intelligence features are not supported on simulator.")
                 #else
-                if intelligenceManager.installedModels.isEmpty {
+                if true { // FIXME: Fix with Foundation Models implementation
                     Text("Intelligence is not installed yet.")
                 } else {
                     Text("Intelligence is setup.")
@@ -93,8 +92,8 @@ struct SettingsView: View {
             }
             .font(.caption)
         }
-        #if targetEnvironment(simulator)
-        .disabled(true)
+        #if true /*targetEnvironment(simulator)*/
+        .disabled(true) // FIXME: Fix with Foundation Models implementation
         #endif
     }
 

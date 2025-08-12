@@ -85,7 +85,6 @@ extension CanvasSchemaV1 {
             self.hasAccessCode = api.has_access_code ?? false
             self.hideCorrectAnswersAt = api.hide_correct_answers_at
             self.htmlURL = api.html_url
-            self.id = api.id.asString
             self.ipFilter = api.ip_filter
             self.lockAt = api.lock_at
             self.lockExplanation = api.lock_explanation

@@ -66,7 +66,6 @@ struct CourseAnnouncementDetailView: View {
 
 private struct SummarySection: View {
     @Environment(NavigationModel.self) private var navigationModel
-    @EnvironmentObject private var llmEvaluator: LLMEvaluator
     @EnvironmentObject private var intelligenceManager: IntelligenceManager
 
     let announcement: DiscussionTopic
@@ -101,7 +100,7 @@ private struct SummarySection: View {
                 }
 
                 Group {
-                    if intelligenceManager.installedModels.isEmpty {
+                    if true { // FIXME: Fix with Foundation Models implementation
                         Button("Install Intelligence...") {
                             navigationModel.showInstallIntelligenceSheet = true
                         }
@@ -121,7 +120,7 @@ private struct SummarySection: View {
                 #endif
             }
         }
-        .disabled(intelligenceManager.currentModelName == nil)
+        .disabled(true) // FIXME: Fix with Foundation Models implementation
         .animation(.default, value: announcement.summary != nil)
         .onChange(of: announcement.summary) { _, _ in
             rippleView.toggle()
@@ -162,16 +161,7 @@ private struct SummarySection: View {
         \(message)
         """
 
-        if let modelName = intelligenceManager.currentModelName {
-            loadingSummary = true
-            announcement.summary = await llmEvaluator
-                .generate(
-                    modelName: modelName,
-                    message: prompt,
-                    systemPrompt: intelligenceManager.systemPrompt
-                )
-                .trimmingCharacters(in: .whitespacesAndNewlines)
-            loadingSummary = false
-        }
+        // FIXME: Fix with Foundation Models implementation
+        return
     }
 }
