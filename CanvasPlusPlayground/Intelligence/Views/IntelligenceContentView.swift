@@ -8,6 +8,7 @@
 import SwiftUI
 
 /// A view designated for promoting intelligence features within the app.
+@available(macOS 26.0, iOS 26.0, *)
 struct IntelligenceContentView<V: View>: View {
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
     @Namespace private var namespace
@@ -60,7 +61,7 @@ struct IntelligenceContentView<V: View>: View {
                         reduceTransparency ? .intelligenceGradient() :
                                 .animatedGradient(
                                     time: elapsedTime,
-                                    colors: IntelligenceManager.gradientColors
+                                    colors: IntelligenceSupport.gradientColors
                                 )
                     )
                     .matchedGeometryEffect(id: "background", in: namespace)
@@ -70,7 +71,7 @@ struct IntelligenceContentView<V: View>: View {
                     .strokeBorder(
                         .animatedGradient(
                             time: elapsedTime,
-                            colors: IntelligenceManager.gradientColors
+                            colors: IntelligenceSupport.gradientColors
                         ),
                         lineWidth: 2.0
                     )

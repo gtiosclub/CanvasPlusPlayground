@@ -16,7 +16,6 @@ struct SettingsView: View {
     #endif
 
     @Environment(NavigationModel.self) private var navigationModel
-    @EnvironmentObject private var intelligenceManager: IntelligenceManager
     @Environment(\.dismiss) private var dismiss
 
     @State private var showChangeAccessToken: Bool = false
@@ -42,7 +41,9 @@ struct SettingsView: View {
     private var mainBody: some View {
         Form {
             loginSettings
-            intelligenceSettings
+            if #available(macOS 26.0, iOS 26.0, *) {
+                intelligenceSettings
+            }
             #if DEBUG
             debugSettings
             #endif
@@ -68,33 +69,13 @@ struct SettingsView: View {
         }
     }
 
+    @available(macOS 26.0, iOS 26.0, *)
     private var intelligenceSettings: some View {
         Section {
-            Button {
-                navigationModel.showInstallIntelligenceSheet = true
-            } label: {
-                Label("Setup Intelligence", systemImage: "square.and.arrow.down")
-            }
-            .foregroundStyle(.blue)
+            Text(IntelligenceSupport.modelAvailabilityDescription)
         } header: {
             Label("Intelligence", systemImage: "wand.and.stars")
-        } footer: {
-            Group {
-                #if targetEnvironment(simulator)
-                Text("Intelligence features are not supported on simulator.")
-                #else
-                if true { // FIXME: Fix with Foundation Models implementation
-                    Text("Intelligence is not installed yet.")
-                } else {
-                    Text("Intelligence is setup.")
-                }
-                #endif
-            }
-            .font(.caption)
         }
-        #if true /*targetEnvironment(simulator)*/
-        .disabled(true) // FIXME: Fix with Foundation Models implementation
-        #endif
     }
 
     #if DEBUG

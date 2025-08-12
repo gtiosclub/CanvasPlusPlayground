@@ -17,10 +17,11 @@ extension ShapeStyle where Self == AnyShapeStyle {
         ))
     }
 
+    @available(iOS 26.0, macOS 26.0, *)
     static func intelligenceGradient() -> Self {
         AnyShapeStyle(
             LinearGradient(
-                colors: IntelligenceManager.gradientColors,
+                colors: IntelligenceSupport.gradientColors,
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
