@@ -18,7 +18,7 @@ enum IntelligenceSupport {
         case .available: 
             return "Intelligence is ready."
         case .unavailable(.appleIntelligenceNotEnabled):
-            return "Enable Apple Intelligence on your device to enable this feature."
+            return "Enable Apple Intelligence on your device to use this feature."
         case .unavailable(.modelNotReady):
             return "Model is not ready. Try again later."
         case .unavailable(.deviceNotEligible):

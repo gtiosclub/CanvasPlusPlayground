@@ -76,6 +76,7 @@ struct SettingsView: View {
         } header: {
             Label("Intelligence", systemImage: "wand.and.stars")
         }
+        .foregroundStyle(.secondary)
     }
 
     #if DEBUG
