@@ -169,6 +169,7 @@ private struct SummarySection: View {
         LoggerService.main.debug("Summarizing announcement...")
 
         loadingSummary = true
+        // FIXME: Show error alert in case of failure.
         announcement.summary = try? await announcementSummaryService?
             .performRequest(for: announcement)
         loadingSummary = false
