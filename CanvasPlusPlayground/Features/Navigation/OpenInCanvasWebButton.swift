@@ -11,11 +11,13 @@ private struct OpenInCanvasWebButton: View {
     let path: WebButtonType
     
     var body: some View {
-        Link("Open in Web", destination: path.url)
-            .environment(\.openURL, OpenURLAction { url in
-                return .systemAction
-            })
-        
+        Link(destination: path.url) {
+            // For some reason, when I use a label, the button looks weird with liquid glass. Using a button looks correct
+            Button("Open in web", systemImage: "globe", action: {})
+        }
+        .environment(\.openURL, OpenURLAction { url in
+            return .systemAction
+        })
     }
 }
 
