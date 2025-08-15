@@ -6,11 +6,15 @@
 //
 
 import Foundation
+import FoundationModels
 
+@available(iOS 26.0, macOS 26.0, *)
 @MainActor
-protocol IntelligenceServiceProvider {
+protocol IntelligenceServiceProvider: AnyObject {
     associatedtype Input
     associatedtype Output: Codable
+
+    var session: LanguageModelSession? { get set }
 
     func setup()
     func performRequest(for input: Input) async throws -> Output
