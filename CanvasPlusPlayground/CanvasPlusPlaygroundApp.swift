@@ -26,7 +26,6 @@ struct CanvasPlusPlaygroundApp: App {
     @State private var remindersManager = RemindersManager()
     // Intelligence
     @StateObject private var intelligenceManager = IntelligenceManager()
-    @StateObject private var llmEvaluator = LLMEvaluator()
 
     var body: some Scene {
         WindowGroup {
@@ -44,7 +43,6 @@ struct CanvasPlusPlaygroundApp: App {
                     .environment(navigationModel)
                     .environment(remindersManager)
                     .environmentObject(intelligenceManager)
-                    .environmentObject(llmEvaluator)
                     .onAppear {
                         CanvasService.shared.setupStorage()
                     }
@@ -65,7 +63,6 @@ struct CanvasPlusPlaygroundApp: App {
                     .environment(pinnedItemsManager)
                     .environment(navigationModel)
                     .environmentObject(intelligenceManager)
-                    .environmentObject(llmEvaluator)
                     .frame(width: 400, height: 500)
             }
         }

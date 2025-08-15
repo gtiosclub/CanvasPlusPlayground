@@ -15,9 +15,6 @@ struct HomeView: View {
     @Environment(CourseManager.self) private var courseManager
     @Environment(NavigationModel.self) private var navigationModel
 
-    @EnvironmentObject private var intelligenceManager: IntelligenceManager
-    @EnvironmentObject private var llmEvaluator: LLMEvaluator
-
     @State private var columnVisibility = NavigationSplitViewVisibility.all
     @State private var isLoadingCourses = false
 
@@ -85,8 +82,6 @@ struct HomeView: View {
             NavigationStack {
                 IntelligenceOnboardingView()
             }
-            .environmentObject(llmEvaluator)
-            .environmentObject(intelligenceManager)
             .interactiveDismissDisabled()
         })
         #if os(iOS)
@@ -143,6 +138,4 @@ struct HomeView: View {
     HomeView()
         .environment(CourseManager())
         .environment(ProfileManager())
-        .environmentObject(LLMEvaluator())
-        .environmentObject(IntelligenceManager())
 }
