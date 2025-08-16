@@ -9,15 +9,12 @@ import SwiftUI
 
 private struct OpenInCanvasWebButton: View {
     let path: WebButtonType
-    
+    @Environment(\.openURL) var openURL
+
     var body: some View {
-        Link(destination: path.url) {
-            // For some reason, when I use a label, the button looks weird with liquid glass. Using a button looks correct
-            Button("Open in web", systemImage: "globe", action: {})
+        Button("Open in web", systemImage: "globe") {
+            openURL(path.url)
         }
-        .environment(\.openURL, OpenURLAction { url in
-            return .systemAction
-        })
     }
 }
 
@@ -36,6 +33,9 @@ private struct OpenInCanvasWebButtonModifier: ViewModifier {
 extension View {
     func openInCanvasWebToolbarButton(_ type: WebButtonType) -> some View {
         self.modifier(OpenInCanvasWebButtonModifier(path: type))
+            .environment(\.openURL, OpenURLAction { url in
+                return .systemAction
+            })
     }
 }
 
