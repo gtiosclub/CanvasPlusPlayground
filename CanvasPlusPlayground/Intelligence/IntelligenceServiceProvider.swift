@@ -19,3 +19,7 @@ protocol IntelligenceServiceProvider: AnyObject {
     func setup()
     func performRequest(for input: Input) async throws -> Output
 }
+
+enum IntelligenceServiceError: Error {
+    case sessionNotAvailable
+}

@@ -15,8 +15,7 @@ final class AnnouncementSummaryService: IntelligenceServiceProvider {
     typealias Input = DiscussionTopic
     typealias Output = String
 
-    enum IntelligenceServiceError: Error {
-        case sessionNotAvailable
+    enum AnnouncementSummaryServiceError: Error {
         case announcementDetailsMissing
     }
 
@@ -32,7 +31,7 @@ final class AnnouncementSummaryService: IntelligenceServiceProvider {
         }
         
         guard let title = announcement.title, let message = announcement.message else {
-            throw IntelligenceServiceError.announcementDetailsMissing
+            throw AnnouncementSummaryServiceError.announcementDetailsMissing
         }
 
         let response = try await session.respond {
