@@ -9,13 +9,12 @@ import SwiftUI
 
 private struct OpenInCanvasWebButton: View {
     let path: WebButtonType
-    
+    @Environment(\.openURL) var openURL
+
     var body: some View {
-        Link("Open in Web", destination: path.url)
-            .environment(\.openURL, OpenURLAction { url in
-                return .systemAction
-            })
-        
+        Button("Open in web", systemImage: "globe") {
+            openURL(path.url)
+        }
     }
 }
 
@@ -34,6 +33,9 @@ private struct OpenInCanvasWebButtonModifier: ViewModifier {
 extension View {
     func openInCanvasWebToolbarButton(_ type: WebButtonType) -> some View {
         self.modifier(OpenInCanvasWebButtonModifier(path: type))
+            .environment(\.openURL, OpenURLAction { url in
+                return .systemAction
+            })
     }
 }
 
