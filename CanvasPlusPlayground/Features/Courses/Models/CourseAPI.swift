@@ -115,6 +115,13 @@ struct CourseProgress: Codable {
     let requirementCompletedCount: Int?
     let nextRequirementUrl: URL?
     let completedAt: Date?
+
+    enum CodingKeys: String, CodingKey {
+        case requirementCount = "requirement_count"
+        case requirementCompletedCount = "requirement_completed_count"
+        case nextRequirementUrl = "next_requirement_url"
+        case completedAt = "completed_at"
+    }
 }
 
 struct CourseSectionRef: Codable {
@@ -175,6 +182,16 @@ struct CourseTerm: Codable {
     let createdAt: Date?
     let workflowState: WorkflowState?
     let gradingPeriodGroupId: Int?
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case startAt = "start_at"
+        case endAt = "end_at"
+        case createdAt = "created_at"
+        case workflowState = "workflow_state"
+        case gradingPeriodGroupId = "grading_period_group_id"
+    }
 
     enum WorkflowState: String, Codable {
         case active, deleted
