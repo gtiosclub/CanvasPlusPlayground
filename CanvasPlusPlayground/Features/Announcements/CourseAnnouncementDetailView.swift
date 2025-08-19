@@ -13,13 +13,13 @@ struct CourseAnnouncementDetailView: View {
     var body: some View {
         Form {
             #if os(iOS)
-            SummarySection(announcement: announcement)
+            summarySection
                 .listRowBackground(Color.clear)
                 .listRowInsets(EdgeInsets())
             #else
             // Workaround to get a clear background in a Form on macOS
             Section { } header: {
-                SummarySection(announcement: announcement)
+                summarySection
                     .multilineTextAlignment(.leading)
             } footer: {
                 Text("")
@@ -53,6 +53,16 @@ struct CourseAnnouncementDetailView: View {
         .id(announcement.id)
     }
 
+    private var summarySection: some View {
+        Group {
+            if #available(iOS 26.0, macOS 26.0, *) {
+                SummarySection(announcement: announcement)
+            } else {
+                EmptyView()
+            }
+        }
+    }
+
     func markAsRead() {
         Task { @MainActor in
             do {
@@ -64,14 +74,16 @@ struct CourseAnnouncementDetailView: View {
     }
 }
 
+@available(iOS 26.0, macOS 26.0, *)
 private struct SummarySection: View {
     @Environment(NavigationModel.self) private var navigationModel
-    @EnvironmentObject private var intelligenceManager: IntelligenceManager
 
     let announcement: DiscussionTopic
 
     @State private var loadingSummary = false
     @State private var rippleView = false
+
+    @State private var announcementSummaryService: AnnouncementSummaryService?
 
     var body: some View {
         VStack {
@@ -100,18 +112,14 @@ private struct SummarySection: View {
                 }
 
                 Group {
-                    if true { // FIXME: Fix with Foundation Models implementation
-                        Button("Install Intelligence...") {
-                            navigationModel.showInstallIntelligenceSheet = true
+                    Button("Summarize" + (announcement.summary != nil ? " Again" : "")) {
+                        Task {
+                            await summarize()
                         }
-                    } else {
-                        Button("Summarize" + (announcement.summary != nil ? " Again" : "")) {
-                            Task {
-                                await summarize()
-                            }
-                        }
-                        .disabled(loadingSummary)
                     }
+                    .disabled(
+                        loadingSummary || !IntelligenceSupport.isModelAvailable
+                    )
                 }
                 #if os(macOS)
                 // The Button would otherwise be bold since it's in a
@@ -120,10 +128,12 @@ private struct SummarySection: View {
                 #endif
             }
         }
-        .disabled(true) // FIXME: Fix with Foundation Models implementation
         .animation(.default, value: announcement.summary != nil)
         .onChange(of: announcement.summary) { _, _ in
             rippleView.toggle()
+        }
+        .task {
+            announcementSummaryService = AnnouncementSummaryService()
         }
     }
 
@@ -142,26 +152,26 @@ private struct SummarySection: View {
             Text(summary)
                 .foregroundStyle(loadingSummary ? .secondary : .primary)
         } else {
-            Text("Summarize this announcement using on-device intelligence.")
+            Text(description)
                 .font(.caption)
         }
     }
 
+    private var description: String {
+        if IntelligenceSupport.isModelAvailable {
+            "Summarize this announcement using on-device intelligence."
+        } else {
+            IntelligenceSupport.modelAvailabilityDescription
+        }
+    }
+
     private func summarize() async {
-        guard let title = announcement.title, let message = announcement.message else { return }
+        LoggerService.main.debug("Summarizing announcement...")
 
-        LoggerService.main.debug("title: \(title)")
-        LoggerService.main.debug("message: \(message)")
-
-        let prompt = """
-        Summarize the following announcement in a college course. Keep the summary to under three sentences.
-        The title of the announcement is \(title). Only provide the summary text as a response and do not say anything else.
-        Remove all surrouding text other than the summary. Give me only the text without any HTML tags, etc. This is the message:
-
-        \(message)
-        """
-
-        // FIXME: Fix with Foundation Models implementation
-        return
+        loadingSummary = true
+        // FIXME: Show error alert in case of failure.
+        announcement.summary = try? await announcementSummaryService?
+            .performRequest(for: announcement)
+        loadingSummary = false
     }
 }

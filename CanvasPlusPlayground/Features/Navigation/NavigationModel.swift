@@ -133,7 +133,6 @@ class NavigationModel {
     }
     var selectedCoursePage: CoursePage?
     var selectedCourseForItemPicker: Course?
-    var showInstallIntelligenceSheet = false
     var showAuthorizationSheet = false
     var showProfileSheet = false
     #if os(iOS)

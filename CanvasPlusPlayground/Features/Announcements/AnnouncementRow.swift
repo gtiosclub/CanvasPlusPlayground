@@ -90,11 +90,10 @@ struct AnnouncementRow: View {
             Spacer().frame(width: unreadIndicatorWidth)
 
             Group {
-                if let summary = announcement.summary {
+                if #available(iOS 26.0, macOS 26.0, *),
+                    let summary = announcement.summary {
                     Text(Image(systemName: "wand.and.sparkles"))
-                        .foregroundStyle(
-                            .intelligenceGradient()
-                        )
+                        .foregroundStyle(.intelligenceGradient())
                     +
                     Text(summary)
                 } else {
