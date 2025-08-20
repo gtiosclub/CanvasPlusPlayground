@@ -15,7 +15,7 @@ struct AssignmentGroupAPI: APIResponse {
     let position: Int
     let group_weight: Double?
     let assignments: [AssignmentAPI]?
-    let rules: AssignmentGroupRules?
+    let rules: AssignmentGroupRulesAPI?
 
     func createModel() -> AssignmentGroup {
         AssignmentGroup(from: self)
@@ -23,14 +23,8 @@ struct AssignmentGroupAPI: APIResponse {
 }
 // swiftlint:enable identifier_name
 
-struct AssignmentGroupRules: Codable, Hashable {
-    let dropHighest: Int?
-    let dropLowest: Int?
-    let neverDrop: [Int]?
-
-    enum CodingKeys: String, CodingKey {
-        case dropHighest = "drop_highest"
-        case dropLowest = "drop_lowest"
-        case neverDrop = "never_drop"
-    }
+struct AssignmentGroupRulesAPI: Codable, Hashable {
+    let drop_highest: Int?
+    let drop_lowest: Int?
+    let never_drop: [Int]?
 }
