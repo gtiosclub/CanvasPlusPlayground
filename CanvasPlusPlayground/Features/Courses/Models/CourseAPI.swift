@@ -39,8 +39,8 @@ struct CourseAPI: APIResponse, Identifiable {
     let default_view: CourseDefaultView?
     let syllabus_body: String? // include[]=syllabus_body
     // let needs_grading_count: Int? // include[]=needs_grading_count & user must have grading rights
-    let term: CourseTerm? // include[]=term
-    let course_progress: CourseProgress? // include[]=course_progress
+    let term: CourseTermAPI? // include[]=term
+    let course_progress: CourseProgressAPI? // include[]=course_progress
     let apply_assignment_group_weights: Bool?
     let teachers: [CourseTeacher]? // include[]=teachers
     //let account: ? // include[]=account
@@ -110,11 +110,11 @@ struct CourseTeacher: Codable {
 
 }
 
-struct CourseProgress: Codable {
-    let requirementCount: Int?
-    let requirementCompletedCount: Int?
-    let nextRequirementUrl: URL?
-    let completedAt: Date?
+struct CourseProgressAPI: Codable {
+    let requirement_count: Int?
+    let requirement_completed_count: Int?
+    let next_requirement_url: URL?
+    let completed_at: Date?
 }
 
 struct CourseSectionRef: Codable {
@@ -167,14 +167,14 @@ struct CourseEnrollment: Codable {
     }
 }
 
-struct CourseTerm: Codable {
+struct CourseTermAPI: Codable {
     let id: Int?
     let name: String?
-    let startAt: Date?
-    let endAt: Date?
-    let createdAt: Date?
-    let workflowState: WorkflowState?
-    let gradingPeriodGroupId: Int?
+    let start_at: Date?
+    let end_at: Date?
+    let created_at: Date?
+    let workflow_state: WorkflowState?
+    let grading_period_group_id: Int?
 
     enum WorkflowState: String, Codable {
         case active, deleted
@@ -266,20 +266,22 @@ extension CourseAPI {
             calendar: CalendarLink(ics: "https://canvas.example.edu/feeds/calendars/course_12345.ics"),
             default_view: .modules,
             syllabus_body: "<p>This course introduces the fundamentals of computer science and programming.</p>",
-            term: CourseTerm(
+            term: CourseTermAPI(
                 id: 876,
                 name: "Spring 2025",
-                startAt: Date.now.addingTimeInterval(-5184000),
-                endAt: Date.now.addingTimeInterval(5184000),
-                createdAt: Date.now.addingTimeInterval(-10368000),
-                workflowState: .active,
-                gradingPeriodGroupId: 123
+                start_at: Date.now.addingTimeInterval(-5184000),
+                end_at: Date.now.addingTimeInterval(5184000),
+                created_at: Date.now.addingTimeInterval(-10368000),
+                workflow_state: .active,
+                grading_period_group_id: 123
             ),
-            course_progress: CourseProgress(
-                requirementCount: 15,
-                requirementCompletedCount: 7,
-                nextRequirementUrl: URL(string: "https://canvas.example.edu/courses/12345/modules/items/456"),
-                completedAt: nil
+            course_progress: CourseProgressAPI(
+                requirement_count: 15,
+                requirement_completed_count: 7,
+                next_requirement_url: URL(
+                    string: "https://canvas.example.edu/courses/12345/modules/items/456"
+                ),
+                completed_at: nil
             ),
             apply_assignment_group_weights: true,
             teachers: [
@@ -368,3 +370,4 @@ extension CourseAPI {
             grading_scheme: nil
         )
 }
+

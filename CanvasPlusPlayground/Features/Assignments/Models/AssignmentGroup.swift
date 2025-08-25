@@ -34,10 +34,24 @@ extension CanvasSchemaV1 {
             self.groupWeight = groupAPI.group_weight
             self.assignments = groupAPI.assignments
 
-            self.rules = groupAPI.rules
+            if let rules = groupAPI.rules {
+                self.rules = .init(from: rules)
+            }
 
             self.tag = ""
         }
+    }
+}
+
+struct AssignmentGroupRules: Codable, Hashable {
+    let dropHighest: Int?
+    let dropLowest: Int?
+    let neverDrop: [Int]?
+
+    init(from apiRules: AssignmentGroupRulesAPI) {
+        self.dropHighest = apiRules.drop_highest
+        self.dropLowest = apiRules.drop_lowest
+        self.neverDrop = apiRules.never_drop
     }
 }
 

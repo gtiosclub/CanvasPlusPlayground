@@ -119,8 +119,16 @@ extension CanvasSchemaV1 {
             self.calendarIcs = courseAPI.calendar?.ics
             self.defaultView = courseAPI.default_view
             self.syllabusBody = courseAPI.syllabus_body
-            self.term = courseAPI.term
-            self.courseProgress = courseAPI.course_progress
+            if let term = courseAPI.term {
+                self.term = .init(from: term)
+            } else {
+                self.term = nil
+            }
+            if let courseProgress = courseAPI.course_progress {
+                self.courseProgress = .init(from: courseProgress)
+            } else {
+                self.courseProgress = nil
+            }
             self.applyAssignmentGroupWeights = courseAPI.apply_assignment_group_weights
             self.teachers = courseAPI.teachers ?? []
             self.canCreateAnnouncement = courseAPI.permissions?.createAnnouncement
@@ -150,10 +158,44 @@ extension CanvasSchemaV1 {
             self.isPastEnrollment = (
                 courseAPI.workflow_state == .completed ||
                 (courseAPI.end_at ?? .distantFuture) < .now ||
-                (courseAPI.term?.endAt ?? .distantFuture) < .now
+                (courseAPI.term?.end_at ?? .distantFuture) < .now
             )
             self.isPublished = courseAPI.workflow_state == .available || courseAPI.workflow_state == .completed
         }
+    }
+}
+
+struct CourseTerm: Codable {
+    let id: Int?
+    let name: String?
+    let startAt: Date?
+    let endAt: Date?
+    let createdAt: Date?
+    let workflowState: CourseTermAPI.WorkflowState?
+    let gradingPeriodGroupId: Int?
+
+    init(from api: CourseTermAPI) {
+        self.id = api.id
+        self.name = api.name
+        self.startAt = api.start_at
+        self.endAt = api.end_at
+        self.createdAt = api.created_at
+        self.workflowState = api.workflow_state
+        self.gradingPeriodGroupId = api.grading_period_group_id
+    }
+}
+
+struct CourseProgress: Codable {
+    let requirementCount: Int?
+    let requirementCompletedCount: Int?
+    let nextRequirementUrl: URL?
+    let completedAt: Date?
+
+    init(from api: CourseProgressAPI) {
+        self.requirementCount = api.requirement_count
+        self.requirementCompletedCount = api.requirement_completed_count
+        self.nextRequirementUrl = api.next_requirement_url
+        self.completedAt = api.completed_at
     }
 }
 
