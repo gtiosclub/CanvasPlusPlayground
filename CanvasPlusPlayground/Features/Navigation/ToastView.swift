@@ -10,6 +10,8 @@ import SwiftUI
 struct ToastView: View {
     var toast: Toast
 
+    @GestureState var drag = CGSize.zero
+
     @Environment(NavigationModel.self) private var navigationModel
 
     @Namespace var animation
@@ -21,6 +23,18 @@ struct ToastView: View {
             content
         })
         .buttonStyle(ElasticButtonStyle())
+    }
+
+    var offset: CGSize {
+        var drag = drag
+
+        if drag.height < 0 {
+            drag.height = (drag.height / pow(2, abs(drag.height) / 2))
+        }
+
+        drag.width = (drag.width / pow(2, abs(drag.width) / 2))
+
+        return drag
     }
 
     var content: some View {
@@ -71,5 +85,10 @@ struct ToastView: View {
                 }
                 .compositingGroup()
         }
+        .offset(offset)
+        .gesture(DragGesture(minimumDistance: 0)
+            .updating($drag) { value, state, _ in
+                state = value.translation
+            })
     }
 }

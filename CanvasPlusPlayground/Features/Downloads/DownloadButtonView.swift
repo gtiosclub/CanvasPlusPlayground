@@ -46,6 +46,7 @@ struct DownloadIcon: View {
     var body: some View {
         ProgressView(value: failed ? 0 : progress, total: 1.0)
             .progressViewStyle(GaugeProgressStyle(strokeWidth: size / 12.0))
+            .opacity(failed ? 0 : 1)
             .overlay {
                 Image(systemName: "arrow.down")
                     .font(.system(size: size * 0.5, weight: .bold))
@@ -61,8 +62,8 @@ struct DownloadIcon: View {
                     .foregroundColor(.white)
             }
             .overlay {
-                Image(systemName: "xmark")
-                    .font(.system(size: size * 0.3, weight: .bold))
+                Image(systemName: "arrow.clockwise")
+                    .font(.system(size: size * 0.9, weight: .bold))
                     .offset(x: 0, y: failed ? 0 : -size)
                     .opacity(failed ? 1 : 0)
             }

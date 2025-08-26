@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct HomeView: View {
     typealias NavigationPage = NavigationModel.NavigationPage
@@ -62,6 +63,11 @@ struct HomeView: View {
         .task {
             navigationModel.selectedNavigationPage = selectedNavigationPage
             navigationModel.selectedCoursePage = selectedCoursePage
+            
+            let fetchDescriptor = FetchDescriptor<Download>(predicate: #Predicate { $0.id == id })
+            if let download = modelContext.fetch(fetchDescriptor).first {
+                navigationModel.present(.init(type: .download(download)))
+            }
         }
         .task {
             if StorageKeys.needsAuthorization {
