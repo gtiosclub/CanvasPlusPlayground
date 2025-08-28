@@ -50,12 +50,15 @@ enum CanvasButtonType {
     
     
     var canvasPath: String {
+        #if os(iOS)
         if UIApplication.shared.canOpenURL(URL(string: CanvasService.canvasSystemURL)!) {
             return CanvasService.canvasSystemURL + CanvasService.canvasDomain
         } else {
             return CanvasService.canvasWebURL
         }
-        
+        #else // no canvas mac app
+        return CanvasService.canvasWebURL
+        #endif
     }
     
     var urlString: String {
