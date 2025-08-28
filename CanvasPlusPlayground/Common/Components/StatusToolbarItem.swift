@@ -43,6 +43,7 @@ private struct StatusToolbarItem: ViewModifier {
             ProgressView().controlSize(.small)
             Text("Loading \(contentName)...")
                 .font(.footnote)
+                .fixedSize()
         }
     }
 }
