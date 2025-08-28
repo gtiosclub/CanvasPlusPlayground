@@ -49,7 +49,7 @@ struct CourseAnnouncementDetailView: View {
             // dont use `.task` so that this Task outlives its view upon disappear
             markAsRead()
         }
-        .openInCanvasWebToolbarButton(.announcement(announcement.courseId ?? "", announcement.id))
+        .openInCanvasToolbarButton(.announcement(announcement.courseId ?? "", announcement.id))
         .id(announcement.id)
     }
 

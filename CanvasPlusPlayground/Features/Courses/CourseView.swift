@@ -75,6 +75,6 @@ struct CourseView: View {
                     return .handled
                 })
         }
-        .openInCanvasWebToolbarButton(.homepage(course.id))
+        .openInCanvasToolbarButton(.homepage(course.id))
     }
 }
