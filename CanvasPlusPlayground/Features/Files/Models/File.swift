@@ -135,7 +135,6 @@ extension File: Cacheable {
     }
 }
 
-
 fileprivate extension DateFormatter {
     static let apiDateFormatter: DateFormatter = {
         let formatter = DateFormatter()

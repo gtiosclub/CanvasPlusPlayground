@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 protocol APIRequest {
     associatedtype Subject: APIResponse
     associatedtype QueryResult: Codable = Subject
@@ -54,7 +52,7 @@ extension APIRequest {
         return url
     }
     static var baseApiURL: URL {
-        return baseURL.appendingPathComponent("api/v1")
+        baseURL.appendingPathComponent("api/v1")
     }
 
     var combinedQueryParams: [(String, String)] {

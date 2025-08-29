@@ -91,7 +91,6 @@ extension CanvasSchemaV1 {
             self.canUpload = api.can_upload
         }
     }
-
 }
 
 extension Folder: Cacheable {

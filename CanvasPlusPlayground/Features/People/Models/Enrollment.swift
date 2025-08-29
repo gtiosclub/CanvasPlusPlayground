@@ -84,7 +84,6 @@ extension CanvasSchemaV1 {
             self.user = enrollmentAPI.user
         }
     }
-
 }
 
 extension Enrollment: Cacheable {

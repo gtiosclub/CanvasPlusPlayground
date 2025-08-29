@@ -269,7 +269,6 @@ extension Assignment: Cacheable {
         self.submission = other.submission
         self.canSubmit = other.canSubmit
     }
-
 }
 
 enum SubmissionType: String, Codable {

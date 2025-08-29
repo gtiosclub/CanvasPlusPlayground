@@ -89,4 +89,3 @@ extension ToDoItem: Cacheable {
         self.htmlURL = other.htmlURL
     }
 }
-

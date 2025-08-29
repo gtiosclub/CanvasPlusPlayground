@@ -241,7 +241,7 @@ extension Course: Cacheable {
         self.imageDownloadURL = other.imageDownloadURL
         self.isFavorite = other.isFavorite
         self.sections = other.sections
-        //self.tabs = other.tabs
+        // self.tabs = other.tabs
         self.settings = other.settings
         self.concluded = other.concluded
         self.gradingScheme = other.gradingScheme

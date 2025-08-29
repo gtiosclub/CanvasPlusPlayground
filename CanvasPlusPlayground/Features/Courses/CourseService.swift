@@ -5,7 +5,6 @@
 //  Created by Abdulaziz Albahar on 4/3/25.
 //
 
-
 protocol CourseServicing {
     var courseRepository: CourseRepository { get set }
 

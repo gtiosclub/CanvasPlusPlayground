@@ -5,7 +5,6 @@
 //  Created by Abdulaziz Albahar on 4/3/25.
 //
 
-
 enum PageConfiguration {
     /// 1-indexed. Get a specific page from offset (perPage*(pageNum-1))
     case page(pageNum: Int, perPage: Int = 50)
