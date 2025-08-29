@@ -8,11 +8,21 @@
 import SwiftUI
 
 private struct OpenInCanvasButton: View {
+    
+    var titleText: String {
+        #if os(iOS)
+        "Open in Canvas Student"
+        #else
+        "Open in web"
+        #endif
+    }
+    
+    
     let path: CanvasButtonType
     @Environment(\.openURL) var openURL
 
     var body: some View {
-        Button("Open in web", systemImage: "globe") {
+        Button(titleText, systemImage: "globe") {
             print("opening url \(path.url)")
             openURL(path.url)
         }
@@ -51,12 +61,12 @@ enum CanvasButtonType {
     
     var canvasPath: String {
         #if os(iOS)
-        if UIApplication.shared.canOpenURL(URL(string: CanvasService.canvasSystemURL)!) {
-            return CanvasService.canvasSystemURL + CanvasService.canvasDomain
-        } else {
+        guard let url = URL(string: CanvasService.canvasSystemURL),
+              UIApplication.shared.canOpenURL(url) else {
             return CanvasService.canvasWebURL
         }
-        #else // no canvas mac app
+        return CanvasService.canvasSystemURL + CanvasService.canvasDomain
+        #else
         return CanvasService.canvasWebURL
         #endif
     }
@@ -84,3 +94,4 @@ enum CanvasButtonType {
         URL(string: urlString) ?? URL(string: CanvasService.canvasWebURL)!
     }
 }
+
