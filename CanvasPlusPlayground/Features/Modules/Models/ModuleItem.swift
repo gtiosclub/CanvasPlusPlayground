@@ -57,7 +57,6 @@ extension CanvasSchemaV1 {
             self.quizLti = itemAPI.quiz_lti
         }
     }
-
 }
 
 extension ModuleItem: Cacheable {

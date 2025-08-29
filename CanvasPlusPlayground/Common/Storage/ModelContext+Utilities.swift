@@ -5,9 +5,9 @@
 //  Created by Abdulaziz Albahar on 4/8/25.
 //
 
+import Combine
 import SwiftData
 import SwiftUI
-import Combine
 
 extension ModelContext {
     /// Don't use for writes! Only reads. `StorageHandler.main` is meant for main thread writes - to serialize operations.
@@ -54,6 +54,6 @@ extension ModelContainer {
 extension NotificationCenter {
     /// To listen to DB changes from main thread (for debugging)
     var managedObjectContextDidSavePublisher: Publishers.ReceiveOn<NotificationCenter.Publisher, DispatchQueue> {
-        return publisher(for: .NSManagedObjectContextDidSave).receive(on: DispatchQueue.main)
+        publisher(for: .NSManagedObjectContextDidSave).receive(on: DispatchQueue.main)
     }
 }

@@ -81,7 +81,6 @@ struct CourseListCell: View {
             Task {
                 await course.markIsFavorite(as: !course.isFavorite)
             }
-
         }
         .symbolVariant(!course.isFavorite ? .none : .slash)
         .tint(.gray)

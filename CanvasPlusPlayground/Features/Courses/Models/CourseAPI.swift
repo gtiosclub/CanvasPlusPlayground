@@ -43,7 +43,7 @@ struct CourseAPI: APIResponse, Identifiable {
     let course_progress: CourseProgressAPI? // include[]=course_progress
     let apply_assignment_group_weights: Bool?
     let teachers: [CourseTeacher]? // include[]=teachers
-    //let account: ? // include[]=account
+    // let account: ? // include[]=account
     let permissions: CoursePermissions?
     let is_public: Bool?
     // let is_public_to_auth_users: Bool?
@@ -107,7 +107,6 @@ struct CourseTeacher: Codable {
         htmlUrl: URL(string: "https://canvas.example.edu/courses/12345/users/54322"),
         pronouns: "she/her"
     )
-
 }
 
 struct CourseProgressAPI: Codable {
@@ -229,7 +228,6 @@ struct CourseSettings: Codable {
         case restrictQuantitativeData = "restrict_quantitative_data"
     }
 }
-
 
 extension CourseAPI {
     static let sample = CourseAPI(
@@ -370,4 +368,3 @@ extension CourseAPI {
             grading_scheme: nil
         )
 }
-

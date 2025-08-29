@@ -148,7 +148,6 @@ extension CanvasSchemaV1 {
             case sideComment = "side_comment", notThreaded = "not_threaded", threaded
         }
     }
-
 }
 
 extension DiscussionTopic: Cacheable {

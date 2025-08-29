@@ -20,7 +20,7 @@ protocol CourseRepository {
 
     @MainActor
     func getCourses(withIds ids: [String]) -> [Course]
-  
+
     func deleteCourses(withIds ids: [String]) async throws
 
     func deleteCourses(
@@ -46,7 +46,6 @@ extension CourseRepository {
 }
 
 class CourseRepositoryImpl: CourseRepository {
-
     private func predicate(
         enrollmentType: EnrollmentType?,
         enrollmentState: GetCoursesRequest.StateFilter?,
@@ -56,14 +55,12 @@ class CourseRepositoryImpl: CourseRepository {
         let enrollmentTypeRaw = enrollmentType?.rawValue ?? ""
         let enrollmentStateRaw = enrollmentState?.rawValue ?? ""
         let state = state as [CourseState?]
-        let predicate = #Predicate<Course> {
+        return #Predicate<Course> {
             (enrollmentTypeRaw == "" || $0.enrollmentTypesRaw.localizedStandardContains(enrollmentTypeRaw)) &&
             (enrollmentStateRaw == "" || $0.enrollmentStatesRaw.localizedStandardContains(enrollmentStateRaw)) &&
             (!excludeBlueprintCourses || $0.blueprint != true) &&
             (state.isEmpty || state.contains($0.workflowState))
         }
-
-        return predicate
     }
 
     @MainActor
@@ -124,8 +121,8 @@ class CourseRepositoryImpl: CourseRepository {
 
         do {
             // All or nothing block to maintain consistency in `order` property
-            let courseIds: [String] = try await writeHandler.transaction { context in
-                return (courses.enumerated().map { (i, courseApi) in
+            return try await writeHandler.transaction { context in
+                (courses.enumerated().map { i, courseApi in
                     let course = Course(courseApi)
 
                     let newTabs: [CanvasTab] = courseApi.tabs?.compactMap { tabApi in
@@ -139,13 +136,11 @@ class CourseRepositoryImpl: CourseRepository {
 
                         if let existingTab = fetchedTabs?.first {
                             existingTab.merge(with: tabApi)
-                            if course.tabs.contains(existingTab) { return nil }
-                            else { return existingTab }
+                            if course.tabs.contains(existingTab) { return nil } else { return existingTab }
                         } else {
                             return CanvasTab(from: tabApi, tabOrigin: .course(id: course.id))
                         }
                     } ?? []
-
 
                     switch pageConfig {
                     case .page:
@@ -175,9 +170,7 @@ class CourseRepositoryImpl: CourseRepository {
                     return course
                 } as [Course])
                 .map { $0.id }
-            }
-
-            return courseIds
+            } as [String]
         } catch {
             LoggerService.main.error("Failed to persist courses: \(error)")
 

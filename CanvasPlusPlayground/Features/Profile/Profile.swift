@@ -57,7 +57,6 @@ extension CanvasSchemaV1 {
             self.tag = ""
         }
     }
-
 }
 
 extension Profile: Cacheable {

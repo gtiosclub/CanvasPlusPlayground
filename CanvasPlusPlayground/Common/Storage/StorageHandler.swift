@@ -10,7 +10,6 @@ import SwiftUI
 
 @ModelActor
 actor StorageHandler {
-
     /// Must use this for all modifications to main-thread-bound models or reads. (e.g. even simple changes like MyModel.prop = false)
     @MainActor
     static var main = {

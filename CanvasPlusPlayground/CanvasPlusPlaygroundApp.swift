@@ -5,8 +5,8 @@
 //  Created by Rahul on 9/6/24.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 @main
 struct CanvasPlusPlaygroundApp: App {
@@ -14,7 +14,7 @@ struct CanvasPlusPlaygroundApp: App {
         case loading, failed, ready
     }
 
-    @State var launchState: LaunchState
+    @State private var launchState: LaunchState
     // Navigation
     @State private var navigationModel = NavigationModel()
 
@@ -77,7 +77,7 @@ struct CanvasPlusPlaygroundApp: App {
 
             Text(
                  """
-                 Local storage data has been corrupted. Please reset local storage to continue using the app. 
+                 Local storage data has been corrupted. Please reset local storage to continue using the app.
                  Note that this will only affect the data you have on-device (Pinned Items, Grade Calculator, etc.), and will not affect the server-side data.
                  """
             )
@@ -86,11 +86,11 @@ struct CanvasPlusPlaygroundApp: App {
 
             Button("Reset local storage") {
                 do {
-                    self.launchState = .loading
+                    launchState = .loading
                     try ModelContainer.eraseSQLiteStore()
-                    self.launchState = Self.setupModelContainer()
+                    launchState = Self.setupModelContainer()
                 } catch {
-                    self.launchState = .failed
+                    launchState = .failed
                     LoggerService.main.error("Erasing SQLite store failed with: \(error)")
                 }
             }
@@ -103,7 +103,6 @@ struct CanvasPlusPlaygroundApp: App {
         LoggerService.main.debug("App Sandbox: \(URL.applicationSupportDirectory.path(percentEncoded: false))")
         #endif
 
-        
         self.launchState = Self.setupModelContainer()
     }
 

@@ -62,7 +62,6 @@ extension CanvasSchemaV1 {
             self.published = moduleApi.published
         }
     }
-
 }
 
 struct ModuleID: Hashable, Identifiable, Codable {

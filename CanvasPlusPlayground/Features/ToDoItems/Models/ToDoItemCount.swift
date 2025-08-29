@@ -42,4 +42,3 @@ extension ToDoItemCount: Cacheable {
         self.assignmentsNeedingSubmitting = other.assignmentsNeedingSubmitting
     }
 }
-

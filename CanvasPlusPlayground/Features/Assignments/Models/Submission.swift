@@ -86,7 +86,6 @@ extension CanvasSchemaV1 {
             self.redoRequest = submissionAPI.redo_request
         }
     }
-
 }
 
 extension Submission: Cacheable {

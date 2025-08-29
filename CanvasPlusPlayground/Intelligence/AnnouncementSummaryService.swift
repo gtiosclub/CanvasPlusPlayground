@@ -29,7 +29,7 @@ final class AnnouncementSummaryService: IntelligenceServiceProvider {
         guard let session else {
             throw IntelligenceServiceError.sessionNotAvailable
         }
-        
+
         guard let title = announcement.title, let message = announcement.message else {
             throw AnnouncementSummaryServiceError.announcementDetailsMissing
         }

@@ -140,7 +140,6 @@ extension PeopleManager {
                         LoggerService.main.error("User \(userID) not found in course \(course.name ?? "N/A")")
                     }
                 }
-
             }
         }
     }
@@ -150,11 +149,11 @@ extension PeopleManager {
         let request = CanvasRequest.getEnrollments(courseId: courseId, userId: userId)
 
         // If user shared course is already known, move on
-        if let numEnrollments = try? await CanvasService.shared.loadCount(request), numEnrollments > 0  {
+        if let numEnrollments = try? await CanvasService.shared.loadCount(request), numEnrollments > 0 {
             return true
         }
 
-        if let enrollments = try? await CanvasService.shared.syncWithAPI(request), enrollments.count > 0 {
+        if let enrollments = try? await CanvasService.shared.syncWithAPI(request), !enrollments.isEmpty {
             return true
         } else {
             return false

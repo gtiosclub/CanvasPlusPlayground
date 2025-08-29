@@ -8,7 +8,6 @@
 import SwiftUI
 
 private struct OpenInCanvasButton: View {
-    
     var titleText: String {
         #if os(iOS)
         "Open in Canvas Student"
@@ -16,8 +15,7 @@ private struct OpenInCanvasButton: View {
         "Open in web"
         #endif
     }
-    
-    
+
     let path: CanvasButtonType
     @Environment(\.openURL) var openURL
 
@@ -44,8 +42,8 @@ private struct OpenInCanvasButtonModifier: ViewModifier {
 extension View {
     func openInCanvasToolbarButton(_ type: CanvasButtonType) -> some View {
         self.modifier(OpenInCanvasButtonModifier(path: type))
-            .environment(\.openURL, OpenURLAction { url in
-                return .systemAction
+            .environment(\.openURL, OpenURLAction { _ in
+                .systemAction
             })
     }
 }
@@ -57,8 +55,7 @@ enum CanvasButtonType {
     case quizzes(String)
     case announcement(String, String)
     case assignment(String, String)
-    
-    
+
     var canvasPath: String {
         #if os(iOS)
         guard let url = URL(string: CanvasService.canvasSystemURL),
@@ -70,7 +67,7 @@ enum CanvasButtonType {
         return CanvasService.canvasWebURL
         #endif
     }
-    
+
     var urlString: String {
         canvasPath + {
             switch self {
@@ -89,9 +86,8 @@ enum CanvasButtonType {
             }
         }()
     }
-    
+
     var url: URL {
         URL(string: urlString) ?? URL(string: CanvasService.canvasWebURL)!
     }
 }
-

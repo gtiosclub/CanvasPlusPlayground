@@ -5,8 +5,8 @@
 //  Created by Abdulaziz Albahar on 4/8/25.
 //
 
-import SwiftData
 import Foundation
+import SwiftData
 
 typealias CanvasTab = CanvasSchemaV1.CanvasTab
 
@@ -68,7 +68,7 @@ extension CanvasTab: Cacheable {
         self.type = other.type
         self.url = other.url
     }
-    
+
     func merge(with other: TabAPI) {
         self.htmlRelativeUrl = other.html_url
         self.fullUrl = other.full_url
