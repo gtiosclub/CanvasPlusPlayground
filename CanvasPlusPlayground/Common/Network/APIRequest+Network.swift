@@ -92,7 +92,10 @@ extension APIRequest {
         urlRequest.setValue("Bearer \(StorageKeys.accessTokenValue)", forHTTPHeaderField: "Authorization")
 
         let (data, response) = try await URLSession.shared.data(for: urlRequest)
-
+        
+        // for logging purposes in the request debug window
+        NetworkRequestRecorder.shared.addRecord(request: urlRequest, response: response)
+        
         guard let httpResponse = response as? HTTPURLResponse else {
             LoggerService.main.error("HTTP error: $\(response)$")
             throw URLError(.badServerResponse)

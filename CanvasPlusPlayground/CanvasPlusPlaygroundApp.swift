@@ -24,7 +24,11 @@ struct CanvasPlusPlaygroundApp: App {
     @State private var courseManager = CourseManager()
     @State private var pinnedItemsManager = PinnedItemsManager()
     @State private var remindersManager = RemindersManager()
-
+    @State private var networkRecorder = NetworkRequestRecorder.shared
+    
+    // System environment functions
+    @Environment(\.openWindow) var openWindow
+    
     var body: some Scene {
         WindowGroup {
             switch launchState {
@@ -45,6 +49,19 @@ struct CanvasPlusPlaygroundApp: App {
                     }
             }
         }
+        .commands {
+            CommandMenu("Debug") {
+                Button("Show Network Request Recorder") {
+                    openWindow(id: "network-request-recorder")
+                }
+                .keyboardShortcut("R", modifiers: [.command, .shift])
+            }
+        }
+        WindowGroup("Network Request Recorder", id: "network-request-recorder") {
+            NetworkRequestRecorderView()
+                .environment(networkRecorder)
+        }
+        .windowStyle(.automatic)
 
         #if os(macOS)
         Settings {
