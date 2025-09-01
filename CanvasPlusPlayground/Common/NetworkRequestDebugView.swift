@@ -7,7 +7,10 @@
 
 import SwiftUI
 
-struct NetworkRequestRecorderView: View {
+
+let networkRequestDebugID = "network-request-recorder"
+
+struct NetworkRequestDebugView: View {
     @Environment(NetworkRequestRecorder.self) private var recorder
 
     // Maintain the current selection

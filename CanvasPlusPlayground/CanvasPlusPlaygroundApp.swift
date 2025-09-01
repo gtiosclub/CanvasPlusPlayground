@@ -52,13 +52,14 @@ struct CanvasPlusPlaygroundApp: App {
         .commands {
             CommandMenu("Debug") {
                 Button("Show Network Request Recorder") {
-                    openWindow(id: "network-request-recorder")
+                    openWindow(id: networkRequestDebugID)
                 }
                 .keyboardShortcut("R", modifiers: [.command, .shift])
             }
         }
-        WindowGroup("Network Request Recorder", id: "network-request-recorder") {
-            NetworkRequestRecorderView()
+        
+        Window("Network Request Debug Window", id: networkRequestDebugID) {
+            NetworkRequestDebugView()
                 .environment(networkRecorder)
         }
         .windowStyle(.automatic)

@@ -19,7 +19,6 @@ final class NetworkRequestRecorder {
         let pair = NetworkRequestResponsePair(request: request, response: response, timestamp: Date.now, id: counter)
         records.append(pair)
         counter += 1
-        print("Counter: \(counter)")
     }
 }
 
