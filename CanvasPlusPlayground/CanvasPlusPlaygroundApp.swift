@@ -15,8 +15,6 @@ struct CanvasPlusPlaygroundApp: App {
     }
 
     @State var launchState: LaunchState
-    // Navigation
-    @State private var navigationModel = NavigationModel()
 
     // App
     @State private var listManager = ToDoListManager()
@@ -38,7 +36,7 @@ struct CanvasPlusPlaygroundApp: App {
                     .environment(profileManager)
                     .environment(courseManager)
                     .environment(pinnedItemsManager)
-                    .environment(navigationModel)
+                    .environment(NavigationModel())
                     .environment(remindersManager)
                     .onAppear {
                         CanvasService.shared.setupStorage()
@@ -58,7 +56,7 @@ struct CanvasPlusPlaygroundApp: App {
                     .environment(profileManager)
                     .environment(courseManager)
                     .environment(pinnedItemsManager)
-                    .environment(navigationModel)
+                    .environment(NavigationModel())
                     .frame(width: 400, height: 500)
             }
         }
