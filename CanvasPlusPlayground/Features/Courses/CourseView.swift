@@ -45,6 +45,7 @@ struct CourseView: View {
         List(coursePages, id: \.self, selection: $navigationModel.selectedCoursePage) { page in
             NavigationLink(value: NavigationModel.Destination.coursePage(page, course)) {
                 Label(page.title, systemImage: page.systemImageIcon)
+                    .contextMenu(for: FocusWindowInfo(courseID: course.id, coursePage: page))
             }
             .tag(page)
         }
