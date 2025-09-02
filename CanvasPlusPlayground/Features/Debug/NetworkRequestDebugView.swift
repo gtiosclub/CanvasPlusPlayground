@@ -5,6 +5,7 @@
 //  Created by Ethan Fox on 8/29/25.
 //
 
+#if DEBUG
 import SwiftUI
 
 struct NetworkRequestDebugView: View {
@@ -70,3 +71,4 @@ struct NetworkRequestDebugView: View {
     }
 }
 
+#endif

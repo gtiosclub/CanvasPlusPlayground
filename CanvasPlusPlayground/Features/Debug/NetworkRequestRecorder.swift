@@ -4,7 +4,7 @@
 //
 //  Created by Ethan Fox on 8/29/25.
 //
-
+#if DEBUG
 import Foundation
 
 @Observable
@@ -77,3 +77,5 @@ final class NetworkRequestRecorder {
         }
     }
 }
+
+#endif
