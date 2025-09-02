@@ -540,6 +540,7 @@
 		A324BA502D07963D005F53FA /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				9B801DE82E66658000DF4942 /* Debug */,
 				B7CC4D682D91AF5800254F55 /* ToDoItems */,
 				9BF228C62D6CD1DF000676F2 /* Reminders */,
 				A373DC2E2D28174700215019 /* Modules */,
