@@ -26,10 +26,11 @@ struct CanvasPlusPlaygroundApp: App {
     @State private var remindersManager = RemindersManager()
     #if DEBUG
     @State private var networkRecorder = NetworkRequestRecorder.shared
-    #endif
     
     // System environment functions
     @Environment(\.openWindow) var openWindow
+    #endif
+    
     
     var body: some Scene {
         WindowGroup {
@@ -51,16 +52,18 @@ struct CanvasPlusPlaygroundApp: App {
                     }
             }
         }
+        #if DEBUG
         .commands {
-            #if DEBUG
             CommandMenu("Debug") {
                 Button("Show Network Request Recorder") {
                     openWindow(id: NetworkRequestRecorder.networkRequestDebugID)
                 }
                 .keyboardShortcut("R", modifiers: [.command, .shift])
             }
-            #endif
+            
         }
+        #endif
+        
         #if DEBUG
         Window("Network Request Debug Window", id: NetworkRequestRecorder.networkRequestDebugID) {
             NetworkRequestDebugView()
@@ -141,3 +144,4 @@ struct CanvasPlusPlaygroundApp: App {
         }
     }
 }
+

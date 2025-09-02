@@ -14,7 +14,7 @@ final class NetworkRequestRecorder {
     var counter = 0
     var records: [NetworkRequestResponsePair] = []
     
-    public static let networkRequestDebugID = "network-request-recorder"
+    static let networkRequestDebugID = "network-request-recorder"
     
     func addRecord(request: URLRequest, response: URLResponse?) {
         let pair = NetworkRequestResponsePair(request: request, response: response, timestamp: Date.now, id: counter)
@@ -28,7 +28,7 @@ final class NetworkRequestRecorder {
         let timestamp: Date
         let id: Int
         
-        public var formattedDetailText: String {
+        var formattedDetailText: String {
             var lines: [String] = []
             
             // Request
