@@ -23,8 +23,9 @@ struct FocusWindowView: View {
     private var course: Course? { courseManager.activeCourses.first(where: { $0.id == info.courseID }) }
     
     var body: some View {
+        @Bindable var navigationModel = navigationModel
         if let course {
-            NavigationStack {
+            NavigationStack(path: $navigationModel.navigationPath) {
                 Group {
                     switch coursePage {
                     case .files:
@@ -49,6 +50,26 @@ struct FocusWindowView: View {
                         PagesListView(courseId: course.id)
                     }
                 }
+                .navigationDestination(for: NavigationModel.Destination.self) { destination in
+                    destination.destinationView()
+                        .environment(\.openURL, OpenURLAction { url in
+                            guard let urlServiceResult = CanvasURLService.determineNavigationDestination(
+                                from: url
+                            ) else { return .discarded }
+
+                            Task {
+                                await navigationModel
+                                    .handleURLSelection(
+                                        result: urlServiceResult,
+                                        courseID: course.id
+                                    )
+                            }
+                            return .handled
+                        })
+                }
+            }
+            .onAppear {
+                print("Focus window navigation path: \(navigationModel.navigationPath)")
             }
         } else {
             ContentUnavailableView("Unable to make a focus window", systemImage: "questionmark.square.dashed", description: Text("The course object is nil"))

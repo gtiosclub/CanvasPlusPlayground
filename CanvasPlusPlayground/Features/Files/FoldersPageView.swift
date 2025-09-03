@@ -29,6 +29,8 @@ struct FoldersPageView: View {
             }
         }
     }
+    
+    @Environment(NavigationModel.self) private var navigationModel
 
     let course: Course
     @State private var folder: Folder?
