@@ -7,39 +7,50 @@
 
 import SwiftUI
 
-private struct OpenInCanvasWebButton: View {
-    let path: WebButtonType
+private struct OpenInCanvasButton: View {
+    
+    var titleText: String {
+        #if os(iOS)
+        "Open in Canvas Student"
+        #else
+        "Open in web"
+        #endif
+    }
+    
+    
+    let path: CanvasButtonType
     @Environment(\.openURL) var openURL
 
     var body: some View {
-        Button("Open in web", systemImage: "globe") {
+        Button(titleText, systemImage: "globe") {
+            print("opening url \(path.url)")
             openURL(path.url)
         }
     }
 }
 
-private struct OpenInCanvasWebButtonModifier: ViewModifier {
-    let path: WebButtonType
+private struct OpenInCanvasButtonModifier: ViewModifier {
+    let path: CanvasButtonType
     func body(content: Content) -> some View {
         content
             .toolbar {
                 ToolbarItem {
-                    OpenInCanvasWebButton(path: path)
+                    OpenInCanvasButton(path: path)
                 }
             }
     }
 }
 
 extension View {
-    func openInCanvasWebToolbarButton(_ type: WebButtonType) -> some View {
-        self.modifier(OpenInCanvasWebButtonModifier(path: type))
+    func openInCanvasToolbarButton(_ type: CanvasButtonType) -> some View {
+        self.modifier(OpenInCanvasButtonModifier(path: type))
             .environment(\.openURL, OpenURLAction { url in
                 return .systemAction
             })
     }
 }
 
-enum WebButtonType {
+enum CanvasButtonType {
     case homepage(String)
     case grades(String)
     case files(String)
@@ -47,8 +58,21 @@ enum WebButtonType {
     case announcement(String, String)
     case assignment(String, String)
     
+    
+    var canvasPath: String {
+        #if os(iOS)
+        guard let url = URL(string: CanvasService.canvasSystemURL),
+              UIApplication.shared.canOpenURL(url) else {
+            return CanvasService.canvasWebURL
+        }
+        return CanvasService.canvasSystemURL + CanvasService.canvasDomain
+        #else
+        return CanvasService.canvasWebURL
+        #endif
+    }
+    
     var urlString: String {
-        CanvasService.canvasURL + {
+        canvasPath + {
             switch self {
             case .homepage(let courseID):
                 "courses/\(courseID)/"
@@ -67,6 +91,7 @@ enum WebButtonType {
     }
     
     var url: URL {
-        URL(string: urlString) ?? URL(string: CanvasService.canvasURL)!
+        URL(string: urlString) ?? URL(string: CanvasService.canvasWebURL)!
     }
 }
+

@@ -48,7 +48,7 @@ protocol NoReturnAPIRequest: APIRequest {
 
 extension APIRequest {
     static var baseURL: URL {
-        guard let url = URL(string: CanvasService.canvasURL) else {
+        guard let url = URL(string: CanvasService.canvasWebURL) else {
             fatalError("Invalid base URL.")
         }
         return url
