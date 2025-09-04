@@ -49,7 +49,7 @@ struct CanvasPlusPlaygroundApp: App {
                     }
             }
         }
-        #if DEBUG
+        #if DEBUG && os(macOS)
         .commands {
             CommandMenu("Debug") {
                 Button("Show Network Request Recorder") {
@@ -61,7 +61,7 @@ struct CanvasPlusPlaygroundApp: App {
         }
         #endif
         
-        #if DEBUG
+        #if DEBUG && os(macOS)
         Window("Network Request Debug Window", id: NetworkRequestRecorder.networkRequestDebugID) {
             NetworkRequestDebugView()
                 .environment(networkRecorder)
