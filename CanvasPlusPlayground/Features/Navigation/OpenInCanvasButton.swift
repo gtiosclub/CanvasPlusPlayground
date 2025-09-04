@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-private struct OpenInCanvasButton: View {
+//FIXME: removed private to test in other modules
+struct OpenInCanvasButton: View {
     var titleText: String {
         #if os(iOS)
         "Open in Canvas Student"
