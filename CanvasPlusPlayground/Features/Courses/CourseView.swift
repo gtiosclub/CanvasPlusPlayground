@@ -61,20 +61,7 @@ struct CourseView: View {
         .navigationTitle(course.displayName)
         .navigationDestination(for: NavigationModel.Destination.self) { destination in
             destination.destinationView()
-                .environment(\.openURL, OpenURLAction { url in
-                    guard let urlServiceResult = CanvasURLService.determineNavigationDestination(
-                        from: url
-                    ) else { return .discarded }
-
-                    Task {
-                        await navigationModel
-                            .handleURLSelection(
-                                result: urlServiceResult,
-                                courseID: course.id
-                            )
-                    }
-                    return .handled
-                })
+                .defaultNavigationDestination(navigationModel: $navigationModel, courseID: course.id)
         }
         .openInCanvasToolbarButton(.homepage(course.id))
     }

@@ -19,53 +19,21 @@ struct FocusWindowView: View {
     private var course: Course? { courseManager.activeCourses.first(where: { $0.id == info.courseID }) }
 
     var body: some View {
+
         @Bindable var navigationModel = navigationModel
+
         if let course {
             NavigationStack(path: $navigationModel.navigationPath) {
-                Group {
-                    switch coursePage {
-                    case .files:
-                        CourseFilesView(course: course)
-                    case .announcements:
-                        CourseAnnouncementsView(course: course)
-                    case .assignments:
-                        CourseAssignmentsView(course: course)
-                    case .calendar:
-                        CalendarView(course: course)
-                    case .grades:
-                        CourseGradeView(course: course)
-                    case .people:
-                        PeopleView(courseID: course.id)
-                    case .groups:
-                        CourseGroupsView(course: course)
-                    case .quizzes:
-                        CourseQuizzesView(courseId: course.id)
-                    case .modules:
-                        ModulesListView(courseId: course.id)
-                    case .pages:
-                        PagesListView(courseId: course.id)
-                    }
-                }
-                .navigationDestination(for: NavigationModel.Destination.self) { destination in
-                    destination.destinationView()
-                        .environment(\.openURL, OpenURLAction { url in
-                            guard let urlServiceResult = CanvasURLService.determineNavigationDestination(
-                                from: url
-                            ) else { return .discarded }
+                CourseDetailView(course: course, coursePage: coursePage)
+                    .defaultNavigationDestination(navigationModel: $navigationModel, courseID: info.courseID)
 
-                            Task {
-                                await navigationModel
-                                    .handleURLSelection(
-                                        result: urlServiceResult,
-                                        courseID: course.id
-                                    )
-                            }
-                            return .handled
-                        })
-                }
             }
+            .environment(navigationModel)
         } else {
             ContentUnavailableView("Unable to open new window", systemImage: "questionmark.square.dashed", description: Text("An error occurred while opening new window"))
+                .task {
+                    if courseManager.activeCourses.isEmpty { await courseManager.getCourses() }
+                }
         }
     }
 }

@@ -8,15 +8,18 @@ import SwiftUI
 
 private struct CourseContextMenu: ViewModifier {
     @Environment(\.openWindow) private var openWindow
-    
+    @Environment(\.supportsMultipleWindows) var supportsMultipleWindows
+
     let focusWindowInfo: FocusWindowInfo
     
-    
+
     func body(content: Content) -> some View {
         content
             .contextMenu {
-                Button("Open in New Window", systemImage: "macwindow.badge.plus") {
-                    openWindow(value: focusWindowInfo)
+                if supportsMultipleWindows {
+                    Button("Open in New Window", systemImage: "macwindow.badge.plus") {
+                        openWindow(value: focusWindowInfo)
+                    }
                 }
             }
     }

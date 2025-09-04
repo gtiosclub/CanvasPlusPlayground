@@ -1,7 +1,7 @@
 //  DefaultNavigationDestination.swift
 //  CanvasPlusPlayground
 //
-//  Created by Assistant on 9/4/25.
+//  Created by Steven Liu on 9/4/25.
 //
 
 import SwiftUI
