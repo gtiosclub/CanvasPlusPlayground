@@ -69,8 +69,16 @@ struct PinnedItemsView: View {
                     Button {
                         selectedItem = item
                     } label: {
-                        PinnedItemCard(item: item)
-                            .cardBackground(selected: selectedItem == item)
+						PinnedItemCard(
+							item: item,
+							onRemove: {
+								pinnedItemsManager.removePinnedItem(
+									itemID: item.id,
+									courseID: item.courseID,
+									type: item.type
+								)
+							}
+						)
                     }
                     .buttonStyle(.plain)
                 }

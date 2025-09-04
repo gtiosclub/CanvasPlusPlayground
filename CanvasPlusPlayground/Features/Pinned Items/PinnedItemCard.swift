@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PinnedItemCard: View {
     var item: PinnedItem
-
+	var onRemove: () -> Void
     var body: some View {
         Group {
             if let itemData = item.data {
@@ -17,18 +17,24 @@ struct PinnedItemCard: View {
                 case .announcement(let announcement):
                     PinnedAnnouncementCard(
                         announcement: announcement,
-                        course: itemData.course
+                        course: itemData.course,
+						onRemove: onRemove
                     )
                 case .file(let file):
                     PinnedFileCard(
                         file: file,
-                        course: itemData.course
+                        course: itemData.course,
+						onRemove: onRemove
                     )
                 case .assignment(let assignment):
                     PinnedAssignmentCard(
                         assignment: assignment,
-                        course: itemData.course
+                        course: itemData.course,
+						onRemove: onRemove
+						
                     )
+				case .quiz(let quiz):
+					PinnedQuizCard(quiz: quiz, course: itemData.course, onRemove: onRemove)
                 }
             } else {
                 Text("Loading...")
@@ -39,92 +45,162 @@ struct PinnedItemCard: View {
 }
 
 private struct PinnedAnnouncementCard: View {
-    let announcement: DiscussionTopic
-    let course: Course
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(course.displayName.uppercased())
-                .font(.caption)
-                .foregroundStyle(course.rgbColors?.color ?? .accentColor)
-
-            VStack(alignment: .leading, spacing: 3) {
-                Text(announcement.title ?? "")
-                    .font(.headline)
-                    .fontDesign(.rounded)
-                    .bold()
-
-                Text(
-                    announcement.message?
-                        .stripHTML()
-                        .trimmingCharacters(
-                            in: .whitespacesAndNewlines
-                        )
-                    ?? ""
-                )
-                .lineLimit(2)
-            }
-        }
-    }
+	let announcement: DiscussionTopic
+	let course: Course
+	let onRemove: () -> Void
+	var body: some View {
+		ScrollView {
+			// New parent VStack to control alignment
+			HStack {
+				Button(action: onRemove) {
+					Image(systemName: "circle")
+						.foregroundStyle(course.rgbColors?.color ?? .accentColor)
+						.font(.title)
+				}
+				.buttonStyle(.plain)
+				VStack {
+					// Your original content VStack
+					VStack(alignment: .leading, spacing: 8) {
+						Text(course.displayName.uppercased())
+							.font(.caption)
+							.foregroundStyle(course.rgbColors?.color ?? .accentColor)
+						
+						VStack(alignment: .leading, spacing: 3) {
+							Text(announcement.title ?? "")
+								.font(.headline)
+								.fontDesign(.rounded)
+								.bold()
+							
+							Text(
+								announcement.message?
+									.stripHTML()
+									.trimmingCharacters(
+										in: .whitespacesAndNewlines
+									)
+								?? ""
+							)
+						}
+					}
+					
+					Spacer()
+				}
+			}
+		}
+	}
 }
 
 private struct PinnedFileCard: View {
     let file: File
     let course: Course
-
+	let onRemove: () -> Void
     var body: some View {
-        HStack(spacing: 8) {
-            Image(systemName: "document")
-                .foregroundStyle(course.rgbColors?.color ?? .accentColor)
-                .font(.title)
-
-            VStack(alignment: .leading, spacing: 8) {
-                Text(course.displayName.uppercased())
-                    .font(.caption)
-                    .foregroundStyle(course.rgbColors?.color ?? .accentColor)
-
-                Text(file.displayName)
-                    .font(.headline)
-                    .fontDesign(.rounded)
-                    .bold()
-            }
-
-            Spacer()
-        }
+		ScrollView {
+			HStack(spacing: 8) {
+				Button(action: onRemove) {
+					Image(systemName: "circle")
+						.foregroundStyle(course.rgbColors?.color ?? .accentColor)
+						.font(.title)
+				}
+				.buttonStyle(.plain)
+				
+				VStack(alignment: .leading, spacing: 8) {
+					Text(course.displayName.uppercased())
+						.font(.caption)
+						.foregroundStyle(course.rgbColors?.color ?? .accentColor)
+					
+					Text(file.displayName)
+						.font(.headline)
+						.fontDesign(.rounded)
+						.bold()
+				}
+				
+				Spacer()
+			}
+		}
     }
 }
 
 private struct PinnedAssignmentCard: View {
     let assignment: Assignment
     let course: Course
-
+	let onRemove: () -> Void
     var body: some View {
-        HStack(spacing: 8) {
-            Image(systemName: "circle")
-                .foregroundStyle(course.rgbColors?.color ?? .accentColor)
-                .font(.title)
-
-            VStack(alignment: .leading, spacing: 8) {
-                Text(course.displayName.uppercased())
-                    .font(.caption)
-                    .foregroundStyle(course.rgbColors?.color ?? .accentColor)
-
-                Text(assignment.name)
-                    .font(.headline)
-                    .fontDesign(.rounded)
-                    .bold()
-            }
-
-            Spacer()
-        }
+		ScrollView {
+			HStack(spacing: 8) {
+				Button(action: onRemove) {
+					Image(systemName: "circle")
+						.foregroundStyle(course.rgbColors?.color ?? .accentColor)
+						.font(.title)
+				}
+				.buttonStyle(.plain)
+				
+				VStack(alignment: .leading, spacing: 8) {
+					Text(course.displayName.uppercased())
+						.font(.caption)
+						.foregroundStyle(course.rgbColors?.color ?? .accentColor)
+					
+					Text(assignment.name)
+						.font(.headline)
+						.fontDesign(.rounded)
+						.bold()
+				}
+				
+				Spacer()
+			}
+		}
     }
+}
+
+private struct PinnedQuizCard: View {
+	let quiz: Quiz
+	let course: Course
+	let onRemove: () -> Void
+	var body: some View {
+		ScrollView {
+			HStack(spacing: 8) {
+				Button(action: onRemove) {
+					Image(systemName: "circle")
+						.foregroundStyle(course.rgbColors?.color ?? .accentColor)
+						.font(.title)
+				}
+				.buttonStyle(.plain)
+				
+				VStack(alignment: .leading, spacing: 8) {
+					Text(course.displayName.uppercased())
+						.font(.caption)
+						.foregroundStyle(course.rgbColors?.color ?? .accentColor)
+					
+					Text(quiz.title)
+						.font(.headline)
+						.fontDesign(.rounded)
+						.bold()
+					if let dueDate = quiz.dueAt {
+						if dueDate < Date() {
+							Text("Due at \(dueDate.formatted(Date.FormatStyle()))")
+								.strikethrough()
+								.foregroundColor(.gray)
+							Text("Past Due")
+								.bold()
+								.foregroundColor(.red)
+						} else {
+							Text("Due at \(dueDate.formatted(Date.FormatStyle()))")
+						}
+					} else {
+						Text("Due at Unknown")
+					}
+				}
+				
+				Spacer()
+			}
+		}
+	}
 }
 
 extension View {
     func cardBackground(selected: Bool) -> some View {
         self
             .frame(width: 250)
-            .frame(maxHeight: .infinity)
+			.frame(maxHeight: 100)
             .padding(12)
             .background {
                 RoundedRectangle(cornerRadius: 16.0)

@@ -32,8 +32,22 @@ struct CourseQuizzesView: View {
 	func quizSection(for quizType: QuizType) -> some View {
 		Section(quizType.title) {
 			let quizzes = quizzesVM.sectionsToQuizzes[quizType] ?? []
-			ForEach(quizzes) {
-				quizCell(for: $0)
+			ForEach(quizzes) { quiz in 
+				quizCell(for: quiz)
+					.contextMenu {
+						PinButton(
+							itemID: quiz.id,
+							courseID: quizzesVM.courseId,
+							type: .quiz
+							)
+					}
+					.swipeActions(edge: .leading) {
+						PinButton(
+							itemID: quiz.id,
+							courseID: quizzesVM.courseId,
+							type: .quiz
+						)
+					}
 			}
 		}
 	}
