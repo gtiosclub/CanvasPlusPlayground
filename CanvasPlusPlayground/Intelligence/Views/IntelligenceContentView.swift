@@ -15,8 +15,9 @@ struct IntelligenceContentView<V: View>: View {
 
     /// This view ripples upon change of this condition
     let condition: Bool
-    /// This boolean determines whether the background of the view is an outline stroke or is filled.
-    let isOutline: Bool
+    /// If this boolean is `true`, the background of the view appears more faded, allowing the
+    /// content to appear more prominent.
+    let isContentProminent: Bool
     /// The view's contents
     let content: V
 
@@ -26,12 +27,12 @@ struct IntelligenceContentView<V: View>: View {
     /// A view designated for promoting intelligence features within the app.
     /// - Parameters:
     ///   - condition: This view ripples upon change of this condition.
-    ///   - isOutline: This boolean determines whether the background of the view is an outline stroke or is filled.
+    ///   - isOutline: If this boolean is `true`, the background of the view appears more faded, allowing the content to appear more prominent
     ///   If `nil` is passed in, `condition` is used instead.
     ///   - content: The view's contents
-    init(condition: Bool, isOutline: Bool? = nil, @ViewBuilder content: @escaping () -> V) {
+    init(condition: Bool, isContentProminent: Bool? = nil, @ViewBuilder content: @escaping () -> V) {
         self.condition = condition
-        self.isOutline = isOutline ?? condition
+        self.isContentProminent = isContentProminent ?? condition
         self.content = content()
     }
 
@@ -55,28 +56,19 @@ struct IntelligenceContentView<V: View>: View {
         TimelineView(.animation) { _ in
             let elapsedTime = startTime.distance(to: Date.now)
 
-            if !isOutline {
-                RoundedRectangle(cornerRadius: 8.0)
-                    .fill(
-                        reduceTransparency ? .intelligenceGradient() :
-                                .animatedGradient(
-                                    time: elapsedTime,
-                                    colors: IntelligenceSupport.gradientColors
-                                )
-                    )
-                    .matchedGeometryEffect(id: "background", in: namespace)
-                    .overlay(.thinMaterial, in: .rect(cornerRadius: 8.0))
-            } else {
-                RoundedRectangle(cornerRadius: 8.0)
-                    .strokeBorder(
-                        .animatedGradient(
-                            time: elapsedTime,
-                            colors: IntelligenceSupport.gradientColors
-                        ),
-                        lineWidth: 2.0
-                    )
-                    .matchedGeometryEffect(id: "background", in: namespace)
-            }
+            Rectangle()
+                .fill(
+                    reduceTransparency ? .intelligenceGradient() :
+                            .animatedGradient(
+                                time: elapsedTime,
+                                colors: IntelligenceSupport.gradientColors
+                            )
+                )
+                .matchedGeometryEffect(id: "background", in: namespace)
+                .overlay(
+                    isContentProminent ? .ultraThickMaterial : .thinMaterial,
+                    in: .rect
+                )
         }
     }
 }
