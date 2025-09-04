@@ -32,7 +32,6 @@ struct CanvasPlusPlaygroundApp: App {
     
     var body: some Scene {
         WindowGroup {
-            @State var navigationModel = NavigationModel()
             switch launchState {
             case .loading:
                 ProgressView()
@@ -45,7 +44,6 @@ struct CanvasPlusPlaygroundApp: App {
                     .environment(courseManager)
                     .environment(pinnedItemsManager)
                     .environment(remindersManager)
-                    .environment(navigationModel)
                     .onAppear {
                         CanvasService.shared.setupStorage()
                     }
@@ -70,10 +68,8 @@ struct CanvasPlusPlaygroundApp: App {
         }
         .windowStyle(.automatic)
         #endif
-        
-        #if os(macOS)
+
         WindowGroup(for: FocusWindowInfo.self) { $focusWindowInfo in
-            @State var navigationModel = NavigationModel()
             if let focusWindowInfo {
                 FocusWindowView(info: focusWindowInfo)
                     .environment(listManager)
@@ -81,10 +77,10 @@ struct CanvasPlusPlaygroundApp: App {
                     .environment(courseManager)
                     .environment(pinnedItemsManager)
                     .environment(remindersManager)
-                    .environment(navigationModel)
             }
         }
-        
+
+        #if os(macOS)
         Settings {
             switch launchState {
             case .loading:
@@ -96,7 +92,6 @@ struct CanvasPlusPlaygroundApp: App {
                     .environment(profileManager)
                     .environment(courseManager)
                     .environment(pinnedItemsManager)
-                    .environment(NavigationModel())
                     .frame(width: 400, height: 500)
             }
         }

@@ -15,10 +15,11 @@ struct SettingsView: View {
     @State private var selectedItem: (any PickableItem)?
     #endif
 
-    @Environment(NavigationModel.self) private var navigationModel
     @Environment(\.dismiss) private var dismiss
 
     @State private var showChangeAccessToken: Bool = false
+
+    @State private var navigationModel = NavigationModel()
 
     var body: some View {
         @Bindable var navigationModel = navigationModel

@@ -135,7 +135,6 @@ class NavigationModel {
     var selectedCourseForItemPicker: Course?
     var showAuthorizationSheet = false
     var showProfileSheet = false
-    let windowID = UUID()
     #if os(iOS)
     var showSettingsSheet = false
     #endif

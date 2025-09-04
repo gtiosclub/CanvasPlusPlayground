@@ -6,7 +6,7 @@
 //
 import SwiftUI
 
-struct CourseContextMenu: ViewModifier {
+private struct CourseContextMenu: ViewModifier {
     @Environment(\.openWindow) private var openWindow
     
     let focusWindowInfo: FocusWindowInfo
@@ -15,7 +15,7 @@ struct CourseContextMenu: ViewModifier {
     func body(content: Content) -> some View {
         content
             .contextMenu {
-                Button("Open in New Window") {
+                Button("Open in New Window", systemImage: "macwindow.badge.plus") {
                     openWindow(value: focusWindowInfo)
                 }
             }
