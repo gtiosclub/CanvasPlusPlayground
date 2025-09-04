@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct ModulesListView: View {
+    @Environment(NavigationModel.self) var navigationModel
     @State private var modulesVM: ModulesViewModel
     @State private var isLoadingModules: Bool = false
+    @State private var selectedModule: ModuleItem?
 
     init(courseId: String) {
         let modulesVM = ModulesViewModel(courseID: courseId)
@@ -17,8 +19,18 @@ struct ModulesListView: View {
     }
 
     var body: some View {
-        List(modulesVM.moduleBlocks) { block in
+        List(modulesVM.moduleBlocks, selection: $selectedModule) { block in
             ModuleSection(moduleBlock: block)
+        }
+        #if os(iOS)
+        .onAppear {
+            selectedModule = nil
+        }
+        #endif
+        .onChange(of: selectedModule) { _, _ in
+            Task {
+                await handleModuleSelection()
+            }
         }
         .task {
             isLoadingModules = true
@@ -28,6 +40,17 @@ struct ModulesListView: View {
         .statusToolbarItem("Modules", isVisible: isLoadingModules)
         .environment(modulesVM)
         .navigationTitle("Modules")
+    }
+
+    func handleModuleSelection() async {
+        if let selectedModule, let urlServiceResult = CanvasURLService.URLServiceResult(
+            from: selectedModule.type
+        ) {
+            await navigationModel
+                .handleURLSelection(
+                    result: urlServiceResult,
+                    courseID: modulesVM.courseID)
+        }
     }
 }
 
@@ -115,22 +138,12 @@ private struct ModuleItemCell: View {
     }
 
     var body: some View {
-        Button(
+        Label(
             item.title,
             systemImage: urlServiceResult?.systemImageName ?? "square.dashed"
-        ) {
-            if let urlServiceResult {
-                Task {
-                    await navigationModel
-                        .handleURLSelection(
-                            result: urlServiceResult,
-                            courseID: modulesVM.courseID)
-                }
-            }
-        }
-        .buttonStyle(.plain)
+        )
         .foregroundStyle(.primary)
-        .disabled(urlServiceResult == nil)
+        .selectionDisabled(urlServiceResult == nil)
         .padding(.leading, indent)
         .padding(.vertical, 4)
     }
