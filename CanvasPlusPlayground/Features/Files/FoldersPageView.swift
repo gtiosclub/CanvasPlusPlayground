@@ -29,6 +29,7 @@ struct FoldersPageView: View {
             }
         }
     }
+    
 
     let course: Course
     @State private var folder: Folder?

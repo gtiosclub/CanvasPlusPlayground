@@ -15,8 +15,6 @@ struct CanvasPlusPlaygroundApp: App {
     }
 
     @State var launchState: LaunchState
-    // Navigation
-    @State private var navigationModel = NavigationModel()
 
     // App
     @State private var listManager = ToDoListManager()
@@ -24,14 +22,13 @@ struct CanvasPlusPlaygroundApp: App {
     @State private var courseManager = CourseManager()
     @State private var pinnedItemsManager = PinnedItemsManager()
     @State private var remindersManager = RemindersManager()
-    #if DEBUG
+#if DEBUG
     @State private var networkRecorder = NetworkRequestRecorder.shared
-    
+
     // System environment functions
     @Environment(\.openWindow) var openWindow
-    #endif
-    
-    
+#endif
+
     var body: some Scene {
         WindowGroup {
             switch launchState {
@@ -45,14 +42,10 @@ struct CanvasPlusPlaygroundApp: App {
                     .environment(profileManager)
                     .environment(courseManager)
                     .environment(pinnedItemsManager)
-                    .environment(navigationModel)
                     .environment(remindersManager)
-                    .onAppear {
-                        CanvasService.shared.setupStorage()
-                    }
             }
         }
-        #if DEBUG && os(macOS)
+#if DEBUG && os(macOS)
         .commands {
             CommandMenu("Debug") {
                 Button("Show Network Request Recorder") {
@@ -60,19 +53,30 @@ struct CanvasPlusPlaygroundApp: App {
                 }
                 .keyboardShortcut("R", modifiers: [.command, .shift])
             }
-            
+
         }
-        #endif
-        
-        #if DEBUG && os(macOS)
+#endif
+
+#if DEBUG && os(macOS)
         Window("Network Request Debug Window", id: NetworkRequestRecorder.networkRequestDebugID) {
             NetworkRequestDebugView()
                 .environment(networkRecorder)
         }
         .windowStyle(.automatic)
-        #endif
-        
-        #if os(macOS)
+#endif
+
+        WindowGroup(for: FocusWindowInfo.self) { $focusWindowInfo in
+            if let focusWindowInfo {
+                FocusWindowView(info: focusWindowInfo)
+                    .environment(listManager)
+                    .environment(profileManager)
+                    .environment(courseManager)
+                    .environment(pinnedItemsManager)
+                    .environment(remindersManager)
+            }
+        }
+
+#if os(macOS)
         Settings {
             switch launchState {
             case .loading:
@@ -84,11 +88,10 @@ struct CanvasPlusPlaygroundApp: App {
                     .environment(profileManager)
                     .environment(courseManager)
                     .environment(pinnedItemsManager)
-                    .environment(navigationModel)
                     .frame(width: 400, height: 500)
             }
         }
-        #endif
+#endif
     }
 
     var launchFailurePage: some View {
@@ -125,12 +128,13 @@ struct CanvasPlusPlaygroundApp: App {
     }
 
     init() {
-        #if DEBUG
+#if DEBUG
         LoggerService.main.debug("App Sandbox: \(URL.applicationSupportDirectory.path(percentEncoded: false))")
-        #endif
+#endif
 
-        
         self.launchState = Self.setupModelContainer()
+
+        CanvasService.shared.setupStorage()
     }
 
     /// Attempts to setup the model container and returns app launch status based on success of setup

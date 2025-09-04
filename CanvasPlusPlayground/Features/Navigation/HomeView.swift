@@ -13,10 +13,10 @@ struct HomeView: View {
     @Environment(ToDoListManager.self) private var toDoListManager
     @Environment(ProfileManager.self) private var profileManager
     @Environment(CourseManager.self) private var courseManager
-    @Environment(NavigationModel.self) private var navigationModel
 
     @State private var columnVisibility = NavigationSplitViewVisibility.all
     @State private var isLoadingCourses = false
+    @State var navigationModel = NavigationModel()
 
     @SceneStorage("CourseListView.selectedNavigationPage")
     private var selectedNavigationPage: NavigationPage?
