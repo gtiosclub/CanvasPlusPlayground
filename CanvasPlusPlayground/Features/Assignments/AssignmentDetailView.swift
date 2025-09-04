@@ -136,7 +136,7 @@ struct AssignmentDetailView: View {
         guard let courseID = assignment.courseId else { return }
 
         fetchingCanSubmitStatus = true
-        let request = CanvasRequest.getAssignment(id: assignment.id, courseId: courseID.asString, include: [.canSubmit])
+        let request = CanvasRequest.getAssignment(id: assignment.id, courseId: courseID.asString, include: [.canSubmit, .submission])
 
         do {
             if let fetched = try await CanvasService.shared.fetch(request).first {
