@@ -225,6 +225,7 @@
 		B7F9503B2D127AD0004BB470 /* ProfileAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F9503A2D127AD0004BB470 /* ProfileAPI.swift */; };
 		B7F9503D2D12ADAE004BB470 /* SubmissionAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F9503C2D12ADAE004BB470 /* SubmissionAPI.swift */; };
 		D48287E32E67D63800F743F9 /* QuizDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48287E22E67D63800F743F9 /* QuizDetailView.swift */; };
+		D48287E52E69523A00F743F9 /* GetQuizRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48287E42E69523A00F743F9 /* GetQuizRequest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -449,6 +450,7 @@
 		B7F9503A2D127AD0004BB470 /* ProfileAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAPI.swift; sourceTree = "<group>"; };
 		B7F9503C2D12ADAE004BB470 /* SubmissionAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmissionAPI.swift; sourceTree = "<group>"; };
 		D48287E22E67D63800F743F9 /* QuizDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizDetailView.swift; sourceTree = "<group>"; };
+		D48287E42E69523A00F743F9 /* GetQuizRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetQuizRequest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -485,6 +487,7 @@
 		A3049B732D15DBEE002F3166 /* API Requests */ = {
 			isa = PBXGroup;
 			children = (
+				D48287E42E69523A00F743F9 /* GetQuizRequest.swift */,
 				B7CC4D662D91AF3B00254F55 /* GetUserTodoItemsRequest.swift */,
 				B7E0735D2D986B1F00A7E82F /* GetUserTodoItemCountRequest.swift */,
 				B7E073632D9872AE00A7E82F /* IgnoreToDoItemRequest.swift */,
@@ -1275,6 +1278,7 @@
 				B7E59A162D200775001836FE /* CourseDetailView.swift in Sources */,
 				A3D022592D6A5BC500F8068C /* Data+Empty.swift in Sources */,
 				9B350F082C9652C6003FC60D /* NSAttributedString+HTML.swift in Sources */,
+				D48287E52E69523A00F743F9 /* GetQuizRequest.swift in Sources */,
 				A3D1614D2D16ACB8004055FB /* CacheableAPIRequest+Sync.swift in Sources */,
 				A3049B562D0E541D002F3166 /* QuizType.swift in Sources */,
 				A3049B612D0E6110002F3166 /* QuizQuestionType.swift in Sources */,
