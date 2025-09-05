@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct ModulesListView: View {
+    @Environment(NavigationModel.self) var navigationModel
     @State private var modulesVM: ModulesViewModel
     @State private var isLoadingModules: Bool = false
+    @State private var selectedModule: ModuleItem?
 
     init(courseId: String) {
         let modulesVM = ModulesViewModel(courseID: courseId)
@@ -17,8 +19,18 @@ struct ModulesListView: View {
     }
 
     var body: some View {
-        List(modulesVM.moduleBlocks) {block in
+        List(modulesVM.moduleBlocks, selection: $selectedModule) { block in
             ModuleSection(moduleBlock: block)
+        }
+        #if os(iOS)
+        .onAppear {
+            selectedModule = nil
+        }
+        #endif
+        .onChange(of: selectedModule) { _, _ in
+            Task {
+                await handleModuleSelection()
+            }
         }
         .task {
             isLoadingModules = true
@@ -27,6 +39,18 @@ struct ModulesListView: View {
         }
         .statusToolbarItem("Modules", isVisible: isLoadingModules)
         .environment(modulesVM)
+        .navigationTitle("Modules")
+    }
+
+    func handleModuleSelection() async {
+        if let selectedModule, let urlServiceResult = CanvasURLService.URLServiceResult(
+            from: selectedModule.type
+        ) {
+            await navigationModel
+                .handleURLSelection(
+                    result: urlServiceResult,
+                    courseID: modulesVM.courseID)
+        }
     }
 }
 
@@ -37,6 +61,7 @@ private struct ModuleSection: View {
     var moduleItems: [ModuleItem]
 
     @Environment(ModulesViewModel.self) private var modulesVM
+    @State private var showPrerequisites = false
 
     init(moduleBlock: ModuleBlock) {
         self.module = moduleBlock.module
@@ -49,6 +74,7 @@ private struct ModuleSection: View {
             content: {
                 ForEach(moduleItems) { item in
                     ModuleItemCell(item: item)
+                        .tag(item)
                 }
             },
             label: {
@@ -60,28 +86,65 @@ private struct ModuleSection: View {
     var title: some View {
         HStack {
             Text(module.name)
+                .font(.title3)
+                .bold()
 
             Spacer()
 
-            Text("Prerequisites: \(prerequisites)")
+            Button("Show Prerequisites", systemImage: "info.circle") {
+                showPrerequisites.toggle()
+            }
+            .popover(isPresented: $showPrerequisites) {
+                prerequisitesView
+                    .presentationCompactAdaptation(.popover)
+            }
+            .buttonStyle(.plain)
+            .labelStyle(.iconOnly)
         }
-        .font(.title3)
-        .bold()
     }
 
-    var prerequisites: String {
-        modulesVM.prerequisites(for: module).map(\.name).joined(separator: ", ")
+    var prerequisitesView: some View {
+        VStack(alignment: .leading) {
+            if prerequisites.isEmpty {
+                Text("No Prerequisites").bold()
+            } else {
+                Text("Prerequisites").bold()
+                ForEach(prerequisites) { prereq in
+                    Text(prereq.name)
+                        .fontWeight(.light)
+                }
+            }
+        }
+        .padding()
+    }
+
+    var prerequisites: [Module] {
+        modulesVM.prerequisites(for: module)
     }
 }
 
 private struct ModuleItemCell: View {
+    @Environment(NavigationModel.self) private var navigationModel
+    @Environment(ModulesViewModel.self) private var modulesVM
+
     @Bindable var item: ModuleItem
+
     var indent: CGFloat {
         CGFloat(item.indent * 10)
     }
 
+    var urlServiceResult: CanvasURLService.URLServiceResult? {
+        .init(from: item.type)
+    }
+
     var body: some View {
-        Text(item.title)
-            .padding(.leading, indent)
+        Label(
+            item.title,
+            systemImage: urlServiceResult?.systemImageName ?? "square.dashed"
+        )
+        .foregroundStyle(.primary)
+        .selectionDisabled(urlServiceResult == nil)
+        .padding(.leading, indent)
+        .padding(.vertical, 4)
     }
 }
