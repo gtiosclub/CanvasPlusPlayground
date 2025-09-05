@@ -47,7 +47,7 @@ class NavigationModel {
         }
     }
 
-    enum CoursePage: String, CaseIterable {
+    enum CoursePage: String, CaseIterable, Codable {
         case assignments
         case files
         case announcements

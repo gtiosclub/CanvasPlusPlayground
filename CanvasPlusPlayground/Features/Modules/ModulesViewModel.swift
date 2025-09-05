@@ -12,7 +12,7 @@ class ModulesViewModel {
     private var _modules = Set<Module>()
     private var _moduleItems = Set<ModuleItem>()
 
-    private let courseID: String
+    let courseID: String
 
     init(courseID: String) {
         self.courseID = courseID

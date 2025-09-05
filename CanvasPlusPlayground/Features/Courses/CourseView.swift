@@ -45,6 +45,7 @@ struct CourseView: View {
         List(coursePages, id: \.self, selection: $navigationModel.selectedCoursePage) { page in
             NavigationLink(value: NavigationModel.Destination.coursePage(page, course)) {
                 Label(page.title, systemImage: page.systemImageIcon)
+                    .contextMenu(for: FocusWindowInfo(courseID: course.id, coursePage: page))
             }
             .tag(page)
         }
@@ -60,20 +61,7 @@ struct CourseView: View {
         .navigationTitle(course.displayName)
         .navigationDestination(for: NavigationModel.Destination.self) { destination in
             destination.destinationView()
-                .environment(\.openURL, OpenURLAction { url in
-                    guard let urlServiceResult = CanvasURLService.determineNavigationDestination(
-                        from: url
-                    ) else { return .discarded }
-
-                    Task {
-                        await navigationModel
-                            .handleURLSelection(
-                                result: urlServiceResult,
-                                courseID: course.id
-                            )
-                    }
-                    return .handled
-                })
+                .defaultNavigationDestination(navigationModel: $navigationModel, courseID: course.id)
         }
         .openInCanvasToolbarButton(.homepage(course.id))
     }
