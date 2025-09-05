@@ -20,6 +20,8 @@ struct PinnedItemDetailView: View {
                     FileViewer(courseID: item.courseID, file: file)
                 case .assignment(let assignment):
                     AssignmentDetailView(assignment: assignment)
+				case .quiz(let quiz):
+					QuizDetailView(quiz: quiz)
                 }
             } else {
                 ProgressView()

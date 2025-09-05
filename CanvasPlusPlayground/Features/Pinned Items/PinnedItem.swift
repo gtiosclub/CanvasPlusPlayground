@@ -18,7 +18,7 @@ class PinnedItem: Identifiable, Codable, Equatable, Hashable {
     private var modelData: PinnedItemData.ModelData?
 
     enum PinnedItemType: Int, Codable {
-        case announcement, assignment, file
+        case announcement, assignment, file, quiz
         // TODO: Add more pinned item types
 
         var displayName: String {
@@ -29,7 +29,10 @@ class PinnedItem: Identifiable, Codable, Equatable, Hashable {
                 "Assignments"
             case .file:
                 "Files"
+			case .quiz:
+				"Quizzes"
             }
+		
         }
     }
 
@@ -68,6 +71,16 @@ class PinnedItem: Identifiable, Codable, Equatable, Hashable {
             }
             guard let assignment = assignments.first else { return }
             setData(modelData: .assignment(assignment))
+			
+		case .quiz:
+			let quizzes = try await CanvasService.shared.loadAndSync(
+				CanvasRequest.getQuiz(id: id, courseId: courseID)
+			) {cachedQuizzes in
+					guard let quiz  = cachedQuizzes?.first else { return }
+					setData(modelData: .quiz(quiz))
+			}
+			guard let quiz = quizzes.first else { return }
+			setData(modelData: .quiz(quiz))
 
         case .file:
             let files = try await CanvasService.shared.loadAndSync(
@@ -122,6 +135,7 @@ struct PinnedItemData {
         case announcement(DiscussionTopic)
         case assignment(Assignment)
         case file(File)
+		case quiz(Quiz)
         // TODO: Add more pinned item types
     }
 

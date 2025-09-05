@@ -125,12 +125,25 @@ enum CanvasRequest {
         )
     }
 
+	// TODO: if implementing submission for quizzes, change this part
+	static func getQuiz(
+		id: String,
+		courseId: String,
+	) -> GetQuizRequest {
+		GetQuizRequest(
+			quizId: id,
+			courseId: courseId
+		)
+	}
+	
     static func getAssignments(
         courseId: String,
         include: [GetAssignmentsRequest.Include] = [.submission]
     ) -> GetAssignmentsRequest {
         GetAssignmentsRequest(courseId: courseId, include: include)
     }
+	
+	
 
     static func getAssignmentGroups(
         courseId: String,
