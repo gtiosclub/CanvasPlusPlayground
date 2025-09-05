@@ -11,7 +11,6 @@ import SwiftUI
 @available(macOS 26.0, iOS 26.0, *)
 struct IntelligenceContentView<V: View>: View {
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
-    @Namespace private var namespace
 
     /// This view ripples upon change of this condition
     let condition: Bool
@@ -27,7 +26,7 @@ struct IntelligenceContentView<V: View>: View {
     /// A view designated for promoting intelligence features within the app.
     /// - Parameters:
     ///   - condition: This view ripples upon change of this condition.
-    ///   - isOutline: If this boolean is `true`, the background of the view appears more faded, allowing the content to appear more prominent
+    ///   - isContentProminent: If this boolean is `true`, the background of the view appears more faded, allowing the content to appear more prominent
     ///   If `nil` is passed in, `condition` is used instead.
     ///   - content: The view's contents
     init(condition: Bool, isContentProminent: Bool? = nil, @ViewBuilder content: @escaping () -> V) {
@@ -64,7 +63,6 @@ struct IntelligenceContentView<V: View>: View {
                                 colors: IntelligenceSupport.gradientColors
                             )
                 )
-                .matchedGeometryEffect(id: "background", in: namespace)
                 .overlay(
                     isContentProminent ? .ultraThickMaterial : .thinMaterial,
                     in: .rect
