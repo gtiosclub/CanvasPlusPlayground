@@ -195,6 +195,10 @@
 		B7C0A3CB2D2F919F003E5A36 /* PinButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0A3CA2D2F919F003E5A36 /* PinButton.swift */; };
 		B7C0A3CD2D3023CA003E5A36 /* PinnedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0A3CC2D3023CA003E5A36 /* PinnedItem.swift */; };
 		B7C0A3CF2D31F339003E5A36 /* PinnedItemCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0A3CE2D31F339003E5A36 /* PinnedItemCard.swift */; };
+		B7C469D22E6C80F800310982 /* CourseHomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C469D12E6C80F100310982 /* CourseHomePage.swift */; };
+		B7C469D42E6C831E00310982 /* GetFrontPageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C469D32E6C831900310982 /* GetFrontPageRequest.swift */; };
+		B7C469D62E6C84CC00310982 /* WikiFrontPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C469D52E6C84CC00310982 /* WikiFrontPage.swift */; };
+		B7C469D82E6C869900310982 /* SyllabusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C469D72E6C869600310982 /* SyllabusView.swift */; };
 		B7CC4D3C2D8DB87200254F55 /* URL+AppRootURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D3B2D8DB86E00254F55 /* URL+AppRootURL.swift */; };
 		B7CC4D3F2D8DFAEC00254F55 /* PickerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D3E2D8DFAE900254F55 /* PickerService.swift */; };
 		B7CC4D412D8DFB7300254F55 /* PickableItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D402D8DFB7300254F55 /* PickableItem.swift */; };
@@ -424,6 +428,10 @@
 		B7C0A3CA2D2F919F003E5A36 /* PinButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinButton.swift; sourceTree = "<group>"; };
 		B7C0A3CC2D3023CA003E5A36 /* PinnedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedItem.swift; sourceTree = "<group>"; };
 		B7C0A3CE2D31F339003E5A36 /* PinnedItemCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedItemCard.swift; sourceTree = "<group>"; };
+		B7C469D12E6C80F100310982 /* CourseHomePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseHomePage.swift; sourceTree = "<group>"; };
+		B7C469D32E6C831900310982 /* GetFrontPageRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetFrontPageRequest.swift; sourceTree = "<group>"; };
+		B7C469D52E6C84CC00310982 /* WikiFrontPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikiFrontPage.swift; sourceTree = "<group>"; };
+		B7C469D72E6C869600310982 /* SyllabusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyllabusView.swift; sourceTree = "<group>"; };
 		B7C7A71D2D95016C00ECC462 /* CanvasPlusPlayground.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CanvasPlusPlayground.entitlements; sourceTree = "<group>"; };
 		B7CC4D3B2D8DB86E00254F55 /* URL+AppRootURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+AppRootURL.swift"; sourceTree = "<group>"; };
 		B7CC4D3E2D8DFAE900254F55 /* PickerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerService.swift; sourceTree = "<group>"; };
@@ -524,6 +532,7 @@
 				A3049B862D16146D002F3166 /* GetQuizzesRequest.swift */,
 				A3D1614E2D1784E3004055FB /* GetUserRequest.swift */,
 				B75684F72DA5F9F4003B4A32 /* GetSinglePageRequest.swift */,
+				B7C469D32E6C831900310982 /* GetFrontPageRequest.swift */,
 				A3D0225C2D6A711900F8068C /* GetPagesRequest.swift */,
 				A3D161502D178615004055FB /* GetUserProfileRequest.swift */,
 				A373DC2C2D28172E00215019 /* GetModulesRequest.swift */,
@@ -550,6 +559,7 @@
 		A324BA502D07963D005F53FA /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				B7C469D02E6C80D500310982 /* Home */,
 				9B801DE82E66658000DF4942 /* Debug */,
 				B7CC4D682D91AF5800254F55 /* ToDoItems */,
 				9BF228C62D6CD1DF000676F2 /* Reminders */,
@@ -1006,6 +1016,16 @@
 			path = Intelligence;
 			sourceTree = "<group>";
 		};
+		B7C469D02E6C80D500310982 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				B7C469D72E6C869600310982 /* SyllabusView.swift */,
+				B7C469D12E6C80F100310982 /* CourseHomePage.swift */,
+				B7C469D52E6C84CC00310982 /* WikiFrontPage.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
 		B7C5532A2D2D5AEB009CF4F0 /* Pinned Items */ = {
 			isa = PBXGroup;
 			children = (
@@ -1280,6 +1300,7 @@
 				A3CF88D12D18E61B000ACDF3 /* APIResponse.swift in Sources */,
 				A373DC352D2824D700215019 /* Module.swift in Sources */,
 				9BFD45812D811B1000BBAA01 /* AssignmentSubmissionManager.swift in Sources */,
+				B7C469D82E6C869900310982 /* SyllabusView.swift in Sources */,
 				B74688A32D63DB59007A27FD /* Assignment.swift in Sources */,
 				B5894F112D6EBD8C00E8F527 /* PageAPI.swift in Sources */,
 				A3C574D92D99F7DA002210FA /* GroupRowView.swift in Sources */,
@@ -1307,6 +1328,7 @@
 				B7CC4D562D90BF3400254F55 /* IntelligenceContentView.swift in Sources */,
 				A373DC162D1A3C8700215019 /* RequestMethod.swift in Sources */,
 				A324BA682D07C2E9005F53FA /* FileViewer.swift in Sources */,
+				B7C469D62E6C84CC00310982 /* WikiFrontPage.swift in Sources */,
 				B7E59A162D200775001836FE /* CourseDetailView.swift in Sources */,
 				A3D022592D6A5BC500F8068C /* Data+Empty.swift in Sources */,
 				9B350F082C9652C6003FC60D /* NSAttributedString+HTML.swift in Sources */,
@@ -1338,6 +1360,7 @@
 				A352AD1A2D3EF1C1007EE6FC /* GetCourseUsersRequest.swift in Sources */,
 				B7460A942D6BFB1A0069CF5B /* GradeCalculator.swift in Sources */,
 				B7E073642D9872AE00A7E82F /* IgnoreToDoItemRequest.swift in Sources */,
+				B7C469D22E6C80F800310982 /* CourseHomePage.swift in Sources */,
 				B77FD0072D5309340049AA5E /* ProfilePicture.swift in Sources */,
 				A35191412D283589001E415F /* ModulesViewModel.swift in Sources */,
 				A3E7F3912C99317100DC4300 /* CourseTabsManager.swift in Sources */,
@@ -1379,6 +1402,7 @@
 				9B0C19402D78E461002ABEFC /* AssignmentSubmissionView.swift in Sources */,
 				B7A12F462D69448300EDFA0A /* AssignmentGroup.swift in Sources */,
 				3DAE85002C9A0E4F008C22E7 /* BridgedPDFView.swift in Sources */,
+				B7C469D42E6C831E00310982 /* GetFrontPageRequest.swift in Sources */,
 				B533C0BE2CADDDE700A74AF6 /* PeopleCommonView.swift in Sources */,
 				B7C0A3C72D2F4E82003E5A36 /* GetFileRequest.swift in Sources */,
 				A31A81E72D0CCB69003C37EB /* GradesViewModel.swift in Sources */,
