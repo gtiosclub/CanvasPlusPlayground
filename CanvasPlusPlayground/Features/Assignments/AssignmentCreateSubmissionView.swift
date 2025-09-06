@@ -8,7 +8,7 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
-struct AssignmentSubmissionView: View {
+struct AssignmentCreateSubmissionView: View {
     typealias AssignmentSubmissionError = AssignmentSubmissionManager.AssignmentSubmissionError
 
     @Environment(\.dismiss) private var dismiss
