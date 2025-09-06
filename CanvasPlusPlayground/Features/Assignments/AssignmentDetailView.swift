@@ -115,6 +115,7 @@ struct AssignmentDetailView: View {
                             htmlText: assignmentDescription
                         )
                     }
+                    .handleDeepLinks(for: assignment.courseId?.asString ?? "")
                 }
             }
             .navigationTitle("Assignment Details")

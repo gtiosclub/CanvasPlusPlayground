@@ -25,7 +25,7 @@ struct FocusWindowView: View {
         if let course {
             NavigationStack(path: $navigationModel.navigationPath) {
                 CourseDetailView(course: course, coursePage: coursePage)
-                    .defaultNavigationDestination(navigationModel: $navigationModel, courseID: info.courseID)
+                    .defaultNavigationDestination(courseID: info.courseID)
 
             }
             .environment(navigationModel)
