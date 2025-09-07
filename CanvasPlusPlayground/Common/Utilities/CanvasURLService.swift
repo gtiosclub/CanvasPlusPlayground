@@ -15,7 +15,9 @@ enum CanvasURLService {
         case page(Page.ID)
         // TODO: Add items as needed.
 
-        init?(pathType: String, id: String) {
+        init?(pathType: String, id: String?) {
+            guard let id else { return nil }
+            
             switch pathType {
             case "assignments":
                 self = .assignment(id)

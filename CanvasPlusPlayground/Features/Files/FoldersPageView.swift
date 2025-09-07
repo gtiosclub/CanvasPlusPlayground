@@ -29,6 +29,7 @@ struct FoldersPageView: View {
             }
         }
     }
+    
 
     let course: Course
     @State private var folder: Folder?
@@ -108,16 +109,6 @@ struct FoldersPageView: View {
     @ViewBuilder
     func folderRow(for subFolder: Folder) -> some View {
         FolderRow(folder: subFolder)
-    }
-
-    @ViewBuilder
-    func destinationView(for item: Selection) -> some View {
-        switch item {
-        case .file(let file):
-            FileViewer(courseID: course.id, file: file)
-        case .folder(let folder):
-            FoldersPageView(course: course, folder: folder)
-        }
     }
 
     private func loadContents() async {
