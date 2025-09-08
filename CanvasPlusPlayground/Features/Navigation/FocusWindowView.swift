@@ -57,7 +57,28 @@ struct FocusWindowView: View {
                 await courseManager.getCourses()
             }
 
-            destination = try await info.destination.loadDestination(courseManager: courseManager)
+            switch info.destination {
+            case .course(let courseID):
+                try await loadCourse(courseID: courseID)
+
+            case .coursePage(let coursePage, let courseID):
+                try await loadCoursePage(coursePage: coursePage, courseID: courseID)
+
+            case .assignment(let assignmentID, let courseID):
+                try await loadAssignment(assignmentID: assignmentID, courseID: courseID)
+
+            case .announcement(let announcementID, let courseID):
+                try await loadAnnouncement(announcementID: announcementID, courseID: courseID)
+
+            case .page(let pageID, let courseID):
+                try await loadPage(pageID: pageID, courseID: courseID)
+
+            case .file(let fileID, let courseID):
+                try await loadFile(fileID: fileID, courseID: courseID)
+
+            case .folder(let folderID, let courseID):
+                try await loadFolder(folderID: folderID, courseID: courseID)
+            }
         } catch {
             errorMessage = "Failed to load content: \(error.localizedDescription)"
             LoggerService.main.error("FocusWindowView: Failed to load destination - \(error)")
@@ -65,6 +86,131 @@ struct FocusWindowView: View {
 
         isLoading = false
     }
+
+    private func loadCourse(courseID: Course.ID) async throws {
+        if let course = courseManager.activeCourses.first(where: { $0.id == courseID }) {
+            destination = .course(course)
+            return
+        }
+
+        let courses = try await CanvasService.shared.loadAndSync(
+            CanvasRequest.getCourse(id: courseID)
+        ) { cachedCourses in
+            if let course = cachedCourses?.first {
+                destination = .course(course)
+            }
+        }
+
+        if destination == nil, let course = courses.first {
+            destination = .course(course)
+        }
+    }
+
+    private func loadCoursePage(coursePage: NavigationModel.CoursePage, courseID: Course.ID) async throws {
+        if let course = courseManager.activeCourses.first(where: { $0.id == courseID }) {
+            destination = .coursePage(coursePage, course)
+            return
+        }
+
+        let courses = try await CanvasService.shared.loadAndSync(
+            CanvasRequest.getCourse(id: courseID)
+        ) { cachedCourses in
+            if let course = cachedCourses?.first {
+                destination = .coursePage(coursePage, course)
+            }
+        }
+
+        if destination == nil, let course = courses.first {
+            destination = .coursePage(coursePage, course)
+        }
+    }
+
+    private func loadAssignment(assignmentID: Assignment.ID, courseID: Course.ID) async throws {
+        let assignments = try await CanvasService.shared.loadAndSync(
+            CanvasRequest.getAssignment(id: assignmentID, courseId: courseID)
+        ) { cachedAssignments in
+            if let assignment = cachedAssignments?.first {
+                destination = .assignment(assignment)
+            }
+        }
+        
+        if destination == nil, let assignment = assignments.first {
+            destination = .assignment(assignment)
+        }
+    }
+
+    private func loadAnnouncement(announcementID: DiscussionTopic.ID, courseID: Course.ID) async throws {
+        let announcements = try await CanvasService.shared.loadAndSync(
+            CanvasRequest.getDiscussionTopics(courseId: courseID)
+        ) { cachedAnnouncements in
+            if let announcement = cachedAnnouncements?.first(where: { $0.id == announcementID }) {
+                destination = .announcement(announcement)
+            }
+        }
+        
+        if destination == nil, let announcement = announcements.first(where: { $0.id == announcementID }) {
+            destination = .announcement(announcement)
+        }
+    }
+
+    private func loadPage(pageID: Page.ID, courseID: Course.ID) async throws {
+        let pages = try await CanvasService.shared.loadAndSync(
+            CanvasRequest.getPages(courseId: courseID)
+        ) { cachedPages in
+            if let page = cachedPages?.first(where: { $0.id == pageID }) {
+                destination = .page(page)
+            }
+        }
+        
+        if destination == nil, let page = pages.first(where: { $0.id == pageID }) {
+            destination = .page(page)
+        }
+    }
+
+    private func loadFile(fileID: String, courseID: Course.ID) async throws {
+        let files = try await CanvasService.shared.loadAndSync(
+            CanvasRequest.getFile(fileId: fileID)
+        ) { cachedFiles in
+            if let file = cachedFiles?.first {
+                destination = .file(file, courseID)
+            }
+        }
+
+        if destination == nil, let file = files.first {
+            destination = .file(file, courseID)
+        }
+    }
+
+    private func loadFolder(folderID: String, courseID: Course.ID) async throws {
+        guard let course = courseManager.activeCourses.first(where: { $0.id == courseID }) else {
+            throw FocusWindowError.courseNotFound
+        }
+
+        let folders = try await CanvasService.shared.loadAndSync(
+            CanvasRequest.getFolder(folderId: folderID)
+        ) { cachedFolders in
+            if let folder = cachedFolders?.first {
+                destination = .folder(folder, course)
+            }
+        }
+
+        if destination == nil, let folder = folders.first {
+            destination = .folder(folder, course)
+        }
+    }
+
+    enum FocusWindowError: LocalizedError {
+        case courseNotFound
+        case unsupportedNewWindow
+
+        var errorDescription: String? {
+            switch self {
+            case .courseNotFound:
+                return "Course could not be found"
+            case .unsupportedNewWindow:
+                return "Unsupported new window"
+            }
+        }
+    }
+    
 }
-
-
