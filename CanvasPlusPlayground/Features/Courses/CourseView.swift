@@ -81,7 +81,7 @@ struct CourseView: View {
 #endif
         .tint(course.rgbColors?.color)
         .navigationTitle(course.displayName)
-        .defaultNavigationDestination(navigationModel: $navigationModel, courseID: course.id)
+        .defaultNavigationDestination(courseID: course.id)
         .openInCanvasToolbarButton(.homepage(course.id))
     }
 }
