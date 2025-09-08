@@ -41,7 +41,7 @@
 		9BF228C82D6CD1EB000676F2 /* RemindersManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF228C72D6CD1EB000676F2 /* RemindersManager.swift */; };
 		9BF8E43F2D90DE4F00B5A50D /* UploadAssignmentFileTransmissionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF8E43E2D90DE4F00B5A50D /* UploadAssignmentFileTransmissionRequest.swift */; };
 		9BF8E4412D90DE5E00B5A50D /* UploadAssignmentFileConfirmationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF8E4402D90DE5E00B5A50D /* UploadAssignmentFileConfirmationRequest.swift */; };
-		9BFBD8C62E6B2FAD00690E47 /* GetSubmissionsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFBD8C52E6B2FAD00690E47 /* GetSubmissionsRequest.swift */; };
+		9BFBD8C62E6B2FAD00690E47 /* GetSubmissionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFBD8C52E6B2FAD00690E47 /* GetSubmissionRequest.swift */; };
 		9BFD457D2D80F6EB00BBAA01 /* UploadAssignmentFileNotificationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFD457C2D80F6EB00BBAA01 /* UploadAssignmentFileNotificationRequest.swift */; };
 		9BFD45812D811B1000BBAA01 /* AssignmentSubmissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFD45802D811B1000BBAA01 /* AssignmentSubmissionManager.swift */; };
 		A301EE092D61137400D71139 /* MarkCourseDiscussionTopicReadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A301EE082D61137400D71139 /* MarkCourseDiscussionTopicReadRequest.swift */; };
@@ -271,7 +271,7 @@
 		9BF228C72D6CD1EB000676F2 /* RemindersManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindersManager.swift; sourceTree = "<group>"; };
 		9BF8E43E2D90DE4F00B5A50D /* UploadAssignmentFileTransmissionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadAssignmentFileTransmissionRequest.swift; sourceTree = "<group>"; };
 		9BF8E4402D90DE5E00B5A50D /* UploadAssignmentFileConfirmationRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadAssignmentFileConfirmationRequest.swift; sourceTree = "<group>"; };
-		9BFBD8C52E6B2FAD00690E47 /* GetSubmissionsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSubmissionsRequest.swift; sourceTree = "<group>"; };
+		9BFBD8C52E6B2FAD00690E47 /* GetSubmissionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSubmissionRequest.swift; sourceTree = "<group>"; };
 		9BFD457C2D80F6EB00BBAA01 /* UploadAssignmentFileNotificationRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadAssignmentFileNotificationRequest.swift; sourceTree = "<group>"; };
 		9BFD45802D811B1000BBAA01 /* AssignmentSubmissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentSubmissionManager.swift; sourceTree = "<group>"; };
 		A301EE082D61137400D71139 /* MarkCourseDiscussionTopicReadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkCourseDiscussionTopicReadRequest.swift; sourceTree = "<group>"; };
@@ -523,7 +523,7 @@
 				A3049B7E2D160C03002F3166 /* GetTabsRequest.swift */,
 				A3049B802D160F6B002F3166 /* GetAnnouncementsRequest.swift */,
 				A3049B822D161432002F3166 /* GetAssignmentsRequest.swift */,
-				9BFBD8C52E6B2FAD00690E47 /* GetSubmissionsRequest.swift */,
+				9BFBD8C52E6B2FAD00690E47 /* GetSubmissionRequest.swift */,
 				B7C0A3C42D2F4C11003E5A36 /* GetAssignmentRequest.swift */,
 				A3049B842D161455002F3166 /* GetEnrollmentsRequest.swift */,
 				A3049B862D16146D002F3166 /* GetQuizzesRequest.swift */,
@@ -1319,7 +1319,7 @@
 				9B350F082C9652C6003FC60D /* NSAttributedString+HTML.swift in Sources */,
 				A3D1614D2D16ACB8004055FB /* CacheableAPIRequest+Sync.swift in Sources */,
 				A3049B562D0E541D002F3166 /* QuizType.swift in Sources */,
-				9BFBD8C62E6B2FAD00690E47 /* GetSubmissionsRequest.swift in Sources */,
+				9BFBD8C62E6B2FAD00690E47 /* GetSubmissionRequest.swift in Sources */,
 				A3049B612D0E6110002F3166 /* QuizQuestionType.swift in Sources */,
 				A3CA025B2D432A8700A9752B /* SearchResultListDataSource.swift in Sources */,
 				9B9C2E042C93F6CD00E4B16B /* CourseAnnouncementsView.swift in Sources */,

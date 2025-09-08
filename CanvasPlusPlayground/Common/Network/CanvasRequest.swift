@@ -146,8 +146,8 @@ enum CanvasRequest {
         courseId: String,
         assignmentId: String,
         userId: String
-    ) -> GetSubmissionsRequest {
-        GetSubmissionsRequest(courseId: courseId, assignmentId: assignmentId, userId: userId)
+    ) -> GetSubmissionRequest {
+        GetSubmissionRequest(courseId: courseId, assignmentId: assignmentId, userId: userId)
     }
 
     static func getEnrollments(courseId: String, userId: String? = nil, perPage: Int = 50) -> GetEnrollmentsRequest {

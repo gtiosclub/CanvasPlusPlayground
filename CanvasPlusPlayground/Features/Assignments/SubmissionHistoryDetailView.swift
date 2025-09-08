@@ -53,10 +53,10 @@ struct SubmissionHistoryDetailView: View {
                 }
             }
             .formStyle(.grouped)
-            .navigationTitle("Assignment History")
+            .navigationTitle("Submission History")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Close") { dismiss() }
+                    Button("Close", systemImage: "xmark") { dismiss() }
                 }
             }
         }
@@ -67,7 +67,6 @@ struct SubmissionHistoryDetailView: View {
         let submission: Submission
         
         var body: some View {
-            
             VStack(alignment: .leading, spacing: 4) {
                 LabeledContent("Attempt", value: String(submission.attempt ?? 0))
                 LabeledContent("Grade", value: submission.grade ?? "N/A")

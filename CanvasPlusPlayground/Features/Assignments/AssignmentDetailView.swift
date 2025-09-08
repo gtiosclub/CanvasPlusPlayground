@@ -49,8 +49,8 @@ struct AssignmentDetailView: View {
                 ReminderButton(item: .assignment(assignment))
             }
             .task {
-                await fetchCanSubmitStatus()
                 await fetchSubmissions()
+                await fetchCanSubmitStatus()
             }
             .sheet(isPresented: $showSubmissionPopUp) {
                 AssignmentCreateSubmissionView(assignment: assignment)
@@ -188,9 +188,14 @@ struct AssignmentDetailView: View {
 
         let request = CanvasRequest.getSubmissionHistoryForAssignment(courseId: courseId, assignmentId: assignment.id, userId: userId)
         
-        let submission = try? await CanvasService.shared.fetch(request).first
+        let submission = try? await CanvasService.shared.loadAndSync(request, onCacheReceive: { cachedSubmission in
+            guard let cachedSubmission else { return }
+            
+            self.submission = cachedSubmission.first
+            
+        })
         
-        self.submission = submission?.createModel()
+        self.submission = submission?.first
     }
 
     private var pointsPossible: String {
@@ -209,3 +214,4 @@ struct AssignmentDetailView: View {
         }
     }
 }
+

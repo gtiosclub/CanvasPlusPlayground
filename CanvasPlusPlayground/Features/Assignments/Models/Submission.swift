@@ -50,6 +50,7 @@ extension CanvasSchemaV1 {
         var submissionHistory: [Submission]?
         var submissionComments: [SubmissionComment]?
         
+        
         init(from submissionAPI: SubmissionAPI) {
             self.id = submissionAPI.id
             self.assignmentId = submissionAPI.assignment_id
@@ -94,6 +95,7 @@ extension CanvasSchemaV1 {
 }
 
 extension Submission: Cacheable {
+    
     func merge(with other: Submission) {
         self.assignmentId = other.assignmentId
         self.assignment = other.assignment
