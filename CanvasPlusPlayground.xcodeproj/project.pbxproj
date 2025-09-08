@@ -199,6 +199,7 @@
 		B7C469D42E6C831E00310982 /* GetFrontPageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C469D32E6C831900310982 /* GetFrontPageRequest.swift */; };
 		B7C469D62E6C84CC00310982 /* WikiFrontPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C469D52E6C84CC00310982 /* WikiFrontPage.swift */; };
 		B7C469D82E6C869900310982 /* SyllabusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C469D72E6C869600310982 /* SyllabusView.swift */; };
+		B7C469DA2E6CB81200310982 /* CanvasURLService+Modifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C469D92E6CB80B00310982 /* CanvasURLService+Modifier.swift */; };
 		B7CC4D3C2D8DB87200254F55 /* URL+AppRootURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D3B2D8DB86E00254F55 /* URL+AppRootURL.swift */; };
 		B7CC4D3F2D8DFAEC00254F55 /* PickerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D3E2D8DFAE900254F55 /* PickerService.swift */; };
 		B7CC4D412D8DFB7300254F55 /* PickableItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D402D8DFB7300254F55 /* PickableItem.swift */; };
@@ -432,6 +433,7 @@
 		B7C469D32E6C831900310982 /* GetFrontPageRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetFrontPageRequest.swift; sourceTree = "<group>"; };
 		B7C469D52E6C84CC00310982 /* WikiFrontPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikiFrontPage.swift; sourceTree = "<group>"; };
 		B7C469D72E6C869600310982 /* SyllabusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyllabusView.swift; sourceTree = "<group>"; };
+		B7C469D92E6CB80B00310982 /* CanvasURLService+Modifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CanvasURLService+Modifier.swift"; sourceTree = "<group>"; };
 		B7C7A71D2D95016C00ECC462 /* CanvasPlusPlayground.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CanvasPlusPlayground.entitlements; sourceTree = "<group>"; };
 		B7CC4D3B2D8DB86E00254F55 /* URL+AppRootURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+AppRootURL.swift"; sourceTree = "<group>"; };
 		B7CC4D3E2D8DFAE900254F55 /* PickerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerService.swift; sourceTree = "<group>"; };
@@ -1000,6 +1002,7 @@
 			children = (
 				B75684F52DA5A7CE003B4A32 /* CanvasURLService.swift */,
 				B78847962E674D5A00AE7221 /* CanvasURLService+Modules.swift */,
+				B7C469D92E6CB80B00310982 /* CanvasURLService+Modifier.swift */,
 			);
 			name = URLService;
 			sourceTree = "<group>";
@@ -1220,6 +1223,7 @@
 				A3CA02592D43294B00A9752B /* SearchResultsListView.swift in Sources */,
 				B72D82FE2E4B904100BA1DAD /* IntelligenceServiceProvider.swift in Sources */,
 				A3D0225D2D6A711900F8068C /* GetPagesRequest.swift in Sources */,
+				B7C469DA2E6CB81200310982 /* CanvasURLService+Modifier.swift in Sources */,
 				B76454FE2C8DF61B002DF00E /* Course.swift in Sources */,
 				A372D1062D90CE7D005E94CA /* GroupMembership.swift in Sources */,
 				A324BA642D07AF0B005F53FA /* CourseFileService.swift in Sources */,
