@@ -44,6 +44,7 @@ struct CourseAnnouncementDetailView: View {
             Section("Announcement Message") {
                 HTMLTextView(htmlText: announcement.message ?? "")
             }
+            .handleDeepLinks(for: announcement.courseId ?? "")
         }
         .formStyle(.grouped)
         .onAppear {

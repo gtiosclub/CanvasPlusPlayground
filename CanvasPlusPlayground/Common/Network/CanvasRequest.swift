@@ -300,6 +300,12 @@ enum CanvasRequest {
         )
     }
 
+    static func getCourseFrontPage(
+        courseID: String
+    ) -> GetFrontPageRequest {
+        GetFrontPageRequest(courseId: courseID)
+    }
+
     static func getPages(
         courseId: String,
         perPage: Int = 50
