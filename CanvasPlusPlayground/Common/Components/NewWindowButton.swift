@@ -1,5 +1,5 @@
 //
-//  CourseContextMenu.swift
+//  NewWindowButton.swift
 //  CanvasPlusPlayground
 //
 //  Created by Steven Liu on 9/1/25.
