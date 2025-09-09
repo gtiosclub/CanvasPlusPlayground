@@ -30,11 +30,7 @@ struct PinnedItemsView: View {
             }
         }
         .listStyle(.inset)
-        .task {
-            for item in pinnedItemsManager.pinnedItems.filter({ $0.data == nil }) {
-                await item.itemData()
-            }
-        }
+        
         .navigationTitle("Pinned")
         .navigationDestination(item: $selectedItem) { item in
             PinnedItemDetailView(item: item)
@@ -81,6 +77,9 @@ struct PinnedItemsView: View {
 						)
                     }
                     .buttonStyle(.plain)
+					.task {
+						await item.itemData()
+					}
                 }
             }
         }

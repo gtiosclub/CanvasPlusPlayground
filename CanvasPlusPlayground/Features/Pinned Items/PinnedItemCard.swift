@@ -48,42 +48,42 @@ private struct PinnedAnnouncementCard: View {
 	let announcement: DiscussionTopic
 	let course: Course
 	let onRemove: () -> Void
+	
 	var body: some View {
 		ScrollView {
-			// New parent VStack to control alignment
-			HStack {
+			HStack(alignment: .top, spacing: 8) {
 				Button(action: onRemove) {
 					Image(systemName: "circle")
 						.foregroundStyle(course.rgbColors?.color ?? .accentColor)
 						.font(.title)
 				}
 				.buttonStyle(.plain)
-				VStack {
-					// Your original content VStack
-					VStack(alignment: .leading, spacing: 8) {
-						Text(course.displayName.uppercased())
-							.font(.caption)
-							.foregroundStyle(course.rgbColors?.color ?? .accentColor)
-						
-						VStack(alignment: .leading, spacing: 3) {
-							Text(announcement.title ?? "")
-								.font(.headline)
-								.fontDesign(.rounded)
-								.bold()
-							
-							Text(
-								announcement.message?
-									.stripHTML()
-									.trimmingCharacters(
-										in: .whitespacesAndNewlines
-									)
-								?? ""
-							)
-						}
-					}
+				
+				VStack(alignment: .leading, spacing: 8) {
+					Text(course.displayName.uppercased())
+						.font(.caption)
+						.foregroundStyle(course.rgbColors?.color ?? .accentColor)
 					
-					Spacer()
+					VStack(alignment: .leading, spacing: 3) {
+						Text(announcement.title ?? "No Title")
+							.font(.headline)
+							.fontDesign(.rounded)
+							.bold()
+							.lineLimit(1)
+						
+						Text(
+							announcement.message?
+								.stripHTML()
+								.trimmingCharacters(in: .whitespacesAndNewlines)
+							?? ""
+						)
+						.font(.subheadline)
+						.foregroundStyle(.secondary)
+						.lineLimit(2) 
+					}
 				}
+				
+				Spacer()
 			}
 		}
 	}

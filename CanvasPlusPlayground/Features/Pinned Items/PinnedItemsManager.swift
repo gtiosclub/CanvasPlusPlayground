@@ -6,11 +6,11 @@
 //
 
 import SwiftUI
-
+import SwiftData
 @Observable
 class PinnedItemsManager {
     static let pinnedItemsKey: String = "pinnedItems"
-
+	private var repository: CanvasRepository
     private(set) var pinnedItems: [PinnedItem] = [] {
         didSet { savePinnedItems() }
     }
@@ -19,7 +19,8 @@ class PinnedItemsManager {
         Dictionary(grouping: pinnedItems) { $0.type }
     }
 
-    init() {
+    init(repository: CanvasRepository) {
+		self.repository = repository
         getPinnedItems()
     }
 
@@ -73,6 +74,12 @@ class PinnedItemsManager {
             UserDefaults.standard.set(data, forKey: Self.pinnedItemsKey)
         }
     }
+	
+	func isItemPinned(itemID: String, courseID: String, type: PinnedItem.PinnedItemType) -> Bool {
+			pinnedItems.contains {
+				$0.id == itemID && $0.courseID == courseID && $0.type == type
+			}
+		}
 
     private func getPinnedItems() {
         var result: [PinnedItem] = []
@@ -83,6 +90,26 @@ class PinnedItemsManager {
 
         pinnedItems = result
     }
+	
+	@MainActor
+	private func pinItem<T: Sendable & PersistentModel>(
+			withData data: T,
+			itemID: String,
+			courseID: String,
+			type: PinnedItem.PinnedItemType
+		) {
+			// Save to model context
+			repository.modelContext.insert(data)
+			
+			do {
+				try repository.modelContext.save()
+			} catch {
+				print("Failed to save model to cache on pinning: \(error)")
+			}
+			
+			let item = PinnedItem(id: itemID, courseID: courseID, type: type)
+			pinnedItems.append(item)
+		}
 
     // MARK: - Debug
     #if DEBUG

@@ -17,11 +17,11 @@ struct CanvasPlusPlaygroundApp: App {
     @State var launchState: LaunchState
 
     // App
-    @State private var listManager = ToDoListManager()
-    @State private var profileManager = ProfileManager()
-    @State private var courseManager = CourseManager()
-    @State private var pinnedItemsManager = PinnedItemsManager()
-    @State private var remindersManager = RemindersManager()
+	@State private var listManager : ToDoListManager
+	@State private var profileManager : ProfileManager
+	@State private var courseManager : CourseManager
+	@State private var pinnedItemsManager : PinnedItemsManager
+	@State private var remindersManager : RemindersManager
 #if DEBUG
     @State private var networkRecorder = NetworkRequestRecorder.shared
 
@@ -131,10 +131,25 @@ struct CanvasPlusPlaygroundApp: App {
 #if DEBUG
         LoggerService.main.debug("App Sandbox: \(URL.applicationSupportDirectory.path(percentEncoded: false))")
 #endif
-
-        self.launchState = Self.setupModelContainer()
-
-        CanvasService.shared.setupStorage()
+		let launchStatus = Self.setupModelContainer()
+		
+		let initialListManager = ToDoListManager()
+		let initialProfileManager = ProfileManager()
+		let initialCourseManager = CourseManager()
+		let initialRemindersManager = RemindersManager()
+		
+		// Then, set up the database and create the manager that depends on it.
+		CanvasService.shared.setupStorage()
+		guard let repository = CanvasService.shared.repository else { fatalError("Repository should be set up by now") }
+		let initialPinnedManager = PinnedItemsManager(repository: repository)
+		
+		self._listManager = State(initialValue: initialListManager)
+		self._profileManager = State(initialValue: initialProfileManager)
+		self._courseManager = State(initialValue: initialCourseManager)
+		self._remindersManager = State(initialValue: initialRemindersManager)
+		self._pinnedItemsManager = State(initialValue: initialPinnedManager)
+		
+		self.launchState = launchStatus
     }
 
     /// Attempts to setup the model container and returns app launch status based on success of setup

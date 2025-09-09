@@ -37,6 +37,7 @@ class PinnedItem: Identifiable, Codable, Equatable, Hashable {
     }
 
     func itemData() async {
+		guard data == nil else { return } 
         do {
             try await fetchData()
             // TODO: use new course infra
@@ -127,11 +128,13 @@ class PinnedItem: Identifiable, Codable, Equatable, Hashable {
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
+		hasher.combine(courseID)
+		hasher.combine(type)
     }
 }
 
-struct PinnedItemData {
-    enum ModelData {
+struct PinnedItemData: Hashable {
+	enum ModelData: Hashable {
         case announcement(DiscussionTopic)
         case assignment(Assignment)
         case file(File)
