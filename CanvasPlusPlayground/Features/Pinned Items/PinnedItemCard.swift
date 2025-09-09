@@ -79,12 +79,13 @@ private struct PinnedAnnouncementCard: View {
 						)
 						.font(.subheadline)
 						.foregroundStyle(.secondary)
-						.lineLimit(2) 
+						.lineLimit(2)
 					}
 				}
 				
 				Spacer()
 			}
+			.frame(maxWidth: 400, alignment: .leading)
 		}
 	}
 }
