@@ -43,7 +43,7 @@
 		9BF8E4412D90DE5E00B5A50D /* UploadAssignmentFileConfirmationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF8E4402D90DE5E00B5A50D /* UploadAssignmentFileConfirmationRequest.swift */; };
 		9BFBD8C62E6B2FAD00690E47 /* GetSubmissionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFBD8C52E6B2FAD00690E47 /* GetSubmissionRequest.swift */; };
 		9BFD457D2D80F6EB00BBAA01 /* UploadAssignmentFileNotificationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFD457C2D80F6EB00BBAA01 /* UploadAssignmentFileNotificationRequest.swift */; };
-		9BFD45812D811B1000BBAA01 /* AssignmentSubmissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFD45802D811B1000BBAA01 /* AssignmentSubmissionManager.swift */; };
+		9BFD45812D811B1000BBAA01 /* UploadSubmissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFD45802D811B1000BBAA01 /* UploadSubmissionManager.swift */; };
 		A301EE092D61137400D71139 /* MarkCourseDiscussionTopicReadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A301EE082D61137400D71139 /* MarkCourseDiscussionTopicReadRequest.swift */; };
 		A301EE0B2D61148C00D71139 /* MarkCourseDiscussionTopicUnreadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A301EE0A2D61148C00D71139 /* MarkCourseDiscussionTopicUnreadRequest.swift */; };
 		A301EE0D2D612E7100D71139 /* DiscussionTopicAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A301EE0C2D612E7100D71139 /* DiscussionTopicAPI.swift */; };
@@ -278,7 +278,7 @@
 		9BF8E4402D90DE5E00B5A50D /* UploadAssignmentFileConfirmationRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadAssignmentFileConfirmationRequest.swift; sourceTree = "<group>"; };
 		9BFBD8C52E6B2FAD00690E47 /* GetSubmissionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSubmissionRequest.swift; sourceTree = "<group>"; };
 		9BFD457C2D80F6EB00BBAA01 /* UploadAssignmentFileNotificationRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadAssignmentFileNotificationRequest.swift; sourceTree = "<group>"; };
-		9BFD45802D811B1000BBAA01 /* AssignmentSubmissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentSubmissionManager.swift; sourceTree = "<group>"; };
+		9BFD45802D811B1000BBAA01 /* UploadSubmissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadSubmissionManager.swift; sourceTree = "<group>"; };
 		A301EE082D61137400D71139 /* MarkCourseDiscussionTopicReadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkCourseDiscussionTopicReadRequest.swift; sourceTree = "<group>"; };
 		A301EE0A2D61148C00D71139 /* MarkCourseDiscussionTopicUnreadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkCourseDiscussionTopicUnreadRequest.swift; sourceTree = "<group>"; };
 		A301EE0C2D612E7100D71139 /* DiscussionTopicAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionTopicAPI.swift; sourceTree = "<group>"; };
@@ -734,7 +734,7 @@
 				9B69FA4E2CC2CCCF006101F3 /* AggregatedAssignmentsListCell.swift */,
 				192EC0472C963ACB00AF8528 /* CourseAssignmentManager.swift */,
 				9B69FA4C2CC2CCB1006101F3 /* AggregatedAssignmentsViewModel.swift */,
-				9BFD45802D811B1000BBAA01 /* AssignmentSubmissionManager.swift */,
+				9BFD45802D811B1000BBAA01 /* UploadSubmissionManager.swift */,
 			);
 			path = Assignments;
 			sourceTree = "<group>";
@@ -1309,7 +1309,7 @@
 				A3049B682D0F3ECA002F3166 /* QuizzesViewModel.swift in Sources */,
 				A3CF88D12D18E61B000ACDF3 /* APIResponse.swift in Sources */,
 				A373DC352D2824D700215019 /* Module.swift in Sources */,
-				9BFD45812D811B1000BBAA01 /* AssignmentSubmissionManager.swift in Sources */,
+				9BFD45812D811B1000BBAA01 /* UploadSubmissionManager.swift in Sources */,
 				B7C469D82E6C869900310982 /* SyllabusView.swift in Sources */,
 				B74688A32D63DB59007A27FD /* Assignment.swift in Sources */,
 				B5894F112D6EBD8C00E8F527 /* PageAPI.swift in Sources */,
@@ -1586,8 +1586,20 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CanvasPlusPlayground/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = NO;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_BLUETOOTH = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PRINTING = NO;
+				ENABLE_RESOURCE_ACCESS_USB = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				ENABLE_USER_SELECTED_FILES = readwrite;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CanvasPlusPlayground/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Canvas Plus";
@@ -1629,8 +1641,20 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CanvasPlusPlayground/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = NO;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_BLUETOOTH = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PRINTING = NO;
+				ENABLE_RESOURCE_ACCESS_USB = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				ENABLE_USER_SELECTED_FILES = readwrite;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CanvasPlusPlayground/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Canvas Plus";

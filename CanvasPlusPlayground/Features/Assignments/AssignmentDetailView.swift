@@ -18,8 +18,8 @@ struct AssignmentDetailView: View {
     @State private var showSubmissionPopUp: Bool = false
     @State private var showSubmissionHistoryPopUp: Bool = false
     @State private var fetchingCanSubmitStatus: Bool = false
-    @State private var canSubmit: Bool?
-    @Environment(ProfileManager.self) private var profileManager
+    @State private var canSubmit: Bool = false // this is updated by a network call upon onAppear()
+    @Environment(ProfileManager.self) private var profileManager // User ID from profileManager is required for getting current submission
     
     var body: some View {
         if assignment.isOnlineQuiz {
@@ -57,7 +57,8 @@ struct AssignmentDetailView: View {
                 AssignmentCreateSubmissionView(assignment: assignment)
             }
             .sheet(isPresented: $showSubmissionHistoryPopUp, content: {
-                SubmissionHistoryDetailView(submission: submission!) // the button to open this sheet can only be pressed if submission is non-nil
+                // the button to open this sheet can only be pressed if submission is non-nil
+                SubmissionHistoryDetailView(submission: submission!)
             })
             .openInCanvasToolbarButton(.assignment(assignment.courseId?.asString ?? "MISSING_COURSE_ID", assignment.id))
         }
@@ -191,9 +192,7 @@ struct AssignmentDetailView: View {
         
         let submission = try? await CanvasService.shared.loadAndSync(request, onCacheReceive: { cachedSubmission in
             guard let cachedSubmission else { return }
-            
             self.submission = cachedSubmission.first
-            
         })
         
         self.submission = submission?.first

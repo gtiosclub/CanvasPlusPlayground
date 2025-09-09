@@ -49,7 +49,7 @@ extension CanvasSchemaV1 {
         var redoRequest: Bool?
         var submissionHistory: [Submission]?
         var submissionComments: [SubmissionComment]?
-        
+        var attachments: [FileAPI] = []
         
         init(from submissionAPI: SubmissionAPI) {
             self.id = submissionAPI.id
@@ -89,6 +89,7 @@ extension CanvasSchemaV1 {
             self.redoRequest = submissionAPI.redo_request
             self.submissionHistory = submissionAPI.submission_history?.map { Submission(from: $0) }
             self.submissionComments = submissionAPI.submission_comments
+            self.attachments = submissionAPI.attachments ?? []
         }
     }
 
@@ -129,6 +130,7 @@ extension Submission: Cacheable {
         self.redoRequest = other.redoRequest
         self.submissionHistory = other.submissionHistory
         self.submissionComments = other.submissionComments
+        self.attachments = other.attachments
     }
 }
 

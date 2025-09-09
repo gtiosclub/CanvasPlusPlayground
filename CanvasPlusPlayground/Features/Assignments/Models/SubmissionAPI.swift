@@ -48,6 +48,7 @@ struct SubmissionAPI: APIResponse, Identifiable, Hashable {
     let redo_request: Bool?
     let submission_comments: [SubmissionComment]?
     let submission_history: [SubmissionAPI]?
+    let attachments: [FileAPI]?
     
     func createModel() -> Submission {
         Submission(from: self)
