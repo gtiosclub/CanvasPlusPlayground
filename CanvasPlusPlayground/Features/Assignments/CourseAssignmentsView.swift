@@ -153,43 +153,47 @@ private struct AssignmentRow: View {
     }
 
     private var bodyContents: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 3) {
-                Text(assignment.name)
-                    .fontWeight(.bold)
-
-                if assignment.isLocked, let unlockDate = assignment.unlockDate {
-                    HStack(spacing: 4) {
-                        Image(systemName: "lock.fill")
-
-                        Text("Available ")
-                            .fontWeight(.semibold)
-                        +
-                        Text(unlockDate, style: .date)
-                    }
-                } else if let dueDate = assignment.dueDate {
-                    Text("Due ")
-                        .fontWeight(.semibold)
-                    +
-                    Text(dueDate, style: .date)
-                }
-            }
-            .fontWeight(.light)
-
-            Spacer()
-
-            if showGrades {
-                if isDropped, !calculator.gradeGroups.isEmpty {
-                    Image(systemName: "xmark.circle.fill")
-                        .foregroundStyle(.separator)
-                }
-
-                Text(assignment.formattedGrade)
-                    .bold()
-                +
-                Text(" / " + assignment.formattedPointsPossible)
-            }
-        }
+		HStack {
+			VStack(alignment: .leading, spacing: 3) {
+				Text(assignment.name)
+					.fontWeight(.bold)
+				
+				if assignment.isLocked, let unlockDate = assignment.unlockDate {
+					HStack(spacing: 4) {
+						Image(systemName: "lock.fill")
+						
+						Text("Available ")
+							.fontWeight(.semibold)
+						+
+						Text(unlockDate, style: .date)
+					}
+				} else if let dueDate = assignment.dueDate {
+					Text("Due ")
+						.fontWeight(.semibold)
+					+
+					Text(dueDate, style: .date)
+				}
+			}
+			.fontWeight(.light)
+			
+			Spacer()
+			
+			if showGrades {
+				if isDropped, !calculator.gradeGroups.isEmpty {
+					Image(systemName: "xmark.circle.fill")
+						.foregroundStyle(.separator)
+				}
+				
+				Text(assignment.formattedGrade)
+					.bold()
+				+
+				Text(" / " + assignment.formattedPointsPossible)
+			}
+			if !assignment.isOnlineQuiz {
+				OpenInCanvasButton(path: .assignment(assignment.courseId?.asString ?? "MISSING_COURSE_ID", assignment.id))
+			}
+		}
+		.padding()
     }
 }
 

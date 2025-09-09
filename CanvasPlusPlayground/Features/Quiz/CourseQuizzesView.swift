@@ -81,6 +81,8 @@ struct CourseQuizzesView: View {
 						Text("Due at Unknown")
 					}
 				}
+				OpenInCanvasButton(path: .quizzes(quiz.courseID, quiz.id))
+					.padding()
 			}
 		}
 	}

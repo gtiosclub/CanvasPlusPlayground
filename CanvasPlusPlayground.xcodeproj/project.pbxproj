@@ -237,6 +237,8 @@
 		B7F9503B2D127AD0004BB470 /* ProfileAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F9503A2D127AD0004BB470 /* ProfileAPI.swift */; };
 		B7F9503D2D12ADAE004BB470 /* SubmissionAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F9503C2D12ADAE004BB470 /* SubmissionAPI.swift */; };
 		D48287E32E67D63800F743F9 /* QuizDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48287E22E67D63800F743F9 /* QuizDetailView.swift */; };
+		D4C309A32E7073BC007BA861 /* DetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C309A22E7073B2007BA861 /* DetailsView.swift */; };
+		D4C309A52E70740C007BA861 /* DisplayableItemDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C309A42E70740C007BA861 /* DisplayableItemDetails.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -473,6 +475,8 @@
 		B7F9503A2D127AD0004BB470 /* ProfileAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAPI.swift; sourceTree = "<group>"; };
 		B7F9503C2D12ADAE004BB470 /* SubmissionAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmissionAPI.swift; sourceTree = "<group>"; };
 		D48287E22E67D63800F743F9 /* QuizDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizDetailView.swift; sourceTree = "<group>"; };
+		D4C309A22E7073B2007BA861 /* DetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsView.swift; sourceTree = "<group>"; };
+		D4C309A42E70740C007BA861 /* DisplayableItemDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayableItemDetails.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -677,6 +681,8 @@
 				B7F950332D11A00F004BB470 /* StatusToolbarItem.swift */,
 				9A977E8A2D6C375E001D7F0A /* ColorPickerSheet.swift */,
 				3DAE84FF2C9A0E4F008C22E7 /* BridgedPDFView.swift */,
+				D4C309A22E7073B2007BA861 /* DetailsView.swift */,
+				D4C309A42E70740C007BA861 /* DisplayableItemDetails.swift */,
 				A3CA025C2D432B8500A9752B /* Search Results */,
 			);
 			path = Components;
@@ -1250,6 +1256,7 @@
 				A3049B632D0E6154002F3166 /* ScoringPolicy.swift in Sources */,
 				A33BE8752D97A6F7005C1D13 /* GetGroupMembershipRequest.swift in Sources */,
 				B7C0A3C92D2F87EC003E5A36 /* AsyncView.swift in Sources */,
+				D4C309A32E7073BC007BA861 /* DetailsView.swift in Sources */,
 				9B69FA4F2CC2CCCF006101F3 /* AggregatedAssignmentsListCell.swift in Sources */,
 				B7F950372D127869004BB470 /* ProfileManager.swift in Sources */,
 				A330B89B2DA98D0D00D6C1C3 /* MarkFavoriteRequest.swift in Sources */,
@@ -1407,6 +1414,7 @@
 				B7C0A3BD2D2F1F2E003E5A36 /* PinnedItemsManager.swift in Sources */,
 				A3049B5D2D0E5D5A002F3166 /* APIAssignmentDate.swift in Sources */,
 				9B0C19402D78E461002ABEFC /* AssignmentSubmissionView.swift in Sources */,
+				D4C309A52E70740C007BA861 /* DisplayableItemDetails.swift in Sources */,
 				B7A12F462D69448300EDFA0A /* AssignmentGroup.swift in Sources */,
 				3DAE85002C9A0E4F008C22E7 /* BridgedPDFView.swift in Sources */,
 				B7C469D42E6C831E00310982 /* GetFrontPageRequest.swift in Sources */,
