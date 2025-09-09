@@ -1,5 +1,5 @@
-# Canvas Plus (iOS)
-A multi-semester iOS Club initiative, working towards a better iOS client for students using Canvas.
+# Canvas Plus
+A multi-semester initiative by iOS Club @ GT, working towards a better iOS and macOS client for students using Canvas.
 
 ### Feature Database
 
@@ -22,7 +22,7 @@ print(URL.applicationSupportDirectory.path(percentEncoded: false))
 
 This project uses [SwiftLint](https://github.com/realm/SwiftLint), a Swift Package that ensures consistent code formatting across the codebase. Please resolve these before merging new code into the codebase.
 
-SwiftLint can automatically fix these most of these errors for you:
+SwiftLint can automatically fix most of these errors for you:
 
 1. Install `swiftlint` via your Terminal: `brew install swiftlint`.
 2. `swiflint lint --fix` automatically runs whenever you build or run in Xcode, which will fix most issues or throw warnings related to code formatting.
