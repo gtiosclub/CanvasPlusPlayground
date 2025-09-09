@@ -39,15 +39,37 @@ struct CourseView: View {
         }
     }
 
+    private var externalCoursePageLinks: [CanvasTab] {
+        guard !course.tabs.isEmpty, pickerService == nil else {
+            return []
+        }
+
+        return course.tabs
+            .filter { $0.visibility == .public }
+            .filter { $0.type == .external }
+    }
+
     var body: some View {
         @Bindable var navigationModel = navigationModel
 
-        List(coursePages, id: \.self, selection: $navigationModel.selectedCoursePage) { page in
-            NavigationLink(value: NavigationModel.Destination.coursePage(page, course)) {
-                Label(page.title, systemImage: page.systemImageIcon)
-                    .contextMenu(for: FocusWindowInfo(courseID: course.id, coursePage: page))
+        List(selection: $navigationModel.selectedCoursePage) {
+            Section {
+                ForEach(coursePages, id: \.self) { page in
+                    NavigationLink(value: NavigationModel.Destination.coursePage(page, course)) {
+                        Label(page.title, systemImage: page.systemImageIcon)
+                            .contextMenu(for: FocusWindowInfo(courseID: course.id, coursePage: page))
+                    }
+                    .tag(page)
+                }
             }
-            .tag(page)
+
+            Section("External") {
+                ForEach(externalCoursePageLinks) { link in
+                    Link(destination: link.htmlAbsoluteUrl) {
+                        Label(link.label, systemImage: "link")
+                    }
+                }
+            }
         }
         .onAppear {
             navigationModel.selectedCoursePage = nil
@@ -59,10 +81,7 @@ struct CourseView: View {
 #endif
         .tint(course.rgbColors?.color)
         .navigationTitle(course.displayName)
-        .navigationDestination(for: NavigationModel.Destination.self) { destination in
-            destination.destinationView()
-                .defaultNavigationDestination(navigationModel: $navigationModel, courseID: course.id)
-        }
+        .defaultNavigationDestination(courseID: course.id)
         .openInCanvasToolbarButton(.homepage(course.id))
     }
 }

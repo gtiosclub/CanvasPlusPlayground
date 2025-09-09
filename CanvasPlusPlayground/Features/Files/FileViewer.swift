@@ -23,6 +23,7 @@ struct FileViewer: View {
                 QuickLookPreview(url: url) { dismiss() }
                     #if os(iOS)
                     .ignoresSafeArea()
+                    .toolbar(.hidden)
                     #else
                     .toolbar {
                         ShareLink(item: url)
