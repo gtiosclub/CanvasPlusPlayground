@@ -141,6 +141,14 @@ enum CanvasRequest {
     ) -> GetAssignmentGroupsRequest {
         GetAssignmentGroupsRequest(courseId: courseId, include: include)
     }
+    
+    static func getSubmissionHistoryForAssignment(
+        courseId: String,
+        assignmentId: String,
+        userId: String
+    ) -> GetSubmissionRequest {
+        GetSubmissionRequest(courseId: courseId, assignmentId: assignmentId, userId: userId)
+    }
 
     static func getEnrollments(courseId: String, userId: String? = nil, perPage: Int = 50) -> GetEnrollmentsRequest {
         GetEnrollmentsRequest(courseId: courseId, userId: userId, perPage: perPage)

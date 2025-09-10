@@ -39,6 +39,16 @@ struct UserAPI: APIResponse, Identifiable {
     }
 }
 
+// This struct is designed for lightweight user presentation in UI contexts as per the provided example. It is used by the submissions comment API
+struct UserDisplay: Identifiable, Codable {
+    let pronouns: String?
+    let id: Int
+    let anonymous_dd: String?
+    let display_name: String?
+    let avatar_image_url: URL?
+    let html_url: URL?
+}
+
 // MARK: Preview
 extension UserAPI {
     static let sample1 = UserAPI(
@@ -145,3 +155,4 @@ extension UserAPI {
    "pronouns": "he/him"
  }
  */
+
