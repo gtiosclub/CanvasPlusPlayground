@@ -14,6 +14,10 @@ struct CourseDetailView: View {
     var body: some View {
         Group {
             switch coursePage {
+            case .home:
+                CourseHomePage(course: course)
+            case .syllabus:
+                SyllabusView(course: course)
             case .files:
                 CourseFilesView(course: course)
             case .announcements:

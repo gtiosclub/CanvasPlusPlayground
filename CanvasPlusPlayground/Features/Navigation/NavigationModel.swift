@@ -48,6 +48,8 @@ class NavigationModel {
     }
 
     enum CoursePage: String, CaseIterable, Codable {
+        case home
+        case syllabus
         case assignments
         case files
         case announcements
@@ -69,6 +71,10 @@ class NavigationModel {
 
         var systemImageIcon: String {
             switch self {
+            case .home:
+                "house.fill"
+            case .syllabus:
+                "book.pages"
             case .files:
                 "folder"
             case .assignments:

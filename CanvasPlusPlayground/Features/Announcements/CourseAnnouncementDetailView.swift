@@ -20,6 +20,7 @@ struct CourseAnnouncementDetailView: View {
             // Workaround to get a clear background in a Form on macOS
             Section { } header: {
                 summarySection
+                    .clipShape(.rect(cornerRadius: 8.0))
                     .multilineTextAlignment(.leading)
             } footer: {
                 Text("")
@@ -43,6 +44,7 @@ struct CourseAnnouncementDetailView: View {
             Section("Announcement Message") {
                 HTMLTextView(htmlText: announcement.message ?? "")
             }
+            .handleDeepLinks(for: announcement.courseId ?? "")
         }
         .formStyle(.grouped)
         .onAppear {
@@ -89,12 +91,14 @@ private struct SummarySection: View {
         VStack {
             IntelligenceContentView(
                 condition: rippleView,
-                isOutline: announcement.summary != nil
+                isContentProminent: announcement.summary != nil
             ) {
                 VStack(alignment: .leading, spacing: 16) {
                     header
 
                     mainBody
+
+                    Color.clear.frame(height: 24)
                 }
                 .foregroundStyle(
                     announcement.summary == nil ? .white : .primary
@@ -102,30 +106,9 @@ private struct SummarySection: View {
                 .frame(maxWidth: .infinity)
                 .padding(8)
             }
-
-            HStack {
-                Spacer()
-
-                if loadingSummary {
-                    ProgressView()
-                        .controlSize(.small)
-                }
-
-                Group {
-                    Button("Summarize" + (announcement.summary != nil ? " Again" : "")) {
-                        Task {
-                            await summarize()
-                        }
-                    }
-                    .disabled(
-                        loadingSummary || !IntelligenceSupport.isModelAvailable
-                    )
-                }
-                #if os(macOS)
-                // The Button would otherwise be bold since it's in a
-                // Section header
-                .fontWeight(.regular)
-                #endif
+            .overlay(alignment: .bottom) {
+                summarizeButton
+                    .offset(y: -8)
             }
         }
         .animation(.default, value: announcement.summary != nil)
@@ -155,6 +138,35 @@ private struct SummarySection: View {
             Text(description)
                 .font(.caption)
         }
+    }
+
+    private var summarizeButton: some View {
+        HStack {
+            Spacer()
+
+            if loadingSummary {
+                ProgressView()
+                    .controlSize(.small)
+            }
+
+            Group {
+                Button("Summarize" + (announcement.summary != nil ? " Again" : "")) {
+                    Task {
+                        await summarize()
+                    }
+                }
+                .buttonStyle(.glass)
+                .disabled(
+                    loadingSummary || !IntelligenceSupport.isModelAvailable
+                )
+            }
+            #if os(macOS)
+            // The Button would otherwise be bold since it's in a
+            // Section header
+            .fontWeight(.regular)
+            #endif
+        }
+        .padding(.horizontal)
     }
 
     private var description: String {
