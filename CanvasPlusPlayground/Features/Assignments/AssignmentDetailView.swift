@@ -56,12 +56,22 @@ struct AssignmentDetailView: View {
             .sheet(isPresented: $showSubmissionPopUp) {
                 AssignmentCreateSubmissionView(assignment: assignment)
             }
-            .sheet(isPresented: $showSubmissionHistoryPopUp, content: {
-                // the button to open this sheet can only be pressed if submission is non-nil
-                SubmissionHistoryDetailView(submission: submission!)
-            })
+            .sheet(isPresented: $showSubmissionHistoryPopUp) {
+                if let submission {
+                    SubmissionHistoryDetailView(submission: submission)
+                } else {
+                    submissionUnavailableView
+                }
+            }
             .openInCanvasToolbarButton(.assignment(assignment.courseId?.asString ?? "MISSING_COURSE_ID", assignment.id))
         }
+    }
+    
+    var submissionUnavailableView: some View {
+        ContentUnavailableView(
+            "Could not load submission",
+            systemImage: "exclamationmark.triangle.fill"
+        )
     }
     
     // displays fields related to assignment object

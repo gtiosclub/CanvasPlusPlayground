@@ -91,7 +91,7 @@ final class NetworkRequestRecorder {
 #endif
 
 extension Data {
-    func jsonToPrettyString() -> String? {
+    fileprivate func jsonToPrettyString() -> String? {
         if let json = try? JSONSerialization.jsonObject(with: self, options: .mutableContainers),
            let jsonData = try? JSONSerialization.data(withJSONObject: json, options: .prettyPrinted) {
             return String(decoding: jsonData, as: UTF8.self)

@@ -100,74 +100,17 @@ struct SubmissionHistoryDetailView: View {
         private struct SumbissionAttachmentListCell: View {
             let file: FileAPI
             @State var dataFileDocument: DataFileDocument?
-            @State var showFileExporter: Bool = false
             @State var showProgressView: Bool = false
             var body: some View {
                 HStack {
                     Text("\(file.display_name)")
-                    Spacer()
-                    if showProgressView {
-                        ProgressView()
-                            .scaleEffect(0.5)
-                    } else {
-                        Button(action:downloadFile) {
-                            Image(systemName: "arrow.down.circle")
-                        }
-                    }
-                }
-                .fileExporter(isPresented: $showFileExporter, document: dataFileDocument, defaultFilename: file.display_name) { result in
-                    switch result {
-                    case .success(let url):
-                        LoggerService.main.info("File saved to \(url)")
-                    case .failure(let error):
-                        LoggerService.main.error("Error placing submission attachment: \(error)")
-                    }
-                    showProgressView = false
-                }
-
-            }
-            
-            func downloadFile() {
-                guard let urlString = file.url else { return }
-                
-                guard let url = URL(string: urlString) else { return }
-                
-                let request = URLRequest(url: url)
-                showProgressView = true
-                Task {
-                    let (data, response) = try await URLSession.shared.data(for: request)
                     
-                    #if DEBUG
-                    // for logging purposes in the request debug window
-                    NetworkRequestRecorder.shared.addRecord(request: request, response: response, responseBody: data)
-                    #endif
-                    
-                    dataFileDocument = DataFileDocument(data: data)
-                    showFileExporter = true
+                    if let url = URL(string: file.url ?? "") {
+                        Spacer()
+                        DownloadButton(url: url, fileName: file.display_name)
+                    }
                 }
             }
         }
     }
 }
-
-// Struct used for file downloads to the user's filesystem.
-// This file takes in generic data (the name of the file dictates the type w/ file exporter)
-struct DataFileDocument: FileDocument {
-    static var readableContentTypes: [UTType] = [.fileURL]
-    static var writableContentTypes: [UTType] = [.fileURL]
-    var data: Data
-    init(data: Data) {
-        self.data = data
-    }
-
-    // For loading from disk (not essential for exporting)
-    init(configuration: ReadConfiguration) throws {
-        data = configuration.file.regularFileContents ?? Data()
-    }
-
-    // For saving to disk
-    func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
-        return FileWrapper(regularFileWithContents: data)
-    }
-}
-

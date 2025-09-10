@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Playgrounds
 
 struct GetSubmissionRequest: CacheableAPIRequest {
     typealias Subject = SubmissionAPI
@@ -19,7 +18,6 @@ struct GetSubmissionRequest: CacheableAPIRequest {
     var path: String { "/courses/\(courseId)/assignments/\(assignmentId)/submissions/\(userId)" }
     var queryParameters: [QueryParameter] {
         include.map { ("include[]", $0.rawValue) }
-
     }
     
     
