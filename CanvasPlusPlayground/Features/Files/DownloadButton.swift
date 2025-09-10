@@ -20,7 +20,7 @@ struct DownloadButton: View {
         Group {
             if showProgressView {
                 ProgressView()
-                    .scaleEffect(0.5)
+                    .controlSize(.small)
             } else {
                 Button("Download", systemImage: "arrow.down.circle", action:downloadFile)
                     .labelStyle(.iconOnly)

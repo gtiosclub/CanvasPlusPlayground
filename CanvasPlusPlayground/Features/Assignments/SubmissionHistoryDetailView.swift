@@ -24,7 +24,7 @@ struct SubmissionHistoryDetailView: View {
             submission.attempt == self.submission.attempt // can't use the id, they're all the same
         }
         
-        return history
+        return history.reversed()
     }
     
     var body: some View {
@@ -38,7 +38,7 @@ struct SubmissionHistoryDetailView: View {
                 // display previous submission info
                 if !submissionHistory.isEmpty {
                     Section("Previous Submissions") {
-                        ForEach(submissionHistory.reversed(), id:\.attempt) { prev in
+                        ForEach(submissionHistory, id:\.attempt) { prev in
                             SubmissionListCell(submission: prev)
                         }
                     }
@@ -57,7 +57,15 @@ struct SubmissionHistoryDetailView: View {
             .navigationTitle("Submission History")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Close", systemImage: "xmark") { dismiss() }
+                    Button {
+                        dismiss()
+                    } label: {
+                        #if os(macOS)
+                        Text("Done")
+                        #else
+                        Image(systemName: "xmark")
+                        #endif
+                    }
                 }
             }
         }
