@@ -45,6 +45,7 @@ struct CourseAnnouncementDetailView: View {
                 HTMLTextView(htmlText: announcement.message ?? "")
                     .frame(height: 300)
             }
+            .handleDeepLinks(for: announcement.courseId ?? "")
         }
         .formStyle(.grouped)
         .onAppear {
