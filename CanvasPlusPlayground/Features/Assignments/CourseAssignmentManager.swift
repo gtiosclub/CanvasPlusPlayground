@@ -16,18 +16,6 @@ class CourseAssignmentManager {
         self.courseID = courseID
     }
 
-    func fetchAssignments() async -> [Assignment] {
-        let request = CanvasRequest.getAssignments(courseId: courseID)
-
-        do {
-            return try await CanvasService.shared.loadAndSync(request)
-        } catch {
-            LoggerService.main.error("Failed to fetch assignments: \(error)")
-        }
-
-        return []
-    }
-
     func fetchAssignmentGroups() async {
         let request = CanvasRequest.getAssignmentGroups(courseId: courseID)
 
@@ -45,10 +33,5 @@ class CourseAssignmentManager {
         } catch {
             LoggerService.main.error("Failed to fetch assignment groups")
         }
-    }
-
-    static func getAssignmentsForCourse(courseID: String) async -> [Assignment] {
-        let manager = CourseAssignmentManager(courseID: courseID)
-        return await manager.fetchAssignments()
     }
 }
