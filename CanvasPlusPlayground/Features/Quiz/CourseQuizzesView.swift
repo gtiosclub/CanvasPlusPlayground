@@ -40,7 +40,8 @@ struct CourseQuizzesView: View {
 
 	@ViewBuilder
 	func quizCell(for quiz: Quiz) -> some View {
-		NavigationLink(destination: QuizDetailView(quiz: quiz)) {
+		NavigationLink(
+			value: NavigationModel.Destination.quiz(quiz)) {
 			HStack {
 				VStack {
 					Text(quiz.title)
@@ -51,7 +52,7 @@ struct CourseQuizzesView: View {
 						if let pointsPossible = quiz.pointsPossible?.truncatingTrailingZeros {
 							Text("\(pointsPossible) pts")
 						} else { Text("No pts")}
-
+						
 						Text("\(quiz.questionCount ?? 0) Questions")
 						Text("Allowed Attempts: \(quiz.allowedAttempts)")
 					}
@@ -81,9 +82,10 @@ struct CourseQuizzesView: View {
 						Text("Due at Unknown")
 					}
 				}
-				OpenInCanvasButton(path: .quizzes(quiz.courseID, quiz.id))
-					.padding()
 			}
+		}
+		.contextMenu {
+			OpenInCanvasButton(path: .quizzes(quiz.courseID, quiz.id))
 		}
 	}
 

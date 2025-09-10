@@ -161,7 +161,6 @@ private struct AssignmentRow: View {
 				if assignment.isLocked, let unlockDate = assignment.unlockDate {
 					HStack(spacing: 4) {
 						Image(systemName: "lock.fill")
-						
 						Text("Available ")
 							.fontWeight(.semibold)
 						+
@@ -193,7 +192,7 @@ private struct AssignmentRow: View {
 				OpenInCanvasButton(path: .assignment(assignment.courseId?.asString ?? "MISSING_COURSE_ID", assignment.id))
 			}
 		}
-		.padding()
+		
     }
 }
 
