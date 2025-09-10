@@ -43,6 +43,7 @@ struct CourseAnnouncementDetailView: View {
 
             Section("Announcement Message") {
                 HTMLTextView(htmlText: announcement.message ?? "")
+                    .frame(height: 300)
             }
         }
         .formStyle(.grouped)
