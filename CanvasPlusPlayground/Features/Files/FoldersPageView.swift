@@ -40,8 +40,6 @@ struct FoldersPageView: View {
 
     @State private var searchText: String = ""
 
-    @Environment(\.isSearching) var isSearching: Bool
-
     init(course: Course, folder: Folder? = nil) {
         self.course = course
         self.folder = folder
