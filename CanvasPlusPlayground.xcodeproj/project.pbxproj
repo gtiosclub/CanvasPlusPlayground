@@ -730,9 +730,6 @@
 			children = (
 				A373DC1E2D1D2B5700215019 /* Models */,
 				B77B57C02E73375E005ADB7B /* View */,
-				9B0C193F2D78E461002ABEFC /* AssignmentSubmissionView.swift */,
-				9BEB4ECF2D56AF570013869D /* AssignmentDetailView.swift */,
-				9BD232392E6C9CA600DB7A0E /* SubmissionHistoryDetailView.swift */,
 				9BFD45802D811B1000BBAA01 /* UploadSubmissionManager.swift */,
 				192EC0472C963ACB00AF8528 /* CourseAssignmentManager.swift */,
 			);
@@ -1008,6 +1005,9 @@
 			children = (
 				B77B57C12E733765005ADB7B /* AssignmentGroupCategory.swift */,
 				192EC04B2C963EE600AF8528 /* CourseAssignmentsView.swift */,
+				9B0C193F2D78E461002ABEFC /* AssignmentCreateSubmissionView.swift */,
+				9BEB4ECF2D56AF570013869D /* AssignmentDetailView.swift */,
+				9BD232392E6C9CA600DB7A0E /* SubmissionHistoryDetailView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
