@@ -41,6 +41,10 @@ enum CanvasRequest {
         GetFileRequest(fileId: fileId)
     }
 
+    static func getFolder(folderId: String) -> GetFolderRequest {
+        GetFolderRequest(folderId: folderId)
+    }
+
     static func getFilesInFolder(folderId: String) -> GetFilesInFolderRequest {
         GetFilesInFolderRequest(folderId: folderId)
     }

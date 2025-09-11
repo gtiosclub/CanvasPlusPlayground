@@ -11,7 +11,7 @@
 		192EC04A2C963B9000AF8528 /* AssignmentAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192EC0492C963B9000AF8528 /* AssignmentAPI.swift */; };
 		192EC04C2C963EE600AF8528 /* CourseAssignmentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192EC04B2C963EE600AF8528 /* CourseAssignmentsView.swift */; };
 		262CA4622E6A34A000BB7C00 /* DefaultNavigationDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 262CA4612E6A34A000BB7C00 /* DefaultNavigationDestination.swift */; };
-		267D85262E662019007F821B /* CourseContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 267D85252E662009007F821B /* CourseContextMenu.swift */; };
+		267D85262E662019007F821B /* NewWindowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 267D85252E662009007F821B /* NewWindowButton.swift */; };
 		267D85282E662AC5007F821B /* FocusWindowInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 267D85272E662AB0007F821B /* FocusWindowInfo.swift */; };
 		267D852A2E6644FE007F821B /* FocusWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 267D85292E6644FE007F821B /* FocusWindowView.swift */; };
 		3DAE85002C9A0E4F008C22E7 /* BridgedPDFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DAE84FF2C9A0E4F008C22E7 /* BridgedPDFView.swift */; };
@@ -203,6 +203,7 @@
 		B7C469D62E6C84CC00310982 /* WikiFrontPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C469D52E6C84CC00310982 /* WikiFrontPage.swift */; };
 		B7C469D82E6C869900310982 /* SyllabusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C469D72E6C869600310982 /* SyllabusView.swift */; };
 		B7C469DA2E6CB81200310982 /* CanvasURLService+Modifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C469D92E6CB80B00310982 /* CanvasURLService+Modifier.swift */; };
+		B7C469DC2E6F894500310982 /* GetFolderRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C469DB2E6F894200310982 /* GetFolderRequest.swift */; };
 		B7CC4D3C2D8DB87200254F55 /* URL+AppRootURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D3B2D8DB86E00254F55 /* URL+AppRootURL.swift */; };
 		B7CC4D3F2D8DFAEC00254F55 /* PickerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D3E2D8DFAE900254F55 /* PickerService.swift */; };
 		B7CC4D412D8DFB7300254F55 /* PickableItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D402D8DFB7300254F55 /* PickableItem.swift */; };
@@ -246,7 +247,7 @@
 		192EC0492C963B9000AF8528 /* AssignmentAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentAPI.swift; sourceTree = "<group>"; };
 		192EC04B2C963EE600AF8528 /* CourseAssignmentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAssignmentsView.swift; sourceTree = "<group>"; };
 		262CA4612E6A34A000BB7C00 /* DefaultNavigationDestination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultNavigationDestination.swift; sourceTree = "<group>"; };
-		267D85252E662009007F821B /* CourseContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseContextMenu.swift; sourceTree = "<group>"; };
+		267D85252E662009007F821B /* NewWindowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewWindowButton.swift; sourceTree = "<group>"; };
 		267D85272E662AB0007F821B /* FocusWindowInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusWindowInfo.swift; sourceTree = "<group>"; };
 		267D85292E6644FE007F821B /* FocusWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusWindowView.swift; sourceTree = "<group>"; };
 		3DAE84FF2C9A0E4F008C22E7 /* BridgedPDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgedPDFView.swift; sourceTree = "<group>"; };
@@ -440,6 +441,7 @@
 		B7C469D52E6C84CC00310982 /* WikiFrontPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikiFrontPage.swift; sourceTree = "<group>"; };
 		B7C469D72E6C869600310982 /* SyllabusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyllabusView.swift; sourceTree = "<group>"; };
 		B7C469D92E6CB80B00310982 /* CanvasURLService+Modifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CanvasURLService+Modifier.swift"; sourceTree = "<group>"; };
+		B7C469DB2E6F894200310982 /* GetFolderRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetFolderRequest.swift; sourceTree = "<group>"; };
 		B7C7A71D2D95016C00ECC462 /* CanvasPlusPlayground.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CanvasPlusPlayground.entitlements; sourceTree = "<group>"; };
 		B7CC4D3B2D8DB86E00254F55 /* URL+AppRootURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+AppRootURL.swift"; sourceTree = "<group>"; };
 		B7CC4D3E2D8DFAE900254F55 /* PickerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerService.swift; sourceTree = "<group>"; };
@@ -531,6 +533,7 @@
 				A3049B782D15E162002F3166 /* GetCourseRootFolderRequest.swift */,
 				B7C0A3C62D2F4E82003E5A36 /* GetFileRequest.swift */,
 				A3049B7A2D15E2B7002F3166 /* GetFilesInFolderRequest.swift */,
+				B7C469DB2E6F894200310982 /* GetFolderRequest.swift */,
 				A3049B7C2D160299002F3166 /* GetFoldersInFolderRequest.swift */,
 				A3049B7E2D160C03002F3166 /* GetTabsRequest.swift */,
 				A3049B802D160F6B002F3166 /* GetAnnouncementsRequest.swift */,
@@ -682,6 +685,7 @@
 				B7F950332D11A00F004BB470 /* StatusToolbarItem.swift */,
 				9A977E8A2D6C375E001D7F0A /* ColorPickerSheet.swift */,
 				3DAE84FF2C9A0E4F008C22E7 /* BridgedPDFView.swift */,
+				267D85252E662009007F821B /* NewWindowButton.swift */,
 				A3CA025C2D432B8500A9752B /* Search Results */,
 			);
 			path = Components;
@@ -1121,7 +1125,6 @@
 			isa = PBXGroup;
 			children = (
 				267D85272E662AB0007F821B /* FocusWindowInfo.swift */,
-				267D85252E662009007F821B /* CourseContextMenu.swift */,
 				B7A26EE82CCB62A00084704A /* NavigationModel.swift */,
 				B76454F52C8DF61B002DF00E /* HomeView.swift */,
 				B7E59A0F2D2002A3001836FE /* Sidebar.swift */,
@@ -1336,6 +1339,7 @@
 				A3049B832D161432002F3166 /* GetAssignmentsRequest.swift in Sources */,
 				B7F9503D2D12ADAE004BB470 /* SubmissionAPI.swift in Sources */,
 				B7E59A102D2002A5001836FE /* Sidebar.swift in Sources */,
+				B7C469DC2E6F894500310982 /* GetFolderRequest.swift in Sources */,
 				B7CC4D462D8DFFA500254F55 /* CourseItemPicker.swift in Sources */,
 				A3049B812D160F6B002F3166 /* GetAnnouncementsRequest.swift in Sources */,
 				A373DC332D2819F700215019 /* APIModuleItem.swift in Sources */,
@@ -1360,7 +1364,7 @@
 				A372D10C2D90E875005E94CA /* GroupsListView.swift in Sources */,
 				A3777E0A2DA0E25E00A8B00C /* StorageHandler.swift in Sources */,
 				A3FFD03C2CDED67C006BAB51 /* String+Numbers.swift in Sources */,
-				267D85262E662019007F821B /* CourseContextMenu.swift in Sources */,
+				267D85262E662019007F821B /* NewWindowButton.swift in Sources */,
 				A301EE132D614A4100D71139 /* GetDiscussionTopicsRequest.swift in Sources */,
 				9A977E832D6C322F001D7F0A /* LoggerService.swift in Sources */,
 				A301EE092D61137400D71139 /* MarkCourseDiscussionTopicReadRequest.swift in Sources */,
