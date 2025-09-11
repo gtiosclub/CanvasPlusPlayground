@@ -22,7 +22,7 @@
 		9B07E7122D779CAB00359B69 /* Date+RelativeDates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B07E7112D779CA500359B69 /* Date+RelativeDates.swift */; };
 		9B0C19402D78E461002ABEFC /* AssignmentSubmissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B0C193F2D78E461002ABEFC /* AssignmentSubmissionView.swift */; };
 		9B350F082C9652C6003FC60D /* NSAttributedString+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B350F072C9652C6003FC60D /* NSAttributedString+HTML.swift */; };
-		9B6663E32C9853BC0060990E /* HTMLTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6663E22C9853BC0060990E /* HTMLTextView.swift */; };
+		9B6663E32C9853BC0060990E /* HTMLWebViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6663E22C9853BC0060990E /* HTMLWebViewWrapper.swift */; };
 		9B69FA4B2CC2CC7F006101F3 /* AggregatedAssignmentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B69FA4A2CC2CC7F006101F3 /* AggregatedAssignmentsView.swift */; };
 		9B69FA4D2CC2CCB1006101F3 /* AggregatedAssignmentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B69FA4C2CC2CCB1006101F3 /* AggregatedAssignmentsViewModel.swift */; };
 		9B69FA4F2CC2CCCF006101F3 /* AggregatedAssignmentsListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B69FA4E2CC2CCCF006101F3 /* AggregatedAssignmentsListCell.swift */; };
@@ -254,7 +254,7 @@
 		9B07E7112D779CA500359B69 /* Date+RelativeDates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+RelativeDates.swift"; sourceTree = "<group>"; };
 		9B0C193F2D78E461002ABEFC /* AssignmentSubmissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentSubmissionView.swift; sourceTree = "<group>"; };
 		9B350F072C9652C6003FC60D /* NSAttributedString+HTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+HTML.swift"; sourceTree = "<group>"; };
-		9B6663E22C9853BC0060990E /* HTMLTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLTextView.swift; sourceTree = "<group>"; };
+		9B6663E22C9853BC0060990E /* HTMLWebViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLWebViewWrapper.swift; sourceTree = "<group>"; };
 		9B69FA4A2CC2CC7F006101F3 /* AggregatedAssignmentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AggregatedAssignmentsView.swift; sourceTree = "<group>"; };
 		9B69FA4C2CC2CCB1006101F3 /* AggregatedAssignmentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AggregatedAssignmentsViewModel.swift; sourceTree = "<group>"; };
 		9B69FA4E2CC2CCCF006101F3 /* AggregatedAssignmentsListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AggregatedAssignmentsListCell.swift; sourceTree = "<group>"; };
@@ -592,7 +592,7 @@
 				B7D7512A2D3D5D7700F7B8B8 /* AllAnnouncementsView.swift */,
 				B7D7512E2D3D660B00F7B8B8 /* AllAnnouncementsManager.swift */,
 				9B92A4242C93856100C21CFC /* CourseAnnouncementManager.swift */,
-				9B6663E22C9853BC0060990E /* HTMLTextView.swift */,
+				9B6663E22C9853BC0060990E /* HTMLWebViewWrapper.swift */,
 				9B9C2E052C93F94C00E4B16B /* CourseAnnouncementDetailView.swift */,
 				9B9C2E032C93F6CD00E4B16B /* CourseAnnouncementsView.swift */,
 				B7D751302D3D688C00F7B8B8 /* AnnouncementRow.swift */,
@@ -1423,7 +1423,7 @@
 				9B9C2E062C93F94C00E4B16B /* CourseAnnouncementDetailView.swift in Sources */,
 				A3D161512D178615004055FB /* GetUserProfileRequest.swift in Sources */,
 				A3D161492D169C23004055FB /* CacheableAPIRequest+Storage.swift in Sources */,
-				9B6663E32C9853BC0060990E /* HTMLTextView.swift in Sources */,
+				9B6663E32C9853BC0060990E /* HTMLWebViewWrapper.swift in Sources */,
 				267D85282E662AC5007F821B /* FocusWindowInfo.swift in Sources */,
 				B7CC4D432D8DFF0A00254F55 /* PickerServiceViewModifier.swift in Sources */,
 				B73AE0BD2D4FB68B007094A8 /* Profile.swift in Sources */,
