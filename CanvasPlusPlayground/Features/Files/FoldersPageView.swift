@@ -144,7 +144,7 @@ struct FoldersPageView: View {
 
     @ViewBuilder
     func folderRow(for subFolder: Folder) -> some View {
-        FolderRow(folder: subFolder)
+        FolderRow(folder: subFolder, course: course)
     }
 
     private func loadContents() async {
@@ -179,6 +179,8 @@ private struct FileRow: View {
                 courseID: course.id,
                 type: .file
             )
+
+            NewWindowButton(destination: .file(file, course.id))
         }
         .swipeActions(edge: .leading) {
             PinButton(
@@ -209,6 +211,7 @@ private struct FileRow: View {
 
 private struct FolderRow: View {
     let folder: Folder
+    let course: Course
 
     var body: some View {
         HStack {
@@ -224,6 +227,9 @@ private struct FolderRow: View {
             }
         }
         .imageScale(.large)
+        .contextMenu {
+            NewWindowButton(destination: .folder(folder, course))
+        }
     }
 
     var count: Int {
