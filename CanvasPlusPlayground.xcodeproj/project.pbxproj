@@ -178,6 +178,7 @@
 		B76455092C8DF61B002DF00E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B76454F22C8DF61B002DF00E /* Preview Assets.xcassets */; };
 		B764550A2C8DF61B002DF00E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B76454F92C8DF61B002DF00E /* Assets.xcassets */; };
 		B7725D652D7387D600D64ED8 /* AccessoryBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7725D642D7387D300D64ED8 /* AccessoryBar.swift */; };
+		B77B57C22E733765005ADB7B /* AssignmentGroupCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77B57C12E733765005ADB7B /* AssignmentGroupCategory.swift */; };
 		B77FD0022D52A0D60049AA5E /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77FD0012D52A0D20049AA5E /* ProfileView.swift */; };
 		B77FD0072D5309340049AA5E /* ProfilePicture.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77FD0062D5309340049AA5E /* ProfilePicture.swift */; };
 		B78847972E674D6400AE7221 /* CanvasURLService+Modules.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78847962E674D5A00AE7221 /* CanvasURLService+Modules.swift */; };
@@ -413,6 +414,7 @@
 		B76454FB2C8DF61B002DF00E /* CourseFileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseFileViewModel.swift; sourceTree = "<group>"; };
 		B76454FC2C8DF61B002DF00E /* CourseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseManager.swift; sourceTree = "<group>"; };
 		B7725D642D7387D300D64ED8 /* AccessoryBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessoryBar.swift; sourceTree = "<group>"; };
+		B77B57C12E733765005ADB7B /* AssignmentGroupCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentGroupCategory.swift; sourceTree = "<group>"; };
 		B77FD0012D52A0D20049AA5E /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		B77FD0062D5309340049AA5E /* ProfilePicture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePicture.swift; sourceTree = "<group>"; };
 		B78847962E674D5A00AE7221 /* CanvasURLService+Modules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CanvasURLService+Modules.swift"; sourceTree = "<group>"; };
@@ -727,8 +729,8 @@
 			isa = PBXGroup;
 			children = (
 				A373DC1E2D1D2B5700215019 /* Models */,
-				192EC04B2C963EE600AF8528 /* CourseAssignmentsView.swift */,
-				9B0C193F2D78E461002ABEFC /* AssignmentCreateSubmissionView.swift */,
+				B77B57C02E73375E005ADB7B /* View */,
+				9B0C193F2D78E461002ABEFC /* AssignmentSubmissionView.swift */,
 				9BEB4ECF2D56AF570013869D /* AssignmentDetailView.swift */,
 				9BD232392E6C9CA600DB7A0E /* SubmissionHistoryDetailView.swift */,
 				9BFD45802D811B1000BBAA01 /* UploadSubmissionManager.swift */,
@@ -1001,6 +1003,15 @@
 			path = CanvasPlusPlayground;
 			sourceTree = "<group>";
 		};
+		B77B57C02E73375E005ADB7B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B77B57C12E733765005ADB7B /* AssignmentGroupCategory.swift */,
+				192EC04B2C963EE600AF8528 /* CourseAssignmentsView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		B78847952E674D3800AE7221 /* URLService */ = {
 			isa = PBXGroup;
 			children = (
@@ -1148,6 +1159,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B76454722C8BBC81002DF00E /* Build configuration list for PBXNativeTarget "CanvasPlusPlayground" */;
 			buildPhases = (
+                9ACDA5E82D5F1DA2001F1F0A /* SwiftLint */,
 				B76454602C8BBC7F002DF00E /* Sources */,
 				B76454612C8BBC7F002DF00E /* Frameworks */,
 				B76454622C8BBC7F002DF00E /* Resources */,
@@ -1380,6 +1392,7 @@
 				B72D83002E4F7A3300BA1DAD /* IntelligenceServiceProvider+SystemPrompt.swift in Sources */,
 				B78847972E674D6400AE7221 /* CanvasURLService+Modules.swift in Sources */,
 				B7F950342D11A00F004BB470 /* StatusToolbarItem.swift in Sources */,
+				B77B57C22E733765005ADB7B /* AssignmentGroupCategory.swift in Sources */,
 				A37AB4AD2D98B05E00610639 /* CanvasGroup+Memberships.swift in Sources */,
 				B7E073602D986D9800A7E82F /* ToDoItemCountAPI.swift in Sources */,
 				A301EE0F2D612EA800D71139 /* DiscussionTopic.swift in Sources */,
