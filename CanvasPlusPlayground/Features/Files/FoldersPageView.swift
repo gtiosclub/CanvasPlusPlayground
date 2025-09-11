@@ -38,6 +38,10 @@ struct FoldersPageView: View {
     @State private var isLoadingContents = true
     @State private var selectedItem: Selection?
 
+    @State private var searchText: String = ""
+
+    @Environment(\.isSearching) var isSearching: Bool
+
     init(course: Course, folder: Folder? = nil) {
         self.course = course
         self.folder = folder
@@ -46,6 +50,38 @@ struct FoldersPageView: View {
     }
 
     var body: some View {
+        listOfFilesAndFolders
+            .task {
+                await filesVM.getAllFiles()
+            }
+            .searchable(text: $searchText)
+            .onChange(of: searchText) { _, _ in
+                filesVM.searchText = searchText
+            }
+            .overlay {
+                if searchText.count > 0 {
+                    searchResult
+                }
+            }
+    }
+    
+
+    private var searchResult: some View {
+        SearchResultsListView(dataSource: filesVM) {
+            ForEach(filesVM.matchedFiles) { file in
+                NavigationLink(
+                    value: NavigationModel.Destination.file(file, course.id)
+                ) {
+                    fileRow(for: file)
+                }
+                .tag(Selection.file(file))
+                .listItemTint(course.rgbColors?.color)
+            }
+        }
+    }
+
+
+    private var listOfFilesAndFolders: some View {
         List(selection: $selectedItem) {
             if !filesVM.displayedFiles.isEmpty {
                 Section("Files") {

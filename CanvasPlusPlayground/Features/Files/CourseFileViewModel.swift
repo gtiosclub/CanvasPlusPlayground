@@ -8,11 +8,24 @@
 import SwiftUI
 
 @Observable
-class CourseFileViewModel {
+class CourseFileViewModel: SearchResultListDataSource {
+
+    // MARK: SearchResultListDatasource
+    let label: String = "Files"
+
+    var loadingState: LoadingState = .nextPageReady
+    var queryMode: PageMode = .live
+
+    func fetchNextPage() async {
+        //MARK: placeholder for future implementation as the VM currently doesn't make network call for searching
+    }
+
     private let courseID: String
 
     var files = [File]()
     var folders = [Folder]()
+    var allFiles = [File]()
+    var searchText = ""
 
     var displayedFiles: [File] {
         files.sorted {
@@ -25,17 +38,31 @@ class CourseFileViewModel {
         }
     }
 
+    var matchedFiles: [File] {
+        allFiles.filter { file in
+            let matchesSearchText = searchText.isEmpty || file.displayName.localizedCaseInsensitiveContains(searchText)
+            return matchesSearchText
+        }
+        .sorted { file1, file2 in
+            file1.filename < file2.filename
+        }
+    }
+
     init(courseID: String) {
         self.courseID = courseID
     }
 
-    func fetchRoot() async -> Folder? {
+    func fetchRoot(isForSearching: Bool = false) async -> Folder? {
         let request = CanvasRequest.getCourseRootFolder(courseId: courseID)
         if let persistedRootFolder: Folder = try? await CanvasService.shared.load(request)?.first {
-            await fetchContent(in: persistedRootFolder)
+            if !isForSearching {
+                await fetchContent(in: persistedRootFolder)
+            }
             return persistedRootFolder
         } else if let rootFolder: Folder = try? await CanvasService.shared.syncWithAPI(request).first {
-            await fetchContent(in: rootFolder)
+            if !isForSearching {
+                await fetchContent(in: rootFolder)
+            }
             return rootFolder
         }
 
@@ -66,6 +93,46 @@ class CourseFileViewModel {
             }
         } catch {
             LoggerService.main.error("\(error.localizedDescription)")
+        }
+    }
+}
+
+// MARK: Collapse all Folders into a flat array of Files
+extension CourseFileViewModel {
+
+    func getAllFiles() async  {
+        guard let root = await fetchRoot(isForSearching: true) else { return }
+        allFiles = await traverseAndCollectFiles(from: root)
+    }
+
+    /// recursively traverses the files tree and collect all files from each folder
+    private func traverseAndCollectFiles(from folder: Folder) async -> [File] {
+        let (files, subFolders) = await loadContents(of: folder)
+        var all = files
+        for subFolder in subFolders {
+            let subFiles = await traverseAndCollectFiles(from: subFolder)
+            all.append(contentsOf: subFiles)
+        }
+        return all
+    }
+
+    /// a non-mutating version of fetchContent(:) to avoid driving unwanted UI updates
+    func loadContents(of folder: Folder) async -> (files: [File], folders: [Folder]) {
+        async let foldersTask: [Folder] = CanvasService.shared.loadAndSync(
+            CanvasRequest.getFoldersInFolder(folderId: folder.id),
+            onCacheReceive: { _ in }
+        )
+        async let filesTask: [File] = CanvasService.shared.loadAndSync(
+            CanvasRequest.getFilesInFolder(folderId: folder.id),
+            onCacheReceive: { _ in }
+        )
+
+        do {
+            let (folders, files) = await ((try foldersTask), (try filesTask))
+            return (files, folders)
+        } catch {
+            LoggerService.main.error("\(error.localizedDescription)")
+            return ([], [])
         }
     }
 }
