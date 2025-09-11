@@ -48,28 +48,22 @@ private struct PinnedAnnouncementCard: View {
 	let announcement: DiscussionTopic
 	let course: Course
 	let onRemove: () -> Void
-	
 	var body: some View {
 		ScrollView {
-			HStack(alignment: .top, spacing: 8) {
+			// New parent VStack to control alignment
+			HStack {
 				Button(action: onRemove) {
 					Image(systemName: "circle")
 						.foregroundStyle(course.rgbColors?.color ?? .accentColor)
 						.font(.title)
 				}
 				.buttonStyle(.plain)
-				
-				VStack(alignment: .leading, spacing: 8) {
-					Text(course.displayName.uppercased())
-						.font(.caption)
-						.foregroundStyle(course.rgbColors?.color ?? .accentColor)
-					
-					VStack(alignment: .leading, spacing: 3) {
-						Text(announcement.title ?? "No Title")
-							.font(.headline)
-							.fontDesign(.rounded)
-							.bold()
-							.lineLimit(1)
+				VStack {
+					// Your original content VStack
+					VStack(alignment: .leading, spacing: 8) {
+						Text(course.displayName.uppercased())
+							.font(.caption)
+							.foregroundStyle(course.rgbColors?.color ?? .accentColor)
 						
 						Text(
 							announcement.message?
@@ -81,9 +75,9 @@ private struct PinnedAnnouncementCard: View {
 						.foregroundStyle(.secondary)
 						.lineLimit(2)
 					}
+					
+					Spacer()
 				}
-				
-				Spacer()
 			}
 			.frame(maxWidth: 400, alignment: .leading)
 		}

@@ -14,10 +14,10 @@ struct PinButton: View {
     let courseID: String?
     let type: PinnedItem.PinnedItemType
 
-    private var isItemPinned: Bool {
-		guard let courseID = courseID else {return false}
-		return pinnedItemsManager.isItemPinned(itemID: itemID, courseID: courseID, type: type)
-        
+    var isItemPinned: Bool {
+        pinnedItemsManager.pinnedItems.contains {
+            $0.id == itemID && $0.courseID == courseID && $0.type == type
+        }
     }
 
     var body: some View {

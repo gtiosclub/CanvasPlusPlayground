@@ -17,12 +17,11 @@ class CanvasService {
     static var shared = CanvasService()
 
     var repository: CanvasRepository?
-	
-	@MainActor
-	func setupStorage() {
-		self.repository = CanvasRepository()
-	}
 
+    @MainActor func setupStorage() {
+        let repo = CanvasRepository()
+        self.repository = repo
+    }
 
     /// Only loads from storage, doesn't make a network call
     @MainActor
