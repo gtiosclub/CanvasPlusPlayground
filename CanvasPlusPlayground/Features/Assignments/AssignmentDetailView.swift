@@ -29,23 +29,9 @@ struct AssignmentDetailView: View {
                 fatalError("Invalid URL for online quiz: \(assignment.htmlUrl ?? "nil")")
             }
         } else {
-            Form {
-                detailsSection
-                
-                submissionSection
-                
-                if let assignmentDescription = assignment.assignmentDescription {
-                    Section {
-                        HTMLTextView(
-                            htmlText: assignmentDescription
-                        )
-                    }
-                    .handleDeepLinks(for: assignment.courseId?.asString ?? "")
-                }
-                
+            DetailsView(item: assignment) {
+                submissionSection // Injecting the unique submission section here
             }
-            .navigationTitle("Assignment Details")
-            .formStyle(.grouped)
             .toolbar {
                 ReminderButton(item: .assignment(assignment))
             }

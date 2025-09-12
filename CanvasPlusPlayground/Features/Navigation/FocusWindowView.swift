@@ -45,7 +45,7 @@ struct FocusWindowView: View {
         switch info.destination {
         case .course(let courseID), .coursePage(_, let courseID), .file(_, let courseID), .folder(_, let courseID):
             return courseID
-        case .announcement(_, let courseID), .assignment(_, let courseID), .page(_, let courseID):
+        case .announcement(_, let courseID), .assignment(_, let courseID), .page(_, let courseID), .quiz(_, let courseID):
             return courseID
         }
     }
@@ -78,6 +78,8 @@ struct FocusWindowView: View {
 
             case .folder(let folderID, let courseID):
                 try await loadFolder(folderID: folderID, courseID: courseID)
+            case .quiz(let quizID, let courseID):
+                try await loadQuiz(quizID: quizID, courseID: courseID)
             }
         } catch {
             errorMessage = "Failed to load content: \(error.localizedDescription)"
@@ -196,6 +198,19 @@ struct FocusWindowView: View {
 
         if destination == nil, let folder = folders.first {
             destination = .folder(folder, course)
+        }
+    }
+    private func loadQuiz(quizID: Quiz.ID, courseID: Course.ID) async throws {
+        let quizzes = try await CanvasService.shared.loadAndSync(
+            CanvasRequest.getQuiz(id: quizID, courseId: courseID)
+        ) { cachedQuizzes in
+            if let quiz = cachedQuizzes?.first {
+                destination = .quiz(quiz)
+            }
+        }
+
+        if destination == nil, let quiz = quizzes.first {
+            destination = .quiz(quiz)
         }
     }
 

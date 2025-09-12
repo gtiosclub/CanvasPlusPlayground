@@ -1,4 +1,12 @@
 //
+//  DetailsView 2.swift
+//  CanvasPlusPlayground
+//
+//  Created by Ivan Li on 9/11/25.
+//
+
+
+//
 //  DetailsView.swift
 //  CanvasPlusPlayground
 //

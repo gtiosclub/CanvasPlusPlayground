@@ -1,3 +1,11 @@
+//
+//  QuizDetailView 2.swift
+//  CanvasPlusPlayground
+//
+//  Created by Ivan Li on 9/11/25.
+//
+
+
 //import SwiftUI
 //import WebKit
 //

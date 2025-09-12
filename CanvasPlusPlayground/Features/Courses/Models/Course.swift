@@ -278,6 +278,13 @@ extension Course {
     }
 }
 
+extension Course: Equatable {
+    static func == (lhs: Course, rhs: Course) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+
+
 extension Course {
     static let sample = Course(.sample)
     static let minimalSample = Course(.minimalSample)
