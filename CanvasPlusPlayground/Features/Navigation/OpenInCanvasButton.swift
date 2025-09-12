@@ -7,24 +7,30 @@
 
 import SwiftUI
 
-private struct OpenInCanvasButton: View {
+
+struct OpenWebLinkButton<Content: View>: View {
+    @Environment(\.openURL) var openURL
+    let url: URL
+    let content: () -> Content
     
-    var titleText: String {
-        #if os(iOS)
-        "Open in Canvas Student"
-        #else
-        "Open in web"
-        #endif
+    var body: some View {
+        Button(action: { openURL(url) }) {
+            content()
+        }
     }
-    
+}
+
+struct OpenInCanvasButton: View {
     
     let path: CanvasButtonType
-    @Environment(\.openURL) var openURL
 
     var body: some View {
-        Button(titleText, systemImage: "globe") {
-            print("opening url \(path.url)")
-            openURL(path.url)
+        OpenWebLinkButton(url: path.url) {
+            #if os(iOS)
+            Label("Open in Canvas Student", systemImage: "globe")
+            #else
+            Label("Open in web", systemImage: "globe")
+            #endif
         }
     }
 }
