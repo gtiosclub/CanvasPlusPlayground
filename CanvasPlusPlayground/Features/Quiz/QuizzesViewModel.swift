@@ -14,7 +14,6 @@ class QuizzesViewModel {
 
     var sectionsToQuizzes: [QuizType: [Quiz]] {
         let unsorted = Dictionary(grouping: quizzes, by: { $0.quizType })
-
         return unsorted.mapValues {
             $0.sorted {
                 if $0.dueAt == $1.dueAt {

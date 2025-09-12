@@ -26,7 +26,6 @@ struct CourseQuizzesView: View {
             await loadQuizzes()
         }
         .statusToolbarItem("Quizzes", isVisible: isLoadingQuizzes)
-        .openInCanvasToolbarButton(.quizzes(quizzesVM.courseId))
     }
 
     @ViewBuilder
@@ -41,32 +40,52 @@ struct CourseQuizzesView: View {
 
     @ViewBuilder
     func quizCell(for quiz: Quiz) -> some View {
-        HStack {
-            VStack {
-                Text(quiz.title)
-                    .bold()
+        NavigationLink(
+            value: NavigationModel.Destination.quiz(quiz)) {
+            HStack {
+                VStack {
+                    Text(quiz.title)
+                        .bold()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+
+                    HStack {
+                        if let pointsPossible = quiz.pointsPossible?.truncatingTrailingZeros {
+                            Text("\(pointsPossible) pts")
+                        } else { Text("No pts")}
+
+                        Text("\(quiz.questionCount ?? 0) Questions")
+                        Text("Allowed Attempts: \(quiz.allowedAttempts)")
+                    }
+                    .font(.caption)
                     .frame(maxWidth: .infinity, alignment: .leading)
-
-                HStack {
-                    if let pointsPossible = quiz.pointsPossible?.truncatingTrailingZeros {
-                        Text("\(pointsPossible) pts")
-                    } else { Text("No pts")}
-
-                    Text("\(quiz.questionCount ?? 0) Questions")
                 }
-                .font(.caption)
-                .frame(maxWidth: .infinity, alignment: .leading)
-            }
 
-            Spacer()
+                Spacer()
 
-            if quiz.lockedForUser == true {
-                Text("Closed")
-            } else if quiz.dueAt == .distantFuture {
-                Text("No Due Date")
-            } else {
-                Text("Due at \(quiz.dueAt?.formatted(Date.FormatStyle()) ?? "Unknown")")
+                if quiz.lockedForUser == true {
+                    Text("Closed")
+                } else if quiz.dueAt == .distantFuture {
+                    Text("No Due Date")
+                } else {
+                    if let dueDate = quiz.dueAt {
+                        if dueDate < Date() {
+                            Text("Due at \(dueDate.formatted(Date.FormatStyle()))")
+                                .strikethrough()
+                                .foregroundColor(.gray)
+                            Text("Past Due")
+                                .bold()
+                                .foregroundColor(.red)
+                        } else {
+                            Text("Due at \(dueDate.formatted(Date.FormatStyle()))")
+                        }
+                    } else {
+                        Text("Due at Unknown")
+                    }
+                }
             }
+        }
+        .contextMenu {
+            OpenInCanvasButton(path: .quizzes(quiz.courseID, quiz.id))
         }
     }
 

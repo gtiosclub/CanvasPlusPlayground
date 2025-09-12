@@ -109,7 +109,7 @@ class NavigationModel {
         case file(File, Course.ID)
         case folder(Folder, Course)
         // TODO: Add specific course items as needed.
-
+        case quiz(Quiz)
         @ViewBuilder
         func destinationView() -> some View {
             switch self {
@@ -127,6 +127,8 @@ class NavigationModel {
                 FileViewer(courseID: courseID, file: file)
             case let .folder(folder, course):
                 FoldersPageView(course: course, folder: folder)
+            case let .quiz(quiz):
+                QuizDetailView(quiz: quiz)
             }
         }
     }

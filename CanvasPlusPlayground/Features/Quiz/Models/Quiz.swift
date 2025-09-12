@@ -13,6 +13,7 @@ typealias Quiz = CanvasSchemaV1.Quiz
 extension CanvasSchemaV1 {
     @Model
     class Quiz {
+        typealias ID = String
         @Attribute(.unique) let id: String
         var courseID: String
 
