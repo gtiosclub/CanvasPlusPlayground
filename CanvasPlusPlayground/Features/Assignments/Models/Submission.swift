@@ -47,10 +47,7 @@ extension CanvasSchemaV1 {
         var postedAt: String?
         var readStatus: String?
         var redoRequest: Bool?
-        var submissionHistory: [Submission]?
-        var submissionComments: [SubmissionComment]?
-        var attachments: [FileAPI] = []
-        
+
         init(from submissionAPI: SubmissionAPI) {
             self.id = submissionAPI.id
             self.assignmentId = submissionAPI.assignment_id
@@ -87,16 +84,12 @@ extension CanvasSchemaV1 {
             self.postedAt = submissionAPI.posted_at
             self.readStatus = submissionAPI.read_status
             self.redoRequest = submissionAPI.redo_request
-            self.submissionHistory = submissionAPI.submission_history?.map { Submission(from: $0) }
-            self.submissionComments = submissionAPI.submission_comments
-            self.attachments = submissionAPI.attachments ?? []
         }
     }
 
 }
 
 extension Submission: Cacheable {
-    
     func merge(with other: Submission) {
         self.assignmentId = other.assignmentId
         self.assignment = other.assignment
@@ -128,9 +121,6 @@ extension Submission: Cacheable {
         self.postedAt = other.postedAt
         self.readStatus = other.readStatus
         self.redoRequest = other.redoRequest
-        self.submissionHistory = other.submissionHistory
-        self.submissionComments = other.submissionComments
-        self.attachments = other.attachments
     }
 }
 

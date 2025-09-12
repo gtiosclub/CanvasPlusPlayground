@@ -46,23 +46,20 @@ struct SubmissionAPI: APIResponse, Identifiable, Hashable {
     let posted_at: String?
     let read_status: String?
     let redo_request: Bool?
-    let submission_comments: [SubmissionComment]?
-    let submission_history: [SubmissionAPI]?
-    let attachments: [FileAPI]?
-    
+
     func createModel() -> Submission {
         Submission(from: self)
     }
 }
 
-struct SubmissionComment: Codable, Identifiable {
+struct SubmissionComment: Codable {
     let id: Int
     let author_id: Int
     let author_name: String
-    let author: UserDisplay
+    let author: UserAPI
     let comment: String
-    let created_at: String
-    let edited_at: String?
+    let createdAt: String
+    let editedAt: String?
 }
 /*
 {

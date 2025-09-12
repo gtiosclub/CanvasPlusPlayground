@@ -16,8 +16,8 @@ final class NetworkRequestRecorder {
     
     static let networkRequestDebugID = "network-request-recorder"
     
-    func addRecord(request: URLRequest, response: URLResponse?, responseBody: Data) {
-        let pair = NetworkRequestResponsePair(request: request, response: response, responseBody: responseBody, timestamp: Date.now, id: counter)
+    func addRecord(request: URLRequest, response: URLResponse?) {
+        let pair = NetworkRequestResponsePair(request: request, response: response, timestamp: Date.now, id: counter)
         records.append(pair)
         counter += 1
     }
@@ -25,7 +25,6 @@ final class NetworkRequestRecorder {
     struct NetworkRequestResponsePair: Identifiable, Hashable {
         let request: URLRequest
         let response: URLResponse? // who ever said we were going to get a response...
-        let responseBody: Data?
         let timestamp: Date
         let id: Int
         
@@ -46,8 +45,7 @@ final class NetworkRequestRecorder {
                 lines.append("  Headers: <none>")
             }
             
-            if let body = self.request.httpBody {
-                let bodyString = body.jsonToPrettyString() ?? "<binary data>"
+            if let body = self.request.httpBody, let bodyString = String(data: body, encoding: .utf8) {
                 lines.append("  Body:")
                 lines.append(bodyString.split(separator: "\n").map { "    \($0)" }.joined(separator: "\n"))
             } else {
@@ -71,14 +69,6 @@ final class NetworkRequestRecorder {
                         }
                     }
                 }
-                
-                if let responseBody = self.responseBody {
-                    let bodyString = responseBody.jsonToPrettyString() ?? "<binary data>"
-                    lines.append("  Body:")
-                    lines.append(bodyString.split(separator: "\n").map { "    \($0)" }.joined(separator: "\n"))
-                } else {
-                    lines.append("  Body: <none>")
-                }
             } else {
                 lines.append("  No response")
             }
@@ -89,14 +79,3 @@ final class NetworkRequestRecorder {
 }
 
 #endif
-
-extension Data {
-    fileprivate func jsonToPrettyString() -> String? {
-        if let json = try? JSONSerialization.jsonObject(with: self, options: .mutableContainers),
-           let jsonData = try? JSONSerialization.data(withJSONObject: json, options: .prettyPrinted) {
-            return String(decoding: jsonData, as: UTF8.self)
-        } else {
-            return nil
-        }
-    }
-}

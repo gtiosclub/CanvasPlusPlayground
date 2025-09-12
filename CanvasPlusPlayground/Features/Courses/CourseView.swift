@@ -57,9 +57,7 @@ struct CourseView: View {
                 ForEach(coursePages, id: \.self) { page in
                     NavigationLink(value: NavigationModel.Destination.coursePage(page, course)) {
                         Label(page.title, systemImage: page.systemImageIcon)
-                    }
-                    .contextMenu {
-                        NewWindowButton(destination: .coursePage(page, course))
+                            .contextMenu(for: FocusWindowInfo(courseID: course.id, coursePage: page))
                     }
                     .tag(page)
                 }
@@ -83,6 +81,7 @@ struct CourseView: View {
 #endif
         .tint(course.rgbColors?.color)
         .navigationTitle(course.displayName)
+        .defaultNavigationDestination(courseID: course.id)
         .openInCanvasToolbarButton(.homepage(course.id))
     }
 }
