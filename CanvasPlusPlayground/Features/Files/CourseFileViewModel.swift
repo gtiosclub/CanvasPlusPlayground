@@ -113,10 +113,19 @@ extension CourseFileViewModel {
     private func traverseAndCollectFiles(from folder: Folder) async -> [File] {
         let (files, subFolders) = await loadContents(of: folder)
         var all = files
-        for subFolder in subFolders {
-            let subFiles = await traverseAndCollectFiles(from: subFolder)
-            all.append(contentsOf: subFiles)
+
+        await withTaskGroup(of: [File].self) { group in
+            for subFolder in subFolders {
+                group.addTask { [self] in
+                    await self.traverseAndCollectFiles(from: subFolder)
+                }
+            }
+
+            for await subFiles in group {
+                all.append(contentsOf: subFiles)
+            }
         }
+
         return all
     }
 
