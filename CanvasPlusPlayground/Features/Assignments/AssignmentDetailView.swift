@@ -36,8 +36,9 @@ struct AssignmentDetailView: View {
                 
                 if let assignmentDescription = assignment.assignmentDescription {
                     Section {
-                        HTMLTextView(
-                            htmlText: assignmentDescription
+                        HTMLWebViewWrapper(
+                            htmlText: assignmentDescription,
+                            courseID: assignment.courseId?.asString ?? ""
                         )
                     }
                     .handleDeepLinks(for: assignment.courseId?.asString ?? "")
