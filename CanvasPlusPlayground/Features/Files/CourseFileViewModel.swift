@@ -52,14 +52,18 @@ class CourseFileViewModel: SearchResultListDataSource {
         self.courseID = courseID
     }
 
+    /// added isForSearching as the parameter that when set to true prevents the function from calling fetchContent(:)
+    /// because in the case of searching, we only need to get the root folder object which then gets called on in traverseAndCollectFiles(:)
     func fetchRoot(isForSearching: Bool = false) async -> Folder? {
         let request = CanvasRequest.getCourseRootFolder(courseId: courseID)
         if let persistedRootFolder: Folder = try? await CanvasService.shared.load(request)?.first {
+            await fetchContent(in: persistedRootFolder)
             if !isForSearching {
                 await fetchContent(in: persistedRootFolder)
             }
             return persistedRootFolder
         } else if let rootFolder: Folder = try? await CanvasService.shared.syncWithAPI(request).first {
+            await fetchContent(in: rootFolder)
             if !isForSearching {
                 await fetchContent(in: rootFolder)
             }
