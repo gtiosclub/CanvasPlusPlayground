@@ -8,12 +8,12 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
-struct AssignmentCreateSubmissionView: View {
-    typealias AssignmentSubmissionError = UploadSubmissionManager.AssignmentSubmissionError
+struct AssignmentSubmissionView: View {
+    typealias AssignmentSubmissionError = AssignmentSubmissionManager.AssignmentSubmissionError
 
     @Environment(\.dismiss) private var dismiss
 
-    @State private var manager: UploadSubmissionManager
+    @State private var manager: AssignmentSubmissionManager
 
     let assignment: Assignment
 
@@ -50,7 +50,7 @@ struct AssignmentCreateSubmissionView: View {
 
     init(assignment: Assignment) {
         self.assignment = assignment
-        self.manager = UploadSubmissionManager(assignment: assignment)
+        self.manager = AssignmentSubmissionManager(assignment: assignment)
     }
 
     var body: some View {

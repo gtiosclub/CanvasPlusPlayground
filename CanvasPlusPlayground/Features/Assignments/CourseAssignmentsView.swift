@@ -57,6 +57,24 @@ struct CourseAssignmentsView: View {
                     ForEach(assignments) { assignment in
                         let assignmentModel = assignment.createModel()
                         AssignmentRow(assignment: assignmentModel, showGrades: showGrades)
+                            .contextMenu {
+                                if !showGrades {
+                                    PinButton(
+                                        itemID: assignmentModel.id,
+                                        courseID: course.id,
+                                        type: .assignment
+                                    )
+                                }
+                            }
+                            .swipeActions(edge: .leading) {
+                                if !showGrades {
+                                    PinButton(
+                                        itemID: assignmentModel.id,
+                                        courseID: course.id,
+                                        type: .assignment
+                                    )
+                                }
+                            }
                     }
                 }
             } header: {
@@ -127,22 +145,6 @@ private struct AssignmentRow: View {
                 value: NavigationModel.Destination.assignment(assignment)
             ) {
                 bodyContents
-            }
-            .contextMenu {
-                PinButton(
-                    itemID: assignment.id,
-                    courseID: assignment.courseId?.asString,
-                    type: .assignment
-                )
-
-                NewWindowButton(destination: .assignment(assignment))
-            }
-            .swipeActions(edge: .leading) {
-                PinButton(
-                    itemID: assignment.id,
-                    courseID: assignment.courseId?.asString,
-                    type: .assignment
-                )
             }
             .tag(assignment)
         } else {

@@ -7,13 +7,13 @@
 
 import Foundation
 @Observable
-public class UploadSubmissionManager {
+public class AssignmentSubmissionManager {
     let assignment: Assignment
 
     init(assignment: Assignment) {
         self.assignment = assignment
     }
-    // MARK: Assignment Submission Uploads
+
     /// This function makes an API request to create and upload a text submission to the corresponding assignment.
     /// The user can pass in text as plaintext or as an HTML document snippet. Note: The HTML snippet will be sanitized
     /// using the same ruleset as the Canvas Web UI

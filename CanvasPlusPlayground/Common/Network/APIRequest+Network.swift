@@ -95,7 +95,7 @@ extension APIRequest {
         
         #if DEBUG
         // for logging purposes in the request debug window
-        NetworkRequestRecorder.shared.addRecord(request: urlRequest, response: response, responseBody: data)
+        NetworkRequestRecorder.shared.addRecord(request: urlRequest, response: response)
         #endif
         
         guard let httpResponse = response as? HTTPURLResponse else {
