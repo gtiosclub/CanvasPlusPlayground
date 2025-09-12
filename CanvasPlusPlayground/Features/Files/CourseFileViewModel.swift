@@ -57,13 +57,11 @@ class CourseFileViewModel: SearchResultListDataSource {
     func fetchRoot(isForSearching: Bool = false) async -> Folder? {
         let request = CanvasRequest.getCourseRootFolder(courseId: courseID)
         if let persistedRootFolder: Folder = try? await CanvasService.shared.load(request)?.first {
-            await fetchContent(in: persistedRootFolder)
             if !isForSearching {
                 await fetchContent(in: persistedRootFolder)
             }
             return persistedRootFolder
         } else if let rootFolder: Folder = try? await CanvasService.shared.syncWithAPI(request).first {
-            await fetchContent(in: rootFolder)
             if !isForSearching {
                 await fetchContent(in: rootFolder)
             }
