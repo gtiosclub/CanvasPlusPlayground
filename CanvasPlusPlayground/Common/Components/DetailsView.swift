@@ -10,7 +10,7 @@ import SwiftUI
 // The Reusable Generic View
 // This view can display any object that conforms to `DisplayableItemDetails`.
 // The `@ViewBuilder` allows us to inject custom sections for specific types.
-struct DetailsView<Item: DisplayableItemDetails, AdditionalContent: View>: View {
+struct AssignmentQuizDetailsForm<Item: DisplayableItemDetails, AdditionalContent: View>: View {
 	let item: Item
 	@ViewBuilder let additionalContent: AdditionalContent
 
