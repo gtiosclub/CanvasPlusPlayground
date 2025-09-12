@@ -39,6 +39,7 @@ typealias Folder = CanvasSchemaV1.Folder
 extension CanvasSchemaV1 {
     @Model
     class Folder {
+        typealias ID = String
         typealias ServerID = Int
 
         @Attribute(.unique) var id: String

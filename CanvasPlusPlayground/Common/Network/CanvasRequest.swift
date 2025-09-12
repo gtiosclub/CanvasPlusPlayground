@@ -41,6 +41,10 @@ enum CanvasRequest {
         GetFileRequest(fileId: fileId)
     }
 
+    static func getFolder(folderId: String) -> GetFolderRequest {
+        GetFolderRequest(folderId: folderId)
+    }
+
     static func getFilesInFolder(folderId: String) -> GetFilesInFolderRequest {
         GetFilesInFolderRequest(folderId: folderId)
     }
@@ -140,6 +144,14 @@ enum CanvasRequest {
         ]
     ) -> GetAssignmentGroupsRequest {
         GetAssignmentGroupsRequest(courseId: courseId, include: include)
+    }
+    
+    static func getSubmissionHistoryForAssignment(
+        courseId: String,
+        assignmentId: String,
+        userId: String
+    ) -> GetSubmissionRequest {
+        GetSubmissionRequest(courseId: courseId, assignmentId: assignmentId, userId: userId)
     }
 
     static func getEnrollments(courseId: String, userId: String? = nil, perPage: Int = 50) -> GetEnrollmentsRequest {

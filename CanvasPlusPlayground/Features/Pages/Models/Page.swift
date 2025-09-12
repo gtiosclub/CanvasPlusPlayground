@@ -12,7 +12,7 @@ typealias Page = CanvasSchemaV1.Page
 
 extension CanvasSchemaV1 {
     @Model
-    final class Page {
+    final class Page: Hashable {
         typealias ID = String
         typealias ServerID = Int
 
