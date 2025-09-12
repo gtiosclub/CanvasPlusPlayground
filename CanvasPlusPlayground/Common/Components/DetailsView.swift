@@ -1,12 +1,4 @@
 //
-//  DetailsView 2.swift
-//  CanvasPlusPlayground
-//
-//  Created by Ivan Li on 9/11/25.
-//
-
-
-//
 //  DetailsView.swift
 //  CanvasPlusPlayground
 //
@@ -15,7 +7,7 @@
 
 import SwiftUI
 
-// 3. The Reusable Generic View
+// The Reusable Generic View
 // This view can display any object that conforms to `DisplayableItemDetails`.
 // The `@ViewBuilder` allows us to inject custom sections for specific types.
 struct DetailsView<Item: DisplayableItemDetails, AdditionalContent: View>: View {
