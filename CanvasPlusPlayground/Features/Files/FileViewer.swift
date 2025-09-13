@@ -27,6 +27,9 @@ struct FileViewer: View {
                     #else
                     .toolbar {
                         ShareLink(item: url)
+                        Button("Open in default app...") {
+                            NSWorkspace.shared.open(url)
+                        }
                     }
                     #endif
             } else {
