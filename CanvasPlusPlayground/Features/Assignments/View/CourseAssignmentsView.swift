@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct CourseAssignmentsView: View {
+    typealias GroupMode = CourseAssignmentManager.GroupMode
     let course: Course
     /// Display grades in each assignment row. Disables navigation to Assignment Details.
     let showGrades: Bool
@@ -18,6 +19,25 @@ struct CourseAssignmentsView: View {
     @State private var isLoadingAssignments = true
     @State private var showingGradeCalculator = false
     @State private var selectedAssignment: Assignment?
+
+    @SceneStorage("CourseAssignmentsView.currentGroupMode")
+    var currentGroupMode: GroupMode = .type
+
+    var displayedAssignmentGroups: [any AssignmentGroupCategory] {
+        switch currentGroupMode {
+        case .type:
+            assignmentManager.assignmentGroups
+        case .dueDate:
+            [
+                UpcomingAssignmentsCategory(
+                    allAssignments: assignmentManager.allAssignments
+                ),
+                PastAssignmentsCategory(
+                    allAssignments: assignmentManager.allAssignments
+                )
+            ]
+        }
+    }
 
     init(course: Course, showGrades: Bool = false) {
         self.course = course
@@ -44,7 +64,8 @@ struct CourseAssignmentsView: View {
 
     var mainbody: some View {
         List(
-            assignmentManager.assignmentGroups,
+            displayedAssignmentGroups,
+            id: \.id,
             selection: $selectedAssignment
         ) { assignmentGroup in
             Section {
@@ -67,6 +88,14 @@ struct CourseAssignmentsView: View {
             }
         }
         .toolbar {
+            ToolbarItem {
+                Menu {
+                    groupByPicker
+                } label: {
+                    Label("Group By...", systemImage: "arrow.up.arrow.down")
+                }
+            }
+
             if showGrades {
                 ToolbarItem(placement: .automatic) {
                     Button("Calculate Grades", image: .customFunctionCapsule) {
@@ -98,6 +127,17 @@ struct CourseAssignmentsView: View {
             #endif
         }
         .environment(gradeCalculator)
+    }
+
+    private var groupByPicker: some View {
+        Picker("Group Assignments",
+            selection: $currentGroupMode) {
+                ForEach(GroupMode.allCases,id: \.self) { mode in
+                    Text(mode.rawValue).tag(mode)
+                }
+            }
+            .fixedSize()
+            .pickerStyle(.inline)
     }
 
     private func loadAssignments() async {
@@ -192,7 +232,7 @@ private struct AssignmentRow: View {
 }
 
 private struct GroupHeader: View {
-    let assignmentGroup: AssignmentGroup
+    let assignmentGroup: any AssignmentGroupCategory
     let showGrades: Bool
 
     @State private var showingInfo = false
@@ -205,7 +245,7 @@ private struct GroupHeader: View {
 
     var body: some View {
         HStack {
-            Text(assignmentGroup.name)
+            Text(assignmentGroup.title)
 
             Spacer()
 
