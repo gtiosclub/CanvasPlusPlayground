@@ -24,7 +24,6 @@ struct DownloadButton: View {
                     .controlSize(.small)
             } else {
                 Button("Download", systemImage: "arrow.down.circle", action:downloadFile)
-                    .labelStyle(.iconOnly)
             }
         }
         .fileExporter(isPresented: $showFileExporter, document: dataFileDocument, defaultFilename: fileName) { result in

@@ -33,6 +33,9 @@ struct FileViewer: View {
                         ToolbarItemGroup {
                             ShareLink(item: url)
                             DownloadButton(url: url, fileName: file.displayName)
+                            Button("Open", systemImage: "doc.text.magnifyingglass") {
+                                NSWorkspace.shared.open(url)
+                            }
                         }
                     }
                     #endif
