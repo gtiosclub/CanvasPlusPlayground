@@ -7,13 +7,6 @@
 
 import SwiftUI
 
-#if os(macOS)
-enum DownloadStatus {
-    case inactive
-    case success
-    case error
-}
-#endif
 
 struct FileViewer: View {
     @Environment(\.dismiss) private var dismiss
@@ -26,46 +19,7 @@ struct FileViewer: View {
     @State private var isLoading = false
 
     #if os(macOS)
-    @State private var downloadStatus = DownloadStatus.inactive
     @State private var destinationURL: URL?
-
-    var alertTitle: String {
-        switch downloadStatus {
-        case .success:
-            return "\(file.displayName) saved"
-        case .error:
-            return "Download failed"
-        default:
-            return ""
-        }
-    }
-
-    var alertMessage: String? {
-        switch downloadStatus {
-        case .success:
-            if let destinationURL {
-                return "The file was saved to: \(destinationURL.description)"
-            } else {
-                return "The file was saved to your chosen location"
-            }
-
-        case .error:
-            return "Please try again."
-        default:
-            return nil
-        }
-    }
-
-    var presentAlert: Binding<Bool> {
-        Binding<Bool>(
-            get: { downloadStatus == .success || downloadStatus == .error },
-            set: { newValue in
-                if newValue == false {
-                    downloadStatus = .inactive
-                }
-            }
-        )
-    }
     #endif
 
     var body: some View {
@@ -76,13 +30,12 @@ struct FileViewer: View {
                     .ignoresSafeArea()
                     .toolbar(.hidden)
                     #else
-                    .macOSToolbarForFileViewer(url: url) { url in downloadFile(from: url) }
-                    .macOSFileDownloadAlert(
-                        alertTitle: alertTitle,
-                        presentAlert: presentAlert,
-                        alertMessage: alertMessage,
-                        downloadStatus: $downloadStatus
-                    )
+                    .toolbar {
+                        ToolbarItemGroup {
+                            ShareLink(item: url)
+                            DownloadButton(url: url, fileName: file.displayName)
+                        }
+                    }
                     #endif
             } else {
                 Group {
@@ -130,10 +83,8 @@ struct FileViewer: View {
                     try FileManager.default.removeItem(at: destinationURL)
                 }
                 try FileManager.default.copyItem(at: sourceURL, to: destinationURL)
-                downloadStatus = .success
             } catch {
                 LoggerService.main.error("Failed to save file: \(error.localizedDescription)")
-                downloadStatus = .error
             }
         }
     }
@@ -154,34 +105,3 @@ struct FileViewer: View {
     }
 }
 
-#if os(macOS)
-extension View {
-    func macOSToolbarForFileViewer(url: URL, downloadAction: @escaping (URL) -> Void) -> some View {
-        self
-            .toolbar {
-                ToolbarItemGroup {
-                    ShareLink(item: url)
-                    Button {
-                        downloadAction(url)
-                    } label: {
-                        Label("Download", systemImage: "arrow.down.circle")
-                    }
-                }
-            }
-    }
-
-    func macOSFileDownloadAlert(alertTitle: String, presentAlert: Binding<Bool>, alertMessage: String?, downloadStatus: Binding<DownloadStatus>) -> some View {
-        self
-            .alert(alertTitle, isPresented: presentAlert) {
-                Button("OK") { downloadStatus.wrappedValue = .inactive }
-            } message: {
-                if let alertMessage {
-                    VStack(alignment: .center) {
-                        Text(alertMessage)
-                    }
-                    .padding()
-                }
-            }
-    }
-}
-#endif
