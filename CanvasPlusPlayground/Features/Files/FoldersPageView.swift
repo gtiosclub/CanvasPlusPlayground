@@ -65,8 +65,10 @@ struct FoldersPageView: View {
             }
         #if os(iOS)
             .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
-        #endif
+        #else
             .searchable(text: $searchText)
+        #endif
+
     }
 
     private var searchResult: some View {
