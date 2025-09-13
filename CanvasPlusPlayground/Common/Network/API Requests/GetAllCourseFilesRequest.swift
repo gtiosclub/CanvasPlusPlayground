@@ -29,9 +29,7 @@ struct GetAllCourseFilesRequest: CacheableArrayAPIRequest {
         self.perPage = perPage
     }
 
-    typealias KeyType = Int?
-
-    var requestId: Int? { Int(courseId) }
+    var requestId: Int? { courseId.asInt }
 
     var requestIdKey: ParentKeyPath<File, Int?> { .createReadable(\.folderId) }
 

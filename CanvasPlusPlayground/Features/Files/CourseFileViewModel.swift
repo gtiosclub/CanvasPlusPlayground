@@ -46,8 +46,7 @@ class CourseFileViewModel: SearchResultListDataSource {
 
     var matchedFiles: [File] {
         allFiles.filter { file in
-            let matchesSearchText = searchText.isEmpty || file.displayName.localizedCaseInsensitiveContains(searchText)
-            return matchesSearchText
+            searchText.isEmpty || file.displayName.localizedCaseInsensitiveContains(searchText)
         }
         .sorted { file1, file2 in
             file1.filename < file2.filename
@@ -58,8 +57,6 @@ class CourseFileViewModel: SearchResultListDataSource {
         self.courseID = courseID
     }
 
-    /// added isForSearching as the parameter that when set to true prevents the function from calling fetchContent(:)
-    /// because in the case of searching, we only need to get the root folder object which then gets called on in traverseAndCollectFiles(:)
     func fetchRoot() async -> Folder? {
         let request = CanvasRequest.getCourseRootFolder(courseId: courseID)
         if let persistedRootFolder: Folder = try? await CanvasService.shared.load(request)?.first {
