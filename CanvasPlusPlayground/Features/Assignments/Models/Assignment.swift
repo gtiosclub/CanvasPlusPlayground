@@ -272,6 +272,12 @@ extension Assignment: Cacheable {
 
 }
 
+extension Course: Equatable {
+    static func == (lhs: Course, rhs: Course) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+
 enum SubmissionType: String, Codable {
     case discussionTopic = "discussion_topic"
     case onlineQuiz = "online_quiz"

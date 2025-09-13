@@ -21,34 +21,25 @@ struct AssignmentDetailView: View {
     @Environment(ProfileManager.self) private var profileManager 
     
     var body: some View {
-        if assignment.isOnlineQuiz {
-            if let url = URL(string: assignment.htmlUrl ?? "gatech.edu") {
-                WebView(url: url)
+        AssignmentQuizDetailsForm(item: assignment) {
+            submissionSection
+        }
+        .toolbar {
+            ReminderButton(item: .assignment(assignment))
+        }
+        .task {
+            await fetchSubmissions()
+            await fetchCanSubmitStatus()
+        }
+        .sheet(isPresented: $showSubmissionPopUp) {
+            AssignmentCreateSubmissionView(assignment: assignment)
+        }
+        .sheet(isPresented: $showSubmissionHistoryPopUp) {
+            if let submission {
+                SubmissionHistoryDetailView(submission: submission)
             } else {
-                fatalError("Invalid URL for online quiz: \(assignment.htmlUrl ?? "nil")")
+                submissionUnavailableView
             }
-        } else {
-            AssignmentQuizDetailsForm(item: assignment) {
-                submissionSection
-            }
-            .toolbar {
-                ReminderButton(item: .assignment(assignment))
-            }
-            .task {
-                await fetchSubmissions()
-                await fetchCanSubmitStatus()
-            }
-            .sheet(isPresented: $showSubmissionPopUp) {
-                AssignmentCreateSubmissionView(assignment: assignment)
-            }
-            .sheet(isPresented: $showSubmissionHistoryPopUp) {
-                if let submission {
-                    SubmissionHistoryDetailView(submission: submission)
-                } else {
-                    submissionUnavailableView
-                }
-            }
-            .openInCanvasToolbarButton(.assignment(assignment.courseId?.asString ?? "MISSING_COURSE_ID", assignment.id))
         }
     }
     

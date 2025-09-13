@@ -12,12 +12,23 @@ struct CourseQuizzesView: View {
 
     @State private var isLoadingQuizzes = true
 
+    @State private var selectedQuiz: Quiz?
+
     init(courseId: String) {
         self.quizzesVM = QuizzesViewModel(courseId: courseId)
     }
 
-    var body: some View {
-        List {
+    var body : some View {
+        mainbody
+            #if os(iOS)
+            .onAppear {
+                selectedQuiz = nil
+            }
+            #endif
+    }
+
+    var mainbody: some View {
+        List(selection: $selectedQuiz) {
             ForEach(quizzesVM.sections) { section in
                 quizSection(for: section)
             }
@@ -87,6 +98,7 @@ struct CourseQuizzesView: View {
         .contextMenu {
             OpenInCanvasButton(path: .quizzes(quiz.courseID, quiz.id))
         }
+        .tag(quiz)
     }
 
     private func loadQuizzes() async {
