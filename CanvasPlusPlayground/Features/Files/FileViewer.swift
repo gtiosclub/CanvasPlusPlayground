@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 struct FileViewer: View {
     @Environment(\.dismiss) private var dismiss
 
