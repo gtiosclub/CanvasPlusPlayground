@@ -23,9 +23,6 @@
 		9B0C19402D78E461002ABEFC /* AssignmentCreateSubmissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B0C193F2D78E461002ABEFC /* AssignmentCreateSubmissionView.swift */; };
 		9B350F082C9652C6003FC60D /* NSAttributedString+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B350F072C9652C6003FC60D /* NSAttributedString+HTML.swift */; };
 		9B6663E32C9853BC0060990E /* HTMLWebViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6663E22C9853BC0060990E /* HTMLWebViewWrapper.swift */; };
-		9B69FA4B2CC2CC7F006101F3 /* AggregatedAssignmentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B69FA4A2CC2CC7F006101F3 /* AggregatedAssignmentsView.swift */; };
-		9B69FA4D2CC2CCB1006101F3 /* AggregatedAssignmentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B69FA4C2CC2CCB1006101F3 /* AggregatedAssignmentsViewModel.swift */; };
-		9B69FA4F2CC2CCCF006101F3 /* AggregatedAssignmentsListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B69FA4E2CC2CCCF006101F3 /* AggregatedAssignmentsListCell.swift */; };
 		9B6D4F802D6E48340033044F /* ReminderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6D4F7F2D6E48340033044F /* ReminderButton.swift */; };
 		9B762BC92D7BF8E70051F1F6 /* SubmitAssignmentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B762BC82D7BF8E70051F1F6 /* SubmitAssignmentRequest.swift */; };
 		9B801DEB2E66659D00DF4942 /* NetworkRequestRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B801DEA2E66659D00DF4942 /* NetworkRequestRecorder.swift */; };
@@ -181,6 +178,7 @@
 		B76455092C8DF61B002DF00E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B76454F22C8DF61B002DF00E /* Preview Assets.xcassets */; };
 		B764550A2C8DF61B002DF00E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B76454F92C8DF61B002DF00E /* Assets.xcassets */; };
 		B7725D652D7387D600D64ED8 /* AccessoryBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7725D642D7387D300D64ED8 /* AccessoryBar.swift */; };
+		B77B57C22E733765005ADB7B /* AssignmentGroupCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77B57C12E733765005ADB7B /* AssignmentGroupCategory.swift */; };
 		B77FD0022D52A0D60049AA5E /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77FD0012D52A0D20049AA5E /* ProfileView.swift */; };
 		B77FD0072D5309340049AA5E /* ProfilePicture.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77FD0062D5309340049AA5E /* ProfilePicture.swift */; };
 		B78847972E674D6400AE7221 /* CanvasURLService+Modules.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78847962E674D5A00AE7221 /* CanvasURLService+Modules.swift */; };
@@ -259,9 +257,6 @@
 		9B0C193F2D78E461002ABEFC /* AssignmentCreateSubmissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentCreateSubmissionView.swift; sourceTree = "<group>"; };
 		9B350F072C9652C6003FC60D /* NSAttributedString+HTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+HTML.swift"; sourceTree = "<group>"; };
 		9B6663E22C9853BC0060990E /* HTMLWebViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLWebViewWrapper.swift; sourceTree = "<group>"; };
-		9B69FA4A2CC2CC7F006101F3 /* AggregatedAssignmentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AggregatedAssignmentsView.swift; sourceTree = "<group>"; };
-		9B69FA4C2CC2CCB1006101F3 /* AggregatedAssignmentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AggregatedAssignmentsViewModel.swift; sourceTree = "<group>"; };
-		9B69FA4E2CC2CCCF006101F3 /* AggregatedAssignmentsListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AggregatedAssignmentsListCell.swift; sourceTree = "<group>"; };
 		9B6D4F7F2D6E48340033044F /* ReminderButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderButton.swift; sourceTree = "<group>"; };
 		9B762BC82D7BF8E70051F1F6 /* SubmitAssignmentRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitAssignmentRequest.swift; sourceTree = "<group>"; };
 		9B801DE92E66659D00DF4942 /* NetworkRequestDebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRequestDebugView.swift; sourceTree = "<group>"; };
@@ -419,6 +414,7 @@
 		B76454FB2C8DF61B002DF00E /* CourseFileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseFileViewModel.swift; sourceTree = "<group>"; };
 		B76454FC2C8DF61B002DF00E /* CourseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseManager.swift; sourceTree = "<group>"; };
 		B7725D642D7387D300D64ED8 /* AccessoryBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessoryBar.swift; sourceTree = "<group>"; };
+		B77B57C12E733765005ADB7B /* AssignmentGroupCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentGroupCategory.swift; sourceTree = "<group>"; };
 		B77FD0012D52A0D20049AA5E /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		B77FD0062D5309340049AA5E /* ProfilePicture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePicture.swift; sourceTree = "<group>"; };
 		B78847962E674D5A00AE7221 /* CanvasURLService+Modules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CanvasURLService+Modules.swift"; sourceTree = "<group>"; };
@@ -733,15 +729,9 @@
 			isa = PBXGroup;
 			children = (
 				A373DC1E2D1D2B5700215019 /* Models */,
-				192EC04B2C963EE600AF8528 /* CourseAssignmentsView.swift */,
-				9B0C193F2D78E461002ABEFC /* AssignmentCreateSubmissionView.swift */,
-				9BEB4ECF2D56AF570013869D /* AssignmentDetailView.swift */,
-				9BD232392E6C9CA600DB7A0E /* SubmissionHistoryDetailView.swift */,
-				9B69FA4A2CC2CC7F006101F3 /* AggregatedAssignmentsView.swift */,
-				9B69FA4E2CC2CCCF006101F3 /* AggregatedAssignmentsListCell.swift */,
-				192EC0472C963ACB00AF8528 /* CourseAssignmentManager.swift */,
-				9B69FA4C2CC2CCB1006101F3 /* AggregatedAssignmentsViewModel.swift */,
+				B77B57C02E73375E005ADB7B /* View */,
 				9BFD45802D811B1000BBAA01 /* UploadSubmissionManager.swift */,
+				192EC0472C963ACB00AF8528 /* CourseAssignmentManager.swift */,
 			);
 			path = Assignments;
 			sourceTree = "<group>";
@@ -1010,6 +1000,18 @@
 			path = CanvasPlusPlayground;
 			sourceTree = "<group>";
 		};
+		B77B57C02E73375E005ADB7B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B77B57C12E733765005ADB7B /* AssignmentGroupCategory.swift */,
+				192EC04B2C963EE600AF8528 /* CourseAssignmentsView.swift */,
+				9B0C193F2D78E461002ABEFC /* AssignmentCreateSubmissionView.swift */,
+				9BEB4ECF2D56AF570013869D /* AssignmentDetailView.swift */,
+				9BD232392E6C9CA600DB7A0E /* SubmissionHistoryDetailView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		B78847952E674D3800AE7221 /* URLService */ = {
 			isa = PBXGroup;
 			children = (
@@ -1260,7 +1262,6 @@
 				A3049B632D0E6154002F3166 /* ScoringPolicy.swift in Sources */,
 				A33BE8752D97A6F7005C1D13 /* GetGroupMembershipRequest.swift in Sources */,
 				B7C0A3C92D2F87EC003E5A36 /* AsyncView.swift in Sources */,
-				9B69FA4F2CC2CCCF006101F3 /* AggregatedAssignmentsListCell.swift in Sources */,
 				B7F950372D127869004BB470 /* ProfileManager.swift in Sources */,
 				A330B89B2DA98D0D00D6C1C3 /* MarkFavoriteRequest.swift in Sources */,
 				A324BA662D07AFD5005F53FA /* FileType.swift in Sources */,
@@ -1291,7 +1292,6 @@
 				A3049B592D0E5A96002F3166 /* LockInfo.swift in Sources */,
 				A3E7F3932C99338B00DC4300 /* TabAPI.swift in Sources */,
 				A3049B7D2D160299002F3166 /* GetFoldersInFolderRequest.swift in Sources */,
-				9B69FA4D2CC2CCB1006101F3 /* AggregatedAssignmentsViewModel.swift in Sources */,
 				B76455022C8DF61B002DF00E /* CourseFilesView.swift in Sources */,
 				B76455032C8DF61B002DF00E /* HomeView.swift in Sources */,
 				A3269E8E2CD5533F006F7D14 /* CanvasRepository.swift in Sources */,
@@ -1392,11 +1392,11 @@
 				B72D83002E4F7A3300BA1DAD /* IntelligenceServiceProvider+SystemPrompt.swift in Sources */,
 				B78847972E674D6400AE7221 /* CanvasURLService+Modules.swift in Sources */,
 				B7F950342D11A00F004BB470 /* StatusToolbarItem.swift in Sources */,
+				B77B57C22E733765005ADB7B /* AssignmentGroupCategory.swift in Sources */,
 				A37AB4AD2D98B05E00610639 /* CanvasGroup+Memberships.swift in Sources */,
 				B7E073602D986D9800A7E82F /* ToDoItemCountAPI.swift in Sources */,
 				A301EE0F2D612EA800D71139 /* DiscussionTopic.swift in Sources */,
 				9B07E7122D779CAB00359B69 /* Date+RelativeDates.swift in Sources */,
-				9B69FA4B2CC2CC7F006101F3 /* AggregatedAssignmentsView.swift in Sources */,
 				B7C0A3BF2D2F2251003E5A36 /* PinnedItemsView.swift in Sources */,
 				A3CF88E32D1921CB000ACDF3 /* FolderAPI.swift in Sources */,
 				A373DC2D2D28172E00215019 /* GetModulesRequest.swift in Sources */,
