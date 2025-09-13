@@ -1,9 +1,10 @@
 //
-//  DetailsView.swift
+//  AssignmentQuizDetailsForm.swift
 //  CanvasPlusPlayground
 //
-//  Created by Ivan Li on 9/9/25.
+//  Created by Ivan Li on 9/12/25.
 //
+
 
 import SwiftUI
 

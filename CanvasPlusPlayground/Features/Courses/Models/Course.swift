@@ -278,11 +278,11 @@ extension Course {
     }
 }
 
-extension Course: Equatable {
-    static func == (lhs: Course, rhs: Course) -> Bool {
-        lhs.id == rhs.id
-    }
-}
+//extension Course: Equatable {
+//    static func == (lhs: Course, rhs: Course) -> Bool {
+//        lhs.id == rhs.id
+//    }
+//}
 
 
 extension Course {

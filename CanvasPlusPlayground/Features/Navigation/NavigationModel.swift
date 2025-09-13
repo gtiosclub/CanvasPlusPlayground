@@ -108,8 +108,8 @@ class NavigationModel {
         case page(Page)
         case file(File, Course.ID)
         case folder(Folder, Course)
-        // TODO: Add specific course items as needed.
         case quiz(Quiz)
+        // TODO: Add specific course items as needed.
         @ViewBuilder
         func destinationView() -> some View {
             switch self {

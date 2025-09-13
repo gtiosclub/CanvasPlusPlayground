@@ -10,8 +10,7 @@ import SwiftUI
 struct AssignmentDetailView: View {
     var assignment: Assignment // currently displayed assignment
     
-    /// Submission is initially nil, but is updated with a new submission once an api network request is made
-    /// Once loaded, this populates other fields like submission history and comments
+
     @State private var submission: Submission?
 
     // Presentable sheets
@@ -19,7 +18,7 @@ struct AssignmentDetailView: View {
     @State private var showSubmissionHistoryPopUp: Bool = false
     @State private var fetchingCanSubmitStatus: Bool = false
     @State private var canSubmit: Bool = false // this is updated by a network call upon onAppear()
-    @Environment(ProfileManager.self) private var profileManager // User ID from profileManager is required for getting current submission
+    @Environment(ProfileManager.self) private var profileManager 
     
     var body: some View {
         if assignment.isOnlineQuiz {
@@ -29,8 +28,8 @@ struct AssignmentDetailView: View {
                 fatalError("Invalid URL for online quiz: \(assignment.htmlUrl ?? "nil")")
             }
         } else {
-            DetailsView(item: assignment) {
-                submissionSection // Injecting the unique submission section here
+            AssignmentQuizDetailsForm(item: assignment) {
+                submissionSection
             }
             .toolbar {
                 ReminderButton(item: .assignment(assignment))

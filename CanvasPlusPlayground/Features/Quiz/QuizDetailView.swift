@@ -77,9 +77,7 @@ struct QuizDetailView: View {
 	let quiz: Quiz
 
 	var body: some View {
-		// Use the generic view for the shared layout
-		DetailsView(item: quiz) {
-			// Inject only the UI that is unique to a Quiz
+		AssignmentQuizDetailsForm(item: quiz) {
 			Section("Quiz Specifics") {
 				if let questionCount = quiz.questionCount {
 					LabeledContent("Number of Questions", value: "\(questionCount)")

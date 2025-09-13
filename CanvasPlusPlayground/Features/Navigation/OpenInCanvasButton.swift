@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-//FIXME: removed private to test in other modules
 struct OpenInCanvasButton: View {
     var titleText: String {
         #if os(iOS)

@@ -8,10 +8,23 @@
 
 import Foundation
 
+enum DisplayableItemType : String {
+    case quiz
+    case assignment
+    var displayTitle : String {
+        switch self {
+        case .quiz:
+            return "Quiz"
+        case .assignment:
+            return "Assignment"
+        }
+    }
+}
 // A protocol that defines common properties for items between quizzes and assignments(for now)
 protocol DisplayableItemDetails {
     var displayName: String { get }
-    var itemType: String { get } // e.g., "Quiz" or "Assignment"
+    var itemType: DisplayableItemType { get }
+
     var unlockDate: Date? { get }
     var dueDate: Date? { get }
     var lockDate: Date? { get }
@@ -20,10 +33,8 @@ protocol DisplayableItemDetails {
 }
 
 extension CanvasSchemaV1.Quiz: DisplayableItemDetails {
-
-
     var displayName: String { self.title }
-    var itemType: String { "Quiz" }
+    var itemType: DisplayableItemType { .quiz }
     var descriptionHTML: String? { self.details }
 
     var unlockDate: Date? { self.unlockAt }
@@ -45,14 +56,8 @@ extension CanvasSchemaV1.Assignment: DisplayableItemDetails {
 
     // These properties map directly to existing ones on your model.
     var displayName: String { self.name }
-    var itemType: String { "Assignment" }
+    var itemType: DisplayableItemType { .assignment }
     var descriptionHTML: String? { self.assignmentDescription }
 
-    // Your model already has computed properties for Date objects and formatted points,
-    // so we can use them directly! This is very clean.
     var pointsPossibleDisplay: String { self.formattedPointsPossible }
-
-    // Note: The protocol requires `unlockDate`, `dueDate`, and `lockDate`.
-    // Your `Assignment` model already provides these exact computed properties,
-    // so no extra work is needed. The conformance is automatic.
 }

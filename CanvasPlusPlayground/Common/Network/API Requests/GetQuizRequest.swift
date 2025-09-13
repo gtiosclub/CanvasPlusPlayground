@@ -5,15 +5,6 @@
 //  Created by Ivan Li on 9/11/25.
 //
 
-
-//
-//  GetQuizRequest.swift
-//  CanvasPlusPlayground
-//
-//  Created by Ivan Li on 9/4/25.
-//
-
-
 import Foundation
 
 struct GetQuizRequest: CacheableAPIRequest {
