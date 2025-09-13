@@ -17,15 +17,21 @@ class CourseFileViewModel: SearchResultListDataSource {
     var queryMode: PageMode = .live
 
     func fetchNextPage() async {
-        //MARK: placeholder for future implementation as the VM currently doesn't make network call for searching
+        await setLoadingState(.loading)
+        do {
+            try await fetchFiles()
+        } catch {
+            await setLoadingState(.error())
+        }
     }
 
     private let courseID: String
 
     var files = [File]()
     var folders = [Folder]()
-    var allFiles = [File]()
+    var allFiles = Set<File>()
     var searchText = ""
+    var page = 1 // 1-indexed
 
     var displayedFiles: [File] {
         files.sorted {
@@ -97,53 +103,54 @@ class CourseFileViewModel: SearchResultListDataSource {
             LoggerService.main.error("\(error.localizedDescription)")
         }
     }
-}
 
-// MARK: Collapse all Folders into a flat array of Files
-extension CourseFileViewModel {
+    @MainActor
+    func fetchFiles() async throws {
+        let request = CanvasRequest.getAllFilesInCourse(
+            courseId: courseID,
+            searchTerm: searchText.count >= 2 ? searchText : ""
+        )
 
-    func getAllFiles() async  {
-        guard let root = await fetchRoot(isForSearching: true) else { return }
-        allFiles = await traverseAndCollectFiles(from: root)
-    }
+        var files = [File]()
 
-    /// recursively traverses the files tree and collect all files from each folder
-    private func traverseAndCollectFiles(from folder: Folder) async -> [File] {
-        let (files, subFolders) = await loadContents(of: folder)
-        var all = files
-
-        await withTaskGroup(of: [File].self) { group in
-            for subFolder in subFolders {
-                group.addTask { [self] in
-                    await self.traverseAndCollectFiles(from: subFolder)
-                }
+        do {
+            switch queryMode {
+            case .offline:
+                files = (try await CanvasService.shared.load(request, loadingMethod: .page(order: page))) ?? []
+            case .live:
+                files = try await CanvasService.shared.syncWithAPI(request, loadingMethod: .page(order: page))
             }
 
-            for await subFiles in group {
-                all.append(contentsOf: subFiles)
+            addNewFiles(files)
+        } catch {
+            // don't make offline query if request was cancelled
+            if let error = error as? URLError, error.code == .cancelled { return }
+
+            LoggerService.main.error("Error fetching users:\(error)")
+
+            if queryMode == .live && page == 1 {
+                setQueryMode(.offline)
+            } else {
+                throw error
             }
         }
 
-        return all
     }
 
-    /// a non-mutating version of fetchContent(:) to avoid driving unwanted UI updates
-    func loadContents(of folder: Folder) async -> (files: [File], folders: [Folder]) {
-        async let foldersTask: [Folder] = CanvasService.shared.loadAndSync(
-            CanvasRequest.getFoldersInFolder(folderId: folder.id),
-            onCacheReceive: { _ in }
-        )
-        async let filesTask: [File] = CanvasService.shared.loadAndSync(
-            CanvasRequest.getFilesInFolder(folderId: folder.id),
-            onCacheReceive: { _ in }
-        )
+    @MainActor
+    private func addNewFiles(_ newFiles: [File]) {
+        if page == 1 {
+            LoggerService.main.debug("Users: \(self.allFiles.map(\.displayName))")
+            self.allFiles = []
+        }
 
-        do {
-            let (folders, files) = await ((try foldersTask), (try filesTask))
-            return (files, folders)
-        } catch {
-            LoggerService.main.error("\(error.localizedDescription)")
-            return ([], [])
+        self.allFiles.formUnion(newFiles)
+
+        if newFiles.isEmpty {
+            setLoadingState(.idle) // no more users means no more pages
+        } else {
+            setLoadingState(.nextPageReady)
+            page += 1
         }
     }
 }

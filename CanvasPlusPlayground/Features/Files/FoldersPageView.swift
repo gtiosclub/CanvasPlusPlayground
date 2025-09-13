@@ -40,6 +40,8 @@ struct FoldersPageView: View {
 
     @State private var searchText: String = ""
 
+    @State private var currentSearchTask: Task<Void, Never>?
+
     init(course: Course, folder: Folder? = nil) {
         self.course = course
         self.folder = folder
@@ -48,21 +50,23 @@ struct FoldersPageView: View {
     }
 
     var body: some View {
-        listOfFilesAndFolders
-            .task {
-                await filesVM.getAllFiles()
+        Group {
+            if searchText.count >= 2 {
+                searchResult
+            } else {
+                defaultView
             }
-            .searchable(text: $searchText)
-            .onChange(of: searchText) { _, _ in
-                filesVM.searchText = searchText
-            }
-            .overlay {
-                if searchText.count > 0 {
-                    searchResult
-                }
-            }
+        }
+        .refreshable {
+            currentSearchTask?.cancel()
+            await newQuery()
+        }
+        .searchable(text: $searchText)
+        .onChange(of: searchText) { _, _ in
+            newQueryAsync()
+        }
+
     }
-    
 
     private var searchResult: some View {
         SearchResultsListView(dataSource: filesVM) {
@@ -78,8 +82,7 @@ struct FoldersPageView: View {
         }
     }
 
-
-    private var listOfFilesAndFolders: some View {
+    private var defaultView: some View {
         List(selection: $selectedItem) {
             if !filesVM.displayedFiles.isEmpty {
                 Section("Files") {
@@ -128,6 +131,20 @@ struct FoldersPageView: View {
         )
         .navigationTitle(folder?.name?.capitalized ?? "Course Files")
         .pickedItem(selectedItem?.pickedValue)
+    }
+
+    private func newQuery() async {
+        filesVM.page = 1
+        filesVM.queryMode = .live
+        filesVM.searchText = searchText
+        await filesVM.fetchNextPage()
+    }
+
+    private func newQueryAsync() {
+        currentSearchTask?.cancel()
+        currentSearchTask = Task {
+            await newQuery()
+        }
     }
 
     @ViewBuilder

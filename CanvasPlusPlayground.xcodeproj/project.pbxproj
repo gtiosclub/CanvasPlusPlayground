@@ -11,6 +11,7 @@
 		192EC04A2C963B9000AF8528 /* AssignmentAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192EC0492C963B9000AF8528 /* AssignmentAPI.swift */; };
 		192EC04C2C963EE600AF8528 /* CourseAssignmentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192EC04B2C963EE600AF8528 /* CourseAssignmentsView.swift */; };
 		262CA4622E6A34A000BB7C00 /* DefaultNavigationDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 262CA4612E6A34A000BB7C00 /* DefaultNavigationDestination.swift */; };
+		26589EF02E75C85100234C2F /* GetAllCourseFilesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26589EEF2E75C84700234C2F /* GetAllCourseFilesRequest.swift */; };
 		267D85262E662019007F821B /* NewWindowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 267D85252E662009007F821B /* NewWindowButton.swift */; };
 		267D85282E662AC5007F821B /* FocusWindowInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 267D85272E662AB0007F821B /* FocusWindowInfo.swift */; };
 		267D852A2E6644FE007F821B /* FocusWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 267D85292E6644FE007F821B /* FocusWindowView.swift */; };
@@ -247,6 +248,7 @@
 		192EC0492C963B9000AF8528 /* AssignmentAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentAPI.swift; sourceTree = "<group>"; };
 		192EC04B2C963EE600AF8528 /* CourseAssignmentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAssignmentsView.swift; sourceTree = "<group>"; };
 		262CA4612E6A34A000BB7C00 /* DefaultNavigationDestination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultNavigationDestination.swift; sourceTree = "<group>"; };
+		26589EEF2E75C84700234C2F /* GetAllCourseFilesRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAllCourseFilesRequest.swift; sourceTree = "<group>"; };
 		267D85252E662009007F821B /* NewWindowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewWindowButton.swift; sourceTree = "<group>"; };
 		267D85272E662AB0007F821B /* FocusWindowInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusWindowInfo.swift; sourceTree = "<group>"; };
 		267D85292E6644FE007F821B /* FocusWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusWindowView.swift; sourceTree = "<group>"; };
@@ -523,6 +525,7 @@
 		A3049B732D15DBEE002F3166 /* API Requests */ = {
 			isa = PBXGroup;
 			children = (
+				26589EEF2E75C84700234C2F /* GetAllCourseFilesRequest.swift */,
 				B7CC4D662D91AF3B00254F55 /* GetUserTodoItemsRequest.swift */,
 				B7E0735D2D986B1F00A7E82F /* GetUserTodoItemCountRequest.swift */,
 				B7E073632D9872AE00A7E82F /* IgnoreToDoItemRequest.swift */,
@@ -1157,7 +1160,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B76454722C8BBC81002DF00E /* Build configuration list for PBXNativeTarget "CanvasPlusPlayground" */;
 			buildPhases = (
-                9ACDA5E82D5F1DA2001F1F0A /* SwiftLint */,
 				B76454602C8BBC7F002DF00E /* Sources */,
 				B76454612C8BBC7F002DF00E /* Frameworks */,
 				B76454622C8BBC7F002DF00E /* Resources */,
@@ -1357,6 +1359,7 @@
 				A3CA025B2D432A8700A9752B /* SearchResultListDataSource.swift in Sources */,
 				9B9C2E042C93F6CD00E4B16B /* CourseAnnouncementsView.swift in Sources */,
 				B77FD0022D52A0D60049AA5E /* ProfileView.swift in Sources */,
+				26589EF02E75C85100234C2F /* GetAllCourseFilesRequest.swift in Sources */,
 				9A977E8B2D6C375E001D7F0A /* ColorPickerSheet.swift in Sources */,
 				B7CC4D712D91C9FB00254F55 /* ToDoListManager.swift in Sources */,
 				B7CC4D732D91D14600254F55 /* ToDoListView.swift in Sources */,
@@ -1648,7 +1651,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CanvasPlusPlayground/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 575PRHZ9KY;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
 				ENABLE_OUTGOING_NETWORK_CONNECTIONS = NO;
