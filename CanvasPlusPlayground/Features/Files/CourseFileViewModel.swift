@@ -8,11 +8,30 @@
 import SwiftUI
 
 @Observable
-class CourseFileViewModel {
+class CourseFileViewModel: SearchResultListDataSource {
+
+    // MARK: SearchResultListDatasource
+    let label: String = "Files"
+
+    var loadingState: LoadingState = .nextPageReady
+    var queryMode: PageMode = .live
+
+    func fetchNextPage() async {
+        await setLoadingState(.loading)
+        do {
+            try await fetchFiles()
+        } catch {
+            await setLoadingState(.error())
+        }
+    }
+
     private let courseID: String
 
     var files = [File]()
     var folders = [Folder]()
+    var allFiles = Set<File>()
+    var searchText = ""
+    var page = 1 // 1-indexed
 
     var displayedFiles: [File] {
         files.sorted {
@@ -25,10 +44,22 @@ class CourseFileViewModel {
         }
     }
 
+    var matchedFiles: [File] {
+        allFiles.filter { file in
+            let matchesSearchText = searchText.isEmpty || file.displayName.localizedCaseInsensitiveContains(searchText)
+            return matchesSearchText
+        }
+        .sorted { file1, file2 in
+            file1.filename < file2.filename
+        }
+    }
+
     init(courseID: String) {
         self.courseID = courseID
     }
 
+    /// added isForSearching as the parameter that when set to true prevents the function from calling fetchContent(:)
+    /// because in the case of searching, we only need to get the root folder object which then gets called on in traverseAndCollectFiles(:)
     func fetchRoot() async -> Folder? {
         let request = CanvasRequest.getCourseRootFolder(courseId: courseID)
         if let persistedRootFolder: Folder = try? await CanvasService.shared.load(request)?.first {
@@ -66,6 +97,56 @@ class CourseFileViewModel {
             }
         } catch {
             LoggerService.main.error("\(error.localizedDescription)")
+        }
+    }
+
+    @MainActor
+    func fetchFiles() async throws {
+        let request = CanvasRequest.getAllFilesInCourse(
+            courseId: courseID,
+            searchTerm: searchText.count >= 2 ? searchText : ""
+        )
+
+        var files = [File]()
+
+        do {
+            switch queryMode {
+            case .offline:
+                files = (try await CanvasService.shared.load(request, loadingMethod: .page(order: page))) ?? []
+            case .live:
+                files = try await CanvasService.shared.syncWithAPI(request, loadingMethod: .page(order: page))
+            }
+
+            addNewFiles(files)
+        } catch {
+            // don't make offline query if request was cancelled
+            if let error = error as? URLError, error.code == .cancelled { return }
+
+            LoggerService.main.error("Error fetching users:\(error)")
+
+            if queryMode == .live && page == 1 {
+                setQueryMode(.offline)
+            } else {
+                throw error
+            }
+        }
+
+    }
+
+    @MainActor
+    private func addNewFiles(_ newFiles: [File]) {
+        if page == 1 {
+            LoggerService.main.debug("Users: \(self.allFiles.map(\.displayName))")
+            self.allFiles = []
+        }
+
+        self.allFiles.formUnion(newFiles)
+
+        if newFiles.isEmpty {
+            setLoadingState(.idle) // no more users means no more pages
+        } else {
+            setLoadingState(.nextPageReady)
+            page += 1
         }
     }
 }

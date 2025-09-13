@@ -45,12 +45,16 @@ enum CanvasRequest {
         GetFolderRequest(folderId: folderId)
     }
 
-    static func getFilesInFolder(folderId: String) -> GetFilesInFolderRequest {
-        GetFilesInFolderRequest(folderId: folderId)
+    static func getFilesInFolder(folderId: String, searchTerm: String? = nil) -> GetFilesInFolderRequest {
+        GetFilesInFolderRequest(folderId: folderId, searchTerm: searchTerm)
     }
 
     static func getFoldersInFolder(folderId: String) -> GetFoldersInFolderRequest {
         GetFoldersInFolderRequest(folderId: folderId)
+    }
+
+    static func getAllFilesInCourse(courseId: String, searchTerm: String? = nil) -> GetAllCourseFilesRequest {
+        GetAllCourseFilesRequest(courseId: courseId, searchTerm: searchTerm)
     }
 
     static func notifyFileUpload(
