@@ -29,7 +29,7 @@ struct FoldersPageView: View {
             }
         }
     }
-    
+
 
     let course: Course
     @State private var folder: Folder?
@@ -50,22 +50,20 @@ struct FoldersPageView: View {
     }
 
     var body: some View {
-        Group {
-            if searchText.count >= 2 {
-                searchResult
-            } else {
-                defaultView
+        defaultView
+            .overlay {
+                if searchText.count >= 2 {
+                    searchResult
+                }
             }
-        }
-        .refreshable {
-            currentSearchTask?.cancel()
-            await newQuery()
-        }
-        .searchable(text: $searchText)
-        .onChange(of: searchText) { _, _ in
-            newQueryAsync()
-        }
-
+            .refreshable {
+                currentSearchTask?.cancel()
+                await newQuery()
+            }
+            .onChange(of: searchText) { _, _ in
+                newQueryAsync()
+            }
+            .searchable(text: $searchText)
     }
 
     private var searchResult: some View {
@@ -112,11 +110,11 @@ struct FoldersPageView: View {
                 }
             }
         }
-        #if os(iOS)
+#if os(iOS)
         .onAppear {
             selectedItem = nil
         }
-        #endif
+#endif
         .task {
             await loadContents()
         }
