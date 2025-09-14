@@ -17,9 +17,6 @@ struct FileViewer: View {
     @State private var url: URL?
     @State private var isLoading = false
 
-    #if os(macOS)
-    @State private var destinationURL: URL?
-    #endif
 
     var body: some View {
         Group {
@@ -33,7 +30,7 @@ struct FileViewer: View {
                         ToolbarItemGroup {
                             ShareLink(item: url)
                             DownloadButton(url: url, fileName: file.displayName)
-                            Button("Open", systemImage: "doc.text.magnifyingglass") {
+                            Button("Open", systemImage: "arrow.up.forward.app") {
                                 NSWorkspace.shared.open(url)
                             }
                         }
@@ -67,30 +64,6 @@ struct FileViewer: View {
         .navigationBarBackButtonHidden()
         #endif
     }
-
-    #if os(macOS)
-    private func downloadFile(from sourceURL: URL?) {
-        guard let sourceURL else { return }
-        let savePanel = NSSavePanel()
-        savePanel.nameFieldStringValue = file.displayName
-        savePanel.canCreateDirectories = true
-        savePanel.isExtensionHidden = false
-        savePanel.allowsOtherFileTypes = true
-
-        if savePanel.runModal() == .OK, let destinationURL = savePanel.url {
-            do {
-                // Remove existing file if present
-                self.destinationURL = destinationURL
-                if FileManager.default.fileExists(atPath: destinationURL.path) {
-                    try FileManager.default.removeItem(at: destinationURL)
-                }
-                try FileManager.default.copyItem(at: sourceURL, to: destinationURL)
-            } catch {
-                LoggerService.main.error("Failed to save file: \(error.localizedDescription)")
-            }
-        }
-    }
-    #endif
 
     private func loadContents() async {
         isLoading = true
