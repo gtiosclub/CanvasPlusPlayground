@@ -36,6 +36,7 @@ struct CourseQuizzesView: View {
         .task {
             await loadQuizzes()
         }
+        .navigationTitle("Quizzes")
         .statusToolbarItem("Quizzes", isVisible: isLoadingQuizzes)
     }
 
@@ -65,34 +66,13 @@ struct CourseQuizzesView: View {
                         } else { Text("No pts")}
 
                         Text("\(quiz.questionCount ?? 0) Questions")
-                        Text("Allowed Attempts: \(quiz.allowedAttempts)")
+                        Text("Allowed Attempts: \(quiz.displayAllowedAttempts)")
                     }
                     .font(.caption)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
 
                 Spacer()
-
-                if quiz.lockedForUser == true {
-                    Text("Closed")
-                } else if quiz.dueAt == .distantFuture {
-                    Text("No Due Date")
-                } else {
-                    if let dueDate = quiz.dueAt {
-                        if dueDate < Date() {
-                            Text("Due at \(dueDate.formatted(Date.FormatStyle()))")
-                                .strikethrough()
-                                .foregroundColor(.gray)
-                            Text("Past Due")
-                                .bold()
-                                .foregroundColor(.red)
-                        } else {
-                            Text("Due at \(dueDate.formatted(Date.FormatStyle()))")
-                        }
-                    } else {
-                        Text("Due at Unknown")
-                    }
-                }
             }
         }
         .contextMenu {

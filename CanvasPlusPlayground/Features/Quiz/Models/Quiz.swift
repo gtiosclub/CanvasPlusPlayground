@@ -71,6 +71,14 @@ extension CanvasSchemaV1 {
             set { scoringPolicyRaw = newValue?.rawValue }
         }
 
+        var displayAllowedAttempts: String {
+            guard allowedAttempts != -1 else {
+                return "Unlimited"
+            }
+
+            return allowedAttempts.asString
+        }
+
         init(api: QuizAPI) {
             self.id = api.id.asString
             self.courseID = ""

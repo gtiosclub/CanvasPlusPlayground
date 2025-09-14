@@ -119,6 +119,13 @@ extension CanvasSchemaV1 {
             return gradeDouble.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", gradeDouble) : String(gradeDouble)
         }
 
+        var displayAllowedAttempts: String? {
+            guard let allowedAttempts else { return nil }
+            guard allowedAttempts != -1 else { return "Unlimited" }
+
+            return allowedAttempts.asString
+        }
+
         // swiftlint:disable:next function_body_length
         init(from assignmentAPI: AssignmentAPI) {
             self.id = assignmentAPI.id.asString

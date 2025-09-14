@@ -17,7 +17,10 @@ struct QuizDetailView: View {
 					LabeledContent("Number of Questions", value: "\(questionCount)")
 				}
 
-				LabeledContent("Allowed Attempts", value: "\(quiz.allowedAttempts)")
+                LabeledContent(
+                    "Allowed Attempts",
+                    value: "\(quiz.displayAllowedAttempts)"
+                )
 			}
 		}
 	}
