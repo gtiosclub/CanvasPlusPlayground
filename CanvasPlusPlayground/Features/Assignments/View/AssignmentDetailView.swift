@@ -9,9 +9,7 @@ import SwiftUI
 
 struct AssignmentDetailView: View {
     var assignment: Assignment // currently displayed assignment
-    
-    /// Submission is initially nil, but is updated with a new submission once an api network request is made
-    /// Once loaded, this populates other fields like submission history and comments
+
     @State private var submission: Submission?
 
     // Presentable sheets
@@ -19,61 +17,38 @@ struct AssignmentDetailView: View {
     @State private var showSubmissionHistoryPopUp: Bool = false
     @State private var fetchingCanSubmitStatus: Bool = false
     @State private var canSubmit: Bool = false // this is updated by a network call upon onAppear()
-    @Environment(ProfileManager.self) private var profileManager // User ID from profileManager is required for getting current submission
-    
+    @Environment(ProfileManager.self) private var profileManager
+
     var body: some View {
-        if assignment.isOnlineQuiz {
-            if let url = URL(string: assignment.htmlUrl ?? "gatech.edu") {
-                WebView(url: url)
+        AssignmentQuizDetailsForm(item: assignment) {
+            submissionSection
+        }
+        .toolbar {
+            ReminderButton(item: .assignment(assignment))
+        }
+        .task {
+            await fetchSubmissions()
+            await fetchCanSubmitStatus()
+        }
+        .sheet(isPresented: $showCreateSubmissionPopUp) {
+            AssignmentCreateSubmissionView(assignment: assignment)
+        }
+        .sheet(isPresented: $showSubmissionHistoryPopUp) {
+            if let submission {
+                SubmissionHistoryDetailView(submission: submission)
             } else {
-                fatalError("Invalid URL for online quiz: \(assignment.htmlUrl ?? "nil")")
+                submissionUnavailableView
             }
-        } else {
-            Form {
-                detailsSection
-                
-                submissionSection
-                
-                if let assignmentDescription = assignment.assignmentDescription {
-                    Section {
-                        HTMLTextView(
-                            htmlText: assignmentDescription
-                        )
-                    }
-                    .handleDeepLinks(for: assignment.courseId?.asString ?? "")
-                }
-                
-            }
-            .navigationTitle("Assignment Details")
-            .formStyle(.grouped)
-            .toolbar {
-                ReminderButton(item: .assignment(assignment))
-            }
-            .task {
-                await fetchSubmissions()
-                await fetchCanSubmitStatus()
-            }
-            .sheet(isPresented: $showCreateSubmissionPopUp) {
-                AssignmentCreateSubmissionView(assignment: assignment)
-            }
-            .sheet(isPresented: $showSubmissionHistoryPopUp) {
-                if let submission {
-                    SubmissionHistoryDetailView(submission: submission)
-                } else {
-                    submissionUnavailableView
-                }
-            }
-            .openInCanvasToolbarButton(.assignment(assignment.courseId?.asString ?? "MISSING_COURSE_ID", assignment.id))
         }
     }
-    
+
     var submissionUnavailableView: some View {
         ContentUnavailableView(
             "Could not load submission",
             systemImage: "exclamationmark.triangle.fill"
         )
     }
-    
+
     // displays fields related to assignment object
     var detailsSection: some View {
         Section("Details") {
@@ -109,7 +84,7 @@ struct AssignmentDetailView: View {
             )
         }
     }
-    
+
     var submissionSection: some View {
         Section("Submission") {
             if let allowedExtensions = assignment.allowedExtensions {
@@ -120,7 +95,7 @@ struct AssignmentDetailView: View {
                 )
             }
 
-            
+
             // everything below required a submission to exist
             if let workflowState = submission?.workflowState {
                 LabeledContent(
@@ -144,21 +119,19 @@ struct AssignmentDetailView: View {
                 value: assignment.formattedGrade + "/" + assignment.formattedPointsPossible
             )
             
-            let submissionTypes = assignment.submissionTypes ?? []
-            let canSubmitFromCanvasPlus = submissionTypes.contains(where: { $0 == .onlineTextEntry || $0 == .onlineUrl || $0 == .onlineUpload}) ?? false
-            let canSubmitFromCanvasApp = submissionTypes.contains(where: { $0 == .discussionTopic || $0 == .externalTool || $0 == .mediaRecording || $0 == .studentAnnotation || $0 == .onPaper || $0 == .onlineQuiz } ) ?? false
+
             HStack {
                 let submissionsClosed = !canSubmit
                 #if os(macOS)
                 Spacer()
                 #endif
-                if canSubmitFromCanvasPlus {
+                if assignment.canSubmitFromCanvasPlus {
                     Button(submissionsClosed ? "Submissions Closed" : "New Submission...") {
                         showCreateSubmissionPopUp.toggle()
                     }
                     .disabled(submissionsClosed)
                 }
-                if canSubmitFromCanvasApp {
+                if assignment.canSubmitFromCanvasApp {
                     OpenInCanvasButton(path: .assignment(assignment.courseId?.asString ?? "", assignment.id))
                 }
                 
@@ -168,7 +141,7 @@ struct AssignmentDetailView: View {
                         .controlSize(.small)
                 }
             }
-            if self.submission != nil && canSubmitFromCanvasPlus {
+            if self.submission != nil && assignment.canSubmitFromCanvasPlus && self.submission?.attempt != nil {
                 LabeledContent("Submission History") {
                     Button("View submission history...") {
                         showSubmissionHistoryPopUp.toggle()
@@ -194,7 +167,7 @@ struct AssignmentDetailView: View {
 
         fetchingCanSubmitStatus = false
     }
-    
+
     private func fetchSubmissions() async {
         guard let userId = profileManager.currentUser?.id else {
             print("Unable to get current user ID")
@@ -206,12 +179,12 @@ struct AssignmentDetailView: View {
         }
 
         let request = CanvasRequest.getSubmissionHistoryForAssignment(courseId: courseId, assignmentId: assignment.id, userId: userId)
-        
+
         let submission = try? await CanvasService.shared.loadAndSync(request, onCacheReceive: { cachedSubmission in
             guard let cachedSubmission else { return }
             self.submission = cachedSubmission.first
         })
-        
+
         self.submission = submission?.first
     }
 
@@ -231,4 +204,3 @@ struct AssignmentDetailView: View {
         }
     }
 }
-
