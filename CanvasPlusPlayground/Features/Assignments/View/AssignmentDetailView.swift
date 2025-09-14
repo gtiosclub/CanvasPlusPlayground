@@ -10,8 +10,7 @@ import SwiftUI
 struct AssignmentDetailView: View {
     var assignment: Assignment // currently displayed assignment
     
-    /// Submission is initially nil, but is updated with a new submission once an api network request is made
-    /// Once loaded, this populates other fields like submission history and comments
+
     @State private var submission: Submission?
 
     // Presentable sheets
@@ -19,52 +18,28 @@ struct AssignmentDetailView: View {
     @State private var showSubmissionHistoryPopUp: Bool = false
     @State private var fetchingCanSubmitStatus: Bool = false
     @State private var canSubmit: Bool = false // this is updated by a network call upon onAppear()
-    @Environment(ProfileManager.self) private var profileManager // User ID from profileManager is required for getting current submission
+    @Environment(ProfileManager.self) private var profileManager 
     
     var body: some View {
-        if assignment.isOnlineQuiz {
-            if let url = URL(string: assignment.htmlUrl ?? "gatech.edu") {
-                WebView(url: url)
+        AssignmentQuizDetailsForm(item: assignment) {
+            submissionSection
+        }
+        .toolbar {
+            ReminderButton(item: .assignment(assignment))
+        }
+        .task {
+            await fetchSubmissions()
+            await fetchCanSubmitStatus()
+        }
+        .sheet(isPresented: $showSubmissionPopUp) {
+            AssignmentCreateSubmissionView(assignment: assignment)
+        }
+        .sheet(isPresented: $showSubmissionHistoryPopUp) {
+            if let submission {
+                SubmissionHistoryDetailView(submission: submission)
             } else {
-                fatalError("Invalid URL for online quiz: \(assignment.htmlUrl ?? "nil")")
+                submissionUnavailableView
             }
-        } else {
-            Form {
-                detailsSection
-                
-                submissionSection
-                
-                if let assignmentDescription = assignment.assignmentDescription {
-                    Section {
-                        HTMLWebViewWrapper(
-                            htmlText: assignmentDescription,
-                            courseID: assignment.courseId?.asString ?? ""
-                        )
-                    }
-                    .handleDeepLinks(for: assignment.courseId?.asString ?? "")
-                }
-                
-            }
-            .navigationTitle("Assignment Details")
-            .formStyle(.grouped)
-            .toolbar {
-                ReminderButton(item: .assignment(assignment))
-            }
-            .task {
-                await fetchSubmissions()
-                await fetchCanSubmitStatus()
-            }
-            .sheet(isPresented: $showSubmissionPopUp) {
-                AssignmentCreateSubmissionView(assignment: assignment)
-            }
-            .sheet(isPresented: $showSubmissionHistoryPopUp) {
-                if let submission {
-                    SubmissionHistoryDetailView(submission: submission)
-                } else {
-                    submissionUnavailableView
-                }
-            }
-            .openInCanvasToolbarButton(.assignment(assignment.courseId?.asString ?? "MISSING_COURSE_ID", assignment.id))
         }
     }
     

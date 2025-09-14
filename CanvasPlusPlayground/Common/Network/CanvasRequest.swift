@@ -190,6 +190,13 @@ enum CanvasRequest {
         GetQuizzesRequest(courseId: courseId, searchTerm: searchTerm)
     }
 
+    static func getQuiz(id: String, courseId: String) -> GetQuizRequest {
+        GetQuizRequest(
+            quizId: id,
+            courseId: courseId
+        )
+    }
+
     static func getUser(id: String? = nil) -> GetUserRequest {
         GetUserRequest(userId: id)
     }

@@ -148,9 +148,10 @@ struct CourseAssignmentsView: View {
     }
 }
 
+
 private struct AssignmentRow: View {
     @Environment(GradeCalculator.self) private var calculator
-
+    @Environment(\.openURL) private var openURL
     let assignment: Assignment
     let showGrades: Bool
 
@@ -163,9 +164,7 @@ private struct AssignmentRow: View {
 
     var body: some View {
         if !showGrades {
-            NavigationLink(
-                value: NavigationModel.Destination.assignment(assignment)
-            ) {
+            NavigationLink( value: NavigationModel.Destination.assignment(assignment)) {
                 bodyContents
             }
             .contextMenu {
@@ -176,6 +175,7 @@ private struct AssignmentRow: View {
                 )
 
                 NewWindowButton(destination: .assignment(assignment))
+                OpenInCanvasButton(path: .assignment(assignment.courseId?.asString ?? "MISSING_COURSE_ID", assignment.id))
             }
             .swipeActions(edge: .leading) {
                 PinButton(
@@ -184,6 +184,9 @@ private struct AssignmentRow: View {
                     type: .assignment
                 )
             }
+            .environment(\.openURL, OpenURLAction { url in
+                    .systemAction
+            })
             .tag(assignment)
         } else {
             bodyContents
