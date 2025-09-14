@@ -17,5 +17,5 @@ public enum QuizQuestionType: String, Codable, CaseIterable {
          numericalQuestion = "numerical_question",
          shortAnswerQuestion = "short_answer_question",
          textOnlyQuestion = "text_only_question",
-         trueFalseQuestion = "trueFalseQuestion"
+         trueFalseQuestion = "true_false_question"
 }

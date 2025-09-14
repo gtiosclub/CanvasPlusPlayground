@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct AnnouncementRow: View {
+    @Environment(\.openURL) private var openURL
     let course: Course?
     let announcement: DiscussionTopic
     var showCourseName = false
@@ -33,6 +34,8 @@ struct AnnouncementRow: View {
             toggleReadButton
 
             NewWindowButton(destination: .announcement(announcement))
+
+            OpenInCanvasButton(path: .announcement(announcement.courseId ?? "", announcement.id))
         }
         .swipeActions(edge: .leading) {
             PinButton(
@@ -41,6 +44,9 @@ struct AnnouncementRow: View {
                 type: .announcement
             )
         }
+        .environment(\.openURL, OpenURLAction { url in
+                .systemAction
+        })
         .id(announcement.id)
     }
 

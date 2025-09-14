@@ -51,7 +51,17 @@ struct CourseAnnouncementDetailView: View {
             // dont use `.task` so that this Task outlives its view upon disappear
             markAsRead()
         }
-        .openInCanvasToolbarButton(.announcement(announcement.courseId ?? "", announcement.id))
+        #if os(iOS)
+        .ignoresSafeArea()
+        .toolbar(.hidden)
+        #else
+        .toolbar {
+            PinButton(
+                itemID: announcement.id,
+                courseID: announcement.courseId,
+                type: .announcement
+            )
+        } #endif
         .id(announcement.id)
     }
 

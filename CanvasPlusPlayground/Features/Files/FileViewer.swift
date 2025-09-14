@@ -26,9 +26,15 @@ struct FileViewer: View {
                     .toolbar(.hidden)
                     #else
                     .toolbar {
-                        ShareLink(item: url)
-                    }
-                    #endif
+                        ToolbarItemGroup() {
+                            ShareLink(item: url)
+                            PinButton(
+                                itemID: file.id,
+                                courseID: courseID,
+                                type: .file
+                            )
+                        }
+                    }                    #endif
             } else {
                 Group {
                     if isLoading {

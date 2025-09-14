@@ -23,9 +23,20 @@ struct AssignmentDetailView: View {
         AssignmentQuizDetailsForm(item: assignment) {
             submissionSection
         }
+        #if os(iOS)
+        .ignoresSafeArea()
+        .toolbar(.hidden)
+        #else
         .toolbar {
-            ReminderButton(item: .assignment(assignment))
-        }
+            ToolbarItemGroup() {
+                ReminderButton(item: .assignment(assignment))
+                PinButton(
+                    itemID: assignment.id,
+                    courseID: assignment.courseId?.asString,
+                    type: .assignment
+                )
+            }
+        } #endif
         .task {
             await fetchSubmissions()
             await fetchCanSubmitStatus()
