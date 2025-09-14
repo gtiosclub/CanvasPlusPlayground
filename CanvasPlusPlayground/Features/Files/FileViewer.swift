@@ -17,6 +17,7 @@ struct FileViewer: View {
     @State private var url: URL?
     @State private var isLoading = false
 
+
     var body: some View {
         Group {
             if let url {
@@ -26,7 +27,13 @@ struct FileViewer: View {
                     .toolbar(.hidden)
                     #else
                     .toolbar {
-                        ShareLink(item: url)
+                        ToolbarItemGroup {
+                            ShareLink(item: url)
+                            DownloadButton(url: url, fileName: file.displayName)
+                            Button("Open", systemImage: "arrow.up.forward.app") {
+                                NSWorkspace.shared.open(url)
+                            }
+                        }
                     }
                     #endif
             } else {
@@ -72,3 +79,4 @@ struct FileViewer: View {
         self.isLoading = false
     }
 }
+
