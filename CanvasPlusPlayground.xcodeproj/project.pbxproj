@@ -240,6 +240,11 @@
 		B7F950392D1279A1004BB470 /* UserAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F950382D1279A1004BB470 /* UserAPI.swift */; };
 		B7F9503B2D127AD0004BB470 /* ProfileAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F9503A2D127AD0004BB470 /* ProfileAPI.swift */; };
 		B7F9503D2D12ADAE004BB470 /* SubmissionAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F9503C2D12ADAE004BB470 /* SubmissionAPI.swift */; };
+		D411AB682E765AD100AEB627 /* GetQuizRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411AB672E765AD100AEB627 /* GetQuizRequest.swift */; };
+		D43B58032E7658560054C12C /* DisplayableItemType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43B58022E7658560054C12C /* DisplayableItemType.swift */; };
+		D43B58052E76586A0054C12C /* AssignmentQuizDetailsForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43B58042E76586A0054C12C /* AssignmentQuizDetailsForm.swift */; };
+		D43B58072E76593C0054C12C /* QuizDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43B58062E76593C0054C12C /* QuizDetailView.swift */; };
+		D43B58092E765A210054C12C /* HTMLTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43B58082E765A210054C12C /* HTMLTextView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -479,6 +484,11 @@
 		B7F950382D1279A1004BB470 /* UserAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAPI.swift; sourceTree = "<group>"; };
 		B7F9503A2D127AD0004BB470 /* ProfileAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAPI.swift; sourceTree = "<group>"; };
 		B7F9503C2D12ADAE004BB470 /* SubmissionAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmissionAPI.swift; sourceTree = "<group>"; };
+		D411AB672E765AD100AEB627 /* GetQuizRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetQuizRequest.swift; sourceTree = "<group>"; };
+		D43B58022E7658560054C12C /* DisplayableItemType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayableItemType.swift; sourceTree = "<group>"; };
+		D43B58042E76586A0054C12C /* AssignmentQuizDetailsForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentQuizDetailsForm.swift; sourceTree = "<group>"; };
+		D43B58062E76593C0054C12C /* QuizDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizDetailView.swift; sourceTree = "<group>"; };
+		D43B58082E765A210054C12C /* HTMLTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLTextView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -523,6 +533,7 @@
 		A3049B732D15DBEE002F3166 /* API Requests */ = {
 			isa = PBXGroup;
 			children = (
+				D411AB672E765AD100AEB627 /* GetQuizRequest.swift */,
 				26589EEF2E75C84700234C2F /* GetAllCourseFilesRequest.swift */,
 				B7CC4D662D91AF3B00254F55 /* GetUserTodoItemsRequest.swift */,
 				B7E0735D2D986B1F00A7E82F /* GetUserTodoItemCountRequest.swift */,
@@ -600,6 +611,7 @@
 		A324BA512D079646005F53FA /* Announcements */ = {
 			isa = PBXGroup;
 			children = (
+				D43B58082E765A210054C12C /* HTMLTextView.swift */,
 				B7D7512A2D3D5D7700F7B8B8 /* AllAnnouncementsView.swift */,
 				B7D7512E2D3D660B00F7B8B8 /* AllAnnouncementsManager.swift */,
 				9B92A4242C93856100C21CFC /* CourseAnnouncementManager.swift */,
@@ -680,6 +692,8 @@
 		A324BA562D0796C3005F53FA /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				D43B58042E76586A0054C12C /* AssignmentQuizDetailsForm.swift */,
+				D43B58022E7658560054C12C /* DisplayableItemType.swift */,
 				B7CC4D5D2D90C03C00254F55 /* Intelligence */,
 				B7CC4D442D8DFF1500254F55 /* PickerService */,
 				B7C0A3C82D2F87E9003E5A36 /* AsyncView.swift */,
@@ -850,6 +864,7 @@
 		A373DC1C2D1D2B1600215019 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				D43B58062E76593C0054C12C /* QuizDetailView.swift */,
 				A373DC262D1D4C4A00215019 /* QuizSubmissionWorkflowState.swift */,
 				A373DC242D1D4BEC00215019 /* APIQuizSubmission.swift */,
 				A3049B622D0E6154002F3166 /* ScoringPolicy.swift */,
@@ -1260,6 +1275,7 @@
 				A339D3F92DB15DC500952536 /* CanvasSchemaV1.swift in Sources */,
 				B7D7512D2D3D652300F7B8B8 /* GetAnnouncementsBatchRequest.swift in Sources */,
 				A324BA6A2D0817AB005F53FA /* FoldersPageView.swift in Sources */,
+				D43B58052E76586A0054C12C /* AssignmentQuizDetailsForm.swift in Sources */,
 				B7A26EE92CCB62A30084704A /* NavigationModel.swift in Sources */,
 				192EC04A2C963B9000AF8528 /* AssignmentAPI.swift in Sources */,
 				A3049B722D125509002F3166 /* APIRequest.swift in Sources */,
@@ -1323,6 +1339,7 @@
 				A373DC352D2824D700215019 /* Module.swift in Sources */,
 				9BFD45812D811B1000BBAA01 /* UploadSubmissionManager.swift in Sources */,
 				B7C469D82E6C869900310982 /* SyllabusView.swift in Sources */,
+				D43B58092E765A210054C12C /* HTMLTextView.swift in Sources */,
 				B74688A32D63DB59007A27FD /* Assignment.swift in Sources */,
 				B5894F112D6EBD8C00E8F527 /* PageAPI.swift in Sources */,
 				A3C574D92D99F7DA002210FA /* GroupRowView.swift in Sources */,
@@ -1361,6 +1378,7 @@
 				9BFBD8C62E6B2FAD00690E47 /* GetSubmissionRequest.swift in Sources */,
 				A3049B612D0E6110002F3166 /* QuizQuestionType.swift in Sources */,
 				A3CA025B2D432A8700A9752B /* SearchResultListDataSource.swift in Sources */,
+				D43B58072E76593C0054C12C /* QuizDetailView.swift in Sources */,
 				9B9C2E042C93F6CD00E4B16B /* CourseAnnouncementsView.swift in Sources */,
 				B77FD0022D52A0D60049AA5E /* ProfileView.swift in Sources */,
 				26589EF02E75C85100234C2F /* GetAllCourseFilesRequest.swift in Sources */,
@@ -1379,6 +1397,7 @@
 				9BF8E4412D90DE5E00B5A50D /* UploadAssignmentFileConfirmationRequest.swift in Sources */,
 				B7C0A3CB2D2F919F003E5A36 /* PinButton.swift in Sources */,
 				B7F950392D1279A1004BB470 /* UserAPI.swift in Sources */,
+				D43B58032E7658560054C12C /* DisplayableItemType.swift in Sources */,
 				A37AB4AB2D988F5800610639 /* CreateGroupMembershipRequest.swift in Sources */,
 				A3049B662D0F3E32002F3166 /* CourseQuizzesView.swift in Sources */,
 				B7D7512B2D3D5D8000F7B8B8 /* AllAnnouncementsView.swift in Sources */,
@@ -1407,6 +1426,7 @@
 				B7C0A3BF2D2F2251003E5A36 /* PinnedItemsView.swift in Sources */,
 				A3CF88E32D1921CB000ACDF3 /* FolderAPI.swift in Sources */,
 				A373DC2D2D28172E00215019 /* GetModulesRequest.swift in Sources */,
+				D411AB682E765AD100AEB627 /* GetQuizRequest.swift in Sources */,
 				267D852A2E6644FE007F821B /* FocusWindowView.swift in Sources */,
 				B7C0A3CD2D3023CA003E5A36 /* PinnedItem.swift in Sources */,
 				B5894F172D6EBEA100E8F527 /* PagesManager.swift in Sources */,
