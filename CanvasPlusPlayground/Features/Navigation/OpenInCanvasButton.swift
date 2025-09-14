@@ -1,23 +1,11 @@
 //
-//  OpenInWebButton.swift
+//  OpenInCanvasButton.swift
 //  CanvasPlusPlayground
 //
 //  Created by Ethan Fox on 4/9/25.
 //
 
 import SwiftUI
-
-struct OpenWebLinkButton<Content: View>: View {
-    @Environment(\.openURL) var openURL
-    let url: URL
-    let content: () -> Content
-    
-    var body: some View {
-        Button(action: { openURL(url) }) {
-            content()
-        }
-    }
-}
 
 struct OpenInCanvasButton: View {
     var titleText: String {
@@ -38,6 +26,9 @@ struct OpenInCanvasButton: View {
             Label("Open in web", systemImage: "globe")
             #endif
         }
+        .environment(\.openURL, OpenURLAction { _ in
+                .systemAction
+        })
     }
 }
 
@@ -56,9 +47,6 @@ private struct OpenInCanvasButtonModifier: ViewModifier {
 extension View {
     func openInCanvasToolbarButton(_ type: CanvasButtonType) -> some View {
         self.modifier(OpenInCanvasButtonModifier(path: type))
-            .environment(\.openURL, OpenURLAction { _ in
-                .systemAction
-            })
     }
 }
 
