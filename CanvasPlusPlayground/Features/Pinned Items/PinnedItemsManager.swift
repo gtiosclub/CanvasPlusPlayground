@@ -52,6 +52,16 @@ class PinnedItemsManager {
         )
     }
 
+    func isPinned(
+        itemID: String,
+        courseID: String?,
+        type: PinnedItem.PinnedItemType
+    ) -> Bool {
+        return pinnedItems.contains {
+            $0.id == itemID && $0.courseID == courseID && $0.type == type
+        }
+    }
+
     func removePinnedItem(
         itemID: String,
         courseID: String,

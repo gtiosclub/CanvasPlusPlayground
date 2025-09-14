@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FileViewer: View {
     @Environment(\.dismiss) private var dismiss
-
+    @Environment(PinnedItemsManager.self) private var pinnedItemsManager
     let courseID: Course.ID
     let file: File
     let fileService = CourseFileService()
@@ -26,9 +26,15 @@ struct FileViewer: View {
                     .toolbar(.hidden)
                     #else
                     .toolbar {
-                        ShareLink(item: url)
-                    }
-                    #endif
+                        ToolbarItemGroup() {
+                            ShareLink(item: url)
+                            PinButton(
+                                itemID: file.id,
+                                courseID: courseID,
+                                type: .file
+                            )
+                        }
+                    }                    #endif
             } else {
                 Group {
                     if isLoading {
