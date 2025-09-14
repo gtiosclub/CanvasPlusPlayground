@@ -97,6 +97,7 @@ struct CourseQuizzesView: View {
         }
         .contextMenu {
             OpenInCanvasButton(path: .quizzes(quiz.courseID, quiz.id))
+            NewWindowButton(destination: .quiz(quiz))
         }
         .tag(quiz)
     }

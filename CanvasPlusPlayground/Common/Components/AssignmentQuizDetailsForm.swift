@@ -60,7 +60,7 @@ struct AssignmentQuizDetailsForm<Item: DisplayableItemDetails, AdditionalContent
 				}
 			}
 		}
-		.navigationTitle("\(item.itemType) Details")
+        .navigationTitle("\(item.itemType.displayTitle) Details")
 		.formStyle(.grouped)
 	}
 }
