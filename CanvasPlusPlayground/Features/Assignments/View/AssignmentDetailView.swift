@@ -13,7 +13,7 @@ struct AssignmentDetailView: View {
     @State private var submission: Submission?
 
     // Presentable sheets
-    @State private var showSubmissionPopUp: Bool = false
+    @State private var showCreateSubmissionPopUp: Bool = false
     @State private var showSubmissionHistoryPopUp: Bool = false
     @State private var fetchingCanSubmitStatus: Bool = false
     @State private var canSubmit: Bool = false // this is updated by a network call upon onAppear()
@@ -30,7 +30,7 @@ struct AssignmentDetailView: View {
             await fetchSubmissions()
             await fetchCanSubmitStatus()
         }
-        .sheet(isPresented: $showSubmissionPopUp) {
+        .sheet(isPresented: $showCreateSubmissionPopUp) {
             AssignmentCreateSubmissionView(assignment: assignment)
         }
         .sheet(isPresented: $showSubmissionHistoryPopUp) {
@@ -118,25 +118,30 @@ struct AssignmentDetailView: View {
                 "Grade",
                 value: assignment.formattedGrade + "/" + assignment.formattedPointsPossible
             )
+            
 
             HStack {
-                let submissionsClosed = !(canSubmit ?? false)
+                let submissionsClosed = !canSubmit
                 #if os(macOS)
                 Spacer()
                 #endif
-
-                Button(submissionsClosed ? "Submissions Closed" : "New Submission...") {
-                    showSubmissionPopUp.toggle()
+                if assignment.canSubmitFromCanvasPlus {
+                    Button(submissionsClosed ? "Submissions Closed" : "New Submission...") {
+                        showCreateSubmissionPopUp.toggle()
+                    }
+                    .disabled(submissionsClosed)
                 }
-                .disabled(submissionsClosed)
+                if assignment.canSubmitFromCanvasApp {
+                    OpenInCanvasButton(path: .assignment(assignment.courseId?.asString ?? "", assignment.id))
+                }
+                
 
                 if fetchingCanSubmitStatus {
                     ProgressView()
                         .controlSize(.small)
                 }
             }
-
-            if let submission = self.submission {
+            if self.submission != nil && assignment.canSubmitFromCanvasPlus && self.submission?.attempt != nil {
                 LabeledContent("Submission History") {
                     Button("View submission history...") {
                         showSubmissionHistoryPopUp.toggle()
