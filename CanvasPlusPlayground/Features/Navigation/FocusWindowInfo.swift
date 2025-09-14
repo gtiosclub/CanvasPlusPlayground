@@ -25,7 +25,6 @@ enum CodableDestination: Codable, Hashable {
     case page(Page.ID, Course.ID)
     case file(File.ID, Course.ID)
     case folder(Folder.ID, Course.ID)
-    case quiz(Quiz.ID, Course.ID)
 }
 
 extension CodableDestination {
@@ -46,8 +45,6 @@ extension CodableDestination {
             self = .file(file.id, courseID)
         case .folder(let folder, let course):
             self = .folder(folder.id, course.id)
-        case .quiz(let quiz):
-            self = .quiz(quiz.id, quiz.courseID)
         }
     }
 }
