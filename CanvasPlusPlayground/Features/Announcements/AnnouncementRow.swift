@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AnnouncementRow: View {
     @Environment(\.openURL) private var openURL
+    @Environment(PinnedItemsManager.self) private var pinnedItemsManager
     let course: Course?
     let announcement: DiscussionTopic
     var showCourseName = false
@@ -17,12 +18,16 @@ struct AnnouncementRow: View {
     private let unreadIndicatorWidth: CGFloat = 10
 
     var body: some View {
-        VStack(alignment: .announcementRowAlignment) {
-            if showCourseName {
-                courseName
+        HStack {
+            VStack(alignment: .announcementRowAlignment) {
+                if showCourseName {
+                    courseName
+                }
+                header
+                detail
             }
-            header
-            detail
+            Spacer()
+            Image(systemName: pinnedItemsManager.isPinned(itemID: announcement.id, courseID: course?.id, type: .announcement) ? "pin" : "pin.slash")
         }
         .contextMenu {
             PinButton(

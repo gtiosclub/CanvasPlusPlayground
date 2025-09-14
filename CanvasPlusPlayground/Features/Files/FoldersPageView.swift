@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct FoldersPageView: View {
+    @Environment(PinnedItemsManager.self) private var pinnedItemsManager
     enum Selection: Hashable, Identifiable {
         case file(File)
         case folder(Folder)
@@ -63,11 +64,11 @@ struct FoldersPageView: View {
             .onChange(of: searchText) { _, _ in
                 newQueryAsync()
             }
-        #if os(iOS)
-            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
-        #else
-            .searchable(text: $searchText)
-        #endif
+#if os(iOS)
+        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
+#else
+        .searchable(text: $searchText)
+#endif
 
     }
 
@@ -153,7 +154,10 @@ struct FoldersPageView: View {
     @ViewBuilder
     func fileRow(for file: File) -> some View {
         if file.url != nil {
-            FileRow(file: file, course: course)
+            HStack {
+                FileRow(file: file, course: course)
+                Image(systemName: pinnedItemsManager.isPinned(itemID: file.id, courseID: course.id, type: .file) ? "pin" : "pin.slash")
+                }
         } else {
             Label("File not available.", systemImage: "document")
                 .disabled(true)
@@ -189,6 +193,8 @@ private struct FileRow: View {
             if file.localURL == nil {
                 Image(systemName: "arrow.down.circle.dotted")
             }
+
+            
         }
         .imageScale(.large)
         .contextMenu {

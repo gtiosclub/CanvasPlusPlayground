@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FileViewer: View {
     @Environment(\.dismiss) private var dismiss
-
+    @Environment(PinnedItemsManager.self) private var pinnedItemsManager
     let courseID: Course.ID
     let file: File
     let fileService = CourseFileService()
