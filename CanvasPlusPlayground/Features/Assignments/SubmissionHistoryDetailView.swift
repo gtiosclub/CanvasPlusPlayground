@@ -21,9 +21,7 @@ struct SubmissionHistoryDetailView: View {
     var submissionHistory:[Submission] {
         guard var history = submission.submissionHistory else { return [] }
         history.removeAll { submission in
-            // can't use the id, they're all the same
-            // if submission.attempt == 0, this is not a submission we want to show
-            submission.attempt == self.submission.attempt || submission.attempt == 0
+            submission.attempt == self.submission.attempt // can't use the id, they're all the same
         }
         
         return history.reversed()

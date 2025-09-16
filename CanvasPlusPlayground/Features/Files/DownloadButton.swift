@@ -12,7 +12,6 @@ struct DownloadButton: View {
     
     let url: URL
     let fileName: String
-
     @State var dataFileDocument: DataFileDocument? = nil
     @State var showFileExporter: Bool = false
     @State var showProgressView: Bool = false

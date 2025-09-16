@@ -1,5 +1,5 @@
 //
-//  OpenInCanvasButton.swift
+//  OpenInWebButton.swift
 //  CanvasPlusPlayground
 //
 //  Created by Ethan Fox on 4/9/25.
@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+//FIXME: removed private to test in other modules
 struct OpenInCanvasButton: View {
     var titleText: String {
         #if os(iOS)
@@ -17,18 +18,13 @@ struct OpenInCanvasButton: View {
     }
 
     let path: CanvasButtonType
+    @Environment(\.openURL) var openURL
 
     var body: some View {
-        OpenWebLinkButton(url: path.url) {
-            #if os(iOS)
-            Label("Open in Canvas Student", systemImage: "globe")
-            #else
-            Label("Open in web", systemImage: "globe")
-            #endif
+        Button(titleText, systemImage: "globe") {
+            print("opening url \(path.url)")
+            openURL(path.url)
         }
-        .environment(\.openURL, OpenURLAction { _ in
-                .systemAction
-        })
     }
 }
 
@@ -47,6 +43,9 @@ private struct OpenInCanvasButtonModifier: ViewModifier {
 extension View {
     func openInCanvasToolbarButton(_ type: CanvasButtonType) -> some View {
         self.modifier(OpenInCanvasButtonModifier(path: type))
+            .environment(\.openURL, OpenURLAction { _ in
+                .systemAction
+            })
     }
 }
 
@@ -54,7 +53,7 @@ enum CanvasButtonType {
     case homepage(String)
     case grades(String)
     case files(String)
-    case quizzes(String, String)
+	case quizzes(String, String)
     case announcement(String, String)
     case assignment(String, String)
 

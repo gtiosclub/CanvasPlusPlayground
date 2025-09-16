@@ -118,24 +118,6 @@ extension CanvasSchemaV1 {
             }
             return gradeDouble.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", gradeDouble) : String(gradeDouble)
         }
-        var canSubmitFromCanvasPlus: Bool {
-            submissionTypes?.contains(where: {
-                $0 == .onlineTextEntry ||
-                $0 == .onlineUrl ||
-                $0 == .onlineUpload})
-            ?? false
-        }
-        
-        var canSubmitFromCanvasApp: Bool {
-            submissionTypes?.contains(where: {
-                $0 == .discussionTopic ||
-                $0 == .externalTool ||
-                $0 == .mediaRecording ||
-                $0 == .studentAnnotation ||
-                $0 == .onPaper ||
-                $0 == .onlineQuiz } )
-            ?? false
-        }
 
         // swiftlint:disable:next function_body_length
         init(from assignmentAPI: AssignmentAPI) {

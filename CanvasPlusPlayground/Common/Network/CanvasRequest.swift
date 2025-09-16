@@ -41,20 +41,12 @@ enum CanvasRequest {
         GetFileRequest(fileId: fileId)
     }
 
-    static func getFolder(folderId: String) -> GetFolderRequest {
-        GetFolderRequest(folderId: folderId)
-    }
-
-    static func getFilesInFolder(folderId: String, searchTerm: String? = nil) -> GetFilesInFolderRequest {
-        GetFilesInFolderRequest(folderId: folderId, searchTerm: searchTerm)
+    static func getFilesInFolder(folderId: String) -> GetFilesInFolderRequest {
+        GetFilesInFolderRequest(folderId: folderId)
     }
 
     static func getFoldersInFolder(folderId: String) -> GetFoldersInFolderRequest {
         GetFoldersInFolderRequest(folderId: folderId)
-    }
-
-    static func getAllFilesInCourse(courseId: String, searchTerm: String? = nil) -> GetAllCourseFilesRequest {
-        GetAllCourseFilesRequest(courseId: courseId, searchTerm: searchTerm)
     }
 
     static func notifyFileUpload(
@@ -201,13 +193,6 @@ enum CanvasRequest {
 
     static func getQuizzes(courseId: String, searchTerm: String? = nil) -> GetQuizzesRequest {
         GetQuizzesRequest(courseId: courseId, searchTerm: searchTerm)
-    }
-
-    static func getQuiz(id: String, courseId: String) -> GetQuizRequest {
-        GetQuizRequest(
-            quizId: id,
-            courseId: courseId
-        )
     }
 
     static func getUser(id: String? = nil) -> GetUserRequest {

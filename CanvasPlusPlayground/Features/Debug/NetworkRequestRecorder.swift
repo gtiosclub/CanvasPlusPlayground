@@ -88,6 +88,8 @@ final class NetworkRequestRecorder {
     }
 }
 
+#endif
+
 extension Data {
     fileprivate func jsonToPrettyString() -> String? {
         if let json = try? JSONSerialization.jsonObject(with: self, options: .mutableContainers),
@@ -98,5 +100,3 @@ extension Data {
         }
     }
 }
-
-#endif

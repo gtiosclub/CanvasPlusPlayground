@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct CourseAssignmentsView: View {
-    typealias GroupMode = CourseAssignmentManager.GroupMode
     let course: Course
     /// Display grades in each assignment row. Disables navigation to Assignment Details.
     let showGrades: Bool
@@ -19,25 +18,6 @@ struct CourseAssignmentsView: View {
     @State private var isLoadingAssignments = true
     @State private var showingGradeCalculator = false
     @State private var selectedAssignment: Assignment?
-
-    @SceneStorage("CourseAssignmentsView.currentGroupMode")
-    var currentGroupMode: GroupMode = .type
-
-    var displayedAssignmentGroups: [any AssignmentGroupCategory] {
-        switch currentGroupMode {
-        case .type:
-            assignmentManager.assignmentGroups
-        case .dueDate:
-            [
-                UpcomingAssignmentsCategory(
-                    allAssignments: assignmentManager.allAssignments
-                ),
-                PastAssignmentsCategory(
-                    allAssignments: assignmentManager.allAssignments
-                )
-            ]
-        }
-    }
 
     init(course: Course, showGrades: Bool = false) {
         self.course = course
@@ -64,8 +44,7 @@ struct CourseAssignmentsView: View {
 
     var mainbody: some View {
         List(
-            displayedAssignmentGroups,
-            id: \.id,
+            assignmentManager.assignmentGroups,
             selection: $selectedAssignment
         ) { assignmentGroup in
             Section {
@@ -78,6 +57,24 @@ struct CourseAssignmentsView: View {
                     ForEach(assignments) { assignment in
                         let assignmentModel = assignment.createModel()
                         AssignmentRow(assignment: assignmentModel, showGrades: showGrades)
+                            .contextMenu {
+                                if !showGrades {
+                                    PinButton(
+                                        itemID: assignmentModel.id,
+                                        courseID: course.id,
+                                        type: .assignment
+                                    )
+                                }
+                            }
+                            .swipeActions(edge: .leading) {
+                                if !showGrades {
+                                    PinButton(
+                                        itemID: assignmentModel.id,
+                                        courseID: course.id,
+                                        type: .assignment
+                                    )
+                                }
+                            }
                     }
                 }
             } header: {
@@ -88,14 +85,6 @@ struct CourseAssignmentsView: View {
             }
         }
         .toolbar {
-            ToolbarItem {
-                Menu {
-                    groupByPicker
-                } label: {
-                    Label("Group By...", systemImage: "arrow.up.arrow.down")
-                }
-            }
-
             if showGrades {
                 ToolbarItem(placement: .automatic) {
                     Button("Calculate Grades", image: .customFunctionCapsule) {
@@ -129,17 +118,6 @@ struct CourseAssignmentsView: View {
         .environment(gradeCalculator)
     }
 
-    private var groupByPicker: some View {
-        Picker("Group Assignments",
-            selection: $currentGroupMode) {
-                ForEach(GroupMode.allCases,id: \.self) { mode in
-                    Text(mode.rawValue).tag(mode)
-                }
-            }
-            .fixedSize()
-            .pickerStyle(.inline)
-    }
-
     private func loadAssignments() async {
         isLoadingAssignments = true
         await assignmentManager.fetchAssignmentGroups()
@@ -150,7 +128,7 @@ struct CourseAssignmentsView: View {
 
 private struct AssignmentRow: View {
     @Environment(GradeCalculator.self) private var calculator
-    @Environment(\.openURL) private var openURL
+
     let assignment: Assignment
     let showGrades: Bool
 
@@ -167,22 +145,6 @@ private struct AssignmentRow: View {
                 value: NavigationModel.Destination.assignment(assignment)
             ) {
                 bodyContents
-            }
-            .contextMenu {
-                PinButton(
-                    itemID: assignment.id,
-                    courseID: assignment.courseId?.asString,
-                    type: .assignment
-                )
-                NewWindowButton(destination: .assignment(assignment))
-                OpenInCanvasButton(path: .assignment(assignment.courseId?.asString ?? "MISSING_COURSE_ID", assignment.id))
-            }
-            .swipeActions(edge: .leading) {
-                PinButton(
-                    itemID: assignment.id,
-                    courseID: assignment.courseId?.asString,
-                    type: .assignment
-                )
             }
             .tag(assignment)
         } else {
@@ -232,7 +194,7 @@ private struct AssignmentRow: View {
 }
 
 private struct GroupHeader: View {
-    let assignmentGroup: any AssignmentGroupCategory
+    let assignmentGroup: AssignmentGroup
     let showGrades: Bool
 
     @State private var showingInfo = false
@@ -245,7 +207,7 @@ private struct GroupHeader: View {
 
     var body: some View {
         HStack {
-            Text(assignmentGroup.title)
+            Text(assignmentGroup.name)
 
             Spacer()
 

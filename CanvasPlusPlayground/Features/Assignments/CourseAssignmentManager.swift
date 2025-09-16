@@ -9,31 +9,23 @@ import SwiftUI
 
 @Observable
 class CourseAssignmentManager {
-    enum GroupMode: String, CaseIterable {
-        case type
-        case dueDate
-
-        var rawValue: String {
-            switch self {
-            case .type:
-                "Type"
-            case .dueDate:
-                "Due Date"
-            }
-        }
-    }
-
     private let courseID: String
     var assignmentGroups = [AssignmentGroup]()
 
-    var allAssignments: [AssignmentAPI] {
-        assignmentGroups.flatMap {
-            $0.assignments ?? []
-        }
-    }
-
     init(courseID: String) {
         self.courseID = courseID
+    }
+
+    func fetchAssignments() async -> [Assignment] {
+        let request = CanvasRequest.getAssignments(courseId: courseID)
+
+        do {
+            return try await CanvasService.shared.loadAndSync(request)
+        } catch {
+            LoggerService.main.error("Failed to fetch assignments: \(error)")
+        }
+
+        return []
     }
 
     func fetchAssignmentGroups() async {
@@ -53,5 +45,10 @@ class CourseAssignmentManager {
         } catch {
             LoggerService.main.error("Failed to fetch assignment groups")
         }
+    }
+
+    static func getAssignmentsForCourse(courseID: String) async -> [Assignment] {
+        let manager = CourseAssignmentManager(courseID: courseID)
+        return await manager.fetchAssignments()
     }
 }

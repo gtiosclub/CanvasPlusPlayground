@@ -22,9 +22,6 @@ struct PagesListView: View {
             NavigationLink(value: NavigationModel.Destination.page(page)) {
                 Text(page.title ?? "Untitled")
             }
-            .contextMenu {
-                NewWindowButton(destination: .page(page))
-            }
             .tag(page)
         }
         #if os(iOS)

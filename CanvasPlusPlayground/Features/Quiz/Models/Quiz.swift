@@ -13,7 +13,6 @@ typealias Quiz = CanvasSchemaV1.Quiz
 extension CanvasSchemaV1 {
     @Model
     class Quiz {
-        typealias ID = String
         @Attribute(.unique) let id: String
         var courseID: String
 
@@ -69,14 +68,6 @@ extension CanvasSchemaV1 {
         var scoringPolicy: ScoringPolicy? {
             get { scoringPolicyRaw.flatMap { ScoringPolicy(rawValue: $0) } }
             set { scoringPolicyRaw = newValue?.rawValue }
-        }
-
-        var displayAllowedAttempts: String {
-            guard allowedAttempts != -1 else {
-                return "Unlimited"
-            }
-
-            return allowedAttempts.asString
         }
 
         init(api: QuizAPI) {

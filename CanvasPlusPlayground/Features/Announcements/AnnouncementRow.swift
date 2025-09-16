@@ -31,8 +31,6 @@ struct AnnouncementRow: View {
             )
 
             toggleReadButton
-
-            NewWindowButton(destination: .announcement(announcement))
         }
         .swipeActions(edge: .leading) {
             PinButton(

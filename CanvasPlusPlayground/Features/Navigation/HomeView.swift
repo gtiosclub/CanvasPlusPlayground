@@ -93,7 +93,6 @@ struct HomeView: View {
         NavigationStack(path: $navigationModel.navigationPath) {
             if let selectedCourse {
                 CourseView(course: selectedCourse)
-                    .defaultNavigationDestination(courseID: selectedCourse.id)
             } else if let selectedNavigationPage {
                 Group {
                     switch selectedNavigationPage {
