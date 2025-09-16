@@ -107,12 +107,21 @@ public class UploadSubmissionManager {
         LoggerService.main.log("Attempting to upload file to canvas File URL: \(url)")
         let filename = url.lastPathComponent
 
-        if url.startAccessingSecurityScopedResource() == false {
-            throw AssignmentSubmissionError.insufficentPermissions
+        let fileData: Data
+        if url.startAccessingSecurityScopedResource() {
+            fileData = try Data(contentsOf: url)
+            url.stopAccessingSecurityScopedResource()
+        } else {
+            guard let copyURL = try? url.safeCopyOut() else {
+                throw AssignmentSubmissionError.insufficentPermissions
+            }
+            if copyURL.startAccessingSecurityScopedResource() == false {
+                fileData = try Data(contentsOf: copyURL)
+                copyURL.stopAccessingSecurityScopedResource()
+            } else {
+                throw AssignmentSubmissionError.insufficentPermissions
+            }
         }
-        let fileData = try Data(contentsOf: url)
-        url.stopAccessingSecurityScopedResource()
-
         let size = fileData.count
 
         guard let courseID = assignment.courseId?.asString else {

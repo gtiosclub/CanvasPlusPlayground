@@ -42,7 +42,7 @@ struct CourseAnnouncementDetailView: View {
             }
 
             Section("Announcement Message") {
-                HTMLTextView(htmlText: announcement.message ?? "")
+                HTMLWebViewWrapper(htmlText: announcement.message ?? "", courseID: announcement.courseId ?? "")
             }
             .handleDeepLinks(for: announcement.courseId ?? "")
         }

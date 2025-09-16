@@ -29,7 +29,7 @@ struct FoldersPageView: View {
             }
         }
     }
-    
+
 
     let course: Course
     @State private var folder: Folder?
@@ -37,6 +37,10 @@ struct FoldersPageView: View {
 
     @State private var isLoadingContents = true
     @State private var selectedItem: Selection?
+
+    @State private var searchText: String = ""
+
+    @State private var currentSearchTask: Task<Void, Never>?
 
     init(course: Course, folder: Folder? = nil) {
         self.course = course
@@ -46,6 +50,42 @@ struct FoldersPageView: View {
     }
 
     var body: some View {
+        defaultView
+            .overlay {
+                if searchText.count >= 2 {
+                    searchResult
+                }
+            }
+            .refreshable {
+                currentSearchTask?.cancel()
+                await newQuery()
+            }
+            .onChange(of: searchText) { _, _ in
+                newQueryAsync()
+            }
+        #if os(iOS)
+            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
+        #else
+            .searchable(text: $searchText)
+        #endif
+
+    }
+
+    private var searchResult: some View {
+        SearchResultsListView(dataSource: filesVM) {
+            ForEach(filesVM.matchedFiles) { file in
+                NavigationLink(
+                    value: NavigationModel.Destination.file(file, course.id)
+                ) {
+                    fileRow(for: file)
+                }
+                .tag(Selection.file(file))
+                .listItemTint(course.rgbColors?.color)
+            }
+        }
+    }
+
+    private var defaultView: some View {
         List(selection: $selectedItem) {
             if !filesVM.displayedFiles.isEmpty {
                 Section("Files") {
@@ -75,11 +115,11 @@ struct FoldersPageView: View {
                 }
             }
         }
-        #if os(iOS)
+#if os(iOS)
         .onAppear {
             selectedItem = nil
         }
-        #endif
+#endif
         .task {
             await loadContents()
         }
@@ -96,6 +136,20 @@ struct FoldersPageView: View {
         .pickedItem(selectedItem?.pickedValue)
     }
 
+    private func newQuery() async {
+        filesVM.page = 1
+        filesVM.queryMode = .live
+        filesVM.searchText = searchText
+        await filesVM.fetchNextPage()
+    }
+
+    private func newQueryAsync() {
+        currentSearchTask?.cancel()
+        currentSearchTask = Task {
+            await newQuery()
+        }
+    }
+
     @ViewBuilder
     func fileRow(for file: File) -> some View {
         if file.url != nil {
@@ -108,7 +162,7 @@ struct FoldersPageView: View {
 
     @ViewBuilder
     func folderRow(for subFolder: Folder) -> some View {
-        FolderRow(folder: subFolder)
+        FolderRow(folder: subFolder, course: course)
     }
 
     private func loadContents() async {
@@ -143,6 +197,8 @@ private struct FileRow: View {
                 courseID: course.id,
                 type: .file
             )
+
+            NewWindowButton(destination: .file(file, course.id))
         }
         .swipeActions(edge: .leading) {
             PinButton(
@@ -173,6 +229,7 @@ private struct FileRow: View {
 
 private struct FolderRow: View {
     let folder: Folder
+    let course: Course
 
     var body: some View {
         HStack {
@@ -188,6 +245,9 @@ private struct FolderRow: View {
             }
         }
         .imageScale(.large)
+        .contextMenu {
+            NewWindowButton(destination: .folder(folder, course))
+        }
     }
 
     var count: Int {

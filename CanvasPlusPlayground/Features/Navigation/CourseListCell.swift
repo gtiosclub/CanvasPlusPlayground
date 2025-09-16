@@ -44,6 +44,8 @@ struct CourseListCell: View {
                     renameCourseFieldText = course.nickname ?? ""
                     showRenameTextField = true
                 }
+
+                NewWindowButton(destination: .course(course))
             }
             .alert("Rename Course", isPresented: $showRenameTextField) {
                 TextField(course.name ?? "", text: $renameCourseFieldText)
