@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct PinnedItemDetailView: View {
+    @Environment(NavigationModel.self) var navigationModel
     let item: PinnedItem
 
     var body: some View {
@@ -22,6 +23,18 @@ struct PinnedItemDetailView: View {
                     AssignmentDetailView(assignment: assignment)
 				case .quiz(let quiz):
 					QuizDetailView(quiz: quiz)
+                case .grade(let assignment):
+                    AssignmentDetailView(assignment: assignment)
+                case .module(let moduleItem):
+                    ProgressView()
+                    .task {
+                        if let urlServiceResult = CanvasURLService.URLServiceResult(from: moduleItem.type) {
+                            await navigationModel.handleURLSelection(
+                                result: urlServiceResult,
+                                courseID: item.courseID
+                            )
+                        }
+                    }
                 }
             } else {
                 ProgressView()

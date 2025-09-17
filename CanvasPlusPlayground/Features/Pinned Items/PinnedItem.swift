@@ -18,7 +18,7 @@ class PinnedItem: Identifiable, Codable, Equatable, Hashable {
     private var modelData: PinnedItemData.ModelData?
 
     enum PinnedItemType: Int, Codable {
-        case announcement, assignment, file, quiz
+        case announcement, assignment, file, quiz, grade, module
         // TODO: Add more pinned item types
 
         var displayName: String {
@@ -31,8 +31,12 @@ class PinnedItem: Identifiable, Codable, Equatable, Hashable {
                 "Files"
 			case .quiz:
 				"Quizzes"
+            case .grade:
+                "Grades"
+            case .module:
+                "Modules"
             }
-		
+
         }
     }
 
@@ -122,8 +126,20 @@ class PinnedItem: Identifiable, Codable, Equatable, Hashable {
 				findItem: { $0?.first },
 				createModelData: PinnedItemData.ModelData.file
 			)
+        case .grade:
+            try await loadItemData(
+                request: CanvasRequest.getAssignment(id: id, courseId: courseID),
+                findItem: { $0?.first },
+                createModelData: PinnedItemData.ModelData.grade
+            )
+        case .module:
+            try await loadItemData(
+                request: CanvasRequest.getModuleItems(courseId: courseID, moduleId: id),
+                findItem: { $0?.first },
+                createModelData: PinnedItemData.ModelData.module
+            )
         }
-		
+
     }
 	
 	// A generic function for loading data from different types using loadfirstthensync
@@ -185,6 +201,8 @@ struct PinnedItemData {
         case assignment(Assignment)
         case file(File)
 		case quiz(Quiz)
+        case grade(Assignment)
+        case module(ModuleItem)
         // TODO: Add more pinned item types
     }
 
