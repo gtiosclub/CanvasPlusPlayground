@@ -32,6 +32,11 @@ struct AssignmentDetailView: View {
         }
         .sheet(isPresented: $showCreateSubmissionPopUp) {
             AssignmentCreateSubmissionView(assignment: assignment)
+                .environment(UploadSubmissionManager(assignment: self.assignment, onSubmit: { submissionAPI in
+                    Task {
+                        await fetchSubmissions()
+                    }
+                }))
         }
         .sheet(isPresented: $showSubmissionHistoryPopUp) {
             if let submission {
@@ -186,6 +191,8 @@ struct AssignmentDetailView: View {
         })
 
         self.submission = submission?.first
+        
+        print("Submission fetched with \(self.submission?.submissionComments?.count.asString ?? "nil") comments \(self.submission?.submissionHistory?.count.asString ?? "nil") submissions")
     }
 
     private var pointsPossible: String {

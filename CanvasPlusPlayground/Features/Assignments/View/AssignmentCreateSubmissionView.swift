@@ -13,7 +13,7 @@ struct AssignmentCreateSubmissionView: View {
 
     @Environment(\.dismiss) private var dismiss
 
-    @State private var manager: UploadSubmissionManager
+    @Environment(UploadSubmissionManager.self) var manager
 
     let assignment: Assignment
 
@@ -46,11 +46,6 @@ struct AssignmentCreateSubmissionView: View {
                 }
             }
         )
-    }
-
-    init(assignment: Assignment) {
-        self.assignment = assignment
-        self.manager = UploadSubmissionManager(assignment: assignment)
     }
 
     var body: some View {
@@ -341,3 +336,4 @@ private struct FileUploadView: View {
         }
     }
 }
+
