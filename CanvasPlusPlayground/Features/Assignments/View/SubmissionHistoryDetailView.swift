@@ -85,7 +85,7 @@ struct SubmissionHistoryDetailView: View {
                     
                     Spacer()
                     VStack(alignment: .trailing) {
-                        Text("-\(comment.author_name)")
+                        Text(comment.author_name)
                             .font(.subheadline)
                         Group {
                             Text(submissionTime, style: .time)

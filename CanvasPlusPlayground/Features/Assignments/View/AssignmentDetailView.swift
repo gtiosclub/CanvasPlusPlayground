@@ -31,12 +31,11 @@ struct AssignmentDetailView: View {
             await fetchCanSubmitStatus()
         }
         .sheet(isPresented: $showCreateSubmissionPopUp) {
-            AssignmentCreateSubmissionView(assignment: assignment)
-                .environment(UploadSubmissionManager(assignment: self.assignment, onSubmit: { submissionAPI in
-                    Task {
-                        await fetchSubmissions()
-                    }
-                }))
+            AssignmentCreateSubmissionView(assignment: assignment, onSubmit: { _ in
+                Task {
+                    await fetchSubmissions()
+                }
+            })
         }
         .sheet(isPresented: $showSubmissionHistoryPopUp) {
             if let submission {
@@ -175,11 +174,11 @@ struct AssignmentDetailView: View {
 
     private func fetchSubmissions() async {
         guard let userId = profileManager.currentUser?.id else {
-            print("Unable to get current user ID")
+            LoggerService.main.error("Unable to get current user ID")
             return
         }
         guard let courseId: String = assignment.courseId.map({ String($0) }) else {
-            print("Unable to get course ID")
+            LoggerService.main.error("Unable to get course ID")
             return
         }
 
@@ -192,7 +191,7 @@ struct AssignmentDetailView: View {
 
         self.submission = submission?.first
         
-        print("Submission fetched with \(self.submission?.submissionComments?.count.asString ?? "nil") comments \(self.submission?.submissionHistory?.count.asString ?? "nil") submissions")
+        LoggerService.main.info("Submission fetched with \(self.submission?.submissionComments?.count.asString ?? "nil") comments \(self.submission?.submissionHistory?.count.asString ?? "nil") submissions")
     }
 
     private var pointsPossible: String {

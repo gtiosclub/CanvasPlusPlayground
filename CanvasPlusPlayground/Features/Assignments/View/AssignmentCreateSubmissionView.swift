@@ -13,10 +13,9 @@ struct AssignmentCreateSubmissionView: View {
 
     @Environment(\.dismiss) private var dismiss
 
-    @Environment(UploadSubmissionManager.self) var manager
+    @State private var manager: UploadSubmissionManager
 
     let assignment: Assignment
-
     @State private var selectedSubmissionType: SubmissionType?
     @State private var showSubmissionUploadProgress = false
     @State private var isFileHover: Bool = false
@@ -28,7 +27,7 @@ struct AssignmentCreateSubmissionView: View {
     @State private var selectedURLs: [URL] = []
 
     @State private var error: AssignmentSubmissionError?
-
+    
     var allowedFileTypes: [UTType] {
         assignment.allowedExtensions?.compactMap { UTType(filenameExtension: $0) } ?? [.item]
     }
@@ -46,6 +45,11 @@ struct AssignmentCreateSubmissionView: View {
                 }
             }
         )
+    }
+    
+    init(assignment: Assignment, onSubmit: @escaping (SubmissionAPI) -> Void) {
+        self.assignment = assignment
+        self.manager = UploadSubmissionManager(assignment: assignment, onSubmit: onSubmit)
     }
 
     var body: some View {
