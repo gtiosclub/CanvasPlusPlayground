@@ -13,6 +13,15 @@ protocol PickableItem {
 
 extension PickableItem where Self: Equatable { }
 
+/// Type-erased `PickableItem`
+struct AnyPickableItem: PickableItem, Equatable {
+    let contents: String
+
+    init(contents: String) {
+        self.contents = contents
+    }
+}
+
 extension DiscussionTopic: PickableItem {
     var contents: String {
         self.message ?? ""
