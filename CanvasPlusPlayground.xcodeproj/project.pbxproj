@@ -1060,6 +1060,8 @@
 				B72D82FD2E4B903C00BA1DAD /* IntelligenceServiceProvider.swift */,
 				B72D82FF2E4F7A2B00BA1DAD /* IntelligenceServiceProvider+SystemPrompt.swift */,
 				B72D82C02E4B503300BA1DAD /* AnnouncementSummaryService.swift */,
+				B72D83012E4F853300BA1DAD /* RAGSystem.swift */,
+				B72D83032E4F85EF00BA1DAD /* GradeCalculatorIntelligenceService.swift */,
 			);
 			path = Intelligence;
 			sourceTree = "<group>";
