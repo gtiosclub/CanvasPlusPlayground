@@ -140,7 +140,6 @@ class NavigationModel {
         }
     }
     var selectedCoursePage: CoursePage?
-    var selectedCourseForItemPicker: Course?
     var showAuthorizationSheet = false
     var showProfileSheet = false
     #if os(iOS)

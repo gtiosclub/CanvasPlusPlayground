@@ -31,7 +31,7 @@ class GradeCalculator {
         let id: String
         var name: String
         var weight: Double
-        var assignments: [GradeAssignment]
+        var assignments: [GradeAssignment] = []
 
         var rules: AssignmentGroupRules?
 
@@ -238,7 +238,7 @@ class GradeCalculator {
                 usedWeightage += group.weight
 
                 LoggerService.main.debug(
-                    "Group: \(group.name), Weight: \(group.weight), Score: \(weightedScore)"
+                    "Group: \(group.name), ID: \(group.id), Weight: \(group.weight), Score: \(weightedScore)"
                 )
 
                 return sum + weightedScore

@@ -13,6 +13,8 @@ struct SettingsView: View {
     @Environment(CourseManager.self) private var courseManager
 
     @State private var selectedItem: (any PickableItem)?
+    @State private var selectedCourseForItemPicker: Course?
+    @State private var showIGCPlayground = false
     #endif
 
     @Environment(\.dismiss) private var dismiss
@@ -22,14 +24,29 @@ struct SettingsView: View {
     @State private var navigationModel = NavigationModel()
 
     var body: some View {
-        @Bindable var navigationModel = navigationModel
-
         NavigationStack {
             mainBody
         }
         #if DEBUG
-        .sheet(item: $navigationModel.selectedCourseForItemPicker) {
+        .sheet(item: $selectedCourseForItemPicker) {
             CourseItemPicker(course: $0, selectedItem: $selectedItem)
+        }
+        .sheet(isPresented: $showIGCPlayground) {
+            NavigationStack {
+                Group {
+                    if #available(macOS 26.0, iOS 26.0, *) {
+                        IGCPlayground()
+                    } else {
+                        Text("Only available on iOS 26.0/macOS 26.0+")
+                    }
+                }
+                .toolbar {
+                    Button("Done") { showIGCPlayground = false }
+                }
+            }
+            #if os(macOS)
+            .frame(width: 300, height: 400)
+            #endif
         }
         #endif
         .sheet(isPresented: $showChangeAccessToken) {
@@ -88,7 +105,11 @@ struct SettingsView: View {
         Section {
             Group {
                 Button("View Item Picker", systemImage: "filemenu.and.selection") {
-                    navigationModel.selectedCourseForItemPicker = courseManager.activeCourses.first
+                    selectedCourseForItemPicker = courseManager.activeCourses.first
+                }
+
+                Button("IGC Playground", systemImage: "plus.forwardslash.minus") {
+                    showIGCPlayground = true
                 }
 
                 Button("Clear Pinned Items", systemImage: "trash") {

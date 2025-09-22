@@ -54,6 +54,15 @@ struct CourseItemPicker: View {
 
         #if os(macOS)
         .frame(width: 400, height: 500)
+        .toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+                cancelButton
+            }
+
+            ToolbarItem(placement: .confirmationAction) {
+                confirmButton
+            }
+        }
         #else
         .safeAreaInset(edge: .bottom) {
             VStack(spacing: 0) {
@@ -74,17 +83,7 @@ struct CourseItemPicker: View {
 
     private var mainBody: some View {
         CourseView(course: course)
-            #if os(macOS)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    cancelButton
-                }
-
-                ToolbarItem(placement: .confirmationAction) {
-                    confirmButton
-                }
-            }
-            #endif
+            .defaultNavigationDestination(courseID: course.id)
     }
 
     private var cancelButton: some View {
