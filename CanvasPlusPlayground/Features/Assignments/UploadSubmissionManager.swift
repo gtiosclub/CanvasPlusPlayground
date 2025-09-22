@@ -9,9 +9,12 @@ import Foundation
 @Observable
 public class UploadSubmissionManager {
     let assignment: Assignment
+    
+    let onSubmit: (SubmissionAPI) -> Void
 
-    init(assignment: Assignment) {
+    init(assignment: Assignment, onSubmit: @escaping (SubmissionAPI) -> Void) {
         self.assignment = assignment
+        self.onSubmit = onSubmit
     }
     // MARK: Assignment Submission Uploads
     /// This function makes an API request to create and upload a text submission to the corresponding assignment.
@@ -30,6 +33,7 @@ public class UploadSubmissionManager {
         )
         let response = try await CanvasService.shared.fetch(request).first
         LoggerService.main.info("returning text submission: \(response.debugDescription)")
+        if let response = response { self.onSubmit(response) }
         return response
     }
     /// This function makes an API request to create and upload a URL submission to the corresponding assignment.
@@ -49,6 +53,7 @@ public class UploadSubmissionManager {
         )
         let response = try await CanvasService.shared.fetch(request).first
         LoggerService.main.info("returning text submission: \(response.debugDescription)")
+        if let response = response { self.onSubmit(response) }
         return response
     }
 
@@ -94,6 +99,7 @@ public class UploadSubmissionManager {
         do {
             let response = try await CanvasService.shared.fetch(submissionRequest).first
             LoggerService.main.info("returning file submission: \(response.debugDescription)")
+            if let response = response { self.onSubmit(response) }
             return response
         } catch {
             LoggerService.main.error("Error submitting assignment: \(error)")
@@ -206,3 +212,4 @@ public class UploadSubmissionManager {
 enum MimeType: String {
     case txt = "text/plain", other = "application/octet-stream"
 }
+
