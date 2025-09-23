@@ -30,7 +30,7 @@ struct CourseItemPicker: View {
     }
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navigationModel.navigationPath) {
             mainBody
         }
         .onDisappear {

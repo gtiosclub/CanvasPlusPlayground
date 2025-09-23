@@ -12,6 +12,7 @@ import PDFKit
 
 @available(iOS 26.0, macOS 26.0, *)
 struct IGCPlayground: View {
+    static let windowID = "com.CanvasPlus.IGCPlayground"
     @Environment(CourseManager.self) var courseManager
 
     @State private var selectedCourse: Course?
@@ -41,27 +42,19 @@ struct IGCPlayground: View {
                 Button("Pick an item", systemImage: "filemenu.and.selection") {
                     showingPicker.toggle()
                 }
-                .disabled(selectedCourse == nil)
 
                 Button("Upload PDF from Disk", systemImage: "doc.richtext") {
                     showingPDFImporter = true
                 }
-                .disabled(selectedCourse == nil)
             }
+            .disabled(selectedCourse == nil)
 
-            if let pickedItem {
-                Button("Extract assignments weights") {
-                    Task {
-                        do {
-                            intelligenceOutput = try await igcIntelligenceService?.performRequest(for: pickedItem) ?? []
-                        } catch {
-                            errorMessage = error.localizedDescription
-                            showingErrorAlert = true
-                        }
-                    }
+            Button("Extract assignments weights") {
+                Task {
+                    await extractWeights()
                 }
-                .disabled(assignmentGroups.isEmpty)
             }
+            .disabled(pickedItem == nil)
 
             Section("Intelligence Output") {
                 ForEach(intelligenceOutput) { output in
@@ -92,29 +85,9 @@ struct IGCPlayground: View {
             case .success(let urls):
                 guard let url = urls.first else { return }
                 Task {
-                    do {
-                        let data = try Data(contentsOf: url)
-                        var extractedText = ""
-                        if let pdfDocument = PDFDocument(data: data),
-                           let pageCount = pdfDocument.pageCount as Int? {
-                            for i in 0..<pageCount {
-                                if let page = pdfDocument.page(at: i),
-                                   let pageText = page.string {
-                                    extractedText.append(pageText)
-                                    extractedText.append("\n")
-                                }
-                            }
-                            extractedText = extractedText.trimmingCharacters(in: .whitespacesAndNewlines)
-                        }
-                        if extractedText.isEmpty {
-                            extractedText = data.base64EncodedString()
-                        }
-                        let pdfItem = PDFPickableItem(fileURL: url, contents: extractedText)
-                        await MainActor.run {
-                            pickedItem = pdfItem
-                        }
-                    } catch {
-                        print(error)
+                    let text = CourseFileService.getContentsOfFile(at: url)
+                    await MainActor.run {
+                        self.pickedItem = AnyPickableItem(contents: text)
                     }
                 }
             case .failure(_):
@@ -143,11 +116,16 @@ struct IGCPlayground: View {
             Text(errorMessage ?? "Unknown error")
         })
     }
-}
 
-private struct PDFPickableItem: PickableItem, Identifiable {
-    let id = UUID()
-    let fileURL: URL
-    let contents: String
+    private func extractWeights() async {
+        guard let pickedItem else { return }
+
+        do {
+            intelligenceOutput = try await igcIntelligenceService?.performRequest(for: pickedItem) ?? []
+        } catch {
+            errorMessage = error.localizedDescription
+            showingErrorAlert = true
+        }
+    }
 }
 #endif

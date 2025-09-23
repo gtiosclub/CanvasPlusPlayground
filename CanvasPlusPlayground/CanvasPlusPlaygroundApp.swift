@@ -63,6 +63,13 @@ struct CanvasPlusPlaygroundApp: App {
                 .environment(networkRecorder)
         }
         .windowStyle(.automatic)
+
+        if #available(macOS 26.0, *) {
+            Window("IGC Playground", id: IGCPlayground.windowID) {
+                IGCPlayground()
+                    .environment(courseManager)
+            }
+        }
 #endif
 
         WindowGroup(for: FocusWindowInfo.self) { $focusWindowInfo in

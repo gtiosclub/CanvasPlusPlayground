@@ -10,31 +10,6 @@ import FoundationModels
 import SwiftUI
 
 @available(iOS 26.0, macOS 26.0, *)
-private struct Example {
-    let groups: [GradeCalculator.GradeGroup]
-    let syllabusExcerpt: String
-    let expectedOutput: [GradeCalculatorIntelligenceServiceResult]
-}
-
-@available(iOS 26.0, macOS 26.0, *)
-extension Example: PromptRepresentable {
-    var promptRepresentation: Prompt {
-        "EXAMPLE"
-
-        """
-        EXISTING CANVAS GROUPS:
-        """
-        groups
-
-        "SYLLABUS EXCERPT:"
-        syllabusExcerpt
-
-        "EXPECTED OUTPUT:"
-        expectedOutput
-    }
-}
-
-@available(iOS 26.0, macOS 26.0, *)
 @MainActor
 @Observable
 final class GradeCalculatorIntelligenceService: IntelligenceServiceProvider {
@@ -60,7 +35,10 @@ final class GradeCalculatorIntelligenceService: IntelligenceServiceProvider {
             rag.addDocument(.init(id: UUID().uuidString, content: String($0)))
         }
 
-        let relevantDocs = rag.searchRelevantDocuments(for: "What are the assignment groups and their corresponding weights in this course?")
+        let relevantDocs = rag.searchRelevantDocuments(
+            for: "What are the assignment groups and their corresponding weights in this course?",
+            limit: 2
+        )
         let context = relevantDocs.map { $0.content }.joined(separator: " ")
 
         let response = try await session.respond(to: Prompt {
@@ -82,7 +60,7 @@ final class GradeCalculatorIntelligenceService: IntelligenceServiceProvider {
             """
             Examples of expected inputs and outputs are as follows:
             """
-            Self.exampleGroupAndSyllabusPairs
+            Example.groupAndSyllabusPairs
 
             """
             EXISTING CANVAS GROUPS:
@@ -97,10 +75,17 @@ final class GradeCalculatorIntelligenceService: IntelligenceServiceProvider {
 
         return response.content
     }
-    
+}
+
+@available(iOS 26.0, macOS 26.0, *)
+private struct Example {
+    let groups: [GradeCalculator.GradeGroup]
+    let syllabusExcerpt: String
+    let expectedOutput: [GradeCalculatorIntelligenceServiceResult]
+
     /// Example input/output triplets for prompt construction and testing.
     /// Each entry contains sample Canvas groups, a syllabus excerpt, and the expected output.
-    private static let exampleGroupAndSyllabusPairs: [Example] = [
+    static let groupAndSyllabusPairs: [Example] = [
         Example(
             groups: [
                 .init(id: "1", name: "Homework", weight: 30),
@@ -158,6 +143,24 @@ final class GradeCalculatorIntelligenceService: IntelligenceServiceProvider {
             ]
         )
     ]
+}
+
+@available(iOS 26.0, macOS 26.0, *)
+extension Example: PromptRepresentable {
+    var promptRepresentation: Prompt {
+        "EXAMPLE"
+
+        """
+        EXISTING CANVAS GROUPS:
+        """
+        groups
+
+        "SYLLABUS EXCERPT:"
+        syllabusExcerpt
+
+        "EXPECTED OUTPUT:"
+        expectedOutput
+    }
 }
 
 @available(iOS 26.0, macOS 26.0, *)
