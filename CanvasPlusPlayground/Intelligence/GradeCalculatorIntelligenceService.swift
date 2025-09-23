@@ -31,14 +31,18 @@ final class GradeCalculatorIntelligenceService: IntelligenceServiceProvider {
 
         let rag = RAGSystem()
 
+        // Use paragraph chunks
         input.contents.split(separator: "\n\n").forEach {
             rag.addDocument(.init(id: UUID().uuidString, content: String($0)))
         }
 
+        // Pick the top two relevant paragraph chunks to use for
+        // the inference
         let relevantDocs = rag.searchRelevantDocuments(
             for: "What are the assignment groups and their corresponding weights in this course?",
             limit: 2
         )
+
         let context = relevantDocs.map { $0.content }.joined(separator: " ")
 
         let response = try await session.respond(to: Prompt {
