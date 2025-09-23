@@ -16,15 +16,12 @@ struct FileViewer: View {
 
     @State private var url: URL?
     @State private var isLoading = false
-    @State private var pickedItem: File?
 
     var body: some View {
         Group {
             if let url {
                 QuickLookPreview(url: url) { dismiss() }
-                    .onAppear {
-                        pickedItem = file
-                    }
+                    .pickedItem(file)
                     #if os(iOS)
                     .ignoresSafeArea()
                     .toolbar(.hidden)
@@ -62,7 +59,6 @@ struct FileViewer: View {
         .task {
             await loadContents()
         }
-        .pickedItem(pickedItem)
         .navigationTitle(file.displayName)
         #if os(iOS)
         .navigationBarBackButtonHidden()
