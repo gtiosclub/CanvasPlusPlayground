@@ -27,6 +27,7 @@ struct IGCPlayground: View {
 
     @State private var errorMessage: String? = nil
     @State private var showingErrorAlert = false
+    @State private var isLoading = false
 
     var body: some View {
         Form {
@@ -49,12 +50,23 @@ struct IGCPlayground: View {
             }
             .disabled(selectedCourse == nil)
 
-            Button("Extract assignments weights") {
-                Task {
-                    await extractWeights()
+            HStack {
+                Button("Extract assignments weights") {
+                    Task {
+                        isLoading = true
+                        await extractWeights()
+                        isLoading = false
+                    }
+                }
+                .disabled(pickedItem == nil)
+                .disabled(isLoading)
+
+                Spacer()
+
+                if isLoading {
+                    ProgressView().controlSize(.small)
                 }
             }
-            .disabled(pickedItem == nil)
 
             Section("Intelligence Output") {
                 ForEach(intelligenceOutput) { output in
