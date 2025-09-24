@@ -63,10 +63,23 @@ private struct PinnedAnnouncementCard: View {
     var body: some View {
         PinnedBaseCard(
             course: course,
-            title: "",
-            subtitle: announcement.message?.stripHTML().trimmingCharacters(in: .whitespacesAndNewlines),
+            title: announcement.title ?? "Announcement",
+            subtitle: nil,
             onRemove: onRemove,
-            extraContent: { EmptyView() }
+            extraContent: {
+                Group {
+                    if let message = announcement.message?.stripHTML().trimmingCharacters(in: .whitespacesAndNewlines) {
+                        Text(message)
+                            .font(.subheadline)
+                            .foregroundStyle(.primary)
+                            .multilineTextAlignment(.leading)
+                    } else {
+                        Text("No message available.")
+                            .foregroundStyle(.secondary)
+                            .italic()
+                    }
+                }
+            }
         )
     }
 }
@@ -199,9 +212,11 @@ private struct PinnedBaseCard<Content: View>: View {
     let subtitle: String?
     let onRemove: () -> Void
     let extraContent: () -> Content
-
+    let fixedWidth: CGFloat = 300
+    let fixedHeight: CGFloat = 150
+    
     var body: some View {
-        ScrollView {
+        VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 8) {
                 Button(action: {
                     withAnimation(.easeInOut(duration: 0.3)) {
@@ -234,12 +249,14 @@ private struct PinnedBaseCard<Content: View>: View {
                             .foregroundStyle(.secondary)
                             .lineLimit(2)
                     }
-
-                    extraContent()
+                    ScrollView {
+                        extraContent()
+                    }
                 }
-
-                Spacer()
             }
         }
+        .padding()
+        .frame(width: fixedWidth)
+        .frame(maxHeight: fixedHeight)
     }
 }

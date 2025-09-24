@@ -109,9 +109,7 @@ class CanvasService {
 			loadingMethod: loadingMethod
 		)
 		
-		// 2. Immediately provide the cached data to the UI.
 		onCacheReceive(cached)
-		//    The parent function does NOT wait for this to finish.
 		Task {
 			do {
 				let freshData = try await request.syncWithAPI(
