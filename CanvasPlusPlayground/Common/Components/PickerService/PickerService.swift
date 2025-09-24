@@ -28,7 +28,9 @@ class PickerService {
     var supportedPickerViews: [NavigationModel.CoursePage] = [
         .announcements,
         .files,
-        .pages
+        .pages,
+        .home,
+        .syllabus
         // TODO: Add more supported picker pages.
     ]
 

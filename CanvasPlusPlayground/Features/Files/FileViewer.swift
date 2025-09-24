@@ -17,11 +17,11 @@ struct FileViewer: View {
     @State private var url: URL?
     @State private var isLoading = false
 
-
     var body: some View {
         Group {
             if let url {
                 QuickLookPreview(url: url) { dismiss() }
+                    .pickedItem(file)
                     #if os(iOS)
                     .ignoresSafeArea()
                     .toolbar(.hidden)

@@ -14,7 +14,7 @@ private struct PickerServiceViewModifier<T: PickableItem & Equatable>: ViewModif
 
     func body(content: Content) -> some View {
         content
-            .onChange(of: item) { _, _ in
+            .onChange(of: item, initial: true) { _, _ in
                 pickerService?.pickedItem = item
             }
     }

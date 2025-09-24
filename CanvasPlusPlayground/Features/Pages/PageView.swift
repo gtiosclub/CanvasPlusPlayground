@@ -14,6 +14,7 @@ struct PageView: View {
         ZStack {
             if let htmlContent = page.body, !htmlContent.isEmpty {
                 HTMLView(html: htmlContent, courseID: page.courseID)
+                    .pickedItem(page)
             } else {
                 ContentUnavailableView("No pages available", systemImage: "exclamationmark.bubble.fill")
             }
