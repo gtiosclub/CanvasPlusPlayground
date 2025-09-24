@@ -256,7 +256,7 @@ fileprivate struct ExtractWeightsView: View {
             )
         }
         .alert(
-            "An error occured",
+            "Extraction Failed",
             isPresented: $isShowingError,
             actions: {
                 Button("OK") { }
@@ -280,7 +280,10 @@ fileprivate struct ExtractWeightsView: View {
             extractedWeights = try await intelligenceService?
                 .performRequest(for: pickedItem) ?? []
         } catch {
-            errorDescription = error.localizedDescription
+            errorDescription = "An error occured while extracting weights."
+            #if DEBUG
+            errorDescription += "DEBUG: " + error.localizedDescription
+            #endif
             isShowingError = true
         }
 
