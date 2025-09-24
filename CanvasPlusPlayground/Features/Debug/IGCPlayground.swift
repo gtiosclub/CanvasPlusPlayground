@@ -99,7 +99,10 @@ struct IGCPlayground: View {
                 Task {
                     let text = CourseFileService.getContentsOfFile(at: url)
                     await MainActor.run {
-                        self.pickedItem = AnyPickableItem(contents: text)
+                        self.pickedItem = AnyPickableItem(
+                            name: "File",
+                            contents: text
+                        )
                     }
                 }
             case .failure(_):

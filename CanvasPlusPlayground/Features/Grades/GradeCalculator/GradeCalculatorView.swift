@@ -15,7 +15,11 @@ struct GradeCalculatorView: View {
     @FocusState private var assignmentRowFocus: GradeCalculator.GradeAssignment?
     @FocusState private var groupRowFocus: GradeCalculator.GradeGroup?
 
-    init(assignmentGroups: [AssignmentGroup]) {
+    let course: Course
+    @State private var showIGCSetup = false
+
+    init(course: Course, assignmentGroups: [AssignmentGroup]) {
+        self.course = course
         _calculator = .init(
             initialValue: .init(assignmentGroups: assignmentGroups)
         )
@@ -57,6 +61,12 @@ struct GradeCalculatorView: View {
             }
             #endif
 
+            if #available(iOS 26.0, macOS 26.0, *) {
+                ToolbarItem(placement: .automatic) {
+                    intelligentGradeCalculatorToolbarItem
+                }
+            }
+
             ToolbarItem(placement: .cancellationAction) {
                 Button {
                     dismiss()
@@ -81,6 +91,16 @@ struct GradeCalculatorView: View {
                 .bold()
             }
         }
+        .sheet(isPresented: $showIGCSetup) {
+            if #available(macOS 26.0, iOS 26.0, *) {
+                IGCSetup(course: course)
+            } else {
+                ContentUnavailableView(
+                    "Feature Unavailable",
+                    systemImage: "exclamationmark.triangle"
+                )
+            }
+        }
         .environment(calculator)
     }
 
@@ -94,6 +114,12 @@ struct GradeCalculatorView: View {
             .contentTransition(.numericText())
             .animation(.default, value: calculator.totalGrade)
         #endif
+    }
+
+    private var intelligentGradeCalculatorToolbarItem: some View {
+        Button("Extract Weights", systemImage: "wand.and.sparkles") {
+            showIGCSetup = true
+        }
     }
 }
 

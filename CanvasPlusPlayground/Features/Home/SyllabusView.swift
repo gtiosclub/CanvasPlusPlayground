@@ -14,7 +14,7 @@ struct SyllabusView: View {
         Group {
             if let syllabusBody = course.syllabusBody {
                 HTMLView(html: syllabusBody, courseID: course.id)
-                    .pickedItem(AnyPickableItem(contents: syllabusBody))
+                    .pickedItem(AnyPickableItem(name: "Syllabus", contents: syllabusBody))
             } else {
                 ContentUnavailableView(
                     "Could not load syllabus",

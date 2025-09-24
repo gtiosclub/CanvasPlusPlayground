@@ -119,6 +119,7 @@ struct CourseAssignmentsView: View {
         .sheet(isPresented: $showingGradeCalculator) {
             NavigationStack {
                 GradeCalculatorView(
+                    course: course,
                     assignmentGroups: assignmentManager.assignmentGroups
                 )
             }
