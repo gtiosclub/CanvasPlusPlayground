@@ -69,6 +69,10 @@ enum IGCOnboardingScreen: String, Identifiable, Hashable {
         }
     }
 
+    var showsBetaBadge: Bool {
+        self == Self.first
+    }
+
     static let first: Self = .intro
 }
 
@@ -86,6 +90,13 @@ struct IGCOnboardingView: View {
             VStack(spacing: 12) {
                 Image(systemName: screen.icon)
                 Text(screen.title)
+
+                if screen.showsBetaBadge {
+                    Text("Beta".uppercased())
+                        .font(.footnote)
+                        .padding(2)
+                        .background(Color.c2, in: .capsule)
+                }
             }
             .font(.largeTitle)
             .fontDesign(.rounded)
