@@ -93,7 +93,7 @@ struct GradeCalculatorView: View {
         }
         .sheet(isPresented: $showIGCSetup) {
             if #available(macOS 26.0, iOS 26.0, *) {
-                IGCSetup(course: course, calculator: calculator)
+                IGCSetupView(course: course, calculator: calculator)
             } else {
                 ContentUnavailableView(
                     "Feature Unavailable",
