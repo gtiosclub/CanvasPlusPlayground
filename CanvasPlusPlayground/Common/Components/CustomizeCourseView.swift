@@ -59,11 +59,7 @@ struct CustomizeCourseView: View {
     private var bottomRowColors: [Color] { Array(colorList.suffix(colorList.count/2)) }
     
     var body: some View {
-        ZStack {
-#if os(macOS)
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .shadow(radius: 12, y: 4)
-#endif
+        
             VStack(spacing: 18) {
                 Text("Choose a Color")
                     .font(.headline)
@@ -93,6 +89,7 @@ struct CustomizeCourseView: View {
                     }
                     .padding(.horizontal, 10)
                 }
+                .scrollClipDisabled(true)
                 Text("Choose an Icon")
                     .font(.headline)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -123,14 +120,14 @@ struct CustomizeCourseView: View {
                     }
                     .padding(.horizontal, 10)
                 }
+                .scrollClipDisabled(true)
                 
             }
 #if os(macOS)
-            .frame(width: 320, height: 280)
+        .frame(width: 320, height: 280)
 #else
-            .frame(minWidth: 280)
+        .frame(minWidth: 280)
 #endif
-        }
     }
 }
 
@@ -152,6 +149,7 @@ private struct ColorSelectionButton: View {
                         .shadow(radius: 1)
                 }
             }
+            .frame(width: 36, height: 36)
         }
         .buttonStyle(PlainButtonStyle())
     }
@@ -191,4 +189,3 @@ private struct SymbolSelectionButton: View {
     
     return CustomizeCourseView(selectedColor: $color, selectedSymbol: $symbol)
 }
-
