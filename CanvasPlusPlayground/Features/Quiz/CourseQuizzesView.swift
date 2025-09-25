@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct CourseQuizzesView: View {
-    @State private var quizzesVM: QuizzesViewModel
+	@State private var quizzesVM: QuizzesViewModel
 
-    @State private var isLoadingQuizzes = true
+	@State private var isLoadingQuizzes = true
 
     @State private var selectedQuiz: Quiz?
 
@@ -40,15 +40,29 @@ struct CourseQuizzesView: View {
         .statusToolbarItem("Quizzes", isVisible: isLoadingQuizzes)
     }
 
-    @ViewBuilder
-    func quizSection(for quizType: QuizType) -> some View {
-        Section(quizType.title) {
-            let quizzes = quizzesVM.sectionsToQuizzes[quizType] ?? []
-            ForEach(quizzes) {
-                quizCell(for: $0)
-            }
-        }
-    }
+	@ViewBuilder
+	func quizSection(for quizType: QuizType) -> some View {
+		Section(quizType.title) {
+			let quizzes = quizzesVM.sectionsToQuizzes[quizType] ?? []
+			ForEach(quizzes) { quiz in 
+				quizCell(for: quiz)
+					.contextMenu {
+						PinButton(
+							itemID: quiz.id,
+							courseID: quizzesVM.courseId,
+							type: .quiz
+							)
+					}
+					.swipeActions(edge: .leading) {
+						PinButton(
+							itemID: quiz.id,
+							courseID: quizzesVM.courseId,
+							type: .quiz
+						)
+					}
+			}
+		}
+	}
 
     @ViewBuilder
     func quizCell(for quiz: Quiz) -> some View {
@@ -82,9 +96,9 @@ struct CourseQuizzesView: View {
         .tag(quiz)
     }
 
-    private func loadQuizzes() async {
-        isLoadingQuizzes = true
-        await quizzesVM.fetchQuizzes()
-        isLoadingQuizzes = false
-    }
+	private func loadQuizzes() async {
+		isLoadingQuizzes = true
+		await quizzesVM.fetchQuizzes()
+		isLoadingQuizzes = false
+	}
 }

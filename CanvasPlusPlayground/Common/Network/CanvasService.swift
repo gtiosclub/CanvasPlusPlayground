@@ -89,6 +89,42 @@ class CanvasService {
             loadingMethod: loadingMethod
         )
     }
+	
+	
+	@MainActor
+	func loadFirstThenSync<Request: CacheableAPIRequest>(
+		_ request: Request,
+		onCacheReceive: @escaping ([Request.PersistedModel]?) -> Void,
+		onSyncComplete: @escaping ([Request.PersistedModel]?) -> Void,
+		loadingMethod: LoadingMethod<Request> = .all(onNewPage: { _ in })
+	) async throws {
+		guard let repository else {
+			onCacheReceive(nil)
+			onSyncComplete(nil)
+			return
+		}
+
+		let cached = try await request.load(
+			from: repository,
+			loadingMethod: loadingMethod
+		)
+		
+		onCacheReceive(cached)
+		Task {
+			do {
+				let freshData = try await request.syncWithAPI(
+					to: repository,
+					loadingMethod: loadingMethod
+				)
+				onSyncComplete(freshData)
+			} catch {
+				// It's good practice to log errors from the background sync.
+				LoggerService.main.error("Background sync failed for \(String(describing: request)): \(error.localizedDescription)")
+				// Optionally, you can call the completion handler with nil or the cached value again.
+				onSyncComplete(cached)
+			}
+		}
+	}
 
     // MARK: Network Requests
 

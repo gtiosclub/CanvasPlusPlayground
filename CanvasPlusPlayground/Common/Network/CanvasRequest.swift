@@ -132,13 +132,15 @@ enum CanvasRequest {
             include: include
         )
     }
-
+	
     static func getAssignments(
         courseId: String,
         include: [GetAssignmentsRequest.Include] = [.submission]
     ) -> GetAssignmentsRequest {
         GetAssignmentsRequest(courseId: courseId, include: include)
     }
+	
+	
 
     static func getAssignmentGroups(
         courseId: String,
