@@ -13,9 +13,6 @@ struct CourseListCell: View {
     let course: Course
 
     @State private var showCourseCustomizer = false
-    @State private var resolvedCourseColor: Color = .accentColor
-
-    @State private var resolvedCourseSymbol: String = "book.pages"
     @State private var showRenameTextField = false
     @State private var renameCourseFieldText: String = ""
 
@@ -28,9 +25,6 @@ struct CourseListCell: View {
             #if os(macOS)
             .padding(.vertical, 4)
             #endif
-            .onAppear {
-                resolvedCourseColor = course.rgbColors?.color ?? .accentColor
-            }
             .swipeActions(edge: .trailing) {
                 favCourseButton
             }
@@ -61,19 +55,17 @@ struct CourseListCell: View {
             }
             #if os(macOS)
             .popover(isPresented: $showCourseCustomizer) {
-                CustomizeCourseView(selectedColor: $resolvedCourseColor, selectedSymbol: $resolvedCourseSymbol)
-                    .onDisappear {
-                            course.rgbColors = .init(color: resolvedCourseColor)
-                            course.courseSymbol = resolvedCourseSymbol
-                    }
+                CustomizeCourseView(courseName: course.displayName, selectedSymbol: course.displaySymbol, selectedColor: course.rgbColors?.color ?? .accentColor, onDismiss: { (symbol, color) in
+                    course.rgbColors = .init(color: color)
+                    course.courseSymbol = symbol
+                })
             }
             #elseif os(iOS)
             .sheet(isPresented: $showCourseCustomizer) {
-                CustomizeCourseView(selectedColor: $resolvedCourseColor, selectedSymbol: $resolvedCourseSymbol)
-                    .onDisappear {
-                        course.rgbColors = .init(color: resolvedCourseColor)
-                        course.courseSymbol = resolvedCourseSymbol
-                    }
+                CustomizeCourseView(courseName: course.displayName, selectedSymbol: course.displaySymbol, selectedColor: course.rgbColors?.color ?? .accentColor, onDismiss: { (symbol, color) in
+                    course.rgbColors = .init(color: color)
+                    course.courseSymbol = symbol
+                })
             }
             #endif
     }
