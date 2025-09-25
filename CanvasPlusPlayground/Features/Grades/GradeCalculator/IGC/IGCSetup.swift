@@ -9,42 +9,29 @@ import SwiftUI
 
 @Observable
 class IGCSetupManager {
+    static let extractedGroupsKey = "IGCSetupManager.extractedGroups"
+
     var course: Course?
     var calculator: GradeCalculator?
     var pickedItem: (any PickableItem)?
-    
-    /// Backing storage for extractedGroups loaded from UserDefaults.
-    private var _extractedGroups: [GradeCalculator.GradeGroup]?
 
     /// The grade groups extracted by intelligence.
-    var extractedGroups: [GradeCalculator.GradeGroup]? {
-        get {
-            if _extractedGroups == nil {
-                // Attempt to load from UserDefaults on first access
-                if let data = UserDefaults.standard.data(forKey: "IGCSetupManager.extractedGroups") {
-                    do {
-                        _extractedGroups = try JSONDecoder().decode([GradeCalculator.GradeGroup].self, from: data)
-                    } catch {
-                        LoggerService.main.error(
-                            "Failed to decode extractedGroups from UserDefaults: \(error)"
-                        )
-                    }
-                }
-            }
-            return _extractedGroups
+    var extractedGroups: [GradeCalculator.GradeGroup]?
+
+    var previouslyExtractedWeightsAvailable: Bool {
+        UserDefaults.standard.value(forKey: Self.extractedGroupsKey) != nil
+    }
+
+    func usePreviouslyExtractedWeights() {
+        guard let data = UserDefaults.standard.data(forKey: Self.extractedGroupsKey) else {
+            return
         }
-        set {
-            _extractedGroups = newValue
-            guard let groups = newValue else {
-                UserDefaults.standard.removeObject(forKey: "IGCSetupManager.extractedGroups")
-                return
-            }
-            do {
-                let data = try JSONEncoder().encode(groups)
-                UserDefaults.standard.set(data, forKey: "IGCSetupManager.extractedGroups")
-            } catch {
-                LoggerService.main.error("Failed to encode extractedGroups to UserDefaults: \(error)")
-            }
+
+        if let decoded = try? JSONDecoder().decode(
+            [GradeCalculator.GradeGroup].self,
+            from: data
+        ) {
+            extractedGroups = decoded
         }
     }
 
@@ -57,7 +44,9 @@ class IGCSetupManager {
 
         var newAssignmentGroups = extractedGroups
 
-        var uncategorizedAssignments = GradeCalculator.GradeGroup.init(
+        // If existing groups retrieved from user defaults already has 'uncategorized',
+        // use that.
+        var uncategorizedAssignmentGroup = extractedGroups.first { $0.id == "uncategorized" } ?? GradeCalculator.GradeGroup.init(
             id: "uncategorized",
             name: "Uncategorized",
             weight: 0.0
@@ -71,14 +60,30 @@ class IGCSetupManager {
             }
         }
 
+        var uncategorizedAssignments = Set<GradeCalculator.GradeAssignment>()
         for oldGroup in calculator.gradeGroups {
             if !oldGroup.assignments.isEmpty {
-                uncategorizedAssignments.assignments
-                    .append(contentsOf: oldGroup.assignments)
+                uncategorizedAssignments = uncategorizedAssignments
+                    .union(oldGroup.assignments)
             }
         }
 
-        newAssignmentGroups.append(uncategorizedAssignments)
+        uncategorizedAssignmentGroup.assignments = Array(
+            uncategorizedAssignments
+        )
+
+        if !newAssignmentGroups.contains(where: { $0.id == "uncategorized" }) {
+            newAssignmentGroups.append(uncategorizedAssignmentGroup)
+        }
+
+        do {
+            let data = try JSONEncoder().encode(newAssignmentGroups)
+            UserDefaults.standard.set(data, forKey: Self.extractedGroupsKey)
+        } catch {
+            LoggerService.main.error(
+                "Failed to encode extractedGroups to UserDefaults: \(error)"
+            )
+        }
 
         calculator.gradeGroups = newAssignmentGroups
     }

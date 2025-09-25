@@ -111,6 +111,10 @@ struct IGCOnboardingView: View {
 
             Spacer()
 
+            if screen == .first {
+                UseOldWeightsButton(path: $path)
+            }
+
             screen.contentView
 
             Spacer()
@@ -140,6 +144,24 @@ struct IGCOnboardingView: View {
             path.append(next)
         } else {
             dismiss()
+        }
+    }
+}
+
+@available(macOS 26.0, iOS 26.0, *)
+fileprivate struct UseOldWeightsButton: View {
+    @Environment(IGCSetupManager.self) var manager
+    @Binding var path: [IGCOnboardingScreen]
+
+    var body: some View {
+        if manager.previouslyExtractedWeightsAvailable {
+            Button("Use previously extracted weights") {
+                manager.usePreviouslyExtractedWeights()
+                path.append(.done)
+            }
+            .buttonStyle(.glass)
+        } else {
+            EmptyView()
         }
     }
 }
