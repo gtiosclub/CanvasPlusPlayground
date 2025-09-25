@@ -210,11 +210,8 @@ fileprivate struct SyllabusPickerView: View {
         .pickableFileImporter(
             isPresented: $showingFilePicker,
             pickedItem: $pickedItem
-        )
-        .onChange(of: showingFilePicker) { _, newValue in
-            if !newValue {
-                manager.pickedItem = pickedItem
-            }
+        ) {
+            manager.pickedItem = pickedItem
         }
         .preference(key: NextButtonEnabledKey.self, value: pickedItem != nil)
     }

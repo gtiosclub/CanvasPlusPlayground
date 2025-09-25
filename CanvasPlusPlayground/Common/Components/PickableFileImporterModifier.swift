@@ -12,6 +12,7 @@ import UniformTypeIdentifiers
 private struct PickableFileImporterModifier: ViewModifier {
     @Binding var isPresented: Bool
     @Binding var pickedItem: (any PickableItem)?
+    let onCompletion: () -> Void
     var allowedContentTypes: [UTType] = [.pdf, .plainText, .html]
     
     func body(content: Content) -> some View {
@@ -29,6 +30,7 @@ private struct PickableFileImporterModifier: ViewModifier {
                             name: url.lastPathComponent,
                             contents: text
                         )
+                        onCompletion()
                     }
                 }
             }
@@ -46,12 +48,14 @@ extension View {
     func pickableFileImporter(
         isPresented: Binding<Bool>,
         pickedItem: Binding<(any PickableItem)?>,
-        allowedContentTypes: [UTType] = [.pdf, .plainText, .html]
+        allowedContentTypes: [UTType] = [.pdf, .plainText, .html],
+        onCompletion: @escaping () -> Void = {}
     ) -> some View {
         modifier(
             PickableFileImporterModifier(
                 isPresented: isPresented,
                 pickedItem: pickedItem,
+                onCompletion: onCompletion,
                 allowedContentTypes: allowedContentTypes
             )
         )
