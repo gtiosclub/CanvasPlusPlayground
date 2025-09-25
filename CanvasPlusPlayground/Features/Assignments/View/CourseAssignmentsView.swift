@@ -124,7 +124,7 @@ struct CourseAssignmentsView: View {
                 )
             }
             #if os(macOS)
-            .frame(width: 550, height: 650)
+            .frame(width: 650, height: 550)
             #endif
         }
         .environment(gradeCalculator)

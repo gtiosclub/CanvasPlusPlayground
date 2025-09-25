@@ -44,7 +44,7 @@ enum IGCOnboardingScreen: String, Identifiable, Hashable {
         case .extractWeights:
             "Use the 'Extract Weights' button to use the selected syllabus file to extract correct grade weights."
         case .done:
-            "Intelligent Grade Calculator has extracted the course weights. The weights are saved and will automatically be applied in the Grade Calculator. You can revert to the course's original weights at any time."
+            "Intelligent Grade Calculator has extracted the course weights. The weights are saved and will automatically be applied in the Grade Calculator."
         }
     }
 
@@ -97,7 +97,7 @@ struct IGCOnboardingView: View {
                     Text("Beta".uppercased())
                         .font(.caption)
                         .padding(8)
-                        .glassEffect(.regular.tint(.accentColor))
+                        .glassEffect()
                 }
             }
             .font(.largeTitle)
@@ -117,24 +117,40 @@ struct IGCOnboardingView: View {
 
             if screen == .first {
                 UseOldWeightsButton(path: $path)
-                    .padding(.bottom, 8)
+                    .padding(.bottom, 12)
             }
         }
+        #if os(macOS)
+        .toolbar {
+            ToolbarItem(placement: .confirmationAction) {
+                nextButton
+            }
+        }
+        #else
         .safeAreaBar(edge: .bottom) {
-            Button(action: onNext) {
-                Text(screen.next == nil ? "Finish" : "Next")
-                    .frame(minHeight: 36)
-                    .font(.headline)
-            }
-            .buttonStyle(.glassProminent)
-            .buttonBorderShape(.capsule)
-            .buttonSizing(.flexible)
-            .disabled(!isNextButtonEnabled)
+            nextButton
         }
+        #endif
         .padding()
         .onPreferenceChange(NextButtonEnabledKey.self) { val in
             isNextButtonEnabled = val
         }
+    }
+
+    private var nextButton: some View {
+        Button(role: .confirm, action: onNext) {
+            Text(screen.next == nil ? "Finish" : "Next")
+                #if os(iOS)
+                .frame(minHeight: 36)
+                .font(.headline)
+                #endif
+        }
+        #if os(iOS)
+        .buttonStyle(.glassProminent)
+        .buttonBorderShape(.capsule)
+        .buttonSizing(.flexible)
+        #endif
+        .disabled(!isNextButtonEnabled)
     }
 
     func onNext() {
@@ -157,7 +173,7 @@ fileprivate struct UseOldWeightsButton: View {
                 manager.usePreviouslyExtractedWeights()
                 path.append(.done)
             }
-            .buttonStyle(.glass)
+            .bold()
         } else {
             EmptyView()
         }

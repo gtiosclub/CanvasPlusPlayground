@@ -120,6 +120,9 @@ struct GradeCalculatorView: View {
         Button("Extract Weights", systemImage: "wand.and.sparkles") {
             showIGCSetup = true
         }
+        .labelStyle(.iconOnly)
+        .buttonBorderShape(.circle)
+        .buttonStyle(.borderedProminent)
     }
 }
 
