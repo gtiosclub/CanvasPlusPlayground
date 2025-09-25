@@ -18,12 +18,18 @@ class IGCSetupManager {
     /// The grade groups extracted by intelligence.
     var extractedGroups: [GradeCalculator.GradeGroup]?
 
+    var resolvedExtractedGroupsKey: String {
+        guard let course else { return Self.extractedGroupsKey }
+
+        return "\(Self.extractedGroupsKey).\(course.id)"
+    }
+
     var previouslyExtractedWeightsAvailable: Bool {
-        UserDefaults.standard.value(forKey: Self.extractedGroupsKey) != nil
+        UserDefaults.standard.value(forKey: resolvedExtractedGroupsKey) != nil
     }
 
     func usePreviouslyExtractedWeights() {
-        guard let data = UserDefaults.standard.data(forKey: Self.extractedGroupsKey) else {
+        guard let data = UserDefaults.standard.data(forKey: resolvedExtractedGroupsKey) else {
             return
         }
 
@@ -78,7 +84,7 @@ class IGCSetupManager {
 
         do {
             let data = try JSONEncoder().encode(newAssignmentGroups)
-            UserDefaults.standard.set(data, forKey: Self.extractedGroupsKey)
+            UserDefaults.standard.set(data, forKey: resolvedExtractedGroupsKey)
         } catch {
             LoggerService.main.error(
                 "Failed to encode extractedGroups to UserDefaults: \(error)"
