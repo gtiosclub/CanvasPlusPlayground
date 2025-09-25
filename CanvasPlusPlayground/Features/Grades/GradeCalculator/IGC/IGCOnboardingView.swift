@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// An onboarding screen for IGC and its relevant/related properties.
 @available(macOS 26.0, iOS 26.0, *)
 enum IGCOnboardingScreen: String, Identifiable, Hashable {
     case intro
@@ -76,7 +77,8 @@ enum IGCOnboardingScreen: String, Identifiable, Hashable {
     static let first: Self = .intro
 }
 
-
+/// A generic onboarding view for IGC with a title, icon, description, and next button. Content is filled in
+/// based on the `screen` passed in.
 @available(macOS 26.0, iOS 26.0, *)
 struct IGCOnboardingView: View {
     let screen: IGCOnboardingScreen
@@ -342,6 +344,8 @@ fileprivate struct AssignmentGroupDisplayGrid: View {
     }
 }
 
+/// Used to ensure the user cannot move to the next page if an item is not picked or weights are not
+/// extracted yet.
 fileprivate struct NextButtonEnabledKey: PreferenceKey {
     static var defaultValue: Bool = true
 

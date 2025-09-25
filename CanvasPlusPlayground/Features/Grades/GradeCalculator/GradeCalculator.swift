@@ -27,7 +27,7 @@ class GradeCalculator {
         }
     }
 
-    struct GradeGroup: Identifiable, Hashable {
+    struct GradeGroup: Identifiable, Hashable, Codable {
         let id: String
         var name: String
         var weight: Double
