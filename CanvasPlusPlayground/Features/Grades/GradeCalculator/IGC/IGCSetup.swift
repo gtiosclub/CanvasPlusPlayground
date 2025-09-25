@@ -116,6 +116,7 @@ struct IGCSetup: View {
             manager.course = course
             manager.calculator = calculator
         }
+        .interactiveDismissDisabled(!path.isEmpty && path.last != .first)
         .environment(manager)
     }
 }
