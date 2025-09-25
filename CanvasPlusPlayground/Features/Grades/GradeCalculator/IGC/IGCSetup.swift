@@ -108,6 +108,9 @@ struct IGCSetup: View {
                 .toolbar {
                     Button(role: .close) { dismiss() }
                 }
+                .navigationDestination(for: IGCOnboardingScreen.self) { screen in
+                    IGCOnboardingView(screen: screen, path: $path, dismiss: dismiss)
+                }
         }
         .onAppear {
             manager.course = course

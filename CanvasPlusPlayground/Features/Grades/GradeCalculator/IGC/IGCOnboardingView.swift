@@ -95,9 +95,9 @@ struct IGCOnboardingView: View {
 
                 if screen.showsBetaBadge {
                     Text("Beta".uppercased())
-                        .font(.footnote)
-                        .padding(2)
-                        .background(Color.c2, in: .capsule)
+                        .font(.caption)
+                        .padding(8)
+                        .glassEffect(.regular.tint(.accentColor))
                 }
             }
             .font(.largeTitle)
@@ -111,13 +111,14 @@ struct IGCOnboardingView: View {
 
             Spacer()
 
-            if screen == .first {
-                UseOldWeightsButton(path: $path)
-            }
-
             screen.contentView
 
             Spacer()
+
+            if screen == .first {
+                UseOldWeightsButton(path: $path)
+                    .padding(.bottom, 8)
+            }
         }
         .safeAreaBar(edge: .bottom) {
             Button(action: onNext) {
@@ -131,9 +132,6 @@ struct IGCOnboardingView: View {
             .disabled(!isNextButtonEnabled)
         }
         .padding()
-        .navigationDestination(for: IGCOnboardingScreen.self) { screen in
-            IGCOnboardingView(screen: screen, path: $path, dismiss: dismiss)
-        }
         .onPreferenceChange(NextButtonEnabledKey.self) { val in
             isNextButtonEnabled = val
         }
