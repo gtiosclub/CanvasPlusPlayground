@@ -49,9 +49,6 @@ struct AnnouncementRow: View {
                 type: .announcement
             )
         }
-        .environment(\.openURL, OpenURLAction { url in
-                .systemAction
-        })
         .id(announcement.id)
     }
 
