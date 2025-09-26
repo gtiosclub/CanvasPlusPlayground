@@ -90,23 +90,10 @@ struct IGCPlayground: View {
                 Button("Done") { showingPicker = false }
             }
         }
-        .fileImporter(isPresented: $showingPDFImporter,
-                      allowedContentTypes: [.pdf],
-                      allowsMultipleSelection: false) { result in
-            switch result {
-            case .success(let urls):
-                guard let url = urls.first else { return }
-                Task {
-                    let text = CourseFileService.getContentsOfFile(at: url)
-                    await MainActor.run {
-                        self.pickedItem = AnyPickableItem(contents: text)
-                    }
-                }
-            case .failure(_):
-                // ignore error
-                break
-            }
-        }
+        .pickableFileImporter(
+            isPresented: $showingPDFImporter,
+            pickedItem: $pickedItem
+        )
         .task(id: selectedCourse) {
             if let selectedCourse {
                 let assignmentsManager = CourseAssignmentManager(

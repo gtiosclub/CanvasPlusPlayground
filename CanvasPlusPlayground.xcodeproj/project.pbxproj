@@ -238,6 +238,10 @@
 		B7E59A122D20046B001836FE /* SidebarTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E59A112D20046B001836FE /* SidebarTile.swift */; };
 		B7E59A142D2004A4001836FE /* CourseListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E59A132D2004A4001836FE /* CourseListCell.swift */; };
 		B7E59A162D200775001836FE /* CourseDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E59A152D20076E001836FE /* CourseDetailView.swift */; };
+		B7F375B82E843F9F008F0846 /* IGCSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F375B72E843F95008F0846 /* IGCSetupView.swift */; };
+		B7F375BA2E8466F7008F0846 /* IGCOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F375B92E8466F7008F0846 /* IGCOnboardingView.swift */; };
+		B7F375BC2E84684E008F0846 /* PickableFileImporterModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F375BB2E84684E008F0846 /* PickableFileImporterModifier.swift */; };
+		B7F375C02E85921E008F0846 /* IGCSetupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F375BF2E85921E008F0846 /* IGCSetupManager.swift */; };
 		B7F950322D118EAF004BB470 /* String+StripHTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F950312D118EAA004BB470 /* String+StripHTML.swift */; };
 		B7F950342D11A00F004BB470 /* StatusToolbarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F950332D11A00F004BB470 /* StatusToolbarItem.swift */; };
 		B7F950372D127869004BB470 /* ProfileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F950362D127861004BB470 /* ProfileManager.swift */; };
@@ -486,6 +490,10 @@
 		B7E59A112D20046B001836FE /* SidebarTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarTile.swift; sourceTree = "<group>"; };
 		B7E59A132D2004A4001836FE /* CourseListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseListCell.swift; sourceTree = "<group>"; };
 		B7E59A152D20076E001836FE /* CourseDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDetailView.swift; sourceTree = "<group>"; };
+		B7F375B72E843F95008F0846 /* IGCSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGCSetupView.swift; sourceTree = "<group>"; };
+		B7F375B92E8466F7008F0846 /* IGCOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGCOnboardingView.swift; sourceTree = "<group>"; };
+		B7F375BB2E84684E008F0846 /* PickableFileImporterModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickableFileImporterModifier.swift; sourceTree = "<group>"; };
+		B7F375BF2E85921E008F0846 /* IGCSetupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGCSetupManager.swift; sourceTree = "<group>"; };
 		B7F950312D118EAA004BB470 /* String+StripHTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+StripHTML.swift"; sourceTree = "<group>"; };
 		B7F950332D11A00F004BB470 /* StatusToolbarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusToolbarItem.swift; sourceTree = "<group>"; };
 		B7F950362D127861004BB470 /* ProfileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileManager.swift; sourceTree = "<group>"; };
@@ -711,6 +719,7 @@
 				9A977E8A2D6C375E001D7F0A /* ColorPickerSheet.swift */,
 				3DAE84FF2C9A0E4F008C22E7 /* BridgedPDFView.swift */,
 				267D85252E662009007F821B /* NewWindowButton.swift */,
+				B7F375BB2E84684E008F0846 /* PickableFileImporterModifier.swift */,
 				A3CA025C2D432B8500A9752B /* Search Results */,
 			);
 			path = Components;
@@ -985,6 +994,7 @@
 		B7460A902D6BFB050069CF5B /* GradeCalculator */ = {
 			isa = PBXGroup;
 			children = (
+				B7F375B62E843F87008F0846 /* IGC */,
 				B7460A952D6CCD6E0069CF5B /* GradeCalculatorView.swift */,
 				B7460A932D6BFB1A0069CF5B /* GradeCalculator.swift */,
 			);
@@ -1173,6 +1183,16 @@
 			path = Navigation;
 			sourceTree = "<group>";
 		};
+		B7F375B62E843F87008F0846 /* IGC */ = {
+			isa = PBXGroup;
+			children = (
+				B7F375B92E8466F7008F0846 /* IGCOnboardingView.swift */,
+				B7F375B72E843F95008F0846 /* IGCSetupView.swift */,
+				B7F375BF2E85921E008F0846 /* IGCSetupManager.swift */,
+			);
+			path = IGC;
+			sourceTree = "<group>";
+		};
 		B7F950352D12785D004BB470 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
@@ -1280,6 +1300,7 @@
 				9BA7C0F72D62DC92000F2918 /* PinnedItemDetailView.swift in Sources */,
 				B76455002C8DF61B002DF00E /* File.swift in Sources */,
 				A330B8892DA4D78E00D6C1C3 /* CanvasTab.swift in Sources */,
+				B7F375C02E85921E008F0846 /* IGCSetupManager.swift in Sources */,
 				A3049B7B2D15E2B7002F3166 /* GetFilesInFolderRequest.swift in Sources */,
 				A3CF88DB2D192194000ACDF3 /* EnrollmentAPI.swift in Sources */,
 				A372D0FB2D90A709005E94CA /* HTTPURLResponse+Codes.swift in Sources */,
@@ -1394,6 +1415,7 @@
 				A3CA025B2D432A8700A9752B /* SearchResultListDataSource.swift in Sources */,
 				D43B58072E76593C0054C12C /* QuizDetailView.swift in Sources */,
 				9B9C2E042C93F6CD00E4B16B /* CourseAnnouncementsView.swift in Sources */,
+				B7F375BA2E8466F7008F0846 /* IGCOnboardingView.swift in Sources */,
 				B77FD0022D52A0D60049AA5E /* ProfileView.swift in Sources */,
 				26589EF02E75C85100234C2F /* GetAllCourseFilesRequest.swift in Sources */,
 				9A977E8B2D6C375E001D7F0A /* ColorPickerSheet.swift in Sources */,
@@ -1410,6 +1432,7 @@
 				A301EE092D61137400D71139 /* MarkCourseDiscussionTopicReadRequest.swift in Sources */,
 				B53D95A02CA0953900647EE9 /* PeopleManager.swift in Sources */,
 				9BF8E4412D90DE5E00B5A50D /* UploadAssignmentFileConfirmationRequest.swift in Sources */,
+				B7F375BC2E84684E008F0846 /* PickableFileImporterModifier.swift in Sources */,
 				B7C0A3CB2D2F919F003E5A36 /* PinButton.swift in Sources */,
 				B7F950392D1279A1004BB470 /* UserAPI.swift in Sources */,
 				D43B58032E7658560054C12C /* DisplayableItemType.swift in Sources */,
@@ -1472,6 +1495,7 @@
 				B75684F62DA5A7D3003B4A32 /* CanvasURLService.swift in Sources */,
 				A3E7F38B2C9555B200DC4300 /* CanvasService.swift in Sources */,
 				B72EA5702D5689B20013070E /* QuickLookPreview.swift in Sources */,
+				B7F375B82E843F9F008F0846 /* IGCSetupView.swift in Sources */,
 				A3777E062D9F152400A8B00C /* CourseService.swift in Sources */,
 				A372D10E2D90F505005E94CA /* CourseGroupsViewModel.swift in Sources */,
 				A372D10A2D90DA7A005E94CA /* GetCourseGroupsRequest.swift in Sources */,

@@ -169,7 +169,7 @@ extension Example: PromptRepresentable {
 
 @available(iOS 26.0, macOS 26.0, *)
 @Generable
-struct GradeCalculatorIntelligenceServiceResult: Identifiable, Codable {
+struct GradeCalculatorIntelligenceServiceResult: Identifiable, Codable, Equatable {
     @Guide(description: "The group id (existing or new unique id)")
     let id: String
 
