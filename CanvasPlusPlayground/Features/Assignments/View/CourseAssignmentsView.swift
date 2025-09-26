@@ -188,9 +188,6 @@ private struct AssignmentRow: View {
                     type: .assignment
                 )
             }
-            .environment(\.openURL, OpenURLAction { url in
-                    .systemAction
-            })
             .tag(assignment)
         } else {
             bodyContents

@@ -9,10 +9,12 @@ import SwiftUI
 
 struct SettingsView: View {
     #if DEBUG
+    @Environment(\.openWindow) private var openWindow
     @Environment(PinnedItemsManager.self) private var pinnedItemManager
     @Environment(CourseManager.self) private var courseManager
 
     @State private var selectedItem: (any PickableItem)?
+    @State private var selectedCourseForItemPicker: Course?
     #endif
 
     @Environment(\.dismiss) private var dismiss
@@ -22,13 +24,11 @@ struct SettingsView: View {
     @State private var navigationModel = NavigationModel()
 
     var body: some View {
-        @Bindable var navigationModel = navigationModel
-
         NavigationStack {
             mainBody
         }
         #if DEBUG
-        .sheet(item: $navigationModel.selectedCourseForItemPicker) {
+        .sheet(item: $selectedCourseForItemPicker) {
             CourseItemPicker(course: $0, selectedItem: $selectedItem)
         }
         #endif
@@ -88,8 +88,16 @@ struct SettingsView: View {
         Section {
             Group {
                 Button("View Item Picker", systemImage: "filemenu.and.selection") {
-                    navigationModel.selectedCourseForItemPicker = courseManager.activeCourses.first
+                    selectedCourseForItemPicker = courseManager.activeCourses.first
                 }
+
+                #if os(macOS)
+                if #available(macOS 26.0, *) {
+                    Button("IGC Playground", systemImage: "plus.forwardslash.minus") {
+                        openWindow(id: IGCPlayground.windowID)
+                    }
+                }
+                #endif
 
                 Button("Clear Pinned Items", systemImage: "trash") {
                     pinnedItemManager.clearAllPinnedItems()

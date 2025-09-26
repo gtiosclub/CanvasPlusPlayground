@@ -21,7 +21,9 @@ struct SubmissionHistoryDetailView: View {
     var submissionHistory:[Submission] {
         guard var history = submission.submissionHistory else { return [] }
         history.removeAll { submission in
-            submission.attempt == self.submission.attempt // can't use the id, they're all the same
+            // can't use the id, they're all the same
+            // if submission.attempt == 0, this is not a submission we want to show
+            submission.attempt == self.submission.attempt || submission.attempt == 0
         }
         
         return history.reversed()
@@ -48,7 +50,7 @@ struct SubmissionHistoryDetailView: View {
                 if !submissionComments.isEmpty {
                     Section("Comments") {
                         ForEach(submissionComments) { comment in
-                            Text(comment.comment)
+                            SubmissionCommentView(comment: comment)
                         }
                     }
                 }
@@ -70,6 +72,32 @@ struct SubmissionHistoryDetailView: View {
             }
         }
         .frame(minWidth: 400, minHeight: 500)
+    }
+    
+    private struct SubmissionCommentView: View {
+        let comment: SubmissionComment
+        
+        var body: some View {
+            VStack(alignment: .leading) {
+                Text(comment.comment)
+                HStack {
+                    let submissionTime = Date.from(comment.created_at)
+                    
+                    Spacer()
+                    VStack(alignment: .trailing) {
+                        Text(comment.author_name)
+                            .font(.subheadline)
+                        Group {
+                            Text(submissionTime, style: .time)
+                            + Text(" on ") +
+                            Text(submissionTime, style: .date)
+                        }
+                        .font(.footnote)
+                    }
+                   
+                }
+            }
+        }
     }
     
     private struct SubmissionListCell: View {

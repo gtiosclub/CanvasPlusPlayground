@@ -13,7 +13,7 @@ struct AssignmentDetailView: View {
     @State private var submission: Submission?
 
     // Presentable sheets
-    @State private var showSubmissionPopUp: Bool = false
+    @State private var showCreateSubmissionPopUp: Bool = false
     @State private var showSubmissionHistoryPopUp: Bool = false
     @State private var fetchingCanSubmitStatus: Bool = false
     @State private var canSubmit: Bool = false // this is updated by a network call upon onAppear()
@@ -41,8 +41,12 @@ struct AssignmentDetailView: View {
             await fetchSubmissions()
             await fetchCanSubmitStatus()
         }
-        .sheet(isPresented: $showSubmissionPopUp) {
-            AssignmentCreateSubmissionView(assignment: assignment)
+        .sheet(isPresented: $showCreateSubmissionPopUp) {
+            AssignmentCreateSubmissionView(assignment: assignment, onSubmit: { _ in
+                Task {
+                    await fetchSubmissions()
+                }
+            })
         }
         .sheet(isPresented: $showSubmissionHistoryPopUp) {
             if let submission {
@@ -129,25 +133,30 @@ struct AssignmentDetailView: View {
                 "Grade",
                 value: assignment.formattedGrade + "/" + assignment.formattedPointsPossible
             )
+            
 
             HStack {
-                let submissionsClosed = !(canSubmit ?? false)
+                let submissionsClosed = !canSubmit
                 #if os(macOS)
                 Spacer()
                 #endif
-
-                Button(submissionsClosed ? "Submissions Closed" : "New Submission...") {
-                    showSubmissionPopUp.toggle()
+                if assignment.canSubmitFromCanvasPlus {
+                    Button(submissionsClosed ? "Submissions Closed" : "New Submission...") {
+                        showCreateSubmissionPopUp.toggle()
+                    }
+                    .disabled(submissionsClosed)
                 }
-                .disabled(submissionsClosed)
+                if assignment.canSubmitFromCanvasApp {
+                    OpenInCanvasButton(path: .assignment(assignment.courseId?.asString ?? "", assignment.id))
+                }
+                
 
                 if fetchingCanSubmitStatus {
                     ProgressView()
                         .controlSize(.small)
                 }
             }
-
-            if let submission = self.submission {
+            if self.submission != nil && assignment.canSubmitFromCanvasPlus && self.submission?.attempt != nil {
                 LabeledContent("Submission History") {
                     Button("View submission history...") {
                         showSubmissionHistoryPopUp.toggle()
@@ -176,11 +185,11 @@ struct AssignmentDetailView: View {
 
     private func fetchSubmissions() async {
         guard let userId = profileManager.currentUser?.id else {
-            print("Unable to get current user ID")
+            LoggerService.main.error("Unable to get current user ID")
             return
         }
         guard let courseId: String = assignment.courseId.map({ String($0) }) else {
-            print("Unable to get course ID")
+            LoggerService.main.error("Unable to get course ID")
             return
         }
 
@@ -192,6 +201,8 @@ struct AssignmentDetailView: View {
         })
 
         self.submission = submission?.first
+        
+        LoggerService.main.info("Submission fetched with \(self.submission?.submissionComments?.count.asString ?? "nil") comments \(self.submission?.submissionHistory?.count.asString ?? "nil") submissions")
     }
 
     private var pointsPossible: String {

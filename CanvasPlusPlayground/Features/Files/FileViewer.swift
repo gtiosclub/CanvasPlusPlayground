@@ -21,20 +21,21 @@ struct FileViewer: View {
         Group {
             if let url {
                 QuickLookPreview(url: url) { dismiss() }
+                    .pickedItem(file)
                     #if os(iOS)
                     .ignoresSafeArea()
                     .toolbar(.hidden)
                     #else
                     .toolbar {
-                        ToolbarItemGroup() {
+                        ToolbarItemGroup {
                             ShareLink(item: url)
-                            PinButton(
-                                itemID: file.id,
-                                courseID: courseID,
-                                type: .file
-                            )
+                            DownloadButton(url: url, fileName: file.displayName)
+                            Button("Open", systemImage: "arrow.up.forward.app") {
+                                NSWorkspace.shared.open(url)
+                            }
                         }
-                    }                    #endif
+                    }
+                    #endif
             } else {
                 Group {
                     if isLoading {
@@ -78,3 +79,4 @@ struct FileViewer: View {
         self.isLoading = false
     }
 }
+
