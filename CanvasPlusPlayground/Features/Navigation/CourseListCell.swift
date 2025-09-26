@@ -55,19 +55,20 @@ struct CourseListCell: View {
             }
             #if os(macOS)
             .popover(isPresented: $showCourseCustomizer) {
-                CustomizeCourseView(courseName: course.displayName, selectedSymbol: course.displaySymbol, selectedColor: course.rgbColors?.color ?? .accentColor, onDismiss: { (symbol, color) in
-                    course.rgbColors = .init(color: color)
-                    course.courseSymbol = symbol
-                })
+                customizeCourseView
             }
             #elseif os(iOS)
             .sheet(isPresented: $showCourseCustomizer) {
-                CustomizeCourseView(courseName: course.displayName, selectedSymbol: course.displaySymbol, selectedColor: course.rgbColors?.color ?? .accentColor, onDismiss: { (symbol, color) in
-                    course.rgbColors = .init(color: color)
-                    course.courseSymbol = symbol
-                })
+                customizeCourseView
             }
             #endif
+    }
+    
+    private var customizeCourseView: some View {
+        CustomizeCourseView(courseName: course.displayName, selectedSymbol: course.displaySymbol, selectedColor: course.rgbColors?.color ?? .accentColor, onDismiss: { (symbol, color) in
+            course.rgbColors = .init(color: color)
+            course.courseSymbol = symbol
+        })
     }
 
     private var favCourseButton: some View {

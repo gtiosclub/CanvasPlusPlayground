@@ -83,7 +83,7 @@ extension CanvasSchemaV1 {
         var courseSymbol: String?
 
         var displaySymbol: String {
-            courseSymbol ?? courseSymbol ?? "book.fill"
+            courseSymbol ?? "book.fill"
         }
         var displayName: String {
             nickname ?? name ?? "Unknown Name"
