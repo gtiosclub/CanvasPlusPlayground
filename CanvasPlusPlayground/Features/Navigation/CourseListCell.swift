@@ -12,30 +12,25 @@ struct CourseListCell: View {
 
     let course: Course
 
-    @State private var showColorPicker = false
-    @State private var resolvedCourseColor: Color = .accentColor
-
+    @State private var showCourseCustomizer = false
     @State private var showRenameTextField = false
     @State private var renameCourseFieldText: String = ""
 
     @State private var isLoadingFavorite: Bool = false
 
     var body: some View {
-        Label(course.displayName, systemImage: "book.pages")
+        Label(course.displayName, systemImage: course.displaySymbol)
             .frame(alignment: .leading)
             .multilineTextAlignment(.leading)
             #if os(macOS)
             .padding(.vertical, 4)
             #endif
-            .onAppear {
-                resolvedCourseColor = course.rgbColors?.color ?? .accentColor
-            }
             .swipeActions(edge: .trailing) {
                 favCourseButton
             }
             .contextMenu {
-                Button("Change Color", systemImage: "paintbrush.fill") {
-                    showColorPicker = true
+                Button("Customize Course", systemImage: "paintbrush.fill") {
+                    showCourseCustomizer = true
                 }
 
                 favCourseButton
@@ -59,20 +54,21 @@ struct CourseListCell: View {
                 Text("Rename \(course.name ?? "")?")
             }
             #if os(macOS)
-            .popover(isPresented: $showColorPicker) {
-                ColorPicker(selection: $resolvedCourseColor) { }
-                    .onDisappear {
-                        course.rgbColors = .init(color: resolvedCourseColor)
-                    }
+            .popover(isPresented: $showCourseCustomizer) {
+                customizeCourseView
             }
             #elseif os(iOS)
-            .colorPickerSheet(
-                isPresented: $showColorPicker,
-                selection: $resolvedCourseColor
-            ) {
-                course.rgbColors = .init(color: resolvedCourseColor)
+            .sheet(isPresented: $showCourseCustomizer) {
+                customizeCourseView
             }
             #endif
+    }
+    
+    private var customizeCourseView: some View {
+        CustomizeCourseView(courseName: course.displayName, selectedSymbol: course.displaySymbol, selectedColor: course.rgbColors?.color ?? .accentColor, onDismiss: { (symbol, color) in
+            course.rgbColors = .init(color: color)
+            course.courseSymbol = symbol
+        })
     }
 
     private var favCourseButton: some View {

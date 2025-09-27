@@ -80,7 +80,11 @@ extension CanvasSchemaV1 {
         var rgbColors: RGBColors?
         var nickname: String?
         var order: Int = -1 // -1 necessary for predicate filtering
+        var courseSymbol: String?
 
+        var displaySymbol: String {
+            courseSymbol ?? "book.fill"
+        }
         var displayName: String {
             nickname ?? name ?? "Unknown Name"
         }
