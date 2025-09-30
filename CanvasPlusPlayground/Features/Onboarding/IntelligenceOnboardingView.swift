@@ -62,7 +62,7 @@ struct IntelligenceOnboardingView: View {
                 }
                 #else
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel", systemImage: "xmark.circle.fill") {
+                    Button("Cancel", systemImage: .xmarkCircleFill) {
                         dismiss()
                     }
                     .labelsHidden()

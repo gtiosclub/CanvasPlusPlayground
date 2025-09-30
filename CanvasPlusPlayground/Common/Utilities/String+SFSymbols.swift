@@ -68,6 +68,7 @@ extension String {
     
     // MARK: - Education & Learning
     static var graduationcapFill = "graduationcap.fill"
+    static var graduationcap = "graduationcap"
     static var circleInsetFilled = "circle.inset.filled"
     
     // MARK: - Stars & Ratings
@@ -95,6 +96,7 @@ extension String {
     static var paintbrushFill = "paintbrush.fill"
     static var characterCursorIbeam = "character.cursor.ibeam"
     static var plusCircleFill = "plus.circle.fill"
+    static var plus = "plus"
     static var plusForwardslashMinus = "plus.forwardslash.minus"
     static var xmarkCircleFill = "xmark.circle.fill"
     static var xmarkRectangleFill = "xmark.rectangle.fill"
@@ -115,6 +117,7 @@ extension String {
     // MARK: - Shapes & Symbols
     static var circle = "circle"
     static var squareDashed = "square.dashed"
+    static var questionmark = "questionmark"
     
     // MARK: - Misc
     static var ant = "ant"

@@ -14,7 +14,7 @@ struct NewWindowButton: View {
 
     var body: some View {
         if supportsMultipleWindows {
-            Button("Open in New Window", systemImage: "macwindow.badge.plus") {
+            Button("Open in New Window", systemImage: .macwindowBadgePlus) {
                 openWindow(value: destination.focusWindowInfo)
             }
         } else {

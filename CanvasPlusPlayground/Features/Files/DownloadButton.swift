@@ -23,7 +23,7 @@ struct DownloadButton: View {
                 ProgressView()
                     .controlSize(.small)
             } else {
-                Button("Download", systemImage: "arrow.down.circle", action:downloadFile)
+                Button("Download", systemImage: .arrowDownCircle, action:downloadFile)
                     .labelStyle(.iconOnly)
             }
         }

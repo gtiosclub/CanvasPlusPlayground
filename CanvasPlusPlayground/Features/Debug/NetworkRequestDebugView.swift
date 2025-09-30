@@ -64,7 +64,7 @@ struct NetworkRequestDebugView: View {
             }
             .toolbar {
                 ToolbarItem {
-                    Toggle("Toggle word wrap", systemImage: "text.justify.left", isOn: $wordWrapEnabled)
+                    Toggle("Toggle word wrap", systemImage: .textJustifyLeft, isOn: $wordWrapEnabled)
                 }
             }
         }

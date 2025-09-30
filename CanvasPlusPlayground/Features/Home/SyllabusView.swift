@@ -18,7 +18,7 @@ struct SyllabusView: View {
             } else {
                 ContentUnavailableView(
                     "Could not load syllabus",
-                    systemImage: "exclamationmark.triangle.fill"
+                    systemImage: .exclamationmarkTriangleFill
                 )
             }
         }

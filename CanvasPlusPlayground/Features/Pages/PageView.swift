@@ -16,7 +16,7 @@ struct PageView: View {
                 HTMLView(html: htmlContent, courseID: page.courseID)
                     .pickedItem(page)
             } else {
-                ContentUnavailableView("No pages available", systemImage: "exclamationmark.bubble.fill")
+                ContentUnavailableView("No pages available", systemImage: .exclamationmarkBubbleFill)
             }
         }
         .navigationTitle(page.title ?? "Untitled")

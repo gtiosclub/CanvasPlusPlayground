@@ -34,7 +34,7 @@ struct PagesListView: View {
         #endif
         .overlay {
             if pagesManager.pages.isEmpty {
-                ContentUnavailableView("No pages available", systemImage: "exclamationmark.bubble.fill")
+                ContentUnavailableView("No pages available", systemImage: .exclamationmarkBubbleFill)
             } else {
                 EmptyView()
             }

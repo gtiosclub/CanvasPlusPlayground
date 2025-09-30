@@ -49,7 +49,7 @@ struct AssignmentDetailView: View {
     var submissionUnavailableView: some View {
         ContentUnavailableView(
             "Could not load submission",
-            systemImage: "exclamationmark.triangle.fill"
+            systemImage: .exclamationmarkTriangleFill
         )
     }
 

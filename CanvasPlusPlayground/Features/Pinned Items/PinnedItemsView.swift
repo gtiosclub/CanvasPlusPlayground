@@ -44,7 +44,7 @@ struct PinnedItemsView: View {
             if sortedTypes.isEmpty {
                 ContentUnavailableView(
                     "No Pinned Items",
-                    systemImage: "pin.fill",
+                    systemImage: .pinFill,
                     description: Text(
                         "Pin files, assignments, announcements, and more from across all your courses for quick access."
                     )

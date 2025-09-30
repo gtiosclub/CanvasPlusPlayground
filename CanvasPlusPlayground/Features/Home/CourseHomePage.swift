@@ -31,7 +31,7 @@ struct CourseHomePage: View {
     private var unavailableView: some View {
         ContentUnavailableView(
             "Unsupported Home Page",
-            systemImage: "questionmark"
+            systemImage: .questionmark
         )
         .navigationTitle(course.displayName)
     }

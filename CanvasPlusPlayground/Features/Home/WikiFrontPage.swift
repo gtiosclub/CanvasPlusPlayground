@@ -20,7 +20,7 @@ struct WikiFrontPage: View {
             } else if unableToLoad {
                 ContentUnavailableView(
                     "Unable to load page",
-                    systemImage: "exclamationmark.triangle.fill"
+                    systemImage: .exclamationmarkTriangleFill
                 )
             } else {
                 ProgressView("Loading...")

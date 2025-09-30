@@ -247,7 +247,7 @@ private struct NoSubmissionView: View {
     var body: some View {
         ContentUnavailableView(
             "Unsupported Submission Type",
-            systemImage: "doc.fill",
+            systemImage: .docFill,
             description: Text("No Submission or Paper Submission")
         )
     }
@@ -273,7 +273,7 @@ private struct UnsupportedSubmissionView: View {
     var body: some View {
         ContentUnavailableView(
             "Unsupported Submission Type",
-            systemImage: "doc.questionmark.fill",
+            systemImage: .docQuestionmarkFill,
             description: Text("\(selectedSubmissionType.displayName) submissions not supported")
         )
     }
@@ -304,7 +304,7 @@ private struct FileUploadView: View {
                     selectedURLs.remove(atOffsets: indices)
                 }
 
-                Button("Pick files...", systemImage: "plus") {
+                Button("Pick files...", systemImage: .plus) {
                     showPicker.toggle()
                 }
                 .tint(.accentColor)
@@ -327,7 +327,7 @@ private struct FileUploadView: View {
                 // The trashcan icon can just be a macOS thing. For iOS, use swipe to delete
                 #if os(macOS)
                 Spacer()
-                Button("Remove file", systemImage: "trash") {
+                Button("Remove file", systemImage: .trash) {
                     withAnimation {
                         onDelete()
                     }

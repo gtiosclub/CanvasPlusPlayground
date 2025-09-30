@@ -52,7 +52,7 @@ struct Sidebar: View {
         #if os(iOS)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
-                Button("Settings", systemImage: "gear") {
+                Button("Settings", systemImage: .gear) {
                     navigationModel.showSettingsSheet.toggle()
                 }
             }

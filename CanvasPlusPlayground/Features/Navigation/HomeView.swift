@@ -111,7 +111,7 @@ struct HomeView: View {
                     destination.destinationView()
                 }
             } else {
-                ContentUnavailableView("Select a course", systemImage: "folder")
+                ContentUnavailableView("Select a course", systemImage: .folder)
             }
         }
     }

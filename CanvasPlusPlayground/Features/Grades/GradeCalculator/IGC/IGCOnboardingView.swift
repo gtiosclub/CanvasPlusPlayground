@@ -190,18 +190,18 @@ fileprivate struct SyllabusPickerView: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            Label(pickedItemTitle, systemImage: "doc.plaintext")
+            Label(pickedItemTitle, systemImage: .docPlaintext)
 
-            Menu(buttonTitle, systemImage: "document") {
+            Menu(buttonTitle, systemImage: .document) {
                 Button(
                     "Choose from Course...",
-                    systemImage: "graduationcap"
+                    systemImage: .graduationcap
                 ) {
                     showingCoursePicker = true
                 }
                 Button(
                     "Choose from Files...",
-                    systemImage: "folder"
+                    systemImage: .folder
                 ) {
                     showingFilePicker = true
                 }
@@ -218,7 +218,7 @@ fileprivate struct SyllabusPickerView: View {
                     manager.pickedItem = pickedItem
                 }
             } else {
-                ContentUnavailableView("Unable to load course", systemImage: "exclamationmark.triangle")
+                ContentUnavailableView("Unable to load course", systemImage: .exclamationmarkTriangle)
             }
         }
         .pickableFileImporter(
@@ -349,7 +349,7 @@ fileprivate struct ReviewGroupsView: View {
             } else {
                 ContentUnavailableView(
                     "An error occured when extracting weights",
-                    systemImage: "exclamationmark.triangle"
+                    systemImage: .exclamationmarkTriangle
                 )
             }
         }

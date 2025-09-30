@@ -30,7 +30,7 @@ struct FileViewer: View {
                         ToolbarItemGroup {
                             ShareLink(item: url)
                             DownloadButton(url: url, fileName: file.displayName)
-                            Button("Open", systemImage: "arrow.up.forward.app") {
+                            Button("Open", systemImage: .arrowUpForwardApp) {
                                 NSWorkspace.shared.open(url)
                             }
                         }
@@ -44,7 +44,7 @@ struct FileViewer: View {
                             Text("Loading...")
                         }
                     } else {
-                        ContentUnavailableView("Unable to preview file.", systemImage: "xmark.rectangle.fill")
+                        ContentUnavailableView("Unable to preview file.", systemImage: .xmarkRectangleFill)
                     }
                 }
                 #if os(iOS)

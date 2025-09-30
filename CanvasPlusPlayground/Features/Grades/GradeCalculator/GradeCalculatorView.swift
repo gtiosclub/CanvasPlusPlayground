@@ -40,7 +40,7 @@ struct GradeCalculatorView: View {
                 calculator.gradeGroups.move(fromOffsets: $0, toOffset: $1)
             }
 
-            Button("Add Assignment Group", systemImage: "plus.circle.fill") {
+            Button("Add Assignment Group", systemImage: .plusCircleFill) {
                 let newGroup = calculator.createEmptyGroup()
                 groupRowFocus = newGroup
             }
@@ -97,7 +97,7 @@ struct GradeCalculatorView: View {
             } else {
                 ContentUnavailableView(
                     "Feature Unavailable",
-                    systemImage: "exclamationmark.triangle"
+                    systemImage: .exclamationmarkTriangle
                 )
             }
         }
@@ -165,7 +165,7 @@ private struct GradeGroupSection: View {
     }
 
     private var addAssignmentButton: some View {
-        Button("Add Assignment", systemImage: "plus.circle.fill") {
+        Button("Add Assignment", systemImage: .plusCircleFill) {
             let newAssignment = calculator.createEmptyAssignment(in: group)
             assignmentRowFocus = newAssignment
         }
@@ -175,7 +175,7 @@ private struct GradeGroupSection: View {
     }
 
     private func deleteAssignmentButton(for assignment: GradeCalculator.GradeAssignment) -> some View {
-        Button("Delete Assignment", systemImage: "trash", role: .destructive) {
+        Button("Delete Assignment", systemImage: .trash, role: .destructive) {
             group.assignments.removeAll {
                 $0 == assignment
             }

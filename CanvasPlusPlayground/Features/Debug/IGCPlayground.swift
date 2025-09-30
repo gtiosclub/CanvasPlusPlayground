@@ -40,11 +40,11 @@ struct IGCPlayground: View {
             }
 
             Section("Select Syllabus file") {
-                Button("Pick an item", systemImage: "filemenu.and.selection") {
+                Button("Pick an item", systemImage: .filemenuAndSelection) {
                     showingPicker.toggle()
                 }
 
-                Button("Upload PDF from Disk", systemImage: "doc.richtext") {
+                Button("Upload PDF from Disk", systemImage: .docRichtext) {
                     showingPDFImporter = true
                 }
             }
