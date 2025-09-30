@@ -74,7 +74,7 @@ private struct PinnedFileCard: View {
 
     var body: some View {
         HStack(spacing: 8) {
-            Image(systemName: "document")
+            Image(systemName: .document)
                 .foregroundStyle(course.rgbColors?.color ?? .accentColor)
                 .font(.title)
 
@@ -100,7 +100,7 @@ private struct PinnedAssignmentCard: View {
 
     var body: some View {
         HStack(spacing: 8) {
-            Image(systemName: "circle")
+            Image(systemName: .circle)
                 .foregroundStyle(course.rgbColors?.color ?? .accentColor)
                 .font(.title)
 

@@ -36,14 +36,14 @@ struct CalendarView: View {
         }
         .overlay {
             if events.isEmpty {
-                ContentUnavailableView("No events found", systemImage: "calendar.badge.exclamationmark")
+                ContentUnavailableView("No events found", systemImage: .calendarBadgeExclamationmark)
             }
         }
         .toolbar {
             if let icsURL {
                 ToolbarItem(placement: .primaryAction) {
                     Link(destination: icsURL) {
-                        Label("Open in Calendar", systemImage: "calendar")
+                        Label("Open in Calendar", systemImage: .calendar)
                     }
                 }
             }

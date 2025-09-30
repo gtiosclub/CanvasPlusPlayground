@@ -125,7 +125,7 @@ struct FoldersPageView: View {
         }
         .overlay {
             if !isLoadingContents && filesVM.displayedFiles.isEmpty && filesVM.displayedFolders.isEmpty {
-                ContentUnavailableView("This folder is empty.", systemImage: "folder")
+                ContentUnavailableView("This folder is empty.", systemImage: .folder)
             }
         }
         .statusToolbarItem(
@@ -155,7 +155,7 @@ struct FoldersPageView: View {
         if file.url != nil {
             FileRow(file: file, course: course)
         } else {
-            Label("File not available.", systemImage: "document")
+            Label("File not available.", systemImage: .document)
                 .disabled(true)
         }
     }
@@ -187,7 +187,7 @@ private struct FileRow: View {
             Spacer()
 
             if file.localURL == nil {
-                Image(systemName: "arrow.down.circle.dotted")
+                Image(systemName: .arrowDownCircleDotted)
             }
         }
         .imageScale(.large)
@@ -211,7 +211,7 @@ private struct FileRow: View {
 
     private var mainContent: some View {
         HStack {
-            Image(systemName: "document")
+            Image(systemName: .document)
                 .foregroundStyle(.tint)
 
             VStack(alignment: .leading) {
@@ -233,7 +233,7 @@ private struct FolderRow: View {
 
     var body: some View {
         HStack {
-            Image(systemName: "folder")
+            Image(systemName: .folder)
                 .foregroundStyle(.tint)
 
             VStack(alignment: .leading) {

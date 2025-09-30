@@ -103,7 +103,7 @@ struct CanvasPlusPlaygroundApp: App {
 
     var launchFailurePage: some View {
         VStack {
-            Image(systemName: "externaldrive.fill.trianglebadge.exclamationmark")
+            Image(systemName: .externalDriveFillTriangleBadgeExclamationmark)
                 .font(.largeTitle)
                 .foregroundStyle(.yellow)
 

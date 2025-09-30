@@ -65,7 +65,7 @@ struct SubmissionHistoryDetailView: View {
                         #if os(macOS)
                         Text("Done")
                         #else
-                        Image(systemName: "xmark")
+                        Image(systemName: .xmark)
                         #endif
                     }
                 }

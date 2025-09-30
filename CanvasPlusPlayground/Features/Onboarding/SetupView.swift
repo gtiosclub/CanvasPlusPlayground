@@ -18,7 +18,7 @@ struct SetupView: View {
         VStack(spacing: 8) {
             Spacer()
 
-            Image(systemName: "person.badge.key")
+            Image(systemName: .personBadgeKey)
                 .font(.largeTitle)
                 .foregroundStyle(.tint)
 

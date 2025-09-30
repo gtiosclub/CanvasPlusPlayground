@@ -85,7 +85,7 @@ struct PeopleView: View {
                     ),
             prompt: "Search People..."
         ) { token in
-            Label(token.category.displayName, systemImage: "person.fill")
+            Label(token.category.displayName, systemImage: .personFill)
         }
         #else
         .searchable(
@@ -94,10 +94,10 @@ struct PeopleView: View {
             suggestedTokens: .constant(suggestedTokens),
             prompt: "Search People..."
         ) { token in
-            Label(token.category.displayName, systemImage: "person.fill")
+            Label(token.category.displayName, systemImage: .personFill)
         }
         .toolbar {
-            Button("Reload", systemImage: "arrow.clockwise.circle") {
+            Button("Reload", systemImage: .arrowClockwiseCircle) {
                 currentSearchTask?.cancel()
                 peopleManager.users = Set()
                 peopleManager.loadingState = .loading
@@ -124,7 +124,7 @@ struct PeopleView: View {
             if !searchText.isEmpty && peopleManager.displayedUsers.isEmpty {
                 ContentUnavailableView.search(text: searchText)
             } else if peopleManager.displayedUsers.isEmpty {
-                ContentUnavailableView("Failed to fetch people", systemImage: "exclamationmark.triangle.fill")
+                ContentUnavailableView("Failed to fetch people", systemImage: .exclamationmarkTriangleFill)
             }
         }
     }
@@ -180,7 +180,7 @@ private struct UserCell: View {
             Button {
                 selectedUser = user
             } label: {
-                Image(systemName: "info.circle")
+                Image(systemName: .infoCircle)
             }
         }
     }

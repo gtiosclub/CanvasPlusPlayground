@@ -91,7 +91,7 @@ private struct ModuleSection: View {
 
             Spacer()
 
-            Button("Show Prerequisites", systemImage: "info.circle") {
+            Button("Show Prerequisites", systemImage: .infoCircle) {
                 showPrerequisites.toggle()
             }
             .popover(isPresented: $showPrerequisites) {
@@ -140,7 +140,7 @@ private struct ModuleItemCell: View {
     var body: some View {
         Label(
             item.title,
-            systemImage: urlServiceResult?.systemImageName ?? "square.dashed"
+            systemImage: urlServiceResult?.systemImageName ?? .squareDashed
         )
         .foregroundStyle(.primary)
         .selectionDisabled(urlServiceResult == nil)

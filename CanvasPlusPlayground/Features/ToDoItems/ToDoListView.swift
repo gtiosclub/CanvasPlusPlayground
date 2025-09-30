@@ -55,7 +55,7 @@ struct ToDoListView: View {
         }
         .overlay {
             if displayedResults.isEmpty {
-                ContentUnavailableView("No To-Do Items", systemImage: "checklist.checked")
+                ContentUnavailableView("No To-Do Items", systemImage: .checklistChecked)
             }
         }
         .toolbar {
@@ -65,7 +65,7 @@ struct ToDoListView: View {
                     Menu {
                         courseFilterPicker
                     } label: {
-                        Image(systemName: "line.3.horizontal.decrease.circle")
+                        Image(systemName: .lineThreeHorizontalDecreaseCircle)
                             .symbolVariant(filterCourse != nil ? .fill : .none)
                     }
                     #else
@@ -87,7 +87,7 @@ struct ToDoListView: View {
                 Text(course.displayName).tag(course)
             }
         } label: {
-            Image(systemName: "line.3.horizontal.decrease.circle")
+            Image(systemName: .lineThreeHorizontalDecreaseCircle)
                 .symbolVariant(filterCourse != nil ? .fill : .none)
         }
         .labelStyle(.iconOnly)
@@ -142,7 +142,7 @@ private struct ToDoItemRow: View {
         }
         .contextMenu {
             if let course = item.course {
-                Button("Go to Course...", systemImage: "folder") {
+                Button("Go to Course...", systemImage: .folder) {
                     navigationModel.selectedNavigationPage = .course(id: course.id)
                 }
             }
@@ -161,7 +161,7 @@ private struct ToDoItemRow: View {
     }
 
     private var ignoreItemButton: some View {
-        Button("Ignore Item", systemImage: "eye.slash", role: .destructive) {
+        Button("Ignore Item", systemImage: .eyeSlash, role: .destructive) {
             onIgnoreItem()
         }
     }

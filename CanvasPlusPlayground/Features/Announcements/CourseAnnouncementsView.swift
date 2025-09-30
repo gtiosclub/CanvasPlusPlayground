@@ -36,7 +36,7 @@ struct CourseAnnouncementsView: View {
         .listStyle(.plain)
         .overlay {
             if announcementManager.announcements.isEmpty {
-                ContentUnavailableView("No announcements available", systemImage: "exclamationmark.bubble.fill")
+                ContentUnavailableView("No announcements available", systemImage: .exclamationmarkBubbleFill)
             } else {
                 EmptyView()
             }

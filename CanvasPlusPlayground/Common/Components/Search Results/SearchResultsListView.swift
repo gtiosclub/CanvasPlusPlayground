@@ -67,7 +67,7 @@ struct SearchResultsListView<Content: View, DataSource: SearchResultListDataSour
 
     var offlineLabel: some View {
         HStack {
-            Image(systemName: "wifi.slash")
+            Image(systemName: .wifiSlash)
             Text("Offline Results")
                 .foregroundStyle(.gray)
                 .font(.system(size: 16))

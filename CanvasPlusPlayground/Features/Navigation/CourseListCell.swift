@@ -29,13 +29,13 @@ struct CourseListCell: View {
                 favCourseButton
             }
             .contextMenu {
-                Button("Customize Course", systemImage: "paintbrush.fill") {
+                Button("Customize Course", systemImage: .paintbrushFill) {
                     showCourseCustomizer = true
                 }
 
                 favCourseButton
 
-                Button("Rename Course...", systemImage: "character.cursor.ibeam") {
+                Button("Rename Course...", systemImage: .characterCursorIbeam) {
                     renameCourseFieldText = course.nickname ?? ""
                     showRenameTextField = true
                 }
@@ -74,7 +74,7 @@ struct CourseListCell: View {
     private var favCourseButton: some View {
         Button(
             course.isFavorite ? "Unfavorite Course" : "Favorite Course",
-            systemImage: "star"
+            systemImage: .star
         ) {
             Task {
                 await course.markIsFavorite(as: !course.isFavorite)

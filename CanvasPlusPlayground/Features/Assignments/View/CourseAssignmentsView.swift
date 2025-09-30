@@ -92,7 +92,7 @@ struct CourseAssignmentsView: View {
                 Menu {
                     groupByPicker
                 } label: {
-                    Label("Group By...", systemImage: "arrow.up.arrow.down")
+                    Label("Group By...", systemImage: .arrowUpArrowDown)
                 }
             }
 
@@ -199,7 +199,7 @@ private struct AssignmentRow: View {
 
                 if assignment.isLocked, let unlockDate = assignment.unlockDate {
                     HStack(spacing: 4) {
-                        Image(systemName: "lock.fill")
+                        Image(systemName: .lockFilled)
 
                         Text("Available ")
                             .fontWeight(.semibold)
@@ -219,7 +219,7 @@ private struct AssignmentRow: View {
 
             if showGrades {
                 if isDropped, !calculator.gradeGroups.isEmpty {
-                    Image(systemName: "xmark.circle.fill")
+                    Image(systemName: .xmarkCircleFill)
                         .foregroundStyle(.separator)
                 }
 
@@ -257,7 +257,7 @@ private struct GroupHeader: View {
             }
 
             if showGrades, showsInfoButton {
-                Button("Show Rules", systemImage: "info.circle") {
+                Button("Show Rules", systemImage: .infoCircle) {
                     showingInfo = true
                 }
                 .popover(isPresented: $showingInfo) {

@@ -26,7 +26,7 @@ struct ProfilePicture: View {
                     .clipShape(.circle)
                 #endif
             } else {
-                Image(systemName: "person.circle")
+                Image(systemName: .personCircle)
                     .font(.system(size: size))
             }
         }

@@ -21,9 +21,9 @@ struct OpenInCanvasButton: View {
     var body: some View {
         OpenWebLinkButton(url: path.url) {
             #if os(iOS)
-            Label("Open in Canvas Student", systemImage: "globe")
+            Label("Open in Canvas Student", systemImage: .globe)
             #else
-            Label("Open in web", systemImage: "globe")
+            Label("Open in web", systemImage: .globe)
             #endif
         }
         .environment(\.openURL, OpenURLAction { _ in

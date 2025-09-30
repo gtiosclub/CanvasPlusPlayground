@@ -25,7 +25,7 @@ struct FocusWindowView: View {
             } else if let errorMessage {
                 ContentUnavailableView(
                     "Unable to open new window",
-                    systemImage: "questionmark.square.dashed",
+                    systemImage: .questionmarkSquareDashed,
                     description: Text(errorMessage)
                 )
             } else if let destination {
