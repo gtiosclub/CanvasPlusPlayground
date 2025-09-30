@@ -17,6 +17,9 @@
 		267D852A2E6644FE007F821B /* FocusWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 267D85292E6644FE007F821B /* FocusWindowView.swift */; };
 		3DAE85002C9A0E4F008C22E7 /* BridgedPDFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DAE84FF2C9A0E4F008C22E7 /* BridgedPDFView.swift */; };
 		7F8535742C98DE3C0023E384 /* CourseGradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8535732C98DE3C0023E384 /* CourseGradeView.swift */; };
+		8C52DB9F2E8C5E0C0057B461 /* Fuzi in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 8C52DB9E2E8C5E0C0057B461 /* Fuzi */; };
+		8C52DBA22E8C5E190057B461 /* SwiftUIHTML in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 8C52DBA12E8C5E190057B461 /* SwiftUIHTML */; };
+		8CB45FF42E8C4ED30072BF68 /* HTMLView_new.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB45FF32E8C4EC90072BF68 /* HTMLView_new.swift */; };
 		95BA93482C9CE20D00137A91 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95BA93472C9CE20D00137A91 /* CalendarView.swift */; };
 		9A977E832D6C322F001D7F0A /* LoggerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A977E822D6C322F001D7F0A /* LoggerService.swift */; };
 		9B07E7122D779CAB00359B69 /* Date+RelativeDates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B07E7112D779CA500359B69 /* Date+RelativeDates.swift */; };
@@ -266,6 +269,7 @@
 		267D85292E6644FE007F821B /* FocusWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusWindowView.swift; sourceTree = "<group>"; };
 		3DAE84FF2C9A0E4F008C22E7 /* BridgedPDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgedPDFView.swift; sourceTree = "<group>"; };
 		7F8535732C98DE3C0023E384 /* CourseGradeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseGradeView.swift; sourceTree = "<group>"; };
+		8CB45FF32E8C4EC90072BF68 /* HTMLView_new.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLView_new.swift; sourceTree = "<group>"; };
 		95BA93472C9CE20D00137A91 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		9A977E822D6C322F001D7F0A /* LoggerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerService.swift; sourceTree = "<group>"; };
 		9B07E7112D779CA500359B69 /* Date+RelativeDates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+RelativeDates.swift"; sourceTree = "<group>"; };
@@ -512,6 +516,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C52DB9F2E8C5E0C0057B461 /* Fuzi in Frameworks */,
+				8C52DBA22E8C5E190057B461 /* SwiftUIHTML in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -714,6 +720,7 @@
 				B7CC4D5D2D90C03C00254F55 /* Intelligence */,
 				B7CC4D442D8DFF1500254F55 /* PickerService */,
 				B7C0A3C82D2F87E9003E5A36 /* AsyncView.swift */,
+				8CB45FF32E8C4EC90072BF68 /* HTMLView_new.swift */,
 				B75684F32DA5A6B2003B4A32 /* HTMLView.swift */,
 				B7F950332D11A00F004BB470 /* StatusToolbarItem.swift */,
 				9B7B3E332E7BA59F004D5FDD /* CustomizeCourseView.swift */,
@@ -1212,7 +1219,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B76454722C8BBC81002DF00E /* Build configuration list for PBXNativeTarget "CanvasPlusPlayground" */;
 			buildPhases = (
-                9ACDA5E82D5F1DA2001F1F0A /* SwiftLint */,
 				B76454602C8BBC7F002DF00E /* Sources */,
 				B76454612C8BBC7F002DF00E /* Frameworks */,
 				B76454622C8BBC7F002DF00E /* Resources */,
@@ -1223,6 +1229,8 @@
 			);
 			name = CanvasPlusPlayground;
 			packageProductDependencies = (
+				8C52DB9E2E8C5E0C0057B461 /* Fuzi */,
+				8C52DBA12E8C5E190057B461 /* SwiftUIHTML */,
 			);
 			productName = CanvasPlusPlayground;
 			productReference = B76454642C8BBC7F002DF00E /* CanvasPlusPlayground.app */;
@@ -1254,6 +1262,8 @@
 			mainGroup = B764545B2C8BBC7F002DF00E;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				8C52DB9D2E8C5E0C0057B461 /* XCRemoteSwiftPackageReference "Fuzi" */,
+				8C52DBA02E8C5E190057B461 /* XCRemoteSwiftPackageReference "SwiftUIHTML" */,
 			);
 			productRefGroup = B76454652C8BBC7F002DF00E /* Products */;
 			projectDirPath = "";
@@ -1449,6 +1459,7 @@
 				A3E7F3912C99317100DC4300 /* CourseTabsManager.swift in Sources */,
 				A372D0FF2D90BAB6005E94CA /* CourseGroupsView.swift in Sources */,
 				B75684F82DA5F9F4003B4A32 /* GetSinglePageRequest.swift in Sources */,
+				8CB45FF42E8C4ED30072BF68 /* HTMLView_new.swift in Sources */,
 				B7CC4D672D91AF4300254F55 /* GetUserTodoItemsRequest.swift in Sources */,
 				9B6D4F802D6E48340033044F /* ReminderButton.swift in Sources */,
 				A3E7F38F2C96C1CE00DC4300 /* CourseTabsView.swift in Sources */,
@@ -1784,6 +1795,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8C52DB9D2E8C5E0C0057B461 /* XCRemoteSwiftPackageReference "Fuzi" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/cezheng/Fuzi.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.3;
+			};
+		};
+		8C52DBA02E8C5E190057B461 /* XCRemoteSwiftPackageReference "SwiftUIHTML" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/PRNDcompany/SwiftUIHTML/";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8C52DB9E2E8C5E0C0057B461 /* Fuzi */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8C52DB9D2E8C5E0C0057B461 /* XCRemoteSwiftPackageReference "Fuzi" */;
+			productName = Fuzi;
+		};
+		8C52DBA12E8C5E190057B461 /* SwiftUIHTML */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8C52DBA02E8C5E190057B461 /* XCRemoteSwiftPackageReference "SwiftUIHTML" */;
+			productName = SwiftUIHTML;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B764545C2C8BBC7F002DF00E /* Project object */;
 }
