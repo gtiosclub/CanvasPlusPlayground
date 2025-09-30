@@ -188,6 +188,13 @@ private struct AssignmentRow: View {
             .tag(assignment)
         } else {
             bodyContents
+                .contextMenu {
+                    PinButton(
+                        itemID: assignment.id,
+                        courseID: assignment.courseId?.asString,
+                        type: .grade
+                    )
+                }
         }
     }
 

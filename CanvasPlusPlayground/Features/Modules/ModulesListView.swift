@@ -75,6 +75,9 @@ private struct ModuleSection: View {
                 ForEach(moduleItems) { item in
                     ModuleItemCell(item: item)
                         .tag(item)
+                        .contextMenu {
+                            PinButton(itemID: item.moduleID.asString, courseID: module.courseID, type: .module)
+                        }
                 }
             },
             label: {
