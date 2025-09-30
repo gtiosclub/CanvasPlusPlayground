@@ -15,37 +15,34 @@ import SwiftUI
 // MARK: Three small widgets evenly take up the entire line
 fileprivate struct ExampleDashboardView: View {
     var body: some View {
-        Dashboard(spacing: 10) {
+        Dashboard(spacing: 15) {
+            //MARK: Large widgets
             RoundedRectangle(cornerRadius: 20)
                 .fill(.green)
                 .frame(height: 200)
                 .widgetSize(.large)
-            
+            //MARK: Medium widgets
             RoundedRectangle(cornerRadius: 20)
                 .fill(.red)
                 .frame(height: 150)
                 .widgetSize(.medium)
-
             RoundedRectangle(cornerRadius: 20)
                 .fill(.red)
                 .frame(height: 150)
                 .widgetSize(.medium)
-
             RoundedRectangle(cornerRadius: 20)
                 .fill(.red)
                 .frame(height: 150)
                 .widgetSize(.medium)
-
             RoundedRectangle(cornerRadius: 20)
                 .fill(.red)
                 .frame(height: 150)
                 .widgetSize(.medium)
-
+            //MARK: Small widgets
             RoundedRectangle(cornerRadius: 10)
                 .fill(.yellow)
                 .frame(height: 200)
                 .widgetSize(.small)
-
             RoundedRectangle(cornerRadius: 10)
                 .fill(.yellow)
                 .frame(height: 200)
