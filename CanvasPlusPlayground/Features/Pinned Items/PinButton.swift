@@ -23,7 +23,7 @@ struct PinButton: View {
     var body: some View {
         Button(
             isItemPinned ? "Unpin" : "Pin",
-            systemImage: isItemPinned ? "pin.slash" : "pin"
+            systemImage: isItemPinned ? .pinSlash : .pin
         ) {
             pinnedItemsManager
                 .togglePinnedItem(

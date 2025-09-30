@@ -28,10 +28,10 @@ struct ReminderButton: View {
             }
         } label: {
             if #available(iOS 18.0, macOS 15.0, *) {
-                Image(systemName: reminderEnabled ? "bell.fill" : "bell")
+                Image(systemName: reminderEnabled ? .bellFill : .bell)
                     .symbolEffect(.wiggle, options: .speed(3), value: reminderEnabled) // no wiggles for the old phones :(
             } else {
-                Image(systemName: reminderEnabled ? "bell.fill" : "bell")
+                Image(systemName: reminderEnabled ? .bellFill : .bell)
             }
         }
         .sheet(isPresented: $showDatePicker) {
@@ -52,9 +52,9 @@ private struct ReminderDatePicker: View {
     // SF Symbol Icon Name, Color of SF Symbol, Date Interval Text, Date Interval
     let datePickerOptions: [(String, Color, String, Date)] =
     [
-        ("bell", .yellow, "Tomorrow", .tomorrowAt8am),
-        ("sofa", .purple, "This Weekend", .nextOrdinalAt8am(weekday: 7)),
-        ("calendar.badge.clock", .green, "Next Week", .nextOrdinalAt8am(weekday: 2)) // Essentially, "next Monday"
+        (.bell, .yellow, "Tomorrow", .tomorrowAt8am),
+        (.sofa, .purple, "This Weekend", .nextOrdinalAt8am(weekday: 7)),
+        (.calendarBadgeClock, .green, "Next Week", .nextOrdinalAt8am(weekday: 2)) // Essentially, "next Monday"
     ]
 
     var body: some View {

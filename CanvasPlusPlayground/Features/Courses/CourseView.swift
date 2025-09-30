@@ -68,7 +68,7 @@ struct CourseView: View {
             Section("External") {
                 ForEach(externalCoursePageLinks) { link in
                     Link(destination: link.htmlAbsoluteUrl) {
-                        Label(link.label, systemImage: "link")
+                        Label(link.label, systemImage: .link)
                     }
                 }
             }

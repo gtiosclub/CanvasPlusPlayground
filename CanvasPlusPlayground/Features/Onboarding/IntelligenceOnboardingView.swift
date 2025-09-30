@@ -90,7 +90,7 @@ struct IntelligenceOnboardingView: View {
 
     @ViewBuilder
     private var header: some View {
-        Image(systemName: "wand.and.stars")
+        Image(systemName: .wandAndStars)
             .font(.largeTitle)
             .foregroundStyle(.tint)
 
@@ -113,7 +113,7 @@ struct IntelligenceOnboardingView: View {
                         Text(intelligenceManager.modelDisplayName(model.name))
                         Spacer()
                         if selectedModel == model {
-                            Image(systemName: "checkmark")
+                            Image(systemName: .checkmark)
                         }
                     }
                     .contentShape(.rect)
@@ -135,7 +135,7 @@ struct IntelligenceOnboardingView: View {
                             Text(model)
                             Spacer()
                             if intelligenceManager.currentModelName == model {
-                                Image(systemName: "checkmark")
+                                Image(systemName: .checkmark)
                             }
                         }
                     }

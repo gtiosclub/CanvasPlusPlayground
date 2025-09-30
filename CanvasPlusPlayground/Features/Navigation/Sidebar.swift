@@ -128,7 +128,7 @@ private struct SidebarTiles: View {
         ) {
             SidebarTile(
                 "Announcements",
-                systemIcon: "bell.circle.fill",
+                systemIcon: .bellCircleFill,
                 color: .blue,
                 page: .announcements
             ) {
@@ -138,7 +138,7 @@ private struct SidebarTiles: View {
             SidebarTile(
                 "To-Do",
                 count: toDoListManager.toDoItemCount,
-                systemIcon: "list.bullet.circle.fill",
+                systemIcon: .listBulletCircleFill,
                 color: .red,
                 page: .toDoList
             ) {
@@ -147,7 +147,7 @@ private struct SidebarTiles: View {
 
             SidebarTile(
                 "Pinned",
-                systemIcon: "pin.circle.fill",
+                systemIcon: .pinCircleFill,
                 color: .orange,
                 page: .pinned
             ) {

@@ -34,7 +34,7 @@ extension CanvasURLService.URLServiceResult {
         case .assignment:
             NavigationModel.CoursePage.assignments.systemImageIcon
         case .file:
-            "document"
+            .document
         case .page:
             NavigationModel.CoursePage.pages.systemImageIcon
         }

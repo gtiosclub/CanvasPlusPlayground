@@ -72,29 +72,29 @@ class NavigationModel {
         var systemImageIcon: String {
             switch self {
             case .home:
-                "house.fill"
+                .house
             case .syllabus:
-                "book.pages"
+                .bookPages
             case .files:
-                "folder"
+                .folder
             case .assignments:
-                "circle.inset.filled"
+                .circleInsetFilled
             case .calendar:
-                "calendar"
+                .calendar
             case .announcements:
-                "bubble"
+                .bubble
             case .grades:
-                "graduationcap.fill"
+                .graduationcapFill
             case .people:
-                "person.crop.circle.fill"
+                .personCropCircleFill
             case .groups:
-                "person.3.sequence.fill"
+                .personThreeSequenceFill
             case .quizzes:
-                "questionmark.circle.fill"
+                .questionmarkCircleFill
             case .modules:
-                "book.closed.circle.fill"
+                .bookClosedCircleFill
             case .pages:
-                "doc.text.fill"
+                .docTextFill
             }
         }
     }

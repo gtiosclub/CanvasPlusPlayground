@@ -62,11 +62,11 @@ struct SettingsView: View {
 
     private var loginSettings: some View {
         Section {
-            Button("Change Access Token", systemImage: "key") {
+            Button("Change Access Token", systemImage: .key) {
                 showChangeAccessToken = true
             }
         } header: {
-            Label("Login", systemImage: "lock.fill")
+            Label("Login", systemImage: .lockFilled)
         }
     }
 
@@ -75,7 +75,7 @@ struct SettingsView: View {
         Section {
             Text(IntelligenceSupport.modelAvailabilityDescription)
         } header: {
-            Label("Intelligence", systemImage: "wand.and.stars")
+            Label("Intelligence", systemImage: .wandAndStars)
         }
         .foregroundStyle(.secondary)
     }
@@ -87,27 +87,27 @@ struct SettingsView: View {
 
         Section {
             Group {
-                Button("View Item Picker", systemImage: "filemenu.and.selection") {
+                Button("View Item Picker", systemImage: .filemenuAndSelection) {
                     selectedCourseForItemPicker = courseManager.activeCourses.first
                 }
 
                 #if os(macOS)
                 if #available(macOS 26.0, *) {
-                    Button("IGC Playground", systemImage: "plus.forwardslash.minus") {
+                    Button("IGC Playground", systemImage: .plusForwardslashMinus) {
                         openWindow(id: IGCPlayground.windowID)
                     }
                 }
                 #endif
 
-                Button("Clear Pinned Items", systemImage: "trash") {
+                Button("Clear Pinned Items", systemImage: .trash) {
                     pinnedItemManager.clearAllPinnedItems()
                 }
 
-                Button("Clear Cache", systemImage: "opticaldiscdrive") {
+                Button("Clear Cache", systemImage: .opticaldiscdrive) {
                     CanvasService.shared.clearStorage()
                 }
 
-                Button("Delete all files", systemImage: "folder.badge.minus") {
+                Button("Delete all files", systemImage: .folderBadgeMinus) {
                     do {
                         try CourseFileService.clearAllFiles()
                     } catch {
@@ -115,7 +115,7 @@ struct SettingsView: View {
                     }
                 }
 
-                Button("Show files in Finder", systemImage: "folder.badge.person.crop") {
+                Button("Show files in Finder", systemImage: .folderBadgePersonCrop) {
                     CourseFileService.showInFinder()
                 }
                 #if os(iOS)
@@ -124,7 +124,7 @@ struct SettingsView: View {
             }
             .foregroundStyle(.red)
         } header: {
-            Label("Debug", systemImage: "ant")
+            Label("Debug", systemImage: .ant)
         }
     }
     #endif

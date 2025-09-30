@@ -63,10 +63,10 @@ enum IGCOnboardingScreen: String, Identifiable, Hashable {
 
     var icon: String {
         switch self {
-        case .intro: return "wand.and.sparkles"
-        case .pickSyllabus: return "book"
-        case .extractWeights: return "pencil"
-        case .done: return "checkmark"
+        case .intro: return .intelligenceSymbol
+        case .pickSyllabus: return .book
+        case .extractWeights: return .pencil
+        case .done: return .checkmark
         }
     }
 

@@ -74,7 +74,7 @@ struct GradeCalculatorView: View {
                     #if os(macOS)
                     Text("Done")
                     #else
-                    Image(systemName: "xmark")
+                    Image(systemName: .xmark)
                     #endif
                 }
                 .keyboardShortcut(
@@ -117,7 +117,7 @@ struct GradeCalculatorView: View {
     }
 
     private var intelligentGradeCalculatorToolbarItem: some View {
-        Button("Extract Weights", systemImage: "wand.and.sparkles") {
+        Button("Extract Weights", systemImage: .intelligenceSymbol) {
             showIGCSetup = true
         }
         .labelStyle(.iconOnly)

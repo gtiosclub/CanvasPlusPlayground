@@ -122,7 +122,7 @@ private struct SummarySection: View {
 
     private var header: some View {
         HStack {
-            Label("Summary", systemImage: "wand.and.stars")
+            Label("Summary", systemImage: .wandAndStars)
 
             Spacer()
         }

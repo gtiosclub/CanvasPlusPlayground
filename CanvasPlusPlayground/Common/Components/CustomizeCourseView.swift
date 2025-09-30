@@ -46,7 +46,7 @@ struct CustomizeCourseView: View {
                         // Cancel: discard changes
                         dismiss()
                     } label: {
-                        Image(systemName: "xmark")
+                        Image(systemName: .xmark)
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
@@ -55,7 +55,7 @@ struct CustomizeCourseView: View {
                         onDismiss(selectedSymbol, selectedColor)
                         dismiss()
                     } label: {
-                        Image(systemName: "checkmark")
+                        Image(systemName: .checkmark)
                     }
                 }
             }

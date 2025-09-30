@@ -115,7 +115,7 @@ struct HomeView: View {
         .statusToolbarItem("Courses", isVisible: isLoadingCourses)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
-                Button("Settings", systemImage: "gear") {
+                Button("Settings", systemImage: .gear) {
                     showSettings.toggle()
                 }
             }
@@ -138,7 +138,7 @@ struct HomeView: View {
                 EmptyView()
             }
         } else {
-            ContentUnavailableView("Select a course", systemImage: "folder")
+            ContentUnavailableView("Select a course", systemImage: .folder)
         }
     }
 
@@ -189,7 +189,7 @@ struct HomeView: View {
         ) {
             HomeViewTile(
                 "Announcements",
-                systemIcon: "bell.circle.fill",
+                systemIcon: .bellCircleFill,
                 color: .blue,
                 page: .announcements
             ) {
@@ -198,7 +198,7 @@ struct HomeView: View {
 
             HomeViewTile(
                 "To-Do",
-                systemIcon: "list.bullet.circle.fill",
+                systemIcon: .listBulletCircleFill,
                 color: .red,
                 page: .toDoList
             ) {
@@ -207,7 +207,7 @@ struct HomeView: View {
 
             HomeViewTile(
                 "Pinned",
-                systemIcon: "pin.circle.fill",
+                systemIcon: .pinCircleFill,
                 color: .orange,
                 page: .pinned
             ) {
@@ -306,7 +306,7 @@ private struct CourseListCell: View {
 
     var body: some View {
         HStack {
-            Label(course.displayName, systemImage: "book.pages")
+            Label(course.displayName, systemImage: .bookPages)
                 .frame(alignment: .leading)
                 .multilineTextAlignment(.leading)
         }
@@ -316,7 +316,7 @@ private struct CourseListCell: View {
                     course.isFavorite = !wrappedCourseIsFavorite
                 }
             } label: {
-                Image(systemName: "star")
+                Image(systemName: .star)
                     .symbolVariant(
                         wrappedCourseIsFavorite
                         ? .slash
@@ -328,20 +328,20 @@ private struct CourseListCell: View {
             resolvedCourseColor = course.rgbColors?.color ?? .accentColor
         }
         .contextMenu {
-            Button("Change Color", systemImage: "paintbrush.fill") {
+            Button("Change Color", systemImage: .paintbrushFill) {
                 showColorPicker = true
             }
 
             Button(
                 wrappedCourseIsFavorite ? "Unfavorite Course" : "Favorite Course",
-                systemImage: wrappedCourseIsFavorite ? "star.slash.fill" : "star.fill"
+                systemImage: wrappedCourseIsFavorite ? .starSlashFill : .starFill
             ) {
                 withAnimation {
                     course.isFavorite = !wrappedCourseIsFavorite
                 }
             }
 
-            Button("Rename \(course.name ?? "")...", systemImage: "character.cursor.ibeam") {
+            Button("Rename \(course.name ?? "")...", systemImage: .characterCursorIbeam) {
                 renameCourseFieldText = course.nickname ?? ""
                 showRenameTextField = true
             }
