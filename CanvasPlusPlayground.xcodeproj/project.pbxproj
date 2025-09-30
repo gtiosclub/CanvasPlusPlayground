@@ -516,7 +516,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		26B743C02E8C3AEB00BD2501 /* Dashboard Layout */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Dashboard Layout"; sourceTree = "<group>"; };
+		26B743C02E8C3AEB00BD2501 /* Layout */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Layout; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -612,7 +612,6 @@
 		A324BA502D07963D005F53FA /* Features */ = {
 			isa = PBXGroup;
 			children = (
-				26B743C02E8C3AEB00BD2501 /* Dashboard Layout */,
 				B7F375C12E85EE82008F0846 /* Dashboard */,
 				B7C469D02E6C80D500310982 /* Home */,
 				9B801DE82E66658000DF4942 /* Debug */,
@@ -1205,12 +1204,13 @@
 				B7F375BF2E85921E008F0846 /* IGCSetupManager.swift */,
 			);
 			path = IGC;
-            sourceTree = "<group>";
-        };
+			sourceTree = "<group>";
+		};
 		B7F375C12E85EE82008F0846 /* Dashboard */ = {
 			isa = PBXGroup;
 			children = (
 				B7F375C22E85EE88008F0846 /* Support */,
+				26B743C02E8C3AEB00BD2501 /* Layout */,
 			);
 			path = Dashboard;
 			sourceTree = "<group>";
@@ -1254,7 +1254,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				26B743C02E8C3AEB00BD2501 /* Dashboard Layout */,
+				26B743C02E8C3AEB00BD2501 /* Layout */,
 			);
 			name = CanvasPlusPlayground;
 			packageProductDependencies = (
