@@ -187,6 +187,9 @@
 		B77FD0022D52A0D60049AA5E /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77FD0012D52A0D20049AA5E /* ProfileView.swift */; };
 		B77FD0072D5309340049AA5E /* ProfilePicture.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77FD0062D5309340049AA5E /* ProfilePicture.swift */; };
 		B78847972E674D6400AE7221 /* CanvasURLService+Modules.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78847962E674D5A00AE7221 /* CanvasURLService+Modules.swift */; };
+		B79101D42E8B09F50090BBB1 /* ListWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79101D32E8B09F50090BBB1 /* ListWidget.swift */; };
+		B79101D82E8B0E900090BBB1 /* GenericWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79101D72E8B0E8D0090BBB1 /* GenericWidget.swift */; };
+		B79101DA2E8B18BE0090BBB1 /* ExampleListWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79101D92E8B18BB0090BBB1 /* ExampleListWidget.swift */; };
 		B7926D162CE95CED00BFFBE1 /* RGBColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7926D152CE95CE900BFFBE1 /* RGBColors.swift */; };
 		B7A12F3F2D69441500EDFA0A /* GetAssignmentGroupsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A12F3E2D69440F00EDFA0A /* GetAssignmentGroupsRequest.swift */; };
 		B7A12F462D69448300EDFA0A /* AssignmentGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A12F452D69448300EDFA0A /* AssignmentGroup.swift */; };
@@ -242,6 +245,7 @@
 		B7F375BA2E8466F7008F0846 /* IGCOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F375B92E8466F7008F0846 /* IGCOnboardingView.swift */; };
 		B7F375BC2E84684E008F0846 /* PickableFileImporterModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F375BB2E84684E008F0846 /* PickableFileImporterModifier.swift */; };
 		B7F375C02E85921E008F0846 /* IGCSetupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F375BF2E85921E008F0846 /* IGCSetupManager.swift */; };
+		B7F375C42E85EE92008F0846 /* Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F375C32E85EE8E008F0846 /* Widget.swift */; };
 		B7F950322D118EAF004BB470 /* String+StripHTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F950312D118EAA004BB470 /* String+StripHTML.swift */; };
 		B7F950342D11A00F004BB470 /* StatusToolbarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F950332D11A00F004BB470 /* StatusToolbarItem.swift */; };
 		B7F950372D127869004BB470 /* ProfileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F950362D127861004BB470 /* ProfileManager.swift */; };
@@ -438,6 +442,9 @@
 		B77FD0012D52A0D20049AA5E /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		B77FD0062D5309340049AA5E /* ProfilePicture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePicture.swift; sourceTree = "<group>"; };
 		B78847962E674D5A00AE7221 /* CanvasURLService+Modules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CanvasURLService+Modules.swift"; sourceTree = "<group>"; };
+		B79101D32E8B09F50090BBB1 /* ListWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListWidget.swift; sourceTree = "<group>"; };
+		B79101D72E8B0E8D0090BBB1 /* GenericWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericWidget.swift; sourceTree = "<group>"; };
+		B79101D92E8B18BB0090BBB1 /* ExampleListWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleListWidget.swift; sourceTree = "<group>"; };
 		B7926D152CE95CE900BFFBE1 /* RGBColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RGBColors.swift; sourceTree = "<group>"; };
 		B7A12F3E2D69440F00EDFA0A /* GetAssignmentGroupsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAssignmentGroupsRequest.swift; sourceTree = "<group>"; };
 		B7A12F452D69448300EDFA0A /* AssignmentGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentGroup.swift; sourceTree = "<group>"; };
@@ -494,6 +501,7 @@
 		B7F375B92E8466F7008F0846 /* IGCOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGCOnboardingView.swift; sourceTree = "<group>"; };
 		B7F375BB2E84684E008F0846 /* PickableFileImporterModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickableFileImporterModifier.swift; sourceTree = "<group>"; };
 		B7F375BF2E85921E008F0846 /* IGCSetupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGCSetupManager.swift; sourceTree = "<group>"; };
+		B7F375C32E85EE8E008F0846 /* Widget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Widget.swift; sourceTree = "<group>"; };
 		B7F950312D118EAA004BB470 /* String+StripHTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+StripHTML.swift"; sourceTree = "<group>"; };
 		B7F950332D11A00F004BB470 /* StatusToolbarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusToolbarItem.swift; sourceTree = "<group>"; };
 		B7F950362D127861004BB470 /* ProfileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileManager.swift; sourceTree = "<group>"; };
@@ -600,6 +608,7 @@
 		A324BA502D07963D005F53FA /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				B7F375C12E85EE82008F0846 /* Dashboard */,
 				B7C469D02E6C80D500310982 /* Home */,
 				9B801DE82E66658000DF4942 /* Debug */,
 				B7CC4D682D91AF5800254F55 /* ToDoItems */,
@@ -1191,6 +1200,25 @@
 				B7F375BF2E85921E008F0846 /* IGCSetupManager.swift */,
 			);
 			path = IGC;
+            sourceTree = "<group>";
+        };
+		B7F375C12E85EE82008F0846 /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				B7F375C22E85EE88008F0846 /* Support */,
+			);
+			path = Dashboard;
+			sourceTree = "<group>";
+		};
+		B7F375C22E85EE88008F0846 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				B7F375C32E85EE8E008F0846 /* Widget.swift */,
+				B79101D32E8B09F50090BBB1 /* ListWidget.swift */,
+				B79101D72E8B0E8D0090BBB1 /* GenericWidget.swift */,
+				B79101D92E8B18BB0090BBB1 /* ExampleListWidget.swift */,
+			);
+			path = Support;
 			sourceTree = "<group>";
 		};
 		B7F950352D12785D004BB470 /* Profile */ = {
@@ -1363,6 +1391,7 @@
 				A373DC312D28176100215019 /* APIModule.swift in Sources */,
 				9BDFF27E2DA6B6D7009F0DE9 /* OpenInCanvasButton.swift in Sources */,
 				9B762BC92D7BF8E70051F1F6 /* SubmitAssignmentRequest.swift in Sources */,
+				B7F375C42E85EE92008F0846 /* Widget.swift in Sources */,
 				B7D7512F2D3D660B00F7B8B8 /* AllAnnouncementsManager.swift in Sources */,
 				A3049B752D15DC1C002F3166 /* GetCoursesRequest.swift in Sources */,
 				B72D82C12E4B503B00BA1DAD /* AnnouncementSummaryService.swift in Sources */,
@@ -1375,6 +1404,7 @@
 				9BFD45812D811B1000BBAA01 /* UploadSubmissionManager.swift in Sources */,
 				B7C469D82E6C869900310982 /* SyllabusView.swift in Sources */,
 				D43B58092E765A210054C12C /* HTMLTextView.swift in Sources */,
+				B79101DA2E8B18BE0090BBB1 /* ExampleListWidget.swift in Sources */,
 				B74688A32D63DB59007A27FD /* Assignment.swift in Sources */,
 				B5894F112D6EBD8C00E8F527 /* PageAPI.swift in Sources */,
 				A3C574D92D99F7DA002210FA /* GroupRowView.swift in Sources */,
@@ -1443,6 +1473,7 @@
 				A352AD1A2D3EF1C1007EE6FC /* GetCourseUsersRequest.swift in Sources */,
 				B7460A942D6BFB1A0069CF5B /* GradeCalculator.swift in Sources */,
 				B7E073642D9872AE00A7E82F /* IgnoreToDoItemRequest.swift in Sources */,
+				B79101D82E8B0E900090BBB1 /* GenericWidget.swift in Sources */,
 				B7C469D22E6C80F800310982 /* CourseHomePage.swift in Sources */,
 				B77FD0072D5309340049AA5E /* ProfilePicture.swift in Sources */,
 				A35191412D283589001E415F /* ModulesViewModel.swift in Sources */,
@@ -1488,6 +1519,7 @@
 				B7A12F462D69448300EDFA0A /* AssignmentGroup.swift in Sources */,
 				9B7B3E342E7BA59F004D5FDD /* CustomizeCourseView.swift in Sources */,
 				3DAE85002C9A0E4F008C22E7 /* BridgedPDFView.swift in Sources */,
+				B79101D42E8B09F50090BBB1 /* ListWidget.swift in Sources */,
 				B7C469D42E6C831E00310982 /* GetFrontPageRequest.swift in Sources */,
 				B533C0BE2CADDDE700A74AF6 /* PeopleCommonView.swift in Sources */,
 				B7C0A3C72D2F4E82003E5A36 /* GetFileRequest.swift in Sources */,
