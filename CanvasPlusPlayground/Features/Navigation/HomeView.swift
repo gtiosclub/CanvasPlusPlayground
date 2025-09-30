@@ -8,59 +8,71 @@
 import SwiftUI
 
 struct HomeView: View {
-    typealias NavigationPage = NavigationModel.NavigationPage
 
     @Environment(ToDoListManager.self) private var toDoListManager
     @Environment(ProfileManager.self) private var profileManager
     @Environment(CourseManager.self) private var courseManager
-
     @State private var columnVisibility = NavigationSplitViewVisibility.all
     @State private var isLoadingCourses = false
     @State var navigationModel = NavigationModel()
 
-    @SceneStorage("CourseListView.selectedNavigationPage")
-    private var selectedNavigationPage: NavigationPage?
-
-    @SceneStorage("CourseListView.selectedCoursePage")
-    private var selectedCoursePage: NavigationModel.CoursePage?
-
-    private var selectedCourse: Course? {
-        guard let selectedNavigationPage, case .course(let id) = selectedNavigationPage else {
-            return nil
-        }
-
-        return courseManager.activeCourses.first(where: { $0.id == id })
-    }
-
     var body: some View {
         @Bindable var courseManager = courseManager
         @Bindable var navigationModel = navigationModel
-
-        NavigationSplitView(columnVisibility: $columnVisibility) {
-            Sidebar()
-                .statusToolbarItem("Courses", isVisible: isLoadingCourses)
-                .refreshable {
-                    await loadCourses()
+        
+        TabView(selection: $navigationModel.selectedTab) {
+            
+            // search
+            Tab("Search", systemImage: "magnifyingglass", value: .search, role: .search) {
+                searchTabView
+            }
+            
+            // dashboard
+            Tab("Dashboard", systemImage: "list.dash.header.rectangle.fill", value: .dashboard) {
+                dashboardTabView
+            }
+            
+            // course/courses
+            
+            #if os(macOS)
+            TabSection("Courses") {
+                ForEach(courseManager.activeCourses) { course in
+                    Tab(value: NavigationModel.Tab.course(course.id)) {
+                        CourseView(course: course)
+                    } label: {
+                        CourseListCell(course: course)
+                    }
                 }
-        } detail: {
-            contentView
+            }
+            #endif
+            
+            #if os(iOS)
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                // ipad show one tab per course
+                TabSection("Courses") {
+                    ForEach(courseManager.activeCourses) { course in
+                        Tab(value: NavigationModel.Tab.course(course.id)) {
+                            CourseView(course: course)
+                        } label: {
+                            CourseListCell(course: course)
+                        }
+                    }
+                }
+            } else {
+                // iphone show courses tab
+                Tab("Courses", systemImage: "book.pages.fill", value: .courses) {
+                    coursesTabView
+                }
+            }
+            #endif
         }
-        .task {
-            navigationModel.selectedNavigationPage = selectedNavigationPage
-            navigationModel.selectedCoursePage = selectedCoursePage
-        }
+        .tabViewStyle(.sidebarAdaptable)
         .task {
             if StorageKeys.needsAuthorization {
                 navigationModel.showAuthorizationSheet = true
             } else {
                 await loadCourses()
             }
-        }
-        .onChange(of: navigationModel.selectedNavigationPage) { _, new in
-            selectedNavigationPage = new
-        }
-        .onChange(of: navigationModel.selectedCoursePage) { _, new in
-            selectedCoursePage = new
         }
         .sheet(isPresented: $navigationModel.showAuthorizationSheet) {
             NavigationStack {
@@ -86,36 +98,6 @@ struct HomeView: View {
         .environment(navigationModel)
     }
 
-    @ViewBuilder
-    private var contentView: some View {
-        @Bindable var navigationModel = navigationModel
-
-        NavigationStack(path: $navigationModel.navigationPath) {
-            if let selectedCourse {
-                CourseView(course: selectedCourse)
-                    .defaultNavigationDestination(courseID: selectedCourse.id)
-            } else if let selectedNavigationPage {
-                Group {
-                    switch selectedNavigationPage {
-                    case .announcements:
-                        AllAnnouncementsView()
-                    case .toDoList:
-                        ToDoListView()
-                    case .pinned:
-                        PinnedItemsView()
-                    default:
-                        EmptyView()
-                    }
-                }
-                .navigationDestination(for: NavigationModel.Destination.self) { destination in
-                    destination.destinationView()
-                }
-            } else {
-                ContentUnavailableView("Select a course", systemImage: "folder")
-            }
-        }
-    }
-
     private func loadCourses() async {
         isLoadingCourses = true
 
@@ -127,6 +109,33 @@ struct HomeView: View {
 
         isLoadingCourses = false
     }
+    
+    @ViewBuilder
+    private var coursesTabView: some View {
+        NavigationStack(path: $navigationModel.coursesPath) {
+            List(courseManager.activeCourses) { course in
+                NavigationLink(value: NavigationModel.Destination.course(course)) {
+                    CourseListCell(course: course)
+                }
+                .listItemTint(.fixed(course.rgbColors?.color ?? .accentColor))
+            }
+            .navigationTitle("Courses")
+            .navigationDestination(for: NavigationModel.Destination.self) { destination in
+                destination.destinationView()
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private var searchTabView: some View {
+        Text("Search is here")
+    }
+    
+    @ViewBuilder
+    private var dashboardTabView: some View{
+        
+        Text("Dashboard is here")
+    }
 }
 
 #Preview {
@@ -134,3 +143,4 @@ struct HomeView: View {
         .environment(CourseManager())
         .environment(ProfileManager())
 }
+

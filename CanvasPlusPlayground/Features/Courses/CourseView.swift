@@ -51,30 +51,32 @@ struct CourseView: View {
 
     var body: some View {
         @Bindable var navigationModel = navigationModel
-
-        List(selection: $navigationModel.selectedCoursePage) {
-            Section {
-                ForEach(coursePages, id: \.self) { page in
-                    NavigationLink(value: NavigationModel.Destination.coursePage(page, course)) {
-                        Label(page.title, systemImage: page.systemImageIcon)
-                    }
-                    .contextMenu {
-                        NewWindowButton(destination: .coursePage(page, course))
-                    }
-                    .tag(page)
-                }
-            }
-
-            Section("External") {
-                ForEach(externalCoursePageLinks) { link in
-                    Link(destination: link.htmlAbsoluteUrl) {
-                        Label(link.label, systemImage: "link")
+        NavigationStack(path: $navigationModel.navigationPath) {
+            List(selection: $navigationModel.selectedCoursePage) {
+                Section {
+                    ForEach(coursePages, id: \.self) { page in
+                        NavigationLink(value: NavigationModel.Destination.coursePage(page, course)) {
+                            Label(page.title, systemImage: page.systemImageIcon)
+                        }
+                        .contextMenu {
+                            NewWindowButton(destination: .coursePage(page, course))
+                        }
+                        .tag(page)
                     }
                 }
+                
+                Section("External") {
+                    ForEach(externalCoursePageLinks) { link in
+                        Link(destination: link.htmlAbsoluteUrl) {
+                            Label(link.label, systemImage: "link")
+                        }
+                    }
+                }
             }
-        }
-        .onAppear {
-            navigationModel.selectedCoursePage = nil
+            .defaultNavigationDestination(courseID: course.id)
+            .onAppear {
+                navigationModel.selectedCoursePage = nil
+            }
         }
 #if os(iOS)
         .listStyle(.insetGrouped)
