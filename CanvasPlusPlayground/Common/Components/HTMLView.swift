@@ -13,7 +13,7 @@ import UIKit
 import AppKit
 #endif
 
-struct HTMLView: ViewRepresentable {
+struct HTMLView_old: ViewRepresentable {
     @Environment(NavigationModel.self) private var navigationModel
 
     let html: String
