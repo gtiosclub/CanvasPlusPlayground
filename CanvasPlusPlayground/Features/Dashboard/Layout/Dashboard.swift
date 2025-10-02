@@ -133,15 +133,3 @@ struct Dashboard: Layout {
         }
     }
 }
-
-// MARK: Horizontal spacing helper
-extension Dashboard {
-    private func horizontalSpacings(subviews: Subviews) -> [CGFloat] {
-        guard !subviews.isEmpty else { return [] }
-
-        return subviews.indices.map {
-            guard $0 < subviews.count - 1 else { return .zero }
-            return subviews[$0].spacing.distance(to: subviews[$0 + 1].spacing, along: .horizontal)
-        }
-    }
-}
