@@ -7,20 +7,18 @@
 
 import SwiftUI
 
-// MARK: DO NOT specify the width of any widget -- the layout can figure out itself
-// MARK: DO specify the widget size of each widget using .widgetSize(:) modifier
-// MARK: Specifying the height is allowed -- for the best results, use the same height for the same type of widgets
-// MARK: Large widget will take up the entire line
-// MARK: Two medium widgets evenly take up the entire line
-// MARK: Three small widgets evenly take up the entire line
+// MARK: DO NOT specify the width or height of any widget using frame(::) modifier
+// MARK: You should ONLY USE `baseHeight` argument of the layout to control the frame size
+// MARK: Large and medium widget will take up the entire line
+// MARK: Two small widgets evenly take up the entire line
 fileprivate struct ExampleDashboardView: View {
 
     var body: some View {
         ScrollView {
-            Dashboard(vSpacing: 20, hSpacing: 15) {
+            Dashboard(vSpacing: 10, hSpacing: 50, baseHeight: 120) {
                 //MARK: Medium widgets (1x2)
                 VStack {
-                    Text("This is a medium widget (1x2)")
+                    Text("This is a medium widget (2x1)")
                     ScrollView(.horizontal) {
                         HStack {
                             ForEach(DevTeam, id: \.self) {
@@ -37,12 +35,12 @@ fileprivate struct ExampleDashboardView: View {
                 //MARK: Small widgets (1x1)
                 RoundedRectangle(cornerRadius: 20)
                     .fill(.red.opacity(0.5))
-                    .overlay { Text("Example Large Widget (2x2)").font(.title3) }
+                    .overlay { Text("Example Small Widget (1x1)").font(.title3) }
                     .widgetSize(.small)
 
                 RoundedRectangle(cornerRadius: 20)
                     .fill(.blue.opacity(0.5))
-                    .overlay { Text("Example Large Widget (2x2)").font(.title3) }
+                    .overlay { Text("Example Small Widget (1x1)").font(.title3) }
                     .widgetSize(.small)
 
 

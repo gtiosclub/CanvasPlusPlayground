@@ -18,7 +18,7 @@ import SwiftUI
 /// - **Arguments**:
 ///   - **vSpacing**: the vertical spacing between widgets
 ///   - **hSpacing**: the horizontal spacing between 2 small widgets on a line
-///   - **baseHeigh**t: the height of small (1x1) and medium (2x1) widget, which can be then used to calculate the height of large widget (2x2) by multiplying the base by 2
+///   - **baseHeight**t: the height of small (1x1) and medium (2x1) widget, which can be then used to calculate the height of large widget (2x2) by multiplying the base by 2
 ///
 /// - **Layout behavior**:
 ///   - Each large widget is placed on its own line, filling the entire horizontal space with spacings.
