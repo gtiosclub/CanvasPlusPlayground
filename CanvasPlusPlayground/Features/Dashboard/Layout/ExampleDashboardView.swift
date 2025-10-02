@@ -14,47 +14,85 @@ import SwiftUI
 // MARK: Two medium widgets evenly take up the entire line
 // MARK: Three small widgets evenly take up the entire line
 fileprivate struct ExampleDashboardView: View {
+
     var body: some View {
-        Dashboard(spacing: 15) {
-            //MARK: Large widgets
-            RoundedRectangle(cornerRadius: 20)
-                .fill(.green)
-                .frame(height: 200)
-                .widgetSize(.large)
-            //MARK: Medium widgets
-            RoundedRectangle(cornerRadius: 20)
-                .fill(.red)
-                .frame(height: 150)
+        ScrollView {
+            Dashboard(vSpacing: 20, hSpacing: 15) {
+                //MARK: Medium widgets (1x2)
+                VStack {
+                    Text("This is a medium widget (1x2)")
+                    ScrollView(.horizontal) {
+                        HStack {
+                            ForEach(DevTeam, id: \.self) {
+                                Text($0).bold().padding().background(.green.opacity(0.3))
+                            }
+                        }.padding()
+                    }
+                }
                 .widgetSize(.medium)
-            RoundedRectangle(cornerRadius: 20)
-                .fill(.red)
-                .frame(height: 150)
-                .widgetSize(.medium)
-            RoundedRectangle(cornerRadius: 20)
-                .fill(.red)
-                .frame(height: 150)
-                .widgetSize(.medium)
-            RoundedRectangle(cornerRadius: 20)
-                .fill(.red)
-                .frame(height: 150)
-                .widgetSize(.medium)
-            //MARK: Small widgets
-            RoundedRectangle(cornerRadius: 10)
-                .fill(.yellow)
-                .frame(height: 200)
-                .widgetSize(.small)
-            RoundedRectangle(cornerRadius: 10)
-                .fill(.yellow)
-                .frame(height: 200)
-                .widgetSize(.small)
-            RoundedRectangle(cornerRadius: 10)
-                .fill(.yellow)
-                .frame(height: 200)
-                .widgetSize(.small)
+                .frame(maxWidth: .infinity, maxHeight: .infinity) // MARK: This helps with non-greedy views to get its ideal size expected by the layout
+                .border(.black)
+
+
+                //MARK: Small widgets (1x1)
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(.red.opacity(0.5))
+                    .overlay { Text("Example Large Widget (2x2)").font(.title3) }
+                    .widgetSize(.small)
+
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(.blue.opacity(0.5))
+                    .overlay { Text("Example Large Widget (2x2)").font(.title3) }
+                    .widgetSize(.small)
+
+
+                //MARK: Large widgets (2x2)
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(.purple.opacity(0.8))
+                    .overlay { Text("Example Large Widget (2x2)").font(.title) }
+                    .widgetSize(.large)
+
+                //MARK: Small widgets (1x1)
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(.red)
+                    .widgetSize(.small)
+
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(.red)
+                    .widgetSize(.small)
+
+                //MARK: Large widgets (2x2)
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(.green)
+                    .widgetSize(.large)
+
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(.green)
+                    .widgetSize(.large)
+            }
+            .padding()
         }
-        .padding()
     }
 }
+
+let DevTeam = [
+    "Rahul",
+    "Ethan",
+    "Steven",
+    "Ivan",
+    "Rahul",
+    "Ethan",
+    "Steven",
+    "Ivan",
+    "Rahul",
+    "Ethan",
+    "Steven",
+    "Ivan",
+    "Rahul",
+    "Ethan",
+    "Steven",
+    "Ivan",
+]
 
 #Preview {
     ExampleDashboardView()

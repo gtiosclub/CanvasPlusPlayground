@@ -10,10 +10,15 @@ import SwiftUI
 /// The layout guide for the dashboard view that contains widgets.
 ///
 /// - **Assumptions**:
-///   - Widgets come in one of three sizes:
+///   - Widgets come in one of three sizes (aspect ratio):
 ///     - **Small**: `1x1`
-///     - **Medium**: `1x2`
-///     - **Large**: `1x3`
+///     - **Medium**: `2x1`
+///     - **Large**: `2x2`
+///
+/// - **Arguments**:
+///   - **vSpacing**: the vertical spacing between widgets
+///   - **hSpacing**: the horizontal spacing between 2 small widgets on a line
+///   - **baseHeigh**t: the height of small (1x1) and medium (2x1) widget, which can be then used to calculate the height of large widget (2x2) by multiplying the base by 2
 ///
 /// - **Layout behavior**:
 ///   - Each large widget is placed on its own line, filling the entire horizontal space with spacings.
@@ -21,202 +26,122 @@ import SwiftUI
 ///   - Every three small widgets share a line, filling the horizontal space with spacings.
 struct Dashboard: Layout {
 
-    /// the spacing between widgets of different sizes
-    var spacing: CGFloat = 20
+    var vSpacing: CGFloat = 20
+    var hSpacing: CGFloat = 15
+    var baseHeight: CGFloat = 150
+    var largeWidgetHeight: CGFloat { baseHeight * 2 }
 
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
-        return proposal.replacingUnspecifiedDimensions() // fills whatever space is proposed by the parent container
-    }
+        guard !subviews.isEmpty else { return .zero }
 
-    /// - subviews placement logic:
-    ///     - Each large widget is placed on its own line, filling the entire horizontal space with spacings.
-    ///     - Every two medium widgets share a line, filling the horizontal space with spacings.
-    ///     - Every three small widgets share a line, filling the horizontal space with spacings.
-    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
-        // 1. obtain 3 subarrays containing large, medium, small widgets respectively, along with their spacings
-        let largeSubviews = subviews.filter { $0.widgetSize == .large }
+        var height: CGFloat = 0
+        var smallCount = 0
 
-        let mediumSubviews = subviews.filter { $0.widgetSize == .medium }
-        let mediumSubviewSpacings = spacing(subviews: mediumSubviews)
-
-        let smallSubviews = subviews.filter { $0.widgetSize == .small }
-        let smallSubviewSpacings = spacing(subviews: smallSubviews)
-
-
-        // Set up initial placement coordinate and proposal for the large widgets
-        var cursorY: CGFloat = bounds.minY // used to dynamically compute the y-offset needed to place each widget
-        var countOfWidgetsOnALine = 0 // used to dynamically compute the x-offset needed to place each widget on a given line
-        var proposal = ProposedViewSize(width: bounds.width, height: nil) // used to dynamically give proposal view size based on widget size
-
-
-        // 2. place large widgets first -- ask each large widget to take up a single line
-        placeLargeWidgets(
-            largeSubviews,
-            proposal: proposal,
-            bounds: bounds,
-            cursorY: &cursorY
-        )
-
-        // 3. place medium widgets next -- ask every 2 medium widgets to evenly take up a single line
-        placeMediumWidgets(
-            mediumSubviews,
-            hSpacings: mediumSubviewSpacings.horizontal,
-            vSpacings: mediumSubviewSpacings.vertical,
-            proposal: &proposal,
-            bounds: bounds,
-            cursorY: &cursorY,
-            countOfWidgetsOnALine: &countOfWidgetsOnALine
-        )
-
-        // 4. place small widgets last -- ask every 3 small widgets to evenly take up a single line
-        placeSmallWidgets(
-            smallSubviews,
-            hSpacings: smallSubviewSpacings.horizontal,
-            vSpacings: smallSubviewSpacings.vertical,
-            proposal: &proposal,
-            bounds: bounds,
-            cursorY: &cursorY,
-            countOfWidgetsOnALine: &countOfWidgetsOnALine
-        )
-    }
-
-    private func placeLargeWidgets(_ subviews: [LayoutSubview], proposal: ProposedViewSize, bounds: CGRect, cursorY: inout CGFloat) {
         for widget in subviews {
-                widget.place(
-                    at: CGPoint(x: bounds.midX, y: cursorY),
-                    anchor: .top,
-                    proposal: ProposedViewSize(width: bounds.width, height: nil)
-                )
-
-                let height = widget.sizeThatFits(.unspecified).height
-
-                cursorY += height + spacing
-            }
-    }
-
-    private func placeMediumWidgets(
-        _ subviews: [LayoutSubview],
-        hSpacings: [CGFloat],
-        vSpacings: [CGFloat],
-        proposal: inout ProposedViewSize,
-        bounds: CGRect,
-        cursorY: inout CGFloat,
-        countOfWidgetsOnALine: inout Int
-    ) {
-        let hSpacing = hSpacings.first ?? 0
-
-        let itemWidth = (bounds.width - hSpacing) / 2
-
-        proposal = ProposedViewSize(width: bounds.width / 2, height: nil)
-
-        var rowMaxHeight: CGFloat = 0
-
-        for (index, mediumWidget) in subviews.enumerated() {
-            let size = mediumWidget.sizeThatFits(proposal)
-
-            let x = bounds.minX + CGFloat(countOfWidgetsOnALine) * (itemWidth + hSpacing) + itemWidth / 2
-
-            mediumWidget.place(
-                at: CGPoint(
-                    x: x,
-                    y: cursorY
-                ),
-                anchor: .top,
-                proposal: ProposedViewSize(width: bounds.width / 2, height: size.height)
-            )
-
-            rowMaxHeight = max(rowMaxHeight, size.height)
-            countOfWidgetsOnALine += 1
-
-            if countOfWidgetsOnALine == 2 || index == subviews.count - 1 {
-                cursorY += rowMaxHeight + (index < vSpacings.count ? vSpacings[index] : 0)
-                countOfWidgetsOnALine = 0
-                rowMaxHeight = 0
+            switch widget.widgetSize {
+            case .small:
+                smallCount += 1
+                if smallCount == 2 {
+                    height += baseHeight + vSpacing
+                    smallCount = 0
+                }
+            case .medium:
+                height += baseHeight + vSpacing
+                smallCount = 0
+            case .large:
+                height += largeWidgetHeight + vSpacing
+                smallCount = 0
             }
         }
 
-        cursorY += spacing
+        // If one small widget left over, still count a row
+        if smallCount == 1 {
+            height += baseHeight + vSpacing
+        }
+
+        return CGSize(width: proposal.width ?? 0, height: height)
     }
 
-    private func placeSmallWidgets(
-        _ subviews: [LayoutSubview],
-        hSpacings: [CGFloat],
-        vSpacings: [CGFloat],
-        proposal: inout ProposedViewSize,
-        bounds: CGRect,
-        cursorY: inout CGFloat,
-        countOfWidgetsOnALine: inout Int
-    ) {
-        proposal = ProposedViewSize(width: bounds.width / 3, height: nil)
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        guard !subviews.isEmpty else { return }
 
-        var rowMaxHeight: CGFloat = 0
+        var x: CGFloat = bounds.minX
+        var y: CGFloat = bounds.minY
+        var smallWidgetCount = 0
 
-        let thirdWidth = bounds.width / 3
-
-        let hSpacing = hSpacings.first ?? 0
-
-        let itemWidth = (bounds.width - 2 * hSpacing) / 3
-
-        var x = bounds.minX + thirdWidth / 2
-
-        for (index, smallWidget) in subviews.enumerated() {
-            let size = smallWidget.sizeThatFits(
-                ProposedViewSize(width: itemWidth, height: nil)
-            )
-
-            let x = bounds.minX + CGFloat(countOfWidgetsOnALine) * (itemWidth + hSpacing) + itemWidth / 2
-
-            smallWidget.place(
-                at: CGPoint(x: x, y: cursorY),
-                anchor: .top,
-                proposal: ProposedViewSize(width: itemWidth, height: size.height)
-            )
-
-            rowMaxHeight = max(rowMaxHeight, size.height)
-            countOfWidgetsOnALine += 1
-
-            if countOfWidgetsOnALine == 3 || index == subviews.count - 1 {
-                cursorY += rowMaxHeight + (index < vSpacings.count ? vSpacings[index] : 0)
-                rowMaxHeight = 0
-                countOfWidgetsOnALine = 0
+        for (index, widget) in subviews.enumerated() {
+            switch widget.widgetSize {
+            case .small: placeSmallWidget(widget, index: index)
+            case .medium: placeMediumWidget(widget, index: index)
+            case .large: placeLargeWidget(widget, index: index)
             }
         }
 
+        // MARK: Local helper functions
+        func placeSmallWidget(_ subview: LayoutSubview, index: Int) {
+            let itemsPerRow = 2
+            let width = (bounds.width - hSpacing) / CGFloat(itemsPerRow)
+
+            let proposal = ProposedViewSize(width: width, height: baseHeight)
+            subview.place(
+                at: CGPoint(x: x, y: y),
+                anchor: .topLeading,
+                proposal: proposal
+            )
+
+            smallWidgetCount += 1
+            if smallWidgetCount < itemsPerRow {
+                // Move to next column
+                x += width + hSpacing
+            } else {
+                // Move to next row
+                y += baseHeight + vSpacing
+                x = bounds.minX
+                smallWidgetCount = 0
+            }
+        }
+
+
+        func placeMediumWidget(_ subview: LayoutSubview, index: Int) {
+            // If a small widget is pending, push to next row first
+            if smallWidgetCount > 0 {
+                y += baseHeight + vSpacing
+                x = bounds.minX
+                smallWidgetCount = 0
+            }
+
+            let proposal = ProposedViewSize(width: bounds.width, height: baseHeight)
+            subview.place(at: CGPoint(x: bounds.minX, y: y), anchor: .topLeading, proposal: proposal)
+
+            y += baseHeight + vSpacing
+            x = bounds.minX
+        }
+
+        func placeLargeWidget(_ subview: LayoutSubview, index: Int) {
+            // If a small widget is pending, push to next row first
+            if smallWidgetCount > 0 {
+                y += baseHeight + vSpacing
+                x = bounds.minX
+                smallWidgetCount = 0
+            }
+
+            let proposal = ProposedViewSize(width: bounds.width, height: largeWidgetHeight)
+            subview.place(at: CGPoint(x: bounds.minX, y: y), anchor: .topLeading, proposal: proposal)
+
+            y += largeWidgetHeight + vSpacing
+            x = bounds.minX
+        }
     }
 }
 
-// MARK: Helper method to find the largest width and height of all subviews
+// MARK: Horizontal spacing helper
 extension Dashboard {
-    private func maxSize(subviews: Subviews) -> CGSize {
-        let sizes = subviews.map { $0.sizeThatFits(.unspecified) }
-        return sizes.reduce(.zero) { CGSize(width: max($0.width, $1.width), height: max($0.height, $1.height)) }
-    }
-}
-
-// MARK: Helper methods to find spacings between subviews
-extension Dashboard {
-    private func spacing(subviews: [LayoutSubview]) -> (horizontal: [CGFloat], vertical: [CGFloat]) {
-        return (horizontalSpacings(subviews: subviews), verticalSpacings(subviews: subviews))
-    }
-
-
-    // find the ideal horizontal spacings between subviews
-    private func horizontalSpacings(subviews: [LayoutSubview]) -> [CGFloat] {
+    private func horizontalSpacings(subviews: Subviews) -> [CGFloat] {
         guard !subviews.isEmpty else { return [] }
 
         return subviews.indices.map {
             guard $0 < subviews.count - 1 else { return .zero }
             return subviews[$0].spacing.distance(to: subviews[$0 + 1].spacing, along: .horizontal)
-        }
-    }
-
-    // find the ideal vertical spacings between subviews
-    private func verticalSpacings(subviews: [LayoutSubview]) -> [CGFloat] {
-        guard !subviews.isEmpty else { return [] }
-
-        return subviews.indices.map {
-            guard $0 < subviews.count - 1 else { return .zero }
-            return subviews[$0].spacing.distance(to: subviews[$0 + 1].spacing, along: .vertical)
         }
     }
 }
