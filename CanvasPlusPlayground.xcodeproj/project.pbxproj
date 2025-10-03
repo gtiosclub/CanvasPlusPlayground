@@ -19,6 +19,7 @@
 		7F8535742C98DE3C0023E384 /* CourseGradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8535732C98DE3C0023E384 /* CourseGradeView.swift */; };
 		8C52DB9F2E8C5E0C0057B461 /* Fuzi in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 8C52DB9E2E8C5E0C0057B461 /* Fuzi */; };
 		8C52DBA22E8C5E190057B461 /* SwiftUIHTML in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 8C52DBA12E8C5E190057B461 /* SwiftUIHTML */; };
+		8CD1EEE32E8DF02500EEC3CF /* RichText in Frameworks */ = {isa = PBXBuildFile; productRef = 8CD1EEE22E8DF02500EEC3CF /* RichText */; };
 		95BA93482C9CE20D00137A91 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95BA93472C9CE20D00137A91 /* CalendarView.swift */; };
 		9A977E832D6C322F001D7F0A /* LoggerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A977E822D6C322F001D7F0A /* LoggerService.swift */; };
 		9B07E7122D779CAB00359B69 /* Date+RelativeDates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B07E7112D779CA500359B69 /* Date+RelativeDates.swift */; };
@@ -515,6 +516,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8C52DB9F2E8C5E0C0057B461 /* Fuzi in Frameworks */,
+				8CD1EEE32E8DF02500EEC3CF /* RichText in Frameworks */,
 				8C52DBA22E8C5E190057B461 /* SwiftUIHTML in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1228,6 +1230,7 @@
 			packageProductDependencies = (
 				8C52DB9E2E8C5E0C0057B461 /* Fuzi */,
 				8C52DBA12E8C5E190057B461 /* SwiftUIHTML */,
+				8CD1EEE22E8DF02500EEC3CF /* RichText */,
 			);
 			productName = CanvasPlusPlayground;
 			productReference = B76454642C8BBC7F002DF00E /* CanvasPlusPlayground.app */;
@@ -1261,6 +1264,7 @@
 			packageReferences = (
 				8C52DB9D2E8C5E0C0057B461 /* XCRemoteSwiftPackageReference "Fuzi" */,
 				8C52DBA02E8C5E190057B461 /* XCRemoteSwiftPackageReference "SwiftUIHTML" */,
+				8CD1EEE12E8DF02500EEC3CF /* XCRemoteSwiftPackageReference "RichText" */,
 			);
 			productRefGroup = B76454652C8BBC7F002DF00E /* Products */;
 			projectDirPath = "";
@@ -1701,7 +1705,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.4;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.gtiosclub.CanvasPlus;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ivanli.CanvasPlus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = NO;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -1757,7 +1761,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.4;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.gtiosclub.CanvasPlus;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ivanli.CanvasPlus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = NO;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -1809,6 +1813,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		8CD1EEE12E8DF02500EEC3CF /* XCRemoteSwiftPackageReference "RichText" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/NuPlay/RichText";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1821,6 +1833,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8C52DBA02E8C5E190057B461 /* XCRemoteSwiftPackageReference "SwiftUIHTML" */;
 			productName = SwiftUIHTML;
+		};
+		8CD1EEE22E8DF02500EEC3CF /* RichText */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8CD1EEE12E8DF02500EEC3CF /* XCRemoteSwiftPackageReference "RichText" */;
+			productName = RichText;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
