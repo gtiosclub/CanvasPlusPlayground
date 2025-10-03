@@ -6,13 +6,21 @@
 //
 
 import SwiftUI
+import RichText
 
 struct HTMLTextView: View {
     let htmlText: String
-
     @State private var announcementAttributedText: NSAttributedString?
-
+    
     var body: some View {
+        #if os(iOS)
+        iosBody
+        #else
+        otherBody
+        #endif
+    
+    }
+    private var otherBody: some View {
         Group {
             if let announcementAttributedText {
                 Text(AttributedString(announcementAttributedText))
@@ -26,3 +34,4 @@ struct HTMLTextView: View {
         }
     }
 }
+
