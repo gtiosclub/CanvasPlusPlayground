@@ -68,16 +68,6 @@ fileprivate struct WidgetShowcaseSection: Identifiable {
             title: "Announcements",
             description: "View all announcements",
             widgets: [.init(AllAnnouncementsWidget())]
-        ),
-        .init(
-            title: "Announcements",
-            description: "View all announcements",
-            widgets: [.init(AllAnnouncementsWidget())]
-        ),
-        .init(
-            title: "Announcements",
-            description: "View all announcements",
-            widgets: [.init(AllAnnouncementsWidget())]
         )
     ]
 }

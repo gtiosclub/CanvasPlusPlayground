@@ -8,7 +8,7 @@
 import SwiftUI
 
 @MainActor
-struct AnyWidget: Identifiable {
+struct AnyWidget {
     private let _id: String
     private let _mainBody: AnyView
 

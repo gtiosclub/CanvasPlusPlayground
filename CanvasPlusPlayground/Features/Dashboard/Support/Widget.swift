@@ -21,7 +21,6 @@ protocol Widget: Identifiable where ID == String {
     var mainBody: Body { get }
     var contents: Contents { get }
     var destination: NavigationModel.Destination { get }
-    @MainActor
     var dataSource: DataSource { get set }
 }
 
