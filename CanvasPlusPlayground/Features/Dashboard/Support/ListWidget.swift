@@ -28,7 +28,7 @@ private struct DefaultListWidgetBody: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
-            ForEach(widget.dataSource.widgetData) { item in
+            ForEach(widget.dataSource.widgetData.prefix(3)) { item in
                 NavigationLink(
                     value: widget.dataSource.destinationView(for: item)) {
                         Row(item: item)

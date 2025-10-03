@@ -43,7 +43,7 @@ struct PeopleCommonView: View {
         .task {
             await getCommonCourses()
         }
-        .animation(.default, value: commonCourses)
+        .animation(.default, value: commonCourses.count)
     }
 
     private var statusLabel: some View {

@@ -47,6 +47,8 @@ struct FocusWindowView: View {
             return courseID
         case .announcement(_, let courseID), .assignment(_, let courseID), .page(_, let courseID), .quiz(_, let courseID):
             return courseID
+        case .allAnnouncements:
+            return ""
         }
     }
 
@@ -80,6 +82,8 @@ struct FocusWindowView: View {
                 try await loadFolder(folderID: folderID, courseID: courseID)
             case .quiz(let quizID, let courseID):
                 try await loadQuiz(quizID: quizID, courseID: courseID)
+            case .allAnnouncements:
+                destination = .allAnnouncements
             }
         } catch {
             errorMessage = "Failed to load content: \(error.localizedDescription)"
