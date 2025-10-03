@@ -19,6 +19,6 @@ struct CourseListCell: View {
             #if os(macOS)
             .padding(.vertical, 4)
             #endif
-            .courseContextMenu(course: course)
+            .customizeCourseMenu(course: course)
     }
 }

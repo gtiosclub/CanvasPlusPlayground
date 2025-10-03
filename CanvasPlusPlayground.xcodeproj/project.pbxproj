@@ -28,7 +28,7 @@
 		9B7B3E342E7BA59F004D5FDD /* CustomizeCourseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B7B3E332E7BA59F004D5FDD /* CustomizeCourseView.swift */; };
 		9B801DEB2E66659D00DF4942 /* NetworkRequestRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B801DEA2E66659D00DF4942 /* NetworkRequestRecorder.swift */; };
 		9B801DEC2E66659D00DF4942 /* NetworkRequestDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B801DE92E66659D00DF4942 /* NetworkRequestDebugView.swift */; };
-		9B91E1342E8C901200B1A826 /* CourseContextMenuModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B91E1332E8C901200B1A826 /* CourseContextMenuModifier.swift */; };
+		9B81E2832E8F84BD00675B90 /* CustomizeCourseMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B81E2822E8F84BD00675B90 /* CustomizeCourseMenu.swift */; };
 		9B92A4232C93853C00C21CFC /* Announcement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B92A4222C93853C00C21CFC /* Announcement.swift */; };
 		9B92A4252C93856100C21CFC /* CourseAnnouncementManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B92A4242C93856100C21CFC /* CourseAnnouncementManager.swift */; };
 		9B9C2E042C93F6CD00E4B16B /* CourseAnnouncementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9C2E032C93F6CD00E4B16B /* CourseAnnouncementsView.swift */; };
@@ -276,7 +276,7 @@
 		9B7B3E332E7BA59F004D5FDD /* CustomizeCourseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizeCourseView.swift; sourceTree = "<group>"; };
 		9B801DE92E66659D00DF4942 /* NetworkRequestDebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRequestDebugView.swift; sourceTree = "<group>"; };
 		9B801DEA2E66659D00DF4942 /* NetworkRequestRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRequestRecorder.swift; sourceTree = "<group>"; };
-		9B91E1332E8C901200B1A826 /* CourseContextMenuModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseContextMenuModifier.swift; sourceTree = "<group>"; };
+		9B81E2822E8F84BD00675B90 /* CustomizeCourseMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizeCourseMenu.swift; sourceTree = "<group>"; };
 		9B92A4222C93853C00C21CFC /* Announcement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Announcement.swift; sourceTree = "<group>"; };
 		9B92A4242C93856100C21CFC /* CourseAnnouncementManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAnnouncementManager.swift; sourceTree = "<group>"; };
 		9B9C2E032C93F6CD00E4B16B /* CourseAnnouncementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAnnouncementsView.swift; sourceTree = "<group>"; };
@@ -1174,8 +1174,8 @@
 				B7E59A152D20076E001836FE /* CourseDetailView.swift */,
 				9BDFF27D2DA6B6D7009F0DE9 /* OpenInCanvasButton.swift */,
 				267D85292E6644FE007F821B /* FocusWindowView.swift */,
+				9B81E2822E8F84BD00675B90 /* CustomizeCourseMenu.swift */,
 				262CA4612E6A34A000BB7C00 /* DefaultNavigationDestination.swift */,
-				9B91E1332E8C901200B1A826 /* CourseContextMenuModifier.swift */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
@@ -1295,6 +1295,7 @@
 				B76454FF2C8DF61B002DF00E /* Enrollment.swift in Sources */,
 				A3049B5F2D0E6044002F3166 /* QuizHideResults.swift in Sources */,
 				9BA7C0F72D62DC92000F2918 /* PinnedItemDetailView.swift in Sources */,
+				9B81E2832E8F84BD00675B90 /* CustomizeCourseMenu.swift in Sources */,
 				B76455002C8DF61B002DF00E /* File.swift in Sources */,
 				A330B8892DA4D78E00D6C1C3 /* CanvasTab.swift in Sources */,
 				B7F375C02E85921E008F0846 /* IGCSetupManager.swift in Sources */,
@@ -1314,7 +1315,6 @@
 				A3049B632D0E6154002F3166 /* ScoringPolicy.swift in Sources */,
 				A33BE8752D97A6F7005C1D13 /* GetGroupMembershipRequest.swift in Sources */,
 				B7C0A3C92D2F87EC003E5A36 /* AsyncView.swift in Sources */,
-				9B91E1342E8C901200B1A826 /* CourseContextMenuModifier.swift in Sources */,
 				B7F950372D127869004BB470 /* ProfileManager.swift in Sources */,
 				A330B89B2DA98D0D00D6C1C3 /* MarkFavoriteRequest.swift in Sources */,
 				A324BA662D07AFD5005F53FA /* FileType.swift in Sources */,

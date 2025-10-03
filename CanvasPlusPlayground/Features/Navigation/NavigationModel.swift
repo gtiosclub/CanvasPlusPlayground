@@ -107,10 +107,11 @@ class NavigationModel {
     }
 
     // MARK: - Tab-based navigation
-    var selectedTab: Tab = .courses {
+    var selectedTab: Tab = .dashboard {
         didSet {
             // when switching tab, flush the course path, this is unique to mac and ipad
             coursePath = NavigationPath()
+            selectedCoursePage = nil
         }
     }
 

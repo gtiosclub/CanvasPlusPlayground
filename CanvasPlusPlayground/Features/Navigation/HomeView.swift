@@ -12,6 +12,8 @@ struct HomeView: View {
     @Environment(ToDoListManager.self) private var toDoListManager
     @Environment(ProfileManager.self) private var profileManager
     @Environment(CourseManager.self) private var courseManager
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    
     @State private var columnVisibility = NavigationSplitViewVisibility.all
     @State private var isLoadingCourses = false
     @State var navigationModel = NavigationModel()
@@ -21,50 +23,29 @@ struct HomeView: View {
         @Bindable var navigationModel = navigationModel
         
         TabView(selection: $navigationModel.selectedTab) {
-            
-            // search
-            Tab("Search", systemImage: "magnifyingglass", value: .search, role: .search) {
-                searchTabView
-            }
-            
             // dashboard
             Tab("Dashboard", systemImage: "list.dash.header.rectangle.fill", value: .dashboard) {
                 dashboardTabView
             }
             
             // course/courses
-            
-            #if os(macOS)
             TabSection("Courses") {
                 ForEach(courseManager.activeCourses) { course in
                     Tab(value: NavigationModel.Tab.course(course.id)) {
-                        CourseView(course: course)
+                        NavigationStack(path: $navigationModel.coursePath) {
+                            CourseView(course: course)
+                        }
                     } label: {
                         CourseListCell(course: course)
                     }
                 }
             }
-            #endif
+            .hidden(horizontalSizeClass == .compact)
             
-            #if os(iOS)
-            if UIDevice.current.userInterfaceIdiom == .pad {
-                // ipad show one tab per course
-                TabSection("Courses") {
-                    ForEach(courseManager.activeCourses) { course in
-                        Tab(value: NavigationModel.Tab.course(course.id)) {
-                            CourseView(course: course)
-                        } label: {
-                            CourseListCell(course: course)
-                        }
-                    }
-                }
-            } else {
-                // iphone show courses tab
-                Tab("Courses", systemImage: "book.pages.fill", value: .courses) {
-                    coursesTabView
-                }
+            Tab("Courses", systemImage: "book.pages.fill", value: .courses) {
+                coursesTabView
             }
-            #endif
+            .hidden(horizontalSizeClass == .regular)
         }
         .tabViewStyle(.sidebarAdaptable)
         .task {
