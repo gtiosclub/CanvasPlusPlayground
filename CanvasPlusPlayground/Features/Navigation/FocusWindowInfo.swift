@@ -27,6 +27,7 @@ enum CodableDestination: Codable, Hashable {
     case folder(Folder.ID, Course.ID)
     case quiz(Quiz.ID, Course.ID)
     case allAnnouncements
+    case allToDos
 }
 
 extension CodableDestination {
@@ -51,6 +52,8 @@ extension CodableDestination {
             self = .quiz(quiz.id, quiz.courseID)
         case .allAnnouncements:
             self = .allAnnouncements
+        case .allToDos:
+            self = .allToDos
         }
     }
 }

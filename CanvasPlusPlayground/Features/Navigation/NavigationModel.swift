@@ -101,6 +101,7 @@ class NavigationModel {
 
     enum Destination: Hashable {
         case allAnnouncements
+        case allToDos
 
         case course(Course)
         case coursePage(CoursePage, Course)
@@ -133,6 +134,8 @@ class NavigationModel {
                 QuizDetailView(quiz: quiz)
             case .allAnnouncements:
                 AllAnnouncementsView()
+            case .allToDos:
+                ToDoListView()
             }
         }
     }
