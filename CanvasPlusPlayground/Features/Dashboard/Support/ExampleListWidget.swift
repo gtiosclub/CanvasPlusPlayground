@@ -12,6 +12,7 @@ fileprivate struct ExampleListWidget: ListWidget {
     let id = "steps_widget"
     let title = "Steps"
     let systemImage = "figure.walk"
+    var color: Color = .orange
     var destination: NavigationModel.Destination = .course(.sample)
     @State var dataSource: StepsDataSource = .init()
 }

@@ -18,6 +18,7 @@ protocol Widget: Identifiable where ID == String {
     var id: String { get }
     var title: String { get }
     var systemImage: String { get }
+    var color: Color { get }
     var mainBody: Body { get }
     var contents: Contents { get }
     var destination: NavigationModel.Destination { get }
@@ -27,6 +28,10 @@ protocol Widget: Identifiable where ID == String {
 extension Widget {
     var mainBody: some View {
         DefaultWidgetBody(widget: self)
+    }
+
+    var color: Color {
+        .accentColor
     }
 }
 
@@ -79,7 +84,7 @@ struct DefaultWidgetBody: View {
                 try? await widget.dataSource
                     .fetchData(context: WidgetContext.shared)
             }
-            .padding(4)
+            .padding(12)
             .background {
                 RoundedRectangle(cornerRadius: 16.0)
                     .fill(.thickMaterial)
@@ -104,6 +109,7 @@ struct DefaultWidgetBody: View {
                 Image(systemName: "chevron.right")
                     .foregroundStyle(.secondary)
             }
+            .foregroundStyle(widget.color)
         }
     }
 }
