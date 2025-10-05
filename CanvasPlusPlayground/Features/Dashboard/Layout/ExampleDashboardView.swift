@@ -15,58 +15,66 @@ fileprivate struct ExampleDashboardView: View {
 
     var body: some View {
         ScrollView {
-            Dashboard(vSpacing: 10, hSpacing: 50, baseHeight: 120) {
-                //MARK: Medium widgets (1x2)
-                VStack {
-                    Text("This is a medium widget (2x1)")
-                    ScrollView(.horizontal) {
-                        HStack {
-                            ForEach(DevTeam, id: \.self) {
-                                Text($0).bold().padding().background(.green.opacity(0.3))
-                            }
-                        }.padding()
-                    }
-                }
-                .widgetSize(.medium)
-                .frame(maxWidth: .infinity, maxHeight: .infinity) // MARK: This helps with non-greedy views to get its ideal size expected by the layout
-                .border(.black)
+            //MARK: Case 1 -- don't specify the any widget width (ideal on iOS)
+            // - this means widget will take up as much as width they can
+            // - each large or medium widget takes up all available width
+            // - two small widgets evenly take up all available width
+//            Dashboard {
+//                RoundedRectangle(cornerRadius: 20)
+//                    .fill(.blue.opacity(0.5))
+//                    .overlay { Text("Large Widget") }
+//                    .widgetSize(.large)
+//                RoundedRectangle(cornerRadius: 20)
+//                    .fill(.yellow.opacity(0.5))
+//                    .overlay { Text("Small Widget") }
+//                    .widgetSize(.small)
+//                RoundedRectangle(cornerRadius: 20)
+//                    .fill(.yellow.opacity(0.5))
+//                    .overlay { Text("Small Widget") }
+//                    .widgetSize(.small)
+//                RoundedRectangle(cornerRadius: 20)
+//                    .fill(.green.opacity(0.5))
+//                    .overlay { Text("Medium Widget") }
+//                    .widgetSize(.medium)
+//                RoundedRectangle(cornerRadius: 20)
+//                    .fill(.blue.opacity(0.5))
+//                    .overlay { Text("Large Widget") }
+//                    .widgetSize(.large)
+//            }
+//            .padding()
 
-
-                //MARK: Small widgets (1x1)
-                RoundedRectangle(cornerRadius: 20)
-                    .fill(.red.opacity(0.5))
-                    .overlay { Text("Example Small Widget (1x1)").font(.title3) }
-                    .widgetSize(.small)
-
+            // MARK: Case 2 -- specify widget width to stack widgts horizontally (ideal on macOS)
+            // - specify maxSmallWidgetWidth, maxMediumWidgetWidth, maxLargeWidgetWidth
+            // - MARK: Also need to specify the width of the ScrollView
+            Dashboard(
+                maxSmallWidgetWidth: 50,
+                maxMediumWidgetWidth: 200,
+                maxLargeWidgetWidth: 200
+            ) {
                 RoundedRectangle(cornerRadius: 20)
                     .fill(.blue.opacity(0.5))
-                    .overlay { Text("Example Small Widget (1x1)").font(.title3) }
-                    .widgetSize(.small)
-
-
-                //MARK: Large widgets (2x2)
-                RoundedRectangle(cornerRadius: 20)
-                    .fill(.purple.opacity(0.8))
-                    .overlay { Text("Example Large Widget (2x2)").font(.title) }
+                    .overlay { Text("Large Widget") }
                     .widgetSize(.large)
-
-                //MARK: Small widgets (1x1)
                 RoundedRectangle(cornerRadius: 20)
-                    .fill(.red)
-                    .widgetSize(.small)
-
-                RoundedRectangle(cornerRadius: 20)
-                    .fill(.red)
-                    .widgetSize(.small)
-
-                //MARK: Large widgets (2x2)
-                RoundedRectangle(cornerRadius: 20)
-                    .fill(.green)
+                    .fill(.blue.opacity(0.5))
+                    .overlay { Text("Large Widget") }
                     .widgetSize(.large)
-
                 RoundedRectangle(cornerRadius: 20)
-                    .fill(.green)
-                    .widgetSize(.large)
+                    .fill(.yellow.opacity(0.5))
+                    .overlay { Text("Medium Widget") }
+                    .widgetSize(.medium)
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(.green.opacity(0.5))
+                    .overlay { Text("Small Widget") }
+                    .widgetSize(.small)
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(.green.opacity(0.5))
+                    .overlay { Text("Small Widget") }
+                    .widgetSize(.small)
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(.green.opacity(0.5))
+                    .overlay { Text("Small Widget") }
+                    .widgetSize(.small)
             }
             .padding()
         }
