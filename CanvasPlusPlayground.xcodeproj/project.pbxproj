@@ -15,6 +15,9 @@
 		267D85262E662019007F821B /* NewWindowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 267D85252E662009007F821B /* NewWindowButton.swift */; };
 		267D85282E662AC5007F821B /* FocusWindowInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 267D85272E662AB0007F821B /* FocusWindowInfo.swift */; };
 		267D852A2E6644FE007F821B /* FocusWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 267D85292E6644FE007F821B /* FocusWindowView.swift */; };
+		26BF115B2E92E1D2000680D4 /* Dashboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26BF11572E92E1D2000680D4 /* Dashboard.swift */; };
+		26BF115C2E92E1D2000680D4 /* DashboardValueKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26BF11582E92E1D2000680D4 /* DashboardValueKey.swift */; };
+		26BF115D2E92E1D2000680D4 /* ExampleDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26BF11592E92E1D2000680D4 /* ExampleDashboardView.swift */; };
 		3DAE85002C9A0E4F008C22E7 /* BridgedPDFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DAE84FF2C9A0E4F008C22E7 /* BridgedPDFView.swift */; };
 		7F8535742C98DE3C0023E384 /* CourseGradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8535732C98DE3C0023E384 /* CourseGradeView.swift */; };
 		95BA93482C9CE20D00137A91 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95BA93472C9CE20D00137A91 /* CalendarView.swift */; };
@@ -268,6 +271,9 @@
 		267D85252E662009007F821B /* NewWindowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewWindowButton.swift; sourceTree = "<group>"; };
 		267D85272E662AB0007F821B /* FocusWindowInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusWindowInfo.swift; sourceTree = "<group>"; };
 		267D85292E6644FE007F821B /* FocusWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusWindowView.swift; sourceTree = "<group>"; };
+		26BF11572E92E1D2000680D4 /* Dashboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dashboard.swift; sourceTree = "<group>"; };
+		26BF11582E92E1D2000680D4 /* DashboardValueKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardValueKey.swift; sourceTree = "<group>"; };
+		26BF11592E92E1D2000680D4 /* ExampleDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleDashboardView.swift; sourceTree = "<group>"; };
 		3DAE84FF2C9A0E4F008C22E7 /* BridgedPDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgedPDFView.swift; sourceTree = "<group>"; };
 		7F8535732C98DE3C0023E384 /* CourseGradeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseGradeView.swift; sourceTree = "<group>"; };
 		95BA93472C9CE20D00137A91 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
@@ -526,6 +532,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		26BF115A2E92E1D2000680D4 /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				26BF11572E92E1D2000680D4 /* Dashboard.swift */,
+				26BF11582E92E1D2000680D4 /* DashboardValueKey.swift */,
+				26BF11592E92E1D2000680D4 /* ExampleDashboardView.swift */,
+			);
+			path = Layout;
+			sourceTree = "<group>";
+		};
 		9B801DE82E66658000DF4942 /* Debug */ = {
 			isa = PBXGroup;
 			children = (
@@ -1200,12 +1216,13 @@
 				B7F375BF2E85921E008F0846 /* IGCSetupManager.swift */,
 			);
 			path = IGC;
-            sourceTree = "<group>";
-        };
+			sourceTree = "<group>";
+		};
 		B7F375C12E85EE82008F0846 /* Dashboard */ = {
 			isa = PBXGroup;
 			children = (
 				B7F375C22E85EE88008F0846 /* Support */,
+				26BF115A2E92E1D2000680D4 /* Layout */,
 			);
 			path = Dashboard;
 			sourceTree = "<group>";
@@ -1346,6 +1363,9 @@
 				A33BE8752D97A6F7005C1D13 /* GetGroupMembershipRequest.swift in Sources */,
 				B7C0A3C92D2F87EC003E5A36 /* AsyncView.swift in Sources */,
 				B7F950372D127869004BB470 /* ProfileManager.swift in Sources */,
+				26BF115B2E92E1D2000680D4 /* Dashboard.swift in Sources */,
+				26BF115C2E92E1D2000680D4 /* DashboardValueKey.swift in Sources */,
+				26BF115D2E92E1D2000680D4 /* ExampleDashboardView.swift in Sources */,
 				A330B89B2DA98D0D00D6C1C3 /* MarkFavoriteRequest.swift in Sources */,
 				A324BA662D07AFD5005F53FA /* FileType.swift in Sources */,
 				B7725D652D7387D600D64ED8 /* AccessoryBar.swift in Sources */,
