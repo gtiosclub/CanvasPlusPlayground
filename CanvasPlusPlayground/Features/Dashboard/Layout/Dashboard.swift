@@ -36,7 +36,9 @@ struct Dashboard: Layout {
     var maxLargeWidgetWidth: CGFloat?
     var largeWidgetHeight: CGFloat { baseHeight * 2 + vSpacing }
 
-    // Check if we're using custom width logic
+    // used to decide subviews placement logic
+    //  -- when set to false: each large or medium widget takes up all width, and every 2 small widgets take up all width on a line
+    //  -- when set to true: user can define the width of each widget to stack multiple widgets horizontally
     private var usesCustomWidths: Bool {
         maxSmallWidgetWidth != nil || maxMediumWidgetWidth != nil || maxLargeWidgetWidth != nil
     }
@@ -44,6 +46,7 @@ struct Dashboard: Layout {
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
         guard !subviews.isEmpty else { return .zero }
 
+        // use whatever width the container view gives us
         let availableWidth = proposal.width ?? 0
 
         if usesCustomWidths {
@@ -54,7 +57,10 @@ struct Dashboard: Layout {
     }
 
     private func sizeThatFitsDefault(availableWidth: CGFloat, subviews: Subviews) -> CGSize {
+        // obtain the maximum sizes for each subview
         let subviewSizes = subviews.map { $0.sizeThatFits(.unspecified) }
+
+        // find the maximum width and height amongst all subviews
         let maxSize: CGSize = subviewSizes.reduce(.zero) {
             CGSize(
                 width: max($0.width, $1.width),
@@ -62,9 +68,11 @@ struct Dashboard: Layout {
             )
         }
 
+        // used to calculate the total height of this dashboard instance
         var height: CGFloat = 0
         var smallCount = 0
 
+        // iterate through each subview and update the total height based on the widget type
         for widget in subviews {
             switch widget.widgetSize {
             case .small:
@@ -88,10 +96,12 @@ struct Dashboard: Layout {
             }
         }
 
+        // account for any remaining small widget
         if smallCount > 0 {
             height += baseHeight + vSpacing
         }
 
+        // remove an additional vspacing from the height
         if height > 0 {
             height -= vSpacing
         }
@@ -103,10 +113,14 @@ struct Dashboard: Layout {
     }
 
     private func sizeThatFitsCustom(availableWidth: CGFloat, subviews: Subviews) -> CGSize {
+        // used to compute the total height of this dashboard instance
         var height: CGFloat = 0
         var currentRowWidth: CGFloat = 0
         var currentRowHeight: CGFloat = 0
 
+        // iterate through each subview
+        // if it fits into the current row, update the current row width
+        // otherwise start a new line, updating the total height accordingly
         for widget in subviews {
             let widgetWidth = getWidgetWidth(for: widget.widgetSize, availableWidth: availableWidth)
             let widgetHeight = getWidgetHeight(for: widget.widgetSize)
@@ -172,6 +186,10 @@ struct Dashboard: Layout {
                 proposal: proposal
             )
 
+            // used to determine if the current small widget should be placed either
+            //      - on a new line,
+            //      - on the first half of the current line
+            //      - or on the second half of the current line
             smallWidgetCount += 1
             if smallWidgetCount < itemsPerRow {
                 x += width + hSpacing
@@ -183,6 +201,7 @@ struct Dashboard: Layout {
         }
 
         func placeMediumWidget(_ subview: LayoutSubview, index: Int) {
+            // account for any single small widget on the current line -> need to start a new line to begin with this placement
             if smallWidgetCount > 0 {
                 y += baseHeight + vSpacing
                 x = bounds.minX
@@ -197,6 +216,7 @@ struct Dashboard: Layout {
         }
 
         func placeLargeWidget(_ subview: LayoutSubview, index: Int) {
+            // account for any single small widget on the current line -> need to start a new line to begin with this placement
             if smallWidgetCount > 0 {
                 y += baseHeight + vSpacing
                 x = bounds.minX
@@ -245,7 +265,7 @@ struct Dashboard: Layout {
     }
 
     // Helper function to get widget width based on size and max width settings
-    private func getWidgetWidth(for size: Size, availableWidth: CGFloat) -> CGFloat {
+    private func getWidgetWidth(for size: WidgetSize, availableWidth: CGFloat) -> CGFloat {
         switch size {
         case .small:
             return maxSmallWidgetWidth ?? (availableWidth - hSpacing) / 2
@@ -257,7 +277,7 @@ struct Dashboard: Layout {
     }
 
     // Helper function to get widget height based on size
-    private func getWidgetHeight(for size: Size) -> CGFloat {
+    private func getWidgetHeight(for size: WidgetSize) -> CGFloat {
         switch size {
         case .small, .medium:
             return baseHeight

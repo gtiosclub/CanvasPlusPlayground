@@ -9,24 +9,24 @@
 
 import SwiftUI
 
-private struct WidgetSize: LayoutValueKey {
-    static let defaultValue: Size = .large
+private struct WidgetSizeKey: LayoutValueKey {
+    static let defaultValue: WidgetSize = .large
 }
 
 extension LayoutSubview {
-    var widgetSize: Size {
-        self[WidgetSize.self]
+    var widgetSize: WidgetSize {
+        self[WidgetSizeKey.self]
     }
 }
 
-enum Size: Comparable {
+enum WidgetSize: Comparable {
     case small
     case medium
     case large
 }
 
 extension View {
-    func widgetSize(_ value: Size) -> some View {
-        layoutValue(key: WidgetSize.self, value: value)
+    func widgetSize(_ value: WidgetSize) -> some View {
+        layoutValue(key: WidgetSizeKey.self, value: value)
     }
 }
