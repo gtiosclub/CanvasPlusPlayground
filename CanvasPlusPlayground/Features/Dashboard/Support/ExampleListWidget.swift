@@ -9,9 +9,10 @@
 import SwiftUI
 
 fileprivate struct ExampleListWidget: ListWidget {
-    let id = UUID()
+    let id = "steps_widget"
     let title = "Steps"
     let systemImage = "figure.walk"
+    var color: Color = .orange
     var destination: NavigationModel.Destination = .course(.sample)
     @State var dataSource: StepsDataSource = .init()
 }
@@ -21,7 +22,7 @@ private class StepsDataSource: ListWidgetDataSource {
     var fetchStatus: WidgetFetchStatus = .loading
     var widgetData: [ListWidgetData] = []
 
-    func fetchData() async throws {
+    func fetchData(context: WidgetContext) async throws {
         fetchStatus = .loading
         // Simulate async fetch
         try await Task.sleep(nanoseconds: 600_000_000)

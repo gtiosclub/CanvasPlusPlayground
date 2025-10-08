@@ -7,7 +7,7 @@
 
 import Foundation
 
-@Observable class AllAnnouncementsManager {
+@Observable class AllAnnouncementsManager: ListWidgetDataSource {
     struct CourseAnnouncement: Hashable, Identifiable {
         var id: String {
             announcement.id
@@ -37,6 +37,23 @@ import Foundation
             self.courseAnnouncements = Set(newValue)
         }
     }
+
+    // ListWidgetDataSource
+    var widgetData: [ListWidgetData] {
+        get {
+            displayedAnnouncements.map {
+                .init(
+                    id: $0.id,
+                    title: $0.announcement.title ?? "",
+                    description: $0.announcement.message?
+                        .stripHTML()
+                        .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+                )
+            }
+        }
+        set { }
+    }
+    var fetchStatus: WidgetFetchStatus = .loading
 
     func fetchAnnouncements(courses: [Course]) async {
         guard !courses.isEmpty else { return }
@@ -90,5 +107,25 @@ import Foundation
                 return CourseAnnouncement(announcement: announcement, course: course)
             }
         }
+    }
+
+    // MARK: - ListWidgetDataSource
+    func fetchData(context: WidgetContext) async throws {
+        guard let courseManager = context.courseManager else {
+            fetchStatus = .error
+            return
+        }
+
+        fetchStatus = .loading
+        await fetchAnnouncements(courses: courseManager.favoritedCourses)
+        fetchStatus = .loaded
+    }
+
+    func destinationView(for data: ListWidgetData) -> NavigationModel.Destination {
+        guard let announcement = displayedAnnouncements.first(where: {
+            $0.id == data.id
+        })?.announcement else { return .allAnnouncements }
+
+        return .announcement(announcement)
     }
 }

@@ -100,6 +100,9 @@ class NavigationModel {
     }
 
     enum Destination: Hashable {
+        case allAnnouncements
+        case allToDos
+
         case course(Course)
         case coursePage(CoursePage, Course)
 
@@ -129,6 +132,10 @@ class NavigationModel {
                 FoldersPageView(course: course, folder: folder)
             case let .quiz(quiz):
                 QuizDetailView(quiz: quiz)
+            case .allAnnouncements:
+                AllAnnouncementsView()
+            case .allToDos:
+                ToDoListView()
             }
         }
     }

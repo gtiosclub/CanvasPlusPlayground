@@ -43,6 +43,9 @@ struct CanvasPlusPlaygroundApp: App {
                     .environment(courseManager)
                     .environment(pinnedItemsManager)
                     .environment(remindersManager)
+                    .task {
+                        WidgetContext.setup(courseManager: courseManager)
+                    }
             }
         }
 #if DEBUG && os(macOS)

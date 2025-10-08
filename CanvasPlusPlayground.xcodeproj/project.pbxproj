@@ -164,6 +164,7 @@
 		B72D83022E4F853300BA1DAD /* RAGSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72D83012E4F853300BA1DAD /* RAGSystem.swift */; };
 		B72D83042E4F860700BA1DAD /* GradeCalculatorIntelligenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72D83032E4F85EF00BA1DAD /* GradeCalculatorIntelligenceService.swift */; };
 		B72EA5702D5689B20013070E /* QuickLookPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72EA56F2D5689B20013070E /* QuickLookPreview.swift */; };
+		B733340D2E916FEB0011E8A9 /* AllToDosWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B733340C2E916FE50011E8A9 /* AllToDosWidget.swift */; };
 		B73AE0BD2D4FB68B007094A8 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73AE0BC2D4FB68B007094A8 /* Profile.swift */; };
 		B7460A942D6BFB1A0069CF5B /* GradeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7460A932D6BFB1A0069CF5B /* GradeCalculator.swift */; };
 		B7460A962D6CCD730069CF5B /* GradeCalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7460A952D6CCD6E0069CF5B /* GradeCalculatorView.swift */; };
@@ -194,6 +195,9 @@
 		B79101D82E8B0E900090BBB1 /* GenericWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79101D72E8B0E8D0090BBB1 /* GenericWidget.swift */; };
 		B79101DA2E8B18BE0090BBB1 /* ExampleListWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79101D92E8B18BB0090BBB1 /* ExampleListWidget.swift */; };
 		B7926D162CE95CED00BFFBE1 /* RGBColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7926D152CE95CE900BFFBE1 /* RGBColors.swift */; };
+		B79580182E8C5E3500B9A38F /* AllAnnouncementsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79580172E8C5E3100B9A38F /* AllAnnouncementsWidget.swift */; };
+		B795801B2E8C64FB00B9A38F /* WidgetShowcase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B795801A2E8C64F800B9A38F /* WidgetShowcase.swift */; };
+		B795801F2E8C697F00B9A38F /* AnyWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B795801E2E8C697F00B9A38F /* AnyWidget.swift */; };
 		B7A12F3F2D69441500EDFA0A /* GetAssignmentGroupsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A12F3E2D69440F00EDFA0A /* GetAssignmentGroupsRequest.swift */; };
 		B7A12F462D69448300EDFA0A /* AssignmentGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A12F452D69448300EDFA0A /* AssignmentGroup.swift */; };
 		B7A12F482D69448C00EDFA0A /* AssignmentGroupAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A12F472D69448C00EDFA0A /* AssignmentGroupAPI.swift */; };
@@ -421,6 +425,7 @@
 		B72D83012E4F853300BA1DAD /* RAGSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGSystem.swift; sourceTree = "<group>"; };
 		B72D83032E4F85EF00BA1DAD /* GradeCalculatorIntelligenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradeCalculatorIntelligenceService.swift; sourceTree = "<group>"; };
 		B72EA56F2D5689B20013070E /* QuickLookPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookPreview.swift; sourceTree = "<group>"; };
+		B733340C2E916FE50011E8A9 /* AllToDosWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllToDosWidget.swift; sourceTree = "<group>"; };
 		B73AE0BC2D4FB68B007094A8 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		B7460A932D6BFB1A0069CF5B /* GradeCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradeCalculator.swift; sourceTree = "<group>"; };
 		B7460A952D6CCD6E0069CF5B /* GradeCalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradeCalculatorView.swift; sourceTree = "<group>"; };
@@ -452,6 +457,9 @@
 		B79101D72E8B0E8D0090BBB1 /* GenericWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericWidget.swift; sourceTree = "<group>"; };
 		B79101D92E8B18BB0090BBB1 /* ExampleListWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleListWidget.swift; sourceTree = "<group>"; };
 		B7926D152CE95CE900BFFBE1 /* RGBColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RGBColors.swift; sourceTree = "<group>"; };
+		B79580172E8C5E3100B9A38F /* AllAnnouncementsWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllAnnouncementsWidget.swift; sourceTree = "<group>"; };
+		B795801A2E8C64F800B9A38F /* WidgetShowcase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetShowcase.swift; sourceTree = "<group>"; };
+		B795801E2E8C697F00B9A38F /* AnyWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyWidget.swift; sourceTree = "<group>"; };
 		B7A12F3E2D69440F00EDFA0A /* GetAssignmentGroupsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAssignmentGroupsRequest.swift; sourceTree = "<group>"; };
 		B7A12F452D69448300EDFA0A /* AssignmentGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentGroup.swift; sourceTree = "<group>"; };
 		B7A12F472D69448C00EDFA0A /* AssignmentGroupAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentGroupAPI.swift; sourceTree = "<group>"; };
@@ -1087,6 +1095,23 @@
 			name = URLService;
 			sourceTree = "<group>";
 		};
+		B79580162E8C5E2700B9A38F /* Widgets */ = {
+			isa = PBXGroup;
+			children = (
+				B79580172E8C5E3100B9A38F /* AllAnnouncementsWidget.swift */,
+				B733340C2E916FE50011E8A9 /* AllToDosWidget.swift */,
+			);
+			path = Widgets;
+			sourceTree = "<group>";
+		};
+		B79580192E8C64F500B9A38F /* Debug */ = {
+			isa = PBXGroup;
+			children = (
+				B795801A2E8C64F800B9A38F /* WidgetShowcase.swift */,
+			);
+			path = Debug;
+			sourceTree = "<group>";
+		};
 		B7AD54EE2CD41D5200FB09BB /* Intelligence */ = {
 			isa = PBXGroup;
 			children = (
@@ -1221,6 +1246,8 @@
 		B7F375C12E85EE82008F0846 /* Dashboard */ = {
 			isa = PBXGroup;
 			children = (
+				B79580192E8C64F500B9A38F /* Debug */,
+				B79580162E8C5E2700B9A38F /* Widgets */,
 				B7F375C22E85EE88008F0846 /* Support */,
 				26BF115A2E92E1D2000680D4 /* Layout */,
 			);
@@ -1231,6 +1258,7 @@
 			isa = PBXGroup;
 			children = (
 				B7F375C32E85EE8E008F0846 /* Widget.swift */,
+				B795801E2E8C697F00B9A38F /* AnyWidget.swift */,
 				B79101D32E8B09F50090BBB1 /* ListWidget.swift */,
 				B79101D72E8B0E8D0090BBB1 /* GenericWidget.swift */,
 				B79101D92E8B18BB0090BBB1 /* ExampleListWidget.swift */,
@@ -1336,6 +1364,7 @@
 				B72D82FE2E4B904100BA1DAD /* IntelligenceServiceProvider.swift in Sources */,
 				A3D0225D2D6A711900F8068C /* GetPagesRequest.swift in Sources */,
 				B7C469DA2E6CB81200310982 /* CanvasURLService+Modifier.swift in Sources */,
+				B795801B2E8C64FB00B9A38F /* WidgetShowcase.swift in Sources */,
 				B76454FE2C8DF61B002DF00E /* Course.swift in Sources */,
 				A372D1062D90CE7D005E94CA /* GroupMembership.swift in Sources */,
 				A324BA642D07AF0B005F53FA /* CourseFileService.swift in Sources */,
@@ -1383,6 +1412,7 @@
 				A3777E042D9F14DD00A8B00C /* PageConfiguration.swift in Sources */,
 				B7CC4D3F2D8DFAEC00254F55 /* PickerService.swift in Sources */,
 				A352AD1C2D3EF206007EE6FC /* User.swift in Sources */,
+				B733340D2E916FEB0011E8A9 /* AllToDosWidget.swift in Sources */,
 				A372D1082D90CEFE005E94CA /* APIGroupMembership.swift in Sources */,
 				B76455012C8DF61B002DF00E /* StorageKeys.swift in Sources */,
 				A3777E082D9F1B3700A8B00C /* CourseSection.swift in Sources */,
@@ -1539,6 +1569,7 @@
 				B7A12F462D69448300EDFA0A /* AssignmentGroup.swift in Sources */,
 				9B7B3E342E7BA59F004D5FDD /* CustomizeCourseView.swift in Sources */,
 				3DAE85002C9A0E4F008C22E7 /* BridgedPDFView.swift in Sources */,
+				B79580182E8C5E3500B9A38F /* AllAnnouncementsWidget.swift in Sources */,
 				B79101D42E8B09F50090BBB1 /* ListWidget.swift in Sources */,
 				B7C469D42E6C831E00310982 /* GetFrontPageRequest.swift in Sources */,
 				B533C0BE2CADDDE700A74AF6 /* PeopleCommonView.swift in Sources */,
@@ -1555,6 +1586,7 @@
 				A3CF88E12D1921C3000ACDF3 /* AnnouncementAPI.swift in Sources */,
 				A3D1614F2D1784E3004055FB /* GetUserRequest.swift in Sources */,
 				A373DC0F2D19F71600215019 /* TypeSafeCodable.swift in Sources */,
+				B795801F2E8C697F00B9A38F /* AnyWidget.swift in Sources */,
 				9B9C2E062C93F94C00E4B16B /* CourseAnnouncementDetailView.swift in Sources */,
 				A3D161512D178615004055FB /* GetUserProfileRequest.swift in Sources */,
 				A3D161492D169C23004055FB /* CacheableAPIRequest+Storage.swift in Sources */,
