@@ -78,7 +78,6 @@ struct DefaultWidgetBody: View {
                     case .error: Text("Could not load content")
                     }
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
             .task {
                 try? await widget.dataSource
