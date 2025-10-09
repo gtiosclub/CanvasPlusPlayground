@@ -19,8 +19,10 @@ protocol Widget: Identifiable where ID == String {
     var title: String { get }
     var systemImage: String { get }
     var color: Color { get }
+    var allowedSizes: [WidgetSize] { get }
     var mainBody: Body { get }
     var contents: Contents { get }
+    func adaptedContents(for size: WidgetSize) -> AnyView
     var destination: NavigationModel.Destination { get }
     var dataSource: DataSource { get set }
 }
@@ -36,6 +38,14 @@ extension Widget {
 
     var color: Color {
         .accentColor
+    }
+
+    var allowedSizes: [WidgetSize] {
+        [.small, .medium, .large]
+    }
+
+    func adaptedContents(for size: WidgetSize) -> AnyView {
+        AnyView(contents)
     }
 }
 
@@ -69,21 +79,18 @@ enum WidgetFetchStatus {
 
 struct DefaultWidgetBody: View {
     let widget: any Widget
+    @Environment(\.widgetSize) private var widgetSize: WidgetSize
 
     var body: some View {
         NavigationLink(value: widget.destination) {
             VStack {
                 Header(widget: widget)
 
-                Group {
-                    switch widget.dataSource.fetchStatus {
-                    case .loading: ProgressView().controlSize(.small)
-                    case .loaded: AnyView(widget.contents)
-                    case .error: Text("Could not load content")
-                    }
-                }
+                ContentView(widget: widget, widgetSize: widgetSize)
             }
             .task {
+                // Only fetch if not already loaded
+                guard widget.dataSource.fetchStatus != .loaded else { return }
                 try? await widget.dataSource
                     .fetchData(context: WidgetContext.shared)
             }
@@ -95,6 +102,21 @@ struct DefaultWidgetBody: View {
             }
         }
         .buttonStyle(.plain)
+    }
+
+    private struct ContentView: View {
+        let widget: any Widget
+        let widgetSize: WidgetSize
+
+        var body: some View {
+            Group {
+                switch widget.dataSource.fetchStatus {
+                case .loading: ProgressView().controlSize(.small)
+                case .loaded: widget.adaptedContents(for: widgetSize)
+                case .error: Text("Could not load content")
+                }
+            }
+        }
     }
 
     private struct Header: View {

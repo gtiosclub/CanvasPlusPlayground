@@ -14,6 +14,7 @@ struct AllToDosWidget: @MainActor ListWidget {
     var systemImage: String = "checklist"
     var color: Color = .red
     var destination: NavigationModel.Destination = .allToDos
+    var allowedSizes: [WidgetSize] = [.small, .medium, .large]
 
     @MainActor
     var dataSource: ToDoListManager = .init()

@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-// MARK: - Widget Configuration
-
 /// Configuration for a widget instance, tracking its type, size, and position
 struct WidgetConfiguration: Identifiable, Codable, Equatable {
     let id: String
@@ -16,7 +14,12 @@ struct WidgetConfiguration: Identifiable, Codable, Equatable {
     var size: WidgetSize
     var order: Int
 
-    init(id: String = UUID().uuidString, widgetID: String, size: WidgetSize = .medium, order: Int = 0) {
+    init(
+        id: String = UUID().uuidString,
+        widgetID: String,
+        size: WidgetSize = .medium,
+        order: Int = 0
+    ) {
         self.id = id
         self.widgetID = widgetID
         self.size = size
@@ -24,28 +27,51 @@ struct WidgetConfiguration: Identifiable, Codable, Equatable {
     }
 }
 
-// MARK: - Widget Store
-
 @Observable
 @MainActor
 class WidgetStore {
+    /// Represents a widget instance with its configuration
+    struct ConfiguredWidget: Identifiable {
+        let configuration: WidgetConfiguration
+        let widget: AnyWidget
+
+        var id: String { configuration.id }
+    }
+
     static let shared = WidgetStore()
     private static let widgetConfigurationsKey = "com.canvasPlus.widgetConfigurations"
 
     // MARK: - Properties
 
-    private(set) var widgetConfigurations: [WidgetConfiguration] = [] {
-        didSet { saveConfigurations() }
+    var widgetConfigurations: [WidgetConfiguration] = [] {
+        didSet {
+            saveConfigurations()
+            updateWidgetCache()
+        }
     }
 
-    // MARK: - Available Widget Types
+    var widgets: [ConfiguredWidget] {
+        widgetConfigurations
+            .sorted { $0.order < $1.order }
+            .compactMap { config in
+                guard let widget = getCachedWidget(for: config) else {
+                    return nil
+                }
+
+                return ConfiguredWidget(
+                    configuration: config,
+                    widget: AnyWidget(widget)
+                )
+            }
+    }
+
+    // prevent recreation on size changes
+    private var widgetCache: [String: any Widget] = [:]
 
     static let availableWidgetTypes: [String: String] = [
         AllAnnouncementsWidget.widgetID: "Announcements",
         AllToDosWidget.widgetID: "To-Do"
     ]
-
-    // MARK: - Initialization
 
     private init() {
         loadConfigurations()
@@ -61,7 +87,11 @@ class WidgetStore {
     /// Adds a new widget to the dashboard
     func addWidget(widgetID: String, size: WidgetSize = .medium) {
         let nextOrder = (widgetConfigurations.map(\.order).max() ?? -1) + 1
-        let config = WidgetConfiguration(widgetID: widgetID, size: size, order: nextOrder)
+        let config = WidgetConfiguration(
+            widgetID: widgetID,
+            size: size,
+            order: nextOrder
+        )
         widgetConfigurations.append(config)
     }
 
@@ -69,14 +99,6 @@ class WidgetStore {
     func removeWidget(configurationID: String) {
         widgetConfigurations.removeAll { $0.id == configurationID }
         reorderWidgets()
-    }
-
-    /// Updates the size of a specific widget
-    func updateWidgetSize(configurationID: String, newSize: WidgetSize) {
-        guard let index = widgetConfigurations.firstIndex(where: { $0.id == configurationID }) else {
-            return
-        }
-        widgetConfigurations[index].size = newSize
     }
 
     /// Reorders widgets based on new positions
@@ -87,7 +109,7 @@ class WidgetStore {
 
     /// Updates widget order to maintain consistency
     private func reorderWidgets() {
-        for (index, config) in widgetConfigurations.enumerated() {
+        for (index, _) in widgetConfigurations.enumerated() {
             if widgetConfigurations[index].order != index {
                 widgetConfigurations[index].order = index
             }
@@ -97,7 +119,7 @@ class WidgetStore {
     // MARK: - Widget Instantiation
 
     /// Creates a widget instance from a configuration
-    func createWidget(from configuration: WidgetConfiguration) -> (any Widget)? {
+    private func createWidget(from configuration: WidgetConfiguration) -> (any Widget)? {
         switch configuration.widgetID {
         case AllAnnouncementsWidget.widgetID:
             return AllAnnouncementsWidget()
@@ -108,21 +130,38 @@ class WidgetStore {
         }
     }
 
-    /// Gets all widgets sorted by order
-    var widgets: [(configuration: WidgetConfiguration, widget: AnyWidget)] {
-        widgetConfigurations
-            .sorted { $0.order < $1.order }
-            .compactMap { config in
-                guard let widget = createWidget(from: config) else { return nil }
-                return (config, AnyWidget(widget))
-            }
+    /// Gets or creates a cached widget instance
+    private func getCachedWidget(
+        for configuration: WidgetConfiguration
+    ) -> (any Widget)? {
+        if let cached = widgetCache[configuration.id] {
+            return cached
+        }
+
+        guard let widget = createWidget(from: configuration) else { return nil }
+        widgetCache[configuration.id] = widget
+        return widget
+    }
+
+    /// Updates the widget cache when configurations change
+    private func updateWidgetCache() {
+        let currentIDs = Set(widgetConfigurations.map(\.id))
+        let cachedIDs = Set(widgetCache.keys)
+
+        // Remove widgets that are no longer in configurations
+        for id in cachedIDs where !currentIDs.contains(id) {
+            widgetCache.removeValue(forKey: id)
+        }
     }
 
     // MARK: - Persistence
 
     private func saveConfigurations() {
         if let data = try? JSONEncoder().encode(widgetConfigurations) {
-            UserDefaults.standard.set(data, forKey: Self.widgetConfigurationsKey)
+            UserDefaults.standard.set(
+                data,
+                forKey: Self.widgetConfigurationsKey
+            )
         }
     }
 
@@ -132,25 +171,31 @@ class WidgetStore {
             return
         }
         widgetConfigurations = configurations.sorted { $0.order < $1.order }
+
+        // Initialize widget cache
+        for config in widgetConfigurations {
+            _ = getCachedWidget(for: config)
+        }
     }
 
     private func initializeDefaultWidgets() {
+        if !widgetConfigurations.isEmpty {
+            clearAllWidgets()
+        }
+
         addWidget(widgetID: AllAnnouncementsWidget.widgetID, size: .medium)
         addWidget(widgetID: AllToDosWidget.widgetID, size: .medium)
     }
 
-    // MARK: - Debug
+    // MARK: - Settings
 
-    #if DEBUG
-    /// Resets all widget configurations to defaults
     func resetToDefaults() {
         widgetConfigurations.removeAll()
         initializeDefaultWidgets()
     }
 
     /// Clears all widget configurations
-    func clearAllWidgets() {
+    private func clearAllWidgets() {
         widgetConfigurations.removeAll()
     }
-    #endif
 }

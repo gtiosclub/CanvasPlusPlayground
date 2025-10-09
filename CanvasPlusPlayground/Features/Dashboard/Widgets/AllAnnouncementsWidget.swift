@@ -13,6 +13,7 @@ struct AllAnnouncementsWidget: @MainActor ListWidget {
     var title: String = "Announcements"
     var systemImage: String = "bubble.right"
     var destination: NavigationModel.Destination = .allAnnouncements
+    var allowedSizes: [WidgetSize] = [.small, .medium, .large]
 
     @MainActor
     var dataSource: AllAnnouncementsManager = .init()
