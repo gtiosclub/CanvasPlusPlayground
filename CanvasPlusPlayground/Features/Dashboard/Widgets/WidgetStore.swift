@@ -68,9 +68,36 @@ class WidgetStore {
     // prevent recreation on size changes
     private var widgetCache: [String: any Widget] = [:]
 
-    static let availableWidgetTypes: [String: String] = [
-        AllAnnouncementsWidget.widgetID: "Announcements",
-        AllToDosWidget.widgetID: "To-Do"
+    // MARK: - Available Widget Types
+
+    /// Metadata about an available widget type
+    @MainActor
+    struct WidgetTypeInfo: Identifiable {
+        let id: String
+        let displayName: String
+        let description: String
+        let systemImage: String
+        let color: Color
+        let allowedSizes: [WidgetSize]
+
+        init(widgetType: any Widget.Type) {
+            self.id = widgetType.widgetID
+            self.displayName = widgetType.displayName
+            self.description = widgetType.description
+            self.systemImage = widgetType.systemImage
+            self.color = widgetType.color
+            self.allowedSizes = widgetType.allowedSizes
+        }
+
+        /// Creates a widget instance for this widget type
+        func createWidget() -> (any Widget)? {
+            WidgetStore.createWidget(for: id)
+        }
+    }
+
+    static let availableWidgetTypes: [WidgetTypeInfo] = [
+        WidgetTypeInfo(widgetType: AllAnnouncementsWidget.self),
+        WidgetTypeInfo(widgetType: AllToDosWidget.self)
     ]
 
     private init() {
@@ -118,9 +145,9 @@ class WidgetStore {
 
     // MARK: - Widget Instantiation
 
-    /// Creates a widget instance from a configuration
-    private func createWidget(from configuration: WidgetConfiguration) -> (any Widget)? {
-        switch configuration.widgetID {
+    /// Creates a widget instance from a widget ID
+    fileprivate static func createWidget(for widgetID: String) -> (any Widget)? {
+        switch widgetID {
         case AllAnnouncementsWidget.widgetID:
             return AllAnnouncementsWidget()
         case AllToDosWidget.widgetID:
@@ -128,6 +155,11 @@ class WidgetStore {
         default:
             return nil
         }
+    }
+
+    /// Creates a widget instance from a configuration
+    private func createWidget(from configuration: WidgetConfiguration) -> (any Widget)? {
+        Self.createWidget(for: configuration.widgetID)
     }
 
     /// Gets or creates a cached widget instance

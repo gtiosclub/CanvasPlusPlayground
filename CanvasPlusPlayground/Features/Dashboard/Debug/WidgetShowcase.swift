@@ -12,69 +12,54 @@ struct WidgetShowcase: View {
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 8) {
-                ForEach(WidgetShowcaseSection.all) { section in
-                    SectionView(section: section)
-                    Divider()
+            VStack(spacing: 24) {
+                ForEach(WidgetStore.availableWidgetTypes) { widgetType in
+                    WidgetTypeSection(widgetType: widgetType)
                 }
             }
             .padding()
         }
         .navigationTitle("Widget Showcase")
         .toolbar {
-            ToolbarItem(placement: .cancellationAction) {
-                Button("Done") { dismiss() }
-            }
-        }
-    }
-
-    fileprivate struct SectionView: View {
-        let section: WidgetShowcaseSection
-
-        var body: some View {
-            VStack(alignment: .leading, spacing: 12) {
-                Text(section.title)
-                    .font(.title)
-                    .bold()
-                    .fontDesign(.rounded)
-
-                Text(section.description)
-                    .font(.title3)
-                    .fontWeight(.light)
-
-                ScrollView(.horizontal) {
-                    LazyHStack {
-                        ForEach(section.widgets, id: \.id) { widget in
-                            widget.mainBody
-                                .disabled(true)
-                        }
-                    }
+            ToolbarItem(placement: .confirmationAction) {
+                Button("Done") {
+                    dismiss()
                 }
-                .scrollClipDisabled()
             }
         }
     }
 }
 
-fileprivate struct WidgetShowcaseSection: Identifiable {
-    var id: String { title }
-    let title: String
-    let description: String
-    let widgets: [AnyWidget]
+private struct WidgetTypeSection: View {
+    let widgetType: WidgetStore.WidgetTypeInfo
 
-    @MainActor
-    static let all: [Self] = [
-        .init(
-            title: "Announcements",
-            description: "View all announcements",
-            widgets: [.init(AllAnnouncementsWidget())]
-        ),
-        .init(
-            title: "To-Dos",
-            description: "View all To-Dos",
-            widgets: [
-                .init(AllToDosWidget())
-            ]
-        )
-    ]
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            // Header
+            HStack(spacing: 12) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(widgetType.color.opacity(0.2))
+                        .frame(width: 50, height: 50)
+
+                    Image(systemName: widgetType.systemImage)
+                        .font(.title3)
+                        .foregroundStyle(widgetType.color)
+                }
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(widgetType.displayName)
+                        .font(.title2)
+                        .bold()
+                        .fontDesign(.rounded)
+
+                    Text(widgetType.description)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+
+            Divider()
+        }
+    }
 }

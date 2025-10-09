@@ -9,11 +9,14 @@ import SwiftUI
 
 struct AllAnnouncementsWidget: @MainActor ListWidget {
     static var widgetID: String { "all_announcements" }
+    static var displayName: String { "Announcements" }
+    static var description: String { "Stay updated with the latest course announcements and important information from your instructors." }
+    static var systemImage: String { "bubble.right" }
+    static var color: Color { .accentColor }
+    static var allowedSizes: [WidgetSize] { [.small, .medium, .large] }
 
-    var title: String = "Announcements"
-    var systemImage: String = "bubble.right"
+    var title: String { Self.displayName }
     var destination: NavigationModel.Destination = .allAnnouncements
-    var allowedSizes: [WidgetSize] = [.small, .medium, .large]
 
     @MainActor
     var dataSource: AllAnnouncementsManager = .init()

@@ -16,10 +16,12 @@ protocol Widget: Identifiable where ID == String {
     associatedtype DataSource: WidgetDataSource
 
     static var widgetID: String { get }
+    static var displayName: String { get }
+    static var description: String { get }
+    static var systemImage: String { get }
+    static var color: Color { get }
+    static var allowedSizes: [WidgetSize] { get }
     var title: String { get }
-    var systemImage: String { get }
-    var color: Color { get }
-    var allowedSizes: [WidgetSize] { get }
     var mainBody: Body { get }
     var contents: Contents { get }
     func adaptedContents(for size: WidgetSize) -> AnyView
@@ -29,6 +31,11 @@ protocol Widget: Identifiable where ID == String {
 
 extension Widget {
     var id: String { Self.widgetID }
+
+    // Instance properties that delegate to static
+    var systemImage: String { Self.systemImage }
+    var color: Color { Self.color }
+    var allowedSizes: [WidgetSize] { Self.allowedSizes }
 }
 
 extension Widget {
@@ -36,11 +43,11 @@ extension Widget {
         DefaultWidgetBody(widget: self)
     }
 
-    var color: Color {
+    static var color: Color {
         .accentColor
     }
 
-    var allowedSizes: [WidgetSize] {
+    static var allowedSizes: [WidgetSize] {
         [.small, .medium, .large]
     }
 

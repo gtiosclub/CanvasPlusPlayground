@@ -41,7 +41,7 @@ struct DashboardView: View {
     private func widgetContextMenu(for item: ConfiguredWidget, configBinding: Binding<WidgetConfiguration>) -> some View {
         Picker("Size", selection: configBinding.size) {
             ForEach(item.widget.allowedSizes, id: \.self) { size in
-                Text(sizeLabel(for: size))
+                Text(size.label)
                     .tag(size)
             }
         }
@@ -53,14 +53,6 @@ struct DashboardView: View {
             widgetStore.removeWidget(configurationID: item.configuration.id)
         } label: {
             Label("Remove Widget", systemImage: "trash")
-        }
-    }
-
-    private func sizeLabel(for size: WidgetSize) -> String {
-        switch size {
-        case .small: return "Small"
-        case .medium: return "Medium"
-        case .large: return "Large"
         }
     }
 }
