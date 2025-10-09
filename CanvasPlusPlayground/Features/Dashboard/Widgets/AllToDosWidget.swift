@@ -7,8 +7,9 @@
 
 import SwiftUI
 
-struct AllToDosWidget: ListWidget {
-    var id: String = "all_todos"
+struct AllToDosWidget: @MainActor ListWidget {
+    static var widgetID: String { "all_todos" }
+
     var title: String = "To-Do"
     var systemImage: String = "checklist"
     var color: Color = .red

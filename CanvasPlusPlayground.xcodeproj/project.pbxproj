@@ -170,6 +170,8 @@
 		B7460A942D6BFB1A0069CF5B /* GradeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7460A932D6BFB1A0069CF5B /* GradeCalculator.swift */; };
 		B7460A962D6CCD730069CF5B /* GradeCalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7460A952D6CCD6E0069CF5B /* GradeCalculatorView.swift */; };
 		B74688A32D63DB59007A27FD /* Assignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74688A22D63DB59007A27FD /* Assignment.swift */; };
+		B7532E922E96D7080045CFB6 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7532E912E96D7030045CFB6 /* DashboardView.swift */; };
+		B7532E942E9814F10045CFB6 /* WidgetStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7532E932E9814EF0045CFB6 /* WidgetStore.swift */; };
 		B75684F42DA5A6B2003B4A32 /* HTMLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75684F32DA5A6B2003B4A32 /* HTMLView.swift */; };
 		B75684F62DA5A7D3003B4A32 /* CanvasURLService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75684F52DA5A7CE003B4A32 /* CanvasURLService.swift */; };
 		B75684F82DA5F9F4003B4A32 /* GetSinglePageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75684F72DA5F9F4003B4A32 /* GetSinglePageRequest.swift */; };
@@ -430,6 +432,8 @@
 		B7460A932D6BFB1A0069CF5B /* GradeCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradeCalculator.swift; sourceTree = "<group>"; };
 		B7460A952D6CCD6E0069CF5B /* GradeCalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradeCalculatorView.swift; sourceTree = "<group>"; };
 		B74688A22D63DB59007A27FD /* Assignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assignment.swift; sourceTree = "<group>"; };
+		B7532E912E96D7030045CFB6 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		B7532E932E9814EF0045CFB6 /* WidgetStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetStore.swift; sourceTree = "<group>"; };
 		B75684F32DA5A6B2003B4A32 /* HTMLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLView.swift; sourceTree = "<group>"; };
 		B75684F52DA5A7CE003B4A32 /* CanvasURLService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasURLService.swift; sourceTree = "<group>"; };
 		B75684F72DA5F9F4003B4A32 /* GetSinglePageRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSinglePageRequest.swift; sourceTree = "<group>"; };
@@ -1096,6 +1100,7 @@
 		B79580162E8C5E2700B9A38F /* Widgets */ = {
 			isa = PBXGroup;
 			children = (
+				B7532E932E9814EF0045CFB6 /* WidgetStore.swift */,
 				B79580172E8C5E3100B9A38F /* AllAnnouncementsWidget.swift */,
 				B733340C2E916FE50011E8A9 /* AllToDosWidget.swift */,
 			);
@@ -1243,6 +1248,7 @@
 		B7F375C12E85EE82008F0846 /* Dashboard */ = {
 			isa = PBXGroup;
 			children = (
+				B7532E912E96D7030045CFB6 /* DashboardView.swift */,
 				B79580192E8C64F500B9A38F /* Debug */,
 				B79580162E8C5E2700B9A38F /* Widgets */,
 				B7F375C22E85EE88008F0846 /* Support */,
@@ -1481,8 +1487,10 @@
 				A373DC162D1A3C8700215019 /* RequestMethod.swift in Sources */,
 				A324BA682D07C2E9005F53FA /* FileViewer.swift in Sources */,
 				B7C469D62E6C84CC00310982 /* WikiFrontPage.swift in Sources */,
+				B7532E942E9814F10045CFB6 /* WidgetStore.swift in Sources */,
 				B7E59A162D200775001836FE /* CourseDetailView.swift in Sources */,
 				A3D022592D6A5BC500F8068C /* Data+Empty.swift in Sources */,
+				B7532E922E96D7080045CFB6 /* DashboardView.swift in Sources */,
 				9B350F082C9652C6003FC60D /* NSAttributedString+HTML.swift in Sources */,
 				A3D1614D2D16ACB8004055FB /* CacheableAPIRequest+Sync.swift in Sources */,
 				A3049B562D0E541D002F3166 /* QuizType.swift in Sources */,

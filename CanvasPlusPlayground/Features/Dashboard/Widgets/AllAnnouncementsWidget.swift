@@ -7,8 +7,9 @@
 
 import SwiftUI
 
-struct AllAnnouncementsWidget: ListWidget {
-    var id: String = "all_announcements"
+struct AllAnnouncementsWidget: @MainActor ListWidget {
+    static var widgetID: String { "all_announcements" }
+
     var title: String = "Announcements"
     var systemImage: String = "bubble.right"
     var destination: NavigationModel.Destination = .allAnnouncements

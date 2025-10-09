@@ -15,7 +15,7 @@ protocol Widget: Identifiable where ID == String {
     associatedtype Contents: View
     associatedtype DataSource: WidgetDataSource
 
-    var id: String { get }
+    static var widgetID: String { get }
     var title: String { get }
     var systemImage: String { get }
     var color: Color { get }
@@ -23,6 +23,10 @@ protocol Widget: Identifiable where ID == String {
     var contents: Contents { get }
     var destination: NavigationModel.Destination { get }
     var dataSource: DataSource { get set }
+}
+
+extension Widget {
+    var id: String { Self.widgetID }
 }
 
 extension Widget {

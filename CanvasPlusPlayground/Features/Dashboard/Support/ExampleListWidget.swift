@@ -8,8 +8,9 @@
 #if DEBUG
 import SwiftUI
 
-fileprivate struct ExampleListWidget: ListWidget {
-    let id = "steps_widget"
+fileprivate struct ExampleListWidget: @MainActor ListWidget {
+    static var widgetID: String { "steps_widget" }
+
     let title = "Steps"
     let systemImage = "figure.walk"
     var color: Color = .orange
