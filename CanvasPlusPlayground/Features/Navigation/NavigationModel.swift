@@ -111,7 +111,6 @@ class NavigationModel {
         didSet {
             // when switching tab, flush the course path, this is unique to mac and ipad
             coursePath = NavigationPath()
-            selectedCoursePage = nil
         }
     }
 
@@ -120,7 +119,7 @@ class NavigationModel {
     var dashboardPath = NavigationPath()
     
     var coursePath = NavigationPath() // on iPad and mac, all course tabs share the same navigation path, and it gets erased when switching tabs
-    // var coursePaths: [Course.ID: NavigationPath]
+
     var navigationPath: NavigationPath {
         set {
             switch selectedTab {
@@ -139,8 +138,6 @@ class NavigationModel {
             }
         }
     }
-    
-    var selectedCoursePage: CoursePage?
     var showAuthorizationSheet = false
     var showProfileSheet = false
     #if os(iOS)

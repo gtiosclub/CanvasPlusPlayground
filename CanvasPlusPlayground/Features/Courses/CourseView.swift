@@ -49,10 +49,12 @@ struct CourseView: View {
             .filter { $0.type == .external }
     }
     
+    @State var selectedCoursePage: NavigationModel.CoursePage?
+    
     var body: some View {
         @Bindable var navigationModel = navigationModel
         
-        List(selection: $navigationModel.selectedCoursePage) {
+        List(selection: $selectedCoursePage) {
             Section {
                 ForEach(coursePages, id: \.self) { page in
                     NavigationLink(value: NavigationModel.Destination.coursePage(page, course)) {
@@ -75,7 +77,7 @@ struct CourseView: View {
         }
         .defaultNavigationDestination(courseID: course.id)
         .onAppear {
-            navigationModel.selectedCoursePage = nil
+            selectedCoursePage = nil
         }
         .tint(course.rgbColors?.color)
         .customizeCourseMenu(course: course)
