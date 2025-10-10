@@ -31,6 +31,14 @@ enum WidgetSize: Comparable, Codable {
         case .large: return "Large"
         }
     }
+
+    var systemImage: String {
+        switch self {
+        case .small: "widget.small"
+        case .medium: "widget.medium"
+        case .large: "widget.large"
+        }
+    }
 }
 
 extension View {

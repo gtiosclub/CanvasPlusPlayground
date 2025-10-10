@@ -8,13 +8,19 @@
 import SwiftUI
 
 struct DashboardView: View {
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
     typealias ConfiguredWidget = WidgetStore.ConfiguredWidget
 
     @Bindable var widgetStore = WidgetStore.shared
 
     var body: some View {
         ScrollView {
-            Dashboard(vSpacing: 60) {
+            Dashboard(
+                vSpacing: vSpacing,
+                maxSmallWidgetWidth: maxSmallWidgetWidth,
+                maxMediumWidgetWidth: maxMediumWidgetWidth,
+                maxLargeWidgetWidth: maxLargeWidgetWidth
+            ) {
                 ForEach(widgetStore.widgets.indices, id: \.self) { index in
                     let item = widgetStore.widgets[index]
                     item.widget.mainBody
@@ -41,7 +47,7 @@ struct DashboardView: View {
     private func widgetContextMenu(for item: ConfiguredWidget, configBinding: Binding<WidgetConfiguration>) -> some View {
         Picker("Size", selection: configBinding.size) {
             ForEach(item.widget.allowedSizes, id: \.self) { size in
-                Text(size.label)
+                Label(size.label, systemImage: size.systemImage)
                     .tag(size)
             }
         }
@@ -54,5 +60,31 @@ struct DashboardView: View {
         } label: {
             Label("Remove Widget", systemImage: "trash")
         }
+    }
+
+    var vSpacing: CGFloat {
+        if horizontalSizeClass == .compact {
+            60
+        } else {
+            20
+        }
+    }
+
+    var maxSmallWidgetWidth: CGFloat? {
+        guard horizontalSizeClass == .regular else { return nil }
+
+        return 200
+    }
+
+    var maxMediumWidgetWidth: CGFloat? {
+        guard horizontalSizeClass == .regular else { return nil }
+
+        return 250
+    }
+
+    var maxLargeWidgetWidth: CGFloat? {
+        guard horizontalSizeClass == .regular else { return nil }
+
+        return 350
     }
 }
