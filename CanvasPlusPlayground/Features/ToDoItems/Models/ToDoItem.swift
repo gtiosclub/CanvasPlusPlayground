@@ -90,3 +90,17 @@ extension ToDoItem: Cacheable {
     }
 }
 
+extension ToDoItem {
+    func navigationDestination() -> NavigationModel.Destination? {
+        if let type = self.itemType {
+            switch type {
+            case .assignment(let assignment):
+                return .assignment(assignment)
+            case .quiz(let quiz):
+                return .quiz(quiz)
+            }
+        }
+
+        return nil
+    }
+}
