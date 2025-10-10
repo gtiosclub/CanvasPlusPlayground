@@ -8,26 +8,25 @@
 import SwiftUI
 
 struct HomeView: View {
-
     @Environment(ToDoListManager.self) private var toDoListManager
     @Environment(ProfileManager.self) private var profileManager
     @Environment(CourseManager.self) private var courseManager
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    
+
     @State private var columnVisibility = NavigationSplitViewVisibility.all
     @State private var isLoadingCourses = false
-    @State var navigationModel = NavigationModel()
+    @State private var navigationModel = NavigationModel()
 
     var body: some View {
         @Bindable var courseManager = courseManager
         @Bindable var navigationModel = navigationModel
-        
+
         TabView(selection: $navigationModel.selectedTab) {
             // dashboard
             Tab("Dashboard", systemImage: "list.dash.header.rectangle.fill", value: .dashboard) {
                 dashboardTabView
             }
-            
+
             // course/courses
             TabSection("Courses") {
                 ForEach(courseManager.activeCourses) { course in
@@ -41,7 +40,7 @@ struct HomeView: View {
                 }
             }
             .hidden(horizontalSizeClass == .compact)
-            
+
             Tab("Courses", systemImage: "book.pages.fill", value: .courses) {
                 coursesTabView
             }
@@ -90,7 +89,7 @@ struct HomeView: View {
 
         isLoadingCourses = false
     }
-    
+
     @ViewBuilder
     private var coursesTabView: some View {
         NavigationStack(path: $navigationModel.coursesPath) {
@@ -106,15 +105,14 @@ struct HomeView: View {
             }
         }
     }
-    
+
     @ViewBuilder
     private var searchTabView: some View {
         Text("Search is here")
     }
-    
+
     @ViewBuilder
-    private var dashboardTabView: some View{
-        
+    private var dashboardTabView: some View {
         Text("Dashboard is here")
     }
 }
@@ -124,4 +122,3 @@ struct HomeView: View {
         .environment(CourseManager())
         .environment(ProfileManager())
 }
-

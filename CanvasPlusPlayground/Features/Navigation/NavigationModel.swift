@@ -9,7 +9,6 @@ import SwiftUI
 
 @Observable
 class NavigationModel {
-    
     enum Tab: Hashable {
         case courses
         case dashboard
@@ -79,9 +78,9 @@ class NavigationModel {
         case file(File, Course.ID)
         case folder(Folder, Course)
         case quiz(Quiz)
-        
+
         // TODO: Add top level views like all announcements, pinned items, etc
-        
+
         // TODO: Add specific course items as needed.
         @ViewBuilder
         func destinationView() -> some View {
@@ -117,7 +116,7 @@ class NavigationModel {
     // Each tab maintains its own NavigationPath (stack)
     var coursesPath = NavigationPath() // navigation path for the phone courses path
     var dashboardPath = NavigationPath()
-    
+
     var coursePath = NavigationPath() // on iPad and mac, all course tabs share the same navigation path, and it gets erased when switching tabs
 
     var navigationPath: NavigationPath {

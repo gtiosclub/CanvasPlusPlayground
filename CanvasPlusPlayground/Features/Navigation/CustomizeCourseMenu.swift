@@ -10,14 +10,12 @@ import SwiftUI
 struct CustomizeCourseMenu: ViewModifier {
     @Environment(CourseManager.self) private var courseManager
     let course: Course
-    
+
     @State private var showCourseCustomizer = false
     @State private var showRenameTextField = false
     @State private var renameCourseFieldText: String = ""
     @State private var isLoadingFavorite: Bool = false
-    
-    
-    
+
     /// The Course actions menu used in context menu and toolbar
     private var courseActionsMenu: some View {
         Menu {
@@ -26,7 +24,7 @@ struct CustomizeCourseMenu: ViewModifier {
             Label("Course Actions", systemImage: "ellipsis")
         }
     }
-    
+
     // FYI, these buttons are wrapped in a menu on the macos toolbar button, on iOS it's just a group
     private var courseActions: some View {
         Group {
@@ -41,9 +39,9 @@ struct CustomizeCourseMenu: ViewModifier {
             NewWindowButton(destination: .course(course))
         }
     }
-    
+
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    
+
     func body(content: Content) -> some View {
         content
             .contextMenu {
@@ -68,7 +66,7 @@ struct CustomizeCourseMenu: ViewModifier {
                 Text("Rename \(course.name ?? "")?")
             }
             .sheet(isPresented: $showCourseCustomizer) {
-                CustomizeCourseView(courseName: course.displayName, selectedSymbol: course.displaySymbol, selectedColor: course.rgbColors?.color ?? .accentColor, onDismiss: { (symbol, color) in
+                CustomizeCourseView(courseName: course.displayName, selectedSymbol: course.displaySymbol, selectedColor: course.rgbColors?.color ?? .accentColor, onDismiss: { symbol, color in
                     course.rgbColors = .init(color: color)
                     course.courseSymbol = symbol
                 })
@@ -83,7 +81,6 @@ struct CustomizeCourseMenu: ViewModifier {
             Task {
                 await course.markIsFavorite(as: !course.isFavorite)
             }
-
         }
         .symbolVariant(!course.isFavorite ? .none : .slash)
     }
