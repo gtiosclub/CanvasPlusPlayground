@@ -80,7 +80,8 @@ struct CourseView: View {
         .courseGradientBackground(
             courses: [course],
             isActive: course.rgbColors != nil,
-            backgroundStyle: .grouped
+            backgroundStyle: .grouped,
+            showIcon: true
         )
         .onAppear {
             selectedCoursePage = nil

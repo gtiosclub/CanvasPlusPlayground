@@ -16,6 +16,7 @@ private struct CourseGradientBackgroundModifier: ViewModifier {
     let courses: [Course]
     let isActive: Bool
     let backgroundStyle: DashboardGradientBackgroundStyle
+    let showIcon: Bool
 
     public func body(content: Content) -> some View {
         content
@@ -40,11 +41,20 @@ private struct CourseGradientBackgroundModifier: ViewModifier {
 
                 if isActive {
                     VStack(spacing: 0) {
-                        DashboardMeshGradient(
-                            colors: DashboardGradientColors
-                                .getColors(from: courses)
-                        )
+                        ZStack(alignment: .topTrailing) {
+                            DashboardMeshGradient(
+                                colors: DashboardGradientColors
+                                    .getColors(from: courses)
+                            )
+
+                            if showIcon, let course = courses.first {
+                                CourseIcon(
+                                    symbolName: course.displaySymbol
+                                )
+                            }
+                        }
                         .frame(height: 400)
+
                         Spacer()
                     }
                     .ignoresSafeArea()
@@ -53,17 +63,48 @@ private struct CourseGradientBackgroundModifier: ViewModifier {
     }
 }
 
+private struct CourseIcon: View {
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+
+    let symbolName: String
+
+    @State private var symbolToggle = false
+
+    var body: some View {
+        GeometryReader { geo in
+            let xFactor: CGFloat = horizontalSizeClass == .compact ? 100 : 200
+            let yFactor: CGFloat = 0.25
+
+            Image(systemName: symbolName)
+                .symbolEffect(.breathe, value: symbolToggle)
+                .opacity(0.2)
+                .font(.system(size: 125))
+                .position(
+                    x: geo.size.width - xFactor,
+                    y: geo.size.height * yFactor
+                )
+        }
+        .onAppear {
+            withAnimation(.spring) {
+                symbolToggle.toggle()
+            }
+        }
+    }
+}
+
 extension View {
     func courseGradientBackground(
         courses: [Course],
         isActive: Bool = true,
-        backgroundStyle: DashboardGradientBackgroundStyle = .default
+        backgroundStyle: DashboardGradientBackgroundStyle = .default,
+        showIcon: Bool = false
     ) -> some View {
         modifier(
             CourseGradientBackgroundModifier(
                 courses: courses,
                 isActive: isActive,
-                backgroundStyle: backgroundStyle
+                backgroundStyle: backgroundStyle,
+                showIcon: showIcon
             )
         )
     }
