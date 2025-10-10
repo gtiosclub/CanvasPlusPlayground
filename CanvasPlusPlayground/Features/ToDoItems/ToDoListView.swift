@@ -129,7 +129,7 @@ private struct ToDoItemRow: View {
         .contextMenu {
             if let course = item.course {
                 Button("Go to Course...", systemImage: "folder") {
-                    navigationModel.selectedNavigationPage = .course(id: course.id)
+                    navigationModel.navigationPath.append(NavigationModel.Destination.course(course))
                 }
             }
 

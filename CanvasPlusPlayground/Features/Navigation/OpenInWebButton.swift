@@ -11,7 +11,7 @@ struct OpenWebLinkButton<Content: View>: View {
     @Environment(\.openURL) var openURL
     let url: URL
     let content: () -> Content
-    
+
     var body: some View {
         Button(action: { openURL(url) }) {
             content()

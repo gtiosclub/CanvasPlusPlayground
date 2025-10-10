@@ -181,11 +181,21 @@ struct CustomizeCourseView: View {
                 .padding(.horizontal, 10)
             }
             .scrollClipDisabled(true)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Dismiss", systemImage: "xmark", role: .cancel) {
+                        dismiss()
+                    }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Confirm", systemImage: "check") {
+                        onDismiss(selectedSymbol, selectedColor)
+                        dismiss()
+                    }
+                }
+            }
         }
         .frame(width: 320, height: 280)
-        .onDisappear {
-            onDismiss(selectedSymbol, selectedColor)
-        }
     }
 }
 #endif
