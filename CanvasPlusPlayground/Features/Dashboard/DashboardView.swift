@@ -37,18 +37,7 @@ struct DashboardView: View {
             .padding()
             .animation(.spring, value: widgetStore.widgetConfigurations)
         }
-        .scrollIndicators(.hidden)
-        .background {
-            VStack(spacing: 0) {
-                DashboardMeshGradient(
-                    colors: DashboardGradientColors
-                        .getColors(from: courseManager.activeCourses)
-                )
-                .frame(height: 400)
-                Spacer()
-            }
-            .ignoresSafeArea()
-        }
+        .courseGradientBackground(courses: courseManager.activeCourses)
         .navigationTitle("Dashboard")
         #if os(iOS)
         .toolbar {
@@ -130,3 +119,4 @@ struct DashboardView: View {
         return 350
     }
 }
+

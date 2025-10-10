@@ -195,6 +195,7 @@
 		B77FD0072D5309340049AA5E /* ProfilePicture.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77FD0062D5309340049AA5E /* ProfilePicture.swift */; };
 		B78847972E674D6400AE7221 /* CanvasURLService+Modules.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78847962E674D5A00AE7221 /* CanvasURLService+Modules.swift */; };
 		B7909D7C2E9963B300E37387 /* DashboardMeshGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7909D7B2E9963B300E37387 /* DashboardMeshGradient.swift */; };
+		B7909D9B2E99707600E37387 /* CourseGradientBackgroundModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7909D9A2E99707600E37387 /* CourseGradientBackgroundModifier.swift */; };
 		B79101D42E8B09F50090BBB1 /* ListWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79101D32E8B09F50090BBB1 /* ListWidget.swift */; };
 		B79101D82E8B0E900090BBB1 /* GenericWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79101D72E8B0E8D0090BBB1 /* GenericWidget.swift */; };
 		B79101DA2E8B18BE0090BBB1 /* ExampleListWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79101D92E8B18BB0090BBB1 /* ExampleListWidget.swift */; };
@@ -459,6 +460,7 @@
 		B77FD0062D5309340049AA5E /* ProfilePicture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePicture.swift; sourceTree = "<group>"; };
 		B78847962E674D5A00AE7221 /* CanvasURLService+Modules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CanvasURLService+Modules.swift"; sourceTree = "<group>"; };
 		B7909D7B2E9963B300E37387 /* DashboardMeshGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardMeshGradient.swift; sourceTree = "<group>"; };
+		B7909D9A2E99707600E37387 /* CourseGradientBackgroundModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseGradientBackgroundModifier.swift; sourceTree = "<group>"; };
 		B79101D32E8B09F50090BBB1 /* ListWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListWidget.swift; sourceTree = "<group>"; };
 		B79101D72E8B0E8D0090BBB1 /* GenericWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericWidget.swift; sourceTree = "<group>"; };
 		B79101D92E8B18BB0090BBB1 /* ExampleListWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleListWidget.swift; sourceTree = "<group>"; };
@@ -1102,6 +1104,7 @@
 		B7909D7D2E99672E00E37387 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				B7909D9A2E99707600E37387 /* CourseGradientBackgroundModifier.swift */,
 				B7909D7B2E9963B300E37387 /* DashboardMeshGradient.swift */,
 			);
 			path = Components;
@@ -1385,6 +1388,7 @@
 				95BA93482C9CE20D00137A91 /* CalendarView.swift in Sources */,
 				B76454FF2C8DF61B002DF00E /* Enrollment.swift in Sources */,
 				A3049B5F2D0E6044002F3166 /* QuizHideResults.swift in Sources */,
+				B7909D9B2E99707600E37387 /* CourseGradientBackgroundModifier.swift in Sources */,
 				9BA7C0F72D62DC92000F2918 /* PinnedItemDetailView.swift in Sources */,
 				9B81E2832E8F84BD00675B90 /* CustomizeCourseMenu.swift in Sources */,
 				B76455002C8DF61B002DF00E /* File.swift in Sources */,

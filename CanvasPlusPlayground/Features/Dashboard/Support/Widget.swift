@@ -104,8 +104,8 @@ struct DefaultWidgetBody: View {
             .padding(12)
             .background {
                 RoundedRectangle(cornerRadius: 16.0)
-                    .fill(.thickMaterial)
-                    .strokeBorder(.thickMaterial)
+                    .fill(.thinMaterial)
+                    .strokeBorder(.ultraThickMaterial)
             }
         }
         .buttonStyle(.plain)
