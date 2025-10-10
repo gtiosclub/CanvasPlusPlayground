@@ -41,7 +41,7 @@ struct HomeView: View {
             }
             .hidden(horizontalSizeClass == .compact)
 
-            Tab("Courses", systemImage: "book.pages.fill", value: .courses) {
+            Tab("Courses", systemImage: "book.pages.fill", value: .allCourses) {
                 coursesTabView
             }
             .hidden(horizontalSizeClass == .regular)
@@ -92,7 +92,7 @@ struct HomeView: View {
 
     @ViewBuilder
     private var coursesTabView: some View {
-        NavigationStack(path: $navigationModel.coursesPath) {
+        NavigationStack(path: $navigationModel.allCoursesPath) {
             List(courseManager.activeCourses) { course in
                 NavigationLink(value: NavigationModel.Destination.course(course)) {
                     CourseListCell(course: course)
@@ -104,11 +104,6 @@ struct HomeView: View {
                 destination.destinationView()
             }
         }
-    }
-
-    @ViewBuilder
-    private var searchTabView: some View {
-        Text("Search is here")
     }
 
     @ViewBuilder

@@ -7,9 +7,17 @@
 
 import SwiftUI
 
-struct CustomizeCourseMenu: ViewModifier {
+
+enum CourseCustomizationMenuPlacement {
+    case contextMenu
+    case toolbar
+}
+
+private struct CustomizeCourseMenu: ViewModifier {
     @Environment(CourseManager.self) private var courseManager
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
     let course: Course
+    let placement: CourseCustomizationMenuPlacement
 
     @State private var showCourseCustomizer = false
     @State private var showRenameTextField = false
@@ -40,17 +48,15 @@ struct CustomizeCourseMenu: ViewModifier {
         }
     }
 
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
-
     func body(content: Content) -> some View {
         content
             .contextMenu {
-                if horizontalSizeClass != .regular {
+                if placement == .contextMenu {
                     courseActions
                 }
             }
             .toolbar {
-                if horizontalSizeClass == .regular {
+                if placement == .toolbar {
                     courseActionsMenu
                 }
             }
@@ -98,7 +104,7 @@ struct CustomizeCourseMenu: ViewModifier {
 extension View {
     /// Adds the course customization context menu/toolbar button to a view.
     /// Is applied as a toolbar button in macOS, otherwise, context menu
-    func customizeCourseMenu(course: Course) -> some View {
-        self.modifier(CustomizeCourseMenu(course: course))
+    func customizeCourseMenu(course: Course, placement: CourseCustomizationMenuPlacement) -> some View {
+        self.modifier(CustomizeCourseMenu(course: course, placement: placement))
     }
 }

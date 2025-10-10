@@ -10,10 +10,10 @@ import SwiftUI
 @Observable
 class NavigationModel {
     enum Tab: Hashable {
-        case courses
+        case allCourses // iPhone only
         case dashboard
         case search
-        case course(Course.ID)
+        case course(Course.ID) // macOS/iPadOS only, all course tabs share the same navigation path
     }
 
     enum CoursePage: String, CaseIterable, Codable {
@@ -119,26 +119,26 @@ class NavigationModel {
     }
 
     // Each tab maintains its own NavigationPath (stack)
-    var coursesPath = NavigationPath() // navigation path for the phone courses path
+    var allCoursesPath = NavigationPath() // for Tab.allCourses
     var dashboardPath = NavigationPath()
 
-    var coursePath = NavigationPath() // on iPad and mac, all course tabs share the same navigation path, and it gets erased when switching tabs
+    var coursePath = NavigationPath() // for Tab.course(id:)
 
     var navigationPath: NavigationPath {
         set {
             switch selectedTab {
-            case .courses: coursesPath = newValue
+            case .allCourses: allCoursesPath = newValue
             case .dashboard: dashboardPath = newValue
             case .course: coursePath = newValue
-            default: coursesPath = newValue
+            default: allCoursesPath = newValue
             }
         }
         get {
             switch selectedTab {
-            case .courses: return coursesPath
+            case .allCourses: return allCoursesPath
             case .dashboard: return dashboardPath
             case .course: return coursePath
-            default: return coursesPath
+            default: return allCoursesPath
             }
         }
     }

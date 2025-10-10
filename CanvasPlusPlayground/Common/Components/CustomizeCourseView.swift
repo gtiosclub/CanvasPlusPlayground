@@ -182,12 +182,12 @@ struct CustomizeCourseView: View {
             }
             .scrollClipDisabled(true)
             .toolbar {
-                ToolbarItem {
+                ToolbarItem(placement: .cancellationAction) {
                     Button("Dismiss", systemImage: "xmark", role: .cancel) {
                         dismiss()
                     }
                 }
-                ToolbarItem {
+                ToolbarItem(placement: .confirmationAction) {
                     Button("Confirm", systemImage: "check") {
                         onDismiss(selectedSymbol, selectedColor)
                         dismiss()
