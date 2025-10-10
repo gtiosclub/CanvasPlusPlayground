@@ -150,6 +150,7 @@ struct CourseAssignmentsView: View {
 }
 
 private struct AssignmentRow: View {
+    @Environment(PinnedItemsManager.self) private var pinnedItemsManager
     @Environment(GradeCalculator.self) private var calculator
     @Environment(\.openURL) private var openURL
     let assignment: Assignment
@@ -167,7 +168,10 @@ private struct AssignmentRow: View {
             NavigationLink(
                 value: NavigationModel.Destination.assignment(assignment)
             ) {
-                bodyContents
+                HStack {
+                    bodyContents
+                    Image(systemName: pinnedItemsManager.isPinned(itemID: assignment.id, courseID: assignment.courseId?.asString, type: .assignment) ? "pin" : "pin.slash")
+                }
             }
             .contextMenu {
                 PinButton(
