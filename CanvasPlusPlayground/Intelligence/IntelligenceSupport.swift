@@ -1,18 +1,19 @@
 import FoundationModels
 import SwiftUI
 
-@available(iOS 26.0, macOS 26.0, *)
 enum IntelligenceSupport {
     static let gradientColors: [Color] = [
-        .c1, .c2, .c3,
-        .c4, .c2, .c4,
-        .c3, .c2, .c3
+        .c1, .c1, .c2,
+        .c2, .c2, .c3,
+        .c3, .c4, .c4
     ]
 
+    @available(iOS 26.0, macOS 26.0, *)
     static var modelAvailability: SystemLanguageModel.Availability {
         SystemLanguageModel.default.availability
     }
 
+    @available(iOS 26.0, macOS 26.0, *)
     static var modelAvailabilityDescription: String {
         switch modelAvailability {
         case .available: 
@@ -28,6 +29,7 @@ enum IntelligenceSupport {
         }
     }
 
+    @available(iOS 26.0, macOS 26.0, *)
     static var isModelAvailable: Bool {
         modelAvailability == .available
     }

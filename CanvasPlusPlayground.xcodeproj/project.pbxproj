@@ -194,6 +194,7 @@
 		B77FD0022D52A0D60049AA5E /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77FD0012D52A0D20049AA5E /* ProfileView.swift */; };
 		B77FD0072D5309340049AA5E /* ProfilePicture.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77FD0062D5309340049AA5E /* ProfilePicture.swift */; };
 		B78847972E674D6400AE7221 /* CanvasURLService+Modules.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78847962E674D5A00AE7221 /* CanvasURLService+Modules.swift */; };
+		B7909D7C2E9963B300E37387 /* DashboardMeshGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7909D7B2E9963B300E37387 /* DashboardMeshGradient.swift */; };
 		B79101D42E8B09F50090BBB1 /* ListWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79101D32E8B09F50090BBB1 /* ListWidget.swift */; };
 		B79101D82E8B0E900090BBB1 /* GenericWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79101D72E8B0E8D0090BBB1 /* GenericWidget.swift */; };
 		B79101DA2E8B18BE0090BBB1 /* ExampleListWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79101D92E8B18BB0090BBB1 /* ExampleListWidget.swift */; };
@@ -457,6 +458,7 @@
 		B77FD0012D52A0D20049AA5E /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		B77FD0062D5309340049AA5E /* ProfilePicture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePicture.swift; sourceTree = "<group>"; };
 		B78847962E674D5A00AE7221 /* CanvasURLService+Modules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CanvasURLService+Modules.swift"; sourceTree = "<group>"; };
+		B7909D7B2E9963B300E37387 /* DashboardMeshGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardMeshGradient.swift; sourceTree = "<group>"; };
 		B79101D32E8B09F50090BBB1 /* ListWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListWidget.swift; sourceTree = "<group>"; };
 		B79101D72E8B0E8D0090BBB1 /* GenericWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericWidget.swift; sourceTree = "<group>"; };
 		B79101D92E8B18BB0090BBB1 /* ExampleListWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleListWidget.swift; sourceTree = "<group>"; };
@@ -1097,6 +1099,14 @@
 			name = URLService;
 			sourceTree = "<group>";
 		};
+		B7909D7D2E99672E00E37387 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				B7909D7B2E9963B300E37387 /* DashboardMeshGradient.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		B79580162E8C5E2700B9A38F /* Widgets */ = {
 			isa = PBXGroup;
 			children = (
@@ -1260,6 +1270,7 @@
 		B7F375C22E85EE88008F0846 /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				B7909D7D2E99672E00E37387 /* Components */,
 				B7F375C32E85EE8E008F0846 /* Widget.swift */,
 				B795801E2E8C697F00B9A38F /* AnyWidget.swift */,
 				B79101D32E8B09F50090BBB1 /* ListWidget.swift */,
@@ -1475,6 +1486,7 @@
 				A3049B772D15DC36002F3166 /* GetCourseRequest.swift in Sources */,
 				B7AD54F52CD41D7900FB09BB /* IntelligenceSupport.swift in Sources */,
 				A3049B852D161455002F3166 /* GetEnrollmentsRequest.swift in Sources */,
+				B7909D7C2E9963B300E37387 /* DashboardMeshGradient.swift in Sources */,
 				A3D161472D169C0A004055FB /* APIRequest+Network.swift in Sources */,
 				A3CF88D92D192177000ACDF3 /* CourseAPI.swift in Sources */,
 				A3049B832D161432002F3166 /* GetAssignmentsRequest.swift in Sources */,

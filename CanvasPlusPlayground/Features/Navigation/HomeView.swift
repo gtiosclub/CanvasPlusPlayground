@@ -23,8 +23,10 @@ struct HomeView: View {
 
         TabView(selection: $navigationModel.selectedTab) {
             // dashboard
-            Tab("Dashboard", systemImage: "list.dash.header.rectangle.fill", value: .dashboard) {
-                dashboardTabView
+            Tab("Dashboard", systemImage: "rectangle.grid.2x2.fill", value: .dashboard) {
+                NavigationStack(path: $navigationModel.dashboardPath) {
+                    DashboardView()
+                }
             }
 
             // course/courses
@@ -104,11 +106,6 @@ struct HomeView: View {
                 destination.destinationView()
             }
         }
-    }
-
-    @ViewBuilder
-    private var dashboardTabView: some View {
-        Text("Dashboard is here")
     }
 }
 

@@ -8,8 +8,12 @@
 import SwiftUI
 
 struct DashboardView: View {
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
     typealias ConfiguredWidget = WidgetStore.ConfiguredWidget
+
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    @Environment(NavigationModel.self) private var navigationModel
+    @Environment(CourseManager.self) private var courseManager
+    @Environment(ProfileManager.self) private var profileManager
 
     @Bindable var widgetStore = WidgetStore.shared
 
@@ -31,8 +35,46 @@ struct DashboardView: View {
                 }
             }
             .padding()
+            .animation(.spring, value: widgetStore.widgetConfigurations)
+        }
+        .scrollIndicators(.hidden)
+        .background {
+            VStack(spacing: 0) {
+                DashboardMeshGradient(
+                    colors: DashboardGradientColors
+                        .getColors(from: courseManager.activeCourses)
+                )
+                .frame(height: 400)
+                Spacer()
+            }
+            .ignoresSafeArea()
         }
         .navigationTitle("Dashboard")
+        #if os(iOS)
+        .toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+                Button("Settings", systemImage: "gear") {
+                    navigationModel.showSettingsSheet.toggle()
+                }
+            }
+        }
+        #endif
+        .toolbar {
+            ToolbarItem(placement: .confirmationAction) {
+                if let currentUser = profileManager.currentUser {
+                    Button {
+                        navigationModel.showProfileSheet.toggle()
+                    } label: {
+                        #if os(macOS)
+                        ProfilePicture(user: currentUser, size: 19)
+                        #else
+                        ProfilePicture(user: currentUser, size: 24)
+                        #endif
+                    }
+                }
+            }
+        }
+        .defaultNavigationDestination(courseID: "")
     }
 
     private func configurationBinding(at index: Int) -> Binding<WidgetConfiguration> {
