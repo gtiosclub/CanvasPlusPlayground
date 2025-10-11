@@ -87,28 +87,39 @@ enum WidgetFetchStatus {
 struct DefaultWidgetBody: View {
     let widget: any Widget
     @Environment(\.widgetSize) private var widgetSize: WidgetSize
+    @Environment(\.isWidgetNavigationEnabled) private var isWidgetNavigationEnabled: Bool
 
     var body: some View {
-        NavigationLink(value: widget.destination) {
-            VStack {
-                Header(widget: widget)
-
-                ContentView(widget: widget, widgetSize: widgetSize)
-            }
-            .task {
-                // Only fetch if not already loaded
-                guard widget.dataSource.fetchStatus != .loaded else { return }
-                try? await widget.dataSource
-                    .fetchData(context: WidgetContext.shared)
-            }
-            .padding(12)
-            .background {
-                RoundedRectangle(cornerRadius: 16.0)
-                    .fill(.thinMaterial)
-                    .strokeBorder(.ultraThickMaterial)
+        Group {
+            if isWidgetNavigationEnabled {
+                NavigationLink(value: widget.destination) {
+                    label
+                }
+            } else {
+                label
             }
         }
         .buttonStyle(.plain)
+    }
+
+    private var label: some View {
+        VStack {
+            Header(widget: widget)
+
+            ContentView(widget: widget, widgetSize: widgetSize)
+        }
+        .task(id: widgetSize) {
+            // Only fetch if not already loaded
+            guard widget.dataSource.fetchStatus != .loaded else { return }
+            try? await widget.dataSource
+                .fetchData(context: WidgetContext.shared)
+        }
+        .padding(12)
+        .background {
+            RoundedRectangle(cornerRadius: 16.0)
+                .fill(.thinMaterial)
+                .strokeBorder(.ultraThickMaterial)
+        }
     }
 
     private struct ContentView: View {
@@ -143,5 +154,17 @@ struct DefaultWidgetBody: View {
             }
             .foregroundStyle(widget.color)
         }
+    }
+}
+
+private struct WidgetNavigationEnabledEnvironmentKey: EnvironmentKey {
+    static let defaultValue: Bool = true
+}
+
+extension EnvironmentValues {
+    /// Determines whether tapping on a widget or its contents navigates to a destination.
+    var isWidgetNavigationEnabled: Bool {
+        get { self[WidgetNavigationEnabledEnvironmentKey.self] }
+        set { self[WidgetNavigationEnabledEnvironmentKey.self] = newValue }
     }
 }

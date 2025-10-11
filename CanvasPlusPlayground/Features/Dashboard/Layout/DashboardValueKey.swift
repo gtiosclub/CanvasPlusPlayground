@@ -19,7 +19,7 @@ extension LayoutSubview {
     }
 }
 
-enum WidgetSize: Comparable, Codable {
+enum WidgetSize: Comparable, Codable, Hashable {
     case small
     case medium
     case large

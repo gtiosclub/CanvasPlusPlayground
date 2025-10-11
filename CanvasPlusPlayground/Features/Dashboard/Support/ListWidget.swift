@@ -29,6 +29,8 @@ struct ListWidgetData: Identifiable {
 }
 
 private struct DefaultListWidgetBody: View {
+    @Environment(\.isWidgetNavigationEnabled) var isWidgetNavigationEnabled: Bool
+
     let widget: any ListWidget
     let size: WidgetSize
 
@@ -43,11 +45,17 @@ private struct DefaultListWidgetBody: View {
     var body: some View {
         VStack(alignment: .leading, spacing: size == .small ? 4 : 8) {
             ForEach(widget.dataSource.widgetData.prefix(itemLimit)) { item in
-                NavigationLink(
-                    value: widget.dataSource.destinationView(for: item)) {
+                Group {
+                    if isWidgetNavigationEnabled {
+                        NavigationLink(
+                            value: widget.dataSource.destinationView(for: item)) {
+                                Row(item: item, size: size)
+                            }
+                    } else {
                         Row(item: item, size: size)
                     }
-                    .buttonStyle(.plain)
+                }
+                .buttonStyle(.plain)
             }
             Spacer()
         }

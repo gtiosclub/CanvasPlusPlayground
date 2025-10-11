@@ -196,6 +196,7 @@
 		B78847972E674D6400AE7221 /* CanvasURLService+Modules.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78847962E674D5A00AE7221 /* CanvasURLService+Modules.swift */; };
 		B7909D7C2E9963B300E37387 /* DashboardMeshGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7909D7B2E9963B300E37387 /* DashboardMeshGradient.swift */; };
 		B7909D9B2E99707600E37387 /* CourseGradientBackgroundModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7909D9A2E99707600E37387 /* CourseGradientBackgroundModifier.swift */; };
+		B7909DAB2E99CC6100E37387 /* CompatibleGlassProminentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7909DAA2E99CC5B00E37387 /* CompatibleGlassProminentButton.swift */; };
 		B79101D42E8B09F50090BBB1 /* ListWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79101D32E8B09F50090BBB1 /* ListWidget.swift */; };
 		B79101D82E8B0E900090BBB1 /* GenericWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79101D72E8B0E8D0090BBB1 /* GenericWidget.swift */; };
 		B79101DA2E8B18BE0090BBB1 /* ExampleListWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79101D92E8B18BB0090BBB1 /* ExampleListWidget.swift */; };
@@ -461,6 +462,7 @@
 		B78847962E674D5A00AE7221 /* CanvasURLService+Modules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CanvasURLService+Modules.swift"; sourceTree = "<group>"; };
 		B7909D7B2E9963B300E37387 /* DashboardMeshGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardMeshGradient.swift; sourceTree = "<group>"; };
 		B7909D9A2E99707600E37387 /* CourseGradientBackgroundModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseGradientBackgroundModifier.swift; sourceTree = "<group>"; };
+		B7909DAA2E99CC5B00E37387 /* CompatibleGlassProminentButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompatibleGlassProminentButton.swift; sourceTree = "<group>"; };
 		B79101D32E8B09F50090BBB1 /* ListWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListWidget.swift; sourceTree = "<group>"; };
 		B79101D72E8B0E8D0090BBB1 /* GenericWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericWidget.swift; sourceTree = "<group>"; };
 		B79101D92E8B18BB0090BBB1 /* ExampleListWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleListWidget.swift; sourceTree = "<group>"; };
@@ -724,6 +726,7 @@
 		A324BA552D0796BE005F53FA /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				B7909DAA2E99CC5B00E37387 /* CompatibleGlassProminentButton.swift */,
 				B78847952E674D3800AE7221 /* URLService */,
 				B7CC4D5B2D90C00800254F55 /* CGSize+Center.swift */,
 				9BD75D6D2E763A10008BF846 /* URL+SafeCopyOut.swift */,
@@ -1592,6 +1595,7 @@
 				B79580182E8C5E3500B9A38F /* AllAnnouncementsWidget.swift in Sources */,
 				B79101D42E8B09F50090BBB1 /* ListWidget.swift in Sources */,
 				B7C469D42E6C831E00310982 /* GetFrontPageRequest.swift in Sources */,
+				B7909DAB2E99CC6100E37387 /* CompatibleGlassProminentButton.swift in Sources */,
 				B533C0BE2CADDDE700A74AF6 /* PeopleCommonView.swift in Sources */,
 				B7C0A3C72D2F4E82003E5A36 /* GetFileRequest.swift in Sources */,
 				A31A81E72D0CCB69003C37EB /* GradesViewModel.swift in Sources */,

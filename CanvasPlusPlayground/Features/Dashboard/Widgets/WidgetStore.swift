@@ -72,7 +72,7 @@ class WidgetStore {
 
     /// Metadata about an available widget type
     @MainActor
-    struct WidgetTypeInfo: Identifiable {
+    struct WidgetTypeInfo: Identifiable, Hashable {
         let id: String
         let displayName: String
         let description: String
