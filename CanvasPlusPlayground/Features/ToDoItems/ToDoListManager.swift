@@ -8,12 +8,27 @@
 import SwiftUI
 
 @Observable
-class ToDoListManager {
+class ToDoListManager: ListWidgetDataSource {
     var toDoItems: Set<ToDoItem> = []
     var toDoItemCount: Int?
 
     var displayedToDoItems: [ToDoItem] {
         Array(toDoItems).sorted { $0.dueDate ?? Date() < $1.dueDate ?? Date() }
+    }
+
+    // ListWidgetDataSource
+    var fetchStatus: WidgetFetchStatus = .loading
+    var widgetData: [ListWidgetData] {
+        get {
+            displayedToDoItems.map {
+                .init(
+                    id: $0.id,
+                    title: $0.title,
+                    description: "Due \($0.dueDate?.formatted(date: .abbreviated, time: .omitted) ?? "-")"
+                )
+            }
+        }
+        set { }
     }
 
     func fetchToDoItemCount() async {
@@ -100,6 +115,26 @@ class ToDoListManager {
             self.toDoItems = Set(newItems)
         } else {
             self.toDoItems.formUnion(newItems)
+        }
+    }
+
+    // MARK: ListWidgetDataSource
+    func fetchData(context: WidgetContext) async throws {
+        guard let courseManager = context.courseManager else {
+            fetchStatus = .error
+            return
+        }
+
+        fetchStatus = .loading
+        await fetchToDoItems(courses: courseManager.favoritedCourses)
+        fetchStatus = .loaded
+    }
+
+    func destinationView(for data: ListWidgetData) -> NavigationModel.Destination {
+        return if let item = displayedToDoItems.first(where: { $0.id == data.id }) {
+            item.navigationDestination() ?? .allToDos
+        } else {
+            .allToDos
         }
     }
 }

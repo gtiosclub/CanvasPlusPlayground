@@ -1,0 +1,170 @@
+//
+//  Widget.swift
+//  CanvasPlusPlayground
+//
+//  Created by Rahul on 9/25/25.
+//
+
+import Foundation
+import SwiftUI
+
+@MainActor
+/// The base protocol that represents a dashboard widget component.
+protocol Widget: Identifiable where ID == String {
+    associatedtype Body: View
+    associatedtype Contents: View
+    associatedtype DataSource: WidgetDataSource
+
+    static var widgetID: String { get }
+    static var displayName: String { get }
+    static var description: String { get }
+    static var systemImage: String { get }
+    static var color: Color { get }
+    static var allowedSizes: [WidgetSize] { get }
+    var title: String { get }
+    var mainBody: Body { get }
+    var contents: Contents { get }
+    func adaptedContents(for size: WidgetSize) -> AnyView
+    var destination: NavigationModel.Destination { get }
+    var dataSource: DataSource { get set }
+}
+
+extension Widget {
+    var id: String { Self.widgetID }
+
+    // Instance properties that delegate to static
+    var systemImage: String { Self.systemImage }
+    var color: Color { Self.color }
+    var allowedSizes: [WidgetSize] { Self.allowedSizes }
+}
+
+extension Widget {
+    var mainBody: some View {
+        DefaultWidgetBody(widget: self)
+    }
+
+    static var color: Color {
+        .accentColor
+    }
+
+    static var allowedSizes: [WidgetSize] {
+        [.small, .medium, .large]
+    }
+
+    func adaptedContents(for size: WidgetSize) -> AnyView {
+        AnyView(contents)
+    }
+}
+
+class WidgetContext {
+    static let shared: WidgetContext = .init()
+
+    private(set) var courseManager: CourseManager?
+
+    private init() { }
+
+    static func setup(courseManager: CourseManager) {
+        shared.courseManager = courseManager
+    }
+}
+
+/// A protocol defining the requirements for a data source used by a Dashboard Widget.
+protocol WidgetDataSource {
+    associatedtype Data: Identifiable
+
+    var widgetData: [Data] { get set }
+    var fetchStatus: WidgetFetchStatus { get set }
+    func fetchData(context: WidgetContext) async throws
+    func destinationView(for data: Data) -> NavigationModel.Destination
+}
+
+enum WidgetFetchStatus {
+    case loading
+    case loaded
+    case error
+}
+
+struct DefaultWidgetBody: View {
+    let widget: any Widget
+    @Environment(\.widgetSize) private var widgetSize: WidgetSize
+    @Environment(\.isWidgetNavigationEnabled) private var isWidgetNavigationEnabled: Bool
+
+    var body: some View {
+        Group {
+            if isWidgetNavigationEnabled {
+                NavigationLink(value: widget.destination) {
+                    label
+                }
+            } else {
+                label
+            }
+        }
+        .buttonStyle(.plain)
+    }
+
+    private var label: some View {
+        VStack {
+            Header(widget: widget)
+
+            ContentView(widget: widget, widgetSize: widgetSize)
+        }
+        .task(id: widgetSize) {
+            // Only fetch if not already loaded
+            guard widget.dataSource.fetchStatus != .loaded else { return }
+            try? await widget.dataSource
+                .fetchData(context: WidgetContext.shared)
+        }
+        .padding(12)
+        .background {
+            RoundedRectangle(cornerRadius: 16.0)
+                .fill(.thinMaterial)
+                .strokeBorder(.ultraThickMaterial)
+        }
+    }
+
+    private struct ContentView: View {
+        let widget: any Widget
+        let widgetSize: WidgetSize
+
+        var body: some View {
+            Group {
+                switch widget.dataSource.fetchStatus {
+                case .loading: ProgressView().controlSize(.small)
+                case .loaded: widget.adaptedContents(for: widgetSize)
+                case .error: Text("Could not load content")
+                }
+            }
+        }
+    }
+
+    private struct Header: View {
+        let widget: any Widget
+
+        var body: some View {
+            HStack {
+                Label(widget.title, systemImage: widget.systemImage)
+                    .font(.headline)
+                    .fontDesign(.rounded)
+                    .bold()
+
+                Spacer()
+
+                Image(systemName: "chevron.right")
+                    .foregroundStyle(.secondary)
+            }
+            .foregroundStyle(widget.color)
+        }
+    }
+}
+
+private struct WidgetNavigationEnabledEnvironmentKey: EnvironmentKey {
+    static let defaultValue: Bool = true
+}
+
+extension EnvironmentValues {
+    /// Determines whether tapping on a widget or its contents navigates to a destination.
+    var isWidgetNavigationEnabled: Bool {
+        get { self[WidgetNavigationEnabledEnvironmentKey.self] }
+        set { self[WidgetNavigationEnabledEnvironmentKey.self] = newValue }
+    }
+}

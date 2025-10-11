@@ -9,42 +9,11 @@ import SwiftUI
 
 @Observable
 class NavigationModel {
-    enum NavigationPage: Hashable, RawRepresentable {
-        init?(rawValue: String) {
-            if rawValue.hasPrefix("course") {
-                guard let id = rawValue.split(separator: "/").last else { return nil }
-                self = .course(id: String(id))
-            } else {
-                switch rawValue {
-                case "announcements":
-                    self = .announcements
-                case "todoList":
-                    self = .toDoList
-                case "pinned":
-                    self = .pinned
-                default:
-                    return nil
-                }
-            }
-        }
-
-        case course(id: Course.ID)
-        case announcements
-        case toDoList
-        case pinned
-
-        var rawValue: String {
-            switch self {
-            case .course(id: let id):
-                "course/\(id)"
-            case .announcements:
-                "announcements"
-            case .toDoList:
-                "todoList"
-            case .pinned:
-                "pinned"
-            }
-        }
+    enum Tab: Hashable {
+        case allCourses // iPhone only
+        case dashboard
+        case search
+        case course(Course.ID) // macOS/iPadOS only, all course tabs share the same navigation path
     }
 
     enum CoursePage: String, CaseIterable, Codable {
@@ -100,15 +69,19 @@ class NavigationModel {
     }
 
     enum Destination: Hashable {
+        case allAnnouncements
+        case allToDos
         case course(Course)
         case coursePage(CoursePage, Course)
-
         case announcement(DiscussionTopic)
         case assignment(Assignment)
         case page(Page)
         case file(File, Course.ID)
         case folder(Folder, Course)
         case quiz(Quiz)
+
+        // TODO: Add top level views like all announcements, pinned items, etc
+
         // TODO: Add specific course items as needed.
         @ViewBuilder
         func destinationView() -> some View {
@@ -129,17 +102,46 @@ class NavigationModel {
                 FoldersPageView(course: course, folder: folder)
             case let .quiz(quiz):
                 QuizDetailView(quiz: quiz)
+            case .allAnnouncements:
+                AllAnnouncementsView()
+            case .allToDos:
+                ToDoListView()
             }
         }
     }
 
-    var navigationPath = NavigationPath()
-    var selectedNavigationPage: NavigationPage? {
+    // MARK: - Tab-based navigation
+    var selectedTab: Tab = .dashboard {
         didSet {
-            selectedCoursePage = nil
+            // when switching tab, flush the course path, this is unique to mac and ipad
+            coursePath = NavigationPath()
         }
     }
-    var selectedCoursePage: CoursePage?
+
+    // Each tab maintains its own NavigationPath (stack)
+    var allCoursesPath = NavigationPath() // for Tab.allCourses
+    var dashboardPath = NavigationPath()
+
+    var coursePath = NavigationPath() // for Tab.course(id:)
+
+    var navigationPath: NavigationPath {
+        set {
+            switch selectedTab {
+            case .allCourses: allCoursesPath = newValue
+            case .dashboard: dashboardPath = newValue
+            case .course: coursePath = newValue
+            default: allCoursesPath = newValue
+            }
+        }
+        get {
+            switch selectedTab {
+            case .allCourses: return allCoursesPath
+            case .dashboard: return dashboardPath
+            case .course: return coursePath
+            default: return allCoursesPath
+            }
+        }
+    }
     var showAuthorizationSheet = false
     var showProfileSheet = false
     #if os(iOS)

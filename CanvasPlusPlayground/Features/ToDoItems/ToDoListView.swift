@@ -30,7 +30,7 @@ struct ToDoListView: View {
 
     var body: some View {
         List(displayedResults, selection: $selectedItem) { item in
-            NavigationLink(value: itemTypeToDestination(for: item)) {
+            NavigationLink(value: item.navigationDestination()) {
                 ToDoItemRow(item: item) {
                     Task {
                         await listManager.ignoreToDoItem(item)
@@ -99,20 +99,6 @@ struct ToDoListView: View {
         await listManager.fetchToDoItems(courses: courseManager.activeCourses)
         isLoading = false
     }
-
-    private func itemTypeToDestination(for item: ToDoItem) -> NavigationModel.Destination? {
-        if let type = item.itemType {
-            switch type {
-            case .assignment(let assignment):
-                return .assignment(assignment)
-            case .quiz:
-                // TODO: Support Quiz Detail View
-                return nil
-            }
-        }
-
-        return nil
-    }
 }
 
 private struct ToDoItemRow: View {
@@ -143,7 +129,7 @@ private struct ToDoItemRow: View {
         .contextMenu {
             if let course = item.course {
                 Button("Go to Course...", systemImage: "folder") {
-                    navigationModel.selectedNavigationPage = .course(id: course.id)
+                    navigationModel.navigationPath.append(NavigationModel.Destination.course(course))
                 }
             }
 

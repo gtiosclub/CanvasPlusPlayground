@@ -8,59 +8,53 @@
 import SwiftUI
 
 struct HomeView: View {
-    typealias NavigationPage = NavigationModel.NavigationPage
-
     @Environment(ToDoListManager.self) private var toDoListManager
     @Environment(ProfileManager.self) private var profileManager
     @Environment(CourseManager.self) private var courseManager
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     @State private var columnVisibility = NavigationSplitViewVisibility.all
     @State private var isLoadingCourses = false
-    @State var navigationModel = NavigationModel()
-
-    @SceneStorage("CourseListView.selectedNavigationPage")
-    private var selectedNavigationPage: NavigationPage?
-
-    @SceneStorage("CourseListView.selectedCoursePage")
-    private var selectedCoursePage: NavigationModel.CoursePage?
-
-    private var selectedCourse: Course? {
-        guard let selectedNavigationPage, case .course(let id) = selectedNavigationPage else {
-            return nil
-        }
-
-        return courseManager.activeCourses.first(where: { $0.id == id })
-    }
+    @State private var navigationModel = NavigationModel()
 
     var body: some View {
         @Bindable var courseManager = courseManager
         @Bindable var navigationModel = navigationModel
 
-        NavigationSplitView(columnVisibility: $columnVisibility) {
-            Sidebar()
-                .statusToolbarItem("Courses", isVisible: isLoadingCourses)
-                .refreshable {
-                    await loadCourses()
+        TabView(selection: $navigationModel.selectedTab) {
+            // dashboard
+            Tab("Dashboard", systemImage: "rectangle.grid.2x2.fill", value: .dashboard) {
+                NavigationStack(path: $navigationModel.dashboardPath) {
+                    DashboardView()
                 }
-        } detail: {
-            contentView
+            }
+
+            // course/courses
+            TabSection("Courses") {
+                ForEach(courseManager.activeCourses) { course in
+                    Tab(value: NavigationModel.Tab.course(course.id)) {
+                        NavigationStack(path: $navigationModel.coursePath) {
+                            CourseView(course: course)
+                        }
+                    } label: {
+                        CourseListCell(course: course)
+                    }
+                }
+            }
+            .hidden(horizontalSizeClass == .compact)
+
+            Tab("Courses", systemImage: "book.pages.fill", value: .allCourses) {
+                coursesTabView
+            }
+            .hidden(horizontalSizeClass == .regular)
         }
-        .task {
-            navigationModel.selectedNavigationPage = selectedNavigationPage
-            navigationModel.selectedCoursePage = selectedCoursePage
-        }
+        .tabViewStyle(.sidebarAdaptable)
         .task {
             if StorageKeys.needsAuthorization {
                 navigationModel.showAuthorizationSheet = true
             } else {
                 await loadCourses()
             }
-        }
-        .onChange(of: navigationModel.selectedNavigationPage) { _, new in
-            selectedNavigationPage = new
-        }
-        .onChange(of: navigationModel.selectedCoursePage) { _, new in
-            selectedCoursePage = new
         }
         .sheet(isPresented: $navigationModel.showAuthorizationSheet) {
             NavigationStack {
@@ -86,36 +80,6 @@ struct HomeView: View {
         .environment(navigationModel)
     }
 
-    @ViewBuilder
-    private var contentView: some View {
-        @Bindable var navigationModel = navigationModel
-
-        NavigationStack(path: $navigationModel.navigationPath) {
-            if let selectedCourse {
-                CourseView(course: selectedCourse)
-                    .defaultNavigationDestination(courseID: selectedCourse.id)
-            } else if let selectedNavigationPage {
-                Group {
-                    switch selectedNavigationPage {
-                    case .announcements:
-                        AllAnnouncementsView()
-                    case .toDoList:
-                        ToDoListView()
-                    case .pinned:
-                        PinnedItemsView()
-                    default:
-                        EmptyView()
-                    }
-                }
-                .navigationDestination(for: NavigationModel.Destination.self) { destination in
-                    destination.destinationView()
-                }
-            } else {
-                ContentUnavailableView("Select a course", systemImage: "folder")
-            }
-        }
-    }
-
     private func loadCourses() async {
         isLoadingCourses = true
 
@@ -126,6 +90,22 @@ struct HomeView: View {
         await (_, _, _) = (coursesTask, profileTask, todoTask)
 
         isLoadingCourses = false
+    }
+
+    @ViewBuilder
+    private var coursesTabView: some View {
+        NavigationStack(path: $navigationModel.allCoursesPath) {
+            List(courseManager.activeCourses) { course in
+                NavigationLink(value: NavigationModel.Destination.course(course)) {
+                    CourseListCell(course: course)
+                }
+                .listItemTint(.fixed(course.rgbColors?.color ?? .accentColor))
+            }
+            .navigationTitle("Courses")
+            .navigationDestination(for: NavigationModel.Destination.self) { destination in
+                destination.destinationView()
+            }
+        }
     }
 }
 

@@ -15,6 +15,7 @@ struct SettingsView: View {
 
     @State private var selectedItem: (any PickableItem)?
     @State private var selectedCourseForItemPicker: Course?
+    @State private var showWidgetShowcase = false
     #endif
 
     @Environment(\.dismiss) private var dismiss
@@ -30,6 +31,12 @@ struct SettingsView: View {
         #if DEBUG
         .sheet(item: $selectedCourseForItemPicker) {
             CourseItemPicker(course: $0, selectedItem: $selectedItem)
+        }
+        .sheet(isPresented: $showWidgetShowcase) {
+            NavigationStack {
+                WidgetShowcase()
+            }
+            .environment(courseManager)
         }
         #endif
         .sheet(isPresented: $showChangeAccessToken) {
@@ -87,6 +94,9 @@ struct SettingsView: View {
 
         Section {
             Group {
+                Button("Show Widget Showcase", systemImage: "widget.small") {
+                    showWidgetShowcase = true
+                }
                 Button("View Item Picker", systemImage: "filemenu.and.selection") {
                     selectedCourseForItemPicker = courseManager.activeCourses.first
                 }
