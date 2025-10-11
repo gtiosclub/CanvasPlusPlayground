@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct DashboardView: View {
-    typealias ConfiguredWidget = WidgetStore.ConfiguredWidget
+fileprivate typealias ConfiguredWidget = WidgetStore.ConfiguredWidget
 
+struct DashboardView: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Environment(NavigationModel.self) private var navigationModel
     @Environment(CourseManager.self) private var courseManager
@@ -25,13 +25,13 @@ struct DashboardView: View {
                 maxMediumWidgetWidth: maxMediumWidgetWidth,
                 maxLargeWidgetWidth: maxLargeWidgetWidth
             ) {
-                ForEach(widgetStore.widgets.indices, id: \.self) { index in
-                    let item = widgetStore.widgets[index]
+                ForEach(widgetStore.widgets) { item in
                     item.widget.mainBody
                         .widgetSize(item.configuration.size)
                         .contextMenu {
-                            widgetContextMenu(for: item, configBinding: configurationBinding(at: index))
+                            WidgetContextMenu(item: item)
                         }
+                        .transition(.scale.combined(with: .blurReplace))
                 }
             }
             .padding()
@@ -66,25 +66,45 @@ struct DashboardView: View {
         .defaultNavigationDestination(courseID: "")
     }
 
-    private func configurationBinding(at index: Int) -> Binding<WidgetConfiguration> {
-        let configID = widgetStore.widgets[index].configuration.id
-        guard let configIndex = widgetStore.widgetConfigurations.firstIndex(where: { $0.id == configID }) else {
-            fatalError("Configuration not found")
-        }
-        return $widgetStore.widgetConfigurations[configIndex]
+    private var vSpacing: CGFloat {
+        horizontalSizeClass == .compact ? 80 : 20
     }
 
-    @ViewBuilder
-    private func widgetContextMenu(for item: ConfiguredWidget, configBinding: Binding<WidgetConfiguration>) -> some View {
-        Picker("Size", selection: configBinding.size) {
-            ForEach(item.widget.allowedSizes, id: \.self) { size in
-                Label(size.label, systemImage: size.systemImage)
-                    .tag(size)
-            }
-        }
-        .pickerStyle(.inline)
+    private var maxSmallWidgetWidth: CGFloat? {
+        guard horizontalSizeClass == .regular else { return nil }
 
-        Divider()
+        return 200
+    }
+
+    private var maxMediumWidgetWidth: CGFloat? {
+        guard horizontalSizeClass == .regular else { return nil }
+
+        return 250
+    }
+
+    private var maxLargeWidgetWidth: CGFloat? {
+        guard horizontalSizeClass == .regular else { return nil }
+
+        return 350
+    }
+}
+
+private struct WidgetContextMenu: View {
+    let item: ConfiguredWidget
+    @Bindable var widgetStore = WidgetStore.shared
+
+    var body: some View {
+        if let configurationBinding {
+            Picker("Size", selection: configurationBinding.size) {
+                ForEach(item.widget.allowedSizes, id: \.self) { size in
+                    Label(size.label, systemImage: size.systemImage)
+                        .tag(size)
+                }
+            }
+            .pickerStyle(.inline)
+
+            Divider()
+        }
 
         Button(role: .destructive) {
             widgetStore.removeWidget(configurationID: item.configuration.id)
@@ -93,30 +113,11 @@ struct DashboardView: View {
         }
     }
 
-    var vSpacing: CGFloat {
-        if horizontalSizeClass == .compact {
-            60
-        } else {
-            20
+    var configurationBinding: Binding<WidgetConfiguration>? {
+        let configID = item.configuration.id
+        guard let configIndex = widgetStore.widgetConfigurations.firstIndex(where: { $0.id == configID }) else {
+            return nil
         }
-    }
-
-    var maxSmallWidgetWidth: CGFloat? {
-        guard horizontalSizeClass == .regular else { return nil }
-
-        return 200
-    }
-
-    var maxMediumWidgetWidth: CGFloat? {
-        guard horizontalSizeClass == .regular else { return nil }
-
-        return 250
-    }
-
-    var maxLargeWidgetWidth: CGFloat? {
-        guard horizontalSizeClass == .regular else { return nil }
-
-        return 350
+        return $widgetStore.widgetConfigurations[configIndex]
     }
 }
-
