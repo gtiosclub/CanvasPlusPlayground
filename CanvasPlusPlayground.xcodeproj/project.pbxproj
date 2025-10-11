@@ -211,6 +211,12 @@
 		B7AD54F52CD41D7900FB09BB /* IntelligenceSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AD54EF2CD41D7900FB09BB /* IntelligenceSupport.swift */; };
 		B7AF50E12E99F14800457E8A /* ReorderWidgetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AF50E02E99F14800457E8A /* ReorderWidgetsView.swift */; };
 		B7AF50E32E99F59300457E8A /* WidgetStore+AvailableWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AF50E22E99F58D00457E8A /* WidgetStore+AvailableWidgets.swift */; };
+		B7AF50E92E9AF66700457E8A /* LogRecentItemModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AF50E52E9AF66700457E8A /* LogRecentItemModifier.swift */; };
+		B7AF50EA2E9AF66700457E8A /* RecentItemsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AF50E72E9AF66700457E8A /* RecentItemsManager.swift */; };
+		B7AF50EB2E9AF66700457E8A /* RecentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AF50E62E9AF66700457E8A /* RecentItem.swift */; };
+		B7AF50ED2E9AF77100457E8A /* RecentItemData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AF50EC2E9AF77100457E8A /* RecentItemData.swift */; };
+		B7AF50EF2E9AF9E700457E8A /* RecentItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AF50EE2E9AF9E700457E8A /* RecentItemsView.swift */; };
+		B7AF50F12E9AF9EF00457E8A /* RecentItemCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AF50F02E9AF9EF00457E8A /* RecentItemCard.swift */; };
 		B7C0A3BD2D2F1F2E003E5A36 /* PinnedItemsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0A3BC2D2F1F25003E5A36 /* PinnedItemsManager.swift */; };
 		B7C0A3BF2D2F2251003E5A36 /* PinnedItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0A3BE2D2F224C003E5A36 /* PinnedItemsView.swift */; };
 		B7C0A3C52D2F4C19003E5A36 /* GetAssignmentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0A3C42D2F4C11003E5A36 /* GetAssignmentRequest.swift */; };
@@ -479,6 +485,12 @@
 		B7AD54EF2CD41D7900FB09BB /* IntelligenceSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntelligenceSupport.swift; sourceTree = "<group>"; };
 		B7AF50E02E99F14800457E8A /* ReorderWidgetsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReorderWidgetsView.swift; sourceTree = "<group>"; };
 		B7AF50E22E99F58D00457E8A /* WidgetStore+AvailableWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WidgetStore+AvailableWidgets.swift"; sourceTree = "<group>"; };
+		B7AF50E52E9AF66700457E8A /* LogRecentItemModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogRecentItemModifier.swift; sourceTree = "<group>"; };
+		B7AF50E62E9AF66700457E8A /* RecentItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentItem.swift; sourceTree = "<group>"; };
+		B7AF50E72E9AF66700457E8A /* RecentItemsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentItemsManager.swift; sourceTree = "<group>"; };
+		B7AF50EC2E9AF77100457E8A /* RecentItemData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentItemData.swift; sourceTree = "<group>"; };
+		B7AF50EE2E9AF9E700457E8A /* RecentItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentItemsView.swift; sourceTree = "<group>"; };
+		B7AF50F02E9AF9EF00457E8A /* RecentItemCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentItemCard.swift; sourceTree = "<group>"; };
 		B7C0A3BC2D2F1F25003E5A36 /* PinnedItemsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedItemsManager.swift; sourceTree = "<group>"; };
 		B7C0A3BE2D2F224C003E5A36 /* PinnedItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedItemsView.swift; sourceTree = "<group>"; };
 		B7C0A3C42D2F4C11003E5A36 /* GetAssignmentRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAssignmentRequest.swift; sourceTree = "<group>"; };
@@ -666,6 +678,7 @@
 				A324BA522D079666005F53FA /* Courses */,
 				A324BA512D079646005F53FA /* Announcements */,
 				A3D022602D6A715400F8068C /* Pages */,
+				B7AF50E82E9AF66700457E8A /* Recent Items */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -1143,6 +1156,19 @@
 			path = Intelligence;
 			sourceTree = "<group>";
 		};
+		B7AF50E82E9AF66700457E8A /* Recent Items */ = {
+			isa = PBXGroup;
+			children = (
+				B7AF50E52E9AF66700457E8A /* LogRecentItemModifier.swift */,
+				B7AF50E62E9AF66700457E8A /* RecentItem.swift */,
+				B7AF50EC2E9AF77100457E8A /* RecentItemData.swift */,
+				B7AF50E72E9AF66700457E8A /* RecentItemsManager.swift */,
+				B7AF50F02E9AF9EF00457E8A /* RecentItemCard.swift */,
+				B7AF50EE2E9AF9E700457E8A /* RecentItemsView.swift */,
+			);
+			path = "Recent Items";
+			sourceTree = "<group>";
+		};
 		B7C469D02E6C80D500310982 /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -1441,6 +1467,7 @@
 				A3FFD03A2CDEC2AC006BAB51 /* LookupCondition.swift in Sources */,
 				B7D95DB72D0A8D78002AD955 /* SettingsView.swift in Sources */,
 				A330B88B2DA5663700D6C1C3 /* ModelContext+Utilities.swift in Sources */,
+				B7AF50F12E9AF9EF00457E8A /* RecentItemCard.swift in Sources */,
 				B7A12F3F2D69441500EDFA0A /* GetAssignmentGroupsRequest.swift in Sources */,
 				9BEB4ED02D56AF570013869D /* AssignmentDetailView.swift in Sources */,
 				A3049B592D0E5A96002F3166 /* LockInfo.swift in Sources */,
@@ -1468,6 +1495,7 @@
 				B72D82C12E4B503B00BA1DAD /* AnnouncementSummaryService.swift in Sources */,
 				B76455042C8DF61B002DF00E /* CourseView.swift in Sources */,
 				A372D1042D90BEB4005E94CA /* CanvasGroup.swift in Sources */,
+				B7AF50EF2E9AF9E700457E8A /* RecentItemsView.swift in Sources */,
 				B75684FA2DA7A080003B4A32 /* GetSingleDiscussionTopicRequest.swift in Sources */,
 				A3049B682D0F3ECA002F3166 /* QuizzesViewModel.swift in Sources */,
 				A3CF88D12D18E61B000ACDF3 /* APIResponse.swift in Sources */,
@@ -1501,11 +1529,15 @@
 				B7CC4D462D8DFFA500254F55 /* CourseItemPicker.swift in Sources */,
 				A3049B812D160F6B002F3166 /* GetAnnouncementsRequest.swift in Sources */,
 				A373DC332D2819F700215019 /* APIModuleItem.swift in Sources */,
+				B7AF50E92E9AF66700457E8A /* LogRecentItemModifier.swift in Sources */,
+				B7AF50EA2E9AF66700457E8A /* RecentItemsManager.swift in Sources */,
+				B7AF50EB2E9AF66700457E8A /* RecentItem.swift in Sources */,
 				B7CC4D562D90BF3400254F55 /* IntelligenceContentView.swift in Sources */,
 				A373DC162D1A3C8700215019 /* RequestMethod.swift in Sources */,
 				B7AF50E12E99F14800457E8A /* ReorderWidgetsView.swift in Sources */,
 				A324BA682D07C2E9005F53FA /* FileViewer.swift in Sources */,
 				B7C469D62E6C84CC00310982 /* WikiFrontPage.swift in Sources */,
+				B7AF50ED2E9AF77100457E8A /* RecentItemData.swift in Sources */,
 				B7532E942E9814F10045CFB6 /* WidgetStore.swift in Sources */,
 				B7E59A162D200775001836FE /* CourseDetailView.swift in Sources */,
 				A3D022592D6A5BC500F8068C /* Data+Empty.swift in Sources */,

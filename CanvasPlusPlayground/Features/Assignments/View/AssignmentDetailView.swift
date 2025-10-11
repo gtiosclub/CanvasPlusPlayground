@@ -26,6 +26,11 @@ struct AssignmentDetailView: View {
         .toolbar {
             ReminderButton(item: .assignment(assignment))
         }
+        .logRecentItem(
+            itemID: assignment.id,
+            courseID: assignment.courseId?.asString ?? "",
+            type: .assignment
+        )
         .task {
             await fetchSubmissions()
             await fetchCanSubmitStatus()
