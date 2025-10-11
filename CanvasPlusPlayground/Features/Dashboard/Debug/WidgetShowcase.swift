@@ -14,7 +14,10 @@ struct WidgetShowcase: View {
         ScrollView {
             VStack(spacing: 24) {
                 ForEach(WidgetStore.availableWidgetTypes) { widgetType in
-                    WidgetTypeSection(widgetType: widgetType)
+                    NavigationLink(value: widgetType) {
+                        WidgetTypeSection(widgetType: widgetType)
+                    }
+                    .buttonStyle(.plain)
                 }
             }
             .padding()
@@ -41,10 +44,7 @@ private struct WidgetTypeSection: View {
         VStack(alignment: .leading, spacing: 12) {
             WidgetTypeHeader(widgetType: widgetType)
 
-            NavigationLink(value: widgetType) {
-                WidgetPreviewThumbnail(widgetType: widgetType)
-            }
-            .buttonStyle(.plain)
+            WidgetPreviewThumbnail(widgetType: widgetType)
 
             Divider()
         }
@@ -121,50 +121,52 @@ private struct WidgetDetailView: View {
     }
 
     var body: some View {
-        VStack(spacing: 24) {
-            WidgetTypeHeader(widgetType: widgetType)
-                .padding(.horizontal)
+        ScrollView {
+            VStack(spacing: 24) {
+                WidgetTypeHeader(widgetType: widgetType)
+                    .padding(.horizontal)
 
-            // Size picker
-            if widgetType.allowedSizes.count > 1 {
-                Picker("Size", selection: $selectedSize) {
-                    ForEach(widgetType.allowedSizes, id: \.self) { size in
-                        Label(size.label, systemImage: size.systemImage)
-                            .tag(size as WidgetSize?)
+                // Size picker
+                if widgetType.allowedSizes.count > 1 {
+                    Picker("Size", selection: $selectedSize) {
+                        ForEach(widgetType.allowedSizes, id: \.self) { size in
+                            Label(size.label, systemImage: size.systemImage)
+                                .tag(size as WidgetSize?)
+                        }
                     }
+                    .pickerStyle(.segmented)
+                    .padding(.horizontal)
                 }
-                .pickerStyle(.segmented)
-                .padding(.horizontal)
-            }
 
-            Spacer()
+                Spacer()
 
-            // Widget preview
-            if let selectedSize {
-                VStack {
-                    if let cachedWidget {
-                        cachedWidget.mainBody
-                            .widgetSize(selectedSize)
-                            .frame(
-                                width: widgetWidth(for: selectedSize),
-                                height: widgetHeight(for: selectedSize)
-                            )
-                    } else {
-                        Text("Preview unavailable")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 160)
-                            .background {
-                                RoundedRectangle(cornerRadius: 16)
-                                    .fill(.thinMaterial)
-                            }
+                // Widget preview
+                if let selectedSize {
+                    VStack {
+                        if let cachedWidget {
+                            cachedWidget.mainBody
+                                .widgetSize(selectedSize)
+                                .frame(
+                                    width: widgetWidth(for: selectedSize),
+                                    height: widgetHeight(for: selectedSize)
+                                )
+                        } else {
+                            Text("Preview unavailable")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 160)
+                                .background {
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .fill(.thinMaterial)
+                                }
+                        }
                     }
+                    .padding(.horizontal)
                 }
-                .padding(.horizontal)
-            }
 
-            Spacer()
+                Spacer()
+            }
         }
         .onAppear {
             if cachedWidget == nil, let widget = widgetType.createWidget() {

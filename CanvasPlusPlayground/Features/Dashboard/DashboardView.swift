@@ -16,6 +16,7 @@ struct DashboardView: View {
     @Environment(ProfileManager.self) private var profileManager
 
     @Bindable var widgetStore = WidgetStore.shared
+    @State private var showWidgetShowcase = false
 
     var body: some View {
         ScrollView {
@@ -49,6 +50,17 @@ struct DashboardView: View {
         }
         #endif
         .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Menu("More options...", systemImage: "ellipsis") {
+                    Button(
+                        "Edit Dashboard",
+                        systemImage: "square.grid.3x3.fill.square"
+                    ) {
+                        showWidgetShowcase = true
+                    }
+                }
+            }
+
             ToolbarItem(placement: .confirmationAction) {
                 if let currentUser = profileManager.currentUser {
                     Button {
@@ -62,6 +74,14 @@ struct DashboardView: View {
                     }
                 }
             }
+        }
+        .sheet(isPresented: $showWidgetShowcase) {
+            NavigationStack {
+                WidgetShowcase()
+            }
+            #if os(macOS)
+            .frame(width: 650, height: 550)
+            #endif
         }
         .defaultNavigationDestination(courseID: "")
     }
