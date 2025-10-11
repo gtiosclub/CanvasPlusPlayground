@@ -1159,14 +1159,22 @@
 		B7AF50E82E9AF66700457E8A /* Recent Items */ = {
 			isa = PBXGroup;
 			children = (
-				B7AF50E52E9AF66700457E8A /* LogRecentItemModifier.swift */,
+				B7AF50F22E9AFD8400457E8A /* Helpers */,
 				B7AF50E62E9AF66700457E8A /* RecentItem.swift */,
 				B7AF50EC2E9AF77100457E8A /* RecentItemData.swift */,
 				B7AF50E72E9AF66700457E8A /* RecentItemsManager.swift */,
-				B7AF50F02E9AF9EF00457E8A /* RecentItemCard.swift */,
 				B7AF50EE2E9AF9E700457E8A /* RecentItemsView.swift */,
 			);
 			path = "Recent Items";
+			sourceTree = "<group>";
+		};
+		B7AF50F22E9AFD8400457E8A /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				B7AF50E52E9AF66700457E8A /* LogRecentItemModifier.swift */,
+				B7AF50F02E9AF9EF00457E8A /* RecentItemCard.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		B7C469D02E6C80D500310982 /* Home */ = {

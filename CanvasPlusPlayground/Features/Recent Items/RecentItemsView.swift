@@ -52,7 +52,7 @@ struct RecentItemsView: View {
                     "No Recent Items",
                     systemImage: "clock",
                     description: Text(
-                        "Items you view will appear here for quick access."
+                        "Assignments, Announcements, and Files you view will appear here for quick access."
                     )
                 )
             }
