@@ -15,14 +15,27 @@ protocol Widget: Identifiable where ID == String {
     associatedtype Contents: View
     associatedtype DataSource: WidgetDataSource
 
-    var id: String { get }
+    static var widgetID: String { get }
+    static var displayName: String { get }
+    static var description: String { get }
+    static var systemImage: String { get }
+    static var color: Color { get }
+    static var allowedSizes: [WidgetSize] { get }
     var title: String { get }
-    var systemImage: String { get }
-    var color: Color { get }
     var mainBody: Body { get }
     var contents: Contents { get }
+    func adaptedContents(for size: WidgetSize) -> AnyView
     var destination: NavigationModel.Destination { get }
     var dataSource: DataSource { get set }
+}
+
+extension Widget {
+    var id: String { Self.widgetID }
+
+    // Instance properties that delegate to static
+    var systemImage: String { Self.systemImage }
+    var color: Color { Self.color }
+    var allowedSizes: [WidgetSize] { Self.allowedSizes }
 }
 
 extension Widget {
@@ -30,8 +43,16 @@ extension Widget {
         DefaultWidgetBody(widget: self)
     }
 
-    var color: Color {
+    static var color: Color {
         .accentColor
+    }
+
+    static var allowedSizes: [WidgetSize] {
+        [.small, .medium, .large]
+    }
+
+    func adaptedContents(for size: WidgetSize) -> AnyView {
+        AnyView(contents)
     }
 }
 
@@ -65,32 +86,55 @@ enum WidgetFetchStatus {
 
 struct DefaultWidgetBody: View {
     let widget: any Widget
+    @Environment(\.widgetSize) private var widgetSize: WidgetSize
+    @Environment(\.isWidgetNavigationEnabled) private var isWidgetNavigationEnabled: Bool
 
     var body: some View {
-        NavigationLink(value: widget.destination) {
-            VStack {
-                Header(widget: widget)
-
-                Group {
-                    switch widget.dataSource.fetchStatus {
-                    case .loading: ProgressView().controlSize(.small)
-                    case .loaded: AnyView(widget.contents)
-                    case .error: Text("Could not load content")
-                    }
+        Group {
+            if isWidgetNavigationEnabled {
+                NavigationLink(value: widget.destination) {
+                    label
                 }
-            }
-            .task {
-                try? await widget.dataSource
-                    .fetchData(context: WidgetContext.shared)
-            }
-            .padding(12)
-            .background {
-                RoundedRectangle(cornerRadius: 16.0)
-                    .fill(.thickMaterial)
-                    .strokeBorder(.thickMaterial)
+            } else {
+                label
             }
         }
         .buttonStyle(.plain)
+    }
+
+    private var label: some View {
+        VStack {
+            Header(widget: widget)
+
+            ContentView(widget: widget, widgetSize: widgetSize)
+        }
+        .task(id: widgetSize) {
+            // Only fetch if not already loaded
+            guard widget.dataSource.fetchStatus != .loaded else { return }
+            try? await widget.dataSource
+                .fetchData(context: WidgetContext.shared)
+        }
+        .padding(12)
+        .background {
+            RoundedRectangle(cornerRadius: 16.0)
+                .fill(.thinMaterial)
+                .strokeBorder(.ultraThickMaterial)
+        }
+    }
+
+    private struct ContentView: View {
+        let widget: any Widget
+        let widgetSize: WidgetSize
+
+        var body: some View {
+            Group {
+                switch widget.dataSource.fetchStatus {
+                case .loading: ProgressView().controlSize(.small)
+                case .loaded: widget.adaptedContents(for: widgetSize)
+                case .error: Text("Could not load content")
+                }
+            }
+        }
     }
 
     private struct Header: View {
@@ -110,5 +154,17 @@ struct DefaultWidgetBody: View {
             }
             .foregroundStyle(widget.color)
         }
+    }
+}
+
+private struct WidgetNavigationEnabledEnvironmentKey: EnvironmentKey {
+    static let defaultValue: Bool = true
+}
+
+extension EnvironmentValues {
+    /// Determines whether tapping on a widget or its contents navigates to a destination.
+    var isWidgetNavigationEnabled: Bool {
+        get { self[WidgetNavigationEnabledEnvironmentKey.self] }
+        set { self[WidgetNavigationEnabledEnvironmentKey.self] = newValue }
     }
 }

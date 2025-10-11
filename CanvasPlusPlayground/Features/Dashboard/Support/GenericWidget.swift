@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@MainActor
 protocol GenericWidget: Widget where DataSource: GenericWidgetDataSource { }
 
 protocol GenericWidgetDataSource: WidgetDataSource { }

@@ -76,6 +76,13 @@ struct CourseView: View {
             }
         }
         .defaultNavigationDestination(courseID: course.id)
+        .scrollContentBackground(.hidden)
+        .courseGradientBackground(
+            courses: [course],
+            isActive: course.rgbColors != nil,
+            backgroundStyle: .grouped,
+            showIcon: true
+        )
         .onAppear {
             selectedCoursePage = nil
         }

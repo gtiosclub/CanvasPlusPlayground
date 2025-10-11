@@ -7,11 +7,15 @@
 
 import SwiftUI
 
-struct AllToDosWidget: ListWidget {
-    var id: String = "all_todos"
-    var title: String = "To-Do"
-    var systemImage: String = "checklist"
-    var color: Color = .red
+struct AllToDosWidget: @MainActor ListWidget {
+    static var widgetID: String { "all_todos" }
+    static var displayName: String { "To-Do List" }
+    static var description: String { "Keep track of your upcoming assignments, quizzes, and tasks across all your courses." }
+    static var systemImage: String { "checklist" }
+    static var color: Color { .red }
+    static var allowedSizes: [WidgetSize] { [.small, .medium, .large] }
+
+    var title: String { "To-Do" }
     var destination: NavigationModel.Destination = .allToDos
 
     @MainActor

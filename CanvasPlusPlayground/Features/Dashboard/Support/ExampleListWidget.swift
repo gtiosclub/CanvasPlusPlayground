@@ -8,11 +8,14 @@
 #if DEBUG
 import SwiftUI
 
-fileprivate struct ExampleListWidget: ListWidget {
-    let id = "steps_widget"
-    let title = "Steps"
-    let systemImage = "figure.walk"
-    var color: Color = .orange
+fileprivate struct ExampleListWidget: @MainActor ListWidget {
+    static var widgetID: String { "steps_widget" }
+    static var displayName: String { "Steps" }
+    static var description: String { "Display latest steps data." }
+    static var systemImage: String { "figure.walk" }
+    static var color: Color { .orange }
+
+    var title: String { "Steps" }
     var destination: NavigationModel.Destination = .course(.sample)
     @State var dataSource: StepsDataSource = .init()
 }
