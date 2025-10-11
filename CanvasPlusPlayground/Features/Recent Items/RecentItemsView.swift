@@ -37,13 +37,7 @@ struct RecentItemsView: View {
             .padding()
         }
         .task {
-            await withTaskGroup { group in
-                for item in recentItemsManager.recentItems.filter({ $0.data == nil }) {
-                    group.addTask {
-                        try? await item.fetchData()
-                    }
-                }
-            }
+            await recentItemsManager.loadRecentItemsData()
         }
         .navigationTitle("Recent Items")
         .overlay {

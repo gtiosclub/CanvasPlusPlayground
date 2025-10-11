@@ -152,6 +152,8 @@ class WidgetStore {
             return AllAnnouncementsWidget()
         case AllToDosWidget.widgetID:
             return AllToDosWidget()
+        case RecentItemsWidget.widgetID:
+            return RecentItemsWidget()
         default:
             return nil
         }

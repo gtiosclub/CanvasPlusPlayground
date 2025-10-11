@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
 @MainActor
 /// The base protocol that represents a dashboard widget component.
@@ -74,6 +75,7 @@ protocol WidgetDataSource {
 
     var widgetData: [Data] { get set }
     var fetchStatus: WidgetFetchStatus { get set }
+    var refreshTrigger: PassthroughSubject<Void, Never> { get }
     func fetchData(context: WidgetContext) async throws
     func destinationView(for data: Data) -> NavigationModel.Destination
 }
@@ -110,9 +112,17 @@ struct DefaultWidgetBody: View {
         }
         .task(id: widgetSize) {
             // Only fetch if not already loaded
-            guard widget.dataSource.fetchStatus != .loaded else { return }
+            guard widget.dataSource.fetchStatus != .loaded else {
+                return
+            }
             try? await widget.dataSource
                 .fetchData(context: WidgetContext.shared)
+        }
+        .onReceive(widget.dataSource.refreshTrigger) {
+            Task {
+                try? await widget.dataSource
+                    .fetchData(context: WidgetContext.shared)
+            }
         }
         .padding(12)
         .background {

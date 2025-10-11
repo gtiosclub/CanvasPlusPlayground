@@ -217,6 +217,7 @@
 		B7AF50ED2E9AF77100457E8A /* RecentItemData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AF50EC2E9AF77100457E8A /* RecentItemData.swift */; };
 		B7AF50EF2E9AF9E700457E8A /* RecentItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AF50EE2E9AF9E700457E8A /* RecentItemsView.swift */; };
 		B7AF50F12E9AF9EF00457E8A /* RecentItemCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AF50F02E9AF9EF00457E8A /* RecentItemCard.swift */; };
+		B7AF50F42E9B03FC00457E8A /* RecentItemsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AF50F32E9B03FC00457E8A /* RecentItemsWidget.swift */; };
 		B7C0A3BD2D2F1F2E003E5A36 /* PinnedItemsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0A3BC2D2F1F25003E5A36 /* PinnedItemsManager.swift */; };
 		B7C0A3BF2D2F2251003E5A36 /* PinnedItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0A3BE2D2F224C003E5A36 /* PinnedItemsView.swift */; };
 		B7C0A3C52D2F4C19003E5A36 /* GetAssignmentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0A3C42D2F4C11003E5A36 /* GetAssignmentRequest.swift */; };
@@ -491,6 +492,7 @@
 		B7AF50EC2E9AF77100457E8A /* RecentItemData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentItemData.swift; sourceTree = "<group>"; };
 		B7AF50EE2E9AF9E700457E8A /* RecentItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentItemsView.swift; sourceTree = "<group>"; };
 		B7AF50F02E9AF9EF00457E8A /* RecentItemCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentItemCard.swift; sourceTree = "<group>"; };
+		B7AF50F32E9B03FC00457E8A /* RecentItemsWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentItemsWidget.swift; sourceTree = "<group>"; };
 		B7C0A3BC2D2F1F25003E5A36 /* PinnedItemsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedItemsManager.swift; sourceTree = "<group>"; };
 		B7C0A3BE2D2F224C003E5A36 /* PinnedItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedItemsView.swift; sourceTree = "<group>"; };
 		B7C0A3C42D2F4C11003E5A36 /* GetAssignmentRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAssignmentRequest.swift; sourceTree = "<group>"; };
@@ -1138,6 +1140,7 @@
 				B795801A2E8C64F800B9A38F /* WidgetShowcase.swift */,
 				B79580172E8C5E3100B9A38F /* AllAnnouncementsWidget.swift */,
 				B733340C2E916FE50011E8A9 /* AllToDosWidget.swift */,
+				B7AF50F32E9B03FC00457E8A /* RecentItemsWidget.swift */,
 			);
 			path = Widgets;
 			sourceTree = "<group>";
@@ -1655,6 +1658,7 @@
 				A3D161512D178615004055FB /* GetUserProfileRequest.swift in Sources */,
 				A3D161492D169C23004055FB /* CacheableAPIRequest+Storage.swift in Sources */,
 				9B6663E32C9853BC0060990E /* HTMLWebViewWrapper.swift in Sources */,
+				B7AF50F42E9B03FC00457E8A /* RecentItemsWidget.swift in Sources */,
 				267D85282E662AC5007F821B /* FocusWindowInfo.swift in Sources */,
 				B7CC4D432D8DFF0A00254F55 /* PickerServiceViewModifier.swift in Sources */,
 				B73AE0BD2D4FB68B007094A8 /* Profile.swift in Sources */,
