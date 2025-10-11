@@ -17,6 +17,7 @@ struct DashboardView: View {
 
     @Bindable var widgetStore = WidgetStore.shared
     @State private var showWidgetShowcase = false
+    @State private var showReorderWidgets = false
 
     var body: some View {
         ScrollView {
@@ -51,13 +52,21 @@ struct DashboardView: View {
         #endif
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
-                Menu("More options...", systemImage: "ellipsis") {
+                Menu("Customize...", systemImage: "ellipsis") {
                     Button(
-                        "Edit Dashboard",
-                        systemImage: "square.grid.3x3.fill.square"
+                        "Add Widgets...",
+                        systemImage: "widget.large.badge.plus"
                     ) {
                         showWidgetShowcase = true
                     }
+
+                    Button(
+                        "Reorder Widgets...",
+                        systemImage: "arrow.up.arrow.down"
+                    ) {
+                        showReorderWidgets = true
+                    }
+                    .disabled(widgetStore.widgets.isEmpty)
                 }
             }
 
@@ -81,6 +90,14 @@ struct DashboardView: View {
             }
             #if os(macOS)
             .frame(width: 650, height: 550)
+            #endif
+        }
+        .sheet(isPresented: $showReorderWidgets) {
+            NavigationStack {
+                ReorderWidgetsView()
+            }
+            #if os(macOS)
+            .frame(width: 500, height: 600)
             #endif
         }
         .defaultNavigationDestination(courseID: "")

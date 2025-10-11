@@ -134,6 +134,11 @@ class WidgetStore {
         reorderWidgets()
     }
 
+    /// Gets widget type info for a configuration
+    func widgetTypeInfo(for configuration: WidgetConfiguration) -> WidgetTypeInfo? {
+        Self.availableWidgetTypes.first(where: { $0.id == configuration.widgetID })
+    }
+
     /// Updates widget order to maintain consistency
     private func reorderWidgets() {
         for (index, _) in widgetConfigurations.enumerated() {
