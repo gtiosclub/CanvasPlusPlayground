@@ -95,11 +95,6 @@ class WidgetStore {
         }
     }
 
-    static let availableWidgetTypes: [WidgetTypeInfo] = [
-        WidgetTypeInfo(widgetType: AllAnnouncementsWidget.self),
-        WidgetTypeInfo(widgetType: AllToDosWidget.self)
-    ]
-
     private init() {
         loadConfigurations()
 
@@ -220,8 +215,9 @@ class WidgetStore {
             clearAllWidgets()
         }
 
-        addWidget(widgetID: AllAnnouncementsWidget.widgetID, size: .medium)
-        addWidget(widgetID: AllToDosWidget.widgetID, size: .medium)
+        for config in Self.defaultConfigurations {
+            addWidget(widgetID: config.widgetID, size: config.size)
+        }
     }
 
     // MARK: - Settings
