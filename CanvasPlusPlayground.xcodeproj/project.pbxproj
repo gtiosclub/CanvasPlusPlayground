@@ -1119,6 +1119,7 @@
 			isa = PBXGroup;
 			children = (
 				B7532E932E9814EF0045CFB6 /* WidgetStore.swift */,
+				B795801A2E8C64F800B9A38F /* WidgetShowcase.swift */,
 				B79580172E8C5E3100B9A38F /* AllAnnouncementsWidget.swift */,
 				B733340C2E916FE50011E8A9 /* AllToDosWidget.swift */,
 			);
@@ -1258,7 +1259,6 @@
 		B7F375C12E85EE82008F0846 /* Dashboard */ = {
 			isa = PBXGroup;
 			children = (
-				B795801A2E8C64F800B9A38F /* WidgetShowcase.swift */,
 				B7532E912E96D7030045CFB6 /* DashboardView.swift */,
 				B7AF50E02E99F14800457E8A /* ReorderWidgetsView.swift */,
 				B79580162E8C5E2700B9A38F /* Widgets */,
