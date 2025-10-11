@@ -97,7 +97,7 @@ struct DashboardView: View {
                 ReorderWidgetsView()
             }
             #if os(macOS)
-            .frame(width: 500, height: 600)
+            .frame(width: 300, height: 300)
             #endif
         }
         .defaultNavigationDestination(courseID: "")

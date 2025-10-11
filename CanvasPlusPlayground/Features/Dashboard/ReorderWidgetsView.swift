@@ -28,10 +28,10 @@ struct ReorderWidgetsView: View {
                 widgetStore.reorderWidgets(from: source, to: destination)
             }
         }
-        .environment(\.editMode, .constant(.active))
         .listStyle(.plain)
         .navigationTitle("Reorder Widgets")
         #if os(iOS)
+        .environment(\.editMode, .constant(.active))
         .navigationBarTitleDisplayMode(.inline)
         #endif
         .toolbar {
