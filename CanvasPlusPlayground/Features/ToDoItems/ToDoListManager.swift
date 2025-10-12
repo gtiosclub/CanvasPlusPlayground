@@ -8,6 +8,7 @@
 import SwiftUI
 
 @Observable
+
 class ToDoListManager: ListWidgetDataSource, BigNumberWidgetDataSource {
     var toDoItems: Set<ToDoItem> = []
     var toDoItemCount: Int?

@@ -128,7 +128,7 @@ import Foundation
 
         return .announcement(announcement)
     }
-
+  
     // MARK: - BigNumberWidgetDataSource
 
     // Only display the number of announcements from courses that are CURRENTLY active

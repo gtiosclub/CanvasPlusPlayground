@@ -12,6 +12,8 @@ extension WidgetStore {
         WidgetTypeInfo(widgetType: AllToDosWidget.self),
         WidgetTypeInfo(widgetType: UnreadAnnouncementsCountWidget.self),
         WidgetTypeInfo(widgetType: ToDoCountWidget.self)
+        WidgetTypeInfo(widgetType: AllToDosWidget.self)
+
     ]
 
     /// The default configuration of widgets when Canvas Plus is first launched.
@@ -20,5 +22,6 @@ extension WidgetStore {
         WidgetConfiguration(widgetID: AllToDosWidget.widgetID, size: .medium, order: 1),
         WidgetConfiguration(widgetID: UnreadAnnouncementsCountWidget.widgetID, size: .small, order: 2),
         WidgetConfiguration(widgetID: ToDoCountWidget.widgetID, size: .small, order: 3)
+        WidgetConfiguration(widgetID: AllToDosWidget.widgetID, size: .medium, order: 1)
     ]
 }
