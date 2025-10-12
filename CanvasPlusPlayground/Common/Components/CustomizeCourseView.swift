@@ -12,8 +12,8 @@ import SwiftUI
 struct CustomizeCourseView: View {
     let courseName: String
     @State var selectedSymbol: String
-    @State var selectedColor: Color
-    
+    @State var selectedColor: Color?
+
     let symbolList: [String] = CourseCustomizationOptions.allowedSymbols
     
     let colorList: [Color] = CourseCustomizationOptions.allowedColors
@@ -106,8 +106,8 @@ struct CustomizeCourseView: View {
 struct CustomizeCourseView: View {
     let courseName: String
     @State var selectedSymbol: String
-    @State var selectedColor: Color
-    
+    @State var selectedColor: Color?
+
     let symbolList: [String] = CourseCustomizationOptions.allowedSymbols
     
     let colorList: [Color] = CourseCustomizationOptions.allowedColors
@@ -189,9 +189,11 @@ struct CustomizeCourseView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Confirm", systemImage: "check") {
+                        guard let selectedColor else { return }
                         onDismiss(selectedSymbol, selectedColor)
                         dismiss()
                     }
+                    .disabled(selectedColor == nil)
                 }
             }
         }
@@ -227,23 +229,23 @@ private struct ColorSelectionButton: View {
 private struct SymbolSelectionButton: View {
     let symbol: String
     let isSelected: Bool
-    let color: Color
+    let color: Color?
     let onSelect: () -> Void
     
     var body: some View {
         Button(action: onSelect) {
             ZStack {
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(isSelected ? color.opacity(0.22) : Color.clear)
+                    .fill(isSelected ? (color ?? .white).opacity(0.22) : Color.clear)
                     .frame(width: 34, height: 34)
                 Image(systemName: symbol)
                     .resizable()
                     .scaledToFit()
-                    .foregroundStyle(color)
+                    .foregroundStyle(color ?? .white)
                     .frame(width: 23, height: 23)
                 if isSelected {
                     RoundedRectangle(cornerRadius: 8)
-                        .stroke(color, lineWidth: 2.5)
+                        .stroke(color ?? .white, lineWidth: 2.5)
                         .frame(width: 34, height: 34)
                 }
             }

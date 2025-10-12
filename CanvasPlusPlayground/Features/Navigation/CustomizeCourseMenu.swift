@@ -72,7 +72,7 @@ private struct CustomizeCourseMenu: ViewModifier {
                 Text("Rename \(course.name ?? "")?")
             }
             .sheet(isPresented: $showCourseCustomizer) {
-                CustomizeCourseView(courseName: course.displayName, selectedSymbol: course.displaySymbol, selectedColor: course.rgbColors?.color ?? .accentColor, onDismiss: { symbol, color in
+                CustomizeCourseView(courseName: course.displayName, selectedSymbol: course.displaySymbol, selectedColor: course.rgbColors?.color, onDismiss: { symbol, color in
                     course.rgbColors = .init(color: color)
                     course.courseSymbol = symbol
                 })
