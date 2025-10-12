@@ -8,7 +8,7 @@
 import SwiftUI
 
 @Observable
-class ToDoListManager: ListWidgetDataSource {
+class ToDoListManager: ListWidgetDataSource, BigNumberWidgetDataSource {
     var toDoItems: Set<ToDoItem> = []
     var toDoItemCount: Int?
 
@@ -136,5 +136,11 @@ class ToDoListManager: ListWidgetDataSource {
         } else {
             .allToDos
         }
+    }
+
+    // MARK: - BigNumberWidgetDataSource
+
+    var bigNumber: Decimal {
+        Decimal(toDoItems.count)
     }
 }
