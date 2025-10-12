@@ -62,6 +62,7 @@ struct FileViewer: View {
         .navigationTitle(file.displayName)
         #if os(iOS)
         .navigationBarBackButtonHidden()
+        .toolbar(.hidden, for: .tabBar)
         #endif
     }
 
