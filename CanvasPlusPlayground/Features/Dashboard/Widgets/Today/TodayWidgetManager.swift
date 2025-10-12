@@ -109,6 +109,10 @@ class TodayWidgetManager: @MainActor ListWidgetDataSource {
         let today = calendar.startOfDay(for: Date())
         let tomorrow = calendar.date(byAdding: .day, value: 1, to: today)!
 
+        // Set to loaded immediately - cache callbacks will populate data synchronously
+        // Network sync continues in background to update with fresh data
+        fetchStatus = .loaded
+
         await withTaskGroup(of: Void.self) { group in
             group.addTask { [weak self] in
                 await self?.fetchTodayCalendarEvents(
@@ -118,7 +122,7 @@ class TodayWidgetManager: @MainActor ListWidgetDataSource {
                 )
             }
 
-            
+
             group.addTask { [weak self] in
                 await self?.fetchTodayAnnouncements(
                     courses: courses,
@@ -127,7 +131,7 @@ class TodayWidgetManager: @MainActor ListWidgetDataSource {
                 )
             }
 
-            
+
             group.addTask { [weak self] in
                 await self?.fetchTodayAssignments(
                     courses: courses,
@@ -136,8 +140,6 @@ class TodayWidgetManager: @MainActor ListWidgetDataSource {
                 )
             }
         }
-
-        fetchStatus = .loaded
     }
 
     private func fetchTodayCalendarEvents(courses: [Course], today: Date, tomorrow: Date) async {
@@ -183,70 +185,51 @@ class TodayWidgetManager: @MainActor ListWidgetDataSource {
 
                     let course = courses.first { $0.id == courseId }
 
-                    await CanvasService.shared.loadFirstThenSync(
-                        request,
-                        onCacheReceive: { [weak self] cached in
-                            guard let cached else { return }
-                            let filtered = cached
-                                .filter { announcement in
-                                    guard let date = announcement.date else { return false }
-                                    return date >= today && date < tomorrow && announcement.published
-                                }
-                                .map { AllAnnouncementsManager.CourseAnnouncement(announcement: $0, course: course) }
-
-                            Task { @MainActor in
-                                if let courseId = course?.id {
-                                    self?.todayAnnouncements.removeAll { $0.course?.id == courseId }
-                                }
-                                self?.todayAnnouncements.append(contentsOf: filtered)
-                                self?.todayAnnouncements.sort {
-                                    ($0.announcement.date ?? .distantPast) > ($1.announcement.date ?? .distantPast)
-                                }
-                            }
-                        },
-                        onSyncComplete: { [weak self] fresh in
-                            guard let fresh else { return }
-                            let filtered = fresh
-                                .filter { announcement in
-                                    guard let date = announcement.date else { return false }
-                                    return date >= today && date < tomorrow && announcement.published
-                                }
-                                .map { AllAnnouncementsManager.CourseAnnouncement(announcement: $0, course: course) }
-
-                            Task { @MainActor in
-                                if let courseId = course?.id {
-                                    self?.todayAnnouncements.removeAll { $0.course?.id == courseId }
-                                }
-                                self?.todayAnnouncements.append(contentsOf: filtered)
-                                self?.todayAnnouncements.sort {
-                                    ($0.announcement.date ?? .distantPast) > ($1.announcement.date ?? .distantPast)
-                                }
-                            }
+                    do {
+                        try await CanvasService.shared.loadAndSync(
+                            request
+                        ) { [weak self] cached in
+                            guard let self, let cached else { return }
+                            self.updateAnnouncements(cached, course: course, today: today, tomorrow: tomorrow)
                         }
-                    )
+                    } catch {
+                        // Silently handle errors - cache data already displayed if available
+                    }
                 }
             }
+        }
+    }
+
+    private func updateAnnouncements(_ announcements: [DiscussionTopic], course: Course?, today: Date, tomorrow: Date) {
+        let filtered = announcements
+            .filter { announcement in
+                guard let date = announcement.date else { return false }
+                return date >= today && date < tomorrow && announcement.published
+            }
+            .map { AllAnnouncementsManager.CourseAnnouncement(announcement: $0, course: course) }
+
+        if let courseId = course?.id {
+            todayAnnouncements.removeAll { $0.course?.id == courseId }
+        }
+        todayAnnouncements.append(contentsOf: filtered)
+        todayAnnouncements.sort {
+            ($0.announcement.date ?? .distantPast) > ($1.announcement.date ?? .distantPast)
         }
     }
 
     private func fetchTodayAssignments(courses: [Course], today: Date, tomorrow: Date) async {
         let request = CanvasRequest.getToDoItems(include: [.ungradedQuizzes])
 
-        await CanvasService.shared.loadFirstThenSync(
-            request,
-            onCacheReceive: { [weak self] cached in
-                guard let cached else { return }
-                Task { @MainActor in
-                    self?.addTodayAssignments(cached, courses: courses, today: today, tomorrow: tomorrow, replaceExisting: true)
-                }
-            },
-            onSyncComplete: { [weak self] fresh in
-                guard let fresh else { return }
-                Task { @MainActor in
-                    self?.addTodayAssignments(fresh, courses: courses, today: today, tomorrow: tomorrow, replaceExisting: true)
-                }
+        do {
+            try await CanvasService.shared.loadAndSync(
+                request
+            ) { [weak self] cached in
+                guard let self, let cached else { return }
+                self.addTodayAssignments(cached, courses: courses, today: today, tomorrow: tomorrow, replaceExisting: true)
             }
-        )
+        } catch {
+            // Silently handle errors - cache data already displayed if available
+        }
     }
 
     private func addTodayAssignments(_ items: [ToDoItem], courses: [Course], today: Date, tomorrow: Date, replaceExisting: Bool) {

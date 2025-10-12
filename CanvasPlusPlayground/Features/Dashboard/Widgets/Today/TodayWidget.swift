@@ -20,10 +20,7 @@ struct TodayWidget: @MainActor ListWidget {
     var title: String { "Today" }
     var destination: NavigationModel.Destination = .today
 
-
-    @State var dataSource: TodayWidgetManager = .init()
-    
-    
+    var dataSource: TodayWidgetManager = .init()
 }
 
 
