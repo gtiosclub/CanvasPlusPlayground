@@ -31,8 +31,12 @@ struct PinnedItemsView: View {
         }
         .listStyle(.inset)
         .task {
-            for item in pinnedItemsManager.pinnedItems.filter({ $0.data == nil }) {
-                await item.itemData()
+            await withTaskGroup { group in
+                for item in pinnedItemsManager.pinnedItems.filter({ $0.data == nil }) {
+                    group.addTask {
+                        await item.itemData()
+                    }
+                }
             }
         }
         .navigationTitle("Pinned")

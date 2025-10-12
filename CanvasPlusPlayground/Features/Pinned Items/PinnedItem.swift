@@ -35,14 +35,17 @@ class PinnedItem: Identifiable, Codable, Equatable, Hashable {
 
     func itemData() async {
         do {
-            try await fetchData()
+
+            async let fetchData: Void = fetchData()
             // TODO: use new course infra
-            try await CanvasService.shared.loadAndSync(
+            async let fetchCourse: [Course] = CanvasService.shared.loadAndSync(
                 CanvasRequest.getCourse(id: courseID)
             ) { cachedCourse in
                     guard let course = cachedCourse?.first else { return }
                     setData(course: course)
             }
+
+            try await (_, _) = (fetchData, fetchCourse)
         } catch {
             LoggerService.main.error("Error fetching \(self.type.displayName)")
         }
