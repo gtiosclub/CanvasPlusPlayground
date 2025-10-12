@@ -65,7 +65,13 @@ class RecentItemsManager: ListWidgetDataSource {
             $0.id == itemID && $0.courseID == courseID && $0.type == type
         }) {
             let existingItem = recentItems.remove(at: existingIndex)
-            recentItems.insert(existingItem, at: 0)
+            let newItem = RecentItem(
+                id: existingItem.id,
+                courseID: existingItem.courseID,
+                type: existingItem.type,
+                viewedAt: Date()
+            )
+            recentItems.insert(newItem, at: 0)
         } else {
             let newItem = RecentItem(
                 id: itemID,
@@ -134,8 +140,10 @@ class RecentItemsManager: ListWidgetDataSource {
     }
 
     private func getDescription(for item: RecentItem) -> String {
+        let defaultDescription = "Viewed \(item.viewedAt.formatted(.relative(presentation: .named)))"
+
         guard let data = item.data else {
-            return "Viewed \(item.viewedAt.formatted(.relative(presentation: .named)))"
+            return defaultDescription
         }
 
         switch data {
@@ -147,14 +155,14 @@ class RecentItemsManager: ListWidgetDataSource {
             if let dueDate = assignment.dueDate {
                 return "Due \(dueDate.formatted(.relative(presentation: .named)))"
             }
-            return "Viewed \(item.viewedAt.formatted(.relative(presentation: .named)))"
+            return defaultDescription
         case .file:
-            return "Viewed \(item.viewedAt.formatted(.relative(presentation: .named)))"
+            return defaultDescription
         case .quiz(let quiz):
             if let dueDate = quiz.dueDate {
                 return "Due \(dueDate.formatted(.relative(presentation: .named)))"
             }
-            return "Viewed \(item.viewedAt.formatted(.relative(presentation: .named)))"
+            return defaultDescription
         }
     }
 
