@@ -25,8 +25,7 @@ struct HomeView: View {
             // dashboard
             Tab("Dashboard", systemImage: "rectangle.grid.2x2.fill", value: .dashboard) {
                 NavigationStack(path: $navigationModel.dashboardPath) {
-                    //DashboardView()
-                    PinnedItemsView()
+                    DashboardView()
                 }
             }
 
