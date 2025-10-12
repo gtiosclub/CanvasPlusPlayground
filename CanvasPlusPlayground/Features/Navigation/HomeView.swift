@@ -12,7 +12,6 @@ struct HomeView: View {
     @Environment(ProfileManager.self) private var profileManager
     @Environment(CourseManager.self) private var courseManager
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @Environment(TodayWidgetManager.self) private var todayWidgetManager
     @State private var columnVisibility = NavigationSplitViewVisibility.all
     @State private var isLoadingCourses = false
     @State private var navigationModel = NavigationModel()

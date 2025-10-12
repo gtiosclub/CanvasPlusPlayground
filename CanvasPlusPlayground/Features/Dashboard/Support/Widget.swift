@@ -103,6 +103,7 @@ struct DefaultWidgetBody: View {
     let widget: any Widget
     @Environment(\.widgetSize) private var widgetSize: WidgetSize
     @Environment(\.isWidgetNavigationEnabled) private var isWidgetNavigationEnabled: Bool
+    @Environment(CourseManager.self) private var courseManager
 
     private func shouldRefresh(trigger: WidgetContext.RefreshTriggerSubject) -> Bool {
         guard case .singleWidget(let requestedID) = trigger else {
@@ -126,7 +127,9 @@ struct DefaultWidgetBody: View {
     }
 
     private var label: some View {
-        VStack {
+        let courseCount = courseManager.activeCourses.count
+
+        return VStack {
             Header(widget: widget)
 
             ContentView(widget: widget, widgetSize: widgetSize)
@@ -136,9 +139,12 @@ struct DefaultWidgetBody: View {
             guard widget.dataSource.fetchStatus != .loaded else {
                 return
             }
-            try? await widget.dataSource
-                .fetchData(context: WidgetContext.shared)
-        }
+        // .task(id: "\(widgetSize)-\(courseCount)") {
+
+        //     guard widget.dataSource.fetchStatus != .loaded else { return }
+        //     try? await widget.dataSource
+        //         .fetchData(context: WidgetContext.shared)
+        // }
         .onReceive(WidgetContext.shared.refreshTrigger) { trigger in
             if shouldRefresh(trigger: trigger) {
                 Task {

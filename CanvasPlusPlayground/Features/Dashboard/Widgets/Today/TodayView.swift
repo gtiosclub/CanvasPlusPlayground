@@ -10,19 +10,14 @@ import SwiftUI
 struct TodayView: View {
     @Environment(CourseManager.self) private var courseManager
     @Environment(NavigationModel.self) private var navigationModel
-    @Environment(TodayWidgetManager.self) private var todayManager
+    @State private var todayManager = TodayWidgetManager()
     @State private var isLoading = false
     @State private var selectedItem: AnyHashable?
 
     private var todayString: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .full
-        // TEMP: Use October 9 for testing (matches TodayWidgetManager)
-        let testDate = Calendar.current.date(from: DateComponents(year: 2025, month: 10, day: 8))!
-        return dateFormatter.string(from: testDate)
-
-        // TODO: Replace with this for production:
-        // return dateFormatter.string(from: Date())
+        return dateFormatter.string(from: Date())
     }
 
     var body: some View {

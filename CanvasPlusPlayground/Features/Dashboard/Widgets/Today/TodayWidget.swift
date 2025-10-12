@@ -8,8 +8,6 @@
 
 import SwiftUI
 
-@MainActor
-let sharedTodayWidgetManager = TodayWidgetManager()
 
 struct TodayWidget: @MainActor ListWidget {
     static var widgetID: String { "today" }
@@ -22,10 +20,8 @@ struct TodayWidget: @MainActor ListWidget {
     var title: String { "Today" }
     var destination: NavigationModel.Destination = .today
 
-//    @MainActor
-//    var dataSource: TodayWidgetManager = .init()
-    @MainActor
-    var dataSource: TodayWidgetManager = sharedTodayWidgetManager
+
+    @State var dataSource: TodayWidgetManager = .init()
     
     
 }

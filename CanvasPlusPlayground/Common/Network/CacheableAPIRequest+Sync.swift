@@ -100,11 +100,18 @@ extension CacheableAPIRequest {
 
     /**
      Fetch a collection of data from the Canvas API. Also provides cached version via closure (if any). Allows filtering.
+
+     **Blocking behavior:** This method blocks until the network request completes, then returns the fresh data.
+
      - Parameters:
-        - request: the desired API query for a **collection** of models.
-        - descriptor: an optimized filter to be performed in the query.
-        - onCacheReceive: a closure for early execution when cached version is received - if any.
-     - Returns: An array of models concerning the desired query.
+        - repository: The storage repository to load from and sync to.
+        - onCacheReceive: A closure called immediately with cached data (if any) before network request starts.
+        - loadingMethod: The loading strategy (all pages, single page, etc.).
+     - Returns: An array of fresh models from the network.
+
+     - Note: Use this when you need the fresh data synchronously. For faster perceived performance where
+             the UI should update immediately with cached data while fresh data loads in the background,
+             use `loadFirstThenSync` instead.
      **/
     func loadAndSync(
         to repository: CanvasRepository,
@@ -122,5 +129,56 @@ extension CacheableAPIRequest {
             using: cached ?? [],
             loadingMethod: loadingMethod
         )
+    }
+
+    /**
+     Load cached data immediately, then sync with API in the background without blocking.
+
+     **Non-blocking behavior:** This method returns immediately after loading and delivering cached data.
+     The network sync happens in a background task, and fresh data is delivered via the completion callback.
+
+     **Key Difference from `loadAndSync`:**
+     - `loadAndSync`: **Blocks** until network completes → slower perceived load, but you get fresh data as return value
+     - `loadFirstThenSync`: **Non-blocking** → faster perceived load, UI updates immediately with cache, then updates again with fresh data
+
+     **Performance:**
+     This method is optimized to avoid redundant cache queries by passing the already-loaded cache
+     to the sync operation, unlike naive implementations that would reload the cache.
+
+     - Parameters:
+        - repository: The storage repository to load from and sync to.
+        - onCacheReceive: Called immediately with cached data (if any). Use this to update UI instantly.
+        - onSyncComplete: Called when network sync completes with fresh data. If sync fails, cached data is returned.
+        - loadingMethod: The loading strategy (all pages, single page, etc.).
+
+     - Note: Ideal for widgets and views where showing stale data quickly is better UX than waiting for fresh data.
+     **/
+    func loadFirstThenSync(
+        to repository: CanvasRepository,
+        onCacheReceive: @escaping ([PersistedModel]?) -> Void,
+        onSyncComplete: @escaping ([PersistedModel]?) -> Void,
+        loadingMethod: LoadingMethod<Self> = .all(onNewPage: { _ in })
+    ) async {
+        let cached: [PersistedModel]? = (try? await load(
+            from: repository,
+            loadingMethod: loadingMethod
+        ))
+
+        onCacheReceive(cached)
+
+        // Sync in background without blocking
+        Task {
+            do {
+                let freshData = try await syncWithAPI(
+                    to: repository,
+                    using: cached ?? [],
+                    loadingMethod: loadingMethod
+                )
+                onSyncComplete(freshData)
+            } catch {
+                // Sync failed, return cached data
+                onSyncComplete(cached)
+            }
+        }
     }
 }

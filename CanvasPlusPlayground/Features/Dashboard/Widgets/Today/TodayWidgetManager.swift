@@ -13,8 +13,6 @@ import SwiftUI
 class TodayWidgetManager: @MainActor ListWidgetDataSource {
     var fetchStatus: WidgetFetchStatus = .loading
 
-    static let testDate = Calendar.current.date(from: DateComponents(year: 2025, month: 10, day: 9))!
-
     struct CourseEvent: Identifiable {
         let event: CanvasCalendarEvent
         let course: Course?
@@ -26,16 +24,14 @@ class TodayWidgetManager: @MainActor ListWidgetDataSource {
     var todayAnnouncements: [AllAnnouncementsManager.CourseAnnouncement] = []
     var todayAssignments: [ToDoItem] = []
 
-    
+
     var widgetData: [ListWidgetData] {
         get {
-            LoggerService.main.debug("[TodayWidget] Building widget data: \(self.todayEvents.count) events, \(self.todayAnnouncements.count) announcements, \(self.todayAssignments.count) assignments")
-
             var data: [ListWidgetData] = []
 
             let dateFormatter = DateFormatter()
             dateFormatter.dateStyle = .full
-            let todayString = dateFormatter.string(from: Self.testDate)
+            let todayString = dateFormatter.string(from: Date())
 
             //Today's date
             data.append(ListWidgetData(
@@ -95,7 +91,6 @@ class TodayWidgetManager: @MainActor ListWidgetDataSource {
     @MainActor
     func fetchData(context: WidgetContext) async throws {
         guard let courseManager = context.courseManager else {
-            LoggerService.main.error("[TodayWidget] No course manager available")
             fetchStatus = .error
             return
         }
@@ -104,19 +99,15 @@ class TodayWidgetManager: @MainActor ListWidgetDataSource {
 
         // Capture courses on the main actor before entering task group
         let courses = courseManager.activeCourses
-        LoggerService.main.debug("[TodayWidget] Starting fetch with \(courses.count) favorited courses")
 
-        // TEMP: Use last Wednesday for testing (October 8, 2025)
+        // If no courses are available yet, stay in loading state
+        guard !courses.isEmpty else {
+            return
+        }
+
         let calendar = Calendar.current
-        let testDate = calendar.date(from: DateComponents(year: 2025, month: 10, day: 9))!
-        let today = calendar.startOfDay(for: testDate)
+        let today = calendar.startOfDay(for: Date())
         let tomorrow = calendar.date(byAdding: .day, value: 1, to: today)!
-
-        LoggerService.main.debug("[TodayWidget] Fetching data for date range: \(today) to \(tomorrow)")
-
-        // TODO: Replace with this for production:
-        // let today = calendar.startOfDay(for: Date())
-        // let tomorrow = calendar.date(byAdding: .day, value: 1, to: today)!
 
         await withTaskGroup(of: Void.self) { group in
             group.addTask { [weak self] in
@@ -146,31 +137,23 @@ class TodayWidgetManager: @MainActor ListWidgetDataSource {
             }
         }
 
-        LoggerService.main.debug("[TodayWidget] Fetch complete. Events: \(self.todayEvents.count), Announcements: \(self.todayAnnouncements.count), Assignments: \(self.todayAssignments.count)")
         fetchStatus = .loaded
     }
 
     private func fetchTodayCalendarEvents(courses: [Course], today: Date, tomorrow: Date) async {
-        LoggerService.main.debug("[TodayWidget] Fetching calendar events for \(courses.count) courses")
         var allEvents: [CourseEvent] = []
 
         for course in courses {
             guard let icsURL = course.calendarIcs,
                   let url = URL(string: icsURL) else {
-                LoggerService.main.debug("[TodayWidget] Course \(course.displayName) has no calendar ICS URL")
                 continue
             }
 
-            LoggerService.main.debug("[TodayWidget] Parsing ICS for course: \(course.displayName)")
             let eventGroups = await ICSParser.parseEvents(from: url)
-            LoggerService.main.debug("[TodayWidget] Found \(eventGroups.count) event groups for \(course.displayName)")
 
             // Filter events for today
             for group in eventGroups {
-                LoggerService.main.debug("[TodayWidget] Event group date: \(group.date), checking if >= \(today) and < \(tomorrow)")
                 if group.date >= today && group.date < tomorrow {
-                    LoggerService.main.debug("[TodayWidget] ✓ Found \(group.events.count) events for today from \(course.displayName)")
-                    // Wrap each event with course information
                     let courseEvents = group.events.map { event in
                         CourseEvent(event: event, course: course)
                     }
@@ -181,16 +164,11 @@ class TodayWidgetManager: @MainActor ListWidgetDataSource {
 
         // Sort by start time
         self.todayEvents = allEvents.sorted { $0.event.startDate < $1.event.startDate }
-        LoggerService.main.debug("[TodayWidget] Calendar events complete: \(self.todayEvents.count) total events")
     }
 
     private func fetchTodayAnnouncements(courses: [Course], today: Date, tomorrow: Date) async {
-        guard !courses.isEmpty else {
-            LoggerService.main.debug("[TodayWidget] No courses to fetch announcements for")
-            return
-        }
+        guard !courses.isEmpty else { return }
 
-        LoggerService.main.debug("[TodayWidget] Fetching announcements for \(courses.count) courses")
         let courseIds = courses.map { $0.id }
 
         await withTaskGroup(of: Void.self) { group in
@@ -205,61 +183,48 @@ class TodayWidgetManager: @MainActor ListWidgetDataSource {
 
                     let course = courses.first { $0.id == courseId }
 
-                    let announcements: [DiscussionTopic]? = try? await CanvasService.shared.loadAndSync(
+                    await CanvasService.shared.loadFirstThenSync(
                         request,
-                        onCacheReceive: { (cached: [DiscussionTopic]?) in
+                        onCacheReceive: { [weak self] cached in
                             guard let cached else { return }
-                            self?.addTodayAnnouncements(cached, course: course, today: today, tomorrow: tomorrow)
+                            let filtered = cached
+                                .filter { announcement in
+                                    guard let date = announcement.date else { return false }
+                                    return date >= today && date < tomorrow && announcement.published
+                                }
+                                .map { AllAnnouncementsManager.CourseAnnouncement(announcement: $0, course: course) }
+
+                            Task { @MainActor in
+                                if let courseId = course?.id {
+                                    self?.todayAnnouncements.removeAll { $0.course?.id == courseId }
+                                }
+                                self?.todayAnnouncements.append(contentsOf: filtered)
+                                self?.todayAnnouncements.sort {
+                                    ($0.announcement.date ?? .distantPast) > ($1.announcement.date ?? .distantPast)
+                                }
+                            }
                         },
-                        loadingMethod: .all(onNewPage: { batchAnnouncements in
-                            self?.addTodayAnnouncements(batchAnnouncements, course: course, today: today, tomorrow: tomorrow)
-                        })
+                        onSyncComplete: { [weak self] fresh in
+                            guard let fresh else { return }
+                            let filtered = fresh
+                                .filter { announcement in
+                                    guard let date = announcement.date else { return false }
+                                    return date >= today && date < tomorrow && announcement.published
+                                }
+                                .map { AllAnnouncementsManager.CourseAnnouncement(announcement: $0, course: course) }
+
+                            Task { @MainActor in
+                                if let courseId = course?.id {
+                                    self?.todayAnnouncements.removeAll { $0.course?.id == courseId }
+                                }
+                                self?.todayAnnouncements.append(contentsOf: filtered)
+                                self?.todayAnnouncements.sort {
+                                    ($0.announcement.date ?? .distantPast) > ($1.announcement.date ?? .distantPast)
+                                }
+                            }
+                        }
                     )
-
-                    guard let announcements else {
-                        LoggerService.main.error("[TodayWidget] Failed to fetch announcements.")
-                        return
-                    }
-
-                    // Final update - do it synchronously on main actor
-                    let filtered = announcements
-                        .filter { announcement in
-                            guard let date = announcement.date else { return false }
-                            return date >= today && date < tomorrow && announcement.published
-                        }
-                        .map { AllAnnouncementsManager.CourseAnnouncement(announcement: $0, course: course) }
-
-                    await MainActor.run {
-                        if let courseId = course?.id {
-                            self?.todayAnnouncements.removeAll { $0.course?.id == courseId }
-                        }
-                        self?.todayAnnouncements.append(contentsOf: filtered)
-                        self?.todayAnnouncements.sort {
-                            ($0.announcement.date ?? .distantPast) > ($1.announcement.date ?? .distantPast)
-                        }
-                    }
                 }
-            }
-        }
-
-        LoggerService.main.debug("[TodayWidget] Announcements complete: \(self.todayAnnouncements.count) total announcements")
-    }
-
-    nonisolated private func addTodayAnnouncements(_ announcements: [DiscussionTopic], course: Course?, today: Date, tomorrow: Date) {
-        DispatchQueue.main.async {
-            let filtered = announcements
-                .filter { announcement in
-                    guard let date = announcement.date else { return false }
-                    return date >= today && date < tomorrow && announcement.published
-                }
-                .map { AllAnnouncementsManager.CourseAnnouncement(announcement: $0, course: course) }
-
-            if let courseId = course?.id {
-                self.todayAnnouncements.removeAll { $0.course?.id == courseId }
-            }
-            self.todayAnnouncements.append(contentsOf: filtered)
-            self.todayAnnouncements.sort {
-                ($0.announcement.date ?? .distantPast) > ($1.announcement.date ?? .distantPast)
             }
         }
     }
@@ -267,29 +232,21 @@ class TodayWidgetManager: @MainActor ListWidgetDataSource {
     private func fetchTodayAssignments(courses: [Course], today: Date, tomorrow: Date) async {
         let request = CanvasRequest.getToDoItems(include: [.ungradedQuizzes])
 
-        do {
-            let items: [ToDoItem] = try await CanvasService.shared.loadAndSync(
-                request,
-                onCacheReceive: { cached in
-                    guard let cached else { return }
-                    Task { @MainActor in
-                        self.addTodayAssignments(cached, courses: courses, today: today, tomorrow: tomorrow, replaceExisting: true)
-                    }
-                },
-                loadingMethod: .all(onNewPage: { items in
-                    Task { @MainActor in
-                        self.addTodayAssignments(items, courses: courses, today: today, tomorrow: tomorrow, replaceExisting: false)
-                    }
-                })
-            )
-
-            // Final update - do it synchronously
-            await MainActor.run {
-                self.addTodayAssignments(items, courses: courses, today: today, tomorrow: tomorrow, replaceExisting: true)
+        await CanvasService.shared.loadFirstThenSync(
+            request,
+            onCacheReceive: { [weak self] cached in
+                guard let cached else { return }
+                Task { @MainActor in
+                    self?.addTodayAssignments(cached, courses: courses, today: today, tomorrow: tomorrow, replaceExisting: true)
+                }
+            },
+            onSyncComplete: { [weak self] fresh in
+                guard let fresh else { return }
+                Task { @MainActor in
+                    self?.addTodayAssignments(fresh, courses: courses, today: today, tomorrow: tomorrow, replaceExisting: true)
+                }
             }
-        } catch {
-            LoggerService.main.error("[TodayWidget] Error fetching to-do items: \(error)")
-        }
+        )
     }
 
     private func addTodayAssignments(_ items: [ToDoItem], courses: [Course], today: Date, tomorrow: Date, replaceExisting: Bool) {
