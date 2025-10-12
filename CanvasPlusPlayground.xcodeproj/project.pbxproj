@@ -25,6 +25,9 @@
 		9B07E7122D779CAB00359B69 /* Date+RelativeDates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B07E7112D779CA500359B69 /* Date+RelativeDates.swift */; };
 		9B0C19402D78E461002ABEFC /* AssignmentCreateSubmissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B0C193F2D78E461002ABEFC /* AssignmentCreateSubmissionView.swift */; };
 		9B350F082C9652C6003FC60D /* NSAttributedString+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B350F072C9652C6003FC60D /* NSAttributedString+HTML.swift */; };
+		9B4F616C2E9ABBC500860E24 /* BigNumberWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4F616B2E9ABBC000860E24 /* BigNumberWidget.swift */; };
+		9B4F616E2E9ABDA900860E24 /* UnreadAnnouncementsCountWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4F616D2E9ABDA300860E24 /* UnreadAnnouncementsCountWidget.swift */; };
+		9B4F61702E9ABDB400860E24 /* ToDoCountWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4F616F2E9ABDAC00860E24 /* ToDoCountWidget.swift */; };
 		9B6663E32C9853BC0060990E /* HTMLWebViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6663E22C9853BC0060990E /* HTMLWebViewWrapper.swift */; };
 		9B6D4F802D6E48340033044F /* ReminderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6D4F7F2D6E48340033044F /* ReminderButton.swift */; };
 		9B762BC92D7BF8E70051F1F6 /* SubmitAssignmentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B762BC82D7BF8E70051F1F6 /* SubmitAssignmentRequest.swift */; };
@@ -291,6 +294,9 @@
 		9B07E7112D779CA500359B69 /* Date+RelativeDates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+RelativeDates.swift"; sourceTree = "<group>"; };
 		9B0C193F2D78E461002ABEFC /* AssignmentCreateSubmissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentCreateSubmissionView.swift; sourceTree = "<group>"; };
 		9B350F072C9652C6003FC60D /* NSAttributedString+HTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+HTML.swift"; sourceTree = "<group>"; };
+		9B4F616B2E9ABBC000860E24 /* BigNumberWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigNumberWidget.swift; sourceTree = "<group>"; };
+		9B4F616D2E9ABDA300860E24 /* UnreadAnnouncementsCountWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnreadAnnouncementsCountWidget.swift; sourceTree = "<group>"; };
+		9B4F616F2E9ABDAC00860E24 /* ToDoCountWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoCountWidget.swift; sourceTree = "<group>"; };
 		9B6663E22C9853BC0060990E /* HTMLWebViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLWebViewWrapper.swift; sourceTree = "<group>"; };
 		9B6D4F7F2D6E48340033044F /* ReminderButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderButton.swift; sourceTree = "<group>"; };
 		9B762BC82D7BF8E70051F1F6 /* SubmitAssignmentRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitAssignmentRequest.swift; sourceTree = "<group>"; };
@@ -1124,6 +1130,8 @@
 				B7AF50E22E99F58D00457E8A /* WidgetStore+AvailableWidgets.swift */,
 				B795801A2E8C64F800B9A38F /* WidgetShowcase.swift */,
 				B79580172E8C5E3100B9A38F /* AllAnnouncementsWidget.swift */,
+				9B4F616F2E9ABDAC00860E24 /* ToDoCountWidget.swift */,
+				9B4F616D2E9ABDA300860E24 /* UnreadAnnouncementsCountWidget.swift */,
 				B733340C2E916FE50011E8A9 /* AllToDosWidget.swift */,
 			);
 			path = Widgets;
@@ -1278,6 +1286,7 @@
 				B7F375C32E85EE8E008F0846 /* Widget.swift */,
 				B795801E2E8C697F00B9A38F /* AnyWidget.swift */,
 				B79101D32E8B09F50090BBB1 /* ListWidget.swift */,
+				9B4F616B2E9ABBC000860E24 /* BigNumberWidget.swift */,
 				B79101D72E8B0E8D0090BBB1 /* GenericWidget.swift */,
 				B79101D92E8B18BB0090BBB1 /* ExampleListWidget.swift */,
 			);
@@ -1413,6 +1422,7 @@
 				B7C0A3C92D2F87EC003E5A36 /* AsyncView.swift in Sources */,
 				B7F950372D127869004BB470 /* ProfileManager.swift in Sources */,
 				26BF115B2E92E1D2000680D4 /* Dashboard.swift in Sources */,
+				9B4F616E2E9ABDA900860E24 /* UnreadAnnouncementsCountWidget.swift in Sources */,
 				26BF115C2E92E1D2000680D4 /* DashboardValueKey.swift in Sources */,
 				26BF115D2E92E1D2000680D4 /* ExampleDashboardView.swift in Sources */,
 				A330B89B2DA98D0D00D6C1C3 /* MarkFavoriteRequest.swift in Sources */,
@@ -1524,6 +1534,7 @@
 				B7CC4D712D91C9FB00254F55 /* ToDoListManager.swift in Sources */,
 				B7CC4D732D91D14600254F55 /* ToDoListView.swift in Sources */,
 				192EC04C2C963EE600AF8528 /* CourseAssignmentsView.swift in Sources */,
+				9B4F61702E9ABDB400860E24 /* ToDoCountWidget.swift in Sources */,
 				A372D10C2D90E875005E94CA /* GroupsListView.swift in Sources */,
 				A3777E0A2DA0E25E00A8B00C /* StorageHandler.swift in Sources */,
 				A3FFD03C2CDED67C006BAB51 /* String+Numbers.swift in Sources */,
@@ -1561,6 +1572,7 @@
 				B78847972E674D6400AE7221 /* CanvasURLService+Modules.swift in Sources */,
 				B7F950342D11A00F004BB470 /* StatusToolbarItem.swift in Sources */,
 				B77B57C22E733765005ADB7B /* AssignmentGroupCategory.swift in Sources */,
+				9B4F616C2E9ABBC500860E24 /* BigNumberWidget.swift in Sources */,
 				A37AB4AD2D98B05E00610639 /* CanvasGroup+Memberships.swift in Sources */,
 				B7E073602D986D9800A7E82F /* ToDoItemCountAPI.swift in Sources */,
 				A301EE0F2D612EA800D71139 /* DiscussionTopic.swift in Sources */,
