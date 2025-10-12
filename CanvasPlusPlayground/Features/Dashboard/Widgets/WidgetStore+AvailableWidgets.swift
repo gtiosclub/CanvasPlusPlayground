@@ -18,7 +18,6 @@ extension WidgetStore {
     static let defaultConfigurations: [WidgetConfiguration] = [
         WidgetConfiguration(widgetID: AllAnnouncementsWidget.widgetID, size: .medium, order: 0),
         WidgetConfiguration(widgetID: AllToDosWidget.widgetID, size: .medium, order: 1),
-        WidgetConfiguration(widgetID: UnreadAnnouncementsCountWidget.widgetID, size: .small, order: 2),
-        WidgetConfiguration(widgetID: ToDoCountWidget.widgetID, size: .small, order: 3)
+        WidgetConfiguration(widgetID: ToDoCountWidget.widgetID, size: .small, order: 2)
     ]
 }

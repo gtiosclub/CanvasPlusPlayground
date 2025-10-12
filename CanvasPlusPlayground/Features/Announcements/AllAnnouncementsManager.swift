@@ -132,7 +132,7 @@ import Foundation
     // MARK: - BigNumberWidgetDataSource
 
     // Only display the number of announcements from courses that are CURRENTLY active
-    var bigNumber: Decimal { Decimal(courseAnnouncements.count { announcement in
+    var bigNumber: Decimal? { Decimal(courseAnnouncements.count { announcement in
         announcement.announcement.readState == .unread &&
         !(announcement.course?.isPastEnrollment ?? false)
     })}

@@ -140,7 +140,8 @@ class ToDoListManager: ListWidgetDataSource, BigNumberWidgetDataSource {
 
     // MARK: - BigNumberWidgetDataSource
 
-    var bigNumber: Decimal {
-        Decimal(toDoItems.count)
+    var bigNumber: Decimal? {
+        guard let toDoItemCount else { return nil }
+        return Decimal(toDoItemCount)
     }
 }

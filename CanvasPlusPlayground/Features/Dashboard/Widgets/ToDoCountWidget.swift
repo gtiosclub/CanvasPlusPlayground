@@ -16,7 +16,7 @@ struct ToDoCountWidget: @MainActor BigNumberWidget {
     static var allowedSizes: [WidgetSize] { [.small] }
 
     var title: String { Self.displayName }
-    var destination: NavigationModel.Destination = .allAnnouncements
+    var destination: NavigationModel.Destination = .allToDos
 
     @MainActor
     var dataSource: ToDoListManager = .init()

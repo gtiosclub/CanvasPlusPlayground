@@ -21,7 +21,7 @@ extension BigNumberWidget {
 }
 
 protocol BigNumberWidgetDataSource: WidgetDataSource {
-    var bigNumber: Decimal { get }
+    var bigNumber: Decimal? { get }
 }
 
 private struct DefaultBigNumberWidgetBody: View {
@@ -38,11 +38,16 @@ private struct DefaultBigNumberWidgetBody: View {
         return formatter
     }()
 
+    var displayString: String {
+        guard let number = widget.dataSource.bigNumber else { return "--" }
+
+        return Self.numberFormatter.string(for: number) ?? String(describing: number)
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: size == .small ? 4 : 8) {
-            let numberString = Self.numberFormatter.string(for: widget.dataSource.bigNumber) ?? String(describing: widget.dataSource.bigNumber)
-            Text(numberString)
-                .font(.system(size: 48, weight: .bold))
+            Text(displayString)
+                .font(.system(size: 48, weight: .bold, design: .rounded))
         }
     }
 }
