@@ -154,6 +154,10 @@ struct SettingsView: View {
                 #if os(iOS)
                 .disabled(true)
                 #endif
+
+                Button("Reset Onboarding", systemImage: "arrow.clockwise") {
+                    StorageKeys.hasCompletedOnboarding = false
+                }
             }
             .foregroundStyle(.red)
         } header: {

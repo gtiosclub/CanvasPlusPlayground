@@ -186,7 +186,6 @@
 		B76455022C8DF61B002DF00E /* CourseFilesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454F42C8DF61B002DF00E /* CourseFilesView.swift */; };
 		B76455032C8DF61B002DF00E /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454F52C8DF61B002DF00E /* HomeView.swift */; };
 		B76455042C8DF61B002DF00E /* CourseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454F62C8DF61B002DF00E /* CourseView.swift */; };
-		B76455052C8DF61B002DF00E /* SetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454F72C8DF61B002DF00E /* SetupView.swift */; };
 		B76455062C8DF61B002DF00E /* CanvasPlusPlaygroundApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454FA2C8DF61B002DF00E /* CanvasPlusPlaygroundApp.swift */; };
 		B76455072C8DF61B002DF00E /* CourseFileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454FB2C8DF61B002DF00E /* CourseFileViewModel.swift */; };
 		B76455082C8DF61B002DF00E /* CourseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454FC2C8DF61B002DF00E /* CourseManager.swift */; };
@@ -221,6 +220,12 @@
 		B7AF50EF2E9AF9E700457E8A /* RecentItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AF50EE2E9AF9E700457E8A /* RecentItemsView.swift */; };
 		B7AF50F12E9AF9EF00457E8A /* RecentItemCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AF50F02E9AF9EF00457E8A /* RecentItemCard.swift */; };
 		B7AF50F42E9B03FC00457E8A /* RecentItemsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AF50F32E9B03FC00457E8A /* RecentItemsWidget.swift */; };
+		B7AF51632E9B30E100457E8A /* OnboardingCompletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AF515D2E9B30E100457E8A /* OnboardingCompletionView.swift */; };
+		B7AF51642E9B30E100457E8A /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AF51602E9B30E100457E8A /* WelcomeView.swift */; };
+		B7AF51652E9B30E100457E8A /* OnboardingFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AF515E2E9B30E100457E8A /* OnboardingFlowView.swift */; };
+		B7AF51682E9B33EA00457E8A /* ShimmerEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AF51672E9B33EA00457E8A /* ShimmerEffect.swift */; };
+		B7AF516C2E9B343800457E8A /* SetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AF516B2E9B343800457E8A /* SetupView.swift */; };
+		B7AF516E2E9B584A00457E8A /* CompatibleGlassEffectViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AF516D2E9B584100457E8A /* CompatibleGlassEffectViewModifier.swift */; };
 		B7C0A3BD2D2F1F2E003E5A36 /* PinnedItemsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0A3BC2D2F1F25003E5A36 /* PinnedItemsManager.swift */; };
 		B7C0A3BF2D2F2251003E5A36 /* PinnedItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0A3BE2D2F224C003E5A36 /* PinnedItemsView.swift */; };
 		B7C0A3C52D2F4C19003E5A36 /* GetAssignmentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0A3C42D2F4C11003E5A36 /* GetAssignmentRequest.swift */; };
@@ -465,7 +470,6 @@
 		B76454F42C8DF61B002DF00E /* CourseFilesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseFilesView.swift; sourceTree = "<group>"; };
 		B76454F52C8DF61B002DF00E /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		B76454F62C8DF61B002DF00E /* CourseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseView.swift; sourceTree = "<group>"; };
-		B76454F72C8DF61B002DF00E /* SetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupView.swift; sourceTree = "<group>"; };
 		B76454F92C8DF61B002DF00E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B76454FA2C8DF61B002DF00E /* CanvasPlusPlaygroundApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasPlusPlaygroundApp.swift; sourceTree = "<group>"; };
 		B76454FB2C8DF61B002DF00E /* CourseFileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseFileViewModel.swift; sourceTree = "<group>"; };
@@ -499,6 +503,12 @@
 		B7AF50EE2E9AF9E700457E8A /* RecentItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentItemsView.swift; sourceTree = "<group>"; };
 		B7AF50F02E9AF9EF00457E8A /* RecentItemCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentItemCard.swift; sourceTree = "<group>"; };
 		B7AF50F32E9B03FC00457E8A /* RecentItemsWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentItemsWidget.swift; sourceTree = "<group>"; };
+		B7AF515D2E9B30E100457E8A /* OnboardingCompletionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCompletionView.swift; sourceTree = "<group>"; };
+		B7AF515E2E9B30E100457E8A /* OnboardingFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFlowView.swift; sourceTree = "<group>"; };
+		B7AF51602E9B30E100457E8A /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
+		B7AF51672E9B33EA00457E8A /* ShimmerEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerEffect.swift; sourceTree = "<group>"; };
+		B7AF516B2E9B343800457E8A /* SetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupView.swift; sourceTree = "<group>"; };
+		B7AF516D2E9B584100457E8A /* CompatibleGlassEffectViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompatibleGlassEffectViewModifier.swift; sourceTree = "<group>"; };
 		B7C0A3BC2D2F1F25003E5A36 /* PinnedItemsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedItemsManager.swift; sourceTree = "<group>"; };
 		B7C0A3BE2D2F224C003E5A36 /* PinnedItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedItemsView.swift; sourceTree = "<group>"; };
 		B7C0A3C42D2F4C11003E5A36 /* GetAssignmentRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAssignmentRequest.swift; sourceTree = "<group>"; };
@@ -664,6 +674,7 @@
 		A324BA502D07963D005F53FA /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				B7AF51612E9B30E100457E8A /* Onboarding */,
 				B7F375C12E85EE82008F0846 /* Dashboard */,
 				B7C469D02E6C80D500310982 /* Home */,
 				9B801DE82E66658000DF4942 /* Debug */,
@@ -681,7 +692,6 @@
 				A324BA5B2D0797B6005F53FA /* People */,
 				A372D0FD2D90BA96005E94CA /* Groups */,
 				A324BA5A2D0797A2005F53FA /* Assignments */,
-				A324BA592D079781005F53FA /* Onboarding */,
 				A324BA532D079685005F53FA /* Files */,
 				A324BA522D079666005F53FA /* Courses */,
 				A324BA512D079646005F53FA /* Announcements */,
@@ -752,6 +762,7 @@
 			isa = PBXGroup;
 			children = (
 				B7909DAA2E99CC5B00E37387 /* CompatibleGlassProminentButton.swift */,
+				B7AF516D2E9B584100457E8A /* CompatibleGlassEffectViewModifier.swift */,
 				B78847952E674D3800AE7221 /* URLService */,
 				B7CC4D5B2D90C00800254F55 /* CGSize+Center.swift */,
 				9BD75D6D2E763A10008BF846 /* URL+SafeCopyOut.swift */,
@@ -769,6 +780,7 @@
 				9A977E822D6C322F001D7F0A /* LoggerService.swift */,
 				A372D0FA2D90A709005E94CA /* HTTPURLResponse+Codes.swift */,
 				A372D1132D91D2B9005E94CA /* String+SFSymbols.swift */,
+				B7AF51672E9B33EA00457E8A /* ShimmerEffect.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -820,14 +832,6 @@
 				A330B88A2DA5663700D6C1C3 /* ModelContext+Utilities.swift */,
 			);
 			path = Storage;
-			sourceTree = "<group>";
-		};
-		A324BA592D079781005F53FA /* Onboarding */ = {
-			isa = PBXGroup;
-			children = (
-				B76454F72C8DF61B002DF00E /* SetupView.swift */,
-			);
-			path = Onboarding;
 			sourceTree = "<group>";
 		};
 		A324BA5A2D0797A2005F53FA /* Assignments */ = {
@@ -1188,6 +1192,17 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		B7AF51612E9B30E100457E8A /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				B7AF515E2E9B30E100457E8A /* OnboardingFlowView.swift */,
+				B7AF51602E9B30E100457E8A /* WelcomeView.swift */,
+				B7AF516B2E9B343800457E8A /* SetupView.swift */,
+				B7AF515D2E9B30E100457E8A /* OnboardingCompletionView.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
 		B7C469D02E6C80D500310982 /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -1349,7 +1364,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B76454722C8BBC81002DF00E /* Build configuration list for PBXNativeTarget "CanvasPlusPlayground" */;
 			buildPhases = (
-                9ACDA5E82D5F1DA2001F1F0A /* SwiftLint */,
 				B76454602C8BBC7F002DF00E /* Sources */,
 				B76454612C8BBC7F002DF00E /* Frameworks */,
 				B76454622C8BBC7F002DF00E /* Resources */,
@@ -1497,6 +1511,7 @@
 				B76455022C8DF61B002DF00E /* CourseFilesView.swift in Sources */,
 				B76455032C8DF61B002DF00E /* HomeView.swift in Sources */,
 				A3269E8E2CD5533F006F7D14 /* CanvasRepository.swift in Sources */,
+				B7AF516E2E9B584A00457E8A /* CompatibleGlassEffectViewModifier.swift in Sources */,
 				A372D1142D91D2B9005E94CA /* String+SFSymbols.swift in Sources */,
 				B72D83022E4F853300BA1DAD /* RAGSystem.swift in Sources */,
 				B7D193B92E7E28EC00FF4C84 /* IGCPlayground.swift in Sources */,
@@ -1536,7 +1551,6 @@
 				B7CC4D412D8DFB7300254F55 /* PickableItem.swift in Sources */,
 				9B92A4252C93856100C21CFC /* CourseAnnouncementManager.swift in Sources */,
 				A35191432D28ED48001E415F /* GetModuleItemsRequest.swift in Sources */,
-				B76455052C8DF61B002DF00E /* SetupView.swift in Sources */,
 				A372D1022D90BEA3005E94CA /* APIGroup.swift in Sources */,
 				A3049B772D15DC36002F3166 /* GetCourseRequest.swift in Sources */,
 				B7AD54F52CD41D7900FB09BB /* IntelligenceSupport.swift in Sources */,
@@ -1546,6 +1560,9 @@
 				A3CF88D92D192177000ACDF3 /* CourseAPI.swift in Sources */,
 				A3049B832D161432002F3166 /* GetAssignmentsRequest.swift in Sources */,
 				B7F9503D2D12ADAE004BB470 /* SubmissionAPI.swift in Sources */,
+				B7AF51632E9B30E100457E8A /* OnboardingCompletionView.swift in Sources */,
+				B7AF51642E9B30E100457E8A /* WelcomeView.swift in Sources */,
+				B7AF51652E9B30E100457E8A /* OnboardingFlowView.swift in Sources */,
 				B7C469DC2E6F894500310982 /* GetFolderRequest.swift in Sources */,
 				B7CC4D462D8DFFA500254F55 /* CourseItemPicker.swift in Sources */,
 				A3049B812D160F6B002F3166 /* GetAnnouncementsRequest.swift in Sources */,
@@ -1572,6 +1589,7 @@
 				D43B58072E76593C0054C12C /* QuizDetailView.swift in Sources */,
 				9B9C2E042C93F6CD00E4B16B /* CourseAnnouncementsView.swift in Sources */,
 				B7F375BA2E8466F7008F0846 /* IGCOnboardingView.swift in Sources */,
+				B7AF516C2E9B343800457E8A /* SetupView.swift in Sources */,
 				B77FD0022D52A0D60049AA5E /* ProfileView.swift in Sources */,
 				26589EF02E75C85100234C2F /* GetAllCourseFilesRequest.swift in Sources */,
 				B7CC4D712D91C9FB00254F55 /* ToDoListManager.swift in Sources */,
@@ -1682,6 +1700,7 @@
 				A372D1102D91D1A1005E94CA /* GroupDetailView.swift in Sources */,
 				A3049B792D15E162002F3166 /* GetCourseRootFolderRequest.swift in Sources */,
 				9BD75D6E2E763A10008BF846 /* URL+SafeCopyOut.swift in Sources */,
+				B7AF51682E9B33EA00457E8A /* ShimmerEffect.swift in Sources */,
 				9BF8E43F2D90DE4F00B5A50D /* UploadAssignmentFileTransmissionRequest.swift in Sources */,
 				7F8535742C98DE3C0023E384 /* CourseGradeView.swift in Sources */,
 				A3049B7F2D160C03002F3166 /* GetTabsRequest.swift in Sources */,
