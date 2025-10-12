@@ -30,9 +30,18 @@ private struct DefaultBigNumberWidgetBody: View {
     let widget: any BigNumberWidget
     let size: WidgetSize
 
+    private static let numberFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.maximumFractionDigits = 2
+        formatter.locale = Locale.current
+        return formatter
+    }()
+
     var body: some View {
         VStack(alignment: .leading, spacing: size == .small ? 4 : 8) {
-            Text("\(widget.dataSource.bigNumber)")
+            let numberString = Self.numberFormatter.string(for: widget.dataSource.bigNumber) ?? String(describing: widget.dataSource.bigNumber)
+            Text(numberString)
                 .font(.system(size: 48, weight: .bold))
         }
     }
