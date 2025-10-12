@@ -20,6 +20,8 @@ struct PinnedItemDetailView: View {
                     FileViewer(courseID: item.courseID, file: file)
                 case .assignment(let assignment):
                     AssignmentDetailView(assignment: assignment)
+                case .calendarEvent(let event):
+                    CalendarEventDetailView(event: event, course: itemData.course)
                 }
             } else {
                 ProgressView()

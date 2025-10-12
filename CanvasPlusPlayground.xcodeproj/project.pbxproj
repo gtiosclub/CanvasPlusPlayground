@@ -20,6 +20,9 @@
 		26BF115D2E92E1D2000680D4 /* ExampleDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26BF11592E92E1D2000680D4 /* ExampleDashboardView.swift */; };
 		3DAE85002C9A0E4F008C22E7 /* BridgedPDFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DAE84FF2C9A0E4F008C22E7 /* BridgedPDFView.swift */; };
 		7F8535742C98DE3C0023E384 /* CourseGradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8535732C98DE3C0023E384 /* CourseGradeView.swift */; };
+		8C3B9CEF2E9B3318001A257A /* TodayWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3B9CEE2E9B3318001A257A /* TodayWidget.swift */; };
+		8C3B9CF12E9B3344001A257A /* TodayWidgetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3B9CF02E9B3344001A257A /* TodayWidgetManager.swift */; };
+		8C3B9CF32E9B348C001A257A /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3B9CF22E9B348C001A257A /* TodayView.swift */; };
 		95BA93482C9CE20D00137A91 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95BA93472C9CE20D00137A91 /* CalendarView.swift */; };
 		9A977E832D6C322F001D7F0A /* LoggerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A977E822D6C322F001D7F0A /* LoggerService.swift */; };
 		9B07E7122D779CAB00359B69 /* Date+RelativeDates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B07E7112D779CA500359B69 /* Date+RelativeDates.swift */; };
@@ -301,6 +304,9 @@
 		26BF11592E92E1D2000680D4 /* ExampleDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleDashboardView.swift; sourceTree = "<group>"; };
 		3DAE84FF2C9A0E4F008C22E7 /* BridgedPDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgedPDFView.swift; sourceTree = "<group>"; };
 		7F8535732C98DE3C0023E384 /* CourseGradeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseGradeView.swift; sourceTree = "<group>"; };
+		8C3B9CEE2E9B3318001A257A /* TodayWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayWidget.swift; sourceTree = "<group>"; };
+		8C3B9CF02E9B3344001A257A /* TodayWidgetManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayWidgetManager.swift; sourceTree = "<group>"; };
+		8C3B9CF22E9B348C001A257A /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
 		95BA93472C9CE20D00137A91 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		9A977E822D6C322F001D7F0A /* LoggerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerService.swift; sourceTree = "<group>"; };
 		9B07E7112D779CA500359B69 /* Date+RelativeDates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+RelativeDates.swift"; sourceTree = "<group>"; };
@@ -1145,6 +1151,8 @@
 		B79580162E8C5E2700B9A38F /* Widgets */ = {
 			isa = PBXGroup;
 			children = (
+				8C3B9CF02E9B3344001A257A /* TodayWidgetManager.swift */,
+				8C3B9CEE2E9B3318001A257A /* TodayWidget.swift */,
 				B7532E932E9814EF0045CFB6 /* WidgetStore.swift */,
 				B7AF50E22E99F58D00457E8A /* WidgetStore+AvailableWidgets.swift */,
 				B795801A2E8C64F800B9A38F /* WidgetShowcase.swift */,
@@ -1322,6 +1330,7 @@
 		B7F375C12E85EE82008F0846 /* Dashboard */ = {
 			isa = PBXGroup;
 			children = (
+				8C3B9CF22E9B348C001A257A /* TodayView.swift */,
 				B7532E912E96D7030045CFB6 /* DashboardView.swift */,
 				B7AF50E02E99F14800457E8A /* ReorderWidgetsView.swift */,
 				B79580162E8C5E2700B9A38F /* Widgets */,
@@ -1364,7 +1373,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B76454722C8BBC81002DF00E /* Build configuration list for PBXNativeTarget "CanvasPlusPlayground" */;
 			buildPhases = (
-                9ACDA5E82D5F1DA2001F1F0A /* SwiftLint */,
 				B76454602C8BBC7F002DF00E /* Sources */,
 				B76454612C8BBC7F002DF00E /* Frameworks */,
 				B76454622C8BBC7F002DF00E /* Resources */,
@@ -1509,6 +1517,7 @@
 				A3049B592D0E5A96002F3166 /* LockInfo.swift in Sources */,
 				A3E7F3932C99338B00DC4300 /* TabAPI.swift in Sources */,
 				A3049B7D2D160299002F3166 /* GetFoldersInFolderRequest.swift in Sources */,
+				8C3B9CF12E9B3344001A257A /* TodayWidgetManager.swift in Sources */,
 				B76455022C8DF61B002DF00E /* CourseFilesView.swift in Sources */,
 				B76455032C8DF61B002DF00E /* HomeView.swift in Sources */,
 				A3269E8E2CD5533F006F7D14 /* CanvasRepository.swift in Sources */,
@@ -1600,6 +1609,7 @@
 				A372D10C2D90E875005E94CA /* GroupsListView.swift in Sources */,
 				A3777E0A2DA0E25E00A8B00C /* StorageHandler.swift in Sources */,
 				A3FFD03C2CDED67C006BAB51 /* String+Numbers.swift in Sources */,
+				8C3B9CEF2E9B3318001A257A /* TodayWidget.swift in Sources */,
 				267D85262E662019007F821B /* NewWindowButton.swift in Sources */,
 				B72D83042E4F860700BA1DAD /* GradeCalculatorIntelligenceService.swift in Sources */,
 				A301EE132D614A4100D71139 /* GetDiscussionTopicsRequest.swift in Sources */,
@@ -1642,6 +1652,7 @@
 				B7C0A3BF2D2F2251003E5A36 /* PinnedItemsView.swift in Sources */,
 				A3CF88E32D1921CB000ACDF3 /* FolderAPI.swift in Sources */,
 				A373DC2D2D28172E00215019 /* GetModulesRequest.swift in Sources */,
+				8C3B9CF32E9B348C001A257A /* TodayView.swift in Sources */,
 				D411AB682E765AD100AEB627 /* GetQuizRequest.swift in Sources */,
 				267D852A2E6644FE007F821B /* FocusWindowView.swift in Sources */,
 				B7C0A3CD2D3023CA003E5A36 /* PinnedItem.swift in Sources */,

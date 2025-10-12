@@ -120,7 +120,7 @@ struct CanvasCalendarEventGroup: Identifiable {
     }
 }
 
-struct CanvasCalendarEvent: Identifiable {
+struct CanvasCalendarEvent: Identifiable, Hashable {
     let id: String
     let summary: String
     let startDate: Date

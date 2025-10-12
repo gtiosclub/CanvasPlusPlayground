@@ -12,7 +12,7 @@ struct HomeView: View {
     @Environment(ProfileManager.self) private var profileManager
     @Environment(CourseManager.self) private var courseManager
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-
+    @Environment(TodayWidgetManager.self) private var todayWidgetManager
     @State private var columnVisibility = NavigationSplitViewVisibility.all
     @State private var isLoadingCourses = false
     @State private var navigationModel = NavigationModel()
@@ -97,6 +97,7 @@ struct HomeView: View {
         async let profileTask: Void = profileManager.getCurrentUserAndProfile()
         async let todoTask: Void = toDoListManager.fetchToDoItemCount()
 
+        
         await (_, _, _) = (coursesTask, profileTask, todoTask)
 
         isLoadingCourses = false

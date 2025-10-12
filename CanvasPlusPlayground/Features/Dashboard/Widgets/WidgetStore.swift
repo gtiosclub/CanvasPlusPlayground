@@ -158,6 +158,8 @@ class WidgetStore {
             return ToDoCountWidget()
         case RecentItemsWidget.widgetID:
             return RecentItemsWidget()
+        case TodayWidget.widgetID:
+            return TodayWidget()
         default:
             return nil
         }

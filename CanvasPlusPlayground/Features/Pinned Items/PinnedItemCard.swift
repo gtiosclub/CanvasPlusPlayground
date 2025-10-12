@@ -17,17 +17,22 @@ struct PinnedItemCard: View {
                 case .announcement(let announcement):
                     PinnedAnnouncementCard(
                         announcement: announcement,
-                        course: itemData.course
+                        course: itemData.course!
                     )
                 case .file(let file):
                     PinnedFileCard(
                         file: file,
-                        course: itemData.course
+                        course: itemData.course!
                     )
                 case .assignment(let assignment):
                     PinnedAssignmentCard(
                         assignment: assignment,
-                        course: itemData.course
+                        course: itemData.course!
+                    )
+                case .calendarEvent(let event):
+                    PinnedCalendarEventCard(
+                        event: event,
+                        course: itemData.course!
                     )
                 }
             } else {
@@ -113,6 +118,44 @@ private struct PinnedAssignmentCard: View {
                     .font(.headline)
                     .fontDesign(.rounded)
                     .bold()
+            }
+
+            Spacer()
+        }
+    }
+}
+
+private struct PinnedCalendarEventCard: View {
+    let event: CanvasCalendarEvent
+    let course: Course?
+
+    private var timeString: String {
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        return formatter.string(from: event.startDate)
+    }
+
+    var body: some View {
+        HStack(spacing: 8) {
+            Image(systemName: "calendar")
+                .foregroundStyle(course?.rgbColors?.color ?? .blue)
+                .font(.title)
+
+            VStack(alignment: .leading, spacing: 8) {
+                if let course {
+                    Text(course.displayName.uppercased())
+                        .font(.caption)
+                        .foregroundStyle(course.rgbColors?.color ?? .blue)
+                }
+
+                Text(event.summary)
+                    .font(.headline)
+                    .fontDesign(.rounded)
+                    .bold()
+
+                Text(timeString)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
             }
 
             Spacer()
