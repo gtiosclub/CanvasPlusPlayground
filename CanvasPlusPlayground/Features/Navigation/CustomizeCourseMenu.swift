@@ -58,6 +58,21 @@ private struct CustomizeCourseMenu: ViewModifier {
             .toolbar {
                 if placement == .toolbar {
                     courseActionsMenu
+                    #if os(macOS)
+                        .popover(isPresented: $showCourseCustomizer) {
+                            CustomizeCourseView(courseName: course.displayName, selectedSymbol: course.displaySymbol, selectedColor: course.rgbColors?.color, onDismiss: { symbol, color in
+                                DispatchQueue.main.async {
+                                    if let color {
+                                        course.rgbColors = .init(color: color)
+                                    } else {
+                                        course.rgbColors = nil
+                                    }
+
+                                    course.courseSymbol = symbol
+                                }
+                            })
+                        }
+                    #endif
                 }
             }
             .alert("Rename Course", isPresented: $showRenameTextField) {
@@ -71,12 +86,21 @@ private struct CustomizeCourseMenu: ViewModifier {
             } message: {
                 Text("Rename \(course.name ?? "")?")
             }
+            #if os(iOS)
             .sheet(isPresented: $showCourseCustomizer) {
                 CustomizeCourseView(courseName: course.displayName, selectedSymbol: course.displaySymbol, selectedColor: course.rgbColors?.color, onDismiss: { symbol, color in
-                    course.rgbColors = .init(color: color)
-                    course.courseSymbol = symbol
+                    DispatchQueue.main.async {
+                        if let color {
+                            course.rgbColors = .init(color: color)
+                        } else {
+                            course.rgbColors = nil
+                        }
+
+                        course.courseSymbol = symbol
+                    }
                 })
             }
+            #endif
     }
 
     private var favCourseButton: some View {

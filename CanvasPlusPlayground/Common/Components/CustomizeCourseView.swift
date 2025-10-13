@@ -19,9 +19,9 @@ struct CustomizeCourseView: View {
     let colorList: [Color] = CourseCustomizationOptions.allowedColors
     
     @Environment(\.dismiss) var dismiss
-    let onDismiss: (String, Color) -> Void
+    let onDismiss: (String, Color?) -> Void
     
-    
+    var displayedColor: Color { selectedColor ?? .primary }
     var body: some View {
         NavigationStack {
             Form {
@@ -52,11 +52,13 @@ struct CustomizeCourseView: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Button {
                         // Confirm: apply changes
+                        guard let selectedColor else { return }
                         onDismiss(selectedSymbol, selectedColor)
                         dismiss()
                     } label: {
                         Image(systemName: "checkmark")
                     }
+                    .disabled(selectedColor == nil)
                 }
             }
         }
@@ -66,7 +68,7 @@ struct CustomizeCourseView: View {
         VStack(alignment: .center, spacing: 16) {
             ZStack {
                 Circle()
-                    .fill((selectedColor).gradient)
+                    .fill(displayedColor.gradient)
                     .frame(width: 112, height: 112)
                     .shadow(color: .black.opacity(0.12), radius: 20, y: 8)
                 
@@ -111,9 +113,8 @@ struct CustomizeCourseView: View {
     let symbolList: [String] = CourseCustomizationOptions.allowedSymbols
     
     let colorList: [Color] = CourseCustomizationOptions.allowedColors
-    
-    @Environment(\.dismiss) var dismiss
-    let onDismiss: (String, Color) -> Void
+
+    let onDismiss: (String, Color?) -> Void
     private var topRowSymbols: [String] { Array(symbolList.prefix((symbolList.count + 1) / 2)) }
     private var bottomRowSymbols: [String] { Array(symbolList.suffix(symbolList.count / 2)) }
     private var topRowColors: [Color] { Array(colorList.prefix((colorList.count + 1) / 2)) }
@@ -133,7 +134,14 @@ struct CustomizeCourseView: View {
                             ColorSelectionButton(
                                 color: color,
                                 isSelected: selectedColor == color,
-                                onSelect: { selectedColor = color }
+                                onSelect: {
+                                    if selectedColor == nil {
+                                        selectedColor = color
+                                    } else {
+                                        selectedColor = nil // tapping a selected button should toggle the color off
+                                    }
+
+                                }
                             )
                         }
                     }
@@ -181,23 +189,12 @@ struct CustomizeCourseView: View {
                 .padding(.horizontal, 10)
             }
             .scrollClipDisabled(true)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Dismiss", systemImage: "xmark", role: .cancel) {
-                        dismiss()
-                    }
-                }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Confirm", systemImage: "check") {
-                        guard let selectedColor else { return }
-                        onDismiss(selectedSymbol, selectedColor)
-                        dismiss()
-                    }
-                    .disabled(selectedColor == nil)
-                }
+            .onDisappear {
+                onDismiss(selectedSymbol, selectedColor)
             }
         }
         .frame(width: 320, height: 280)
+        .padding()
     }
 }
 #endif
@@ -231,21 +228,22 @@ private struct SymbolSelectionButton: View {
     let isSelected: Bool
     let color: Color?
     let onSelect: () -> Void
-    
+
+    var displayedColor: Color { color ?? .primary }
     var body: some View {
         Button(action: onSelect) {
             ZStack {
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(isSelected ? (color ?? .white).opacity(0.22) : Color.clear)
+                    .fill(isSelected ? displayedColor.opacity(0.22) : Color.clear)
                     .frame(width: 34, height: 34)
                 Image(systemName: symbol)
                     .resizable()
                     .scaledToFit()
-                    .foregroundStyle(color ?? .white)
+                    .foregroundStyle(displayedColor)
                     .frame(width: 23, height: 23)
                 if isSelected {
                     RoundedRectangle(cornerRadius: 8)
-                        .stroke(color ?? .white, lineWidth: 2.5)
+                        .stroke(displayedColor, lineWidth: 2.5)
                         .frame(width: 34, height: 34)
                 }
             }
