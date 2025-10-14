@@ -18,6 +18,8 @@ extension BigNumberWidget {
     func adaptedContents(for size: WidgetSize) -> AnyView {
         AnyView(DefaultBigNumberWidgetBody(widget: self, size: size))
     }
+
+    static var allowedSizes: [WidgetSize] { [.small] }
 }
 
 protocol BigNumberWidgetDataSource: WidgetDataSource {
@@ -45,7 +47,7 @@ private struct DefaultBigNumberWidgetBody: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: size == .small ? 4 : 8) {
+        VStack(alignment: .leading) {
             Text(displayString)
                 .font(.system(size: 48, weight: .bold, design: .rounded))
         }
