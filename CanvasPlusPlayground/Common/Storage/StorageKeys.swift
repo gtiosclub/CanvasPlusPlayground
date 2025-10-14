@@ -10,6 +10,7 @@ import Foundation
 enum StorageKeys {
     static let accessTokenKey = "com.canvasPlus.AccessToken"
     static let installedModelsKey = "com.canvasPlus.installedModels"
+    static let hasCompletedOnboardingKey = "com.canvasPlus.hasCompletedOnboarding"
 
     static let baseKeychainQuery = [
         kSecClass as String: kSecClassGenericPassword,
@@ -79,5 +80,14 @@ enum StorageKeys {
 
     static var needsAuthorization: Bool {
         accessTokenValue.isEmpty
+    }
+
+    static var hasCompletedOnboarding: Bool {
+        get {
+            UserDefaults.standard.bool(forKey: hasCompletedOnboardingKey)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: hasCompletedOnboardingKey)
+        }
     }
 }

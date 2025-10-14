@@ -17,6 +17,7 @@ private struct CourseGradientBackgroundModifier: ViewModifier {
     let isActive: Bool
     let backgroundStyle: DashboardGradientBackgroundStyle
     let showIcon: Bool
+    let edge: VerticalEdge
 
     public func body(content: Content) -> some View {
         content
@@ -41,6 +42,10 @@ private struct CourseGradientBackgroundModifier: ViewModifier {
 
                 if isActive {
                     VStack(spacing: 0) {
+                        if edge == .bottom {
+                            Spacer()
+                        }
+
                         ZStack(alignment: .topTrailing) {
                             DashboardMeshGradient(
                                 colors: DashboardGradientColors
@@ -55,7 +60,9 @@ private struct CourseGradientBackgroundModifier: ViewModifier {
                         }
                         .frame(height: 400)
 
-                        Spacer()
+                        if edge == .top {
+                            Spacer()
+                        }
                     }
                     .ignoresSafeArea()
                 }
@@ -97,14 +104,16 @@ extension View {
         courses: [Course],
         isActive: Bool = true,
         backgroundStyle: DashboardGradientBackgroundStyle = .default,
-        showIcon: Bool = false
+        showIcon: Bool = false,
+        edge: VerticalEdge = .top
     ) -> some View {
         modifier(
             CourseGradientBackgroundModifier(
                 courses: courses,
                 isActive: isActive,
                 backgroundStyle: backgroundStyle,
-                showIcon: showIcon
+                showIcon: showIcon,
+                edge: edge
             )
         )
     }

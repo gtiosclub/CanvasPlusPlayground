@@ -14,6 +14,9 @@ struct SetupView: View {
 
     @State private var tempAccessKey: String = ""
 
+    var isOnboarding: Bool = false
+    var onContinue: (() -> Void)?
+
     var body: some View {
         VStack(spacing: 8) {
             Spacer()
@@ -52,16 +55,23 @@ struct SetupView: View {
             tempAccessKey = StorageKeys.accessTokenValue.trimmingCharacters(in: .whitespacesAndNewlines)
         }
         .onDisappear {
-            Task {
-                StorageKeys.accessTokenValue = tempAccessKey.trimmingCharacters(in: .whitespacesAndNewlines)
-                await courseManager.getCourses()
-                await profileManager.getCurrentUserAndProfile()
+            if !isOnboarding {
+                Task {
+                    StorageKeys.accessTokenValue = tempAccessKey.trimmingCharacters(in: .whitespacesAndNewlines)
+                    await courseManager.getCourses()
+                    await profileManager.getCurrentUserAndProfile()
+                }
             }
         }
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
                 Button("Done") {
-                    dismiss()
+                    if isOnboarding {
+                        StorageKeys.accessTokenValue = tempAccessKey.trimmingCharacters(in: .whitespacesAndNewlines)
+                        onContinue?()
+                    } else {
+                        dismiss()
+                    }
                 }
                 .disabled(tempAccessKey.isEmpty)
             }

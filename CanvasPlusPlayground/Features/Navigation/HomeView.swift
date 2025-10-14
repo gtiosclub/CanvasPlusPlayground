@@ -50,17 +50,27 @@ struct HomeView: View {
         }
         .tabViewStyle(.sidebarAdaptable)
         .task {
-            if StorageKeys.needsAuthorization {
+            if !StorageKeys.hasCompletedOnboarding {
+                navigationModel.showAuthorizationSheet = true
+            } else if StorageKeys.needsAuthorization {
                 navigationModel.showAuthorizationSheet = true
             } else {
                 await loadCourses()
             }
         }
         .sheet(isPresented: $navigationModel.showAuthorizationSheet) {
-            NavigationStack {
-                SetupView()
+            Task {
+                await loadCourses()
             }
-            .interactiveDismissDisabled()
+        } content: {
+            if !StorageKeys.hasCompletedOnboarding {
+                OnboardingFlowView()
+            } else {
+                NavigationStack {
+                    SetupView()
+                }
+                .interactiveDismissDisabled()
+            }
         }
         .sheet(isPresented: $navigationModel.showProfileSheet) {
             if let currentUser = profileManager.currentUser {
