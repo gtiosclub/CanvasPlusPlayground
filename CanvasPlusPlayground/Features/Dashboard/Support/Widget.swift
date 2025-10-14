@@ -58,14 +58,28 @@ extension Widget {
 }
 
 class WidgetContext {
+    enum RefreshTriggerSubject: Equatable {
+        case allWidgets
+        case singleWidget(id: String)
+    }
+
     static let shared: WidgetContext = .init()
 
     private(set) var courseManager: CourseManager?
+    var refreshTrigger: PassthroughSubject<RefreshTriggerSubject, Never> = .init()
 
     private init() { }
 
     static func setup(courseManager: CourseManager) {
         shared.courseManager = courseManager
+    }
+
+    @MainActor func requestToRefreshAllWidgets() {
+        refreshTrigger.send(.allWidgets)
+    }
+
+    @MainActor func requestToRefreshWidget(widget: any Widget.Type) {
+        refreshTrigger.send(.singleWidget(id: widget.widgetID))
     }
 }
 
@@ -75,7 +89,6 @@ protocol WidgetDataSource {
 
     var widgetData: [Data] { get set }
     var fetchStatus: WidgetFetchStatus { get set }
-    var refreshTrigger: PassthroughSubject<Void, Never> { get }
     func fetchData(context: WidgetContext) async throws
     func destinationView(for data: Data) -> NavigationModel.Destination
 }
@@ -90,6 +103,14 @@ struct DefaultWidgetBody: View {
     let widget: any Widget
     @Environment(\.widgetSize) private var widgetSize: WidgetSize
     @Environment(\.isWidgetNavigationEnabled) private var isWidgetNavigationEnabled: Bool
+
+    private func shouldRefresh(trigger: WidgetContext.RefreshTriggerSubject) -> Bool {
+        guard case .singleWidget(let requestedID) = trigger else {
+            return trigger == .allWidgets
+        }
+
+        return widget.id == requestedID
+    }
 
     var body: some View {
         Group {
@@ -118,10 +139,12 @@ struct DefaultWidgetBody: View {
             try? await widget.dataSource
                 .fetchData(context: WidgetContext.shared)
         }
-        .onReceive(widget.dataSource.refreshTrigger) {
-            Task {
-                try? await widget.dataSource
-                    .fetchData(context: WidgetContext.shared)
+        .onReceive(WidgetContext.shared.refreshTrigger) { trigger in
+            if shouldRefresh(trigger: trigger) {
+                Task {
+                    try? await widget.dataSource
+                        .fetchData(context: WidgetContext.shared)
+                }
             }
         }
         .padding(12)

@@ -19,7 +19,6 @@ class ToDoListManager: ListWidgetDataSource, BigNumberWidgetDataSource {
 
     // ListWidgetDataSource
     var fetchStatus: WidgetFetchStatus = .loading
-    var refreshTrigger = PassthroughSubject<Void, Never>()
     var widgetData: [ListWidgetData] {
         get {
             displayedToDoItems.map {

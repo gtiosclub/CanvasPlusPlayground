@@ -55,7 +55,6 @@ import Combine
         set { }
     }
     var fetchStatus: WidgetFetchStatus = .loading
-    var refreshTrigger = PassthroughSubject<Void, Never>()
 
     func fetchAnnouncements(courses: [Course]) async {
         guard !courses.isEmpty else { return }

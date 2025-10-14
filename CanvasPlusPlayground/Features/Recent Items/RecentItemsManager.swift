@@ -48,7 +48,6 @@ class RecentItemsManager: ListWidgetDataSource {
     }
 
     var fetchStatus: WidgetFetchStatus = .loading
-    var refreshTrigger = PassthroughSubject<Void, Never>()
 
     init() {
         let savedMax = UserDefaults.standard.integer(forKey: Self.maxRecentItemsKey)
@@ -56,7 +55,7 @@ class RecentItemsManager: ListWidgetDataSource {
         getRecentItems()
     }
 
-    func logRecentItem(
+    @MainActor func logRecentItem(
         itemID: String,
         courseID: String,
         type: RecentItemType
@@ -83,12 +82,15 @@ class RecentItemsManager: ListWidgetDataSource {
             trimRecentItemsIfNeeded()
         }
 
-        refreshTrigger.send()
+        WidgetContext.shared
+            .requestToRefreshWidget(widget: RecentItemsWidget.self)
     }
 
-    func clearAllRecentItems() {
+    @MainActor func clearAllRecentItems() {
         recentItems.removeAll()
-        refreshTrigger.send()
+
+        WidgetContext.shared
+            .requestToRefreshWidget(widget: RecentItemsWidget.self)
     }
 
     private func trimRecentItemsIfNeeded() {
