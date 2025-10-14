@@ -86,10 +86,10 @@ struct CustomizeCourseView: View {
         return LazyVGrid(columns: columns, spacing: 12) {
             ForEach(Array(colorList.enumerated()), id: \.offset) { _, color in
                 ColorSelectionButton(color: color, isSelected: color == selectedColor) {
-                    if selectedColor == nil {
-                        selectedColor = color
+                    if selectedColor == color {
+                        selectedColor = nil  // tapping a selected button should toggle the color off
                     } else {
-                        selectedColor = nil // tapping a selected button should toggle the color off
+                        selectedColor = color
                     }
                 }
             }
@@ -139,10 +139,10 @@ struct CustomizeCourseView: View {
                                 color: color,
                                 isSelected: selectedColor == color,
                                 onSelect: {
-                                    if selectedColor == nil {
-                                        selectedColor = color
+                                    if selectedColor == color {
+                                        selectedColor = nil  // tapping a selected button should toggle the color off
                                     } else {
-                                        selectedColor = nil // tapping a selected button should toggle the color off
+                                        selectedColor = color
                                     }
 
                                 }

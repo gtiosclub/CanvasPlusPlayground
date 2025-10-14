@@ -60,17 +60,7 @@ private struct CustomizeCourseMenu: ViewModifier {
                     courseActionsMenu
                     #if os(macOS)
                         .popover(isPresented: $showCourseCustomizer) {
-                            CustomizeCourseView(courseName: course.displayName, selectedSymbol: course.displaySymbol, selectedColor: course.rgbColors?.color, onDismiss: { symbol, color in
-                                DispatchQueue.main.async {
-                                    if let color {
-                                        course.rgbColors = .init(color: color)
-                                    } else {
-                                        course.rgbColors = nil
-                                    }
-
-                                    course.courseSymbol = symbol
-                                }
-                            })
+                            customizeCourseView
                         }
                     #endif
                 }
@@ -88,19 +78,23 @@ private struct CustomizeCourseMenu: ViewModifier {
             }
             #if os(iOS)
             .sheet(isPresented: $showCourseCustomizer) {
-                CustomizeCourseView(courseName: course.displayName, selectedSymbol: course.displaySymbol, selectedColor: course.rgbColors?.color, onDismiss: { symbol, color in
-                    DispatchQueue.main.async {
-                        if let color {
-                            course.rgbColors = .init(color: color)
-                        } else {
-                            course.rgbColors = nil
-                        }
-
-                        course.courseSymbol = symbol
-                    }
-                })
+                customizeCourseView
             }
             #endif
+    }
+
+    private var customizeCourseView: some View {
+        CustomizeCourseView(courseName: course.displayName, selectedSymbol: course.displaySymbol, selectedColor: course.rgbColors?.color, onDismiss: { symbol, color in
+            DispatchQueue.main.async {
+                if let color {
+                    course.rgbColors = .init(color: color)
+                } else {
+                    course.rgbColors = nil
+                }
+
+                course.courseSymbol = symbol
+            }
+        })
     }
 
     private var favCourseButton: some View {

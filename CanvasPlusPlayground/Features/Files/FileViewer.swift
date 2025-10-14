@@ -9,7 +9,8 @@ import SwiftUI
 
 struct FileViewer: View {
     @Environment(\.dismiss) private var dismiss
-
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    
     let courseID: Course.ID
     let file: File
     let fileService = CourseFileService()
@@ -62,7 +63,10 @@ struct FileViewer: View {
         .navigationTitle(file.displayName)
         #if os(iOS)
         .navigationBarBackButtonHidden()
-        .toolbar(.hidden, for: .tabBar)
+        .toolbar(
+                    horizontalSizeClass == .compact ? .hidden : .automatic,
+                    for: .tabBar
+                )
         #endif
     }
 
