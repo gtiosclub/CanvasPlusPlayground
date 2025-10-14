@@ -44,7 +44,7 @@ private struct DefaultListWidgetBody: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: size == .small ? 4 : 8) {
-            ForEach(widget.dataSource.widgetData.prefix(itemLimit)) { item in
+            ForEach(data) { item in
                 Group {
                     if isWidgetNavigationEnabled {
                         NavigationLink(
@@ -59,6 +59,16 @@ private struct DefaultListWidgetBody: View {
             }
             Spacer()
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .overlay {
+            if data.isEmpty {
+                Text("No items")
+            }
+        }
+    }
+
+    private var data: ArraySlice<ListWidgetData> {
+        widget.dataSource.widgetData.prefix(itemLimit)
     }
 
     private struct Row: View {

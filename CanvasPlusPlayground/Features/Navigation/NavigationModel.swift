@@ -71,6 +71,7 @@ class NavigationModel {
     enum Destination: Hashable {
         case allAnnouncements
         case allToDos
+        case recentItems
         case course(Course)
         case coursePage(CoursePage, Course)
         case announcement(DiscussionTopic)
@@ -79,10 +80,6 @@ class NavigationModel {
         case file(File, Course.ID)
         case folder(Folder, Course)
         case quiz(Quiz)
-
-        // TODO: Add top level views like all announcements, pinned items, etc
-
-        // TODO: Add specific course items as needed.
         @ViewBuilder
         func destinationView() -> some View {
             switch self {
@@ -106,6 +103,8 @@ class NavigationModel {
                 AllAnnouncementsView()
             case .allToDos:
                 ToDoListView()
+            case .recentItems:
+                RecentItemsView()
             }
         }
     }

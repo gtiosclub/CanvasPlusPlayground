@@ -7,6 +7,7 @@
 
 #if DEBUG
 import SwiftUI
+import Combine
 
 fileprivate struct ExampleListWidget: @MainActor ListWidget {
     static var widgetID: String { "steps_widget" }
@@ -23,6 +24,7 @@ fileprivate struct ExampleListWidget: @MainActor ListWidget {
 @Observable
 private class StepsDataSource: ListWidgetDataSource {
     var fetchStatus: WidgetFetchStatus = .loading
+    var refreshTrigger = PassthroughSubject<Void, Never>()
     var widgetData: [ListWidgetData] = []
 
     func fetchData(context: WidgetContext) async throws {

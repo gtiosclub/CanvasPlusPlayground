@@ -19,6 +19,7 @@ struct SettingsView: View {
     #endif
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(RecentItemsManager.self) private var recentItemsManager
 
     @State private var showChangeAccessToken: Bool = false
 
@@ -49,6 +50,7 @@ struct SettingsView: View {
     private var mainBody: some View {
         Form {
             loginSettings
+            recentItemsSettings
             if #available(macOS 26.0, iOS 26.0, *) {
                 intelligenceSettings
             }
@@ -74,6 +76,27 @@ struct SettingsView: View {
             }
         } header: {
             Label("Login", systemImage: "lock.fill")
+        }
+    }
+
+    @ViewBuilder
+    private var recentItemsSettings: some View {
+        @Bindable var recentItemsManager = recentItemsManager
+
+        Section {
+            Picker("Max Recent Items", selection: $recentItemsManager.maxRecentItems) {
+                ForEach(RecentItemsManager.maxRecentItemsOptions, id: \.self) { option in
+                    Text("\(option)").tag(option)
+                }
+            }
+
+            Button("Clear Recent Items", systemImage: "clock.arrow.circlepath") {
+                recentItemsManager.clearAllRecentItems()
+            }
+        } header: {
+            Label("Recent Items", systemImage: "clock")
+        } footer: {
+            Text("Currently tracking \(recentItemsManager.recentItems.count) recent items.")
         }
     }
 

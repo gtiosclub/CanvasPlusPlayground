@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 @Observable class AllAnnouncementsManager: ListWidgetDataSource, BigNumberWidgetDataSource {
     struct CourseAnnouncement: Hashable, Identifiable {
@@ -54,6 +55,7 @@ import Foundation
         set { }
     }
     var fetchStatus: WidgetFetchStatus = .loading
+    var refreshTrigger = PassthroughSubject<Void, Never>()
 
     func fetchAnnouncements(courses: [Course]) async {
         guard !courses.isEmpty else { return }

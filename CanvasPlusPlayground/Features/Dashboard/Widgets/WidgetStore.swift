@@ -156,6 +156,8 @@ class WidgetStore {
             return UnreadAnnouncementsCountWidget()
         case ToDoCountWidget.widgetID:
             return ToDoCountWidget()
+        case RecentItemsWidget.widgetID:
+            return RecentItemsWidget()
         default:
             return nil
         }

@@ -28,6 +28,7 @@ enum CodableDestination: Codable, Hashable {
     case quiz(Quiz.ID, Course.ID)
     case allAnnouncements
     case allToDos
+    case recentItems
 }
 
 extension CodableDestination {
@@ -54,6 +55,8 @@ extension CodableDestination {
             self = .allAnnouncements
         case .allToDos:
             self = .allToDos
+        case .recentItems:
+            self = .recentItems
         }
     }
 }

@@ -21,6 +21,7 @@ struct CanvasPlusPlaygroundApp: App {
     @State private var profileManager = ProfileManager()
     @State private var courseManager = CourseManager()
     @State private var pinnedItemsManager = PinnedItemsManager()
+    @State private var recentItemsManager = RecentItemsManager.shared
     @State private var remindersManager = RemindersManager()
 #if DEBUG
     @State private var networkRecorder = NetworkRequestRecorder.shared
@@ -42,6 +43,7 @@ struct CanvasPlusPlaygroundApp: App {
                     .environment(profileManager)
                     .environment(courseManager)
                     .environment(pinnedItemsManager)
+                    .environment(recentItemsManager)
                     .environment(remindersManager)
                     .task {
                         WidgetContext.setup(courseManager: courseManager)
@@ -82,6 +84,7 @@ struct CanvasPlusPlaygroundApp: App {
                     .environment(profileManager)
                     .environment(courseManager)
                     .environment(pinnedItemsManager)
+                    .environment(recentItemsManager)
                     .environment(remindersManager)
             }
         }
@@ -98,6 +101,7 @@ struct CanvasPlusPlaygroundApp: App {
                     .environment(profileManager)
                     .environment(courseManager)
                     .environment(pinnedItemsManager)
+                    .environment(recentItemsManager)
                     .frame(width: 400, height: 500)
             }
         }

@@ -56,6 +56,11 @@ struct FileViewer: View {
                 #endif
             }
         }
+        .logRecentItem(
+            itemID: file.id,
+            courseID: courseID,
+            type: .file
+        )
         .task {
             await loadContents()
         }

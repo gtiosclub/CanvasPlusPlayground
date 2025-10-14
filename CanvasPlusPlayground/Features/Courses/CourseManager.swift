@@ -49,4 +49,8 @@ class CourseManager {
             LoggerService.main.error("Failed to fetch courses. \(error)")
         }
     }
+
+    func course(withID id: Course.ID) -> Course? {
+        activeCourses.first { $0.id == id }
+    }
 }

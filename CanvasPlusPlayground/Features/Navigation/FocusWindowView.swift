@@ -47,7 +47,7 @@ struct FocusWindowView: View {
             return courseID
         case .announcement(_, let courseID), .assignment(_, let courseID), .page(_, let courseID), .quiz(_, let courseID):
             return courseID
-        case .allAnnouncements, .allToDos:
+        case .allAnnouncements, .allToDos, .recentItems:
             return ""
         }
     }
@@ -86,6 +86,8 @@ struct FocusWindowView: View {
                 destination = .allAnnouncements
             case .allToDos:
                 destination = .allToDos
+            case .recentItems:
+                destination = .recentItems
             }
         } catch {
             errorMessage = "Failed to load content: \(error.localizedDescription)"
@@ -96,7 +98,7 @@ struct FocusWindowView: View {
     }
 
     private func loadCourse(courseID: Course.ID) async throws {
-        if let course = courseManager.activeCourses.first(where: { $0.id == courseID }) {
+        if let course = courseManager.course(withID: courseID) {
             destination = .course(course)
             return
         }
@@ -115,7 +117,7 @@ struct FocusWindowView: View {
     }
 
     private func loadCoursePage(coursePage: NavigationModel.CoursePage, courseID: Course.ID) async throws {
-        if let course = courseManager.activeCourses.first(where: { $0.id == courseID }) {
+        if let course = courseManager.course(withID: courseID) {
             destination = .coursePage(coursePage, course)
             return
         }
@@ -190,7 +192,7 @@ struct FocusWindowView: View {
     }
 
     private func loadFolder(folderID: String, courseID: Course.ID) async throws {
-        guard let course = courseManager.activeCourses.first(where: { $0.id == courseID }) else {
+        guard let course = courseManager.course(withID: courseID) else {
             throw FocusWindowError.courseNotFound
         }
 
