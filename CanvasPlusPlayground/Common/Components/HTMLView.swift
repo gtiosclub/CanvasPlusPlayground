@@ -33,9 +33,17 @@ struct HTMLView: ViewRepresentable {
     func updateUIView(_ uiView: WKWebView, context: Context) {
         updateView(uiView, context: context)
     }
+
+    static func dismantleUIView(_ uiView: WKWebView, coordinator: Coordinator) {
+        dismantleView(uiView)
+    }
     #else
     func updateNSView(_ nsView: WKWebView, context: Context) {
         updateView(nsView, context: context)
+    }
+
+    static func dismantleNSView(_ nsView: WKWebView, coordinator: Coordinator) {
+        dismantleView(nsView)
     }
     #endif
 
@@ -53,6 +61,13 @@ struct HTMLView: ViewRepresentable {
 
     func updateView(_ view: WKWebView, context: Context) {
         view.loadHTMLString(html, baseURL: nil)
+    }
+
+    static func dismantleView(_ view: WKWebView) {
+        view.stopLoading()
+        view.navigationDelegate = nil
+
+        view.loadHTMLString("", baseURL: nil)
     }
 
     class Coordinator: NSObject, WKNavigationDelegate {
