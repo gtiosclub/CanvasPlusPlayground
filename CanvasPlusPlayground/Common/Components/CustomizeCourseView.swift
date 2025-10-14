@@ -52,13 +52,11 @@ struct CustomizeCourseView: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Button {
                         // Confirm: apply changes
-                        guard let selectedColor else { return }
                         onDismiss(selectedSymbol, selectedColor)
                         dismiss()
                     } label: {
                         Image(systemName: "checkmark")
                     }
-                    .disabled(selectedColor == nil)
                 }
             }
         }
@@ -87,7 +85,13 @@ struct CustomizeCourseView: View {
         let columns = [GridItem(.adaptive(minimum: 44, maximum: 60), spacing: 12)]
         return LazyVGrid(columns: columns, spacing: 12) {
             ForEach(Array(colorList.enumerated()), id: \.offset) { _, color in
-                ColorSelectionButton(color: color, isSelected: color == selectedColor) { selectedColor = color }
+                ColorSelectionButton(color: color, isSelected: color == selectedColor) {
+                    if selectedColor == nil {
+                        selectedColor = color
+                    } else {
+                        selectedColor = nil // tapping a selected button should toggle the color off
+                    }
+                }
             }
         }
         .padding(.vertical, 4)
