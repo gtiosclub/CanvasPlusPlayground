@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 
 @Observable
-class ToDoListManager: ListWidgetDataSource {
+class ToDoListManager: ListWidgetDataSource, BigNumberWidgetDataSource {
     var toDoItems: Set<ToDoItem> = []
     var toDoItemCount: Int?
 
@@ -128,7 +128,13 @@ class ToDoListManager: ListWidgetDataSource {
         }
 
         fetchStatus = .loading
-        await fetchToDoItems(courses: courseManager.favoritedCourses)
+
+        async let fetchItems =  fetchToDoItems(courses: courseManager.favoritedCourses)
+        async let fetchCount = fetchToDoItemCount()
+
+        await fetchItems
+        await fetchCount
+        
         fetchStatus = .loaded
     }
 
@@ -138,5 +144,12 @@ class ToDoListManager: ListWidgetDataSource {
         } else {
             .allToDos
         }
+    }
+
+    // MARK: - BigNumberWidgetDataSource
+
+    var bigNumber: Decimal? {
+        guard let toDoItemCount else { return nil }
+        return Decimal(toDoItemCount)
     }
 }

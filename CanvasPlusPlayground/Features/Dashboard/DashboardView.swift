@@ -132,15 +132,20 @@ private struct WidgetContextMenu: View {
 
     var body: some View {
         if let configurationBinding {
-            Picker("Size", selection: configurationBinding.size) {
-                ForEach(item.widget.allowedSizes, id: \.self) { size in
-                    Label(size.label, systemImage: size.systemImage)
-                        .tag(size)
+            if item.widget.allowedSizes.count > 1 {
+                Picker("Size", selection: configurationBinding.size) {
+                    ForEach(item.widget.allowedSizes, id: \.self) { size in
+                        Label(size.label, systemImage: size.systemImage)
+                            .tag(size)
+                    }
                 }
+                .pickerStyle(.inline)
+                Divider()
+            } else if let onlySize = item.widget.allowedSizes.first {
+                Label(onlySize.label, systemImage: onlySize.systemImage)
+                    .foregroundStyle(.secondary)
+                Divider()
             }
-            .pickerStyle(.inline)
-
-            Divider()
         }
 
         Button(role: .destructive) {
