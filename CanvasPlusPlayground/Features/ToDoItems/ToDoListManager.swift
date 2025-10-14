@@ -127,6 +127,7 @@ class ToDoListManager: ListWidgetDataSource, BigNumberWidgetDataSource {
 
         fetchStatus = .loading
         await fetchToDoItems(courses: courseManager.favoritedCourses)
+        await fetchToDoItemCount()
         fetchStatus = .loaded
     }
 
