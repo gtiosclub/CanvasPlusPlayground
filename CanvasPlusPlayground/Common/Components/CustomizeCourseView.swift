@@ -12,16 +12,16 @@ import SwiftUI
 struct CustomizeCourseView: View {
     let courseName: String
     @State var selectedSymbol: String
-    @State var selectedColor: Color
-    
+    @State var selectedColor: Color?
+
     let symbolList: [String] = CourseCustomizationOptions.allowedSymbols
     
     let colorList: [Color] = CourseCustomizationOptions.allowedColors
     
     @Environment(\.dismiss) var dismiss
-    let onDismiss: (String, Color) -> Void
+    let onDismiss: (String, Color?) -> Void
     
-    
+    var displayedColor: Color { selectedColor ?? .primary }
     var body: some View {
         NavigationStack {
             Form {
@@ -66,7 +66,7 @@ struct CustomizeCourseView: View {
         VStack(alignment: .center, spacing: 16) {
             ZStack {
                 Circle()
-                    .fill((selectedColor).gradient)
+                    .fill(displayedColor.gradient)
                     .frame(width: 112, height: 112)
                     .shadow(color: .black.opacity(0.12), radius: 20, y: 8)
                 
@@ -85,7 +85,13 @@ struct CustomizeCourseView: View {
         let columns = [GridItem(.adaptive(minimum: 44, maximum: 60), spacing: 12)]
         return LazyVGrid(columns: columns, spacing: 12) {
             ForEach(Array(colorList.enumerated()), id: \.offset) { _, color in
-                ColorSelectionButton(color: color, isSelected: color == selectedColor) { selectedColor = color }
+                ColorSelectionButton(color: color, isSelected: color == selectedColor) {
+                    if selectedColor == color {
+                        selectedColor = nil  // tapping a selected button should toggle the color off
+                    } else {
+                        selectedColor = color
+                    }
+                }
             }
         }
         .padding(.vertical, 4)
@@ -106,14 +112,13 @@ struct CustomizeCourseView: View {
 struct CustomizeCourseView: View {
     let courseName: String
     @State var selectedSymbol: String
-    @State var selectedColor: Color
-    
+    @State var selectedColor: Color?
+
     let symbolList: [String] = CourseCustomizationOptions.allowedSymbols
     
     let colorList: [Color] = CourseCustomizationOptions.allowedColors
-    
-    @Environment(\.dismiss) var dismiss
-    let onDismiss: (String, Color) -> Void
+
+    let onDismiss: (String, Color?) -> Void
     private var topRowSymbols: [String] { Array(symbolList.prefix((symbolList.count + 1) / 2)) }
     private var bottomRowSymbols: [String] { Array(symbolList.suffix(symbolList.count / 2)) }
     private var topRowColors: [Color] { Array(colorList.prefix((colorList.count + 1) / 2)) }
@@ -133,7 +138,14 @@ struct CustomizeCourseView: View {
                             ColorSelectionButton(
                                 color: color,
                                 isSelected: selectedColor == color,
-                                onSelect: { selectedColor = color }
+                                onSelect: {
+                                    if selectedColor == color {
+                                        selectedColor = nil  // tapping a selected button should toggle the color off
+                                    } else {
+                                        selectedColor = color
+                                    }
+
+                                }
                             )
                         }
                     }
@@ -181,21 +193,12 @@ struct CustomizeCourseView: View {
                 .padding(.horizontal, 10)
             }
             .scrollClipDisabled(true)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Dismiss", systemImage: "xmark", role: .cancel) {
-                        dismiss()
-                    }
-                }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Confirm", systemImage: "check") {
-                        onDismiss(selectedSymbol, selectedColor)
-                        dismiss()
-                    }
-                }
+            .onDisappear {
+                onDismiss(selectedSymbol, selectedColor)
             }
         }
         .frame(width: 320, height: 280)
+        .padding()
     }
 }
 #endif
@@ -227,23 +230,24 @@ private struct ColorSelectionButton: View {
 private struct SymbolSelectionButton: View {
     let symbol: String
     let isSelected: Bool
-    let color: Color
+    let color: Color?
     let onSelect: () -> Void
-    
+
+    var displayedColor: Color { color ?? .primary }
     var body: some View {
         Button(action: onSelect) {
             ZStack {
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(isSelected ? color.opacity(0.22) : Color.clear)
+                    .fill(isSelected ? displayedColor.opacity(0.22) : Color.clear)
                     .frame(width: 34, height: 34)
                 Image(systemName: symbol)
                     .resizable()
                     .scaledToFit()
-                    .foregroundStyle(color)
+                    .foregroundStyle(displayedColor)
                     .frame(width: 23, height: 23)
                 if isSelected {
                     RoundedRectangle(cornerRadius: 8)
-                        .stroke(color, lineWidth: 2.5)
+                        .stroke(displayedColor, lineWidth: 2.5)
                         .frame(width: 34, height: 34)
                 }
             }

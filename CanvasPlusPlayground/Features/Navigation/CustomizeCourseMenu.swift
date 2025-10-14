@@ -58,6 +58,11 @@ private struct CustomizeCourseMenu: ViewModifier {
             .toolbar {
                 if placement == .toolbar {
                     courseActionsMenu
+                    #if os(macOS)
+                        .popover(isPresented: $showCourseCustomizer) {
+                            customizeCourseView
+                        }
+                    #endif
                 }
             }
             .alert("Rename Course", isPresented: $showRenameTextField) {
@@ -71,12 +76,25 @@ private struct CustomizeCourseMenu: ViewModifier {
             } message: {
                 Text("Rename \(course.name ?? "")?")
             }
+            #if os(iOS)
             .sheet(isPresented: $showCourseCustomizer) {
-                CustomizeCourseView(courseName: course.displayName, selectedSymbol: course.displaySymbol, selectedColor: course.rgbColors?.color ?? .accentColor, onDismiss: { symbol, color in
-                    course.rgbColors = .init(color: color)
-                    course.courseSymbol = symbol
-                })
+                customizeCourseView
             }
+            #endif
+    }
+
+    private var customizeCourseView: some View {
+        CustomizeCourseView(courseName: course.displayName, selectedSymbol: course.displaySymbol, selectedColor: course.rgbColors?.color, onDismiss: { symbol, color in
+            DispatchQueue.main.async {
+                if let color {
+                    course.rgbColors = .init(color: color)
+                } else {
+                    course.rgbColors = nil
+                }
+
+                course.courseSymbol = symbol
+            }
+        })
     }
 
     private var favCourseButton: some View {
