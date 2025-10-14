@@ -24,5 +24,10 @@ struct QuizDetailView: View {
                 )
 			}
 		}
+		.logRecentItem(
+			itemID: quiz.id,
+            courseID: quiz.courseID,
+			type: .quiz
+		)
 	}
 }

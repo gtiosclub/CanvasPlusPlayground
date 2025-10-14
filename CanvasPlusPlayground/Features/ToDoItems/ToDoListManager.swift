@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 @Observable
 class ToDoListManager: ListWidgetDataSource {
@@ -18,6 +19,7 @@ class ToDoListManager: ListWidgetDataSource {
 
     // ListWidgetDataSource
     var fetchStatus: WidgetFetchStatus = .loading
+    var refreshTrigger = PassthroughSubject<Void, Never>()
     var widgetData: [ListWidgetData] {
         get {
             displayedToDoItems.map {

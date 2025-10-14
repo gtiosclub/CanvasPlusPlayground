@@ -9,12 +9,14 @@ extension WidgetStore {
     /// All the available widgets in Canvas Plus
     static let availableWidgetTypes: [WidgetTypeInfo] = [
         WidgetTypeInfo(widgetType: AllAnnouncementsWidget.self),
-        WidgetTypeInfo(widgetType: AllToDosWidget.self)
+        WidgetTypeInfo(widgetType: AllToDosWidget.self),
+        WidgetTypeInfo(widgetType: RecentItemsWidget.self)
     ]
 
     /// The default configuration of widgets when Canvas Plus is first launched.
     static let defaultConfigurations: [WidgetConfiguration] = [
         WidgetConfiguration(widgetID: AllAnnouncementsWidget.widgetID, size: .medium, order: 0),
-        WidgetConfiguration(widgetID: AllToDosWidget.widgetID, size: .medium, order: 1)
+        WidgetConfiguration(widgetID: AllToDosWidget.widgetID, size: .medium, order: 1),
+        WidgetConfiguration(widgetID: RecentItemsWidget.widgetID, size: .medium, order: 2)
     ]
 }
