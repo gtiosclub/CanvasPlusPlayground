@@ -35,7 +35,7 @@ class NavigationModel {
         }
 
         static let requiredTabs: Set<CoursePage> = [
-            .people, .groups
+            .people, .groups, .calendar
         ]
 
         var systemImageIcon: String {

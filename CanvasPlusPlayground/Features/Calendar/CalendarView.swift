@@ -25,9 +25,7 @@ struct CalendarView: View {
                 ForEach(events) { eventGroup in
                     Section(eventGroup.displayDate) {
                         ForEach(eventGroup.events) { event in
-                            NavigationLink(value: NavigationModel.Destination.calendarEvent(event, course)) {
-                                EventRow(event: event)
-                            }
+                            EventLinkRow(event: event, course: course)
                         }
                     }
                 }
@@ -62,16 +60,43 @@ struct CalendarView: View {
     }
 }
 
+private struct EventLinkRow: View {
+    let event: CanvasCalendarEvent
+    let course: Course
+
+    var body: some View {
+        NavigationLink(value: NavigationModel.Destination.calendarEvent(event, course)) {
+            EventRow(event: event)
+        }
+        .contextMenu {
+            PinButton(
+                itemID: event.id,
+                courseID: course.id,
+                type: .calendarEvent
+            )
+            NewWindowButton(destination: .calendarEvent(event, course))
+        }
+        .swipeActions(edge: .leading) {
+            PinButton(
+                itemID: event.id,
+                courseID: course.id,
+                type: .calendarEvent
+            )
+        }
+    }
+}
+
 private struct EventRow: View {
     let event: CanvasCalendarEvent
 
     var body: some View {
-        HStack {
+        VStack(alignment: .leading, spacing: 4) {
             Text(event.summary)
-            Spacer()
+                .lineLimit(2)
 
             dateDetailText
                 .foregroundStyle(.secondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 

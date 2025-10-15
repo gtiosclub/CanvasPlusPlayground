@@ -146,12 +146,14 @@ private struct PinnedCalendarEventCard: View {
                     Text(course.displayName.uppercased())
                         .font(.caption)
                         .foregroundStyle(course.rgbColors?.color ?? .blue)
+                        .lineLimit(1)
                 }
 
                 Text(event.summary)
                     .font(.headline)
                     .fontDesign(.rounded)
                     .bold()
+                    .lineLimit(2)
 
                 Text(timeString)
                     .font(.subheadline)
