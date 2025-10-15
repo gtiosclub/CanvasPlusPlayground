@@ -84,26 +84,9 @@ class PinnedItem: Identifiable, Codable, Equatable, Hashable {
             guard let file = files.first else { return }
             setData(modelData: .file(file))
         case .calendarEvent:
-            let courses = try await CanvasService.shared.loadAndSync(
-                CanvasRequest.getCourse(id: courseID)
-            ) { _ in }
-
-            guard let course = courses.first,
-                  let icsURLString = course.calendarIcs,
-                  let icsURL = URL(string: icsURLString) else {
-                LoggerService.main.error("No ICS URL found for course: \(self.courseID)")
-                return
-            }
-
-            let eventGroups = await ICSParser.parseEvents(from: icsURL)
-            let allEvents = eventGroups.flatMap { $0.events }
-
-            guard let event = allEvents.first(where: { $0.id == id }) else {
-                LoggerService.main.error("Calendar event not found: \(self.id)")
-                return
-            }
-
-            setData(modelData: .calendarEvent(event))
+            // Calendar events are stored from ICS data and don't need to be fetched
+            // The event data should be provided when the item is pinned
+            LoggerService.main.debug("Calendar event pinned: \(self.id)")
         }
     }
 
@@ -153,10 +136,10 @@ struct PinnedItemData {
     }
 
     let modelData: ModelData
-    let course: Course
+    let course: Course?
 
     init?(modelData: ModelData?, course: Course?) {
-        guard let modelData, let course else { return nil }
+        guard let modelData else { return nil }
 
         self.modelData = modelData
         self.course = course

@@ -35,7 +35,7 @@ class NavigationModel {
         }
 
         static let requiredTabs: Set<CoursePage> = [
-            .people, .groups, .calendar
+            .people, .groups
         ]
 
         var systemImageIcon: String {
@@ -69,6 +69,7 @@ class NavigationModel {
     }
 
     enum Destination: Hashable {
+        case today
         case allAnnouncements
         case allToDos
         case recentItems
@@ -80,7 +81,7 @@ class NavigationModel {
         case file(File, Course.ID)
         case folder(Folder, Course)
         case quiz(Quiz)
-        case calendarEvent(CanvasCalendarEvent, Course)
+        case calendarEvent(CanvasCalendarEvent, Course?)
 
         // TODO: Add top level views like all announcements, pinned items, etc
 
@@ -88,6 +89,8 @@ class NavigationModel {
         @ViewBuilder
         func destinationView() -> some View {
             switch self {
+            case .today:
+                TodayView()
             case .course(let course):
                 CourseView(course: course)
             case let .coursePage(coursePage, course):

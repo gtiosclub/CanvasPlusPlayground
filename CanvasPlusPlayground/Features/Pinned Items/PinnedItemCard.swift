@@ -17,22 +17,22 @@ struct PinnedItemCard: View {
                 case .announcement(let announcement):
                     PinnedAnnouncementCard(
                         announcement: announcement,
-                        course: itemData.course
+                        course: itemData.course!
                     )
                 case .file(let file):
                     PinnedFileCard(
                         file: file,
-                        course: itemData.course
+                        course: itemData.course!
                     )
                 case .assignment(let assignment):
                     PinnedAssignmentCard(
                         assignment: assignment,
-                        course: itemData.course
+                        course: itemData.course!
                     )
                 case .calendarEvent(let event):
                     PinnedCalendarEventCard(
                         event: event,
-                        course: itemData.course
+                        course: itemData.course!
                     )
                 }
             } else {
@@ -146,14 +146,12 @@ private struct PinnedCalendarEventCard: View {
                     Text(course.displayName.uppercased())
                         .font(.caption)
                         .foregroundStyle(course.rgbColors?.color ?? .blue)
-                        .lineLimit(1)
                 }
 
                 Text(event.summary)
                     .font(.headline)
                     .fontDesign(.rounded)
                     .bold()
-                    .lineLimit(2)
 
                 Text(timeString)
                     .font(.subheadline)
