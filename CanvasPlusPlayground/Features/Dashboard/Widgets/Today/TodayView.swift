@@ -22,7 +22,6 @@ struct TodayView: View {
 
     var body: some View {
         List(selection: $selectedItem) {
-            // Header Section
             Section {
                 VStack(alignment: .leading, spacing: 8) {
                     Text(todayString)
@@ -50,7 +49,6 @@ struct TodayView: View {
                 }
             }
 
-            // Announcements Section
             if !todayManager.todayAnnouncements.isEmpty {
                 Section("Announcements") {
                     ForEach(todayManager.todayAnnouncements, id: \.id) { courseAnnouncement in
@@ -65,7 +63,6 @@ struct TodayView: View {
                 }
             }
 
-            // Assignments Section
             if !todayManager.todayAssignments.isEmpty {
                 Section("Assignments Due Today") {
                     ForEach(todayManager.todayAssignments) { assignment in
@@ -78,7 +75,6 @@ struct TodayView: View {
                 }
             }
 
-            // Empty State
             if todayManager.fetchStatus == .loaded &&
                todayManager.todayEvents.isEmpty &&
                todayManager.todayAnnouncements.isEmpty &&

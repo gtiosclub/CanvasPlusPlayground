@@ -40,7 +40,7 @@ class TodayWidgetManager: @MainActor ListWidgetDataSource {
                 description: " "
             ))
 
-            //today's courses/events
+
             for courseEvent in todayEvents {
                 let timeFormatter = DateFormatter()
                 timeFormatter.timeStyle = .short
@@ -54,7 +54,6 @@ class TodayWidgetManager: @MainActor ListWidgetDataSource {
                 ))
             }
 
-            // Add announcements
             for announcement in todayAnnouncements {
                 let courseName = announcement.course?.displayName ?? "Unknown Course"
                 data.append(ListWidgetData(
@@ -97,10 +96,8 @@ class TodayWidgetManager: @MainActor ListWidgetDataSource {
 
         fetchStatus = .loading
 
-        // Capture courses on the main actor before entering task group
         let courses = courseManager.activeCourses
 
-        // If no courses are available yet, stay in loading state
         guard !courses.isEmpty else {
             return
         }
@@ -109,8 +106,6 @@ class TodayWidgetManager: @MainActor ListWidgetDataSource {
         let today = calendar.startOfDay(for: Date())
         let tomorrow = calendar.date(byAdding: .day, value: 1, to: today)!
 
-        // Set to loaded immediately - cache callbacks will populate data synchronously
-        // Network sync continues in background to update with fresh data
         fetchStatus = .loaded
 
         await withTaskGroup(of: Void.self) { group in
@@ -193,7 +188,7 @@ class TodayWidgetManager: @MainActor ListWidgetDataSource {
                             self.updateAnnouncements(cached, course: course, today: today, tomorrow: tomorrow)
                         }
                     } catch {
-                        // Silently handle errors - cache data already displayed if available
+                        
                     }
                 }
             }
@@ -228,7 +223,7 @@ class TodayWidgetManager: @MainActor ListWidgetDataSource {
                 self.addTodayAssignments(cached, courses: courses, today: today, tomorrow: tomorrow, replaceExisting: true)
             }
         } catch {
-            // Silently handle errors - cache data already displayed if available
+            
         }
     }
 
@@ -259,7 +254,6 @@ class TodayWidgetManager: @MainActor ListWidgetDataSource {
         }
     }
 
-    // MARK: - Navigation
 
     func destinationView(for data: ListWidgetData) -> NavigationModel.Destination {
         let id = data.id
@@ -268,21 +262,19 @@ class TodayWidgetManager: @MainActor ListWidgetDataSource {
             return .today
         }
 
-        // No events message
         if id == "no-events" {
             return .today
         }
 
-        // Calendar event
         if id.hasPrefix("event-") {
             let eventID = String(id.dropFirst("event-".count))
-            if let courseEvent = todayEvents.first(where: { $0.event.id == eventID }) {
-                return .calendarEvent(courseEvent.event, courseEvent.course)
+            if let courseEvent = todayEvents.first(where: { $0.event.id == eventID }),
+               let course = courseEvent.course {
+                return .calendarEvent(courseEvent.event, course)
             }
             return .today
         }
 
-        // Announcement
         if id.hasPrefix("announcement-") {
             let announcementID = String(id.dropFirst("announcement-".count))
             if let announcement = todayAnnouncements.first(where: { $0.id == announcementID }) {
@@ -290,7 +282,6 @@ class TodayWidgetManager: @MainActor ListWidgetDataSource {
             }
         }
 
-        // Assignment
         if id.hasPrefix("assignment-") {
             let assignmentID = String(id.dropFirst("assignment-".count))
             if let assignment = todayAssignments.first(where: { $0.id == assignmentID }) {
@@ -301,3 +292,4 @@ class TodayWidgetManager: @MainActor ListWidgetDataSource {
         return .today
     }
 }
+

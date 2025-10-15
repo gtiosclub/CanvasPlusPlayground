@@ -80,7 +80,8 @@ class NavigationModel {
         case file(File, Course.ID)
         case folder(Folder, Course)
         case quiz(Quiz)
-        case calendarEvent(CanvasCalendarEvent, Course)
+        case calendarEvent(CanvasCalendarEvent, Course?)
+        case today
 
         // TODO: Add top level views like all announcements, pinned items, etc
 
@@ -112,6 +113,8 @@ class NavigationModel {
                 RecentItemsView()
             case let .calendarEvent(event, course):
                 CalendarEventDetailView(event: event, course: course)
+            case .today:
+                TodayView()
             }
         }
     }
