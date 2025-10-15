@@ -23,6 +23,7 @@ class TodayWidgetManager: @MainActor ListWidgetDataSource {
     var todayEvents: [CourseEvent] = []
     var todayAnnouncements: [AllAnnouncementsManager.CourseAnnouncement] = []
     var todayAssignments: [ToDoItem] = []
+    private var courses: [Course] = []
 
 
     var widgetData: [ListWidgetData] {
@@ -65,7 +66,9 @@ class TodayWidgetManager: @MainActor ListWidgetDataSource {
 
 
             for assignment in todayAssignments {
-                let courseName = assignment.course?.displayName ?? "Unknown Course"
+                // Dynamically look up course using courseID to handle race conditions
+                let course = courses.first { $0.id == assignment.courseID.asString }
+                let courseName = course?.displayName ?? "Unknown Course"
                 data.append(ListWidgetData(
                     id: "assignment-\(assignment.id)",
                     title: assignment.title,
@@ -96,9 +99,12 @@ class TodayWidgetManager: @MainActor ListWidgetDataSource {
 
         fetchStatus = .loading
 
+        // Always store courses, even if empty, for dynamic lookup
         let courses = courseManager.activeCourses
+        self.courses = courses
 
         guard !courses.isEmpty else {
+            fetchStatus = .loaded
             return
         }
 

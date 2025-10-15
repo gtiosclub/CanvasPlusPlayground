@@ -21,6 +21,7 @@
 		3DAE85002C9A0E4F008C22E7 /* BridgedPDFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DAE84FF2C9A0E4F008C22E7 /* BridgedPDFView.swift */; };
 		7F8535742C98DE3C0023E384 /* CourseGradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8535732C98DE3C0023E384 /* CourseGradeView.swift */; };
 		8C0A84272E9FF2850036D1F6 /* CalendarEventDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0A84262E9FF2850036D1F6 /* CalendarEventDetailView.swift */; };
+		8C0A84562E9FFFCA0036D1F6 /* TodayWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0A84532E9FFFCA0036D1F6 /* TodayWidget.swift */; };
 		95BA93482C9CE20D00137A91 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95BA93472C9CE20D00137A91 /* CalendarView.swift */; };
 		9A977E832D6C322F001D7F0A /* LoggerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A977E822D6C322F001D7F0A /* LoggerService.swift */; };
 		9B07E7122D779CAB00359B69 /* Date+RelativeDates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B07E7112D779CA500359B69 /* Date+RelativeDates.swift */; };
@@ -303,6 +304,7 @@
 		3DAE84FF2C9A0E4F008C22E7 /* BridgedPDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgedPDFView.swift; sourceTree = "<group>"; };
 		7F8535732C98DE3C0023E384 /* CourseGradeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseGradeView.swift; sourceTree = "<group>"; };
 		8C0A84262E9FF2850036D1F6 /* CalendarEventDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarEventDetailView.swift; sourceTree = "<group>"; };
+		8C0A84532E9FFFCA0036D1F6 /* TodayWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayWidget.swift; sourceTree = "<group>"; };
 		95BA93472C9CE20D00137A91 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		9A977E822D6C322F001D7F0A /* LoggerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerService.swift; sourceTree = "<group>"; };
 		9B07E7112D779CA500359B69 /* Date+RelativeDates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+RelativeDates.swift"; sourceTree = "<group>"; };
@@ -1154,6 +1156,7 @@
 			children = (
 				8CA377352E9C0B7B006A2374 /* Today */,
 				B7532E932E9814EF0045CFB6 /* WidgetStore.swift */,
+				8C0A84532E9FFFCA0036D1F6 /* TodayWidget.swift */,
 				B7AF50E22E99F58D00457E8A /* WidgetStore+AvailableWidgets.swift */,
 				B795801A2E8C64F800B9A38F /* WidgetShowcase.swift */,
 				B79580172E8C5E3100B9A38F /* AllAnnouncementsWidget.swift */,
@@ -1627,6 +1630,7 @@
 				A3049B662D0F3E32002F3166 /* CourseQuizzesView.swift in Sources */,
 				B7D7512B2D3D5D8000F7B8B8 /* AllAnnouncementsView.swift in Sources */,
 				A3E7F3892C954E0500DC4300 /* CanvasRequest.swift in Sources */,
+				8C0A84562E9FFFCA0036D1F6 /* TodayWidget.swift in Sources */,
 				A352AD1A2D3EF1C1007EE6FC /* GetCourseUsersRequest.swift in Sources */,
 				B7460A942D6BFB1A0069CF5B /* GradeCalculator.swift in Sources */,
 				B7E073642D9872AE00A7E82F /* IgnoreToDoItemRequest.swift in Sources */,

@@ -33,7 +33,6 @@ protocol Widget: Identifiable where ID == String {
 extension Widget {
     var id: String { Self.widgetID }
 
-    // Instance properties that delegate to static
     var systemImage: String { Self.systemImage }
     var color: Color { Self.color }
     var allowedSizes: [WidgetSize] { Self.allowedSizes }
@@ -103,7 +102,6 @@ struct DefaultWidgetBody: View {
     let widget: any Widget
     @Environment(\.widgetSize) private var widgetSize: WidgetSize
     @Environment(\.isWidgetNavigationEnabled) private var isWidgetNavigationEnabled: Bool
-    @Environment(CourseManager.self) private var courseManager
 
     private func shouldRefresh(trigger: WidgetContext.RefreshTriggerSubject) -> Bool {
         guard case .singleWidget(let requestedID) = trigger else {
@@ -127,7 +125,6 @@ struct DefaultWidgetBody: View {
     }
 
     private var label: some View {
-        let courseCount = courseManager.activeCourses.count
 
         return VStack {
             Header(widget: widget)
@@ -135,7 +132,6 @@ struct DefaultWidgetBody: View {
             ContentView(widget: widget, widgetSize: widgetSize)
         }
         .task(id: widgetSize) {
-            // Only fetch if not already loaded
             guard widget.dataSource.fetchStatus != .loaded else {
                 return
             }
