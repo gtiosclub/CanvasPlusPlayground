@@ -125,8 +125,7 @@ struct DefaultWidgetBody: View {
     }
 
     private var label: some View {
-
-        return VStack {
+        VStack {
             Header(widget: widget)
 
             ContentView(widget: widget, widgetSize: widgetSize)

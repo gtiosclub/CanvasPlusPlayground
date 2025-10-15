@@ -46,10 +46,20 @@ class CourseAssignmentManager {
                     guard let cachedGroups else { return }
 
                     self.assignmentGroups = cachedGroups.sorted(by: { $0.position < $1.position })
+                    Task { @MainActor in
+                        WidgetContext.shared.requestToRefreshAllWidgets()
+                    }
                 }
             )
 
-            self.assignmentGroups = groups.sorted(by: { $0.position < $1.position })
+            let sortedGroups = groups.sorted(by: { $0.position < $1.position })
+
+            if sortedGroups != self.assignmentGroups {
+                self.assignmentGroups = sortedGroups
+                await MainActor.run {
+                    WidgetContext.shared.requestToRefreshAllWidgets()
+                }
+            }
         } catch {
             LoggerService.main.error("Failed to fetch assignment groups")
         }
