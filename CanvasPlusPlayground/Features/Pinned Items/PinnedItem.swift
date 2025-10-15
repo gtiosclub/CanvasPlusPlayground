@@ -18,7 +18,7 @@ class PinnedItem: Identifiable, Codable, Equatable, Hashable {
     private var modelData: PinnedItemData.ModelData?
 
     enum PinnedItemType: Int, Codable {
-        case announcement, assignment, file
+        case announcement, assignment, file, calendarEvent
         // TODO: Add more pinned item types
 
         var displayName: String {
@@ -29,6 +29,8 @@ class PinnedItem: Identifiable, Codable, Equatable, Hashable {
                 "Assignments"
             case .file:
                 "Files"
+            case .calendarEvent:
+                "Calendar Events"
             }
         }
     }
@@ -81,6 +83,27 @@ class PinnedItem: Identifiable, Codable, Equatable, Hashable {
             }
             guard let file = files.first else { return }
             setData(modelData: .file(file))
+        case .calendarEvent:
+            let courses = try await CanvasService.shared.loadAndSync(
+                CanvasRequest.getCourse(id: courseID)
+            ) { _ in }
+
+            guard let course = courses.first,
+                  let icsURLString = course.calendarIcs,
+                  let icsURL = URL(string: icsURLString) else {
+                LoggerService.main.error("No ICS URL found for course: \(self.courseID)")
+                return
+            }
+
+            let eventGroups = await ICSParser.parseEvents(from: icsURL)
+            let allEvents = eventGroups.flatMap { $0.events }
+
+            guard let event = allEvents.first(where: { $0.id == id }) else {
+                LoggerService.main.error("Calendar event not found: \(self.id)")
+                return
+            }
+
+            setData(modelData: .calendarEvent(event))
         }
     }
 
@@ -125,6 +148,7 @@ struct PinnedItemData {
         case announcement(DiscussionTopic)
         case assignment(Assignment)
         case file(File)
+        case calendarEvent(CanvasCalendarEvent)
         // TODO: Add more pinned item types
     }
 

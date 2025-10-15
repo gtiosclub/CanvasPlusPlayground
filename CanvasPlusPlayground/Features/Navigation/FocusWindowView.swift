@@ -49,6 +49,8 @@ struct FocusWindowView: View {
             return courseID
         case .allAnnouncements, .allToDos, .recentItems:
             return ""
+        case .calendarEvent(_, let courseID):
+            return courseID ?? ""
         }
     }
 
@@ -88,6 +90,8 @@ struct FocusWindowView: View {
                 destination = .allToDos
             case .recentItems:
                 destination = .recentItems
+            case .calendarEvent(let event, let course):
+                try await loadEvent(eventID: event, course: course)
             }
         } catch {
             errorMessage = "Failed to load content: \(error.localizedDescription)"
@@ -221,10 +225,45 @@ struct FocusWindowView: View {
             destination = .quiz(quiz)
         }
     }
+    
+    private func loadEvent(eventID: String, course courseID: Course.ID?) async throws {
+        var course: Course?
+        
+        if let courseID {
+            course = courseManager.activeCourses.first(where: { $0.id == courseID })
+            if course == nil {
+                let courses = try await CanvasService.shared.loadAndSync(
+                    CanvasRequest.getCourse(id: courseID)
+                ) { cachedCourses in
+                    if let fetchedCourse = cachedCourses?.first {
+                        course = fetchedCourse
+                    }
+                }
+                
+                if course == nil, let fetchedCourse = courses.first {
+                    course = fetchedCourse
+                }
+            }
+        }
+        
+        if let course, let icsURL = URL(string: course.calendarIcs ?? "") {
+            let eventGroups = await ICSParser.parseEvents(from: icsURL)
+            
+            for group in eventGroups {
+                if let event = group.events.first(where: { $0.id == eventID }) {
+                    destination = .calendarEvent(event, course)
+                    return
+                }
+            }
+        }
+        
+        throw FocusWindowError.contentNotFound
+    }
 
     enum FocusWindowError: LocalizedError {
         case courseNotFound
         case unsupportedNewWindow
+        case contentNotFound
 
         var errorDescription: String? {
             switch self {
@@ -232,6 +271,8 @@ struct FocusWindowView: View {
                 return "Course could not be found"
             case .unsupportedNewWindow:
                 return "Unsupported new window"
+            case .contentNotFound:
+                return "Content could not be found"
             }
         }
     }
