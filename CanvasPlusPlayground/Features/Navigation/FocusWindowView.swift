@@ -50,7 +50,7 @@ struct FocusWindowView: View {
         case .allAnnouncements, .allToDos, .recentItems:
             return ""
         case .calendarEvent(_, let courseID):
-            return courseID!
+            return courseID ?? ""
         }
     }
 
@@ -257,7 +257,6 @@ struct FocusWindowView: View {
             }
         }
         
-        // If event not found, throw error
         throw FocusWindowError.contentNotFound
     }
 
