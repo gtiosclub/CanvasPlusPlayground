@@ -30,21 +30,38 @@ struct HomeView: View {
             }
 
             // course/courses
-            TabSection("Courses") {
-                ForEach(courseManager.activeCourses) { course in
+            TabSection("Favorited Courses") {
+                ForEach(courseManager.favoritedCourses) { course in
                     Tab(value: NavigationModel.Tab.course(course.id)) {
                         NavigationStack(path: $navigationModel.coursePath) {
                             CourseView(course: course)
+                                .defaultNavigationDestination()
                         }
                     } label: {
                         CourseListCell(course: course)
                     }
                 }
             }
+            .tabPlacement(.sidebarOnly)
+            .hidden(horizontalSizeClass == .compact)
+
+            TabSection("Other Courses") {
+                ForEach(courseManager.unfavoritedCourses) { course in
+                    Tab(value: NavigationModel.Tab.course(course.id)) {
+                        NavigationStack(path: $navigationModel.coursePath) {
+                            CourseView(course: course)
+                                .defaultNavigationDestination()
+                        }
+                    } label: {
+                        CourseListCell(course: course)
+                    }
+                }
+            }
+            .tabPlacement(.sidebarOnly)
             .hidden(horizontalSizeClass == .compact)
 
             Tab("Courses", systemImage: "book.pages.fill", value: .allCourses) {
-                coursesTabView
+                CourseListView()
             }
             .hidden(horizontalSizeClass == .regular)
         }
@@ -100,22 +117,6 @@ struct HomeView: View {
         await (_, _, _) = (coursesTask, profileTask, todoTask)
 
         isLoadingCourses = false
-    }
-
-    @ViewBuilder
-    private var coursesTabView: some View {
-        NavigationStack(path: $navigationModel.allCoursesPath) {
-            List(courseManager.activeCourses) { course in
-                NavigationLink(value: NavigationModel.Destination.course(course)) {
-                    CourseListCell(course: course)
-                }
-                .listItemTint(.fixed(course.rgbColors?.color ?? .accentColor))
-            }
-            .navigationTitle("Courses")
-            .navigationDestination(for: NavigationModel.Destination.self) { destination in
-                destination.destinationView()
-            }
-        }
     }
 }
 

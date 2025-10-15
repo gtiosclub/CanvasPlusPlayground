@@ -75,7 +75,7 @@ struct CourseView: View {
                 }
             }
         }
-        .defaultNavigationDestination(courseID: course.id)
+        .handleDeepLinks(for: course.id)
         .scrollContentBackground(.hidden)
         .courseGradientBackground(
             courses: [course],

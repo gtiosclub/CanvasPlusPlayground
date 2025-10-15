@@ -48,7 +48,7 @@ private class StepsDataSource: ListWidgetDataSource {
 
     NavigationStack(path: $navModel.navigationPath) {
         ExampleListWidget().mainBody
-            .defaultNavigationDestination(courseID: Course.sample.id)
+            .defaultNavigationDestination()
     }
     .environment(navModel)
 }

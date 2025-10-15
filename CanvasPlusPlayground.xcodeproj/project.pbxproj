@@ -227,6 +227,7 @@
 		B7AF51682E9B33EA00457E8A /* ShimmerEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AF51672E9B33EA00457E8A /* ShimmerEffect.swift */; };
 		B7AF516C2E9B343800457E8A /* SetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AF516B2E9B343800457E8A /* SetupView.swift */; };
 		B7AF516E2E9B584A00457E8A /* CompatibleGlassEffectViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AF516D2E9B584100457E8A /* CompatibleGlassEffectViewModifier.swift */; };
+		B7AF52D02EA0085E00457E8A /* CourseListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AF52CF2EA0085C00457E8A /* CourseListView.swift */; };
 		B7C0A3BD2D2F1F2E003E5A36 /* PinnedItemsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0A3BC2D2F1F25003E5A36 /* PinnedItemsManager.swift */; };
 		B7C0A3BF2D2F2251003E5A36 /* PinnedItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0A3BE2D2F224C003E5A36 /* PinnedItemsView.swift */; };
 		B7C0A3C52D2F4C19003E5A36 /* GetAssignmentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0A3C42D2F4C11003E5A36 /* GetAssignmentRequest.swift */; };
@@ -511,6 +512,7 @@
 		B7AF51672E9B33EA00457E8A /* ShimmerEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerEffect.swift; sourceTree = "<group>"; };
 		B7AF516B2E9B343800457E8A /* SetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupView.swift; sourceTree = "<group>"; };
 		B7AF516D2E9B584100457E8A /* CompatibleGlassEffectViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompatibleGlassEffectViewModifier.swift; sourceTree = "<group>"; };
+		B7AF52CF2EA0085C00457E8A /* CourseListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseListView.swift; sourceTree = "<group>"; };
 		B7C0A3BC2D2F1F25003E5A36 /* PinnedItemsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedItemsManager.swift; sourceTree = "<group>"; };
 		B7C0A3BE2D2F224C003E5A36 /* PinnedItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedItemsView.swift; sourceTree = "<group>"; };
 		B7C0A3C42D2F4C11003E5A36 /* GetAssignmentRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAssignmentRequest.swift; sourceTree = "<group>"; };
@@ -1302,6 +1304,7 @@
 				267D85272E662AB0007F821B /* FocusWindowInfo.swift */,
 				B7A26EE82CCB62A00084704A /* NavigationModel.swift */,
 				B76454F52C8DF61B002DF00E /* HomeView.swift */,
+				B7AF52CF2EA0085C00457E8A /* CourseListView.swift */,
 				B7E59A132D2004A4001836FE /* CourseListCell.swift */,
 				B7E59A152D20076E001836FE /* CourseDetailView.swift */,
 				9BDFF27D2DA6B6D7009F0DE9 /* OpenInCanvasButton.swift */,
@@ -1513,6 +1516,7 @@
 				8C0A84272E9FF2850036D1F6 /* CalendarEventDetailView.swift in Sources */,
 				A3E7F3932C99338B00DC4300 /* TabAPI.swift in Sources */,
 				A3049B7D2D160299002F3166 /* GetFoldersInFolderRequest.swift in Sources */,
+				B7AF52D02EA0085E00457E8A /* CourseListView.swift in Sources */,
 				B76455022C8DF61B002DF00E /* CourseFilesView.swift in Sources */,
 				B76455032C8DF61B002DF00E /* HomeView.swift in Sources */,
 				A3269E8E2CD5533F006F7D14 /* CanvasRepository.swift in Sources */,
