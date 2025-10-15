@@ -101,12 +101,14 @@ private struct HTMLWebView: PlatformRepresentable {
                     body {
                         color: #fff;
                         background: transparent !important;
+                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
                     }
                 }
                 @media (prefers-color-scheme: light) {
                     body {
                         color: #000;
                         background: transparent !important;
+                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
                     }
                 }
             </style>
@@ -127,12 +129,14 @@ private struct HTMLWebView: PlatformRepresentable {
                 body {
                     color: #fff;
                     background: transparent !important;
+                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
                 }
             }
             @media (prefers-color-scheme: light) {
                 body {
                     color: #000;
                     background: transparent !important;
+                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
                 }
             }
     </style>
