@@ -139,12 +139,9 @@ struct DefaultWidgetBody: View {
             guard widget.dataSource.fetchStatus != .loaded else {
                 return
             }
-        // .task(id: "\(widgetSize)-\(courseCount)") {
-
-        //     guard widget.dataSource.fetchStatus != .loaded else { return }
-        //     try? await widget.dataSource
-        //         .fetchData(context: WidgetContext.shared)
-        // }
+            try? await widget.dataSource
+                .fetchData(context: WidgetContext.shared)
+        }
         .onReceive(WidgetContext.shared.refreshTrigger) { trigger in
             if shouldRefresh(trigger: trigger) {
                 Task {
