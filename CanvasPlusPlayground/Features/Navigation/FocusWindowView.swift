@@ -47,7 +47,7 @@ struct FocusWindowView: View {
             return courseID
         case .announcement(_, let courseID), .assignment(_, let courseID), .page(_, let courseID), .quiz(_, let courseID):
             return courseID
-        case .allAnnouncements, .allToDos, .recentItems, .today:
+        case .allAnnouncements, .allToDos, .recentItems:
             return ""
         case .calendarEvent(_, let courseID):
             return courseID ?? ""
@@ -90,8 +90,6 @@ struct FocusWindowView: View {
                 destination = .allToDos
             case .recentItems:
                 destination = .recentItems
-            case .today:
-                destination = .today
             case .calendarEvent(let event, let course):
                 try await loadEvent(eventID: event, course: course)
             }
@@ -230,7 +228,7 @@ struct FocusWindowView: View {
     
     private func loadEvent(eventID: String, course courseID: Course.ID?) async throws {
         var course: Course?
-
+        
         if let courseID {
             course = courseManager.activeCourses.first(where: { $0.id == courseID })
             if course == nil {
@@ -241,16 +239,16 @@ struct FocusWindowView: View {
                         course = fetchedCourse
                     }
                 }
-
+                
                 if course == nil, let fetchedCourse = courses.first {
                     course = fetchedCourse
                 }
             }
         }
-
+        
         if let course, let icsURL = URL(string: course.calendarIcs ?? "") {
             let eventGroups = await ICSParser.parseEvents(from: icsURL)
-
+            
             for group in eventGroups {
                 if let event = group.events.first(where: { $0.id == eventID }) {
                     destination = .calendarEvent(event, course)
@@ -258,24 +256,23 @@ struct FocusWindowView: View {
                 }
             }
         }
-
-        // If event not found, throw error
+        
         throw FocusWindowError.contentNotFound
     }
 
     enum FocusWindowError: LocalizedError {
         case courseNotFound
-        case contentNotFound
         case unsupportedNewWindow
+        case contentNotFound
 
         var errorDescription: String? {
             switch self {
             case .courseNotFound:
                 return "Course could not be found"
-            case .contentNotFound:
-                return "Content could not be found"
             case .unsupportedNewWindow:
                 return "Unsupported new window"
+            case .contentNotFound:
+                return "Content could not be found"
             }
         }
     }

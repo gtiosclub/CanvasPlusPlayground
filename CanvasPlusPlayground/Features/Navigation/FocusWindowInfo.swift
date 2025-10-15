@@ -26,11 +26,10 @@ enum CodableDestination: Codable, Hashable {
     case file(File.ID, Course.ID)
     case folder(Folder.ID, Course.ID)
     case quiz(Quiz.ID, Course.ID)
-    case calendarEvent(String, Course.ID?)
     case allAnnouncements
     case allToDos
     case recentItems
-    case today
+    case calendarEvent(String, Course.ID?)
 }
 
 extension CodableDestination {
@@ -53,17 +52,14 @@ extension CodableDestination {
             self = .folder(folder.id, course.id)
         case .quiz(let quiz):
             self = .quiz(quiz.id, quiz.courseID)
-        case .calendarEvent(let event, let course):
-            self = .calendarEvent(event.id, course?.id)
         case .allAnnouncements:
             self = .allAnnouncements
         case .allToDos:
             self = .allToDos
         case .recentItems:
             self = .recentItems
-        case .today:
-            self = .today
-
+        case .calendarEvent(let event, let course):
+            self = .calendarEvent(event.id, course.id)
         }
     }
 }

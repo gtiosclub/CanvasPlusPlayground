@@ -27,13 +27,41 @@ enum ICSParser {
         }
 
         var events = [CanvasCalendarEvent]()
-        let lines = content.components(separatedBy: .newlines)
+
+        // Normalize line endings and split properly
+        let normalizedContent = content.replacingOccurrences(of: "\r\n", with: "\n")
+                                       .replacingOccurrences(of: "\r", with: "\n")
+        let lines = normalizedContent.components(separatedBy: "\n")
+
         var currentEvent: [String: String] = [:]
 
-        for line in lines {
+        // Unfold lines according to RFC 5545
+        var unfoldedLines = [String]()
+        var currentLine = ""
+
+        for (index, line) in lines.enumerated() {
+            if line.hasPrefix(" ") || line.hasPrefix("\t") {
+                // This is a continuation line - remove the leading whitespace and append
+                let continuation = String(line.dropFirst())
+                currentLine += continuation
+            } else {
+                // This is a new line
+                if !currentLine.isEmpty {
+                    unfoldedLines.append(currentLine)
+                }
+                currentLine = line
+            }
+        }
+
+        if !currentLine.isEmpty {
+            unfoldedLines.append(currentLine)
+        }
+
+        for line in unfoldedLines {
             if line.hasPrefix("BEGIN:VEVENT") {
                 currentEvent = [:]
             } else if line.hasPrefix("END:VEVENT") {
+
                 if let id = currentEvent["UID"],
                    let summary = currentEvent["SUMMARY"],
                    let startDateString = currentEvent["DTSTART"],
@@ -44,18 +72,19 @@ enum ICSParser {
 
                     let event = CanvasCalendarEvent(
                         id: id,
-                        summary: summary,
+                        summary: unescapeICSValue(summary),
                         startDate: startDate,
                         endDate: endDate,
-                        location: location
+                        location: unescapeICSValue(location)
                     )
-
                     events.append(event)
                 }
             } else {
                 let components = line.components(separatedBy: ":")
                 if components.count > 1 {
-                    let key = components[0]
+                    // Extract the property name (before any semicolon for parameters)
+                    let keyWithParams = components[0]
+                    let key = keyWithParams.components(separatedBy: ";")[0]
                     let value = components[1...].joined(separator: ":")
                     currentEvent[key] = value
                 }
@@ -63,6 +92,14 @@ enum ICSParser {
         }
 
         return groupEvents(events)
+    }
+
+    private static func unescapeICSValue(_ value: String) -> String {
+        return value
+            .replacingOccurrences(of: "\\n", with: "\n")
+            .replacingOccurrences(of: "\\,", with: ",")
+            .replacingOccurrences(of: "\\;", with: ";")
+            .replacingOccurrences(of: "\\\\", with: "\\")
     }
 
     private static func groupEvents(_ events: [CanvasCalendarEvent]) -> [CanvasCalendarEventGroup] {
