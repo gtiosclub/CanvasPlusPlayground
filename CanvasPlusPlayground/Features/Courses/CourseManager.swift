@@ -37,13 +37,21 @@ class CourseManager {
                 pageConfiguration: .all(perPage: 40)
             )
 
-            self.activeCourses = try await courseService.getCourses(
+            WidgetContext.shared.requestToRefreshAllWidgets()
+
+            let latestCourses = try await courseService.getCourses(
                 enrollmentType: nil,
                 enrollmentState: .active,
                 excludeBlueprintCourses: false,
                 state: [],
                 pageConfiguration: .all(perPage: 40)
             )
+
+            if latestCourses != self.activeCourses {
+                self.activeCourses = latestCourses
+                WidgetContext.shared.requestToRefreshAllWidgets()
+            }
+
             LoggerService.main.debug("Fetched courses: \(self.activeCourses.compactMap(\.name))")
         } catch {
             LoggerService.main.error("Failed to fetch courses. \(error)")

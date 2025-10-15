@@ -24,7 +24,6 @@ fileprivate struct ExampleListWidget: @MainActor ListWidget {
 @Observable
 private class StepsDataSource: ListWidgetDataSource {
     var fetchStatus: WidgetFetchStatus = .loading
-    var refreshTrigger = PassthroughSubject<Void, Never>()
     var widgetData: [ListWidgetData] = []
 
     func fetchData(context: WidgetContext) async throws {
