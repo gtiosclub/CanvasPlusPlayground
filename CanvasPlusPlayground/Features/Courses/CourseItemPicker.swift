@@ -83,7 +83,7 @@ struct CourseItemPicker: View {
 
     private var mainBody: some View {
         CourseView(course: course)
-            .defaultNavigationDestination(courseID: course.id)
+            .defaultNavigationDestination()
     }
 
     private var cancelButton: some View {

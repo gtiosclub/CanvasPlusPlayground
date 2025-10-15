@@ -23,6 +23,7 @@ struct AssignmentDetailView: View {
         AssignmentQuizDetailsForm(item: assignment) {
             submissionSection
         }
+        .handleDeepLinks(for: assignment.courseId?.asString ?? "")
         .toolbar {
             ReminderButton(item: .assignment(assignment))
         }

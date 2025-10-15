@@ -24,6 +24,7 @@ struct QuizDetailView: View {
                 )
 			}
 		}
+        .handleDeepLinks(for: quiz.courseID)
 		.logRecentItem(
 			itemID: quiz.id,
             courseID: quiz.courseID,
