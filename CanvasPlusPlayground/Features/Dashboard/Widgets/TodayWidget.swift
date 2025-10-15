@@ -8,7 +8,6 @@
 
 import SwiftUI
 
-
 struct TodayWidget: @MainActor ListWidget {
     static var widgetID: String { "today" }
     static var displayName: String { "Today" }
