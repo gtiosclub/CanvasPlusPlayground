@@ -39,7 +39,6 @@ struct CalendarEventDetailView: View {
 
     var body: some View {
         Form {
-            // Course Section (if available)
             if let course {
                 Section {
                     HStack {
@@ -66,7 +65,6 @@ struct CalendarEventDetailView: View {
                 }
             }
 
-            // Event Details Section
             Section("Event Details") {
                 LabeledContent("Title", value: event.summary)
 
