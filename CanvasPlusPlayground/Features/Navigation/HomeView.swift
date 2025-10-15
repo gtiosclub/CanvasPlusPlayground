@@ -35,6 +35,7 @@ struct HomeView: View {
                     Tab(value: NavigationModel.Tab.course(course.id)) {
                         NavigationStack(path: $navigationModel.coursePath) {
                             CourseView(course: course)
+                                .defaultNavigationDestination()
                         }
                     } label: {
                         CourseListCell(course: course)
@@ -112,9 +113,7 @@ struct HomeView: View {
                 .listItemTint(.fixed(course.rgbColors?.color ?? .accentColor))
             }
             .navigationTitle("Courses")
-            .navigationDestination(for: NavigationModel.Destination.self) { destination in
-                destination.destinationView()
-            }
+            .defaultNavigationDestination()
         }
     }
 }

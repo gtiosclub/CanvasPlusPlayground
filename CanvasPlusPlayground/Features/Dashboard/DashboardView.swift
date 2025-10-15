@@ -100,7 +100,7 @@ struct DashboardView: View {
             .frame(width: 300, height: 300)
             #endif
         }
-        .defaultNavigationDestination(courseID: "")
+        .defaultNavigationDestination()
     }
 
     private var vSpacing: CGFloat {

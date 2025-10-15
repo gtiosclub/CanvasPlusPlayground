@@ -7,13 +7,10 @@
 import SwiftUI
 
 extension View {
-    /// Adds the default navigation destination logic for NavigationModel.Destination, including URL handling.
-    func defaultNavigationDestination(
-        courseID: Course.ID
-    ) -> some View {
+    /// Adds the default navigation destination logic for NavigationModel.Destination.
+    func defaultNavigationDestination() -> some View {
         self.navigationDestination(for: NavigationModel.Destination.self) { destination in
             destination.destinationView()
-                .handleDeepLinks(for: courseID)
         }
     }
 }
