@@ -226,7 +226,9 @@ private struct NavigationBanner: View {
                     .foregroundStyle(tint)
             }
             .font(.headline)
+            #if os(iOS)
             .padding(.vertical, 4)
+            #endif
             .padding(8)
             .compatibleGlassEffect(isInteractive: true, in: .capsule)
         }
