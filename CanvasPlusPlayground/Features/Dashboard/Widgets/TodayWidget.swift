@@ -15,6 +15,7 @@ struct TodayWidget: @MainActor ListWidget {
     static var systemImage: String { "calendar.day.timeline.left" }
     static var color: Color { .blue }
     static var allowedSizes: [WidgetSize] { [.large] }
+    static var widgetGroups: [WidgetGroup] { [.announcements, .assignments, .courses] }
 
     var title: String { "Today" }
     var destination: NavigationModel.Destination = .today

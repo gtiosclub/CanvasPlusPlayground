@@ -15,6 +15,7 @@ fileprivate struct ExampleListWidget: @MainActor ListWidget {
     static var description: String { "Display latest steps data." }
     static var systemImage: String { "figure.walk" }
     static var color: Color { .orange }
+    static var widgetGroups: [WidgetGroup] { [] }
 
     var title: String { "Steps" }
     var destination: NavigationModel.Destination = .course(.sample)

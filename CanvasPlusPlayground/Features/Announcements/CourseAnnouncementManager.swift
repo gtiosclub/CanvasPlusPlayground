@@ -39,6 +39,9 @@ import Foundation
                 guard let cached else { return }
 
                 self.setAnnouncements(cached)
+                Task { @MainActor in
+                    WidgetContext.shared.requestToRefreshWidgets(in: .announcements)
+                }
             },
             loadingMethod: .all(onNewPage: { topics in
                 self.addAnnouncements(topics)
@@ -51,6 +54,9 @@ import Foundation
         }
 
         setAnnouncements(announcements)
+        await MainActor.run {
+            WidgetContext.shared.requestToRefreshWidgets(in: .announcements)
+        }
     }
 
     func setAnnouncements(_ announcements: [DiscussionTopic]) {
