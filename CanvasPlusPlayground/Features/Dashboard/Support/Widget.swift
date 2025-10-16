@@ -130,6 +130,8 @@ struct DefaultWidgetBody: View {
             Header(widget: widget)
 
             ContentView(widget: widget, widgetSize: widgetSize)
+
+            Spacer()
         }
         .task(id: widgetSize) {
             // Only fetch if not already loaded
@@ -148,6 +150,7 @@ struct DefaultWidgetBody: View {
             }
         }
         .padding(12)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background {
             RoundedRectangle(cornerRadius: 16.0)
                 .fill(.thinMaterial)

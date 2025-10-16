@@ -160,7 +160,9 @@ struct Dashboard: Layout {
             let width = (bounds.width - hSpacing) / CGFloat(itemsPerRow)
 
             // measure height for this small
-            let measure = subview.sizeThatFits(ProposedViewSize(width: width, height: nil)).height
+            let measure = subview.sizeThatFits(
+                ProposedViewSize(width: width, height: baseHeight)
+            ).height
             // we need the row height = max(height of the two smalls)
             // Place first, but defer advancing y until row completes.
             subview.place(
@@ -175,7 +177,9 @@ struct Dashboard: Layout {
             } else {
                 // recompute the second small’s height so we advance by the max
                 let prevIndex = index - 1
-                let h1 = (prevIndex >= 0) ? subviews[prevIndex].sizeThatFits(ProposedViewSize(width: width, height: nil)).height : measure
+                let h1 = (prevIndex >= 0) ? subviews[prevIndex].sizeThatFits(
+                    ProposedViewSize(width: width, height: baseHeight)
+                ).height : measure
                 let h2 = measure
                 let rowHeight = max(h1, h2)
                 y += rowHeight + vSpacing
@@ -189,13 +193,17 @@ struct Dashboard: Layout {
                 // finish the partially filled small row by measuring its row height
                 let width = (bounds.width - hSpacing) / 2
                 let lastSmall = subviews[index - 1]
-                let hPartial = lastSmall.sizeThatFits(ProposedViewSize(width: width, height: nil)).height
+                let hPartial = lastSmall.sizeThatFits(
+                    ProposedViewSize(width: width, height: baseHeight)
+                ).height
                 y += hPartial + vSpacing
                 x = bounds.minX
                 smallWidgetCount = 0
             }
 
-            let measured = subview.sizeThatFits(ProposedViewSize(width: bounds.width, height: nil)).height
+            let measured = subview.sizeThatFits(
+                ProposedViewSize(width: bounds.width, height: baseHeight)
+            ).height
             subview.place(
                 at: CGPoint(x: bounds.minX, y: y),
                 anchor: .topLeading,
@@ -210,13 +218,17 @@ struct Dashboard: Layout {
             if smallWidgetCount > 0 {
                 let width = (bounds.width - hSpacing) / 2
                 let lastSmall = subviews[index - 1]
-                let hPartial = lastSmall.sizeThatFits(ProposedViewSize(width: width, height: nil)).height
+                let hPartial = lastSmall.sizeThatFits(
+                    ProposedViewSize(width: width, height: baseHeight)
+                ).height
                 y += hPartial + vSpacing
                 x = bounds.minX
                 smallWidgetCount = 0
             }
 
-            let measured = subview.sizeThatFits(ProposedViewSize(width: bounds.width, height: nil)).height
+            let measured = subview.sizeThatFits(
+                ProposedViewSize(width: bounds.width, height: largeWidgetHeight)
+            ).height
             subview.place(
                 at: CGPoint(x: bounds.minX, y: y),
                 anchor: .topLeading,
@@ -235,7 +247,10 @@ struct Dashboard: Layout {
 
         for widget in subviews {
             let widgetWidth = getWidgetWidth(for: widget.widgetSize, availableWidth: bounds.width)
-            let measureProposal = ProposedViewSize(width: widgetWidth, height: nil)
+            let measureProposal = ProposedViewSize(
+                width: widgetWidth,
+                height: getWidgetHeight(for: widget.widgetSize)
+            )
             let measuredSize = widget.sizeThatFits(measureProposal)
             let measuredWidth = min(widgetWidth, measuredSize.width)
             let measuredHeight = measuredSize.height
