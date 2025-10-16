@@ -100,6 +100,9 @@ struct DashboardView: View {
             .frame(width: 300, height: 300)
             #endif
         }
+        .safeAreaInset(edge: .top) {
+            NavigationBanner()
+        }
         .defaultNavigationDestination()
     }
 
@@ -161,5 +164,71 @@ private struct WidgetContextMenu: View {
             return nil
         }
         return $widgetStore.widgetConfigurations[configIndex]
+    }
+}
+
+private struct NavigationBanner: View {
+    var body: some View {
+        ScrollView(.horizontal) {
+            HStack {
+                NavigationCapsule(
+                    title: "Announcements",
+                    systemImage: "bubble",
+                    tint: .blue,
+                    destination: .allAnnouncements
+                )
+
+                NavigationCapsule(
+                    title: "To-Dos",
+                    systemImage: "list.bullet",
+                    tint: .red,
+                    destination: .allToDos
+                )
+
+                NavigationCapsule(
+                    title: "Pinned",
+                    systemImage: "pin",
+                    tint: .orange,
+                    destination: .pinnedItems
+                )
+
+                NavigationCapsule(
+                    title: "Recents",
+                    systemImage: "clock",
+                    tint: .blue,
+                    destination: .recentItems
+                )
+            }
+        }
+        .scrollClipDisabled()
+        .contentMargins(.horizontal, 12, for: .scrollContent)
+        .scrollIndicators(.hidden)
+    }
+
+    struct NavigationCapsule: View {
+        let title: String
+        let systemImage: String
+        let tint: Color
+        let destination: NavigationModel.Destination
+
+        var body: some View {
+            NavigationLink(value: destination) {
+                label
+            }
+            .buttonStyle(.plain)
+        }
+
+        private var label: some View {
+            Label {
+                Text(title)
+            } icon: {
+                Image(systemName: systemImage)
+                    .foregroundStyle(tint)
+            }
+            .font(.headline)
+            .padding(.vertical, 4)
+            .padding(8)
+            .compatibleGlassEffect(isInteractive: true, in: .capsule)
+        }
     }
 }
