@@ -33,12 +33,16 @@ struct OpenInCanvasButton: View {
 }
 
 private struct OpenInCanvasButtonModifier: ViewModifier {
+    @Environment(PickerService.self) var pickerService: PickerService?
+
     let path: CanvasButtonType
     func body(content: Content) -> some View {
         content
             .toolbar {
-                ToolbarItem {
-                    OpenInCanvasButton(path: path)
+                if pickerService == nil {
+                    ToolbarItem {
+                        OpenInCanvasButton(path: path)
+                    }
                 }
             }
     }
