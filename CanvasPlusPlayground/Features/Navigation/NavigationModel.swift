@@ -71,6 +71,7 @@ class NavigationModel {
     enum Destination: Hashable {
         case allAnnouncements
         case allToDos
+        case pinnedItems
         case recentItems
         case course(Course)
         case coursePage(CoursePage, Course)
@@ -108,6 +109,8 @@ class NavigationModel {
                 AllAnnouncementsView()
             case .allToDos:
                 ToDoListView()
+            case .pinnedItems:
+                PinnedItemsView()
             case .recentItems:
                 RecentItemsView()
             case let .calendarEvent(event, course):
