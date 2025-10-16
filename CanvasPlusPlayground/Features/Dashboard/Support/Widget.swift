@@ -22,6 +22,7 @@ protocol Widget: Identifiable where ID == String {
     static var systemImage: String { get }
     static var color: Color { get }
     static var allowedSizes: [WidgetSize] { get }
+    static var widgetGroups: [WidgetGroup] { get }
     var title: String { get }
     var mainBody: Body { get }
     var contents: Contents { get }
@@ -33,7 +34,6 @@ protocol Widget: Identifiable where ID == String {
 extension Widget {
     var id: String { Self.widgetID }
 
-    // Instance properties that delegate to static
     var systemImage: String { Self.systemImage }
     var color: Color { Self.color }
     var allowedSizes: [WidgetSize] { Self.allowedSizes }
@@ -61,6 +61,7 @@ class WidgetContext {
     enum RefreshTriggerSubject: Equatable {
         case allWidgets
         case singleWidget(id: String)
+        case widgetGroup(WidgetGroup)
     }
 
     static let shared: WidgetContext = .init()
@@ -80,6 +81,10 @@ class WidgetContext {
 
     @MainActor func requestToRefreshWidget(widget: any Widget.Type) {
         refreshTrigger.send(.singleWidget(id: widget.widgetID))
+    }
+
+    @MainActor func requestToRefreshWidgets(in group: WidgetGroup) {
+        refreshTrigger.send(.widgetGroup(group))
     }
 }
 
@@ -105,11 +110,15 @@ struct DefaultWidgetBody: View {
     @Environment(\.isWidgetNavigationEnabled) private var isWidgetNavigationEnabled: Bool
 
     private func shouldRefresh(trigger: WidgetContext.RefreshTriggerSubject) -> Bool {
-        guard case .singleWidget(let requestedID) = trigger else {
-            return trigger == .allWidgets
+        switch trigger {
+        case .allWidgets:
+            return true
+        case .singleWidget(let requestedID):
+            return widget.id == requestedID
+        case .widgetGroup(let group):
+            let widgetIDs = WidgetStore.getWidgetIDs(in: group)
+            return widgetIDs.contains(widget.id)
         }
-
-        return widget.id == requestedID
     }
 
     var body: some View {
@@ -132,7 +141,6 @@ struct DefaultWidgetBody: View {
             ContentView(widget: widget, widgetSize: widgetSize)
         }
         .task(id: widgetSize) {
-            // Only fetch if not already loaded
             guard widget.dataSource.fetchStatus != .loaded else {
                 return
             }

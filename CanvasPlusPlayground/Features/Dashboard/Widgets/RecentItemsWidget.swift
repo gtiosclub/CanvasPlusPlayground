@@ -14,6 +14,7 @@ struct RecentItemsWidget: @MainActor ListWidget {
     static var systemImage: String { "clock" }
     static var color: Color { .accentColor }
     static var allowedSizes: [WidgetSize] { [.small, .medium, .large] }
+    static var widgetGroups: [WidgetGroup] { [.recentItems] }
 
     var title: String { Self.displayName }
     var destination: NavigationModel.Destination = .recentItems

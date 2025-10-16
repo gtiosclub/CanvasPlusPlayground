@@ -21,6 +21,9 @@
 		3DAE85002C9A0E4F008C22E7 /* BridgedPDFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DAE84FF2C9A0E4F008C22E7 /* BridgedPDFView.swift */; };
 		7F8535742C98DE3C0023E384 /* CourseGradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8535732C98DE3C0023E384 /* CourseGradeView.swift */; };
 		8C0A84272E9FF2850036D1F6 /* CalendarEventDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0A84262E9FF2850036D1F6 /* CalendarEventDetailView.swift */; };
+		8C0A84562E9FFFCA0036D1F6 /* TodayWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0A84532E9FFFCA0036D1F6 /* TodayWidget.swift */; };
+		8C0A889E2EA06B5F0036D1F6 /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0A889B2EA06B5F0036D1F6 /* TodayView.swift */; };
+		8C0A889F2EA06B5F0036D1F6 /* TodayWidgetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0A889C2EA06B5F0036D1F6 /* TodayWidgetManager.swift */; };
 		95BA93482C9CE20D00137A91 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95BA93472C9CE20D00137A91 /* CalendarView.swift */; };
 		9A977E832D6C322F001D7F0A /* LoggerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A977E822D6C322F001D7F0A /* LoggerService.swift */; };
 		9B07E7122D779CAB00359B69 /* Date+RelativeDates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B07E7112D779CA500359B69 /* Date+RelativeDates.swift */; };
@@ -304,6 +307,9 @@
 		3DAE84FF2C9A0E4F008C22E7 /* BridgedPDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgedPDFView.swift; sourceTree = "<group>"; };
 		7F8535732C98DE3C0023E384 /* CourseGradeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseGradeView.swift; sourceTree = "<group>"; };
 		8C0A84262E9FF2850036D1F6 /* CalendarEventDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarEventDetailView.swift; sourceTree = "<group>"; };
+		8C0A84532E9FFFCA0036D1F6 /* TodayWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayWidget.swift; sourceTree = "<group>"; };
+		8C0A889B2EA06B5F0036D1F6 /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
+		8C0A889C2EA06B5F0036D1F6 /* TodayWidgetManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayWidgetManager.swift; sourceTree = "<group>"; };
 		95BA93472C9CE20D00137A91 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		9A977E822D6C322F001D7F0A /* LoggerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerService.swift; sourceTree = "<group>"; };
 		9B07E7112D779CA500359B69 /* Date+RelativeDates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+RelativeDates.swift"; sourceTree = "<group>"; };
@@ -594,6 +600,15 @@
 				26BF11592E92E1D2000680D4 /* ExampleDashboardView.swift */,
 			);
 			path = Layout;
+			sourceTree = "<group>";
+		};
+		8C0A889D2EA06B5F0036D1F6 /* Today */ = {
+			isa = PBXGroup;
+			children = (
+				8C0A889B2EA06B5F0036D1F6 /* TodayView.swift */,
+				8C0A889C2EA06B5F0036D1F6 /* TodayWidgetManager.swift */,
+			);
+			path = Today;
 			sourceTree = "<group>";
 		};
 		9B801DE82E66658000DF4942 /* Debug */ = {
@@ -1150,7 +1165,9 @@
 		B79580162E8C5E2700B9A38F /* Widgets */ = {
 			isa = PBXGroup;
 			children = (
+				8C0A889D2EA06B5F0036D1F6 /* Today */,
 				B7532E932E9814EF0045CFB6 /* WidgetStore.swift */,
+				8C0A84532E9FFFCA0036D1F6 /* TodayWidget.swift */,
 				B7AF50E22E99F58D00457E8A /* WidgetStore+AvailableWidgets.swift */,
 				B795801A2E8C64F800B9A38F /* WidgetShowcase.swift */,
 				B79580172E8C5E3100B9A38F /* AllAnnouncementsWidget.swift */,
@@ -1370,7 +1387,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B76454722C8BBC81002DF00E /* Build configuration list for PBXNativeTarget "CanvasPlusPlayground" */;
 			buildPhases = (
-                9ACDA5E82D5F1DA2001F1F0A /* SwiftLint */,
 				B76454602C8BBC7F002DF00E /* Sources */,
 				B76454612C8BBC7F002DF00E /* Frameworks */,
 				B76454622C8BBC7F002DF00E /* Resources */,
@@ -1512,6 +1528,8 @@
 				B7AF50F12E9AF9EF00457E8A /* RecentItemCard.swift in Sources */,
 				B7A12F3F2D69441500EDFA0A /* GetAssignmentGroupsRequest.swift in Sources */,
 				9BEB4ED02D56AF570013869D /* AssignmentDetailView.swift in Sources */,
+				8C0A889E2EA06B5F0036D1F6 /* TodayView.swift in Sources */,
+				8C0A889F2EA06B5F0036D1F6 /* TodayWidgetManager.swift in Sources */,
 				A3049B592D0E5A96002F3166 /* LockInfo.swift in Sources */,
 				8C0A84272E9FF2850036D1F6 /* CalendarEventDetailView.swift in Sources */,
 				A3E7F3932C99338B00DC4300 /* TabAPI.swift in Sources */,
@@ -1624,6 +1642,7 @@
 				A3049B662D0F3E32002F3166 /* CourseQuizzesView.swift in Sources */,
 				B7D7512B2D3D5D8000F7B8B8 /* AllAnnouncementsView.swift in Sources */,
 				A3E7F3892C954E0500DC4300 /* CanvasRequest.swift in Sources */,
+				8C0A84562E9FFFCA0036D1F6 /* TodayWidget.swift in Sources */,
 				A352AD1A2D3EF1C1007EE6FC /* GetCourseUsersRequest.swift in Sources */,
 				B7460A942D6BFB1A0069CF5B /* GradeCalculator.swift in Sources */,
 				B7E073642D9872AE00A7E82F /* IgnoreToDoItemRequest.swift in Sources */,
