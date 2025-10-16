@@ -24,11 +24,16 @@ enum CompatibleGlassEffect {
 
 private struct CompatibleGlassEffectViewModifier<S: Shape>: ViewModifier {
     let glass: CompatibleGlassEffect
+    let isInteractive: Bool
     let shape: S
 
     func body(content: Content) -> some View {
         if #available(iOS 26.0, macOS 26.0, *) {
-            content.glassEffect(glass.glassEffect, in: shape)
+            content
+                .glassEffect(
+                    glass.glassEffect.interactive(isInteractive),
+                    in: shape
+                )
         } else {
             content.background(.thinMaterial, in: shape)
         }
@@ -38,9 +43,16 @@ private struct CompatibleGlassEffectViewModifier<S: Shape>: ViewModifier {
 extension View {
     func compatibleGlassEffect<S: Shape>(
         _ glass: CompatibleGlassEffect = .regular,
+        isInteractive: Bool = false,
         in shape: S
     ) -> some View {
-        modifier(CompatibleGlassEffectViewModifier(glass: glass, shape: shape))
+        modifier(
+            CompatibleGlassEffectViewModifier(
+                glass: glass,
+                isInteractive: isInteractive,
+                shape: shape
+            )
+        )
     }
     
     func compatibleGlassEffect(
