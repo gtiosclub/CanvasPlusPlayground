@@ -47,7 +47,7 @@ class CourseAssignmentManager {
 
                     self.assignmentGroups = cachedGroups.sorted(by: { $0.position < $1.position })
                     Task { @MainActor in
-                        WidgetContext.shared.requestToRefreshAllWidgets()
+                        WidgetContext.shared.requestToRefreshWidgets(in: .assignments)
                     }
                 }
             )
@@ -57,7 +57,7 @@ class CourseAssignmentManager {
             if sortedGroups != self.assignmentGroups {
                 self.assignmentGroups = sortedGroups
                 await MainActor.run {
-                    WidgetContext.shared.requestToRefreshAllWidgets()
+                    WidgetContext.shared.requestToRefreshWidgets(in: .assignments)
                 }
             }
         } catch {

@@ -14,6 +14,7 @@ struct AllToDosWidget: @MainActor ListWidget {
     static var systemImage: String { "checklist" }
     static var color: Color { .red }
     static var allowedSizes: [WidgetSize] { [.small, .medium, .large] }
+    static var widgetGroups: [WidgetGroup] { [.assignments] }
 
     var title: String { "To-Do" }
     var destination: NavigationModel.Destination = .allToDos

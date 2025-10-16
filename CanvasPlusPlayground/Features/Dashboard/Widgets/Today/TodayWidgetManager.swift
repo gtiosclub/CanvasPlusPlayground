@@ -20,10 +20,18 @@ class TodayWidgetManager: @MainActor ListWidgetDataSource {
         var id: String { event.id }
     }
 
+    // ID prefixes for different data types
+    private static let eventPrefix = "event-"
+    private static let announcementPrefix = "announcement-"
+    private static let assignmentPrefix = "assignment-"
+
     var todayEvents: [CourseEvent] = []
     var todayAnnouncements: [AllAnnouncementsManager.CourseAnnouncement] = []
     var todayAssignments: [ToDoItem] = []
     private var courses: [Course] = []
+
+    private let announcementsManager = AllAnnouncementsManager()
+    private let toDoManager = ToDoListManager()
 
 
     var widgetData: [ListWidgetData] {
@@ -34,7 +42,7 @@ class TodayWidgetManager: @MainActor ListWidgetDataSource {
             dateFormatter.dateStyle = .full
             let todayString = dateFormatter.string(from: Date())
 
-            //Today's date
+    
             data.append(ListWidgetData(
                 id: "today-date",
                 title: todayString,
@@ -49,7 +57,7 @@ class TodayWidgetManager: @MainActor ListWidgetDataSource {
                 let courseName = courseEvent.course?.displayName ?? "Unknown Course"
 
                 data.append(ListWidgetData(
-                    id: "event-\(courseEvent.event.id)",
+                    id: "\(Self.eventPrefix)\(courseEvent.event.id)",
                     title: courseEvent.event.summary,
                     description: "📅 \(timeString) • \(courseName)"
                 ))
@@ -58,7 +66,7 @@ class TodayWidgetManager: @MainActor ListWidgetDataSource {
             for announcement in todayAnnouncements {
                 let courseName = announcement.course?.displayName ?? "Unknown Course"
                 data.append(ListWidgetData(
-                    id: "announcement-\(announcement.id)",
+                    id: "\(Self.announcementPrefix)\(announcement.id)",
                     title: announcement.announcement.title ?? "Announcement",
                     description: "📢 \(courseName)"
                 ))
@@ -70,7 +78,7 @@ class TodayWidgetManager: @MainActor ListWidgetDataSource {
                 let course = courses.first { $0.id == assignment.courseID.asString }
                 let courseName = course?.displayName ?? "Unknown Course"
                 data.append(ListWidgetData(
-                    id: "assignment-\(assignment.id)",
+                    id: "\(Self.assignmentPrefix)\(assignment.id)",
                     title: assignment.title,
                     description: "✅ Due today • \(courseName)"
                 ))
@@ -99,20 +107,12 @@ class TodayWidgetManager: @MainActor ListWidgetDataSource {
 
         fetchStatus = .loading
 
-        // Always store courses, even if empty, for dynamic lookup
         let courses = courseManager.activeCourses
         self.courses = courses
-
-        guard !courses.isEmpty else {
-            fetchStatus = .loaded
-            return
-        }
 
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
         let tomorrow = calendar.date(byAdding: .day, value: 1, to: today)!
-
-        fetchStatus = .loaded
 
         await withTaskGroup(of: Void.self) { group in
             group.addTask { [weak self] in
@@ -141,6 +141,7 @@ class TodayWidgetManager: @MainActor ListWidgetDataSource {
                 )
             }
         }
+        fetchStatus = .loaded
     }
 
     private func fetchTodayCalendarEvents(courses: [Course], today: Date, tomorrow: Date) async {
@@ -154,7 +155,7 @@ class TodayWidgetManager: @MainActor ListWidgetDataSource {
 
             let eventGroups = await ICSParser.parseEvents(from: url)
 
-            // Filter events for today
+
             for group in eventGroups {
                 if group.date >= today && group.date < tomorrow {
                     let courseEvents = group.events.map { event in
@@ -165,98 +166,28 @@ class TodayWidgetManager: @MainActor ListWidgetDataSource {
             }
         }
 
-        // Sort by start time
         self.todayEvents = allEvents.sorted { $0.event.startDate < $1.event.startDate }
     }
 
     private func fetchTodayAnnouncements(courses: [Course], today: Date, tomorrow: Date) async {
         guard !courses.isEmpty else { return }
 
-        let courseIds = courses.map { $0.id }
+        await announcementsManager.fetchAnnouncements(courses: courses)
 
-        await withTaskGroup(of: Void.self) { group in
-            for courseId in courseIds {
-                group.addTask { [weak self] in
-                    let request = CanvasRequest.getDiscussionTopics(
-                        courseId: courseId,
-                        orderBy: .position,
-                        onlyAnnouncements: true,
-                        perPage: 25
-                    )
-
-                    let course = courses.first { $0.id == courseId }
-
-                    do {
-                        try await CanvasService.shared.loadAndSync(
-                            request
-                        ) { [weak self] cached in
-                            guard let self, let cached else { return }
-                            self.updateAnnouncements(cached, course: course, today: today, tomorrow: tomorrow)
-                        }
-                    } catch {
-                        
-                    }
-                }
-            }
-        }
-    }
-
-    private func updateAnnouncements(_ announcements: [DiscussionTopic], course: Course?, today: Date, tomorrow: Date) {
-        let filtered = announcements
-            .filter { announcement in
-                guard let date = announcement.date else { return false }
-                return date >= today && date < tomorrow && announcement.published
-            }
-            .map { AllAnnouncementsManager.CourseAnnouncement(announcement: $0, course: course) }
-
-        if let courseId = course?.id {
-            todayAnnouncements.removeAll { $0.course?.id == courseId }
-        }
-        todayAnnouncements.append(contentsOf: filtered)
-        todayAnnouncements.sort {
-            ($0.announcement.date ?? .distantPast) > ($1.announcement.date ?? .distantPast)
+        self.todayAnnouncements = announcementsManager.displayedAnnouncements.filter { announcement in
+            guard let date = announcement.announcement.date else { return false }
+            return date >= today && date < tomorrow
         }
     }
 
     private func fetchTodayAssignments(courses: [Course], today: Date, tomorrow: Date) async {
-        let request = CanvasRequest.getToDoItems(include: [.ungradedQuizzes])
+        guard !courses.isEmpty else { return }
 
-        do {
-            try await CanvasService.shared.loadAndSync(
-                request
-            ) { [weak self] cached in
-                guard let self, let cached else { return }
-                self.addTodayAssignments(cached, courses: courses, today: today, tomorrow: tomorrow, replaceExisting: true)
-            }
-        } catch {
-            
-        }
-    }
+        await toDoManager.fetchToDoItems(courses: courses)
 
-    private func addTodayAssignments(_ items: [ToDoItem], courses: [Course], today: Date, tomorrow: Date, replaceExisting: Bool) {
-        let filtered = items
-            .filter { $0.type == .submitting }
-            .filter { item in
-                guard let dueDate = item.dueDate else { return false }
-                return dueDate >= today && dueDate < tomorrow
-            }
-
-        filtered.forEach { item in
-            item.course = courses.first { $0.id == item.courseID.asString }
-        }
-
-        let sorted = filtered.sorted {
-            ($0.dueDate ?? Date()) < ($1.dueDate ?? Date())
-        }
-
-        if replaceExisting {
-            self.todayAssignments = sorted
-        } else {
-            // Append new items and remove duplicates
-            let existing = Set(self.todayAssignments.map { $0.id })
-            let newItems = sorted.filter { !existing.contains($0.id) }
-            self.todayAssignments.append(contentsOf: newItems)
-            self.todayAssignments.sort { ($0.dueDate ?? Date()) < ($1.dueDate ?? Date()) }
+        self.todayAssignments = toDoManager.displayedToDoItems.filter { item in
+            guard let dueDate = item.dueDate else { return false }
+            return dueDate >= today && dueDate < tomorrow
         }
     }
 
@@ -264,16 +195,8 @@ class TodayWidgetManager: @MainActor ListWidgetDataSource {
     func destinationView(for data: ListWidgetData) -> NavigationModel.Destination {
         let id = data.id
 
-        if id == "today-date" {
-            return .today
-        }
-
-        if id == "no-events" {
-            return .today
-        }
-
-        if id.hasPrefix("event-") {
-            let eventID = String(id.dropFirst("event-".count))
+        if id.hasPrefix(Self.eventPrefix) {
+            let eventID = String(id.dropFirst(Self.eventPrefix.count))
             if let courseEvent = todayEvents.first(where: { $0.event.id == eventID }),
                let course = courseEvent.course {
                 return .calendarEvent(courseEvent.event, course)
@@ -281,15 +204,15 @@ class TodayWidgetManager: @MainActor ListWidgetDataSource {
             return .today
         }
 
-        if id.hasPrefix("announcement-") {
-            let announcementID = String(id.dropFirst("announcement-".count))
+        if id.hasPrefix(Self.announcementPrefix) {
+            let announcementID = String(id.dropFirst(Self.announcementPrefix.count))
             if let announcement = todayAnnouncements.first(where: { $0.id == announcementID }) {
                 return .announcement(announcement.announcement)
             }
         }
 
-        if id.hasPrefix("assignment-") {
-            let assignmentID = String(id.dropFirst("assignment-".count))
+        if id.hasPrefix(Self.assignmentPrefix) {
+            let assignmentID = String(id.dropFirst(Self.assignmentPrefix.count))
             if let assignment = todayAssignments.first(where: { $0.id == assignmentID }) {
                 return assignment.navigationDestination() ?? .today
             }

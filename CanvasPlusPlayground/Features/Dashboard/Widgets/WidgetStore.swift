@@ -7,6 +7,14 @@
 
 import SwiftUI
 
+/// Represents a group of widgets that share common data sources
+enum WidgetGroup: String, CaseIterable {
+    case announcements
+    case assignments
+    case courses
+    case recentItems
+}
+
 /// Configuration for a widget instance, tracking its type, size, and position
 struct WidgetConfiguration: Identifiable, Codable, Equatable {
     let id: String
@@ -79,6 +87,7 @@ class WidgetStore {
         let systemImage: String
         let color: Color
         let allowedSizes: [WidgetSize]
+        let widgetGroups: [WidgetGroup]
 
         init(widgetType: any Widget.Type) {
             self.id = widgetType.widgetID
@@ -87,6 +96,7 @@ class WidgetStore {
             self.systemImage = widgetType.systemImage
             self.color = widgetType.color
             self.allowedSizes = widgetType.allowedSizes
+            self.widgetGroups = widgetType.widgetGroups
         }
 
         /// Creates a widget instance for this widget type
@@ -132,6 +142,13 @@ class WidgetStore {
     /// Gets widget type info for a configuration
     func widgetTypeInfo(for configuration: WidgetConfiguration) -> WidgetTypeInfo? {
         Self.availableWidgetTypes.first(where: { $0.id == configuration.widgetID })
+    }
+
+    /// Returns all widget IDs that belong to a specific group
+    static func getWidgetIDs(in group: WidgetGroup) -> [String] {
+        availableWidgetTypes
+            .filter { $0.widgetGroups.contains(group) }
+            .map { $0.id }
     }
 
     /// Updates widget order to maintain consistency

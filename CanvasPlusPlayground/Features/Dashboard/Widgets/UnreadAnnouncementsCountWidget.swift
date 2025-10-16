@@ -13,6 +13,7 @@ struct UnreadAnnouncementsCountWidget: @MainActor BigNumberWidget {
     static var description: String { "Get a quick count of all your unread announcements." }
     static var systemImage: String { "bubble.right" }
     static var color: Color { .accentColor }
+    static var widgetGroups: [WidgetGroup] { [.announcements] }
 
     var title: String { Self.displayName }
     var destination: NavigationModel.Destination = .allAnnouncements
