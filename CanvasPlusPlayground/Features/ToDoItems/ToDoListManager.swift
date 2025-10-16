@@ -112,10 +112,18 @@ class ToDoListManager: ListWidgetDataSource, BigNumberWidgetDataSource {
             item.course = courses.first { $0.id == item.courseID.asString }
         }
 
+        let oldItems = self.toDoItems
+
         if replaceExisting {
             self.toDoItems = Set(newItems)
         } else {
             self.toDoItems.formUnion(newItems)
+        }
+
+        if oldItems != self.toDoItems {
+            Task { @MainActor in
+                WidgetContext.shared.requestToRefreshAllWidgets()
+            }
         }
     }
 

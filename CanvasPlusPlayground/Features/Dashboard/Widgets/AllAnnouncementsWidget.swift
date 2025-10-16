@@ -14,7 +14,6 @@ struct AllAnnouncementsWidget: @MainActor ListWidget {
     static var systemImage: String { "bubble.right" }
     static var color: Color { .accentColor }
     static var allowedSizes: [WidgetSize] { [.small, .medium, .large] }
-    static var widgetGroups: [WidgetGroup] { [.announcements] }
 
     var title: String { Self.displayName }
     var destination: NavigationModel.Destination = .allAnnouncements

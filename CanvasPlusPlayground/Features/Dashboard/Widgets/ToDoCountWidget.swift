@@ -13,7 +13,6 @@ struct ToDoCountWidget: @MainActor BigNumberWidget {
     static var description: String { "Get a quick count of all your to-do items." }
     static var systemImage: String { "checklist" }
     static var color: Color { .red }
-    static var widgetGroups: [WidgetGroup] { [.assignments] }
 
     var title: String { Self.displayName }
     var destination: NavigationModel.Destination = .allToDos

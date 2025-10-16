@@ -74,17 +74,20 @@ struct TodayView: View {
                     }
                 }
             }
-        }
-        .overlay {
+
             if todayManager.fetchStatus == .loaded &&
                todayManager.todayEvents.isEmpty &&
                todayManager.todayAnnouncements.isEmpty &&
                todayManager.todayAssignments.isEmpty {
-                ContentUnavailableView(
-                    "No Events Today",
-                    systemImage: "sun.max",
-                    description: Text("Enjoy your free day!")
-                )
+                Section {
+                    ContentUnavailableView(
+                        "No Events Today",
+                        systemImage: "sun.max",
+                        description: Text("Enjoy your free day!")
+                    )
+                    .listRowSeparator(.hidden)
+                    .listRowBackground(Color.clear)
+                }
             }
         }
         .navigationTitle("Today")
