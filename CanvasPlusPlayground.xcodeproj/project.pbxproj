@@ -181,6 +181,7 @@
 		B75684F82DA5F9F4003B4A32 /* GetSinglePageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75684F72DA5F9F4003B4A32 /* GetSinglePageRequest.swift */; };
 		B75684FA2DA7A080003B4A32 /* GetSingleDiscussionTopicRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75684F92DA7A080003B4A32 /* GetSingleDiscussionTopicRequest.swift */; };
 		B75BFD562EA3EC7B00BB74C3 /* NSApp+NewTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75BFD552EA3EC7600BB74C3 /* NSApp+NewTab.swift */; };
+		B75BFD682EA452CE00BB74C3 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = B75BFD672EA452CE00BB74C3 /* AppIcon.icon */; };
 		B76454FE2C8DF61B002DF00E /* Course.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454ED2C8DF61B002DF00E /* Course.swift */; };
 		B76454FF2C8DF61B002DF00E /* Enrollment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454EE2C8DF61B002DF00E /* Enrollment.swift */; };
 		B76455002C8DF61B002DF00E /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454EF2C8DF61B002DF00E /* File.swift */; };
@@ -466,6 +467,7 @@
 		B75684F72DA5F9F4003B4A32 /* GetSinglePageRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSinglePageRequest.swift; sourceTree = "<group>"; };
 		B75684F92DA7A080003B4A32 /* GetSingleDiscussionTopicRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSingleDiscussionTopicRequest.swift; sourceTree = "<group>"; };
 		B75BFD552EA3EC7600BB74C3 /* NSApp+NewTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSApp+NewTab.swift"; sourceTree = "<group>"; };
+		B75BFD672EA452CE00BB74C3 /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = AppIcon.icon; sourceTree = "<group>"; };
 		B76454642C8BBC7F002DF00E /* CanvasPlusPlayground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CanvasPlusPlayground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B76454ED2C8DF61B002DF00E /* Course.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Course.swift; sourceTree = "<group>"; };
 		B76454EE2C8DF61B002DF00E /* Enrollment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enrollment.swift; sourceTree = "<group>"; };
@@ -1107,6 +1109,7 @@
 		B76454FD2C8DF61B002DF00E /* CanvasPlusPlayground */ = {
 			isa = PBXGroup;
 			children = (
+				B75BFD672EA452CE00BB74C3 /* AppIcon.icon */,
 				9BD5845B2E5FDFBE00D9CD20 /* Info.plist */,
 				B7C7A71D2D95016C00ECC462 /* CanvasPlusPlayground.entitlements */,
 				A324BA542D0796B8005F53FA /* Common */,
@@ -1432,6 +1435,7 @@
 			files = (
 				B76455092C8DF61B002DF00E /* Preview Assets.xcassets in Resources */,
 				B764550A2C8DF61B002DF00E /* Assets.xcassets in Resources */,
+				B75BFD682EA452CE00BB74C3 /* AppIcon.icon in Resources */,
 				B7CC4D5F2D90C86C00254F55 /* Gradient.metal in Resources */,
 				B7CC4D582D90BF4A00254F55 /* Ripple.metal in Resources */,
 			);
