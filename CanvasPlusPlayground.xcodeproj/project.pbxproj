@@ -185,6 +185,9 @@
 		B75BFD5C2EA4491200BB74C3 /* PinnedFilesWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75BFD5B2EA4491200BB74C3 /* PinnedFilesWidget.swift */; };
 		B75BFD5D2EA4491200BB74C3 /* PinnedAnnouncementsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75BFD592EA4491200BB74C3 /* PinnedAnnouncementsWidget.swift */; };
 		B75BFD5E2EA4491200BB74C3 /* PinnedAssignmentsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75BFD5A2EA4491200BB74C3 /* PinnedAssignmentsWidget.swift */; };
+		B75BFD622EA44D5300BB74C3 /* PinnedAnnouncementsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75BFD612EA44D5300BB74C3 /* PinnedAnnouncementsDataSource.swift */; };
+		B75BFD642EA44D6700BB74C3 /* PinnedAssignmentsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75BFD632EA44D6700BB74C3 /* PinnedAssignmentsDataSource.swift */; };
+		B75BFD662EA44D6F00BB74C3 /* PinnedFilesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75BFD652EA44D6F00BB74C3 /* PinnedFilesDataSource.swift */; };
 		B76454FE2C8DF61B002DF00E /* Course.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454ED2C8DF61B002DF00E /* Course.swift */; };
 		B76454FF2C8DF61B002DF00E /* Enrollment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454EE2C8DF61B002DF00E /* Enrollment.swift */; };
 		B76455002C8DF61B002DF00E /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454EF2C8DF61B002DF00E /* File.swift */; };
@@ -474,6 +477,9 @@
 		B75BFD592EA4491200BB74C3 /* PinnedAnnouncementsWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedAnnouncementsWidget.swift; sourceTree = "<group>"; };
 		B75BFD5A2EA4491200BB74C3 /* PinnedAssignmentsWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedAssignmentsWidget.swift; sourceTree = "<group>"; };
 		B75BFD5B2EA4491200BB74C3 /* PinnedFilesWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedFilesWidget.swift; sourceTree = "<group>"; };
+		B75BFD612EA44D5300BB74C3 /* PinnedAnnouncementsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedAnnouncementsDataSource.swift; sourceTree = "<group>"; };
+		B75BFD632EA44D6700BB74C3 /* PinnedAssignmentsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedAssignmentsDataSource.swift; sourceTree = "<group>"; };
+		B75BFD652EA44D6F00BB74C3 /* PinnedFilesDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedFilesDataSource.swift; sourceTree = "<group>"; };
 		B76454642C8BBC7F002DF00E /* CanvasPlusPlayground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CanvasPlusPlayground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B76454ED2C8DF61B002DF00E /* Course.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Course.swift; sourceTree = "<group>"; };
 		B76454EE2C8DF61B002DF00E /* Enrollment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enrollment.swift; sourceTree = "<group>"; };
@@ -1088,6 +1094,27 @@
 			path = GradeCalculator;
 			sourceTree = "<group>";
 		};
+		B75BFD5F2EA44D4A00BB74C3 /* Pinned Items */ = {
+			isa = PBXGroup;
+			children = (
+				B75BFD602EA44D5000BB74C3 /* Data Sources */,
+				B75BFD592EA4491200BB74C3 /* PinnedAnnouncementsWidget.swift */,
+				B75BFD5A2EA4491200BB74C3 /* PinnedAssignmentsWidget.swift */,
+				B75BFD5B2EA4491200BB74C3 /* PinnedFilesWidget.swift */,
+			);
+			path = "Pinned Items";
+			sourceTree = "<group>";
+		};
+		B75BFD602EA44D5000BB74C3 /* Data Sources */ = {
+			isa = PBXGroup;
+			children = (
+				B75BFD652EA44D6F00BB74C3 /* PinnedFilesDataSource.swift */,
+				B75BFD632EA44D6700BB74C3 /* PinnedAssignmentsDataSource.swift */,
+				B75BFD612EA44D5300BB74C3 /* PinnedAnnouncementsDataSource.swift */,
+			);
+			path = "Data Sources";
+			sourceTree = "<group>";
+		};
 		B764545B2C8BBC7F002DF00E = {
 			isa = PBXGroup;
 			children = (
@@ -1170,9 +1197,7 @@
 				9B4F616D2E9ABDA300860E24 /* UnreadAnnouncementsCountWidget.swift */,
 				B733340C2E916FE50011E8A9 /* AllToDosWidget.swift */,
 				B7AF50F32E9B03FC00457E8A /* RecentItemsWidget.swift */,
-				B75BFD592EA4491200BB74C3 /* PinnedAnnouncementsWidget.swift */,
-				B75BFD5A2EA4491200BB74C3 /* PinnedAssignmentsWidget.swift */,
-				B75BFD5B2EA4491200BB74C3 /* PinnedFilesWidget.swift */,
+				B75BFD5F2EA44D4A00BB74C3 /* Pinned Items */,
 			);
 			path = Widgets;
 			sourceTree = "<group>";
@@ -1581,6 +1606,7 @@
 				B7AD54F52CD41D7900FB09BB /* IntelligenceSupport.swift in Sources */,
 				A3049B852D161455002F3166 /* GetEnrollmentsRequest.swift in Sources */,
 				B7909D7C2E9963B300E37387 /* DashboardMeshGradient.swift in Sources */,
+				B75BFD662EA44D6F00BB74C3 /* PinnedFilesDataSource.swift in Sources */,
 				A3D161472D169C0A004055FB /* APIRequest+Network.swift in Sources */,
 				A3CF88D92D192177000ACDF3 /* CourseAPI.swift in Sources */,
 				A3049B832D161432002F3166 /* GetAssignmentsRequest.swift in Sources */,
@@ -1654,6 +1680,7 @@
 				A372D0FF2D90BAB6005E94CA /* CourseGroupsView.swift in Sources */,
 				B75684F82DA5F9F4003B4A32 /* GetSinglePageRequest.swift in Sources */,
 				B7CC4D672D91AF4300254F55 /* GetUserTodoItemsRequest.swift in Sources */,
+				B75BFD622EA44D5300BB74C3 /* PinnedAnnouncementsDataSource.swift in Sources */,
 				9B6D4F802D6E48340033044F /* ReminderButton.swift in Sources */,
 				A3E7F38F2C96C1CE00DC4300 /* CourseTabsView.swift in Sources */,
 				B76455062C8DF61B002DF00E /* CanvasPlusPlaygroundApp.swift in Sources */,
@@ -1710,6 +1737,7 @@
 				A372D10A2D90DA7A005E94CA /* GetCourseGroupsRequest.swift in Sources */,
 				B76455082C8DF61B002DF00E /* CourseManager.swift in Sources */,
 				A3CF88E12D1921C3000ACDF3 /* AnnouncementAPI.swift in Sources */,
+				B75BFD642EA44D6700BB74C3 /* PinnedAssignmentsDataSource.swift in Sources */,
 				A3D1614F2D1784E3004055FB /* GetUserRequest.swift in Sources */,
 				A373DC0F2D19F71600215019 /* TypeSafeCodable.swift in Sources */,
 				B795801F2E8C697F00B9A38F /* AnyWidget.swift in Sources */,
