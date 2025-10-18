@@ -1,0 +1,181 @@
+{
+  "fill" : {
+    "linear-gradient" : [
+      "srgb:1.00000,1.00000,1.00000,1.00000",
+      "srgb:0.83742,0.83744,0.83743,1.00000"
+    ]
+  },
+  "groups" : [
+    {
+      "blend-mode-specializations" : [
+        {
+          "value" : "plus-lighter"
+        },
+        {
+          "appearance" : "dark",
+          "value" : "plus-lighter"
+        }
+      ],
+      "blur-material" : 0.5,
+      "layers" : [
+        {
+          "fill" : {
+            "solid" : "extended-gray:0.25000,1.00000"
+          },
+          "glass" : true,
+          "image-name" : "plus.svg",
+          "name" : "plus",
+          "position" : {
+            "scale" : 0.41,
+            "translation-in-points" : [
+              282.69149916758545,
+              -289.4434853233926
+            ]
+          }
+        }
+      ],
+      "lighting" : "individual",
+      "position" : {
+        "scale" : 1,
+        "translation-in-points" : [
+          -46.67889834137479,
+          16.51642471554693
+        ]
+      },
+      "shadow-specializations" : [
+        {
+          "value" : {
+            "kind" : "layer-color",
+            "opacity" : 0.64
+          }
+        },
+        {
+          "appearance" : "dark",
+          "value" : {
+            "kind" : "neutral",
+            "opacity" : 0.64
+          }
+        }
+      ],
+      "specular" : false,
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    },
+    {
+      "blend-mode-specializations" : [
+        {
+          "appearance" : "dark",
+          "value" : "normal"
+        }
+      ],
+      "blur-material" : 0.5,
+      "layers" : [
+        {
+          "blend-mode" : "normal",
+          "fill" : {
+            "linear-gradient" : [
+              "srgb:1.00000,0.57811,0.00000,1.00000",
+              "srgb:1.00000,0.49327,0.47400,1.00000"
+            ]
+          },
+          "glass" : true,
+          "image-name" : "circle 3.svg",
+          "name" : "circle 3",
+          "opacity" : 1,
+          "position" : {
+            "scale" : 0.57,
+            "translation-in-points" : [
+              11.204173727683774,
+              -165.31577349562463
+            ]
+          }
+        },
+        {
+          "blend-mode" : "normal",
+          "fill" : {
+            "linear-gradient" : [
+              "srgb:0.47684,0.50481,1.00000,1.00000",
+              "srgb:0.00486,0.09609,0.57499,1.00000"
+            ]
+          },
+          "glass" : true,
+          "image-name" : "circle 2.svg",
+          "name" : "circle 2",
+          "opacity" : 1,
+          "position" : {
+            "scale" : 0.5,
+            "translation-in-points" : [
+              -232.4,
+              110
+            ]
+          }
+        },
+        {
+          "blend-mode" : "normal",
+          "fill" : {
+            "linear-gradient" : [
+              "srgb:0.75407,0.75409,0.75408,1.00000",
+              "srgb:0.30840,0.56182,0.00000,1.00000"
+            ]
+          },
+          "glass" : true,
+          "image-name" : "circle.svg",
+          "name" : "circle",
+          "opacity" : 1,
+          "position" : {
+            "scale" : 0.17,
+            "translation-in-points" : [
+              113.80382830233789,
+              317.7473549844508
+            ]
+          }
+        },
+        {
+          "blend-mode" : "normal",
+          "fill" : {
+            "linear-gradient" : [
+              "extended-srgb:0.00000,0.53333,1.00000,1.00000",
+              "srgb:0.46202,0.83828,1.00000,1.00000"
+            ]
+          },
+          "glass" : true,
+          "image-name" : "circle.svg",
+          "name" : "circle",
+          "opacity" : 1,
+          "position" : {
+            "scale" : 0.3,
+            "translation-in-points" : [
+              -42.514014731983735,
+              317.0179971978668
+            ]
+          }
+        }
+      ],
+      "lighting" : "combined",
+      "position" : {
+        "scale" : 1,
+        "translation-in-points" : [
+          40.82835093501296,
+          -15.136134710828856
+        ]
+      },
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0
+      },
+      "specular" : true,
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    }
+  ],
+  "supported-platforms" : {
+    "circles" : [
+      "watchOS"
+    ],
+    "squares" : "shared"
+  }
+}
