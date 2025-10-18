@@ -19,28 +19,24 @@ struct CourseGroupsView: View {
     }
 
     var body: some View {
-        GroupsListView()
-            .task {
-                isLoading = true
-                await courseGroupsVM.fetchGroups(for: course.id)
-                isLoading = false
+        Group {
+            if isLoading == false && courseGroupsVM.groups.isEmpty {
+                ContentUnavailableView("No groups for this course could be found.", systemImage: "person.2.slash.fill")
+            } else {
+                GroupsListView()
+                    .searchable(
+                        text: $courseGroupsVM.searchText,
+                        prompt: "Search Groups..."
+                    )
             }
-            .statusToolbarItem("Groups", isVisible: isLoading)
-            .environment(courseGroupsVM)
-            #if os(iOS)
-            .searchable(
-                text: $courseGroupsVM.searchText,
-                placement:
-                        .navigationBarDrawer(
-                            displayMode: .always
-                        ),
-                prompt: "Search Groups..."
-            )
-            #else
-            .searchable(
-                text: $courseGroupsVM.searchText,
-                prompt: "Search Groups..."
-            )
-            #endif
+        }
+
+        .task {
+            isLoading = true
+            await courseGroupsVM.fetchGroups(for: course.id)
+            isLoading = false
+        }
+        .statusToolbarItem("Groups", isVisible: isLoading)
+        .environment(courseGroupsVM)
     }
 }
