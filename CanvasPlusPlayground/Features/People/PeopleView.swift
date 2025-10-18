@@ -65,12 +65,24 @@ struct PeopleView: View {
         SearchResultsListView(
             dataSource: peopleManager
         ) {
-            ForEach(peopleManager.displayedUsers, id: \.id) { user in
-                UserCell(
-                    user: user,
-                    namespace: namespace,
-                    selectedUser: $selectedUser
-                )
+
+            ForEach(peopleManager.displayedUsers.indices, id: \.self) { idx in
+                let user = peopleManager.displayedUsers[idx]
+                if idx == 0 {
+                    UserCell(
+                        user: user,
+                        namespace: namespace,
+                        selectedUser: $selectedUser
+                    )
+                    .popoverTip(PeopleBacktrackTip())
+                } else {
+                    UserCell(
+                        user: user,
+                        namespace: namespace,
+                        selectedUser: $selectedUser
+                    )
+                }
+
             }
         }
         .navigationTitle("People")

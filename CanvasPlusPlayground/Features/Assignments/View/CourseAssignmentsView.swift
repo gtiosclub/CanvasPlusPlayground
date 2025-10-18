@@ -101,6 +101,7 @@ struct CourseAssignmentsView: View {
                     Button("Calculate Grades", image: .customFunctionCapsule) {
                         showingGradeCalculator = true
                     }
+                    .popoverTip(IGCTip())
                     #if os(macOS)
                     .labelStyle(.titleAndIcon)
                     #endif

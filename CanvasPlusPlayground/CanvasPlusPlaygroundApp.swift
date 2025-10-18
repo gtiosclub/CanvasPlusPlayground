@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import TipKit
 
 @main
 struct CanvasPlusPlaygroundApp: App {
@@ -47,6 +48,14 @@ struct CanvasPlusPlaygroundApp: App {
                     .environment(remindersManager)
                     .task {
                         WidgetContext.setup(courseManager: courseManager)
+
+                        // Configure TipKit
+                        do {
+                            try Tips.configure()
+                        }
+                        catch {
+                            LoggerService.main.error("Error initializing TipKit \(error.localizedDescription)")
+                        }
                     }
             }
         }
@@ -57,6 +66,11 @@ struct CanvasPlusPlaygroundApp: App {
                     openWindow(id: NetworkRequestRecorder.networkRequestDebugID)
                 }
                 .keyboardShortcut("R", modifiers: [.command, .shift])
+                Button("Reset Tips") {
+                    Task {
+                        try Tips.resetDatastore()
+                    }
+                }
             }
 
         }
