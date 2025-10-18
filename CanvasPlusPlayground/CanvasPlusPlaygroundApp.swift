@@ -50,17 +50,24 @@ struct CanvasPlusPlaygroundApp: App {
                     }
             }
         }
-#if DEBUG && os(macOS)
         .commands {
+            #if os(macOS)
+            CommandGroup(after: .newItem) {
+                Button("New Tab") {
+                    NSApplication.addTabbedWindow()
+                }
+                .keyboardShortcut("T")
+            }
+            #if DEBUG
             CommandMenu("Debug") {
                 Button("Show Network Request Recorder") {
                     openWindow(id: NetworkRequestRecorder.networkRequestDebugID)
                 }
                 .keyboardShortcut("R", modifiers: [.command, .shift])
             }
-
+            #endif
+            #endif
         }
-#endif
 
 #if DEBUG && os(macOS)
         Window("Network Request Debug Window", id: NetworkRequestRecorder.networkRequestDebugID) {
