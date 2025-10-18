@@ -22,7 +22,6 @@ struct DashboardView: View {
     var body: some View {
         ScrollView {
             Dashboard(
-                vSpacing: vSpacing,
                 maxSmallWidgetWidth: maxSmallWidgetWidth,
                 maxMediumWidgetWidth: maxMediumWidgetWidth,
                 maxLargeWidgetWidth: maxLargeWidgetWidth
@@ -106,9 +105,6 @@ struct DashboardView: View {
         .defaultNavigationDestination()
     }
 
-    private var vSpacing: CGFloat {
-        horizontalSizeClass == .compact ? 80 : 20
-    }
 
     private var maxSmallWidgetWidth: CGFloat? {
         guard horizontalSizeClass == .regular else { return nil }

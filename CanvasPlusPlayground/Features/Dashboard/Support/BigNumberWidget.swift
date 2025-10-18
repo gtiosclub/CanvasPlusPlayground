@@ -47,9 +47,9 @@ private struct DefaultBigNumberWidgetBody: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading) {
-            Text(displayString)
-                .font(.system(size: 48, weight: .bold, design: .rounded))
-        }
+        Text(displayString)
+            .font(.system(size: 64, weight: .bold, design: .rounded))
+            .foregroundStyle(widget.color.gradient)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

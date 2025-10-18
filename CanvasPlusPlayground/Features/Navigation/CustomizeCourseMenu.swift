@@ -14,6 +14,7 @@ enum CourseCustomizationMenuPlacement {
 }
 
 private struct CustomizeCourseMenu: ViewModifier {
+    @Environment(PickerService.self) private var pickerService: PickerService?
     @Environment(CourseManager.self) private var courseManager
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     let course: Course
@@ -56,7 +57,7 @@ private struct CustomizeCourseMenu: ViewModifier {
                 }
             }
             .toolbar {
-                if placement == .toolbar {
+                if placement == .toolbar && pickerService == nil {
                     courseActionsMenu
                     #if os(macOS)
                         .popover(isPresented: $showCourseCustomizer) {

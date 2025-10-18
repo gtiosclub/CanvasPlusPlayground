@@ -34,7 +34,8 @@ struct Dashboard: Layout {
     var maxSmallWidgetWidth: CGFloat?
     var maxMediumWidgetWidth: CGFloat?
     var maxLargeWidgetWidth: CGFloat?
-    var largeWidgetHeight: CGFloat { baseHeight * 2 + vSpacing }
+    // content-only height; add vSpacing only when advancing rows
+    var largeWidgetHeight: CGFloat { baseHeight * 2 }
 
     // used to decide subviews placement logic
     //  -- when set to false: each large or medium widget takes up all width, and every 2 small widgets take up all width on a line
@@ -47,7 +48,9 @@ struct Dashboard: Layout {
         guard !subviews.isEmpty else { return .zero }
 
         // use whatever width the container view gives us
-        let availableWidth = proposal.width ?? 0
+        let availableWidth = proposal.width
+            ?? subviews.map { $0.sizeThatFits(.unspecified).width }.max() // best guess
+            ?? 0
 
         if usesCustomWidths {
             return sizeThatFitsCustom(availableWidth: availableWidth, subviews: subviews)
@@ -57,97 +60,74 @@ struct Dashboard: Layout {
     }
 
     private func sizeThatFitsDefault(availableWidth: CGFloat, subviews: Subviews) -> CGSize {
-        // obtain the maximum sizes for each subview
-        let subviewSizes = subviews.map { $0.sizeThatFits(.unspecified) }
+        guard !subviews.isEmpty else { return .zero }
 
-        // find the maximum width and height amongst all subviews
-        let maxSize: CGSize = subviewSizes.reduce(.zero) {
-            CGSize(
-                width: max($0.width, $1.width),
-                height: max($0.height, $1.height)
-            )
-        }
-
-        // used to calculate the total height of this dashboard instance
+        let smallWidth = (availableWidth - hSpacing) / 2
         var height: CGFloat = 0
-        var smallCount = 0
+        var i = 0
 
-        // iterate through each subview and update the total height based on the widget type
-        for widget in subviews {
+        while i < subviews.count {
+            let widget = subviews[i]
             switch widget.widgetSize {
             case .small:
-                smallCount += 1
-                if smallCount == 2 {
-                    height += baseHeight + vSpacing
-                    smallCount = 0
+                // measure up to two smalls on this row
+                let m1 = subviews[i].sizeThatFits(ProposedViewSize(width: smallWidth, height: nil)).height
+                var rowHeight = m1
+                if i + 1 < subviews.count, subviews[i + 1].widgetSize == .small {
+                    let m2 = subviews[i + 1].sizeThatFits(ProposedViewSize(width: smallWidth, height: nil)).height
+                    rowHeight = max(rowHeight, m2)
+                    i += 2
+                } else {
+                    i += 1
                 }
+                height += rowHeight
+                if i < subviews.count { height += vSpacing }
+
             case .medium:
-                if smallCount > 0 {
-                    height += baseHeight + vSpacing
-                    smallCount = 0
-                }
-                height += baseHeight + vSpacing
+                let mh = widget.sizeThatFits(ProposedViewSize(width: availableWidth, height: nil)).height
+                height += mh
+                i += 1
+                if i < subviews.count { height += vSpacing }
+
             case .large:
-                if smallCount > 0 {
-                    height += baseHeight + vSpacing
-                    smallCount = 0
-                }
-                height += largeWidgetHeight + vSpacing
+                let lh = widget.sizeThatFits(ProposedViewSize(width: availableWidth, height: nil)).height
+                height += lh
+                i += 1
+                if i < subviews.count { height += vSpacing }
             }
         }
 
-        // account for any remaining small widget
-        if smallCount > 0 {
-            height += baseHeight + vSpacing
-        }
-
-        // remove an additional vspacing from the height
-        if height > 0 {
-            height -= vSpacing
-        }
-
-        return CGSize(
-            width: availableWidth > 0 ? availableWidth : maxSize.width,
-            height: height
-        )
+        return CGSize(width: availableWidth, height: height)
     }
 
     private func sizeThatFitsCustom(availableWidth: CGFloat, subviews: Subviews) -> CGSize {
-        // used to compute the total height of this dashboard instance
         var height: CGFloat = 0
         var currentRowWidth: CGFloat = 0
         var currentRowHeight: CGFloat = 0
 
-        // iterate through each subview
-        // if it fits into the current row, update the current row width
-        // otherwise start a new line, updating the total height accordingly
         for widget in subviews {
             let widgetWidth = getWidgetWidth(for: widget.widgetSize, availableWidth: availableWidth)
-            let widgetHeight = getWidgetHeight(for: widget.widgetSize)
+            // measure with the same width you’ll place with; let the child tell its height
+            let measureProposal = ProposedViewSize(width: widgetWidth, height: nil)
+            let measuredSize = widget.sizeThatFits(measureProposal)
+            let measuredWidth = min(widgetWidth, measuredSize.width)
+            let measuredHeight = measuredSize.height
 
-            // Check if widget fits on current row
             let needsSpacing = currentRowWidth > 0
-            let requiredWidth = widgetWidth + (needsSpacing ? hSpacing : 0)
+            let requiredWidth = measuredWidth + (needsSpacing ? hSpacing : 0)
 
             if currentRowWidth > 0 && currentRowWidth + requiredWidth > availableWidth {
-                // Move to next row
                 height += currentRowHeight + vSpacing
                 currentRowWidth = 0
                 currentRowHeight = 0
             }
 
-            // Add widget to current row
-            if currentRowWidth > 0 {
-                currentRowWidth += hSpacing
-            }
-            currentRowWidth += widgetWidth
-            currentRowHeight = max(currentRowHeight, widgetHeight)
+            if currentRowWidth > 0 { currentRowWidth += hSpacing }
+            currentRowWidth += measuredWidth
+            currentRowHeight = max(currentRowHeight, measuredHeight)
         }
 
-        // Add the last row
-        if currentRowHeight > 0 {
-            height += currentRowHeight
-        }
+        if currentRowHeight > 0 { height += currentRowHeight }
 
         return CGSize(width: availableWidth, height: height)
     }
@@ -179,54 +159,83 @@ struct Dashboard: Layout {
             let itemsPerRow = 2
             let width = (bounds.width - hSpacing) / CGFloat(itemsPerRow)
 
-            let proposal = ProposedViewSize(width: width, height: baseHeight)
+            // measure height for this small
+            let measure = subview.sizeThatFits(
+                ProposedViewSize(width: width, height: baseHeight)
+            ).height
+            // we need the row height = max(height of the two smalls)
+            // Place first, but defer advancing y until row completes.
             subview.place(
                 at: CGPoint(x: x, y: y),
                 anchor: .topLeading,
-                proposal: proposal
+                proposal: ProposedViewSize(width: width, height: measure)
             )
 
-            // used to determine if the current small widget should be placed either
-            //      - on a new line,
-            //      - on the first half of the current line
-            //      - or on the second half of the current line
             smallWidgetCount += 1
             if smallWidgetCount < itemsPerRow {
                 x += width + hSpacing
             } else {
-                y += baseHeight + vSpacing
+                // recompute the second small’s height so we advance by the max
+                let prevIndex = index - 1
+                let h1 = (prevIndex >= 0) ? subviews[prevIndex].sizeThatFits(
+                    ProposedViewSize(width: width, height: baseHeight)
+                ).height : measure
+                let h2 = measure
+                let rowHeight = max(h1, h2)
+                y += rowHeight + vSpacing
                 x = bounds.minX
                 smallWidgetCount = 0
             }
         }
 
         func placeMediumWidget(_ subview: LayoutSubview, index: Int) {
-            // account for any single small widget on the current line -> need to start a new line to begin with this placement
             if smallWidgetCount > 0 {
-                y += baseHeight + vSpacing
+                // finish the partially filled small row by measuring its row height
+                let width = (bounds.width - hSpacing) / 2
+                let lastSmall = subviews[index - 1]
+                let hPartial = lastSmall.sizeThatFits(
+                    ProposedViewSize(width: width, height: baseHeight)
+                ).height
+                y += hPartial + vSpacing
                 x = bounds.minX
                 smallWidgetCount = 0
             }
 
-            let proposal = ProposedViewSize(width: bounds.width, height: baseHeight)
-            subview.place(at: CGPoint(x: bounds.minX, y: y), anchor: .topLeading, proposal: proposal)
+            let measured = subview.sizeThatFits(
+                ProposedViewSize(width: bounds.width, height: baseHeight)
+            ).height
+            subview.place(
+                at: CGPoint(x: bounds.minX, y: y),
+                anchor: .topLeading,
+                proposal: ProposedViewSize(width: bounds.width, height: measured)
+            )
 
-            y += baseHeight + vSpacing
+            y += measured + vSpacing
             x = bounds.minX
         }
 
         func placeLargeWidget(_ subview: LayoutSubview, index: Int) {
-            // account for any single small widget on the current line -> need to start a new line to begin with this placement
             if smallWidgetCount > 0 {
-                y += baseHeight + vSpacing
+                let width = (bounds.width - hSpacing) / 2
+                let lastSmall = subviews[index - 1]
+                let hPartial = lastSmall.sizeThatFits(
+                    ProposedViewSize(width: width, height: baseHeight)
+                ).height
+                y += hPartial + vSpacing
                 x = bounds.minX
                 smallWidgetCount = 0
             }
 
-            let proposal = ProposedViewSize(width: bounds.width, height: largeWidgetHeight)
-            subview.place(at: CGPoint(x: bounds.minX, y: y), anchor: .topLeading, proposal: proposal)
+            let measured = subview.sizeThatFits(
+                ProposedViewSize(width: bounds.width, height: largeWidgetHeight)
+            ).height
+            subview.place(
+                at: CGPoint(x: bounds.minX, y: y),
+                anchor: .topLeading,
+                proposal: ProposedViewSize(width: bounds.width, height: measured)
+            )
 
-            y += largeWidgetHeight + vSpacing
+            y += measured + vSpacing
             x = bounds.minX
         }
     }
@@ -238,41 +247,43 @@ struct Dashboard: Layout {
 
         for widget in subviews {
             let widgetWidth = getWidgetWidth(for: widget.widgetSize, availableWidth: bounds.width)
-            let widgetHeight = getWidgetHeight(for: widget.widgetSize)
+            let measureProposal = ProposedViewSize(
+                width: widgetWidth,
+                height: getWidgetHeight(for: widget.widgetSize)
+            )
+            let measuredSize = widget.sizeThatFits(measureProposal)
+            let measuredWidth = min(widgetWidth, measuredSize.width)
+            let measuredHeight = measuredSize.height
 
-            // Check if widget fits on current row
             let needsSpacing = x > bounds.minX
-            let requiredWidth = widgetWidth + (needsSpacing ? hSpacing : 0)
+            let requiredWidth = measuredWidth + (needsSpacing ? hSpacing : 0)
 
             if x > bounds.minX && x + requiredWidth > bounds.maxX {
-                // Move to next row
                 y += currentRowHeight + vSpacing
                 x = bounds.minX
                 currentRowHeight = 0
             }
 
-            // Place widget
-            if x > bounds.minX {
-                x += hSpacing
-            }
+            if x > bounds.minX { x += hSpacing }
 
-            let proposal = ProposedViewSize(width: widgetWidth, height: widgetHeight)
-            widget.place(at: CGPoint(x: x, y: y), anchor: .topLeading, proposal: proposal)
+            widget.place(
+                at: CGPoint(x: x, y: y),
+                anchor: .topLeading,
+                proposal: ProposedViewSize(width: measuredWidth, height: measuredHeight)
+            )
 
-            x += widgetWidth
-            currentRowHeight = max(currentRowHeight, widgetHeight)
+            x += measuredWidth
+            currentRowHeight = max(currentRowHeight, measuredHeight)
         }
     }
 
     // Helper function to get widget width based on size and max width settings
     private func getWidgetWidth(for size: WidgetSize, availableWidth: CGFloat) -> CGFloat {
+        let safeWidth = max(0, availableWidth)
         switch size {
-        case .small:
-            return maxSmallWidgetWidth ?? (availableWidth - hSpacing) / 2
-        case .medium:
-            return maxMediumWidgetWidth ?? availableWidth
-        case .large:
-            return maxLargeWidgetWidth ?? availableWidth
+        case .small:  return maxSmallWidgetWidth ?? max(0, (safeWidth - hSpacing) / 2)
+        case .medium: return maxMediumWidgetWidth ?? safeWidth
+        case .large:  return maxLargeWidgetWidth ?? safeWidth
         }
     }
 
