@@ -26,6 +26,7 @@ class PinnedItemsManager {
 
     // MARK: - User Intents
 
+    @MainActor
     func togglePinnedItem(
         itemID: String,
         courseID: String?,
@@ -40,6 +41,13 @@ class PinnedItemsManager {
         } else {
             addPinnedItem(itemID: itemID, courseID: courseID, type: type)
         }
+
+        WidgetContext.shared
+            .requestToRefreshWidget(widget: PinnedAnnouncementsWidget.self)
+        WidgetContext.shared
+            .requestToRefreshWidget(widget: PinnedFilesWidget.self)
+        WidgetContext.shared
+            .requestToRefreshWidget(widget: PinnedAssignmentsWidget.self)
     }
 
     func addPinnedItem(
@@ -197,7 +205,7 @@ class PinnedAssignmentsDataSource: ListWidgetDataSource {
                 guard let data = pinnedItem.data,
                       case .assignment(let assignment) = data.modelData else { continue }
 
-                let title = assignment.name ?? "Untitled Assignment"
+                let title = assignment.name
                 let description = data.course.name ?? "Unknown Course"
 
                 result.append(ListWidgetData(
