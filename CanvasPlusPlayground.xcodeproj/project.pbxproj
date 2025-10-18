@@ -182,6 +182,9 @@
 		B75684FA2DA7A080003B4A32 /* GetSingleDiscussionTopicRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75684F92DA7A080003B4A32 /* GetSingleDiscussionTopicRequest.swift */; };
 		B75BFD562EA3EC7B00BB74C3 /* NSApp+NewTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75BFD552EA3EC7600BB74C3 /* NSApp+NewTab.swift */; };
 		B75BFD682EA452CE00BB74C3 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = B75BFD672EA452CE00BB74C3 /* AppIcon.icon */; };
+		B75BFD5C2EA4491200BB74C3 /* PinnedFilesWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75BFD5B2EA4491200BB74C3 /* PinnedFilesWidget.swift */; };
+		B75BFD5D2EA4491200BB74C3 /* PinnedAnnouncementsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75BFD592EA4491200BB74C3 /* PinnedAnnouncementsWidget.swift */; };
+		B75BFD5E2EA4491200BB74C3 /* PinnedAssignmentsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75BFD5A2EA4491200BB74C3 /* PinnedAssignmentsWidget.swift */; };
 		B76454FE2C8DF61B002DF00E /* Course.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454ED2C8DF61B002DF00E /* Course.swift */; };
 		B76454FF2C8DF61B002DF00E /* Enrollment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454EE2C8DF61B002DF00E /* Enrollment.swift */; };
 		B76455002C8DF61B002DF00E /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76454EF2C8DF61B002DF00E /* File.swift */; };
@@ -468,6 +471,9 @@
 		B75684F92DA7A080003B4A32 /* GetSingleDiscussionTopicRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSingleDiscussionTopicRequest.swift; sourceTree = "<group>"; };
 		B75BFD552EA3EC7600BB74C3 /* NSApp+NewTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSApp+NewTab.swift"; sourceTree = "<group>"; };
 		B75BFD672EA452CE00BB74C3 /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = AppIcon.icon; sourceTree = "<group>"; };
+		B75BFD592EA4491200BB74C3 /* PinnedAnnouncementsWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedAnnouncementsWidget.swift; sourceTree = "<group>"; };
+		B75BFD5A2EA4491200BB74C3 /* PinnedAssignmentsWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedAssignmentsWidget.swift; sourceTree = "<group>"; };
+		B75BFD5B2EA4491200BB74C3 /* PinnedFilesWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedFilesWidget.swift; sourceTree = "<group>"; };
 		B76454642C8BBC7F002DF00E /* CanvasPlusPlayground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CanvasPlusPlayground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B76454ED2C8DF61B002DF00E /* Course.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Course.swift; sourceTree = "<group>"; };
 		B76454EE2C8DF61B002DF00E /* Enrollment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enrollment.swift; sourceTree = "<group>"; };
@@ -1164,6 +1170,9 @@
 				9B4F616D2E9ABDA300860E24 /* UnreadAnnouncementsCountWidget.swift */,
 				B733340C2E916FE50011E8A9 /* AllToDosWidget.swift */,
 				B7AF50F32E9B03FC00457E8A /* RecentItemsWidget.swift */,
+				B75BFD592EA4491200BB74C3 /* PinnedAnnouncementsWidget.swift */,
+				B75BFD5A2EA4491200BB74C3 /* PinnedAssignmentsWidget.swift */,
+				B75BFD5B2EA4491200BB74C3 /* PinnedFilesWidget.swift */,
 			);
 			path = Widgets;
 			sourceTree = "<group>";
@@ -1629,6 +1638,9 @@
 				A37AB4AB2D988F5800610639 /* CreateGroupMembershipRequest.swift in Sources */,
 				9BD75D702E77127C008BF846 /* OpenInWebButton.swift in Sources */,
 				A3049B662D0F3E32002F3166 /* CourseQuizzesView.swift in Sources */,
+				B75BFD5C2EA4491200BB74C3 /* PinnedFilesWidget.swift in Sources */,
+				B75BFD5D2EA4491200BB74C3 /* PinnedAnnouncementsWidget.swift in Sources */,
+				B75BFD5E2EA4491200BB74C3 /* PinnedAssignmentsWidget.swift in Sources */,
 				B7D7512B2D3D5D8000F7B8B8 /* AllAnnouncementsView.swift in Sources */,
 				A3E7F3892C954E0500DC4300 /* CanvasRequest.swift in Sources */,
 				A352AD1A2D3EF1C1007EE6FC /* GetCourseUsersRequest.swift in Sources */,
