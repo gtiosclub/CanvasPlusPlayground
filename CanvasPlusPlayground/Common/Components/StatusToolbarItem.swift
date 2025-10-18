@@ -18,15 +18,6 @@ private struct StatusToolbarItem: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-        #if os(iOS)
-            .toolbar {
-                ToolbarItem(placement: .status) {
-                    if isVisible {
-                        toolbarContent
-                    }
-                }
-            }
-        #else
             .safeAreaInset(edge: .bottom) {
                 if isVisible {
                     toolbarContent
@@ -35,7 +26,6 @@ private struct StatusToolbarItem: ViewModifier {
                         .padding(.bottom)
                 }
             }
-        #endif
     }
 
     private var toolbarContent: some View {
