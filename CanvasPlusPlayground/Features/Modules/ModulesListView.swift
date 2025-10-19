@@ -40,6 +40,9 @@ struct ModulesListView: View {
         .statusToolbarItem("Modules", isVisible: isLoadingModules)
         .environment(modulesVM)
         .navigationTitle("Modules")
+        .refreshable {
+            await modulesVM.fetchModules()
+        }
     }
 
     func handleModuleSelection() async {

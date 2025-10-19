@@ -19,7 +19,16 @@ struct CourseGroupsView: View {
     }
 
     var body: some View {
-        GroupsListView()
+        Group {
+            if isLoading == false && courseGroupsVM.groups.isEmpty {
+                ContentUnavailableView("No groups for this course could be found.", systemImage: "person.2.slash.fill")
+            } else {
+                GroupsListView()
+                    .searchable(
+                        text: $courseGroupsVM.searchText,
+                        prompt: "Search Groups..."
+                    )
+            }
             .task {
                 isLoading = true
                 await courseGroupsVM.fetchGroups(for: course.id)
@@ -45,6 +54,5 @@ struct CourseGroupsView: View {
             )
             .navigationTitle("\(course.displayName) -- Groups")
             #endif
-
     }
 }
