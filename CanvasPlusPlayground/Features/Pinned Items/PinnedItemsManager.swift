@@ -9,6 +9,7 @@ import SwiftUI
 
 @Observable
 class PinnedItemsManager {
+    static let shared = PinnedItemsManager()
     static let pinnedItemsKey: String = "pinnedItems"
 
     private(set) var pinnedItems: [PinnedItem] = [] {
@@ -25,6 +26,7 @@ class PinnedItemsManager {
 
     // MARK: - User Intents
 
+    @MainActor
     func togglePinnedItem(
         itemID: String,
         courseID: String?,
@@ -39,6 +41,13 @@ class PinnedItemsManager {
         } else {
             addPinnedItem(itemID: itemID, courseID: courseID, type: type)
         }
+
+        WidgetContext.shared
+            .requestToRefreshWidget(widget: PinnedAnnouncementsWidget.self)
+        WidgetContext.shared
+            .requestToRefreshWidget(widget: PinnedFilesWidget.self)
+        WidgetContext.shared
+            .requestToRefreshWidget(widget: PinnedAssignmentsWidget.self)
     }
 
     func addPinnedItem(

@@ -158,6 +158,12 @@ class WidgetStore {
             return ToDoCountWidget()
         case RecentItemsWidget.widgetID:
             return RecentItemsWidget()
+        case PinnedAnnouncementsWidget.widgetID:
+            return PinnedAnnouncementsWidget()
+        case PinnedAssignmentsWidget.widgetID:
+            return PinnedAssignmentsWidget()
+        case PinnedFilesWidget.widgetID:
+            return PinnedFilesWidget()
         default:
             return nil
         }
