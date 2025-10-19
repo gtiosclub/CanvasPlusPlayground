@@ -29,30 +29,19 @@ struct CourseGroupsView: View {
                         prompt: "Search Groups..."
                     )
             }
-            .task {
-                isLoading = true
-                await courseGroupsVM.fetchGroups(for: course.id)
-                isLoading = false
-            }
-            .statusToolbarItem("Groups", isVisible: isLoading)
-            .environment(courseGroupsVM)
-            #if os(iOS)
-            .searchable(
-                text: $courseGroupsVM.searchText,
-                placement:
-                        .navigationBarDrawer(
-                            displayMode: .always
-                        ),
-                prompt: "Search Groups..."
-            )
-            .navigationTitle("Groups")
-
-            #else
-            .searchable(
-                text: $courseGroupsVM.searchText,
-                prompt: "Search Groups..."
-            )
-            .navigationTitle("\(course.displayName) -- Groups")
-            #endif
+        }
+        .task {
+            isLoading = true
+            await courseGroupsVM.fetchGroups(for: course.id)
+            isLoading = false
+        }
+        .statusToolbarItem("Groups", isVisible: isLoading)
+        .environment(courseGroupsVM)
+        #if os(iOS)
+        .navigationTitle("Groups")
+        #else
+        .navigationTitle("\(course.displayName) -- Groups")
+        #endif
     }
 }
+
