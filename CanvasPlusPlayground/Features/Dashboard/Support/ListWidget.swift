@@ -22,7 +22,7 @@ extension ListWidget {
 
 protocol ListWidgetDataSource: WidgetDataSource where Data == ListWidgetData { }
 
-struct ListWidgetData: Identifiable {
+struct ListWidgetData: Identifiable, Equatable {
     var id: String
     var title: String
     var description: String
@@ -36,16 +36,16 @@ private struct DefaultListWidgetBody: View {
 
     private var itemLimit: Int {
         switch size {
-        case .small: return 2
+        case .small: return 3
         case .medium: return 3
         case .large: return 6
         }
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: size == .small ? 4 : 8) {
+        VStack(alignment: .leading, spacing: size == .small ? 6 : 8) {
             ForEach(data) { item in
-                Group {
+                VStack(spacing: 3) {
                     if isWidgetNavigationEnabled {
                         NavigationLink(
                             value: widget.dataSource.destinationView(for: item)) {
@@ -84,7 +84,6 @@ private struct DefaultListWidgetBody: View {
                 VStack(alignment: .leading, spacing: size == .small ? 2 : 4) {
                     Text(item.title)
                         .bold()
-                        .font(size == .small ? .caption : .body)
                         .lineLimit(1)
 
                     if showDescription {
@@ -96,6 +95,7 @@ private struct DefaultListWidgetBody: View {
                 }
                 Spacer()
             }
+            .contentShape(.rect)
         }
     }
 }
