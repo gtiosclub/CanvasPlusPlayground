@@ -73,6 +73,7 @@ class NavigationModel {
         case allToDos
         case pinnedItems
         case recentItems
+        case today
         case course(Course)
         case coursePage(CoursePage, Course)
         case announcement(DiscussionTopic)
@@ -113,6 +114,8 @@ class NavigationModel {
                 PinnedItemsView()
             case .recentItems:
                 RecentItemsView()
+            case .today:
+                TodayView()
             case let .calendarEvent(event, course):
                 CalendarEventDetailView(event: event, course: course)
             }
