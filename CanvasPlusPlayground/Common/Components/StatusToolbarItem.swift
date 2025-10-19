@@ -23,6 +23,7 @@ private struct StatusToolbarItem: ViewModifier {
                     toolbarContent
                         .padding(6)
                         .background(.thinMaterial, in: .rect(cornerRadius: 8))
+                        .compatibleGlassEffect()
                         .padding(.bottom)
                 }
             }
