@@ -26,6 +26,9 @@
 		9B07E7122D779CAB00359B69 /* Date+RelativeDates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B07E7112D779CA500359B69 /* Date+RelativeDates.swift */; };
 		9B0C19402D78E461002ABEFC /* AssignmentCreateSubmissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B0C193F2D78E461002ABEFC /* AssignmentCreateSubmissionView.swift */; };
 		9B350F082C9652C6003FC60D /* NSAttributedString+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B350F072C9652C6003FC60D /* NSAttributedString+HTML.swift */; };
+		9B4967462EA42D53001FE066 /* CustomizeCourseView+Tips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4967452EA42D53001FE066 /* CustomizeCourseView+Tips.swift */; };
+		9B4967482EA42D5B001FE066 /* IGC+Tips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4967472EA42D5B001FE066 /* IGC+Tips.swift */; };
+		9B49674A2EA42D64001FE066 /* PeopleBacktrack+Tips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4967492EA42D64001FE066 /* PeopleBacktrack+Tips.swift */; };
 		9B4F616C2E9ABBC500860E24 /* BigNumberWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4F616B2E9ABBC000860E24 /* BigNumberWidget.swift */; };
 		9B4F616E2E9ABDA900860E24 /* UnreadAnnouncementsCountWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4F616D2E9ABDA300860E24 /* UnreadAnnouncementsCountWidget.swift */; };
 		9B4F61702E9ABDB400860E24 /* ToDoCountWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4F616F2E9ABDAC00860E24 /* ToDoCountWidget.swift */; };
@@ -310,6 +313,9 @@
 		9B07E7112D779CA500359B69 /* Date+RelativeDates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+RelativeDates.swift"; sourceTree = "<group>"; };
 		9B0C193F2D78E461002ABEFC /* AssignmentCreateSubmissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentCreateSubmissionView.swift; sourceTree = "<group>"; };
 		9B350F072C9652C6003FC60D /* NSAttributedString+HTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+HTML.swift"; sourceTree = "<group>"; };
+		9B4967452EA42D53001FE066 /* CustomizeCourseView+Tips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CustomizeCourseView+Tips.swift"; sourceTree = "<group>"; };
+		9B4967472EA42D5B001FE066 /* IGC+Tips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IGC+Tips.swift"; sourceTree = "<group>"; };
+		9B4967492EA42D64001FE066 /* PeopleBacktrack+Tips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PeopleBacktrack+Tips.swift"; sourceTree = "<group>"; };
 		9B4F616B2E9ABBC000860E24 /* BigNumberWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigNumberWidget.swift; sourceTree = "<group>"; };
 		9B4F616D2E9ABDA300860E24 /* UnreadAnnouncementsCountWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnreadAnnouncementsCountWidget.swift; sourceTree = "<group>"; };
 		9B4F616F2E9ABDAC00860E24 /* ToDoCountWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoCountWidget.swift; sourceTree = "<group>"; };
@@ -598,6 +604,16 @@
 			path = Layout;
 			sourceTree = "<group>";
 		};
+		9B4967442EA42D3B001FE066 /* Tips */ = {
+			isa = PBXGroup;
+			children = (
+				9B4967452EA42D53001FE066 /* CustomizeCourseView+Tips.swift */,
+				9B4967472EA42D5B001FE066 /* IGC+Tips.swift */,
+				9B4967492EA42D64001FE066 /* PeopleBacktrack+Tips.swift */,
+			);
+			path = Tips;
+			sourceTree = "<group>";
+		};
 		9B801DE82E66658000DF4942 /* Debug */ = {
 			isa = PBXGroup;
 			children = (
@@ -680,6 +696,7 @@
 		A324BA502D07963D005F53FA /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				9B4967442EA42D3B001FE066 /* Tips */,
 				B7AF51612E9B30E100457E8A /* Onboarding */,
 				B7F375C12E85EE82008F0846 /* Dashboard */,
 				B7C469D02E6C80D500310982 /* Home */,
@@ -1496,6 +1513,7 @@
 				A373DC252D1D4BEC00215019 /* APIQuizSubmission.swift in Sources */,
 				B7C0A3CF2D31F339003E5A36 /* PinnedItemCard.swift in Sources */,
 				9BF228C82D6CD1EB000676F2 /* RemindersManager.swift in Sources */,
+				9B4967462EA42D53001FE066 /* CustomizeCourseView+Tips.swift in Sources */,
 				B7D95D772D07C3D3002AD955 /* ICSParser.swift in Sources */,
 				A3CF88D32D18E6BB000ACDF3 /* ParentKeyPath.swift in Sources */,
 				B7CC4D5A2D90BF6C00254F55 /* RippleModifier.swift in Sources */,
@@ -1634,6 +1652,7 @@
 				B7C469D22E6C80F800310982 /* CourseHomePage.swift in Sources */,
 				B77FD0072D5309340049AA5E /* ProfilePicture.swift in Sources */,
 				A35191412D283589001E415F /* ModulesViewModel.swift in Sources */,
+				9B4967482EA42D5B001FE066 /* IGC+Tips.swift in Sources */,
 				A3E7F3912C99317100DC4300 /* CourseTabsManager.swift in Sources */,
 				A372D0FF2D90BAB6005E94CA /* CourseGroupsView.swift in Sources */,
 				B75684F82DA5F9F4003B4A32 /* GetSinglePageRequest.swift in Sources */,
@@ -1650,6 +1669,7 @@
 				B7E073602D986D9800A7E82F /* ToDoItemCountAPI.swift in Sources */,
 				B75BFD562EA3EC7B00BB74C3 /* NSApp+NewTab.swift in Sources */,
 				A301EE0F2D612EA800D71139 /* DiscussionTopic.swift in Sources */,
+				9B49674A2EA42D64001FE066 /* PeopleBacktrack+Tips.swift in Sources */,
 				9B07E7122D779CAB00359B69 /* Date+RelativeDates.swift in Sources */,
 				B7C0A3BF2D2F2251003E5A36 /* PinnedItemsView.swift in Sources */,
 				A3CF88E32D1921CB000ACDF3 /* FolderAPI.swift in Sources */,
