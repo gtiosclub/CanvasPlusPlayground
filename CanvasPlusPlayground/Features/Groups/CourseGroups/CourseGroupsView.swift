@@ -30,7 +30,6 @@ struct CourseGroupsView: View {
                     )
             }
         }
-
         .task {
             isLoading = true
             await courseGroupsVM.fetchGroups(for: course.id)
@@ -38,5 +37,11 @@ struct CourseGroupsView: View {
         }
         .statusToolbarItem("Groups", isVisible: isLoading)
         .environment(courseGroupsVM)
+        #if os(iOS)
+        .navigationTitle("Groups")
+        #else
+        .navigationTitle("\(course.displayName) -- Groups")
+        #endif
     }
 }
+

@@ -115,7 +115,11 @@ struct CourseAssignmentsView: View {
             await loadAssignments()
         }
         .statusToolbarItem("Assignments", isVisible: isLoadingAssignments)
+        #if os(iOS)
         .navigationTitle(showGrades ? "Grades" : "Assignments")
+        #else
+        .navigationTitle(showGrades ? "\(course.displayName) -- Grades" : "\(course.displayName) -- Assignments")
+        #endif
         .sheet(isPresented: $showingGradeCalculator) {
             NavigationStack {
                 GradeCalculatorView(

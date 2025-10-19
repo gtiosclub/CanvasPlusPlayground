@@ -51,7 +51,12 @@ struct CourseAnnouncementsView: View {
             "Announcements",
             isVisible: isLoadingAnnouncements
         )
+        #if os(iOS)
         .navigationTitle("Announcements")
+        #else
+        .navigationTitle("\(course.displayName) -- Announcements")
+        #endif
+
         .pickedItem(selectedAnnouncement)
     }
 
