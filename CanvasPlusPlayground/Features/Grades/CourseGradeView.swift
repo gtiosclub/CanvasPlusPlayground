@@ -23,7 +23,6 @@ struct CourseGradeView: View {
             .safeAreaInset(edge: .top, spacing: 0) {
                 gradesAccessoryBar
             }
-            .navigationTitle("Grades")
             .task {
                 await loadGrades()
             }

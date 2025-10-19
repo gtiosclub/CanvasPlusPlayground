@@ -50,7 +50,12 @@ struct CalendarView: View {
             }
         }
         .statusToolbarItem("Calendar", isVisible: isLoadingCalendar)
+        #if os(iOS)
         .navigationTitle("Calendar")
+
+        #else
+        .navigationTitle("\(course.displayName) -- Calendar")
+        #endif
     }
 
     private func loadCalendar() async {

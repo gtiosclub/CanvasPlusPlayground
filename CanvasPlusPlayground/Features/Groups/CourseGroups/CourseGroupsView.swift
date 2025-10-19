@@ -36,11 +36,15 @@ struct CourseGroupsView: View {
                         ),
                 prompt: "Search Groups..."
             )
+            .navigationTitle("Groups")
+
             #else
             .searchable(
                 text: $courseGroupsVM.searchText,
                 prompt: "Search Groups..."
             )
+            .navigationTitle("\(course.displayName) -- Groups")
             #endif
+
     }
 }
