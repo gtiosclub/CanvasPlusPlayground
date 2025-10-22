@@ -92,7 +92,9 @@ class PeopleManager: SearchResultListDataSource {
 
             if queryMode == .live && page == 1 {
                 setQueryMode(.offline)
-                try await fetchPeople()
+                setLoadingState(.idle)
+                // FIXME: Crashes on RELEASE configuration
+                // try await fetchPeople()
             } else {
                 throw error
             }

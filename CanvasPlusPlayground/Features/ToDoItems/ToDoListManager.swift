@@ -12,6 +12,7 @@ import Combine
 class ToDoListManager: ListWidgetDataSource, BigNumberWidgetDataSource {
     var toDoItems: Set<ToDoItem> = []
     var toDoItemCount: Int?
+    var errorMessage: String?
 
     var displayedToDoItems: [ToDoItem] {
         Array(toDoItems).sorted { $0.dueDate ?? Date() < $1.dueDate ?? Date() }
@@ -54,19 +55,10 @@ class ToDoListManager: ListWidgetDataSource, BigNumberWidgetDataSource {
         let request = CanvasRequest.getToDoItems(include: [.ungradedQuizzes])
 
         do {
+            // Only load from network, not cache
             let items: [ToDoItem] = try await CanvasService.shared
-                .loadAndSync(
+                .syncWithAPI(
                     request,
-                    onCacheReceive: { cached in
-                        guard let cached else { return }
-                        Task { @MainActor in
-                            self.addItems(
-                                cached,
-                                courses: courses,
-                                replaceExisting: true
-                            )
-                        }
-                    },
                     loadingMethod: .all(onNewPage: { items in
                         Task { @MainActor in
                             self.addItems(items, courses: courses)
@@ -80,9 +72,13 @@ class ToDoListManager: ListWidgetDataSource, BigNumberWidgetDataSource {
                     courses: courses,
                     replaceExisting: true
                 )
+                self.errorMessage = nil
             }
         } catch {
             LoggerService.main.error("Failed to fetch to-do items: \(error)")
+            Task { @MainActor in
+                self.errorMessage = "Failed to load to-do items: \(error.localizedDescription)"
+            }
         }
     }
 
