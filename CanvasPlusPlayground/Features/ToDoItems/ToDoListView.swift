@@ -54,7 +54,19 @@ struct ToDoListView: View {
             await loadItems()
         }
         .overlay {
-            if displayedResults.isEmpty {
+            if let errorMessage = listManager.errorMessage {
+                ContentUnavailableView {
+                    Label("Unable to Load To-Do Items", systemImage: "exclamationmark.triangle")
+                } description: {
+                    Text(errorMessage)
+                } actions: {
+                    Button("Try Again") {
+                        Task {
+                            await loadItems()
+                        }
+                    }
+                }
+            } else if displayedResults.isEmpty && !isLoading {
                 ContentUnavailableView("No To-Do Items", systemImage: "checklist.checked")
             }
         }

@@ -26,28 +26,66 @@ extension CanvasSchemaV1 {
         var type: ToDoItemType
         var ignoreURL: String
         var ignorePermanentlyURL: String
-        var assignment: Assignment?
-        var quiz: Quiz?
+        var assignmentAPIData: Data?
+        var quizAPIData: Data?
         var htmlURL: String
 
         // MARK: Custom Properties
         @Transient
         var course: Course?
 
+        @Transient
+        private var _assignmentAPICache: AssignmentAPI?
+
+        @Transient
+        private var _quizAPICache: QuizAPI?
+
+        var assignmentAPI: AssignmentAPI? {
+            get {
+                if let cached = _assignmentAPICache {
+                    return cached
+                }
+                guard let data = assignmentAPIData else { return nil }
+                let decoded = try? JSONDecoder().decode(AssignmentAPI.self, from: data)
+                _assignmentAPICache = decoded
+                return decoded
+            }
+            set {
+                _assignmentAPICache = newValue
+                assignmentAPIData = newValue.flatMap { try? JSONEncoder().encode($0) }
+            }
+        }
+
+        var quizAPI: QuizAPI? {
+            get {
+                if let cached = _quizAPICache {
+                    return cached
+                }
+                guard let data = quizAPIData else { return nil }
+                let decoded = try? JSONDecoder().decode(QuizAPI.self, from: data)
+                _quizAPICache = decoded
+                return decoded
+            }
+            set {
+                _quizAPICache = newValue
+                quizAPIData = newValue.flatMap { try? JSONEncoder().encode($0) }
+            }
+        }
+
         // MARK: Computed Properties
         var title: String {
-            assignment?.name ?? quiz?.title ?? "Unknown Item"
+            assignmentAPI?.name ?? quizAPI?.title ?? "Unknown Item"
         }
 
         var dueDate: Date? {
-            assignment?.dueDate ?? quiz?.dueAt
+            assignmentAPI?.dueDate ?? quizAPI?.due_at
         }
 
         var itemType: TodoItemType? {
-            if let assignment {
-                return .assignment(assignment)
-            } else if let quiz {
-                return .quiz(quiz)
+            if let assignmentAPI {
+                return .assignmentAPI(assignmentAPI)
+            } else if let quizAPI {
+                return .quizAPI(quizAPI)
             }
 
             return nil
@@ -63,16 +101,16 @@ extension CanvasSchemaV1 {
             self.type = toDoItemAPI.type
             self.ignoreURL = toDoItemAPI.ignoreURL
             self.ignorePermanentlyURL = toDoItemAPI.ignorePermanentlyURL
-            self.assignment = toDoItemAPI.assignment?.createModel()
-            self.quiz = toDoItemAPI.quiz?.createModel()
+            self.assignmentAPIData = toDoItemAPI.assignment.flatMap { try? JSONEncoder().encode($0) }
+            self.quizAPIData = toDoItemAPI.quiz.flatMap { try? JSONEncoder().encode($0) }
             self.htmlURL = toDoItemAPI.htmlURL
         }
     }
 }
 
 enum TodoItemType {
-    case assignment(Assignment)
-    case quiz(Quiz)
+    case assignmentAPI(AssignmentAPI)
+    case quizAPI(QuizAPI)
 }
 
 extension ToDoItem: Cacheable {
@@ -84,8 +122,10 @@ extension ToDoItem: Cacheable {
         self.type = other.type
         self.ignoreURL = other.ignoreURL
         self.ignorePermanentlyURL = other.ignorePermanentlyURL
-        self.assignment = other.assignment
-        self.quiz = other.quiz
+        self.assignmentAPIData = other.assignmentAPIData
+        self.quizAPIData = other.quizAPIData
+        self._assignmentAPICache = nil
+        self._quizAPICache = nil
         self.htmlURL = other.htmlURL
     }
 }
@@ -94,10 +134,10 @@ extension ToDoItem {
     func navigationDestination() -> NavigationModel.Destination? {
         if let type = self.itemType {
             switch type {
-            case .assignment(let assignment):
-                return .assignment(assignment)
-            case .quiz(let quiz):
-                return .quiz(quiz)
+            case .assignmentAPI(let assignmentAPI):
+                return .assignment(assignmentAPI.createModel())
+            case .quizAPI(let quizAPI):
+                return .quiz(quizAPI.createModel())
             }
         }
 
