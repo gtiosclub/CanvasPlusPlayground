@@ -83,6 +83,7 @@ class NavigationModel {
         case folder(Folder, Course)
         case quiz(Quiz)
         case calendarEvent(CanvasCalendarEvent, Course)
+        case allCalendar
 
         // TODO: Add top level views like all announcements, pinned items, etc
 
@@ -118,6 +119,8 @@ class NavigationModel {
                 TodayView()
             case let .calendarEvent(event, course):
                 CalendarEventDetailView(event: event, course: course)
+            case .allCalendar:
+                CombinedCalendar()
             }
         }
     }
@@ -133,6 +136,7 @@ class NavigationModel {
     // Each tab maintains its own NavigationPath (stack)
     var allCoursesPath = NavigationPath() // for Tab.allCourses
     var dashboardPath = NavigationPath()
+    var calendarPath = NavigationPath()
 
     var coursePath = NavigationPath() // for Tab.course(id:)
 

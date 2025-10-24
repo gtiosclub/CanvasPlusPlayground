@@ -95,7 +95,7 @@ class PinnedItem: Identifiable, Codable, Equatable, Hashable {
                 return
             }
 
-            let eventGroups = await ICSParser.parseEvents(from: icsURL)
+            let eventGroups = await ICSParser.parseEvents(from: icsURL, for: course)
             let allEvents = eventGroups.flatMap { $0.events }
 
             guard let event = allEvents.first(where: { $0.id == id }) else {

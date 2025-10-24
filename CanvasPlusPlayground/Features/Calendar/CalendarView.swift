@@ -21,16 +21,7 @@ struct CalendarView: View {
 
     var body: some View {
         VStack {
-            List {
-                ForEach(events) { eventGroup in
-                    Section(eventGroup.displayDate) {
-                        ForEach(eventGroup.events) { event in
-                            EventLinkRow(event: event, course: course)
-                        }
-                    }
-                }
-            }
-            .listStyle(.inset)
+            CalendarEventsView(events: events)
         }
         .task {
             await loadCalendar()
@@ -60,58 +51,7 @@ struct CalendarView: View {
 
     private func loadCalendar() async {
         isLoadingCalendar = true
-        events = await ICSParser.parseEvents(from: icsURL)
+        events = await ICSParser.parseEvents(from: icsURL, for: course)
         isLoadingCalendar = false
     }
 }
-
-private struct EventLinkRow: View {
-    let event: CanvasCalendarEvent
-    let course: Course
-
-    var body: some View {
-        NavigationLink(value: NavigationModel.Destination.calendarEvent(event, course)) {
-            EventRow(event: event)
-        }
-        .contextMenu {
-            PinButton(
-                itemID: event.id,
-                courseID: course.id,
-                type: .calendarEvent
-            )
-            NewWindowButton(destination: .calendarEvent(event, course))
-        }
-        .swipeActions(edge: .leading) {
-            PinButton(
-                itemID: event.id,
-                courseID: course.id,
-                type: .calendarEvent
-            )
-        }
-    }
-}
-
-private struct EventRow: View {
-    let event: CanvasCalendarEvent
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(event.summary)
-                .lineLimit(2)
-
-            dateDetailText
-                .foregroundStyle(.secondary)
-                .frame(maxWidth: .infinity, alignment: .leading)
-        }
-    }
-
-    private var dateDetailText: Text {
-        if event.startDate == event.endDate {
-            Text(event.startDate, style: .time)
-        } else {
-            Text(event.startDate, style: .time) + Text(" - ") + Text(event.endDate, style: .time)
-        }
-    }
-}
-
-

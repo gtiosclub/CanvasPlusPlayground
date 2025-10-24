@@ -106,7 +106,7 @@ class TodayDataSource: ListWidgetDataSource {
                 }
 
                 group.addTask {
-                    let eventGroups = await ICSParser.parseEvents(from: icsURL)
+                    let eventGroups = await ICSParser.parseEvents(from: icsURL, for: course)
                     let todayEvents = eventGroups
                         .filter { Calendar.current.isDate($0.date, inSameDayAs: today) }
                         .flatMap { $0.events }
