@@ -11,14 +11,18 @@ import Foundation
 @Observable
 class CombinedCalendarManager {
 
-    var calendarEvents: [CanvasCalendarEventGroup] = []
+    var calendarEventGroups: [CanvasCalendarEventGroup] = []
+
+    var calendarEvents: [CanvasCalendarEvent] {
+        return calendarEventGroups.flatMap { $0.events }
+    }
 
     func getCalendarEventsForCourses(courses: [Course]) async {
 
         let gtScheduler = GTSchedulerParser.shared
         
 
-        calendarEvents = []
+        calendarEventGroups = []
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
 
@@ -82,7 +86,7 @@ class CombinedCalendarManager {
         }
 
         // Assign the accumulated event groups to calendarEvents
-        calendarEvents = allEventGroups
+        calendarEventGroups = allEventGroups
     }
 }
 

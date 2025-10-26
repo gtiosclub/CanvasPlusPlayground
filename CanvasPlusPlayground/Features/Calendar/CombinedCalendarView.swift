@@ -12,7 +12,7 @@ struct CombinedCalendar: View {
     @Environment(CombinedCalendarManager.self) var calendarManager
 
     var body: some View {
-        CalendarEventsView(events: calendarManager.calendarEvents)
+        CalendarEventsView(events: calendarManager.calendarEventGroups)
             .task {
                 // we only want to do this on first open
                     await calendarManager.getCalendarEventsForCourses(courses: courseManager.activeCourses)

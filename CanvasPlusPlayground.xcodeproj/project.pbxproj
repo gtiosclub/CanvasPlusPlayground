@@ -52,7 +52,7 @@
 		9BD2323A2E6C9CA600DB7A0E /* SubmissionHistoryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD232392E6C9CA600DB7A0E /* SubmissionHistoryDetailView.swift */; };
 		9BD75D6E2E763A10008BF846 /* URL+SafeCopyOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD75D6D2E763A10008BF846 /* URL+SafeCopyOut.swift */; };
 		9BD75D702E77127C008BF846 /* OpenInWebButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD75D6F2E771277008BF846 /* OpenInWebButton.swift */; };
-		9BD883B32EAE9ED800371BBB /* ICalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD883B22EAE9ED800371BBB /* ICalView.swift */; };
+		9BD883B32EAE9ED800371BBB /* CalendarWeekView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD883B22EAE9ED800371BBB /* CalendarWeekView.swift */; };
 		9BDFF27E2DA6B6D7009F0DE9 /* OpenInCanvasButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BDFF27D2DA6B6D7009F0DE9 /* OpenInCanvasButton.swift */; };
 		9BEB4ED02D56AF570013869D /* AssignmentDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BEB4ECF2D56AF570013869D /* AssignmentDetailView.swift */; };
 		9BF228C82D6CD1EB000676F2 /* RemindersManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF228C72D6CD1EB000676F2 /* RemindersManager.swift */; };
@@ -352,7 +352,7 @@
 		9BD5845B2E5FDFBE00D9CD20 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		9BD75D6D2E763A10008BF846 /* URL+SafeCopyOut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+SafeCopyOut.swift"; sourceTree = "<group>"; };
 		9BD75D6F2E771277008BF846 /* OpenInWebButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenInWebButton.swift; sourceTree = "<group>"; };
-		9BD883B22EAE9ED800371BBB /* ICalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ICalView.swift; path = CanvasPlusPlayground/Features/Calendar/ICalView.swift; sourceTree = "<group>"; };
+		9BD883B22EAE9ED800371BBB /* CalendarWeekView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CalendarWeekView.swift; path = CanvasPlusPlayground/Features/Calendar/CalendarWeekView.swift; sourceTree = "<group>"; };
 		9BDFF27D2DA6B6D7009F0DE9 /* OpenInCanvasButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenInCanvasButton.swift; sourceTree = "<group>"; };
 		9BEB4ECF2D56AF570013869D /* AssignmentDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentDetailView.swift; sourceTree = "<group>"; };
 		9BF228C72D6CD1EB000676F2 /* RemindersManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindersManager.swift; sourceTree = "<group>"; };
@@ -1148,7 +1148,7 @@
 		B764545B2C8BBC7F002DF00E = {
 			isa = PBXGroup;
 			children = (
-				9BD883B22EAE9ED800371BBB /* ICalView.swift */,
+				9BD883B22EAE9ED800371BBB /* CalendarWeekView.swift */,
 				B76454FD2C8DF61B002DF00E /* CanvasPlusPlayground */,
 				B76454652C8BBC7F002DF00E /* Products */,
 			);
@@ -1783,7 +1783,7 @@
 				9B6663E32C9853BC0060990E /* HTMLWebViewWrapper.swift in Sources */,
 				B7AF50F42E9B03FC00457E8A /* RecentItemsWidget.swift in Sources */,
 				267D85282E662AC5007F821B /* FocusWindowInfo.swift in Sources */,
-				9BD883B32EAE9ED800371BBB /* ICalView.swift in Sources */,
+				9BD883B32EAE9ED800371BBB /* CalendarWeekView.swift in Sources */,
 				B7CC4D432D8DFF0A00254F55 /* PickerServiceViewModifier.swift in Sources */,
 				B73AE0BD2D4FB68B007094A8 /* Profile.swift in Sources */,
 				B75684F42DA5A6B2003B4A32 /* HTMLView.swift in Sources */,
