@@ -10,6 +10,8 @@ import Foundation
 
 @Observable
 class CombinedCalendarManager {
+    var hasPingedServer = false
+
     var calendarEvents: [CanvasCalendarEventGroup] = []
 
 
@@ -45,6 +47,7 @@ class CombinedCalendarManager {
             calendarEvents.append(contentsOf: newEvents)
         }
 
+        hasPingedServer = true
     }
 
     private func getCalendarEventsForCourse(course: Course, catalog: GTSCatalog) -> [CanvasCalendarEventGroup] {

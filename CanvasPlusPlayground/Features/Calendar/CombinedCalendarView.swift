@@ -9,12 +9,15 @@ import SwiftUI
 
 struct CombinedCalendar: View {
     @Environment(CourseManager.self) var courseManager
-    @State var calendarManager: CombinedCalendarManager = CombinedCalendarManager()
+    @Environment(CombinedCalendarManager.self) var calendarManager
 
     var body: some View {
         CalendarEventsView(events: calendarManager.calendarEvents)
             .task {
-                await calendarManager.getCalendarEventsForCourses(courses: courseManager.activeCourses)
+                // we only want to do this on first open
+                if !calendarManager.hasPingedServer {
+                    await calendarManager.getCalendarEventsForCourses(courses: courseManager.activeCourses)
+                }
             }
     }
 }
