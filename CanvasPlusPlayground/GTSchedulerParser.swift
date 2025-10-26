@@ -1,5 +1,5 @@
 //
-//  CalendarThing.swift
+//  GTSchedulerParser.swift
 //  CanvasPlusPlayground
 //
 //  Created by Ethan Fox on 10/21/25.
