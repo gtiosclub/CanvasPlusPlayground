@@ -10,116 +10,79 @@ import Foundation
 
 @Observable
 class CombinedCalendarManager {
-    var hasPingedServer = false
 
     var calendarEvents: [CanvasCalendarEventGroup] = []
 
-
-    private func decodeCatalog(from data: Data) throws -> GTSCatalog {
-        let dec = JSONDecoder()
-        dec.dateDecodingStrategy = .iso8601
-        return try dec.decode(GTSCatalog.self, from: data)
-    }
-
-    private func fetchCatalog() async throws -> GTSCatalog {
-        let request = URLRequest(url: URL(string: "https://gt-scheduler.github.io/crawler-v2/202508.json")!)
-
-        let (data, response) = try await URLSession.shared.data(for: request)
-
-        guard let httpResponse = response as? HTTPURLResponse,
-              (200...299).contains(httpResponse.statusCode) else {
-            print("HTTP error fetching GT Scheduler Catalog: \((response as? HTTPURLResponse)?.statusCode ?? -1)")
-            throw URLError(.badServerResponse)
-        }
-
-        return try decodeCatalog(from: data)
-    }
-
-
     func getCalendarEventsForCourses(courses: [Course]) async {
-        guard let catalog = try? await fetchCatalog() else {
-            print("Failed to fetch catalog")
-            return
-        }
+
+        let gtScheduler = GTSchedulerParser.shared
+        
+
         calendarEvents = []
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+
+        var allEventGroups: [CanvasCalendarEventGroup] = []
+
         for course in courses {
-            let newEvents = getCalendarEventsForCourse(course: course, catalog: catalog)
-            calendarEvents.append(contentsOf: newEvents)
-        }
+            
+            let courseSchedule = try? await gtScheduler.getCanvasCourseScheduleMeetings(course: course) // TODO: ERROR HANDLING
+            guard let courseSchedule = courseSchedule else { continue }
 
-        hasPingedServer = true
-    }
+            // Dictionary to collect CanvasCalendarEvents grouped by date
+            var eventsByDate: [Date: [CanvasCalendarEvent]] = [:]
 
-    private func getCalendarEventsForCourse(course: Course, catalog: GTSCatalog) -> [CanvasCalendarEventGroup] {
+            // For the next 21 days (3 weeks) starting today
+            for dayOffset in 0..<21 {
+                guard let currentDate = calendar.date(byAdding: .day, value: dayOffset, to: today) else { continue }
+                let weekday = calendar.component(.weekday, from: currentDate) // Sunday=1 ... Saturday=7
 
-        var allCalendarEvents: [CanvasCalendarEventGroup] = []
+                for meeting in courseSchedule.meetings {
+                    // Check if currentDate weekday matches meeting.weekday (which is Locale.Weekday)
+                    if weekday == meeting.weekday.number(calendar: calendar) {
+                        // Construct startDate and endDate by combining currentDate with meeting startTime/endTime
+                        var startComponents = calendar.dateComponents([.year, .month, .day], from: currentDate)
+                        startComponents.hour = meeting.startTime.hour
+                        startComponents.minute = meeting.startTime.minute
+                        startComponents.second = 0
 
-        for section in course.sections {
-            let crnPattern = /\d{5}/
+                        var endComponents = calendar.dateComponents([.year, .month, .day], from: currentDate)
+                        endComponents.hour = meeting.endTime.hour
+                        endComponents.minute = meeting.endTime.minute
+                        endComponents.second = 0
 
-            let components = section.name?.split(separator: "/") ?? []
-            if components.count < 4 {
-                return []
-            }
+                        guard let startDate = calendar.date(from: startComponents),
+                              let endDate = calendar.date(from: endComponents) else { continue }
 
-            guard var courseCode = course.courseCode else {
-                return []
-            }
+                        // Create CanvasCalendarEvent
+                        let event = CanvasCalendarEvent(
+                            id: UUID().uuidString,
+                            course: course,
+                            summary: course.displayName,
+                            startDate: startDate,
+                            endDate: endDate,
+                            location: meeting.location
+                        )
 
-            if let courseCodeMatch = courseCode.firstMatch(of: /[A-Z]{2,4}-\d{4}/) {
-                courseCode = String(courseCodeMatch.0)
-            } else {
-            }
-
-            courseCode = courseCode.replacingOccurrences(of: "-", with: " ")
-
-            guard let sectionCode = course.courseCode?.split(separator: "-").last else {
-                return []
-            }
-
-            guard let crn = components.last, !crn.matches(of: crnPattern).isEmpty else {
-                print("ETHAN: invalid section \(section.name ?? "N/A")")
-                return []
-            }
-
-            guard let meetings = catalog.courses[courseCode]?.sections[String(sectionCode)]?.meetings else { continue }
-
-            for meeting in meetings {
-                let dayList = weekdays(from: meeting.days)
-
-                let timeSpan = catalog.caches.periods[meeting.idx]
-                for day in dayList {
-
-                    guard let date = nextDate(for: day) else { continue }
-
-
-                    guard let (startTime, endTime) = datesFromTimeSpanAndDay(timeSpan, day: date) else {
-                        print("Error getting date from timespan")
-                        continue
+                        // Append this event to eventsByDate for currentDate
+                        if eventsByDate[currentDate] != nil {
+                            eventsByDate[currentDate]?.append(event)
+                        } else {
+                            eventsByDate[currentDate] = [event]
+                        }
                     }
-
-                    let event = CanvasCalendarEvent(id: UUID().uuidString, course: course, summary: course.displayName, startDate: startTime, endDate: endTime, location: meeting.location)
-
-                    allCalendarEvents.append(CanvasCalendarEventGroup(date: startTime, events: [event]))
                 }
+            }
 
+            // For each date with events, create a CanvasCalendarEventGroup and add to allEventGroups
+            for (date, events) in eventsByDate {
+                let eventGroup = CanvasCalendarEventGroup(date: date, events: events)
+                allEventGroups.append(eventGroup)
             }
         }
 
-
-        return allCalendarEvents
-    }
-
-    func nextDate(for weekday: Locale.Weekday, includingToday: Bool = true, calendar: Calendar = .current) -> Date? {
-        let today = Date()
-        let todayWeekday = calendar.component(.weekday, from: today)
-        let targetWeekdayNumber = weekday.number(calendar: calendar)
-
-        if includingToday && todayWeekday == targetWeekdayNumber {
-            return today
-        }
-
-        return calendar.nextDate(after: today, matching: DateComponents(weekday: targetWeekdayNumber), matchingPolicy: .nextTime)
+        // Assign the accumulated event groups to calendarEvents
+        calendarEvents = allEventGroups
     }
 }
 

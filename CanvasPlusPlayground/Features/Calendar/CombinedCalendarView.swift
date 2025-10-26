@@ -15,9 +15,7 @@ struct CombinedCalendar: View {
         CalendarEventsView(events: calendarManager.calendarEvents)
             .task {
                 // we only want to do this on first open
-                if !calendarManager.hasPingedServer {
                     await calendarManager.getCalendarEventsForCourses(courses: courseManager.activeCourses)
-                }
             }
     }
 }
