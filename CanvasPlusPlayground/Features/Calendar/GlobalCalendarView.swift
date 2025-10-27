@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct GlobalCalendarView: View {
+
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+
+
     @Environment(GlobalCalendarManager.self) var calendarManager
     @Environment(CourseManager.self) var courseManager
 
@@ -23,6 +27,7 @@ struct GlobalCalendarView: View {
             }
         }
         .task {
+            calendarManager.sizeClass = horizontalSizeClass
             await calendarManager.getCalendarEventsForCourses(courses: courseManager.activeCourses)
         }
         .toolbar {
@@ -35,6 +40,9 @@ struct GlobalCalendarView: View {
             ToolbarItem {
                 Button("Current", action: calendarManager.setToNow)
             }
+        }
+        .onChange(of: horizontalSizeClass) { newSizeClass in
+            calendarManager.sizeClass = newSizeClass
         }
     }
 

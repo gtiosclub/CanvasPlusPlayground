@@ -6,21 +6,38 @@
 //
 
 import Foundation
+import SwiftUI
 
 @Observable
 class GlobalCalendarManager {
 
-
     var currentDate: Date = .now
 
+    var sizeClass: UserInterfaceSizeClass? = nil
+
+    var moveBy: Int {
+        guard let sizeClass else { return 2 }
+
+        return sizeClass == .compact ? 2 : 7
+    }
 
     var currentWeekDates: [Date] {
-        let calendar = Calendar.current
-        guard let weekInterval = calendar.dateInterval(of: .weekOfYear, for: currentDate) else {
-            return [currentDate]
-        }
-        return (0..<7).compactMap { offset in
-            calendar.date(byAdding: .day, value: offset, to: weekInterval.start)
+
+        if let sizeClass, sizeClass == .regular {
+            let calendar = Calendar.current
+            guard let weekInterval = calendar.dateInterval(of: .weekOfYear, for: currentDate) else {
+                return [currentDate]
+            }
+            return (0..<7).compactMap { offset in
+                calendar.date(byAdding: .day, value: offset, to: weekInterval.start)
+            }
+        } else {
+            // Returns the current date and the next date (2 consecutive days)
+            let calendar = Calendar.current
+            guard let nextDate = calendar.date(byAdding: .day, value: 1, to: currentDate) else {
+                return [currentDate]
+            }
+            return [currentDate, nextDate]
         }
     }
 
@@ -153,13 +170,13 @@ class GlobalCalendarManager {
 
     func incrementWeek() {
 
-        if let newDate = Calendar.current.date(byAdding: .day, value: 7, to: currentDate) {
+        if let newDate = Calendar.current.date(byAdding: .day, value: moveBy, to: currentDate) {
             currentDate = newDate
         }
     }
 
     func decrementWeek() {
-        if let newDate = Calendar.current.date(byAdding: .day, value: -7, to: currentDate) {
+        if let newDate = Calendar.current.date(byAdding: .day, value: -moveBy, to: currentDate) {
             currentDate = newDate
         }
     }
