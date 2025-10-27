@@ -11,16 +11,18 @@ import SwiftUI
 @Observable
 class GlobalCalendarManager {
 
-    var currentDate: Date = .now
+    var currentDate: Date = .now // currently displayed date
 
     var sizeClass: UserInterfaceSizeClass? = nil
 
-    var moveBy: Int {
+    // how much should the stepper move by (macOS: increment by week, iOS: increment by 2 day segments)
+    var stepperIncrementCount: Int {
         guard let sizeClass else { return 2 }
 
         return sizeClass == .compact ? 2 : 7
     }
 
+    // all dates currently displayed (macOS: entire week, iOS: just 2 days)
     var currentWeekDates: [Date] {
 
         if let sizeClass, sizeClass == .regular {
@@ -41,18 +43,18 @@ class GlobalCalendarManager {
         }
     }
 
-    
-    var calendarEventGroups: [CanvasCalendarEventGroup] {
-        weekAlignedEventsFromCourseSchedule // + ... (when you want to add more calendar events (like todos/etc, add them to this computed property
-    }
-
     var calendarEvents: [CanvasCalendarEvent] {
         return calendarEventGroups.flatMap { $0.events }
     }
 
-    var calendarEventsFromCourseSchedule: [CanvasCalendarEventGroup] = []
+    private var calendarEventGroups: [CanvasCalendarEventGroup] {
+        weekAlignedEventsFromCourseSchedule // + ... (when you want to add more calendar events (like todos/etc, add them to this computed property
+    }
 
-    var weekAlignedEventsFromCourseSchedule: [CanvasCalendarEventGroup] {
+    private var calendarEventsFromCourseSchedule: [CanvasCalendarEventGroup] = []
+
+
+    private var weekAlignedEventsFromCourseSchedule: [CanvasCalendarEventGroup] {
         // Build a mapping: weekday number (Sunday=1 ... Saturday=7) -> date in current week
         let calendar = Calendar.current
         let weekDayToDate: [Int: Date] = Dictionary(uniqueKeysWithValues: currentWeekDates.map {
@@ -170,13 +172,13 @@ class GlobalCalendarManager {
 
     func incrementWeek() {
 
-        if let newDate = Calendar.current.date(byAdding: .day, value: moveBy, to: currentDate) {
+        if let newDate = Calendar.current.date(byAdding: .day, value: stepperIncrementCount, to: currentDate) {
             currentDate = newDate
         }
     }
 
     func decrementWeek() {
-        if let newDate = Calendar.current.date(byAdding: .day, value: -moveBy, to: currentDate) {
+        if let newDate = Calendar.current.date(byAdding: .day, value: -stepperIncrementCount, to: currentDate) {
             currentDate = newDate
         }
     }
