@@ -23,7 +23,7 @@ struct CanvasPlusPlaygroundApp: App {
     @State private var pinnedItemsManager = PinnedItemsManager.shared
     @State private var recentItemsManager = RecentItemsManager.shared
     @State private var remindersManager = RemindersManager()
-    @State private var combinedCourseManager = CombinedCalendarManager()
+    @State private var combinedCourseManager = GlobalCalendarManager()
 #if DEBUG
     @State private var networkRecorder = NetworkRequestRecorder.shared
 

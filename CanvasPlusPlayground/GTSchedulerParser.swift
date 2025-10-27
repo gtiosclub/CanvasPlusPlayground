@@ -6,14 +6,10 @@
 //
 
 import Foundation
-import Playgrounds
-
 
 class GTSchedulerParser {
     static let shared = GTSchedulerParser()
-    private init() {
-
-    }
+    private init() { }
 
     enum ParserError: Error {
         case malformedSectionName
@@ -86,7 +82,6 @@ class GTSchedulerParser {
             try await fetchCatalog()
         }
 
-
         guard let catalog else {
             throw ParserError.missingCatalog
         }
@@ -135,10 +130,7 @@ class GTSchedulerParser {
                     let meet = CanvasCourseScheduleMeeting(weekday: day, startTime: startTime, endTime: endTime, location: meeting.location)
                     courseMeetings.append(meet)
                 }
-
             }
-
-
         }
 
         return CanvasCourseSchedule(course: course, meetings: courseMeetings)
@@ -208,7 +200,7 @@ class GTSchedulerParser {
     }
 }
 
-// A single public struct that represents a canvas course and its meeting times
+// A single public struct that represents a canvas course and its meeting times (instead of a collection of many different objects with data everywhere
 struct CanvasCourseSchedule {
     let course: Course
 

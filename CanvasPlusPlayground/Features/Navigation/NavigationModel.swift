@@ -120,7 +120,7 @@ class NavigationModel {
             case let .calendarEvent(event, course):
                 CalendarEventDetailView(event: event, course: course)
             case .allCalendar:
-                CalendarWeekView(currentDate: Date.now)
+                GlobalCalendarView()
             }
         }
     }
