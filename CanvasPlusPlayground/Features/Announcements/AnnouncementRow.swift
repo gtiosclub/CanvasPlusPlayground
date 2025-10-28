@@ -8,12 +8,19 @@
 import SwiftUI
 
 struct AnnouncementRow: View {
+    @Environment(PinnedItemsManager.self) private var pinnedItemsManager
     let course: Course?
     let announcement: DiscussionTopic
     var showCourseName = false
 
     // MARK: Drawing Constants
     private let unreadIndicatorWidth: CGFloat = 10
+
+    var isPinned: Bool {
+        pinnedItemsManager.pinnedItems.contains {
+            $0.id == announcement.id && $0.courseID == course?.id && $0.type == .announcement
+        }
+    }
 
     var body: some View {
         VStack(alignment: .announcementRowAlignment) {
@@ -73,10 +80,18 @@ struct AnnouncementRow: View {
             }
             .frame(width: unreadIndicatorWidth, height: unreadIndicatorWidth)
 
-            Text(announcement.title ?? "")
-                .alignmentGuide(.announcementRowAlignment) { context in
-                    context[.leading]
+            HStack(spacing: 4) {
+                Text(announcement.title ?? "")
+
+                if isPinned {
+                    Image(systemName: "pin.fill")
+                        .font(.caption)
+                        .foregroundStyle(.orange)
                 }
+            }
+            .alignmentGuide(.announcementRowAlignment) { context in
+                context[.leading]
+            }
 
             Spacer()
 

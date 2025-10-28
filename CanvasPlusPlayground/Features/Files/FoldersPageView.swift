@@ -182,8 +182,15 @@ struct FoldersPageView: View {
 }
 
 private struct FileRow: View {
+    @Environment(PinnedItemsManager.self) private var pinnedItemsManager
     let file: File
     let course: Course
+
+    var isPinned: Bool {
+        pinnedItemsManager.pinnedItems.contains {
+            $0.id == file.id && $0.courseID == course.id && $0.type == .file
+        }
+    }
 
     var body: some View {
         HStack {
@@ -220,8 +227,16 @@ private struct FileRow: View {
                 .foregroundStyle(.tint)
 
             VStack(alignment: .leading) {
-                Text(file.displayName)
-                    .font(.headline)
+                HStack(spacing: 4) {
+                    Text(file.displayName)
+                        .font(.headline)
+
+                    if isPinned {
+                        Image(systemName: "pin.fill")
+                            .font(.caption)
+                            .foregroundStyle(.orange)
+                    }
+                }
 
                 if let size = file.size {
                     Text(size.formatted(.byteCount(style: .file)))

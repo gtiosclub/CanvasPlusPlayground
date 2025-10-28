@@ -29,6 +29,11 @@ struct FileViewer: View {
                     #else
                     .toolbar {
                         ToolbarItemGroup {
+                            PinButton(
+                                itemID: file.id,
+                                courseID: courseID,
+                                type: .file
+                            )
                             ShareLink(item: url)
                             DownloadButton(url: url, fileName: file.displayName)
                             Button("Open", systemImage: "arrow.up.forward.app") {
@@ -62,6 +67,17 @@ struct FileViewer: View {
             courseID: courseID,
             type: .file
         )
+        .toolbar {
+            #if os(iOS)
+            ToolbarItem(placement: .primaryAction) {
+                PinButton(
+                    itemID: file.id,
+                    courseID: courseID,
+                    type: .file
+                )
+            }
+            #endif
+        }
         .task {
             await loadContents()
         }

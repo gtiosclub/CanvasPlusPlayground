@@ -156,6 +156,7 @@ struct CourseAssignmentsView: View {
 private struct AssignmentRow: View {
     @Environment(GradeCalculator.self) private var calculator
     @Environment(\.openURL) private var openURL
+    @Environment(PinnedItemsManager.self) private var pinnedItemsManager
     let assignment: Assignment
     let showGrades: Bool
 
@@ -164,6 +165,12 @@ private struct AssignmentRow: View {
             .flatMap(\.consideredAssignments)
             .map(\.id)
             .contains(assignment.id)
+    }
+
+    var isPinned: Bool {
+        pinnedItemsManager.pinnedItems.contains {
+            $0.id == assignment.id && $0.courseID == assignment.courseId?.asString && $0.type == .assignment
+        }
     }
 
     var body: some View {
@@ -198,8 +205,16 @@ private struct AssignmentRow: View {
     private var bodyContents: some View {
         HStack {
             VStack(alignment: .leading, spacing: 3) {
-                Text(assignment.name)
-                    .fontWeight(.bold)
+                HStack(spacing: 4) {
+                    Text(assignment.name)
+                        .fontWeight(.bold)
+
+                    if isPinned {
+                        Image(systemName: "pin.fill")
+                            .font(.caption)
+                            .foregroundStyle(.orange)
+                    }
+                }
 
                 if assignment.isLocked, let unlockDate = assignment.unlockDate {
                     HStack(spacing: 4) {

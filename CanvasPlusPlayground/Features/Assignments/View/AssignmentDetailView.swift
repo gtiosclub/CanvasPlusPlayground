@@ -25,7 +25,14 @@ struct AssignmentDetailView: View {
         }
         .handleDeepLinks(for: assignment.courseId?.asString ?? "")
         .toolbar {
-            ReminderButton(item: .assignment(assignment))
+            ToolbarItemGroup {
+                PinButton(
+                    itemID: assignment.id,
+                    courseID: assignment.courseId?.asString,
+                    type: .assignment
+                )
+                ReminderButton(item: .assignment(assignment))
+            }
         }
         .logRecentItem(
             itemID: assignment.id,
