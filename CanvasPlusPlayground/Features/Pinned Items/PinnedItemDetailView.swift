@@ -22,6 +22,10 @@ struct PinnedItemDetailView: View {
                     AssignmentDetailView(assignment: assignment)
                 case .calendarEvent(let event):
                     CalendarEventDetailView(event: event, course: itemData.course)
+                case .quiz(let quiz):
+                    QuizDetailView(quiz: quiz)
+                case .grade:
+                    CourseGradeView(course: itemData.course)
                 }
             } else {
                 ProgressView()

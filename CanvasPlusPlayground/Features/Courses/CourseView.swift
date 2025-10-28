@@ -61,7 +61,23 @@ struct CourseView: View {
                         Label(page.title, systemImage: page.systemImageIcon)
                     }
                     .contextMenu {
+                        if page == .grades {
+                            PinButton(
+                                itemID: course.id,
+                                courseID: course.id,
+                                type: .grade
+                            )
+                        }
                         NewWindowButton(destination: .coursePage(page, course))
+                    }
+                    .swipeActions(edge: .leading) {
+                        if page == .grades {
+                            PinButton(
+                                itemID: course.id,
+                                courseID: course.id,
+                                type: .grade
+                            )
+                        }
                     }
                     .tag(page)
                 }

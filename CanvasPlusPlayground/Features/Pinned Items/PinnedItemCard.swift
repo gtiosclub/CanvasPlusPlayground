@@ -34,6 +34,16 @@ struct PinnedItemCard: View {
                         event: event,
                         course: itemData.course
                     )
+                case .quiz(let quiz):
+                    PinnedQuizCard(
+                        quiz: quiz,
+                        course: itemData.course
+                    )
+                case .grade(let enrollment):
+                    PinnedGradeCard(
+                        enrollment: enrollment,
+                        course: itemData.course
+                    )
                 }
             } else {
                 Text("Loading...")
@@ -43,32 +53,73 @@ struct PinnedItemCard: View {
     }
 }
 
+// MARK: - Base Card View
+private struct BasePinnedItemCard<Content: View>: View {
+    let course: Course?
+    let icon: String?
+    let title: String
+    let additionalContent: () -> Content
+
+    init(
+        course: Course?,
+        icon: String? = nil,
+        title: String,
+        @ViewBuilder additionalContent: @escaping () -> Content = { EmptyView() }
+    ) {
+        self.course = course
+        self.icon = icon
+        self.title = title
+        self.additionalContent = additionalContent
+    }
+
+    var body: some View {
+        HStack(spacing: 8) {
+            if let icon {
+                Image(systemName: icon)
+                    .foregroundStyle(course?.rgbColors?.color ?? .accentColor)
+                    .font(.title)
+            }
+
+            VStack(alignment: .leading, spacing: 8) {
+                if let course {
+                    Text(course.displayName.uppercased())
+                        .font(.caption)
+                        .foregroundStyle(course.rgbColors?.color ?? .accentColor)
+                        .lineLimit(1)
+                }
+
+                Text(title)
+                    .font(.headline)
+                    .fontDesign(.rounded)
+                    .bold()
+                    .lineLimit(2)
+
+                additionalContent()
+            }
+
+            Spacer()
+        }
+    }
+}
+
+// MARK: - Specific Card Views
 private struct PinnedAnnouncementCard: View {
     let announcement: DiscussionTopic
     let course: Course
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(course.displayName.uppercased())
-                .font(.caption)
-                .foregroundStyle(course.rgbColors?.color ?? .accentColor)
-
-            VStack(alignment: .leading, spacing: 3) {
-                Text(announcement.title ?? "")
-                    .font(.headline)
-                    .fontDesign(.rounded)
-                    .bold()
-
-                Text(
-                    announcement.message?
-                        .stripHTML()
-                        .trimmingCharacters(
-                            in: .whitespacesAndNewlines
-                        )
-                    ?? ""
-                )
-                .lineLimit(2)
-            }
+        BasePinnedItemCard(
+            course: course,
+            icon: nil,
+            title: announcement.title ?? ""
+        ) {
+            Text(
+                announcement.message?
+                    .stripHTML()
+                    .trimmingCharacters(in: .whitespacesAndNewlines)
+                ?? ""
+            )
+            .lineLimit(2)
         }
     }
 }
@@ -78,24 +129,11 @@ private struct PinnedFileCard: View {
     let course: Course
 
     var body: some View {
-        HStack(spacing: 8) {
-            Image(systemName: "document")
-                .foregroundStyle(course.rgbColors?.color ?? .accentColor)
-                .font(.title)
-
-            VStack(alignment: .leading, spacing: 8) {
-                Text(course.displayName.uppercased())
-                    .font(.caption)
-                    .foregroundStyle(course.rgbColors?.color ?? .accentColor)
-
-                Text(file.displayName)
-                    .font(.headline)
-                    .fontDesign(.rounded)
-                    .bold()
-            }
-
-            Spacer()
-        }
+        BasePinnedItemCard(
+            course: course,
+            icon: "document",
+            title: file.displayName
+        )
     }
 }
 
@@ -104,24 +142,11 @@ private struct PinnedAssignmentCard: View {
     let course: Course
 
     var body: some View {
-        HStack(spacing: 8) {
-            Image(systemName: "circle")
-                .foregroundStyle(course.rgbColors?.color ?? .accentColor)
-                .font(.title)
-
-            VStack(alignment: .leading, spacing: 8) {
-                Text(course.displayName.uppercased())
-                    .font(.caption)
-                    .foregroundStyle(course.rgbColors?.color ?? .accentColor)
-
-                Text(assignment.name)
-                    .font(.headline)
-                    .fontDesign(.rounded)
-                    .bold()
-            }
-
-            Spacer()
-        }
+        BasePinnedItemCard(
+            course: course,
+            icon: "book",
+            title: assignment.name
+        )
     }
 }
 
@@ -136,31 +161,68 @@ private struct PinnedCalendarEventCard: View {
     }
 
     var body: some View {
-        HStack(spacing: 8) {
-            Image(systemName: "calendar")
-                .foregroundStyle(course?.rgbColors?.color ?? .blue)
-                .font(.title)
+        BasePinnedItemCard(
+            course: course,
+            icon: "calendar",
+            title: event.summary
+        ) {
+            Text(timeString)
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+        }
+    }
+}
 
-            VStack(alignment: .leading, spacing: 8) {
-                if let course {
-                    Text(course.displayName.uppercased())
-                        .font(.caption)
-                        .foregroundStyle(course.rgbColors?.color ?? .blue)
-                        .lineLimit(1)
+private struct PinnedQuizCard: View {
+    let quiz: Quiz
+    let course: Course
+
+    var body: some View {
+        BasePinnedItemCard(
+            course: course,
+            icon: "questionmark.circle",
+            title: quiz.title
+        ) {
+            HStack(spacing: 8) {
+                if let pointsPossible = quiz.pointsPossible?.truncatingTrailingZeros {
+                    Text("\(pointsPossible) pts")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
                 }
 
-                Text(event.summary)
-                    .font(.headline)
-                    .fontDesign(.rounded)
-                    .bold()
-                    .lineLimit(2)
-
-                Text(timeString)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                if let questionCount = quiz.questionCount {
+                    Text("\(questionCount) Questions")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
             }
+        }
+    }
+}
 
-            Spacer()
+private struct PinnedGradeCard: View {
+    let enrollment: Enrollment
+    let course: Course
+
+    var body: some View {
+        BasePinnedItemCard(
+            course: course,
+            icon: "chart.bar.fill",
+            title: "Course Grade"
+        ) {
+            HStack(spacing: 8) {
+                if let currentScore = enrollment.grades?.current_score?.truncatingTrailingZeros {
+                    Text("\(currentScore)%")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
+
+                if let currentGrade = enrollment.grades?.current_grade {
+                    Text(currentGrade)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
+            }
         }
     }
 }

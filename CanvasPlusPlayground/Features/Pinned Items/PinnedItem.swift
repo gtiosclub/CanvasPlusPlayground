@@ -18,7 +18,7 @@ class PinnedItem: Identifiable, Codable, Equatable, Hashable {
     private var modelData: PinnedItemData.ModelData?
 
     enum PinnedItemType: Int, Codable {
-        case announcement, assignment, file, calendarEvent
+        case announcement, assignment, file, calendarEvent, quiz, grade
         // TODO: Add more pinned item types
 
         var displayName: String {
@@ -31,6 +31,10 @@ class PinnedItem: Identifiable, Codable, Equatable, Hashable {
                 "Files"
             case .calendarEvent:
                 "Calendar Events"
+            case .quiz:
+                "Quizzes"
+            case .grade:
+                "Grades"
             }
         }
     }
@@ -104,6 +108,24 @@ class PinnedItem: Identifiable, Codable, Equatable, Hashable {
             }
 
             setData(modelData: .calendarEvent(event))
+        case .quiz:
+            let quizzes = try await CanvasService.shared.loadAndSync(
+                CanvasRequest.getQuiz(id: id, courseId: courseID)
+            ) { cachedQuizzes in
+                    guard let quiz = cachedQuizzes?.first else { return }
+                    setData(modelData: .quiz(quiz))
+            }
+            guard let quiz = quizzes.first else { return }
+            setData(modelData: .quiz(quiz))
+        case .grade:
+            let enrollments = try await CanvasService.shared.loadAndSync(
+                CanvasRequest.getEnrollments(courseId: courseID)
+            ) { cachedEnrollments in
+                    guard let enrollment = cachedEnrollments?.first else { return }
+                    setData(modelData: .grade(enrollment))
+            }
+            guard let enrollment = enrollments.first else { return }
+            setData(modelData: .grade(enrollment))
         }
     }
 
@@ -149,6 +171,8 @@ struct PinnedItemData {
         case assignment(Assignment)
         case file(File)
         case calendarEvent(CanvasCalendarEvent)
+        case quiz(Quiz)
+        case grade(Enrollment)
         // TODO: Add more pinned item types
     }
 

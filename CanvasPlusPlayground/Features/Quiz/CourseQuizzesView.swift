@@ -76,8 +76,20 @@ struct CourseQuizzesView: View {
             }
         }
         .contextMenu {
+            PinButton(
+                itemID: quiz.id,
+                courseID: quiz.courseID,
+                type: .quiz
+            )
             OpenInCanvasButton(path: .quizzes(quiz.courseID, quiz.id))
             NewWindowButton(destination: .quiz(quiz))
+        }
+        .swipeActions(edge: .leading) {
+            PinButton(
+                itemID: quiz.id,
+                courseID: quiz.courseID,
+                type: .quiz
+            )
         }
         .tag(quiz)
     }
