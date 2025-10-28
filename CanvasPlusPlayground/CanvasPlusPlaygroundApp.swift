@@ -23,7 +23,6 @@ struct CanvasPlusPlaygroundApp: App {
     @State private var pinnedItemsManager = PinnedItemsManager.shared
     @State private var recentItemsManager = RecentItemsManager.shared
     @State private var remindersManager = RemindersManager()
-    @State private var combinedCourseManager = GlobalCalendarManager()
 #if DEBUG
     @State private var networkRecorder = NetworkRequestRecorder.shared
 
@@ -46,7 +45,6 @@ struct CanvasPlusPlaygroundApp: App {
                     .environment(pinnedItemsManager)
                     .environment(recentItemsManager)
                     .environment(remindersManager)
-                    .environment(combinedCourseManager)
                     .task {
                         WidgetContext.setup(courseManager: courseManager)
                     }

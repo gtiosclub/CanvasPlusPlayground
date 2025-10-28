@@ -12,22 +12,26 @@ struct GlobalCalendarView: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
 
-    @Environment(GlobalCalendarManager.self) var calendarManager
+    @State var calendarManager = GlobalCalendarManager()
     @Environment(CourseManager.self) var courseManager
 
     var body: some View {
-        HStack(spacing: 0) {
-            ForEach(Array(calendarManager.currentWeekDates.enumerated()), id: \.element) { index, date in
-                if index > 0 {
-                    Divider()
+        ScrollView {
+            HStack(spacing: 0) {
+                ForEach(Array(calendarManager.currentWeekDates.enumerated()), id: \.element) { index, date in
+                    if index > 0 {
+                        Divider()
+                    }
+                    DayColumn(date: date, events: calendarManager.calendarEvents.filter { event in
+                        Calendar.current.isDate(event.startDate, inSameDayAs: date)
+                    })
                 }
-                DayColumn(date: date, events: calendarManager.calendarEvents.filter { event in
-                    Calendar.current.isDate(event.startDate, inSameDayAs: date)
-                }, backgroundTint: Calendar.current.isDateInToday(date) ? .blue.opacity(0.15) : nil)
             }
         }
         .task {
-            calendarManager.sizeClass = horizontalSizeClass
+            if let horizontalSizeClass {
+                setDisplayMode(sizeClass: horizontalSizeClass)
+            }
             await calendarManager.getCalendarEventsForCourses(courses: courseManager.activeCourses)
         }
         .toolbar {
@@ -41,15 +45,19 @@ struct GlobalCalendarView: View {
                 Button("Current", action: calendarManager.setToNow)
             }
         }
-        .onChange(of: horizontalSizeClass) { newSizeClass in
-            calendarManager.sizeClass = newSizeClass
+        .onChange(of: horizontalSizeClass) { newValue in
+            guard let newValue else { return }
+            setDisplayMode(sizeClass: newValue)
         }
     }
 
     private struct DayColumn: View {
         let date: Date
         let events: [CanvasCalendarEvent]
-        let backgroundTint: Color?
+
+        var backgroundTint: Color? {
+            date.isInToday ? .blue.opacity(0.15) : nil
+        }
 
         var body: some View {
             VStack {
@@ -95,11 +103,14 @@ struct GlobalCalendarView: View {
                 }
                 .padding(5)
                 .frame(maxWidth: .infinity)
-                .background(.thinMaterial)
-                .cornerRadius(8)
+                .background(.thinMaterial, in: .rect(cornerRadius: 8))
                 .padding(.horizontal, 4)
             }
             .buttonStyle(.plain)
         }
+    }
+
+    func setDisplayMode(sizeClass: UserInterfaceSizeClass) {
+        calendarManager.displayMode = sizeClass == .compact ? .compact : .entireWeek
     }
 }

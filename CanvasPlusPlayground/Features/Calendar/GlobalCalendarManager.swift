@@ -13,19 +13,20 @@ class GlobalCalendarManager {
 
     var currentDate: Date = .now // currently displayed date
 
-    var sizeClass: UserInterfaceSizeClass? = nil
+    enum DisplayMode { case compact, entireWeek }
+
+    var displayMode: DisplayMode = .entireWeek
 
     // how much should the stepper move by (macOS: increment by week, iOS: increment by 2 day segments)
     var stepperIncrementCount: Int {
-        guard let sizeClass else { return 2 }
 
-        return sizeClass == .compact ? 2 : 7
+        return displayMode == .compact ? 2 : 7
     }
 
     // all dates currently displayed (macOS: entire week, iOS: just 2 days)
     var currentWeekDates: [Date] {
 
-        if let sizeClass, sizeClass == .regular {
+        if displayMode == .entireWeek {
             let calendar = Calendar.current
             guard let weekInterval = calendar.dateInterval(of: .weekOfYear, for: currentDate) else {
                 return [currentDate]

@@ -15,7 +15,7 @@ class GTSchedulerParser {
         case malformedSectionName
         case missingCatalog
     }
-    
+
     var catalog: GTSCatalog?
 
     func fetchCatalog() async throws {
@@ -36,6 +36,12 @@ class GTSchedulerParser {
 
     // MARK: Helper Functions
 
+    /// Converts a string of weekday codes to an array of Locale.Weekday values.
+    ///
+    /// Example:
+    ///   Input: "MWF" => Output: [.monday, .wednesday, .friday]
+    ///   Input: "TR"  => Output: [.tuesday, .thursday]
+    ///   Input: "U"   => Output: [.sunday]
     func weekdays(from dayString: String) -> [Locale.Weekday] {
         let map: [Character: Locale.Weekday] = [
             "M": .monday,
@@ -49,6 +55,12 @@ class GTSchedulerParser {
         return dayString.compactMap { map[$0] }
     }
 
+    /// Parses a time span string (e.g., "1100 - 1215") into start/end DateComponents.
+    ///
+    /// Example:
+    ///   Input: "1100 - 1215" => Output: (start: hour=11, minute=0, end: hour=12, minute=15)
+    ///   Input: "0830 - 0945" => Output: (start: hour=8, minute=30, end: hour=9, minute=45)
+    ///   Returns nil if format is invalid.
     private func dateComponentsFromTimeSpan(_ timeSpan: String) -> (start: DateComponents, end: DateComponents)? {
         let parts = timeSpan.components(separatedBy: " - ")
         guard parts.count == 2 else { return nil }
@@ -69,6 +81,12 @@ class GTSchedulerParser {
         return (start: startComponents, end: endComponents)
     }
 
+    /// Parses a 4-digit string in HHmm format into hour and minute components.
+    ///
+    /// Example:
+    ///   Input: "1100" => Output: (11, 0)
+    ///   Input: "0945" => Output: (9, 45)
+    ///   Returns nil if input is not 4 digits.
     private func componentsFromHHmm(_ str: String) -> (hour: Int, minute: Int)? {
         guard str.count == 4,
               let hour = Int(str.prefix(2)),
@@ -76,52 +94,75 @@ class GTSchedulerParser {
         return (hour, minute)
     }
 
+    /// Parses the given Course object and returns a CanvasCourseSchedule containing meeting times with weekdays, start/end times, and locations.
+    ///
+    /// Example:
+    ///   - Suppose you have a Course representing CS 1331 Section A with section name "CS-1331/A/REG/12345"
+    ///   - The catalog will have an entry courses["CS 1331"] -> sections["A"] -> meetings array
+    ///   - Each meeting indicates days (e.g., "MWF"), period index (idx), and location
+    ///   - This function matches those up to return CanvasCourseScheduleMeeting entries for each weekday/period/location combination
     func getCanvasCourseScheduleMeetings(course: Course) async throws -> CanvasCourseSchedule {
 
+        // 1. If catalog has not been fetched yet, fetch it
         if catalog == nil { // should only be fetched once
             try await fetchCatalog()
         }
 
+        // 2. Ensure we have a catalog after fetching
         guard let catalog else {
             throw ParserError.missingCatalog
         }
+
         var courseMeetings: [CanvasCourseScheduleMeeting] = []
-        
+
+        // 3. Iterate over each section in the course (most of the times, will just be a single section)
         for section in course.sections {
             let crnPattern = /\d{5}/
 
+            // 4. Parse the section name, expected format: "CS-1331/A/REG/12345"
             let components = section.name?.split(separator: "/") ?? []
             if components.count < 4 {
                 throw ParserError.malformedSectionName
             }
 
+            // 5. Extract the course code string, e.g. "CS-1331"
             guard var courseCode = course.courseCode else {
                 throw ParserError.malformedSectionName
             }
 
+            // 6. Normalize course code to format like "CS 1331"
             if let courseCodeMatch = courseCode.firstMatch(of: /[A-Z]{2,4}-\d{4}/) {
                 courseCode = String(courseCodeMatch.0)
             } else {
+                // If no match, keep as is (no-op)
             }
-
             courseCode = courseCode.replacingOccurrences(of: "-", with: " ")
 
+            // 7. Extract the section code from course code, e.g. "A" from "CS-1331-A" or similar
             guard let sectionCode = course.courseCode?.split(separator: "-").last else {
                 throw ParserError.malformedSectionName
             }
 
+            // 8. Validate that the last component is a CRN number matching 5 digits
             guard let crn = components.last, !crn.matches(of: crnPattern).isEmpty else {
                 throw ParserError.malformedSectionName
             }
 
+            // 9. Lookup meetings for this course code and section code in the catalog dictionary
             guard let meetings = catalog.courses[courseCode]?.sections[String(sectionCode)]?.meetings else { continue }
 
+            // 10. For each meeting entry, expand to individual weekday/time/location objects
             for meeting in meetings {
+                // Get the list of weekdays from the meeting.days string (e.g., "MWF" -> [.monday, .wednesday, .friday])
                 let dayList = weekdays(from: meeting.days)
 
+                // Get the time span string (e.g. "1100 - 1215") from the catalog's periods array using the meeting's idx
                 let timeSpan = catalog.caches.periods[meeting.idx]
+
+                // For each weekday, create a CanvasCourseScheduleMeeting object with the appropriate times and location
                 for day in dayList {
 
+                    // Convert the time span string to start and end DateComponents
                     guard let (startTime, endTime) = dateComponentsFromTimeSpan(timeSpan) else {
                         print("Error getting date from timespan")
                         continue
@@ -147,8 +188,6 @@ class GTSchedulerParser {
 
         return calendar.nextDate(after: today, matching: DateComponents(weekday: targetWeekdayNumber), matchingPolicy: .nextTime)
     }
-
-
 
     // MARK: Helper structs for decoding GT Scheduler JSON payload
 

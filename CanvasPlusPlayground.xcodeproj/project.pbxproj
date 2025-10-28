@@ -34,7 +34,6 @@
 		9B4F616C2E9ABBC500860E24 /* BigNumberWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4F616B2E9ABBC000860E24 /* BigNumberWidget.swift */; };
 		9B4F616E2E9ABDA900860E24 /* UnreadAnnouncementsCountWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4F616D2E9ABDA300860E24 /* UnreadAnnouncementsCountWidget.swift */; };
 		9B4F61702E9ABDB400860E24 /* ToDoCountWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4F616F2E9ABDAC00860E24 /* ToDoCountWidget.swift */; };
-		9B54F1262EA8408900EB0629 /* GTSchedulerParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B54F1252EA8408900EB0629 /* GTSchedulerParser.swift */; };
 		9B6663E32C9853BC0060990E /* HTMLWebViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6663E22C9853BC0060990E /* HTMLWebViewWrapper.swift */; };
 		9B6D4F802D6E48340033044F /* ReminderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6D4F7F2D6E48340033044F /* ReminderButton.swift */; };
 		9B762BC92D7BF8E70051F1F6 /* SubmitAssignmentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B762BC82D7BF8E70051F1F6 /* SubmitAssignmentRequest.swift */; };
@@ -46,6 +45,8 @@
 		9B92A4252C93856100C21CFC /* CourseAnnouncementManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B92A4242C93856100C21CFC /* CourseAnnouncementManager.swift */; };
 		9B9C2E042C93F6CD00E4B16B /* CourseAnnouncementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9C2E032C93F6CD00E4B16B /* CourseAnnouncementsView.swift */; };
 		9B9C2E062C93F94C00E4B16B /* CourseAnnouncementDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9C2E052C93F94C00E4B16B /* CourseAnnouncementDetailView.swift */; };
+		9BA2D9382EB10A130098544B /* GTSchedulerParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BA2D9362EB10A130098544B /* GTSchedulerParser.swift */; };
+		9BA2D9392EB10A130098544B /* ICSParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BA2D9372EB10A130098544B /* ICSParser.swift */; };
 		9BA7C0F72D62DC92000F2918 /* PinnedItemDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BA7C0F62D62DC92000F2918 /* PinnedItemDetailView.swift */; };
 		9BABD5322E71DC01002589F8 /* DownloadButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BABD5312E71DBFD002589F8 /* DownloadButton.swift */; };
 		9BD2323A2E6C9CA600DB7A0E /* SubmissionHistoryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD232392E6C9CA600DB7A0E /* SubmissionHistoryDetailView.swift */; };
@@ -278,7 +279,6 @@
 		B7D7512D2D3D652300F7B8B8 /* GetAnnouncementsBatchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D7512C2D3D652300F7B8B8 /* GetAnnouncementsBatchRequest.swift */; };
 		B7D7512F2D3D660B00F7B8B8 /* AllAnnouncementsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D7512E2D3D660B00F7B8B8 /* AllAnnouncementsManager.swift */; };
 		B7D751312D3D688C00F7B8B8 /* AnnouncementRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D751302D3D688C00F7B8B8 /* AnnouncementRow.swift */; };
-		B7D95D772D07C3D3002AD955 /* ICSParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D95D762D07C3D3002AD955 /* ICSParser.swift */; };
 		B7D95DB72D0A8D78002AD955 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D95DB62D0A8D75002AD955 /* SettingsView.swift */; };
 		B7E0735E2D986B2400A7E82F /* GetUserTodoItemCountRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E0735D2D986B1F00A7E82F /* GetUserTodoItemCountRequest.swift */; };
 		B7E073602D986D9800A7E82F /* ToDoItemCountAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E0735F2D986D9800A7E82F /* ToDoItemCountAPI.swift */; };
@@ -332,7 +332,6 @@
 		9B4F616B2E9ABBC000860E24 /* BigNumberWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigNumberWidget.swift; sourceTree = "<group>"; };
 		9B4F616D2E9ABDA300860E24 /* UnreadAnnouncementsCountWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnreadAnnouncementsCountWidget.swift; sourceTree = "<group>"; };
 		9B4F616F2E9ABDAC00860E24 /* ToDoCountWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoCountWidget.swift; sourceTree = "<group>"; };
-		9B54F1252EA8408900EB0629 /* GTSchedulerParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GTSchedulerParser.swift; path = ../../GTSchedulerParser.swift; sourceTree = "<group>"; };
 		9B6663E22C9853BC0060990E /* HTMLWebViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLWebViewWrapper.swift; sourceTree = "<group>"; };
 		9B6D4F7F2D6E48340033044F /* ReminderButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderButton.swift; sourceTree = "<group>"; };
 		9B762BC82D7BF8E70051F1F6 /* SubmitAssignmentRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitAssignmentRequest.swift; sourceTree = "<group>"; };
@@ -344,6 +343,8 @@
 		9B92A4242C93856100C21CFC /* CourseAnnouncementManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAnnouncementManager.swift; sourceTree = "<group>"; };
 		9B9C2E032C93F6CD00E4B16B /* CourseAnnouncementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAnnouncementsView.swift; sourceTree = "<group>"; };
 		9B9C2E052C93F94C00E4B16B /* CourseAnnouncementDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAnnouncementDetailView.swift; sourceTree = "<group>"; };
+		9BA2D9362EB10A130098544B /* GTSchedulerParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GTSchedulerParser.swift; sourceTree = "<group>"; };
+		9BA2D9372EB10A130098544B /* ICSParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICSParser.swift; sourceTree = "<group>"; };
 		9BA7C0F62D62DC92000F2918 /* PinnedItemDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedItemDetailView.swift; sourceTree = "<group>"; };
 		9BABD5312E71DBFD002589F8 /* DownloadButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadButton.swift; sourceTree = "<group>"; };
 		9BD232392E6C9CA600DB7A0E /* SubmissionHistoryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmissionHistoryDetailView.swift; sourceTree = "<group>"; };
@@ -579,7 +580,6 @@
 		B7D7512C2D3D652300F7B8B8 /* GetAnnouncementsBatchRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAnnouncementsBatchRequest.swift; sourceTree = "<group>"; };
 		B7D7512E2D3D660B00F7B8B8 /* AllAnnouncementsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllAnnouncementsManager.swift; sourceTree = "<group>"; };
 		B7D751302D3D688C00F7B8B8 /* AnnouncementRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementRow.swift; sourceTree = "<group>"; };
-		B7D95D762D07C3D3002AD955 /* ICSParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICSParser.swift; sourceTree = "<group>"; };
 		B7D95DB62D0A8D75002AD955 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		B7E0735D2D986B1F00A7E82F /* GetUserTodoItemCountRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetUserTodoItemCountRequest.swift; sourceTree = "<group>"; };
 		B7E0735F2D986D9800A7E82F /* ToDoItemCountAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoItemCountAPI.swift; sourceTree = "<group>"; };
@@ -644,6 +644,15 @@
 				B7D193B82E7E28EC00FF4C84 /* IGCPlayground.swift */,
 			);
 			path = Debug;
+			sourceTree = "<group>";
+		};
+		9BA2D9352EB109AF0098544B /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				9BA2D9362EB10A130098544B /* GTSchedulerParser.swift */,
+				9BA2D9372EB10A130098544B /* ICSParser.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		9BF228C62D6CD1DF000676F2 /* Reminders */ = {
@@ -917,10 +926,9 @@
 			children = (
 				9BD883B22EAE9ED800371BBB /* GlobalCalendarView.swift */,
 				9B3BAA0C2EADA7FF0031F402 /* GlobalCalendarManager.swift */,
-				9B54F1252EA8408900EB0629 /* GTSchedulerParser.swift */,
+				9BA2D9352EB109AF0098544B /* Helpers */,
 				8C0A84262E9FF2850036D1F6 /* CalendarEventDetailView.swift */,
 				95BA93472C9CE20D00137A91 /* CalendarView.swift */,
-				B7D95D762D07C3D3002AD955 /* ICSParser.swift */,
 				9B2049032EAEFA93002C260F /* Date+ConvenienceMethods.swift */,
 			);
 			path = Calendar;
@@ -1563,7 +1571,6 @@
 				A373DC252D1D4BEC00215019 /* APIQuizSubmission.swift in Sources */,
 				B7C0A3CF2D31F339003E5A36 /* PinnedItemCard.swift in Sources */,
 				9BF228C82D6CD1EB000676F2 /* RemindersManager.swift in Sources */,
-				B7D95D772D07C3D3002AD955 /* ICSParser.swift in Sources */,
 				A3CF88D32D18E6BB000ACDF3 /* ParentKeyPath.swift in Sources */,
 				B7CC4D5A2D90BF6C00254F55 /* RippleModifier.swift in Sources */,
 				B7AF50E32E99F59300457E8A /* WidgetStore+AvailableWidgets.swift in Sources */,
@@ -1694,13 +1701,14 @@
 				D43B58032E7658560054C12C /* DisplayableItemType.swift in Sources */,
 				A37AB4AB2D988F5800610639 /* CreateGroupMembershipRequest.swift in Sources */,
 				9BD75D702E77127C008BF846 /* OpenInWebButton.swift in Sources */,
-				9B54F1262EA8408900EB0629 /* GTSchedulerParser.swift in Sources */,
 				A3049B662D0F3E32002F3166 /* CourseQuizzesView.swift in Sources */,
 				B75BFD5C2EA4491200BB74C3 /* PinnedFilesWidget.swift in Sources */,
 				B75BFD5D2EA4491200BB74C3 /* PinnedAnnouncementsWidget.swift in Sources */,
 				B75BFD5E2EA4491200BB74C3 /* PinnedAssignmentsWidget.swift in Sources */,
 				B7D7512B2D3D5D8000F7B8B8 /* AllAnnouncementsView.swift in Sources */,
 				A3E7F3892C954E0500DC4300 /* CanvasRequest.swift in Sources */,
+				9BA2D9382EB10A130098544B /* GTSchedulerParser.swift in Sources */,
+				9BA2D9392EB10A130098544B /* ICSParser.swift in Sources */,
 				A352AD1A2D3EF1C1007EE6FC /* GetCourseUsersRequest.swift in Sources */,
 				B7460A942D6BFB1A0069CF5B /* GradeCalculator.swift in Sources */,
 				B7E073642D9872AE00A7E82F /* IgnoreToDoItemRequest.swift in Sources */,

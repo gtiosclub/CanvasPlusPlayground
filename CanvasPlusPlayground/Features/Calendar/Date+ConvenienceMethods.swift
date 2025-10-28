@@ -15,6 +15,10 @@ extension Date {
         formatter.dateFormat = "E d" // e.g., "Mon 20"
         return formatter.string(from: self)
     }
+
+    var isInToday: Bool {
+        Calendar.current.isDateInToday(self)
+    }
 }
 
 extension Locale.Weekday {
@@ -32,3 +36,4 @@ extension Locale.Weekday {
         }
     }
 }
+

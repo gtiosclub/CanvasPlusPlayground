@@ -136,7 +136,6 @@ class NavigationModel {
     // Each tab maintains its own NavigationPath (stack)
     var allCoursesPath = NavigationPath() // for Tab.allCourses
     var dashboardPath = NavigationPath()
-    var calendarPath = NavigationPath()
 
     var coursePath = NavigationPath() // for Tab.course(id:)
 
