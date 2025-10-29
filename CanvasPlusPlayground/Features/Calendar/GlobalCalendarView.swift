@@ -11,20 +11,33 @@ struct GlobalCalendarView: View {
 
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
-
     @State var calendarManager = GlobalCalendarManager()
     @Environment(CourseManager.self) var courseManager
 
+    private var calendarColumns: some View {
+        HStack(spacing: 0) {
+            ForEach(Array(calendarManager.currentWeekDates.enumerated()), id: \.element) { index, date in
+                if index > 0 {
+                    Divider()
+                }
+                DayColumn(date: date, events: calendarManager.calendarEvents.filter { event in
+                    Calendar.current.isDate(event.startDate, inSameDayAs: date)
+                })
+            }
+        }
+    }
+
     var body: some View {
-        ScrollView {
-            HStack(spacing: 0) {
-                ForEach(Array(calendarManager.currentWeekDates.enumerated()), id: \.element) { index, date in
-                    if index > 0 {
-                        Divider()
+        GeometryReader { geo in
+            let minColumnHeight: CGFloat = 600 // Estimate or adjust for your minimum expected height per column
+            let shouldScroll = minColumnHeight > geo.size.height
+            Group {
+                if shouldScroll {
+                    ScrollView(.vertical) {
+                        calendarColumns
                     }
-                    DayColumn(date: date, events: calendarManager.calendarEvents.filter { event in
-                        Calendar.current.isDate(event.startDate, inSameDayAs: date)
-                    })
+                } else {
+                    calendarColumns
                 }
             }
         }
@@ -32,7 +45,7 @@ struct GlobalCalendarView: View {
             if let horizontalSizeClass {
                 setDisplayMode(sizeClass: horizontalSizeClass)
             }
-            await calendarManager.getCalendarEventsForCourses(courses: courseManager.activeCourses)
+            await calendarManager.getCalendarEventsForCourses(courses: courseManager.favoritedCourses)
         }
         .toolbar {
             ToolbarItem {
@@ -99,6 +112,7 @@ struct GlobalCalendarView: View {
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                     }
+                    .lineLimit(nil)
                     Spacer()
                 }
                 .padding(5)
