@@ -56,6 +56,13 @@ struct CourseAnnouncementDetailView: View {
             courseID: announcement.courseId ?? "",
             type: .announcement
         )
+        .toolbar {
+            PinButton(
+                itemID: announcement.id,
+                courseID: announcement.courseId,
+                type: .announcement
+            )
+        }
         .openInCanvasToolbarButton(.announcement(announcement.courseId ?? "", announcement.id))
         .id(announcement.id)
     }

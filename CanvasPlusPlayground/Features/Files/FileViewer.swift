@@ -29,6 +29,11 @@ struct FileViewer: View {
                     #else
                     .toolbar {
                         ToolbarItemGroup {
+                            PinButton(
+                                itemID: file.id,
+                                courseID: courseID,
+                                type: .file
+                            )
                             ShareLink(item: url)
                             DownloadButton(url: url, fileName: file.displayName)
                             Button("Open", systemImage: "arrow.up.forward.app") {
