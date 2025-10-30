@@ -8,6 +8,7 @@
 import Foundation
 
 class GTSchedulerParser {
+    private static let gtSchedulerURL = "https://gt-scheduler.github.io/crawler-v2/202508.json"
     static let shared = GTSchedulerParser()
     private init() { }
 
@@ -19,7 +20,7 @@ class GTSchedulerParser {
     var catalog: GTSCatalog?
 
     func fetchCatalog() async throws {
-        let request = URLRequest(url: URL(string: "https://gt-scheduler.github.io/crawler-v2/202508.json")!)
+        let request = URLRequest(url: URL(string: Self.gtSchedulerURL)!)
 
         let (data, response) = try await URLSession.shared.data(for: request)
 

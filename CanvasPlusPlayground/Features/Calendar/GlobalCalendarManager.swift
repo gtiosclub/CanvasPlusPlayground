@@ -10,7 +10,6 @@ import SwiftUI
 
 @Observable
 class GlobalCalendarManager {
-
     var currentDate: Date = .now // currently displayed date
 
     enum DisplayMode { case compact, entireWeek }
@@ -19,13 +18,11 @@ class GlobalCalendarManager {
 
     // how much should the stepper move by (macOS: increment by week, iOS: increment by 2 day segments)
     var stepperIncrementCount: Int {
-
         return displayMode == .compact ? 2 : 7
     }
 
     // all dates currently displayed (macOS: entire week, iOS: just 2 days)
     var currentWeekDates: [Date] {
-
         if displayMode == .entireWeek {
             let calendar = Calendar.current
             guard let weekInterval = calendar.dateInterval(of: .weekOfYear, for: currentDate) else {
