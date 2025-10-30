@@ -81,13 +81,8 @@ struct AnnouncementRow: View {
             .frame(width: unreadIndicatorWidth, height: unreadIndicatorWidth)
 
             HStack(spacing: 4) {
-                Text(announcement.title ?? "")
-
-                if isPinned {
-                    Image(systemName: "pin.fill")
-                        .font(.caption)
-                        .foregroundStyle(.orange)
-                }
+                Text(announcement.title ?? "")  
+                    .pinnedItemBadge(isVisible: isPinned)
             }
             .alignmentGuide(.announcementRowAlignment) { context in
                 context[.leading]

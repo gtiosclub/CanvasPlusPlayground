@@ -208,12 +208,7 @@ private struct AssignmentRow: View {
                 HStack(spacing: 4) {
                     Text(assignment.name)
                         .fontWeight(.bold)
-
-                    if isPinned {
-                        Image(systemName: "pin.fill")
-                            .font(.caption)
-                            .foregroundStyle(.orange)
-                    }
+                        .pinnedItemBadge(isVisible: isPinned)
                 }
 
                 if assignment.isLocked, let unlockDate = assignment.unlockDate {

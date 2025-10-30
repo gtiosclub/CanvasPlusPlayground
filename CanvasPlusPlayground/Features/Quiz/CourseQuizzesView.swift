@@ -64,12 +64,7 @@ struct CourseQuizzesView: View {
                     HStack(spacing: 4) {
                         Text(quiz.title)
                             .bold()
-
-                        if isPinned {
-                            Image(systemName: "pin.fill")
-                                .font(.caption)
-                                .foregroundStyle(.orange)
-                        }
+                            .pinnedItemBadge(isVisible: isPinned)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
 

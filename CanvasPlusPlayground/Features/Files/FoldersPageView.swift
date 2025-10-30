@@ -230,12 +230,7 @@ private struct FileRow: View {
                 HStack(spacing: 4) {
                     Text(file.displayName)
                         .font(.headline)
-
-                    if isPinned {
-                        Image(systemName: "pin.fill")
-                            .font(.caption)
-                            .foregroundStyle(.orange)
-                    }
+                        .pinnedItemBadge(isVisible: isPinned)
                 }
 
                 if let size = file.size {

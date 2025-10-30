@@ -67,17 +67,6 @@ struct FileViewer: View {
             courseID: courseID,
             type: .file
         )
-        .toolbar {
-            #if os(iOS)
-            ToolbarItem(placement: .primaryAction) {
-                PinButton(
-                    itemID: file.id,
-                    courseID: courseID,
-                    type: .file
-                )
-            }
-            #endif
-        }
         .task {
             await loadContents()
         }
