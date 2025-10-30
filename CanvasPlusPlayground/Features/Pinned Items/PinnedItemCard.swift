@@ -13,35 +13,43 @@ struct PinnedItemCard: View {
     var body: some View {
         Group {
             if let itemData = item.data {
-                switch itemData.modelData {
-                case .announcement(let announcement):
-                    PinnedAnnouncementCard(
-                        announcement: announcement,
-                        course: itemData.course
-                    )
-                case .file(let file):
-                    PinnedFileCard(
-                        file: file,
-                        course: itemData.course
-                    )
-                case .assignment(let assignment):
-                    PinnedAssignmentCard(
-                        assignment: assignment,
-                        course: itemData.course
-                    )
-                case .calendarEvent(let event):
-                    PinnedCalendarEventCard(
-                        event: event,
-                        course: itemData.course
-                    )
-                case .quiz(let quiz):
-                    PinnedQuizCard(
-                        quiz: quiz,
-                        course: itemData.course
-                    )
-                case .grade(let enrollment):
-                    PinnedGradeCard(
-                        enrollment: enrollment,
+                if let modelData = itemData.modelData {
+                    switch modelData {
+                    case .announcement(let announcement):
+                        PinnedAnnouncementCard(
+                            announcement: announcement,
+                            course: itemData.course
+                        )
+                    case .file(let file):
+                        PinnedFileCard(
+                            file: file,
+                            course: itemData.course
+                        )
+                    case .assignment(let assignment):
+                        PinnedAssignmentCard(
+                            assignment: assignment,
+                            course: itemData.course
+                        )
+                    case .calendarEvent(let event):
+                        PinnedCalendarEventCard(
+                            event: event,
+                            course: itemData.course
+                        )
+                    case .quiz(let quiz):
+                        PinnedQuizCard(
+                            quiz: quiz,
+                            course: itemData.course
+                        )
+                    case .grade(let enrollment):
+                        PinnedGradeCard(
+                            enrollment: enrollment,
+                            course: itemData.course
+                        )
+                    }
+                } else {
+                    // Course tab without specific model data
+                    PinnedCourseTabCard(
+                        type: item.type,
                         course: itemData.course
                     )
                 }
@@ -224,6 +232,19 @@ private struct PinnedGradeCard: View {
                 }
             }
         }
+    }
+}
+
+private struct PinnedCourseTabCard: View {
+    let type: PinnedItem.PinnedItemType
+    let course: Course
+
+    var body: some View {
+        BasePinnedItemCard(
+            course: course,
+            icon: type.coursePage?.systemImageIcon,
+            title: type.displayName
+        )
     }
 }
 

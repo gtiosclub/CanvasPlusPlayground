@@ -61,21 +61,21 @@ struct CourseView: View {
                         Label(page.title, systemImage: page.systemImageIcon)
                     }
                     .contextMenu {
-                        if page == .grades {
+                        if let pinnedItemType = PinnedItem.PinnedItemType(coursePage: page) {
                             PinButton(
                                 itemID: course.id,
                                 courseID: course.id,
-                                type: .grade
+                                type: pinnedItemType
                             )
                         }
                         NewWindowButton(destination: .coursePage(page, course))
                     }
                     .swipeActions(edge: .leading) {
-                        if page == .grades {
+                        if let pinnedItemType = PinnedItem.PinnedItemType(coursePage: page) {
                             PinButton(
                                 itemID: course.id,
                                 courseID: course.id,
-                                type: .grade
+                                type: pinnedItemType
                             )
                         }
                     }
