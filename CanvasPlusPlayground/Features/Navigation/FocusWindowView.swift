@@ -47,7 +47,7 @@ struct FocusWindowView: View {
             return courseID
         case .announcement(_, let courseID), .assignment(_, let courseID), .page(_, let courseID), .quiz(_, let courseID):
             return courseID
-        case .allAnnouncements, .allToDos, .recentItems, .pinnedItems, .today:
+        case .allAnnouncements, .allToDos, .recentItems, .pinnedItems, .today, .allCalendar:
             return ""
         case .calendarEvent(_, let courseID):
             return courseID ?? ""
@@ -96,6 +96,8 @@ struct FocusWindowView: View {
                 destination = .today
             case .calendarEvent(let event, let course):
                 try await loadEvent(eventID: event, course: course)
+            case .allCalendar:
+                destination = .allCalendar
             }
         } catch {
             errorMessage = "Failed to load content: \(error.localizedDescription)"
@@ -251,7 +253,7 @@ struct FocusWindowView: View {
         }
         
         if let course, let icsURL = URL(string: course.calendarIcs ?? "") {
-            let eventGroups = await ICSParser.parseEvents(from: icsURL)
+            let eventGroups = await ICSParser.parseEvents(from: icsURL, for: course)
             
             for group in eventGroups {
                 if let event = group.events.first(where: { $0.id == eventID }) {

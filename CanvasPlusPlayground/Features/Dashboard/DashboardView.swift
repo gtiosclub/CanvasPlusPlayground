@@ -194,6 +194,13 @@ private struct NavigationBanner: View {
                     tint: .blue,
                     destination: .recentItems
                 )
+
+                NavigationCapsule(
+                    title: "Calendar",
+                    systemImage: "calendar",
+                    tint: .purple,
+                    destination: .allCalendar
+                )
             }
         }
         .scrollClipDisabled()

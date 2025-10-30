@@ -17,7 +17,8 @@ enum ICSParser {
     }
 
     static func parseEvents(
-        from icsURL: URL?
+        from icsURL: URL?,
+        for course: Course
     ) async -> [CanvasCalendarEventGroup] {
         guard let icsURL else { return [] }
 
@@ -72,6 +73,7 @@ enum ICSParser {
 
                     let event = CanvasCalendarEvent(
                         id: id,
+                        course: course,
                         summary: unescapeICSValue(summary),
                         startDate: startDate,
                         endDate: endDate,
@@ -159,6 +161,7 @@ struct CanvasCalendarEventGroup: Identifiable {
 
 struct CanvasCalendarEvent: Identifiable, Hashable {
     let id: String
+    let course: Course
     let summary: String
     let startDate: Date
     let endDate: Date

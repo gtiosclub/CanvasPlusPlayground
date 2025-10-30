@@ -60,7 +60,7 @@ struct CalendarView: View {
 
     private func loadCalendar() async {
         isLoadingCalendar = true
-        events = await ICSParser.parseEvents(from: icsURL)
+        events = await ICSParser.parseEvents(from: icsURL, for: course)
         isLoadingCalendar = false
     }
 }
@@ -113,5 +113,3 @@ private struct EventRow: View {
         }
     }
 }
-
-
