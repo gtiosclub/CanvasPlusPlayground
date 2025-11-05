@@ -18,8 +18,7 @@ class PinnedItem: Identifiable, Codable, Equatable, Hashable {
     private var modelData: PinnedItemData.ModelData?
 
     enum PinnedItemType: Int, Codable {
-        case announcement, assignment, file, calendarEvent
-        // TODO: Add more pinned item types
+        case announcement, assignment, file, calendarEvent, quiz, grade, home, syllabus, people, groups, modules, pages
 
         var displayName: String {
             switch self {
@@ -31,6 +30,22 @@ class PinnedItem: Identifiable, Codable, Equatable, Hashable {
                 "Files"
             case .calendarEvent:
                 "Calendar Events"
+            case .quiz:
+                "Quizzes"
+            case .grade:
+                "Grades"
+            case .home:
+                "Home"
+            case .syllabus:
+                "Syllabus"
+            case .people:
+                "People"
+            case .groups:
+                "Groups"
+            case .modules:
+                "Modules"
+            case .pages:
+                "Pages"
             }
         }
     }
@@ -104,6 +119,26 @@ class PinnedItem: Identifiable, Codable, Equatable, Hashable {
             }
 
             setData(modelData: .calendarEvent(event))
+        case .quiz:
+            let quizzes = try await CanvasService.shared.loadAndSync(
+                CanvasRequest.getQuiz(id: id, courseId: courseID)
+            ) { cachedQuizzes in
+                    guard let quiz = cachedQuizzes?.first else { return }
+                    setData(modelData: .quiz(quiz))
+            }
+            guard let quiz = quizzes.first else { return }
+            setData(modelData: .quiz(quiz))
+        case .grade:
+            let enrollments = try await CanvasService.shared.loadAndSync(
+                CanvasRequest.getEnrollments(courseId: courseID)
+            ) { cachedEnrollments in
+                    guard let enrollment = cachedEnrollments?.first else { return }
+                    setData(modelData: .grade(enrollment))
+            }
+            guard let enrollment = enrollments.first else { return }
+            setData(modelData: .grade(enrollment))
+        case .home, .syllabus, .people, .groups, .modules, .pages:
+            break
         }
     }
 
@@ -116,7 +151,7 @@ class PinnedItem: Identifiable, Codable, Equatable, Hashable {
             self.modelData = modelData
         }
 
-        if self.course != nil && self.modelData != nil {
+        if self.course != nil {
             self.data = .init(modelData: self.modelData, course: self.course)
         }
     }
@@ -149,16 +184,106 @@ struct PinnedItemData {
         case assignment(Assignment)
         case file(File)
         case calendarEvent(CanvasCalendarEvent)
+        case quiz(Quiz)
+        case grade(Enrollment)
         // TODO: Add more pinned item types
     }
 
-    let modelData: ModelData
+    let modelData: ModelData?
     let course: Course
 
-    init?(modelData: ModelData?, course: Course?) {
-        guard let modelData, let course else { return nil }
+    init?(modelData: ModelData? = nil, course: Course?) {
+        guard let course else { return nil }
 
         self.modelData = modelData
         self.course = course
+    }
+}
+
+extension PinnedItem.PinnedItemType {
+    init?(coursePage: NavigationModel.CoursePage) {
+        switch coursePage {
+        case .home:
+            self = .home
+        case .syllabus:
+            self = .syllabus
+        case .assignments:
+            self = .assignment
+        case .files:
+            self = .file
+        case .announcements:
+            self = .announcement
+        case .grades:
+            self = .grade
+        case .calendar:
+            self = .calendarEvent
+        case .people:
+            self = .people
+        case .groups:
+            self = .groups
+        case .quizzes:
+            self = .quiz
+        case .modules:
+            self = .modules
+        case .pages:
+            self = .pages
+        }
+    }
+
+    var coursePage: NavigationModel.CoursePage? {
+        switch self {
+        case .home:
+            return .home
+        case .syllabus:
+            return .syllabus
+        case .assignment:
+            return .assignments
+        case .file:
+            return .files
+        case .announcement:
+            return .announcements
+        case .grade:
+            return .grades
+        case .calendarEvent:
+            return .calendar
+        case .people:
+            return .people
+        case .groups:
+            return .groups
+        case .quiz:
+            return .quizzes
+        case .modules:
+            return .modules
+        case .pages:
+            return .pages
+        }
+    }
+}
+
+
+extension PinnedItem {
+    func destination() -> NavigationModel.Destination? {
+        guard let itemData = data else { return nil }
+
+        if let modelData = itemData.modelData {
+            switch modelData {
+            case .announcement(let announcement):
+                return .announcement(announcement)
+            case .assignment(let assignment):
+                return .assignment(assignment)
+            case .file(let file):
+                return .file(file, itemData.course.id)
+            case .calendarEvent(let event):
+                return .calendarEvent(event, itemData.course)
+            case .quiz(let quiz):
+                return .quiz(quiz)
+            case .grade:
+                return .coursePage(.grades, itemData.course)
+            }
+        } else if let coursePage = type.coursePage {
+            return .coursePage(coursePage, itemData.course)
+        }
+
+        return nil
     }
 }
