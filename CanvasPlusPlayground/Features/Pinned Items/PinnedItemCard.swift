@@ -176,17 +176,20 @@ extension View {
                     .fill(.secondary.opacity(selected ? 0.30 : 0.15))
             }
     }
-
+    
     func pinnedItemBadge(isVisible: Bool) -> some View {
         Group {
             if isVisible {
-                self
-                Image(systemName: "pin.fill")
-                    .font(.caption2)
-                    .foregroundStyle(.orange)
+                HStack(spacing: 4) {
+                    self
+                    Image(systemName: "pin.fill")
+                        .font(.caption2)
+                        .foregroundStyle(.orange)
+                }
             } else {
                 self
             }
         }
     }
 }
+    
