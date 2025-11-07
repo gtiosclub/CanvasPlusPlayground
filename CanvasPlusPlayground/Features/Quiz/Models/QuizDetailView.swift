@@ -25,6 +25,13 @@ struct QuizDetailView: View {
 			}
 		}
         .handleDeepLinks(for: quiz.courseID)
+		.toolbar {
+			PinButton(
+				itemID: quiz.assignmentID ?? quiz.id,
+				courseID: quiz.courseID,
+				type: .assignment
+			)
+		}
 		.logRecentItem(
 			itemID: quiz.id,
             courseID: quiz.courseID,

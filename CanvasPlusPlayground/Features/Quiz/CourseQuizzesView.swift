@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct CourseQuizzesView: View {
+    @Environment(PinnedItemsManager.self) private var pinnedItemsManager
     @State private var quizzesVM: QuizzesViewModel
 
     @State private var isLoadingQuizzes = true
@@ -52,13 +53,20 @@ struct CourseQuizzesView: View {
 
     @ViewBuilder
     func quizCell(for quiz: Quiz) -> some View {
+        let isPinned = pinnedItemsManager.pinnedItems.contains {
+            $0.id == (quiz.assignmentID ?? quiz.id) && $0.courseID == quiz.courseID && $0.type == .assignment
+        }
+
         NavigationLink(
             value: NavigationModel.Destination.quiz(quiz)) {
             HStack {
                 VStack {
-                    Text(quiz.title)
-                        .bold()
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                    HStack(spacing: 4) {
+                        Text(quiz.title)
+                            .bold()
+                            .pinnedItemBadge(isVisible: isPinned)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
 
                     HStack {
                         if let pointsPossible = quiz.pointsPossible?.truncatingTrailingZeros {
