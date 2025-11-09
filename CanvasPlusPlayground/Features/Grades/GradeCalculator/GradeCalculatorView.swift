@@ -208,7 +208,7 @@ private struct GradeGroupHeader: View {
                 )
                 .fixedSize()
                 #if os(iOS)
-                .keyboardType(.numberPad)
+                .keyboardType(.decimalPad)
                 #endif
 
                 Text("%")
@@ -269,7 +269,7 @@ extension TextField {
             .fontWeight(.semibold)
             .foregroundStyle(.tint)
             #if os(iOS)
-            .keyboardType(.numberPad)
+            .keyboardType(.decimalPad)
             #endif
     }
 }
