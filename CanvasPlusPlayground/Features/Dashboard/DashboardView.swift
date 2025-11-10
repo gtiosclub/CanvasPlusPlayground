@@ -21,6 +21,8 @@ struct DashboardView: View {
 
     var body: some View {
         ScrollView {
+            NavigationBanner()
+
             Dashboard(
                 maxSmallWidgetWidth: maxSmallWidgetWidth,
                 maxMediumWidgetWidth: maxMediumWidgetWidth,
@@ -98,9 +100,6 @@ struct DashboardView: View {
             #if os(macOS)
             .frame(width: 300, height: 300)
             #endif
-        }
-        .safeAreaInset(edge: .top) {
-            NavigationBanner()
         }
         .defaultNavigationDestination()
     }
