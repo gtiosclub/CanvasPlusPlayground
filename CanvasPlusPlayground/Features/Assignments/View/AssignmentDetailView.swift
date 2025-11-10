@@ -158,7 +158,7 @@ struct AssignmentDetailView: View {
                         .controlSize(.small)
                 }
             }
-            if self.submission != nil && assignment.canSubmitFromCanvasPlus && self.submission?.attempt != nil {
+            if self.submission != nil && self.submission?.attempt != nil {
                 LabeledContent("Submission History") {
                     Button("View submission history...") {
                         showSubmissionHistoryPopUp.toggle()
