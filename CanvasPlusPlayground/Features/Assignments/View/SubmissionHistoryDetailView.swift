@@ -143,7 +143,7 @@ struct SubmissionHistoryDetailView: View {
                     
                     if let url = URL(string: file.url ?? "") {
                         Spacer()
-                        DownloadButton(url: url, fileName: file.display_name)
+                        QuickLookButton(url: url, fileName: file.display_name)
                     }
                 }
             }
