@@ -303,8 +303,27 @@ enum SubmissionType: String, Codable {
     case studentAnnotation = "student_annotation"
 
     var displayName: String {
-        rawValue
-            .replacingOccurrences(of: "_", with: " ")
-            .capitalized
+        switch self {
+        case .discussionTopic:
+            "Discussion Topic"
+        case .onlineQuiz:
+            "Online Quiz"
+        case .onPaper:
+            "On Paper"
+        case .none:
+            "None"
+        case .externalTool:
+            "External Tool"
+        case .onlineTextEntry:
+            "Online Text Entry"
+        case .onlineUrl:
+            "Online URL"
+        case .onlineUpload:
+            "Online Upload"
+        case .mediaRecording:
+            "Media Recording"
+        case .studentAnnotation:
+            "Student Annotation"
+        }
     }
 }
