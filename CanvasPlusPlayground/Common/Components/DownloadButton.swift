@@ -39,17 +39,13 @@ struct DownloadButton: View {
     }
     
     func downloadFile() {
-        
-        let request = URLRequest(url: url)
         showProgressView = true
         Task {
-            let (data, response) = try await URLSession.shared.data(for: request)
-            
-#if DEBUG
-            // for logging purposes in the request debug window
-            NetworkRequestRecorder.shared.addRecord(request: request, response: response, responseBody: data)
-#endif
-            
+            guard let data = await url.downloadWebFile() else {
+                LoggerService.main.error("Error downloading file")
+                return
+            }
+
             dataFileDocument = DataFileDocument(data: data)
             showFileExporter = true
             showProgressView = false

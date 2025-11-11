@@ -34,6 +34,8 @@
 		9B4F616C2E9ABBC500860E24 /* BigNumberWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4F616B2E9ABBC000860E24 /* BigNumberWidget.swift */; };
 		9B4F616E2E9ABDA900860E24 /* UnreadAnnouncementsCountWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4F616D2E9ABDA300860E24 /* UnreadAnnouncementsCountWidget.swift */; };
 		9B4F61702E9ABDB400860E24 /* ToDoCountWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4F616F2E9ABDAC00860E24 /* ToDoCountWidget.swift */; };
+		9B5A5F172EC23900000012ED /* QuicklookButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5A5F162EC23900000012ED /* QuicklookButton.swift */; };
+		9B5A5F192EC23C62000012ED /* URL+DownloadFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5A5F182EC23C62000012ED /* URL+DownloadFile.swift */; };
 		9B6663E32C9853BC0060990E /* HTMLWebViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6663E22C9853BC0060990E /* HTMLWebViewWrapper.swift */; };
 		9B6D4F802D6E48340033044F /* ReminderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6D4F7F2D6E48340033044F /* ReminderButton.swift */; };
 		9B762BC92D7BF8E70051F1F6 /* SubmitAssignmentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B762BC82D7BF8E70051F1F6 /* SubmitAssignmentRequest.swift */; };
@@ -332,6 +334,8 @@
 		9B4F616B2E9ABBC000860E24 /* BigNumberWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigNumberWidget.swift; sourceTree = "<group>"; };
 		9B4F616D2E9ABDA300860E24 /* UnreadAnnouncementsCountWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnreadAnnouncementsCountWidget.swift; sourceTree = "<group>"; };
 		9B4F616F2E9ABDAC00860E24 /* ToDoCountWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoCountWidget.swift; sourceTree = "<group>"; };
+		9B5A5F162EC23900000012ED /* QuicklookButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuicklookButton.swift; sourceTree = "<group>"; };
+		9B5A5F182EC23C62000012ED /* URL+DownloadFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+DownloadFile.swift"; sourceTree = "<group>"; };
 		9B6663E22C9853BC0060990E /* HTMLWebViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLWebViewWrapper.swift; sourceTree = "<group>"; };
 		9B6D4F7F2D6E48340033044F /* ReminderButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderButton.swift; sourceTree = "<group>"; };
 		9B762BC82D7BF8E70051F1F6 /* SubmitAssignmentRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitAssignmentRequest.swift; sourceTree = "<group>"; };
@@ -786,7 +790,7 @@
 		A324BA532D079685005F53FA /* Files */ = {
 			isa = PBXGroup;
 			children = (
-				9BABD5312E71DBFD002589F8 /* DownloadButton.swift */,
+				9B5A5F182EC23C62000012ED /* URL+DownloadFile.swift */,
 				A373DC1D2D1D2B4000215019 /* Models */,
 				A324BA692D0817AB005F53FA /* FoldersPageView.swift */,
 				B76454FB2C8DF61B002DF00E /* CourseFileViewModel.swift */,
@@ -853,6 +857,8 @@
 				3DAE84FF2C9A0E4F008C22E7 /* BridgedPDFView.swift */,
 				267D85252E662009007F821B /* NewWindowButton.swift */,
 				B7F375BB2E84684E008F0846 /* PickableFileImporterModifier.swift */,
+				9BABD5312E71DBFD002589F8 /* DownloadButton.swift */,
+				9B5A5F162EC23900000012ED /* QuicklookButton.swift */,
 				A3CA025C2D432B8500A9752B /* Search Results */,
 			);
 			path = Components;
@@ -1566,6 +1572,7 @@
 				B7725D652D7387D600D64ED8 /* AccessoryBar.swift in Sources */,
 				192EC0482C963ACB00AF8528 /* CourseAssignmentManager.swift in Sources */,
 				A3777E022D9F148300A8B00C /* CourseRepository.swift in Sources */,
+				9B5A5F192EC23C62000012ED /* URL+DownloadFile.swift in Sources */,
 				A373DC232D1D454000215019 /* GradingSchemeEntry.swift in Sources */,
 				A301EE0D2D612E7100D71139 /* DiscussionTopicAPI.swift in Sources */,
 				A373DC252D1D4BEC00215019 /* APIQuizSubmission.swift in Sources */,
@@ -1714,6 +1721,7 @@
 				B7E073642D9872AE00A7E82F /* IgnoreToDoItemRequest.swift in Sources */,
 				B79101D82E8B0E900090BBB1 /* GenericWidget.swift in Sources */,
 				B7C469D22E6C80F800310982 /* CourseHomePage.swift in Sources */,
+				9B5A5F172EC23900000012ED /* QuicklookButton.swift in Sources */,
 				B77FD0072D5309340049AA5E /* ProfilePicture.swift in Sources */,
 				A35191412D283589001E415F /* ModulesViewModel.swift in Sources */,
 				A3E7F3912C99317100DC4300 /* CourseTabsManager.swift in Sources */,
