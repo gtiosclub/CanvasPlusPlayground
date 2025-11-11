@@ -790,8 +790,6 @@
 		A324BA532D079685005F53FA /* Files */ = {
 			isa = PBXGroup;
 			children = (
-				9BABD5312E71DBFD002589F8 /* DownloadButton.swift */,
-				9B5A5F162EC23900000012ED /* QuicklookButton.swift */,
 				9B5A5F182EC23C62000012ED /* URL+DownloadFile.swift */,
 				A373DC1D2D1D2B4000215019 /* Models */,
 				A324BA692D0817AB005F53FA /* FoldersPageView.swift */,
@@ -859,6 +857,8 @@
 				3DAE84FF2C9A0E4F008C22E7 /* BridgedPDFView.swift */,
 				267D85252E662009007F821B /* NewWindowButton.swift */,
 				B7F375BB2E84684E008F0846 /* PickableFileImporterModifier.swift */,
+				9BABD5312E71DBFD002589F8 /* DownloadButton.swift */,
+				9B5A5F162EC23900000012ED /* QuicklookButton.swift */,
 				A3CA025C2D432B8500A9752B /* Search Results */,
 			);
 			path = Components;

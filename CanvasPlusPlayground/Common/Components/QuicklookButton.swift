@@ -37,17 +37,15 @@ struct QuickLookButton: View {
 
         Task {
             guard let data = await url.downloadWebFile() else {
-                print("Error downloading file")
+                LoggerService.main.error("Error downloading file")
                 return
             }
-            // Write to temp location and set up Quick Look
             let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
             do {
                 try data.write(to: tempURL)
                 quickLookURL = tempURL
             } catch {
-                // Handle write error, e.g., show an alert or log
-                print("Failed to write file for Quick Look: \(error)")
+                LoggerService.main.error("Failed to write file for Quick Look: \(error)")
             }
 
             showProgressView = false

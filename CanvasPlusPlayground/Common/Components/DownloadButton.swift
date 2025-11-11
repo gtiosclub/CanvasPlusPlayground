@@ -42,7 +42,7 @@ struct DownloadButton: View {
         showProgressView = true
         Task {
             guard let data = await url.downloadWebFile() else {
-                print("Error downloading file")
+                LoggerService.main.error("Error downloading file")
                 return
             }
 
