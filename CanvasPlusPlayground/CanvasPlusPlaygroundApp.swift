@@ -8,6 +8,8 @@
 import SwiftUI
 import SwiftData
 
+let sandbox = true
+
 @main
 struct CanvasPlusPlaygroundApp: App {
     enum LaunchState {
