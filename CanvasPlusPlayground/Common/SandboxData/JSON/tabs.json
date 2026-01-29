@@ -1,0 +1,56 @@
+[
+    {
+        "id": "home",
+        "html_url": "https://canvas.example.com/courses/99001",
+        "full_url": "https://canvas.example.com/courses/99001",
+        "position": 1,
+        "visibility": "public",
+        "label": "Home",
+        "type": "internal"
+    },
+    {
+        "id": "modules",
+        "html_url": "https://canvas.example.com/courses/99001/modules",
+        "full_url": "https://canvas.example.com/courses/99001/modules",
+        "position": 2,
+        "visibility": "public",
+        "label": "Modules",
+        "type": "internal"
+    },
+    {
+        "id": "assignments",
+        "html_url": "https://canvas.example.com/courses/99001/assignments",
+        "full_url": "https://canvas.example.com/courses/99001/assignments",
+        "position": 3,
+        "visibility": "public",
+        "label": "Assignments",
+        "type": "internal"
+    },
+    {
+        "id": "announcements",
+        "html_url": "https://canvas.example.com/courses/99001/announcements",
+        "full_url": "https://canvas.example.com/courses/99001/announcements",
+        "position": 4,
+        "visibility": "public",
+        "label": "Announcements",
+        "type": "internal"
+    },
+    {
+        "id": "files",
+        "html_url": "https://canvas.example.com/courses/99001/files",
+        "full_url": "https://canvas.example.com/courses/99001/files",
+        "position": 5,
+        "visibility": "public",
+        "label": "Files",
+        "type": "internal"
+    },
+    {
+        "id": "grades",
+        "html_url": "https://canvas.example.com/courses/99001/grades",
+        "full_url": "https://canvas.example.com/courses/99001/grades",
+        "position": 6,
+        "visibility": "public",
+        "label": "Grades",
+        "type": "internal"
+    }
+]

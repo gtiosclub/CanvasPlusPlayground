@@ -1,0 +1,236 @@
+[
+    {
+        "id": 99901,
+        "name": "Week 1: Getting Started with Python",
+        "position": 1,
+        "unlock_at": null,
+        "require_sequential_progress": false,
+        "prerequisite_module_ids": [],
+        "items_count": 4,
+        "state": "completed",
+        "completed_at": "2025-01-19T15:30:00Z",
+        "published": true,
+        "workflow_state": "active",
+        "items": [
+            {
+                "id": 990101,
+                "module_id": 99901,
+                "position": 1,
+                "title": "Welcome to Week 1",
+                "indent": 0,
+                "type": "Page",
+                "page_url": "welcome-to-week-1",
+                "html_url": "https://canvas.example.com/courses/99001/pages/welcome-to-week-1",
+                "published": true,
+                "completion_requirement": {
+                    "type": "must_view",
+                    "completed": true
+                }
+            },
+            {
+                "id": 990102,
+                "module_id": 99901,
+                "position": 2,
+                "title": "Week 1 - Introduction to Python.pdf",
+                "indent": 0,
+                "type": "File",
+                "content_id": 99803,
+                "html_url": "https://canvas.example.com/courses/99001/files/99803",
+                "published": true,
+                "completion_requirement": {
+                    "type": "must_view",
+                    "completed": true
+                }
+            },
+            {
+                "id": 990103,
+                "module_id": 99901,
+                "position": 3,
+                "title": "Practice Quiz: Variables Review",
+                "indent": 0,
+                "type": "Quiz",
+                "content_id": 99402,
+                "html_url": "https://canvas.example.com/courses/99001/quizzes/99402",
+                "published": true,
+                "completion_requirement": {
+                    "type": "must_submit",
+                    "completed": true
+                }
+            },
+            {
+                "id": 990104,
+                "module_id": 99901,
+                "position": 4,
+                "title": "Python Documentation",
+                "indent": 0,
+                "type": "ExternalUrl",
+                "external_url": "https://docs.python.org/3/",
+                "new_tab": true,
+                "published": true,
+                "completion_requirement": {
+                    "type": "must_view",
+                    "completed": true
+                }
+            }
+        ]
+    },
+    {
+        "id": 99902,
+        "name": "Week 2: Variables and Data Types",
+        "position": 2,
+        "unlock_at": "2025-01-20T00:00:00Z",
+        "require_sequential_progress": true,
+        "prerequisite_module_ids": [99901],
+        "items_count": 4,
+        "state": "started",
+        "published": true,
+        "workflow_state": "active",
+        "items": [
+            {
+                "id": 990201,
+                "module_id": 99902,
+                "position": 1,
+                "title": "Week 2 Overview",
+                "indent": 0,
+                "type": "Page",
+                "page_url": "week-2-overview",
+                "html_url": "https://canvas.example.com/courses/99001/pages/week-2-overview",
+                "published": true,
+                "completion_requirement": {
+                    "type": "must_view",
+                    "completed": true
+                }
+            },
+            {
+                "id": 990202,
+                "module_id": 99902,
+                "position": 2,
+                "title": "Week 2 - Variables and Data Types.pdf",
+                "indent": 0,
+                "type": "File",
+                "content_id": 99804,
+                "html_url": "https://canvas.example.com/courses/99001/files/99804",
+                "published": true,
+                "completion_requirement": {
+                    "type": "must_view",
+                    "completed": false
+                }
+            },
+            {
+                "id": 990203,
+                "module_id": 99902,
+                "position": 3,
+                "title": "Homework 1: Variables and Data Types",
+                "indent": 0,
+                "type": "Assignment",
+                "content_id": 99301,
+                "html_url": "https://canvas.example.com/courses/99001/assignments/99301",
+                "published": true,
+                "completion_requirement": {
+                    "type": "must_submit",
+                    "completed": false
+                },
+                "content_details": {
+                    "points_possible": 100.0,
+                    "due_at": "2025-01-27T23:59:00Z",
+                    "unlock_at": "2025-01-20T00:00:00Z"
+                }
+            },
+            {
+                "id": 990204,
+                "module_id": 99902,
+                "position": 4,
+                "title": "Quiz 1: Python Basics",
+                "indent": 0,
+                "type": "Quiz",
+                "content_id": 99401,
+                "html_url": "https://canvas.example.com/courses/99001/quizzes/99401",
+                "published": true,
+                "completion_requirement": {
+                    "type": "must_submit",
+                    "completed": false
+                },
+                "content_details": {
+                    "points_possible": 50.0,
+                    "due_at": "2025-01-24T23:59:00Z",
+                    "unlock_at": "2025-01-20T00:00:00Z",
+                    "lock_at": "2025-01-25T23:59:00Z"
+                }
+            }
+        ]
+    },
+    {
+        "id": 99903,
+        "name": "Week 3: Control Structures",
+        "position": 3,
+        "unlock_at": "2025-01-27T00:00:00Z",
+        "require_sequential_progress": false,
+        "prerequisite_module_ids": [99902],
+        "items_count": 3,
+        "state": "locked",
+        "published": true,
+        "workflow_state": "active",
+        "items": [
+            {
+                "id": 990301,
+                "module_id": 99903,
+                "position": 1,
+                "title": "Week 3 Overview",
+                "indent": 0,
+                "type": "Page",
+                "page_url": "week-3-overview",
+                "html_url": "https://canvas.example.com/courses/99001/pages/week-3-overview",
+                "published": true,
+                "completion_requirement": {
+                    "type": "must_view",
+                    "completed": false
+                }
+            },
+            {
+                "id": 990302,
+                "module_id": 99903,
+                "position": 2,
+                "title": "Homework 2: Control Structures",
+                "indent": 0,
+                "type": "Assignment",
+                "content_id": 99302,
+                "html_url": "https://canvas.example.com/courses/99001/assignments/99302",
+                "published": true,
+                "completion_requirement": {
+                    "type": "must_submit",
+                    "completed": false
+                },
+                "content_details": {
+                    "points_possible": 100.0,
+                    "due_at": "2025-02-03T23:59:00Z",
+                    "unlock_at": "2025-01-27T00:00:00Z",
+                    "locked_for_user": true,
+                    "lock_explanation": "This module is locked until Week 2 is completed."
+                }
+            },
+            {
+                "id": 990303,
+                "module_id": 99903,
+                "position": 3,
+                "title": "Quiz 2: Control Structures",
+                "indent": 0,
+                "type": "Quiz",
+                "content_id": 99401,
+                "html_url": "https://canvas.example.com/courses/99001/quizzes/99401",
+                "published": true,
+                "completion_requirement": {
+                    "type": "must_submit",
+                    "completed": false
+                },
+                "content_details": {
+                    "points_possible": 50.0,
+                    "due_at": "2025-02-07T23:59:00Z",
+                    "unlock_at": "2025-02-03T00:00:00Z",
+                    "lock_at": "2025-02-08T23:59:00Z",
+                    "locked_for_user": true,
+                    "lock_explanation": "This module is locked until Week 2 is completed."
+                }
+            }
+        ]
+    }
+]

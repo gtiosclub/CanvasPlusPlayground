@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 63;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -609,6 +609,10 @@
 		D43B58082E765A210054C12C /* HTMLTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLTextView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		8C4BD6652F2AA5F900D7BB91 /* SandboxData */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = SandboxData; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		B76454612C8BBC7F002DF00E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -806,6 +810,7 @@
 		A324BA542D0796B8005F53FA /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				8C4BD6652F2AA5F900D7BB91 /* SandboxData */,
 				A3777E032D9F14DD00A8B00C /* PageConfiguration.swift */,
 				A324BA582D079730005F53FA /* Storage */,
 				A324BA572D0796F6005F53FA /* Network */,
@@ -1453,7 +1458,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B76454722C8BBC81002DF00E /* Build configuration list for PBXNativeTarget "CanvasPlusPlayground" */;
 			buildPhases = (
-                9ACDA5E82D5F1DA2001F1F0A /* SwiftLint */,
 				B76454602C8BBC7F002DF00E /* Sources */,
 				B76454612C8BBC7F002DF00E /* Frameworks */,
 				B76454622C8BBC7F002DF00E /* Resources */,
@@ -1461,6 +1465,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				8C4BD6652F2AA5F900D7BB91 /* SandboxData */,
 			);
 			name = CanvasPlusPlayground;
 			packageProductDependencies = (

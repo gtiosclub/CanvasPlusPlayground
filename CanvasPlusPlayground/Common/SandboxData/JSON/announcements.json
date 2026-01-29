@@ -1,0 +1,30 @@
+[
+    {
+        "id": 99501,
+        "title": "Welcome to CS 101!",
+        "created_at": "2025-01-15T09:00:00Z",
+        "message": "<p>Welcome to CS 101: Introduction to Programming!</p><p>I'm excited to have you in this course. Over the next few months, we'll explore the fundamentals of programming using Python.</p><h3>Getting Started</h3><ul><li>Review the syllabus in the Home section</li><li>Install Python 3.x on your computer</li><li>Complete the practice quiz to test your setup</li></ul><p>Don't hesitate to reach out if you have any questions!</p><p>Best,<br>Dr. Smith</p>",
+        "context_code": "course_99001"
+    },
+    {
+        "id": 99502,
+        "title": "Office Hours Update",
+        "created_at": "2025-01-17T14:30:00Z",
+        "message": "<p>Hi everyone,</p><p>I wanted to let you know about the office hours schedule:</p><ul><li><strong>Dr. Smith:</strong> Tuesdays 2-4 PM, Room 301</li><li><strong>TA Alex:</strong> Thursdays 3-5 PM, Lab 102</li></ul><p>You can also schedule virtual office hours through the booking link in the syllabus.</p>",
+        "context_code": "course_99001"
+    },
+    {
+        "id": 99503,
+        "title": "Homework 1 Tips",
+        "created_at": "2025-01-20T10:00:00Z",
+        "message": "<p>Homework 1 is now available! Here are some tips to help you succeed:</p><ol><li><strong>Start early</strong> - Don't wait until the last minute</li><li><strong>Test your code</strong> - Run it with different inputs</li><li><strong>Comment your code</strong> - Explain what each section does</li><li><strong>Ask questions</strong> - Use the discussion board or office hours</li></ol><p>Good luck!</p>",
+        "context_code": "course_99001"
+    },
+    {
+        "id": 99504,
+        "title": "Quiz 1 Reminder",
+        "created_at": "2025-01-22T08:00:00Z",
+        "message": "<p>Reminder: Quiz 1 is due this Friday at 11:59 PM!</p><p>The quiz covers:</p><ul><li>Variables and data types</li><li>Basic operators</li><li>String operations</li></ul><p>You have 2 attempts, and your highest score will be kept. Good luck!</p>",
+        "context_code": "course_99001"
+    }
+]

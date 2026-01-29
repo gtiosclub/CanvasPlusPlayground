@@ -1,0 +1,73 @@
+[
+    {
+        "id": 99101,
+        "name": "Dr. Sarah Smith",
+        "sortable_name": "Smith, Sarah",
+        "first_name": "Sarah",
+        "last_name": "Smith",
+        "short_name": "Dr. Smith",
+        "login_id": "ssmith@university.edu",
+        "avatar_url": "https://canvas.example.com/images/avatars/99101.png",
+        "email": "ssmith@university.edu",
+        "time_zone": "America/Los_Angeles",
+        "bio": "Associate Professor of Computer Science. Research interests include programming education and software engineering.",
+        "pronouns": "she/her",
+        "role": "teacher"
+    },
+    {
+        "id": 99102,
+        "name": "Alex Johnson",
+        "sortable_name": "Johnson, Alex",
+        "first_name": "Alex",
+        "last_name": "Johnson",
+        "short_name": "Alex",
+        "login_id": "ajohnson@university.edu",
+        "avatar_url": "https://canvas.example.com/images/avatars/99102.png",
+        "email": "ajohnson@university.edu",
+        "time_zone": "America/Los_Angeles",
+        "bio": "Graduate student in Computer Science. TA for CS 101.",
+        "pronouns": "they/them",
+        "role": "ta"
+    },
+    {
+        "id": 99103,
+        "name": "Emily Chen",
+        "sortable_name": "Chen, Emily",
+        "first_name": "Emily",
+        "last_name": "Chen",
+        "short_name": "Emily",
+        "login_id": "echen@university.edu",
+        "avatar_url": "https://canvas.example.com/images/avatars/99103.png",
+        "email": "echen@university.edu",
+        "time_zone": "America/New_York",
+        "pronouns": "she/her",
+        "role": "student"
+    },
+    {
+        "id": 99104,
+        "name": "Marcus Williams",
+        "sortable_name": "Williams, Marcus",
+        "first_name": "Marcus",
+        "last_name": "Williams",
+        "short_name": "Marcus",
+        "login_id": "mwilliams@university.edu",
+        "avatar_url": "https://canvas.example.com/images/avatars/99104.png",
+        "email": "mwilliams@university.edu",
+        "time_zone": "America/Chicago",
+        "role": "student"
+    },
+    {
+        "id": 99105,
+        "name": "Priya Patel",
+        "sortable_name": "Patel, Priya",
+        "first_name": "Priya",
+        "last_name": "Patel",
+        "short_name": "Priya",
+        "login_id": "ppatel@university.edu",
+        "avatar_url": "https://canvas.example.com/images/avatars/99105.png",
+        "email": "ppatel@university.edu",
+        "time_zone": "America/Los_Angeles",
+        "pronouns": "she/her",
+        "role": "student"
+    }
+]

@@ -1,0 +1,128 @@
+[
+    {
+        "id": 991001,
+        "course_id": 99001,
+        "course_section_id": 99001,
+        "enrollment_state": "active",
+        "type": "TeacherEnrollment",
+        "user_id": 99101,
+        "role": "TeacherEnrollment",
+        "role_id": 1,
+        "start_at": "2025-01-01T00:00:00Z",
+        "user": {
+            "id": 99101,
+            "name": "Dr. Sarah Smith",
+            "sortable_name": "Smith, Sarah",
+            "short_name": "Dr. Smith",
+            "avatar_url": "https://canvas.example.com/images/avatars/99101.png"
+        }
+    },
+    {
+        "id": 991002,
+        "course_id": 99001,
+        "course_section_id": 99001,
+        "enrollment_state": "active",
+        "type": "TaEnrollment",
+        "user_id": 99102,
+        "role": "TaEnrollment",
+        "role_id": 2,
+        "start_at": "2025-01-01T00:00:00Z",
+        "user": {
+            "id": 99102,
+            "name": "Alex Johnson",
+            "sortable_name": "Johnson, Alex",
+            "short_name": "Alex",
+            "avatar_url": "https://canvas.example.com/images/avatars/99102.png"
+        }
+    },
+    {
+        "id": 991003,
+        "course_id": 99001,
+        "course_section_id": 99001,
+        "enrollment_state": "active",
+        "type": "StudentEnrollment",
+        "user_id": 99103,
+        "role": "StudentEnrollment",
+        "role_id": 3,
+        "start_at": "2025-01-15T00:00:00Z",
+        "last_activity_at": "2025-01-23T14:30:00Z",
+        "grades": {
+            "html_url": "https://canvas.example.com/courses/99001/grades/99103",
+            "current_grade": "A",
+            "current_score": 95.0,
+            "final_grade": "A",
+            "final_score": 95.0
+        },
+        "computed_current_score": 95.0,
+        "computed_final_score": 95.0,
+        "computed_current_grade": "A",
+        "computed_final_grade": "A",
+        "user": {
+            "id": 99103,
+            "name": "Emily Chen",
+            "sortable_name": "Chen, Emily",
+            "short_name": "Emily",
+            "avatar_url": "https://canvas.example.com/images/avatars/99103.png"
+        }
+    },
+    {
+        "id": 991004,
+        "course_id": 99001,
+        "course_section_id": 99001,
+        "enrollment_state": "active",
+        "type": "StudentEnrollment",
+        "user_id": 99104,
+        "role": "StudentEnrollment",
+        "role_id": 3,
+        "start_at": "2025-01-15T00:00:00Z",
+        "last_activity_at": "2025-01-22T10:15:00Z",
+        "grades": {
+            "html_url": "https://canvas.example.com/courses/99001/grades/99104",
+            "current_grade": "B",
+            "current_score": 82.5,
+            "final_grade": "B",
+            "final_score": 82.5
+        },
+        "computed_current_score": 82.5,
+        "computed_final_score": 82.5,
+        "computed_current_grade": "B",
+        "computed_final_grade": "B",
+        "user": {
+            "id": 99104,
+            "name": "Marcus Williams",
+            "sortable_name": "Williams, Marcus",
+            "short_name": "Marcus",
+            "avatar_url": "https://canvas.example.com/images/avatars/99104.png"
+        }
+    },
+    {
+        "id": 991005,
+        "course_id": 99001,
+        "course_section_id": 99001,
+        "enrollment_state": "active",
+        "type": "StudentEnrollment",
+        "user_id": 99105,
+        "role": "StudentEnrollment",
+        "role_id": 3,
+        "start_at": "2025-01-15T00:00:00Z",
+        "last_activity_at": "2025-01-23T16:45:00Z",
+        "grades": {
+            "html_url": "https://canvas.example.com/courses/99001/grades/99105",
+            "current_grade": "A-",
+            "current_score": 88.0,
+            "final_grade": "A-",
+            "final_score": 88.0
+        },
+        "computed_current_score": 88.0,
+        "computed_final_score": 88.0,
+        "computed_current_grade": "A-",
+        "computed_final_grade": "A-",
+        "user": {
+            "id": 99105,
+            "name": "Priya Patel",
+            "sortable_name": "Patel, Priya",
+            "short_name": "Priya",
+            "avatar_url": "https://canvas.example.com/images/avatars/99105.png"
+        }
+    }
+]

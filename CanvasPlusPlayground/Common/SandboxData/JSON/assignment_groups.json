@@ -1,0 +1,137 @@
+[
+    {
+        "id": 99201,
+        "name": "Homework",
+        "position": 1,
+        "group_weight": 30.0,
+        "rules": {
+            "drop_lowest": 1
+        },
+        "assignments": [
+            {
+                "id": 99301,
+                "name": "Homework 1: Variables and Data Types",
+                "assignment_group_id": 99201,
+                "description": "<h2>Homework 1: Variables and Data Types</h2><p>In this assignment, you will practice working with Python variables and basic data types.</p><h3>Instructions</h3><ol><li>Create variables of different types (int, float, string, boolean)</li><li>Perform basic operations on these variables</li><li>Convert between data types</li></ol><h3>Submission</h3><p>Submit a single Python file named <code>hw1.py</code></p>",
+                "due_at": "2025-01-27T23:59:00Z",
+                "unlock_at": "2025-01-20T00:00:00Z",
+                "points_possible": 100.0,
+                "grading_type": "points",
+                "created_at": "2025-01-15T00:00:00Z",
+                "updated_at": "2025-01-15T00:00:00Z",
+                "position": 1,
+                "course_id": 99001,
+                "submission_types": ["online_upload"],
+                "allowed_extensions": ["py"],
+                "workflow_state": "published",
+                "published": true,
+                "html_url": "https://canvas.example.com/courses/99001/assignments/99301",
+                "submissions_download_url": "https://canvas.example.com/courses/99001/assignments/99301/submissions?zip=1",
+                "has_submitted_submissions": true,
+                "locked_for_user": false
+            },
+            {
+                "id": 99302,
+                "name": "Homework 2: Control Structures",
+                "assignment_group_id": 99201,
+                "description": "<h2>Homework 2: Control Structures</h2><p>Practice using if/else statements and loops in Python.</p><h3>Tasks</h3><ul><li>Write a program that determines if a number is positive, negative, or zero</li><li>Create a loop that prints the first 10 Fibonacci numbers</li><li>Build a simple number guessing game</li></ul>",
+                "due_at": "2025-02-03T23:59:00Z",
+                "unlock_at": "2025-01-27T00:00:00Z",
+                "points_possible": 100.0,
+                "grading_type": "points",
+                "created_at": "2025-01-15T00:00:00Z",
+                "updated_at": "2025-01-15T00:00:00Z",
+                "position": 2,
+                "course_id": 99001,
+                "submission_types": ["online_upload"],
+                "allowed_extensions": ["py"],
+                "workflow_state": "published",
+                "published": true,
+                "html_url": "https://canvas.example.com/courses/99001/assignments/99302",
+                "has_submitted_submissions": false,
+                "locked_for_user": false
+            }
+        ]
+    },
+    {
+        "id": 99202,
+        "name": "Projects",
+        "position": 2,
+        "group_weight": 40.0,
+        "assignments": [
+            {
+                "id": 99303,
+                "name": "Project 1: Calculator Application",
+                "assignment_group_id": 99202,
+                "description": "<h2>Project 1: Calculator Application</h2><p>Build a fully functional calculator application in Python.</p><h3>Requirements</h3><ul><li>Support basic operations: addition, subtraction, multiplication, division</li><li>Handle division by zero gracefully</li><li>Include a user-friendly menu system</li><li>Allow continuous calculations until the user chooses to exit</li></ul><h3>Bonus Points</h3><ul><li>Add support for exponents and square roots</li><li>Implement calculation history</li></ul>",
+                "due_at": "2025-02-17T23:59:00Z",
+                "unlock_at": "2025-02-03T00:00:00Z",
+                "points_possible": 200.0,
+                "grading_type": "points",
+                "created_at": "2025-01-15T00:00:00Z",
+                "updated_at": "2025-01-15T00:00:00Z",
+                "position": 1,
+                "course_id": 99001,
+                "submission_types": ["online_upload", "online_text_entry"],
+                "allowed_extensions": ["py", "zip"],
+                "workflow_state": "published",
+                "published": true,
+                "html_url": "https://canvas.example.com/courses/99001/assignments/99303",
+                "has_submitted_submissions": false,
+                "locked_for_user": false
+            }
+        ]
+    },
+    {
+        "id": 99203,
+        "name": "Quizzes",
+        "position": 3,
+        "group_weight": 30.0,
+        "assignments": [
+            {
+                "id": 99304,
+                "name": "Quiz 1: Python Basics",
+                "assignment_group_id": 99203,
+                "description": "This quiz covers variables, data types, and basic operations in Python.",
+                "due_at": "2025-01-24T23:59:00Z",
+                "unlock_at": "2025-01-20T00:00:00Z",
+                "lock_at": "2025-01-25T23:59:00Z",
+                "points_possible": 50.0,
+                "grading_type": "points",
+                "created_at": "2025-01-15T00:00:00Z",
+                "updated_at": "2025-01-15T00:00:00Z",
+                "position": 1,
+                "course_id": 99001,
+                "submission_types": ["online_quiz"],
+                "workflow_state": "published",
+                "published": true,
+                "is_quiz_assignment": true,
+                "html_url": "https://canvas.example.com/courses/99001/assignments/99304",
+                "has_submitted_submissions": true,
+                "locked_for_user": false
+            },
+            {
+                "id": 99305,
+                "name": "Quiz 2: Control Structures",
+                "assignment_group_id": 99203,
+                "description": "Test your knowledge of if/else statements and loops.",
+                "due_at": "2025-02-07T23:59:00Z",
+                "unlock_at": "2025-02-03T00:00:00Z",
+                "lock_at": "2025-02-08T23:59:00Z",
+                "points_possible": 50.0,
+                "grading_type": "points",
+                "created_at": "2025-01-15T00:00:00Z",
+                "updated_at": "2025-01-15T00:00:00Z",
+                "position": 2,
+                "course_id": 99001,
+                "submission_types": ["online_quiz"],
+                "workflow_state": "published",
+                "published": true,
+                "is_quiz_assignment": true,
+                "html_url": "https://canvas.example.com/courses/99001/assignments/99305",
+                "has_submitted_submissions": false,
+                "locked_for_user": false
+            }
+        ]
+    }
+]
