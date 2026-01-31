@@ -57,9 +57,9 @@ Course ID `12345` is used consistently across all of this data.
 
 Added extension methods that decide whether to load sandbox or real data:
 
-- **`CourseManager.getCoursesIfNeeded()`** – Uses `dummyCourse` when in sandbox.
-- **`ProfileManager.getCurrentUserAndProfileIfNeeded()`** – Uses `dummyUser` and `dummyProfile` in sandbox.
-- **`ToDoListManager.fetchToDoItemCountIfNeeded()`** – Uses `dummyToDoCount` in sandbox.
+- **`CourseManager.getSandboxedCourses()`** – Uses `dummyCourse` when in sandbox.
+- **`ProfileManager.getSandboxedCurrentUserAndProfile()`** – Uses `dummyUser` and `dummyProfile` in sandbox.
+- **`ToDoListManager.fetchSandboxedToDoItemCountIfNeeded()`** – Uses `dummyToDoCount` in sandbox.
 
 These methods are used only when `AppEnvironment.isSandbox` is true.
 
