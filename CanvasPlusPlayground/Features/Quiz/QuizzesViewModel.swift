@@ -33,6 +33,10 @@ class QuizzesViewModel {
     }
 
     func fetchQuizzes() async {
+        if AppEnvironment.isSandbox {
+            addQuizzes(SandboxData.dummyQuizzes)
+            return
+        }
         let request = CanvasRequest.getQuizzes(courseId: courseId)
 
         do {

@@ -67,7 +67,9 @@ struct HomeView: View {
         }
         .tabViewStyle(.sidebarAdaptable)
         .task {
-            if !StorageKeys.hasCompletedOnboarding {
+            if AppEnvironment.isSandbox {
+                await loadCourses()
+            } else if !StorageKeys.hasCompletedOnboarding {
                 navigationModel.showAuthorizationSheet = true
             } else if StorageKeys.needsAuthorization {
                 navigationModel.showAuthorizationSheet = true
@@ -110,11 +112,17 @@ struct HomeView: View {
     private func loadCourses() async {
         isLoadingCourses = true
 
-        async let coursesTask: Void = courseManager.getCourses()
-        async let profileTask: Void = profileManager.getCurrentUserAndProfile()
-        async let todoTask: Void = toDoListManager.fetchToDoItemCount()
+        if AppEnvironment.isSandbox {
+            await courseManager.getCoursesIfNeeded()
+            await profileManager.getCurrentUserAndProfileIfNeeded()
+            await toDoListManager.fetchToDoItemCountIfNeeded()
+        } else {
+            async let coursesTask: Void = courseManager.getCourses()
+            async let profileTask: Void = profileManager.getCurrentUserAndProfile()
+            async let todoTask: Void = toDoListManager.fetchToDoItemCount()
 
-        await (_, _, _) = (coursesTask, profileTask, todoTask)
+            await (_, _, _) = (coursesTask, profileTask, todoTask)
+        }
 
         isLoadingCourses = false
     }
