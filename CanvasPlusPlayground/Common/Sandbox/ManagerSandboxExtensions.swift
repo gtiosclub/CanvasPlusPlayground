@@ -13,7 +13,7 @@ import Foundation
 // MARK: - CourseManager
 
 extension CourseManager {
-    func getCoursesIfNeeded() async {
+    func getSandboxedCourses() async {
         guard AppEnvironment.isSandbox else {
             await getCourses()
             return
@@ -26,7 +26,7 @@ extension CourseManager {
 // MARK: - ProfileManager
 
 extension ProfileManager {
-    func getCurrentUserAndProfileIfNeeded() async {
+    func getSandboxedCurrentUserAndProfile() async {
         guard AppEnvironment.isSandbox else {
             await getCurrentUserAndProfile()
             return
@@ -39,7 +39,7 @@ extension ProfileManager {
 // MARK: - ToDoListManager
 
 extension ToDoListManager {
-    func fetchToDoItemCountIfNeeded() async {
+    func fetchSandboxedToDoItemCount() async {
         guard AppEnvironment.isSandbox else {
             await fetchToDoItemCount()
             return

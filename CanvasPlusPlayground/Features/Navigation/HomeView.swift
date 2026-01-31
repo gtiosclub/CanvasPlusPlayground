@@ -113,9 +113,9 @@ struct HomeView: View {
         isLoadingCourses = true
 
         if AppEnvironment.isSandbox {
-            await courseManager.getCoursesIfNeeded()
-            await profileManager.getCurrentUserAndProfileIfNeeded()
-            await toDoListManager.fetchToDoItemCountIfNeeded()
+            await courseManager.getSandboxedCourses()
+            await profileManager.getSandboxedCurrentUserAndProfile()
+            await toDoListManager.fetchSandboxedToDoItemCount()
         } else {
             async let coursesTask: Void = courseManager.getCourses()
             async let profileTask: Void = profileManager.getCurrentUserAndProfile()
