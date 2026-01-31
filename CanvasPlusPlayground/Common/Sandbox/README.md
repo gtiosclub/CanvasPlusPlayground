@@ -85,9 +85,9 @@ Updated `loadCourses()` to use the sandbox extensions when in sandbox:
 
 ```
 If sandbox:
-  - getCoursesIfNeeded()
-  - getCurrentUserAndProfileIfNeeded()
-  - fetchToDoItemCountIfNeeded()
+  - getSandboxedCourses()
+  - getSandboxedCurrentUserAndProfile()
+  - fetchSandboxedToDoItemCountIfNeeded()
 Else:
   - Existing network-based loading (getCourses, getCurrentUserAndProfile, etc.)
 ```
@@ -155,7 +155,7 @@ Extended `TabAPI` with `sandboxTabs` so the dummy course shows the same tabs as 
 
 1. App launches → `HomeView` appears.
 2. `.task` sees `AppEnvironment.isSandbox == true` → skips auth and calls `loadCourses()`.
-3. `loadCourses()` calls `getCoursesIfNeeded()`, `getCurrentUserAndProfileIfNeeded()`, `fetchToDoItemCountIfNeeded()`.
+3. `loadCourses()` calls `getSandboxedCourses()`, `getSandboxedCurrentUserAndProfile()`, `fetchSandboxedToDoItemCount()`.
 4. Those methods see sandbox → load data from `SandboxData` only, no API calls.
 5. `HomeView` shows the sandbox course in the sidebar.
 6. When a tab is opened (e.g., Announcements), the view calls its manager’s fetch (e.g., `fetchAnnouncements()`).
