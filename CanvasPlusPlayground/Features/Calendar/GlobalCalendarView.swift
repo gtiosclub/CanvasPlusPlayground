@@ -68,6 +68,9 @@ struct GlobalCalendarView: View {
         let date: Date
         let events: [CanvasCalendarEvent]
 
+        private var sortedEvents: [CanvasCalendarEvent] {
+            events.sorted { $0.startDate < $1.startDate }
+        }
         var backgroundTint: Color? {
             date.isInToday ? .blue.opacity(0.15) : nil
         }
@@ -76,7 +79,7 @@ struct GlobalCalendarView: View {
             VStack {
                 Text(date.dayNumberString)
                 VStack(spacing: 5) {
-                    ForEach(events) { event in
+                    ForEach(sortedEvents) { event in
                         EventCardView(event: event)
                     }
                 }
