@@ -24,6 +24,10 @@ class PagesManager {
     }
 
     func fetchPages() async {
+        if AppEnvironment.isSandbox {
+            setPages(SandboxData.dummyPages)
+            return
+        }
         let request = CanvasRequest.getPages(courseId: self.courseID)
         do {
             let fetchedPages = try await CanvasService.shared.loadAndSync(

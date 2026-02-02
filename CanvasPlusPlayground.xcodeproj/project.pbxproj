@@ -18,6 +18,7 @@
 		26BF115B2E92E1D2000680D4 /* Dashboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26BF11572E92E1D2000680D4 /* Dashboard.swift */; };
 		26BF115C2E92E1D2000680D4 /* DashboardValueKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26BF11582E92E1D2000680D4 /* DashboardValueKey.swift */; };
 		26BF115D2E92E1D2000680D4 /* ExampleDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26BF11592E92E1D2000680D4 /* ExampleDashboardView.swift */; };
+		26C2182A2F2E65500050594A /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 26C218292F2E65460050594A /* README.md */; };
 		3DAE85002C9A0E4F008C22E7 /* BridgedPDFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DAE84FF2C9A0E4F008C22E7 /* BridgedPDFView.swift */; };
 		7F8535742C98DE3C0023E384 /* CourseGradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8535732C98DE3C0023E384 /* CourseGradeView.swift */; };
 		8C0A84272E9FF2850036D1F6 /* CalendarEventDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0A84262E9FF2850036D1F6 /* CalendarEventDetailView.swift */; };
@@ -304,6 +305,9 @@
 		D43B58052E76586A0054C12C /* AssignmentQuizDetailsForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43B58042E76586A0054C12C /* AssignmentQuizDetailsForm.swift */; };
 		D43B58072E76593C0054C12C /* QuizDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43B58062E76593C0054C12C /* QuizDetailView.swift */; };
 		D43B58092E765A210054C12C /* HTMLTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43B58082E765A210054C12C /* HTMLTextView.swift */; };
+		SANDBOX052E5F6789012345A5 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = SANDBOX012E5F6789012345A1 /* AppEnvironment.swift */; };
+		SANDBOX062E5F6789012345A6 /* SandboxData.swift in Sources */ = {isa = PBXBuildFile; fileRef = SANDBOX022E5F6789012345A2 /* SandboxData.swift */; };
+		SANDBOX072E5F6789012345A7 /* ManagerSandboxExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = SANDBOX042E5F6789012345A4 /* ManagerSandboxExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -318,6 +322,7 @@
 		26BF11572E92E1D2000680D4 /* Dashboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dashboard.swift; sourceTree = "<group>"; };
 		26BF11582E92E1D2000680D4 /* DashboardValueKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardValueKey.swift; sourceTree = "<group>"; };
 		26BF11592E92E1D2000680D4 /* ExampleDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleDashboardView.swift; sourceTree = "<group>"; };
+		26C218292F2E65460050594A /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		3DAE84FF2C9A0E4F008C22E7 /* BridgedPDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgedPDFView.swift; sourceTree = "<group>"; };
 		7F8535732C98DE3C0023E384 /* CourseGradeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseGradeView.swift; sourceTree = "<group>"; };
 		8C0A84262E9FF2850036D1F6 /* CalendarEventDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarEventDetailView.swift; sourceTree = "<group>"; };
@@ -607,6 +612,9 @@
 		D43B58042E76586A0054C12C /* AssignmentQuizDetailsForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentQuizDetailsForm.swift; sourceTree = "<group>"; };
 		D43B58062E76593C0054C12C /* QuizDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizDetailView.swift; sourceTree = "<group>"; };
 		D43B58082E765A210054C12C /* HTMLTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLTextView.swift; sourceTree = "<group>"; };
+		SANDBOX012E5F6789012345A1 /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
+		SANDBOX022E5F6789012345A2 /* SandboxData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandboxData.swift; sourceTree = "<group>"; };
+		SANDBOX042E5F6789012345A4 /* ManagerSandboxExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerSandboxExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -806,6 +814,8 @@
 		A324BA542D0796B8005F53FA /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				SANDBOX012E5F6789012345A1 /* AppEnvironment.swift */,
+				SANDBOX032E5F6789012345A3 /* Sandbox */,
 				A3777E032D9F14DD00A8B00C /* PageConfiguration.swift */,
 				A324BA582D079730005F53FA /* Storage */,
 				A324BA572D0796F6005F53FA /* Network */,
@@ -1446,6 +1456,16 @@
 			path = Profile;
 			sourceTree = "<group>";
 		};
+		SANDBOX032E5F6789012345A3 /* Sandbox */ = {
+			isa = PBXGroup;
+			children = (
+				26C218292F2E65460050594A /* README.md */,
+				SANDBOX042E5F6789012345A4 /* ManagerSandboxExtensions.swift */,
+				SANDBOX022E5F6789012345A2 /* SandboxData.swift */,
+			);
+			path = Sandbox;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1453,7 +1473,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B76454722C8BBC81002DF00E /* Build configuration list for PBXNativeTarget "CanvasPlusPlayground" */;
 			buildPhases = (
-                9ACDA5E82D5F1DA2001F1F0A /* SwiftLint */,
 				B76454602C8BBC7F002DF00E /* Sources */,
 				B76454612C8BBC7F002DF00E /* Frameworks */,
 				B76454622C8BBC7F002DF00E /* Resources */,
@@ -1510,6 +1529,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				26C2182A2F2E65500050594A /* README.md in Resources */,
 				B76455092C8DF61B002DF00E /* Preview Assets.xcassets in Resources */,
 				B764550A2C8DF61B002DF00E /* Assets.xcassets in Resources */,
 				B75BFD682EA452CE00BB74C3 /* AppIcon.icon in Resources */,
@@ -1588,6 +1608,9 @@
 				B733340D2E916FEB0011E8A9 /* AllToDosWidget.swift in Sources */,
 				A372D1082D90CEFE005E94CA /* APIGroupMembership.swift in Sources */,
 				B76455012C8DF61B002DF00E /* StorageKeys.swift in Sources */,
+				SANDBOX052E5F6789012345A5 /* AppEnvironment.swift in Sources */,
+				SANDBOX062E5F6789012345A6 /* SandboxData.swift in Sources */,
+				SANDBOX072E5F6789012345A7 /* ManagerSandboxExtensions.swift in Sources */,
 				A3777E082D9F1B3700A8B00C /* CourseSection.swift in Sources */,
 				A37AB4A72D98670600610639 /* LeaveGroupRequest.swift in Sources */,
 				A3FFD03A2CDEC2AC006BAB51 /* LookupCondition.swift in Sources */,

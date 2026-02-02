@@ -47,4 +47,10 @@ class ProfileManager {
 
         return nil
     }
+
+    /// Sets user and profile for sandbox mode. Only used when AppEnvironment.isSandbox is true.
+    func setSandboxUserAndProfile(user: User, profile: Profile) {
+        currentUser = user
+        currentProfile = profile
+    }
 }

@@ -57,6 +57,11 @@ class PeopleManager: SearchResultListDataSource {
     func fetchPeople() async throws {
         guard let courseID else { return }
 
+        if AppEnvironment.isSandbox {
+            addNewUsers(SandboxData.dummyUsers)
+            return
+        }
+
         let request = CanvasRequest.getUsers(
             courseId: courseID,
             include: [.enrollments, .avatarUrl, .bio, .pronouns],
