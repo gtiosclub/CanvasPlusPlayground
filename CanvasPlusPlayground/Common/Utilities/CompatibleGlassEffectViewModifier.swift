@@ -5,6 +5,7 @@
 //  Created by Rahul on 10/11/25.
 //
 
+#if os(iOS) || os(macOS)
 import SwiftUI
 
 enum CompatibleGlassEffect {
@@ -61,3 +62,4 @@ extension View {
         compatibleGlassEffect(glass, in: RoundedRectangle(cornerRadius: 12))
     }
 }
+#endif

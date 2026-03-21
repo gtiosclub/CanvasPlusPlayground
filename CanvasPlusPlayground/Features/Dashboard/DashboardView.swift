@@ -232,7 +232,9 @@ private struct NavigationBanner: View {
             .padding(.vertical, 4)
             #endif
             .padding(8)
+            #if !os(visionOS)
             .compatibleGlassEffect(isInteractive: true, in: .capsule)
+            #endif
         }
     }
 }

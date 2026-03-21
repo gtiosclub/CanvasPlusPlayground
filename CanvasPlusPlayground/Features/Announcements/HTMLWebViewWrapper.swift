@@ -62,7 +62,7 @@ private struct HTMLWebView: PlatformRepresentable {
                     ) {
                         await onDestinationLink(potentialDestination)
                     } else {
-                        #if os(iOS)
+                        #if os(iOS) || os(visionOS)
                         await UIApplication.shared.open(url)
                         #else
                         NSWorkspace.shared.open(url)

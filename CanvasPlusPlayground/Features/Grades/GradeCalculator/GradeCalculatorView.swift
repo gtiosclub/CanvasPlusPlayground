@@ -81,8 +81,7 @@ struct GradeCalculatorView: View {
                     assignmentRowFocus == nil && groupRowFocus == nil ? .defaultAction : .none
                 )
             }
-
-            ToolbarItemGroup(placement: .keyboard) {
+            ToolbarItemGroup(placement: .automatic) {
                 Spacer()
                 Button("Done") {
                     assignmentRowFocus = nil
