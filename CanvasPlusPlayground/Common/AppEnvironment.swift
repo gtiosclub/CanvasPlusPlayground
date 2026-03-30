@@ -15,5 +15,5 @@ enum AppEnvironment {
     /// - Skips authentication flow
     /// - Uses static dummy data for all course content
     /// - No network calls are made
-    static let isSandbox = false
+    static let isSandbox = true
 }
