@@ -71,6 +71,8 @@ struct HomeView: View {
         .task {
             if AppEnvironment.isSandbox {
                 await loadCourses()
+                SandboxDataLoader.persistSandboxData()
+                await SpotlightIndexer.shared.indexAllContent()
             } else if !StorageKeys.hasCompletedOnboarding {
                 navigationModel.showAuthorizationSheet = true
             } else if StorageKeys.needsAuthorization {
@@ -111,10 +113,10 @@ struct HomeView: View {
         #endif
         .sheet(isPresented: $navigationModel.showSpotlightSearch) {
             SpotlightSearchView()
-                #if os(macOS)
-                .frame(width: 560)
-                .frame(minHeight: 100, maxHeight: 480)
-                #endif
+//                #if os(macOS)
+//                .frame(width: 560)
+//                .frame(minHeight: 100, maxHeight: 480)
+//                #endif
         }
         .background {
             Button("") {

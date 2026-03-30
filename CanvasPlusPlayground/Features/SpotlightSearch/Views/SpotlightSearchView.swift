@@ -31,8 +31,8 @@ struct SpotlightSearchView: View {
             #endif
         }
         #if os(macOS)
-        .frame(width: 560)
-        .frame(minHeight: 100, maxHeight: 480)
+        .frame(width: 350)
+        .frame(minHeight: 400, maxHeight: .infinity)
         #endif
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
