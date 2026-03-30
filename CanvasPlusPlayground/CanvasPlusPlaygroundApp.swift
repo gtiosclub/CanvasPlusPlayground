@@ -67,6 +67,15 @@ struct CanvasPlusPlaygroundApp: App {
             }
             #endif
             #endif
+            CommandGroup(after: .textEditing) {
+                Button("Search Everywhere") {
+                    NotificationCenter.default.post(
+                        name: .openSpotlightSearch,
+                        object: nil
+                    )
+                }
+                .keyboardShortcut("k", modifiers: .command)
+            }
         }
 
 #if DEBUG && os(macOS)
