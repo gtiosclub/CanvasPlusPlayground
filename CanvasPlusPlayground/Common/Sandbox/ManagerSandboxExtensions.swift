@@ -18,7 +18,7 @@ extension CourseManager {
             await getCourses()
             return
         }
-        self.activeCourses = [SandboxData.dummyCourse]
+        self.activeCourses = SandboxData.dummyCourses
         LoggerService.main.debug("[Sandbox] Loaded dummy course")
     }
 }
