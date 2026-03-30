@@ -78,8 +78,9 @@ class CourseFileViewModel: SearchResultListDataSource {
 
     func fetchContent(in folder: Folder) async {
         if AppEnvironment.isSandbox {
-            self.folders = []
-            self.files = SandboxData.dummyFiles
+            let folderId = Int(folder.id)
+            self.folders = SandboxData.dummySubfolders.filter { $0.parentFolderId == folderId }
+            self.files = SandboxData.dummyFiles.filter { $0.folderId == folderId }
             return
         }
         async let foldersInRootFolder: [Folder] = CanvasService.shared.loadAndSync(
