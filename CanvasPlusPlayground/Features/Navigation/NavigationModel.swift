@@ -123,6 +123,27 @@ class NavigationModel {
                 GlobalCalendarView()
             }
         }
+        // Computed displayTitle
+        var displayTitle: String {
+            switch self {
+            case .allAnnouncements: "All Announcements"
+            case .allToDos: "To-Do List"
+            case .pinnedItems: "Pinned"
+            case .recentItems: "Recent Items"
+            case .today: "Today"
+            case .allCalendar: "Calendar"
+            case .course(let c): c.displayName
+            case .coursePage(let page, _): page.title
+            case .announcement(let a): a.title ?? "Announcement"
+            case .assignment(let a): a.name
+            case .page(let p): p.displayTitle
+            case .file(let f, _): f.displayName
+            case .folder(let f, _): f.name ?? "Folder"
+            case .quiz(let q): q.title
+            case .calendarEvent(let e, _): "Event"
+            }
+        }
+
     }
 
     // MARK: - Tab-based navigation
@@ -130,6 +151,7 @@ class NavigationModel {
         didSet {
             // when switching tab, flush the course path, this is unique to mac and ipad
             coursePath = NavigationPath()
+            courseDestinations = []
         }
     }
 
@@ -138,6 +160,11 @@ class NavigationModel {
     var dashboardPath = NavigationPath()
 
     var coursePath = NavigationPath() // for Tab.course(id:)
+    
+    // breadcrumbs support
+    var allCoursesDestinations: [Destination] = []
+    var dashboardDestinations: [Destination] = []
+    var courseDestinations: [Destination] = []
 
     var navigationPath: NavigationPath {
         set {
@@ -157,6 +184,74 @@ class NavigationModel {
             }
         }
     }
+    
+    /// The shadow destination array for the currently active tab.
+    private var currentDestinations: [Destination] {
+        get {
+            switch selectedTab {
+            case .allCourses: allCoursesDestinations
+            case .dashboard: dashboardDestinations
+            case .course: courseDestinations
+            default: allCoursesDestinations
+            }
+        }
+        set {
+            switch selectedTab {
+            case .allCourses: allCoursesDestinations = newValue
+            case .dashboard: dashboardDestinations = newValue
+            case .course: courseDestinations = newValue
+            default: allCoursesDestinations = newValue
+            }
+        }
+    }
+
+    /// Breadcrumb trail for the current tab.
+    var breadcrumbs: [Destination] {
+        currentDestinations
+    }
+
+    /// Push a destination onto the current navigation path.
+    func push(_ destination: Destination) {
+        navigationPath.append(destination)
+        // Recording into currentDestinations happens via recordDestination()
+        // called from defaultNavigationDestination's onAppear.
+    }
+
+    /// Called when a destination view appears. Keeps the breadcrumb
+    /// trail in sync with the navigation path.
+    func recordDestination(_ destination: Destination) {
+        if currentDestinations.count < navigationPath.count {
+            currentDestinations.append(destination)
+        }
+    }
+
+    /// Trim the breadcrumb trail when the navigation path shrinks (back navigation).
+    func trimBreadcrumbs(to count: Int) {
+        if currentDestinations.count > count {
+            currentDestinations = Array(currentDestinations.prefix(count))
+        }
+    }
+
+    /// Pop to the root of the current navigation stack.
+    func popToRoot() {
+        currentDestinations = []
+        navigationPath = NavigationPath()
+    }
+
+    /// Pop back to a specific breadcrumb index.
+    func popToIndex(_ index: Int) {
+        let keepCount = index + 1
+        guard keepCount < currentDestinations.count else { return }
+        currentDestinations = Array(currentDestinations.prefix(keepCount))
+
+        // Rebuild NavigationPath from scratch
+        var newPath = NavigationPath()
+        for dest in currentDestinations {
+            newPath.append(dest)
+        }
+        navigationPath = newPath
+    }
+    
     var showAuthorizationSheet = false
     var showProfileSheet = false
     #if os(iOS)
