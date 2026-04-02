@@ -97,7 +97,9 @@ struct IGCOnboardingView: View {
                     Text("Beta".uppercased())
                         .font(.caption)
                         .padding(8)
+                    #if !os(visionOS)
                         .glassEffect()
+                    #endif
                 }
             }
             .font(.largeTitle)
@@ -206,7 +208,9 @@ fileprivate struct SyllabusPickerView: View {
                     showingFilePicker = true
                 }
             }
+            #if !os(visionOS)
             .buttonStyle(.glass)
+            #endif
         }
         .sheet(isPresented: $showingCoursePicker) {
             if let course = manager.course {
@@ -279,7 +283,9 @@ fileprivate struct ExtractWeightsView: View {
                     await extractWeights()
                 }
             }
+            #if !os(visionOS)
             .buttonStyle(.glass)
+            #endif
             .disabled(
                 intelligenceService == nil ||
                 manager.pickedItem == nil ||

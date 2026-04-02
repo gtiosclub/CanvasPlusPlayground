@@ -53,7 +53,7 @@ struct CourseTabsView: View {
     }
 }
 
-#if os(iOS)
+#if os(iOS) || os(visionOS)
 typealias PlatformRepresentable = UIViewRepresentable
 #else
 typealias PlatformRepresentable = NSViewRepresentable
@@ -62,7 +62,7 @@ typealias PlatformRepresentable = NSViewRepresentable
 struct WebView: PlatformRepresentable {
     let url: URL
 
-#if os(iOS)
+#if os(iOS) || os(visionOS)
     func makeUIView(context: Context) -> WKWebView {
         WKWebView()
     }
