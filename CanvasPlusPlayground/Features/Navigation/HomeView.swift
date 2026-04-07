@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CoreSpotlight
 import SwiftData
 
 struct HomeView: View {
@@ -128,14 +127,6 @@ struct HomeView: View {
             }
             .keyboardShortcut("k", modifiers: .command)
             .hidden()
-        }
-        .onContinueUserActivity(CSSearchableItemActionType) { activity in
-            guard let identifier = activity.userInfo?[CSSearchableItemActivityIdentifier] as? String else {
-                return
-            }
-            if !handleSpotlightDeepLink(identifier) {
-                pendingSpotlightIdentifier = identifier
-            }
         }
         .onReceive(NotificationCenter.default.publisher(for: .openSpotlightDeepLink)) { notification in
             guard let identifier = notification.userInfo?[SpotlightDeepLinkUserInfoKey.identifier] as? String else {
