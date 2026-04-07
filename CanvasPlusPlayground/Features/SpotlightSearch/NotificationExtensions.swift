@@ -4,10 +4,13 @@
 //
 //  Created by Ivan Li on 3/30/26.
 //
-#if os(macOS)
-import AppKit
+import Foundation
 
 extension Notification.Name {
     static let openSpotlightSearch = Notification.Name("openSpotlightSearch")
+    static let openSpotlightDeepLink = Notification.Name("openSpotlightDeepLink")
 }
-#endif
+
+enum SpotlightDeepLinkUserInfoKey {
+    static let identifier = "identifier"
+}

@@ -18,6 +18,7 @@ struct HomeView: View {
     @State private var columnVisibility = NavigationSplitViewVisibility.all
     @State private var isLoadingCourses = false
     @State private var navigationModel = NavigationModel()
+    @State private var pendingSpotlightIdentifier: String?
 
     var body: some View {
         @Bindable var courseManager = courseManager
@@ -73,6 +74,7 @@ struct HomeView: View {
                 await loadCourses()
                 SandboxDataLoader.persistSandboxData()
                 await SpotlightIndexer.shared.indexAllContent()
+                drainPendingSpotlightDeepLink()
             } else if !StorageKeys.hasCompletedOnboarding {
                 navigationModel.showAuthorizationSheet = true
             } else if StorageKeys.needsAuthorization {
@@ -80,11 +82,13 @@ struct HomeView: View {
             } else {
                 await loadCourses()
                 await SpotlightIndexer.shared.indexAllContent()
+                drainPendingSpotlightDeepLink()
             }
         }
         .sheet(isPresented: $navigationModel.showAuthorizationSheet) {
             Task {
                 await loadCourses()
+                drainPendingSpotlightDeepLink()
             }
         } content: {
             if !StorageKeys.hasCompletedOnboarding {
@@ -129,7 +133,17 @@ struct HomeView: View {
             guard let identifier = activity.userInfo?[CSSearchableItemActivityIdentifier] as? String else {
                 return
             }
-            handleSpotlightDeepLink(identifier)
+            if !handleSpotlightDeepLink(identifier) {
+                pendingSpotlightIdentifier = identifier
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .openSpotlightDeepLink)) { notification in
+            guard let identifier = notification.userInfo?[SpotlightDeepLinkUserInfoKey.identifier] as? String else {
+                return
+            }
+            if !handleSpotlightDeepLink(identifier) {
+                pendingSpotlightIdentifier = identifier
+            }
         }
         .onReceive(NotificationCenter.default.publisher(for: .openSpotlightSearch)) { _ in
             navigationModel.showSpotlightSearch = true
@@ -234,17 +248,28 @@ struct HomeView: View {
     }
 
     
-    private func handleSpotlightDeepLink(_ identifier: String) {
+    @discardableResult
+    private func handleSpotlightDeepLink(_ identifier: String) -> Bool {
         let parts = identifier.split(separator: ":", maxSplits: 1)
-        guard parts.count == 2 else { return }
+        guard parts.count == 2 else { return false }
 
         let type = String(parts[0])
         let id = String(parts[1])
 
-        guard let destination = destinationForDeepLink(type: type, id: id) else { return }
+        guard let destination = destinationForDeepLink(type: type, id: id) else { return false }
 
         navigationModel.selectedTab = .dashboard
-        navigationModel.dashboardPath.append(destination)
+        DispatchQueue.main.async {
+            navigationModel.dashboardPath.append(destination)
+        }
+        return true
+    }
+
+    private func drainPendingSpotlightDeepLink() {
+        guard let pending = pendingSpotlightIdentifier else { return }
+        if handleSpotlightDeepLink(pending) {
+            pendingSpotlightIdentifier = nil
+        }
     }
 
 
