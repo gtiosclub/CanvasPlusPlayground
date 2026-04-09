@@ -21,4 +21,68 @@ struct TodayWidget: @MainActor ListWidget {
 
     @MainActor
     var dataSource: TodayDataSource = .init()
+
+    func adaptedContents(for size: WidgetSize) -> AnyView {
+        AnyView(TodayWidgetBodyView(widget: self))
+    }
+}
+
+private struct TodayWidgetBodyView: View {
+    let widget: TodayWidget
+
+    private var dataSource: TodayWidget.DataSource { widget.dataSource }
+
+    var body: some View {
+        Group {
+            if dataSource.widgetData.isEmpty {
+                ContentUnavailableView(
+                    "All Clear for Today! 🎉",
+                    systemImage: "calendar.badge.checkmark",
+                    description: Text("Today’s looking light. Kick back and enjoy it")
+                )
+            } else {
+                List {
+                    Section {
+                        if !dataSource.todoItems.isEmpty {
+                            ForEach(dataSource.todoItems) { item in
+                                NavigationLink(value: dataSource.destinationView(for: item)) {
+                                    TodayItemRow(item: item)
+                                }
+                            }
+                        } else {
+                            Text("No to-do items")
+                                .foregroundStyle(.secondary)
+                                .font(.callout)
+                        }
+                    } header: {
+                        Label("To-Do Items", systemImage: "checklist")
+                            .font(.headline)
+                            .foregroundStyle(.red)
+                    }
+
+                    Section {
+                        if !dataSource.calendarEventItems.isEmpty {
+                            ForEach(dataSource.calendarEventItems) { item in
+                                NavigationLink(value: dataSource.destinationView(for: item)) {
+                                    TodayItemRow(item: item)
+                                }
+                            }
+                        } else {
+                            Text("No calendar events")
+                                .foregroundStyle(.secondary)
+                                .font(.callout)
+                        }
+                    } header: {
+                        Label("Calendar Events", systemImage: "calendar")
+                            .font(.headline)
+                            .foregroundStyle(.purple)
+                    }
+                }
+                .listStyle(.plain)
+                .scrollContentBackground(.hidden)
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
 }

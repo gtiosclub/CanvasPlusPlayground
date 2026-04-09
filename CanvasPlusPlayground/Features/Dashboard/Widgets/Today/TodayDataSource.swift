@@ -59,7 +59,11 @@ class TodayDataSource: ListWidgetDataSource {
 
     var widgetData: [ListWidgetData] {
         get {
-            todayItems.map { item in
+            todayItems.compactMap { item in
+                let currentMidNightDate = Calendar.current.startOfDay(for: .now)
+                let itemMidNightDate = Calendar.current.startOfDay(for: item.sortDate)
+                guard currentMidNightDate == itemMidNightDate else { return nil }
+
                 switch item.type {
                 case .todo(let todoItem):
                     return ListWidgetData(

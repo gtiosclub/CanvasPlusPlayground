@@ -114,20 +114,20 @@ struct DefaultWidgetBody: View {
 
     var body: some View {
         Group {
-            if isWidgetNavigationEnabled {
-                NavigationLink(value: widget.destination) {
-                    label
-                }
-            } else {
-                label
-            }
+            label
         }
         .buttonStyle(.plain)
     }
 
     private var label: some View {
         VStack {
-            Header(widget: widget)
+            if isWidgetNavigationEnabled {
+                NavigationLink(value: widget.destination) {
+                    Header(widget: widget)
+                }
+            } else {
+                Header(widget: widget)
+            }
 
             ContentView(widget: widget, widgetSize: widgetSize)
 
@@ -185,8 +185,7 @@ struct DefaultWidgetBody: View {
 
                 Spacer()
 
-                Image(systemName: "chevron.right")
-                    .foregroundStyle(.secondary)
+                Image(systemName: "chevron.right").padding()
             }
             .foregroundStyle(widget.color)
         }

@@ -46,6 +46,7 @@ private struct DefaultListWidgetBody: View {
         VStack(alignment: .leading, spacing: size == .small ? 6 : 8) {
             ForEach(data) { item in
                 VStack(spacing: 3) {
+                    Divider().padding(.bottom, 4)
                     if isWidgetNavigationEnabled {
                         NavigationLink(
                             value: widget.dataSource.destinationView(for: item)) {
