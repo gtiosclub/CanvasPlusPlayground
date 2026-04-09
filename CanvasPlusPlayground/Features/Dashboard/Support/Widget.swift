@@ -153,7 +153,7 @@ struct DefaultWidgetBody: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background {
             RoundedRectangle(cornerRadius: 16.0)
-                .fill(.thinMaterial)
+                .fill(.ultraThickMaterial)
                 .strokeBorder(.ultraThickMaterial)
         }
     }

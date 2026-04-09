@@ -132,4 +132,8 @@ struct HomeView: View {
     HomeView()
         .environment(CourseManager())
         .environment(ProfileManager())
+        .environment(ToDoListManager())
+    #if os(macOS)
+        .frame(width: 800, height: 500)
+    #endif
 }

@@ -220,21 +220,39 @@ private struct NavigationBanner: View {
             .buttonStyle(.plain)
         }
 
+        @ViewBuilder
         private var label: some View {
-            Label {
-                Text(title)
-            } icon: {
-                Image(systemName: systemImage)
-                    .foregroundStyle(tint)
+            if #available(iOS 26, macOS 26, *) {
+                Label {
+                    Text(title)
+                } icon: {
+                    Image(systemName: systemImage)
+                        .foregroundStyle(tint)
+                }
+                .font(.headline)
+                #if os(iOS)
+                .padding(.vertical, 4)
+                #endif
+                .padding(8)
+                #if !os(visionOS)
+                .glassEffect(.regular.interactive())
+                #endif
+            } else {
+                Label {
+                    Text(title)
+                } icon: {
+                    Image(systemName: systemImage)
+                        .foregroundStyle(tint)
+                }
+                .font(.headline)
+                #if os(iOS)
+                .padding(.vertical, 4)
+                #endif
+                .padding(8)
+                #if !os(visionOS)
+                .compatibleGlassEffect(isInteractive: true, in: .capsule)
+                #endif
             }
-            .font(.headline)
-            #if os(iOS)
-            .padding(.vertical, 4)
-            #endif
-            .padding(8)
-            #if !os(visionOS)
-            .compatibleGlassEffect(isInteractive: true, in: .capsule)
-            #endif
         }
     }
 }
