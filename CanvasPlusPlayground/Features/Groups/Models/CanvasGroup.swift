@@ -13,7 +13,7 @@ typealias CanvasGroup = CanvasSchemaV1.CanvasGroup
 extension CanvasSchemaV1 {
     @Model
     class CanvasGroup: Cacheable, Hashable {
-        var id: String
+        @Attribute(.unique) var id: String
         var name: String
         var groupDescription: String?
         var concluded: Bool

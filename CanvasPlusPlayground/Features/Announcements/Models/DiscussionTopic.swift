@@ -15,7 +15,7 @@ extension CanvasSchemaV1 {
     class DiscussionTopic: Hashable, Equatable {
         typealias ID = String
 
-        var id: String
+        @Attribute(.unique) var id: String
 
         // MARK: In Docs
         var author: DiscussionParticipantAPI?

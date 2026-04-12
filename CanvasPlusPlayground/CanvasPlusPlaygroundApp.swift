@@ -7,12 +7,84 @@
 
 import SwiftUI
 import SwiftData
+import CoreSpotlight
+
+#if os(iOS) || os(visionOS)
+import UIKit
+
+final class SpotlightAppDelegate: NSObject, UIApplicationDelegate {
+    func application(
+        _ application: UIApplication,
+        continue userActivity: NSUserActivity,
+        restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void
+    ) -> Bool {
+        SpotlightAppDelegate.handle(userActivity: userActivity)
+    }
+
+    func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
+    ) -> Bool {
+        if let userActivity = launchOptions?[.userActivityDictionary] as? [AnyHashable: Any],
+           let activity = userActivity["UIApplicationLaunchOptionsUserActivityKey"] as? NSUserActivity {
+            _ = SpotlightAppDelegate.handle(userActivity: activity)
+        }
+        return true
+    }
+
+    @discardableResult
+    static func handle(userActivity: NSUserActivity) -> Bool {
+        guard userActivity.activityType == CSSearchableItemActionType,
+              let identifier = userActivity.userInfo?[CSSearchableItemActivityIdentifier] as? String else {
+            return false
+        }
+        NotificationCenter.default.post(
+            name: .openSpotlightDeepLink,
+            object: nil,
+            userInfo: [SpotlightDeepLinkUserInfoKey.identifier: identifier]
+        )
+        return true
+    }
+}
+#elseif os(macOS)
+import AppKit
+
+final class SpotlightAppDelegate: NSObject, NSApplicationDelegate {
+    func application(
+        _ application: NSApplication,
+        continue userActivity: NSUserActivity,
+        restorationHandler: @escaping ([NSUserActivityRestoring]) -> Void
+    ) -> Bool {
+        SpotlightAppDelegate.handle(userActivity: userActivity)
+    }
+
+    @discardableResult
+    static func handle(userActivity: NSUserActivity) -> Bool {
+        guard userActivity.activityType == CSSearchableItemActionType,
+              let identifier = userActivity.userInfo?[CSSearchableItemActivityIdentifier] as? String else {
+            return false
+        }
+        NotificationCenter.default.post(
+            name: .openSpotlightDeepLink,
+            object: nil,
+            userInfo: [SpotlightDeepLinkUserInfoKey.identifier: identifier]
+        )
+        return true
+    }
+}
+#endif
 
 @main
 struct CanvasPlusPlaygroundApp: App {
     enum LaunchState {
         case loading, failed, ready
     }
+
+    #if os(iOS) || os(visionOS)
+    @UIApplicationDelegateAdaptor(SpotlightAppDelegate.self) private var spotlightAppDelegate
+    #elseif os(macOS)
+    @NSApplicationDelegateAdaptor(SpotlightAppDelegate.self) private var spotlightAppDelegate
+    #endif
 
     @State var launchState: LaunchState
 
@@ -67,6 +139,15 @@ struct CanvasPlusPlaygroundApp: App {
             }
             #endif
             #endif
+            CommandGroup(after: .textEditing) {
+                Button("Search Everywhere") {
+                    NotificationCenter.default.post(
+                        name: .openSpotlightSearch,
+                        object: nil
+                    )
+                }
+                .keyboardShortcut("k", modifiers: .command)
+            }
         }
 
 #if DEBUG && os(macOS)

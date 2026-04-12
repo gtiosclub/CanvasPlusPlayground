@@ -319,6 +319,12 @@ enum SandboxData {
         ]
     }
 
+    static var dummyAssignments: [Assignment] {
+        dummyAssignmentGroups.flatMap { group in
+            (group.assignments ?? []).map { Assignment(from: $0) }
+        }
+    }
+
     // MARK: - Files
 
     static var dummyRootFolder: Folder {
