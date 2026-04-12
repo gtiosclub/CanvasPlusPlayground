@@ -23,7 +23,7 @@ struct FileViewer: View {
             if let url {
                 QuickLookPreview(url: url) { dismiss() }
                     .pickedItem(file)
-                    #if os(iOS)
+                    #if os(iOS) || os(visionOS)
                     .ignoresSafeArea()
                     .toolbar(.hidden)
                     #else

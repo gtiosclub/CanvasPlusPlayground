@@ -167,7 +167,9 @@ private struct SummarySection: View {
                         await summarize()
                     }
                 }
+                #if !os(visionOS)
                 .buttonStyle(.glass)
+                #endif
                 .disabled(
                     loadingSummary || !IntelligenceSupport.isModelAvailable
                 )

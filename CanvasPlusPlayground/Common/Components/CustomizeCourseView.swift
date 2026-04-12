@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-#if os(iOS)
+#if os(iOS) || os(visionOS)
 struct CustomizeCourseView: View {
     let courseName: String
     @State var selectedSymbol: String

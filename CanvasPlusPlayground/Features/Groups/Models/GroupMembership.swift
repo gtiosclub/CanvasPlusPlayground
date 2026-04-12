@@ -13,7 +13,7 @@ typealias GroupMembership = CanvasSchemaV1.GroupMembership
 extension CanvasSchemaV1 {
     @Model
     class GroupMembership: Hashable {
-        var id: String
+        @Attribute(.unique) var id: String
         var groupId: Int
         var userId: Int
         var workflowState: GroupMembershipState

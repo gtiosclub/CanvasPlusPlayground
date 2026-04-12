@@ -257,4 +257,5 @@ class NavigationModel {
     #if os(iOS)
     var showSettingsSheet = false
     #endif
+    var showSpotlightSearch = false
 }

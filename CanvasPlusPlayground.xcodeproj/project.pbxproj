@@ -23,6 +23,13 @@
 		7F8535742C98DE3C0023E384 /* CourseGradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8535732C98DE3C0023E384 /* CourseGradeView.swift */; };
 		8C0A84272E9FF2850036D1F6 /* CalendarEventDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0A84262E9FF2850036D1F6 /* CalendarEventDetailView.swift */; };
 		8CAC2F2D2F7B296B00EC5FA4 /* BreadcrumbView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAC2F2C2F7B296B00EC5FA4 /* BreadcrumbView.swift */; };
+		8CAC2F192F7A1D8E00EC5FA4 /* SpotlightSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAC2F182F7A1D8500EC5FA4 /* SpotlightSearchResult.swift */; };
+		8CAC2F1B2F7A204300EC5FA4 /* SearchCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAC2F1A2F7A203B00EC5FA4 /* SearchCategory.swift */; };
+		8CAC2F202F7A224200EC5FA4 /* SpotlightIndexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAC2F1F2F7A223F00EC5FA4 /* SpotlightIndexer.swift */; };
+		8CAC2F222F7A239E00EC5FA4 /* SpotlightSearchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAC2F212F7A239900EC5FA4 /* SpotlightSearchable.swift */; };
+		8CAC2F252F7A2A3800EC5FA4 /* SpotlightSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAC2F242F7A2A2D00EC5FA4 /* SpotlightSearchViewModel.swift */; };
+		8CAC2F282F7A2F1700EC5FA4 /* SpotlightSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAC2F272F7A2F0E00EC5FA4 /* SpotlightSearchView.swift */; };
+		8CAC2F2A2F7A36A400EC5FA4 /* NotificationExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAC2F292F7A369B00EC5FA4 /* NotificationExtensions.swift */; };
 		8CC6226E2EA4D44C00A12B5D /* TodayDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC6226A2EA4D44C00A12B5D /* TodayDataSource.swift */; };
 		8CC6226F2EA4D44C00A12B5D /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC6226B2EA4D44C00A12B5D /* TodayView.swift */; };
 		8CC622702EA4D44C00A12B5D /* TodayWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC6226C2EA4D44C00A12B5D /* TodayWidget.swift */; };
@@ -328,6 +335,13 @@
 		7F8535732C98DE3C0023E384 /* CourseGradeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseGradeView.swift; sourceTree = "<group>"; };
 		8C0A84262E9FF2850036D1F6 /* CalendarEventDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarEventDetailView.swift; sourceTree = "<group>"; };
 		8CAC2F2C2F7B296B00EC5FA4 /* BreadcrumbView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadcrumbView.swift; sourceTree = "<group>"; };
+		8CAC2F182F7A1D8500EC5FA4 /* SpotlightSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightSearchResult.swift; sourceTree = "<group>"; };
+		8CAC2F1A2F7A203B00EC5FA4 /* SearchCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCategory.swift; sourceTree = "<group>"; };
+		8CAC2F1F2F7A223F00EC5FA4 /* SpotlightIndexer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightIndexer.swift; sourceTree = "<group>"; };
+		8CAC2F212F7A239900EC5FA4 /* SpotlightSearchable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightSearchable.swift; sourceTree = "<group>"; };
+		8CAC2F242F7A2A2D00EC5FA4 /* SpotlightSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightSearchViewModel.swift; sourceTree = "<group>"; };
+		8CAC2F272F7A2F0E00EC5FA4 /* SpotlightSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightSearchView.swift; sourceTree = "<group>"; };
+		8CAC2F292F7A369B00EC5FA4 /* NotificationExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationExtensions.swift; sourceTree = "<group>"; };
 		8CC6226A2EA4D44C00A12B5D /* TodayDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayDataSource.swift; sourceTree = "<group>"; };
 		8CC6226B2EA4D44C00A12B5D /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
 		8CC6226C2EA4D44C00A12B5D /* TodayWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayWidget.swift; sourceTree = "<group>"; };
@@ -640,6 +654,52 @@
 			path = Layout;
 			sourceTree = "<group>";
 		};
+		8CAC2F172F79FB6900EC5FA4 /* SpotlightSearch */ = {
+			isa = PBXGroup;
+			children = (
+				8CAC2F292F7A369B00EC5FA4 /* NotificationExtensions.swift */,
+				8CAC2F262F7A2EE000EC5FA4 /* Views */,
+				8CAC2F232F7A296D00EC5FA4 /* ViewModel */,
+				8CAC2F1E2F7A223B00EC5FA4 /* Services */,
+				8CAC2F1D2F7A223100EC5FA4 /* Models */,
+			);
+			path = SpotlightSearch;
+			sourceTree = "<group>";
+		};
+		8CAC2F1D2F7A223100EC5FA4 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				8CAC2F1A2F7A203B00EC5FA4 /* SearchCategory.swift */,
+				8CAC2F182F7A1D8500EC5FA4 /* SpotlightSearchResult.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		8CAC2F1E2F7A223B00EC5FA4 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				8CAC2F212F7A239900EC5FA4 /* SpotlightSearchable.swift */,
+				8CAC2F1F2F7A223F00EC5FA4 /* SpotlightIndexer.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		8CAC2F232F7A296D00EC5FA4 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				8CAC2F242F7A2A2D00EC5FA4 /* SpotlightSearchViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		8CAC2F262F7A2EE000EC5FA4 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				8CAC2F272F7A2F0E00EC5FA4 /* SpotlightSearchView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		8CC6226D2EA4D44C00A12B5D /* Today */ = {
 			isa = PBXGroup;
 			children = (
@@ -741,6 +801,7 @@
 		A324BA502D07963D005F53FA /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				8CAC2F172F79FB6900EC5FA4 /* SpotlightSearch */,
 				B7AF51612E9B30E100457E8A /* Onboarding */,
 				B7F375C12E85EE82008F0846 /* Dashboard */,
 				B7C469D02E6C80D500310982 /* Home */,
@@ -1563,6 +1624,7 @@
 				A324BA642D07AF0B005F53FA /* CourseFileService.swift in Sources */,
 				95BA93482C9CE20D00137A91 /* CalendarView.swift in Sources */,
 				B76454FF2C8DF61B002DF00E /* Enrollment.swift in Sources */,
+				8CAC2F222F7A239E00EC5FA4 /* SpotlightSearchable.swift in Sources */,
 				A3049B5F2D0E6044002F3166 /* QuizHideResults.swift in Sources */,
 				B7909D9B2E99707600E37387 /* CourseGradientBackgroundModifier.swift in Sources */,
 				9BA7C0F72D62DC92000F2918 /* PinnedItemDetailView.swift in Sources */,
@@ -1588,13 +1650,16 @@
 				B7C0A3C92D2F87EC003E5A36 /* AsyncView.swift in Sources */,
 				B7F950372D127869004BB470 /* ProfileManager.swift in Sources */,
 				26BF115B2E92E1D2000680D4 /* Dashboard.swift in Sources */,
+				8CAC2F282F7A2F1700EC5FA4 /* SpotlightSearchView.swift in Sources */,
 				9B4F616E2E9ABDA900860E24 /* UnreadAnnouncementsCountWidget.swift in Sources */,
 				26BF115C2E92E1D2000680D4 /* DashboardValueKey.swift in Sources */,
 				26BF115D2E92E1D2000680D4 /* ExampleDashboardView.swift in Sources */,
+				8CAC2F192F7A1D8E00EC5FA4 /* SpotlightSearchResult.swift in Sources */,
 				A330B89B2DA98D0D00D6C1C3 /* MarkFavoriteRequest.swift in Sources */,
 				A324BA662D07AFD5005F53FA /* FileType.swift in Sources */,
 				B7725D652D7387D600D64ED8 /* AccessoryBar.swift in Sources */,
 				192EC0482C963ACB00AF8528 /* CourseAssignmentManager.swift in Sources */,
+				8CAC2F1B2F7A204300EC5FA4 /* SearchCategory.swift in Sources */,
 				A3777E022D9F148300A8B00C /* CourseRepository.swift in Sources */,
 				9B5A5F192EC23C62000012ED /* URL+DownloadFile.swift in Sources */,
 				A373DC232D1D454000215019 /* GradingSchemeEntry.swift in Sources */,
@@ -1633,6 +1698,7 @@
 				9B2049042EAEFA93002C260F /* Date+ConvenienceMethods.swift in Sources */,
 				A3269E8E2CD5533F006F7D14 /* CanvasRepository.swift in Sources */,
 				B7AF516E2E9B584A00457E8A /* CompatibleGlassEffectViewModifier.swift in Sources */,
+				8CAC2F2A2F7A36A400EC5FA4 /* NotificationExtensions.swift in Sources */,
 				A372D1142D91D2B9005E94CA /* String+SFSymbols.swift in Sources */,
 				B72D83022E4F853300BA1DAD /* RAGSystem.swift in Sources */,
 				B7D193B92E7E28EC00FF4C84 /* IGCPlayground.swift in Sources */,
@@ -1703,6 +1769,7 @@
 				B7E59A162D200775001836FE /* CourseDetailView.swift in Sources */,
 				A3D022592D6A5BC500F8068C /* Data+Empty.swift in Sources */,
 				B7532E922E96D7080045CFB6 /* DashboardView.swift in Sources */,
+				8CAC2F252F7A2A3800EC5FA4 /* SpotlightSearchViewModel.swift in Sources */,
 				9B350F082C9652C6003FC60D /* NSAttributedString+HTML.swift in Sources */,
 				A3D1614D2D16ACB8004055FB /* CacheableAPIRequest+Sync.swift in Sources */,
 				A3049B562D0E541D002F3166 /* QuizType.swift in Sources */,
@@ -1761,6 +1828,7 @@
 				B76455062C8DF61B002DF00E /* CanvasPlusPlaygroundApp.swift in Sources */,
 				B72D83002E4F7A3300BA1DAD /* IntelligenceServiceProvider+SystemPrompt.swift in Sources */,
 				B78847972E674D6400AE7221 /* CanvasURLService+Modules.swift in Sources */,
+				8CAC2F202F7A224200EC5FA4 /* SpotlightIndexer.swift in Sources */,
 				B7F950342D11A00F004BB470 /* StatusToolbarItem.swift in Sources */,
 				B77B57C22E733765005ADB7B /* AssignmentGroupCategory.swift in Sources */,
 				9B4F616C2E9ABBC500860E24 /* BigNumberWidget.swift in Sources */,
@@ -2016,12 +2084,13 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.gtiosclub.CanvasPlus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = NO;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,7";
 			};
 			name = Debug;
 		};
@@ -2072,12 +2141,13 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.gtiosclub.CanvasPlus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = NO;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,7";
 			};
 			name = Release;
 		};
