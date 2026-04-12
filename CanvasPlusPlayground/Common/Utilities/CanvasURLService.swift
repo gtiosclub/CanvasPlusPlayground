@@ -59,7 +59,7 @@ extension NavigationModel {
             from: result,
             for: courseID
         ) else { return }
-        navigationPath.append(destination)
+        push(destination)
     }
 }
 
