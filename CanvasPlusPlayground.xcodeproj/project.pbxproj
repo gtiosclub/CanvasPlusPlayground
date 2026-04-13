@@ -22,7 +22,10 @@
 		3DAE85002C9A0E4F008C22E7 /* BridgedPDFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DAE84FF2C9A0E4F008C22E7 /* BridgedPDFView.swift */; };
 		7F8535742C98DE3C0023E384 /* CourseGradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8535732C98DE3C0023E384 /* CourseGradeView.swift */; };
 		8C0A84272E9FF2850036D1F6 /* CalendarEventDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0A84262E9FF2850036D1F6 /* CalendarEventDetailView.swift */; };
-		8CAC2F2D2F7B296B00EC5FA4 /* BreadcrumbView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAC2F2C2F7B296B00EC5FA4 /* BreadcrumbView.swift */; };
+		8C5A13172F8D95AE00E09B46 /* Homeview+DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5A13162F8D95AE00E09B46 /* Homeview+DeepLink.swift */; };
+		8C5A13192F8D961200E09B46 /* DetailContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5A13182F8D961200E09B46 /* DetailContainerView.swift */; };
+		8C5A131B2F8D96A400E09B46 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5A131A2F8D96A400E09B46 /* SidebarView.swift */; };
+		8C5A131D2F8DA17000E09B46 /* CourseOverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5A131C2F8DA17000E09B46 /* CourseOverviewView.swift */; };
 		8CAC2F192F7A1D8E00EC5FA4 /* SpotlightSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAC2F182F7A1D8500EC5FA4 /* SpotlightSearchResult.swift */; };
 		8CAC2F1B2F7A204300EC5FA4 /* SearchCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAC2F1A2F7A203B00EC5FA4 /* SearchCategory.swift */; };
 		8CAC2F202F7A224200EC5FA4 /* SpotlightIndexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAC2F1F2F7A223F00EC5FA4 /* SpotlightIndexer.swift */; };
@@ -30,6 +33,7 @@
 		8CAC2F252F7A2A3800EC5FA4 /* SpotlightSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAC2F242F7A2A2D00EC5FA4 /* SpotlightSearchViewModel.swift */; };
 		8CAC2F282F7A2F1700EC5FA4 /* SpotlightSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAC2F272F7A2F0E00EC5FA4 /* SpotlightSearchView.swift */; };
 		8CAC2F2A2F7A36A400EC5FA4 /* NotificationExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAC2F292F7A369B00EC5FA4 /* NotificationExtensions.swift */; };
+		8CAC2F2D2F7B296B00EC5FA4 /* BreadcrumbView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAC2F2C2F7B296B00EC5FA4 /* BreadcrumbView.swift */; };
 		8CC6226E2EA4D44C00A12B5D /* TodayDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC6226A2EA4D44C00A12B5D /* TodayDataSource.swift */; };
 		8CC6226F2EA4D44C00A12B5D /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC6226B2EA4D44C00A12B5D /* TodayView.swift */; };
 		8CC622702EA4D44C00A12B5D /* TodayWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC6226C2EA4D44C00A12B5D /* TodayWidget.swift */; };
@@ -334,7 +338,10 @@
 		3DAE84FF2C9A0E4F008C22E7 /* BridgedPDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgedPDFView.swift; sourceTree = "<group>"; };
 		7F8535732C98DE3C0023E384 /* CourseGradeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseGradeView.swift; sourceTree = "<group>"; };
 		8C0A84262E9FF2850036D1F6 /* CalendarEventDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarEventDetailView.swift; sourceTree = "<group>"; };
-		8CAC2F2C2F7B296B00EC5FA4 /* BreadcrumbView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadcrumbView.swift; sourceTree = "<group>"; };
+		8C5A13162F8D95AE00E09B46 /* Homeview+DeepLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Homeview+DeepLink.swift"; sourceTree = "<group>"; };
+		8C5A13182F8D961200E09B46 /* DetailContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailContainerView.swift; sourceTree = "<group>"; };
+		8C5A131A2F8D96A400E09B46 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
+		8C5A131C2F8DA17000E09B46 /* CourseOverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseOverviewView.swift; sourceTree = "<group>"; };
 		8CAC2F182F7A1D8500EC5FA4 /* SpotlightSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightSearchResult.swift; sourceTree = "<group>"; };
 		8CAC2F1A2F7A203B00EC5FA4 /* SearchCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCategory.swift; sourceTree = "<group>"; };
 		8CAC2F1F2F7A223F00EC5FA4 /* SpotlightIndexer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightIndexer.swift; sourceTree = "<group>"; };
@@ -342,6 +349,7 @@
 		8CAC2F242F7A2A2D00EC5FA4 /* SpotlightSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightSearchViewModel.swift; sourceTree = "<group>"; };
 		8CAC2F272F7A2F0E00EC5FA4 /* SpotlightSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightSearchView.swift; sourceTree = "<group>"; };
 		8CAC2F292F7A369B00EC5FA4 /* NotificationExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationExtensions.swift; sourceTree = "<group>"; };
+		8CAC2F2C2F7B296B00EC5FA4 /* BreadcrumbView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadcrumbView.swift; sourceTree = "<group>"; };
 		8CC6226A2EA4D44C00A12B5D /* TodayDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayDataSource.swift; sourceTree = "<group>"; };
 		8CC6226B2EA4D44C00A12B5D /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
 		8CC6226C2EA4D44C00A12B5D /* TodayWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayWidget.swift; sourceTree = "<group>"; };
@@ -848,6 +856,7 @@
 		A324BA522D079666005F53FA /* Courses */ = {
 			isa = PBXGroup;
 			children = (
+				8C5A131C2F8DA17000E09B46 /* CourseOverviewView.swift */,
 				A3777E012D9F148300A8B00C /* CourseRepository.swift */,
 				A3777E052D9F152400A8B00C /* CourseService.swift */,
 				A373DC182D1A40EC00215019 /* Models */,
@@ -1456,6 +1465,9 @@
 		B7E59A0E2D200281001836FE /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
+				8C5A131A2F8D96A400E09B46 /* SidebarView.swift */,
+				8C5A13182F8D961200E09B46 /* DetailContainerView.swift */,
+				8C5A13162F8D95AE00E09B46 /* Homeview+DeepLink.swift */,
 				8CAC2F2C2F7B296B00EC5FA4 /* BreadcrumbView.swift */,
 				9BD75D6F2E771277008BF846 /* OpenInWebButton.swift */,
 				267D85272E662AB0007F821B /* FocusWindowInfo.swift */,
@@ -1684,6 +1696,7 @@
 				A37AB4A72D98670600610639 /* LeaveGroupRequest.swift in Sources */,
 				A3FFD03A2CDEC2AC006BAB51 /* LookupCondition.swift in Sources */,
 				B7D95DB72D0A8D78002AD955 /* SettingsView.swift in Sources */,
+				8C5A13172F8D95AE00E09B46 /* Homeview+DeepLink.swift in Sources */,
 				A330B88B2DA5663700D6C1C3 /* ModelContext+Utilities.swift in Sources */,
 				B7AF50F12E9AF9EF00457E8A /* RecentItemCard.swift in Sources */,
 				B7A12F3F2D69441500EDFA0A /* GetAssignmentGroupsRequest.swift in Sources */,
@@ -1775,6 +1788,7 @@
 				A3049B562D0E541D002F3166 /* QuizType.swift in Sources */,
 				9BFBD8C62E6B2FAD00690E47 /* GetSubmissionRequest.swift in Sources */,
 				A3049B612D0E6110002F3166 /* QuizQuestionType.swift in Sources */,
+				8C5A131B2F8D96A400E09B46 /* SidebarView.swift in Sources */,
 				A3CA025B2D432A8700A9752B /* SearchResultListDataSource.swift in Sources */,
 				D43B58072E76593C0054C12C /* QuizDetailView.swift in Sources */,
 				9B9C2E042C93F6CD00E4B16B /* CourseAnnouncementsView.swift in Sources */,
@@ -1848,6 +1862,7 @@
 				9BABD5322E71DC01002589F8 /* DownloadButton.swift in Sources */,
 				B5894F192D6EC56000E8F527 /* PageView.swift in Sources */,
 				B7CC4D5C2D90C00B00254F55 /* CGSize+Center.swift in Sources */,
+				8C5A13192F8D961200E09B46 /* DetailContainerView.swift in Sources */,
 				A351913F2D283556001E415F /* ModulesListView.swift in Sources */,
 				A3CF88DF2D1921B5000ACDF3 /* FileAPI.swift in Sources */,
 				B7CC4D3C2D8DB87200254F55 /* URL+AppRootURL.swift in Sources */,
@@ -1893,6 +1908,7 @@
 				9BD883B32EAE9ED800371BBB /* GlobalCalendarView.swift in Sources */,
 				B7CC4D432D8DFF0A00254F55 /* PickerServiceViewModifier.swift in Sources */,
 				B73AE0BD2D4FB68B007094A8 /* Profile.swift in Sources */,
+				8C5A131D2F8DA17000E09B46 /* CourseOverviewView.swift in Sources */,
 				B75684F42DA5A6B2003B4A32 /* HTMLView.swift in Sources */,
 				B7D751312D3D688C00F7B8B8 /* AnnouncementRow.swift in Sources */,
 				9B801DEB2E66659D00DF4942 /* NetworkRequestRecorder.swift in Sources */,
@@ -2048,7 +2064,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CanvasPlusPlayground/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 2TJP6MN7HM;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_FILE_ACCESS_DOWNLOADS_FOLDER = readonly;
 				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
@@ -2081,7 +2097,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.gtiosclub.CanvasPlus;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ivanli2005.CanvasPlus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = NO;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
@@ -2105,7 +2121,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CanvasPlusPlayground/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 2TJP6MN7HM;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_FILE_ACCESS_DOWNLOADS_FOLDER = readonly;
 				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
@@ -2138,7 +2154,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.gtiosclub.CanvasPlus;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ivanli2005.CanvasPlus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = NO;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";

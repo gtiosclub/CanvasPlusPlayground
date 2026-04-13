@@ -13,7 +13,10 @@ class NavigationModel {
         case allCourses // iPhone only
         case dashboard
         case search
-        case course(Course.ID) // macOS/iPadOS only, all course tabs share the same navigation path
+        // macOS/iPadOS only — course overview and per-page tabs in the sidebar.
+        // All course tabs share the same navigation path.
+        case course(Course.ID)
+        case coursePage(Course.ID, CoursePage)
     }
 
     enum CoursePage: String, CaseIterable, Codable {
@@ -64,6 +67,18 @@ class NavigationModel {
                 "book.closed.circle.fill"
             case .pages:
                 "doc.text.fill"
+            }
+        }
+
+        /// Available pages for a course based on its loaded `course.tabs`.
+        /// Mirrors `CourseView`'s filter but ignores `PickerService` (sidebar context).
+        static func available(for course: Course) -> [CoursePage] {
+            guard !course.tabs.isEmpty else { return [] }
+            let availableTabs = Set(
+                course.tabs.compactMap { CoursePage(rawValue: $0.label.lowercased()) }
+            )
+            return CoursePage.allCases.filter {
+                availableTabs.contains($0) || CoursePage.requiredTabs.contains($0)
             }
         }
     }
@@ -159,19 +174,18 @@ class NavigationModel {
     var allCoursesPath = NavigationPath() // for Tab.allCourses
     var dashboardPath = NavigationPath()
 
-    var coursePath = NavigationPath() // for Tab.course(id:)
-    
     // breadcrumbs support
     var allCoursesDestinations: [Destination] = []
     var dashboardDestinations: [Destination] = []
     var courseDestinations: [Destination] = []
+    var coursePath = NavigationPath() // for Tab.coursePage(id:page:)
 
     var navigationPath: NavigationPath {
         set {
             switch selectedTab {
             case .allCourses: allCoursesPath = newValue
             case .dashboard: dashboardPath = newValue
-            case .course: coursePath = newValue
+            case .course, .coursePage: coursePath = newValue
             default: allCoursesPath = newValue
             }
         }
@@ -179,7 +193,7 @@ class NavigationModel {
             switch selectedTab {
             case .allCourses: return allCoursesPath
             case .dashboard: return dashboardPath
-            case .course: return coursePath
+            case .course, .coursePage: return coursePath
             default: return allCoursesPath
             }
         }
@@ -191,7 +205,7 @@ class NavigationModel {
             switch selectedTab {
             case .allCourses: allCoursesDestinations
             case .dashboard: dashboardDestinations
-            case .course: courseDestinations
+            case .course, .coursePage: courseDestinations
             default: allCoursesDestinations
             }
         }
@@ -199,7 +213,7 @@ class NavigationModel {
             switch selectedTab {
             case .allCourses: allCoursesDestinations = newValue
             case .dashboard: dashboardDestinations = newValue
-            case .course: courseDestinations = newValue
+            case .course, .coursePage: courseDestinations = newValue
             default: allCoursesDestinations = newValue
             }
         }
