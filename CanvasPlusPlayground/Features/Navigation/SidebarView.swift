@@ -56,12 +56,6 @@ struct SidebarView: View {
                     visiblePages[course.id] = 0
                     expandedCourses.remove(course.id)
                 } else {
-                    // Collapse any currently expanded course first
-                    for id in expandedCourses {
-                        visiblePages[id] = 0
-                    }
-                    expandedCourses.removeAll()
-
                     expandedCourses.insert(course.id)
                     visiblePages[course.id] = 0
                     revealPages(for: course)
@@ -88,8 +82,10 @@ struct SidebarView: View {
                     Label(page.title, systemImage: page.systemImageIcon)
                         .padding(.leading)
                 }
+                .id("\(course.id)-\(page.rawValue)")
                 .opacity(index < revealed ? 1 : 0)
                 .offset(y: index < revealed ? 0 : -10)
+                .animation(.spring(duration: 0.2, bounce: 0.15), value: index < revealed)
             }
         }
     }
@@ -103,11 +99,8 @@ struct SidebarView: View {
         for i in 1...count {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.06 + Double(i) * 0.018) {
                 guard revealGeneration[course.id] == gen else { return }
-                withAnimation(.spring(duration: 0.2, bounce: 0.15)) {
-                    visiblePages[course.id] = i
-                }
+                visiblePages[course.id] = i
             }
         }
     }
-
 }
