@@ -44,6 +44,8 @@ struct HomeView: View {
         } detail: {
             DetailContainerView()
         }
+        .tabViewStyle(.sidebarAdaptable)
+        .globalAppBackground(courses: courseManager.activeCourses)
         .task {
             if AppEnvironment.isSandbox {
                 await loadCourses()
