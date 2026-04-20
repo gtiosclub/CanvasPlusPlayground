@@ -37,6 +37,9 @@
 		8CC6226E2EA4D44C00A12B5D /* TodayDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC6226A2EA4D44C00A12B5D /* TodayDataSource.swift */; };
 		8CC6226F2EA4D44C00A12B5D /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC6226B2EA4D44C00A12B5D /* TodayView.swift */; };
 		8CC622702EA4D44C00A12B5D /* TodayWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC6226C2EA4D44C00A12B5D /* TodayWidget.swift */; };
+		8CD6A4E72F95E37000BD3903 /* AssignmentOverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD6A4E62F95E36700BD3903 /* AssignmentOverviewView.swift */; };
+		8CD6A4E92F95EA4000BD3903 /* AnnouncementOverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD6A4E82F95EA4000BD3903 /* AnnouncementOverviewView.swift */; };
+		8CD6A4EE2F9681F900BD3903 /* CalendarOverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD6A4EB2F9681F900BD3903 /* CalendarOverviewView.swift */; };
 		95BA93482C9CE20D00137A91 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95BA93472C9CE20D00137A91 /* CalendarView.swift */; };
 		9A977E832D6C322F001D7F0A /* LoggerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A977E822D6C322F001D7F0A /* LoggerService.swift */; };
 		9B07E7122D779CAB00359B69 /* Date+RelativeDates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B07E7112D779CA500359B69 /* Date+RelativeDates.swift */; };
@@ -353,6 +356,9 @@
 		8CC6226A2EA4D44C00A12B5D /* TodayDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayDataSource.swift; sourceTree = "<group>"; };
 		8CC6226B2EA4D44C00A12B5D /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
 		8CC6226C2EA4D44C00A12B5D /* TodayWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayWidget.swift; sourceTree = "<group>"; };
+		8CD6A4E62F95E36700BD3903 /* AssignmentOverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentOverviewView.swift; sourceTree = "<group>"; };
+		8CD6A4E82F95EA4000BD3903 /* AnnouncementOverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementOverviewView.swift; sourceTree = "<group>"; };
+		8CD6A4EB2F9681F900BD3903 /* CalendarOverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarOverviewView.swift; sourceTree = "<group>"; };
 		95BA93472C9CE20D00137A91 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		9A977E822D6C322F001D7F0A /* LoggerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerService.swift; sourceTree = "<group>"; };
 		9B07E7112D779CA500359B69 /* Date+RelativeDates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+RelativeDates.swift"; sourceTree = "<group>"; };
@@ -856,6 +862,9 @@
 		A324BA522D079666005F53FA /* Courses */ = {
 			isa = PBXGroup;
 			children = (
+				8CD6A4EB2F9681F900BD3903 /* CalendarOverviewView.swift */,
+				8CD6A4E82F95EA4000BD3903 /* AnnouncementOverviewView.swift */,
+				8CD6A4E62F95E36700BD3903 /* AssignmentOverviewView.swift */,
 				8C5A131C2F8DA17000E09B46 /* CourseOverviewView.swift */,
 				A3777E012D9F148300A8B00C /* CourseRepository.swift */,
 				A3777E052D9F152400A8B00C /* CourseService.swift */,
@@ -1648,6 +1657,7 @@
 				A3CF88DB2D192194000ACDF3 /* EnrollmentAPI.swift in Sources */,
 				A372D0FB2D90A709005E94CA /* HTTPURLResponse+Codes.swift in Sources */,
 				B7F950322D118EAF004BB470 /* String+StripHTML.swift in Sources */,
+				8CD6A4E92F95EA4000BD3903 /* AnnouncementOverviewView.swift in Sources */,
 				A339D3F92DB15DC500952536 /* CanvasSchemaV1.swift in Sources */,
 				B7D7512D2D3D652300F7B8B8 /* GetAnnouncementsBatchRequest.swift in Sources */,
 				A324BA6A2D0817AB005F53FA /* FoldersPageView.swift in Sources */,
@@ -1726,6 +1736,7 @@
 				A373DC312D28176100215019 /* APIModule.swift in Sources */,
 				9BDFF27E2DA6B6D7009F0DE9 /* OpenInCanvasButton.swift in Sources */,
 				9B762BC92D7BF8E70051F1F6 /* SubmitAssignmentRequest.swift in Sources */,
+				8CD6A4EE2F9681F900BD3903 /* CalendarOverviewView.swift in Sources */,
 				B7F375C42E85EE92008F0846 /* Widget.swift in Sources */,
 				B7D7512F2D3D660B00F7B8B8 /* AllAnnouncementsManager.swift in Sources */,
 				A3049B752D15DC1C002F3166 /* GetCoursesRequest.swift in Sources */,
@@ -1927,6 +1938,7 @@
 				A373DC372D28285300215019 /* ModuleItem.swift in Sources */,
 				A306ED112CEAC09E00556D1E /* Folder.swift in Sources */,
 				B7E073622D986DD300A7E82F /* ToDoItemCount.swift in Sources */,
+				8CD6A4E72F95E37000BD3903 /* AssignmentOverviewView.swift in Sources */,
 				A373DC272D1D4C4A00215019 /* QuizSubmissionWorkflowState.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -16,21 +16,24 @@ struct CourseOverviewView: View {
 
     @State private var gradesVM: GradesViewModel
     @State private var expandedSections: Set<String> = []
-    @State private var animateRing = false
+    @State private var ringProgress: Double = 0
 
     init(course: Course) {
         self.course = course
         self._gradesVM = State(initialValue: GradesViewModel(courseId: course.id))
     }
 
+    // MARK: - To-Do Items
+
     private var courseToDoItems: [ToDoItem] {
         toDoListManager.displayedToDoItems.filter { $0.courseID.asString == course.id }
     }
 
+    // MARK: - Body
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
-                // Header
                 Text("Course Dashboard")
                     .font(.system(size: 56, weight: .heavy))
                     .padding(.bottom, 4)
@@ -38,9 +41,9 @@ struct CourseOverviewView: View {
                 HStack(alignment: .top, spacing: 20) {
                     // Left column: expandable page rows
                     VStack(alignment: .leading, spacing: 0) {
-                        expandableRow("Assignments", page: .assignments)
-                        expandableRow("Announcements", page: .announcements)
-                        expandableRow("Calendar", page: .calendar)
+                        assignmentsExpandableRow
+                        announcementsExpandableRow
+                        calendarExpandableRow
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -67,47 +70,118 @@ struct CourseOverviewView: View {
         }
     }
 
-    // MARK: - Expandable Row
+    // MARK: - Assignments Expandable Row
 
-    @ViewBuilder
-    private func expandableRow(_ title: String, page: NavigationModel.CoursePage) -> some View {
-        let isExpanded = expandedSections.contains(title)
+    private var assignmentsExpandableRow: some View {
+        let isExpanded = expandedSections.contains("Assignments")
 
-        Button {
-            withAnimation(.spring(duration: 0.3, bounce: 0.15)) {
-                if isExpanded {
-                    expandedSections.remove(title)
-                } else {
-                    expandedSections.insert(title)
+        return VStack(alignment: .leading, spacing: 0) {
+            Button {
+                withAnimation(.spring(duration: 0.3, bounce: 0.15)) {
+                    if isExpanded {
+                        expandedSections.remove("Assignments")
+                    } else {
+                        expandedSections.insert("Assignments")
+                    }
                 }
+            } label: {
+                HStack {
+                    Text("Assignments")
+                        .font(.system(size: 30, weight: .semibold))
+                        .foregroundStyle(.primary)
+                    Spacer()
+                    Image(systemName: "chevron.down")
+                        .font(.body.weight(.medium))
+                        .foregroundStyle(.secondary)
+                        .rotationEffect(.degrees(isExpanded ? 0 : -90))
+                }
+                .contentShape(Rectangle())
+                .padding(.vertical, 12)
             }
-        } label: {
-            HStack {
-                Text(title)
-                    .font(.system(size: 30, weight: .semibold))
-                    .foregroundStyle(.primary)
+            .buttonStyle(.plain)
 
-                Spacer()
-
-                Image(systemName: "chevron.down")
-                    .font(.body.weight(.medium))
-                    .foregroundStyle(.secondary)
-                    .rotationEffect(.degrees(isExpanded ? 0 : -90))
+            if isExpanded {
+                AssignmentOverviewView(course: course)
+                    .transition(.opacity)
             }
-            .contentShape(Rectangle())
-            .padding(.vertical, 12)
         }
-        .buttonStyle(.plain)
+        .clipped()
+    }
 
-        if isExpanded {
-            // Placeholder for expanded content
-            Text("No items to display")
-                .font(.system(size: 13))
-                .foregroundStyle(.secondary)
-                .padding(.bottom, 12)
-                .padding(.leading, 4)
-                .transition(.opacity.combined(with: .move(edge: .top)))
+    // MARK: - Announcements Expandable Row
+
+    private var announcementsExpandableRow: some View {
+        let isExpanded = expandedSections.contains("Announcements")
+
+        return VStack(alignment: .leading, spacing: 0) {
+            Button {
+                withAnimation(.spring(duration: 0.3, bounce: 0.15)) {
+                    if isExpanded {
+                        expandedSections.remove("Announcements")
+                    } else {
+                        expandedSections.insert("Announcements")
+                    }
+                }
+            } label: {
+                HStack {
+                    Text("Announcements")
+                        .font(.system(size: 30, weight: .semibold))
+                        .foregroundStyle(.primary)
+                    Spacer()
+                    Image(systemName: "chevron.down")
+                        .font(.body.weight(.medium))
+                        .foregroundStyle(.secondary)
+                        .rotationEffect(.degrees(isExpanded ? 0 : -90))
+                }
+                .contentShape(Rectangle())
+                .padding(.vertical, 12)
+            }
+            .buttonStyle(.plain)
+
+            if isExpanded {
+                AnnouncementOverviewView(course: course)
+                    .transition(.opacity)
+            }
         }
+        .clipped()
+    }
+
+    // MARK: - Calendar Expandable Row
+
+    private var calendarExpandableRow: some View {
+        let isExpanded = expandedSections.contains("Calendar")
+
+        return VStack(alignment: .leading, spacing: 0) {
+            Button {
+                withAnimation(.spring(duration: 0.3, bounce: 0.15)) {
+                    if isExpanded {
+                        expandedSections.remove("Calendar")
+                    } else {
+                        expandedSections.insert("Calendar")
+                    }
+                }
+            } label: {
+                HStack {
+                    Text("Calendar")
+                        .font(.system(size: 30, weight: .semibold))
+                        .foregroundStyle(.primary)
+                    Spacer()
+                    Image(systemName: "chevron.down")
+                        .font(.body.weight(.medium))
+                        .foregroundStyle(.secondary)
+                        .rotationEffect(.degrees(isExpanded ? 0 : -90))
+                }
+                .contentShape(Rectangle())
+                .padding(.vertical, 12)
+            }
+            .buttonStyle(.plain)
+
+            if isExpanded {
+                CalendarOverviewView(course: course)
+                    .transition(.opacity)
+            }
+        }
+        .clipped()
     }
 
     // MARK: - Grade Card
@@ -137,30 +211,41 @@ struct CourseOverviewView: View {
 
     private var gradeRing: some View {
         let scoreValue = Double(gradesVM.currentScore) ?? 0
-        let progress = animateRing ? scoreValue / 100.0 : 0
 
         return ZStack {
             Circle()
                 .stroke(Color.secondary.opacity(0.2), lineWidth: 12)
 
             Circle()
-                .trim(from: 0, to: progress)
+                .trim(from: 0, to: ringProgress)
                 .stroke(Color.accentColor, style: StrokeStyle(lineWidth: 12, lineCap: .round))
                 .rotationEffect(.degrees(-90))
+                .animation(.easeOut(duration: 0.8), value: ringProgress)
 
             Text("\(Int(scoreValue))%")
                 .font(.system(size: 30, weight: .semibold))
         }
         .frame(width: 120, height: 120)
-        .animation(.easeOut(duration: 0.8), value: animateRing)
         .onAppear {
-            animateRing = false
-            withAnimation(.easeOut(duration: 0.8).delay(0.2)) {
-                animateRing = true
-            }
+            animateRingToCurrentScore()
         }
         .onDisappear {
-            animateRing = false
+            ringProgress = 0
+        }
+        .onChange(of: gradesVM.currentScore) {
+            ringProgress = 0
+            animateRingToCurrentScore()
+        }
+        .onChange(of: course.id) {
+            ringProgress = 0
+            animateRingToCurrentScore()
+        }
+    }
+
+    private func animateRingToCurrentScore() {
+        let target = (Double(gradesVM.currentScore) ?? 0) / 100.0
+        withAnimation(.easeOut(duration: 0.8).delay(0.2)) {
+            ringProgress = target
         }
     }
 
