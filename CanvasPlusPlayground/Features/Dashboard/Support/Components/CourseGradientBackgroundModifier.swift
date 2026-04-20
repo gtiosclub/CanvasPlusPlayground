@@ -20,27 +20,27 @@ private struct CourseGradientBackgroundModifier: ViewModifier {
     let edge: VerticalEdge
 
     public func body(content: Content) -> some View {
-        content
-            .background {
-                Group {
-                    switch backgroundStyle {
-                    case .default:
-                        #if os(iOS)
-                        Color(uiColor: .systemBackground)
-                        #elseif os(macOS)
-                        Color(nsColor: .windowBackgroundColor)
-                        #endif
-                    case .grouped:
-                        #if os(iOS)
-                        Color(uiColor: .systemGroupedBackground)
-                        #elseif os(macOS)
-                        Color(nsColor: .windowBackgroundColor)
-                        #endif
+        if isActive {
+            content
+                .background {
+                    Group {
+                        switch backgroundStyle {
+                        case .default:
+                            #if os(iOS)
+                            Color(uiColor: .systemBackground)
+                            #elseif os(macOS)
+                            Color(nsColor: .windowBackgroundColor)
+                            #endif
+                        case .grouped:
+                            #if os(iOS)
+                            Color(uiColor: .systemGroupedBackground)
+                            #elseif os(macOS)
+                            Color(nsColor: .windowBackgroundColor)
+                            #endif
+                        }
                     }
-                }
-                .ignoresSafeArea()
+                    .ignoresSafeArea()
 
-                if isActive {
                     VStack(spacing: 0) {
                         if edge == .bottom {
                             Spacer()
@@ -66,7 +66,9 @@ private struct CourseGradientBackgroundModifier: ViewModifier {
                     }
                     .ignoresSafeArea()
                 }
-            }
+        } else {
+            content
+        }
     }
 }
 
@@ -116,5 +118,34 @@ extension View {
                 edge: edge
             )
         )
+    }
+}
+
+private struct GlobalAppBackgroundModifier: ViewModifier {
+    let courses: [Course]
+
+    func body(content: Content) -> some View {
+        content
+            .scrollContentBackground(.hidden)
+            .background {
+                ZStack {
+                    #if os(iOS)
+                    Color(uiColor: .systemBackground)
+                    #elseif os(macOS)
+                    Color(nsColor: .windowBackgroundColor)
+                    #endif
+
+                    DashboardMeshGradient(
+                        colors: DashboardGradientColors.getColors(from: courses)
+                    )
+                }
+                .ignoresSafeArea()
+            }
+    }
+}
+
+extension View {
+    func globalAppBackground(courses: [Course]) -> some View {
+        modifier(GlobalAppBackgroundModifier(courses: courses))
     }
 }

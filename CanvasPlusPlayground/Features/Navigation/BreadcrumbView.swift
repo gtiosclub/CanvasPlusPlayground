@@ -46,13 +46,13 @@ struct BreadcrumbView: View {
                 .padding(.horizontal, 12)
                 .padding(.vertical, 8)
             }
-            .background {
-                Rectangle()
-                    .fill(.bar)
-                    .overlay(alignment: .bottom) {
-                        Divider()
-                    }
+            .background(.ultraThinMaterial, in: .capsule)
+            .overlay {
+                Capsule()
+                    .strokeBorder(.separator, lineWidth: 0.5)
             }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
         )
     }
 }

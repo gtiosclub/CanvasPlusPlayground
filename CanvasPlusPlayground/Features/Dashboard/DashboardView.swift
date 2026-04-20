@@ -40,7 +40,6 @@ struct DashboardView: View {
             .padding()
             .animation(.spring, value: widgetStore.widgetConfigurations)
         }
-        .courseGradientBackground(courses: courseManager.activeCourses)
         .navigationTitle("Dashboard")
         #if os(iOS)
         .toolbar {

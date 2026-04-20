@@ -21,6 +21,7 @@ private struct DefaultNavigationDestinationModifier: ViewModifier {
         content
             .navigationDestination(for: NavigationModel.Destination.self) { destination in
                 destination.destinationView()
+                    .toolbarBackground(.hidden, for: .automatic)
                     .onAppear {
                         navigationModel.recordDestination(destination)
                     }

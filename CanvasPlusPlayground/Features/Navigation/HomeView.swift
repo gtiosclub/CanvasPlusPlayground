@@ -68,6 +68,7 @@ struct HomeView: View {
             .hidden(horizontalSizeClass == .regular)
         }
         .tabViewStyle(.sidebarAdaptable)
+        .globalAppBackground(courses: courseManager.activeCourses)
         .task {
             if AppEnvironment.isSandbox {
                 await loadCourses()
