@@ -14,6 +14,14 @@ import SwiftData
 
 enum SandboxData {
     static let courseID = "12345"
+    static let courseID2 = "67890"
+    private static let courseIntID = 12345
+    private static let courseInt2ID = 67890
+
+    /// Map between String courseID and its Int form.
+    private static func intID(for courseID: String) -> Int {
+        courseID == Self.courseID2 ? courseInt2ID : courseIntID
+    }
 
     // MARK: - Course
 
@@ -111,7 +119,17 @@ enum SandboxData {
 
     // MARK: - Announcements
 
-    static var dummyAnnouncements: [DiscussionTopic] {
+    private static func makeAnnouncement(
+        id: Int,
+        courseID: String,
+        authorName: String,
+        authorId: Int,
+        title: String,
+        message: String,
+        postedDaysAgo: Double,
+        pinned: Bool = false,
+        readState: DiscussionTopic.ReadState = .read
+    ) -> DiscussionTopic {
         let topic = DiscussionTopic(from: DiscussionTopicAPI(
             id: 1,
             author: DiscussionParticipantAPI(
@@ -161,55 +179,219 @@ enum SandboxData {
             sections: nil
         ))
         topic.courseId = courseID
-        return [topic]
+        return topic
+    }
+
+    private static var course1Announcements: [DiscussionTopic] {
+        [
+            makeAnnouncement(
+                id: 1, courseID: courseID, authorName: "Ivan Li", authorId: 1002,
+                title: "Welcome to the Sandbox Course",
+                message: "This is a sandbox environment. All data is static for demonstration purposes.",
+                postedDaysAgo: 14, pinned: true
+            ),
+            makeAnnouncement(
+                id: 2, courseID: courseID, authorName: "Ivan Li", authorId: 1002,
+                title: "Midterm Review Session",
+                message: "We will hold a review session this Friday at 3 PM in Room 205. Bring your notes!",
+                postedDaysAgo: 3
+            ),
+            makeAnnouncement(
+                id: 3, courseID: courseID, authorName: "Ivan Li", authorId: 1002,
+                title: "Office Hours Canceled This Week",
+                message: "Due to a conference, office hours are canceled this Thursday. Email me if you need help.",
+                postedDaysAgo: 1, readState: .unread
+            ),
+            makeAnnouncement(
+                id: 4, courseID: courseID, authorName: "Jane Smith", authorId: 1003,
+                title: "Study Group Forming",
+                message: "Looking for people to form a study group for the final project. Reply here if interested!",
+                postedDaysAgo: 0.5, readState: .unread
+            ),
+        ]
+    }
+
+    private static var course2Announcements: [DiscussionTopic] {
+        [
+            makeAnnouncement(
+                id: 101, courseID: courseID2, authorName: "Ivan Li", authorId: 1002,
+                title: "Welcome to Mobile App Development!",
+                message: "Excited to have you all in CS4261. We'll be building iOS apps with SwiftUI this semester.",
+                postedDaysAgo: 14, pinned: true
+            ),
+            makeAnnouncement(
+                id: 102, courseID: courseID2, authorName: "Ivan Li", authorId: 1002,
+                title: "App Pitch Presentations Next Week",
+                message: "Please come prepared with a 5-minute pitch for your final app project. Slides optional.",
+                postedDaysAgo: 2
+            ),
+            makeAnnouncement(
+                id: 103, courseID: courseID2, authorName: "Ivan Li", authorId: 1002,
+                title: "Xcode 16 Required for Labs",
+                message: "Make sure you've updated to Xcode 16 before starting Lab 2 next week.",
+                postedDaysAgo: 1, readState: .unread
+            ),
+        ]
+    }
+
+    static func dummyAnnouncements(forCourseID id: String) -> [DiscussionTopic] {
+        id == courseID2 ? course2Announcements : course1Announcements
+    }
+
+    static var dummyAnnouncements: [DiscussionTopic] {
+        course1Announcements + course2Announcements
     }
 
     // MARK: - Assignments
 
-    static var dummyAssignmentGroups: [AssignmentGroup] {
-        var assignment1 = AssignmentAPI(id: 1, name: "Introduction Assignment", groupID: 1)
-        assignment1.due_at = ISO8601DateFormatter().string(from: Date.now.addingTimeInterval(604800))
-        assignment1.points_possible = 100
-        assignment1.published = true
-        assignment1.course_id = 12345
+    private static func makeAssignment(
+        id: Int, courseIntID: Int, name: String, groupID: Int,
+        dueDaysFromNow: Double, points: Double,
+        submissionTypes: [String] = ["online_upload"]
+    ) -> AssignmentAPI {
+        var a = AssignmentAPI(id: id, name: name, groupID: groupID)
+        a.due_at = ISO8601DateFormatter().string(from: Date.now.addingTimeInterval(86400 * dueDaysFromNow))
+        a.points_possible = points
+        a.published = true
+        a.course_id = courseIntID
+        a.submission_types = submissionTypes
+        return a
+    }
 
-        var assignment2 = AssignmentAPI(id: 2, name: "Week 1 Reading", groupID: 1)
-        assignment2.due_at = ISO8601DateFormatter().string(from: Date.now.addingTimeInterval(86400))
-        assignment2.points_possible = 50
-        assignment2.published = true
-        assignment2.course_id = 12345
-
-        let groupAPI = AssignmentGroupAPI(
+    private static var course1AssignmentGroups: [AssignmentGroup] {
+        let homeworkGroup = AssignmentGroupAPI(
             id: 1,
             name: "Assignments",
             position: 0,
-            group_weight: 100,
-            assignments: [assignment1, assignment2],
+            group_weight: 40,
+            assignments: [
+                makeAssignment(id: 1, courseIntID: courseIntID, name: "Introduction Assignment", groupID: 1, dueDaysFromNow: 7, points: 100),
+                makeAssignment(id: 2, courseIntID: courseIntID, name: "Week 1 Reading Response", groupID: 1, dueDaysFromNow: 1, points: 50),
+                makeAssignment(id: 3, courseIntID: courseIntID, name: "Data Structures Problem Set", groupID: 1, dueDaysFromNow: 14, points: 75),
+                makeAssignment(id: 4, courseIntID: courseIntID, name: "Essay Draft", groupID: 1, dueDaysFromNow: -2, points: 100,
+                               submissionTypes: ["online_text_entry"]),
+            ],
             rules: nil
         )
-        return [AssignmentGroup(from: groupAPI)]
+
+        let examsGroup = AssignmentGroupAPI(
+            id: 2,
+            name: "Exams",
+            position: 1,
+            group_weight: 40,
+            assignments: [
+                makeAssignment(id: 5, courseIntID: courseIntID, name: "Midterm Exam", groupID: 2, dueDaysFromNow: 21, points: 200),
+                makeAssignment(id: 6, courseIntID: courseIntID, name: "Final Exam", groupID: 2, dueDaysFromNow: 60, points: 300),
+            ],
+            rules: nil
+        )
+
+        let participationGroup = AssignmentGroupAPI(
+            id: 3,
+            name: "Participation",
+            position: 2,
+            group_weight: 20,
+            assignments: [
+                makeAssignment(id: 7, courseIntID: courseIntID, name: "Discussion Post Week 1", groupID: 3, dueDaysFromNow: -5, points: 10,
+                               submissionTypes: ["discussion_topic"]),
+                makeAssignment(id: 8, courseIntID: courseIntID, name: "Discussion Post Week 2", groupID: 3, dueDaysFromNow: 2, points: 10,
+                               submissionTypes: ["discussion_topic"]),
+            ],
+            rules: nil
+        )
+
+        return [
+            AssignmentGroup(from: homeworkGroup),
+            AssignmentGroup(from: examsGroup),
+            AssignmentGroup(from: participationGroup),
+        ]
     }
 
-    // MARK: - Files
+    private static var course2AssignmentGroups: [AssignmentGroup] {
+        let labsGroup = AssignmentGroupAPI(
+            id: 101,
+            name: "Labs",
+            position: 0,
+            group_weight: 30,
+            assignments: [
+                makeAssignment(id: 101, courseIntID: courseInt2ID, name: "Lab 1: Hello SwiftUI", groupID: 101, dueDaysFromNow: 5, points: 50),
+                makeAssignment(id: 102, courseIntID: courseInt2ID, name: "Lab 2: Navigation & State", groupID: 101, dueDaysFromNow: 12, points: 50),
+                makeAssignment(id: 103, courseIntID: courseInt2ID, name: "Lab 3: Networking", groupID: 101, dueDaysFromNow: 19, points: 75),
+            ],
+            rules: nil
+        )
 
-    static var dummyRootFolder: Folder {
-        Folder(api: FolderAPI(
-            id: 1,
-            name: "Course Files",
-            full_name: "course files/Course Files",
-            context_id: 12345,
+        let projectsGroup = AssignmentGroupAPI(
+            id: 102,
+            name: "Projects",
+            position: 1,
+            group_weight: 50,
+            assignments: [
+                makeAssignment(id: 104, courseIntID: courseInt2ID, name: "Project Proposal", groupID: 102, dueDaysFromNow: 3, points: 50,
+                               submissionTypes: ["online_text_entry"]),
+                makeAssignment(id: 105, courseIntID: courseInt2ID, name: "Final App Submission", groupID: 102, dueDaysFromNow: 45, points: 300),
+            ],
+            rules: nil
+        )
+
+        let quizzesGroup = AssignmentGroupAPI(
+            id: 103,
+            name: "Quizzes",
+            position: 2,
+            group_weight: 20,
+            assignments: [
+                makeAssignment(id: 106, courseIntID: courseInt2ID, name: "Quiz 1: Swift Fundamentals", groupID: 103, dueDaysFromNow: 1, points: 25),
+                makeAssignment(id: 107, courseIntID: courseInt2ID, name: "Quiz 2: SwiftUI Layout", groupID: 103, dueDaysFromNow: 8, points: 25),
+            ],
+            rules: nil
+        )
+
+        return [
+            AssignmentGroup(from: labsGroup),
+            AssignmentGroup(from: projectsGroup),
+            AssignmentGroup(from: quizzesGroup),
+        ]
+    }
+
+    static func dummyAssignmentGroups(forCourseID id: String) -> [AssignmentGroup] {
+        id == courseID2 ? course2AssignmentGroups : course1AssignmentGroups
+    }
+
+    static var dummyAssignmentGroups: [AssignmentGroup] {
+        course1AssignmentGroups + course2AssignmentGroups
+    }
+
+    static var dummyAssignments: [Assignment] {
+        dummyAssignmentGroups.flatMap { group in
+            (group.assignments ?? []).map { Assignment(from: $0) }
+        }
+    }
+
+    // MARK: - Files / Folders
+
+    private static func makeFolder(
+        id: Int, parentID: Int?, name: String, fullName: String,
+        contextIntID: Int, filesCount: Int, foldersCount: Int,
+        createdDaysAgo: Double = 14
+    ) -> Folder {
+        let createdISO = "2024-01-01T00:00:00Z"
+        return Folder(api: FolderAPI(
+            id: id,
+            name: name,
+            full_name: fullName,
+            context_id: contextIntID,
             context_type: "Course",
-            parent_folder_id: nil,
-            created_at: "2024-01-01T00:00:00Z",
-            updated_at: "2024-01-01T00:00:00Z",
+            parent_folder_id: parentID,
+            created_at: createdISO,
+            updated_at: createdISO,
             lock_at: nil,
             unlock_at: nil,
             position: 0,
             locked: false,
             folders_url: nil,
             files_url: nil,
-            files_count: 1,
-            folders_count: 0,
+            files_count: filesCount,
+            folders_count: foldersCount,
             hidden: nil,
             locked_for_user: nil,
             hidden_for_user: nil,
@@ -218,26 +400,48 @@ enum SandboxData {
         ))
     }
 
-    static var dummyFiles: [File] {
-        [File(api: FileAPI(
-            id: 1,
-            uuid: "sandbox-uuid-1",
-            folder_id: 1,
-            display_name: "Syllabus.pdf",
-            filename: "Syllabus.pdf",
-            content_type: "application/pdf",
+    private static var course1RootFolder: Folder {
+        makeFolder(id: 1, parentID: nil, name: "Course Files",
+                   fullName: "course files/Course Files",
+                   contextIntID: courseIntID, filesCount: 5, foldersCount: 1)
+    }
+
+    private static var course2RootFolder: Folder {
+        makeFolder(id: 101, parentID: nil, name: "Course Files",
+                   fullName: "course files/Course Files",
+                   contextIntID: courseInt2ID, filesCount: 4, foldersCount: 1)
+    }
+
+    static func dummyRootFolder(forCourseID id: String) -> Folder {
+        id == courseID2 ? course2RootFolder : course1RootFolder
+    }
+
+    static var dummyRootFolder: Folder { course1RootFolder }
+
+    private static func makeFile(
+        id: Int, folderId: Int, name: String,
+        contentType: String, mimeClass: String, size: Int,
+        daysAgo: Double
+    ) -> File {
+        File(api: FileAPI(
+            id: id,
+            uuid: "sandbox-uuid-\(id)",
+            folder_id: folderId,
+            display_name: name,
+            filename: name,
+            content_type: contentType,
             url: nil,
-            size: 102400,
-            created_at: Date.now.addingTimeInterval(-86400),
-            updated_at: Date.now.addingTimeInterval(-86400),
+            size: size,
+            created_at: Date.now.addingTimeInterval(-86400 * daysAgo),
+            updated_at: Date.now.addingTimeInterval(-86400 * daysAgo),
             unlock_at: nil,
             locked: false,
             hidden: false,
             lock_at: nil,
             hidden_for_user: false,
             thumbnail_url: nil,
-            modified_at: Date.now.addingTimeInterval(-86400),
-            mime_class: "pdf",
+            modified_at: Date.now.addingTimeInterval(-86400 * daysAgo),
+            mime_class: mimeClass,
             media_entry_id: nil,
             locked_for_user: false,
             lock_explanation: nil,
@@ -245,40 +449,92 @@ enum SandboxData {
             avatar: nil,
             usage_rights: nil,
             visibility_level: "course"
-        ))]
+        ))
     }
+
+    private static var course1Files: [File] {
+        [
+            makeFile(id: 1, folderId: 1, name: "Syllabus.pdf",
+                     contentType: "application/pdf", mimeClass: "pdf", size: 102400, daysAgo: 14),
+            makeFile(id: 2, folderId: 1, name: "Lecture 1 Slides.pdf",
+                     contentType: "application/pdf", mimeClass: "pdf", size: 2048000, daysAgo: 10),
+            makeFile(id: 3, folderId: 1, name: "Lecture 2 Slides.pdf",
+                     contentType: "application/pdf", mimeClass: "pdf", size: 1835000, daysAgo: 7),
+            makeFile(id: 4, folderId: 1, name: "Project Guidelines.docx",
+                     contentType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                     mimeClass: "doc", size: 45200, daysAgo: 12),
+            makeFile(id: 5, folderId: 1, name: "Sample Data.csv",
+                     contentType: "text/csv", mimeClass: "file", size: 8500, daysAgo: 5),
+            makeFile(id: 6, folderId: 2, name: "Homework 1 Solutions.pdf",
+                     contentType: "application/pdf", mimeClass: "pdf", size: 320000, daysAgo: 3),
+        ]
+    }
+
+    private static var course2Files: [File] {
+        [
+            makeFile(id: 101, folderId: 101, name: "CS4261 Syllabus.pdf",
+                     contentType: "application/pdf", mimeClass: "pdf", size: 142000, daysAgo: 14),
+            makeFile(id: 102, folderId: 101, name: "SwiftUI Cheatsheet.pdf",
+                     contentType: "application/pdf", mimeClass: "pdf", size: 680000, daysAgo: 9),
+            makeFile(id: 103, folderId: 101, name: "Starter Project.zip",
+                     contentType: "application/zip", mimeClass: "file", size: 4500000, daysAgo: 6),
+            makeFile(id: 104, folderId: 101, name: "App Design Rubric.docx",
+                     contentType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                     mimeClass: "doc", size: 52000, daysAgo: 5),
+            makeFile(id: 105, folderId: 102, name: "Demo App Screenshots.zip",
+                     contentType: "application/zip", mimeClass: "file", size: 9200000, daysAgo: 2),
+        ]
+    }
+
+    static func dummyFiles(forCourseID id: String) -> [File] {
+        id == courseID2 ? course2Files : course1Files
+    }
+
+    static var dummyFiles: [File] { course1Files + course2Files }
+
+    private static var course1Subfolders: [Folder] {
+        [makeFolder(id: 2, parentID: 1, name: "Solutions",
+                    fullName: "course files/Solutions",
+                    contextIntID: courseIntID, filesCount: 1, foldersCount: 0,
+                    createdDaysAgo: 9)]
+    }
+
+    private static var course2Subfolders: [Folder] {
+        [makeFolder(id: 102, parentID: 101, name: "Demos",
+                    fullName: "course files/Demos",
+                    contextIntID: courseInt2ID, filesCount: 1, foldersCount: 0,
+                    createdDaysAgo: 9)]
+    }
+
+    static func dummySubfolders(forCourseID id: String) -> [Folder] {
+        id == courseID2 ? course2Subfolders : course1Subfolders
+    }
+
+    static var dummySubfolders: [Folder] { course1Subfolders + course2Subfolders }
 
     // MARK: - People
 
-    private static let sandboxStudentEnrollment = EnrollmentAPI(
-        id: 1,
-        course_id: 12345,
-        course_section_id: nil,
-        enrollment_state: .active,
-        type: "StudentEnrollment",
-        user_id: 1001,
-        associated_user_id: nil,
-        role: "StudentEnrollment",
-        role_id: 3,
-        start_at: nil,
-        end_at: nil,
-        last_activity_at: nil,
-        grades: nil,
-        user: nil,
-        computed_current_score: nil,
-        computed_final_score: nil,
-        computed_current_grade: nil,
-        computed_current_letter_grade: nil,
-        computed_final_grade: nil,
-        multiple_grading_periods_enabled: nil,
-        totals_for_all_grading_periods_option: nil,
-        current_grading_period_id: nil,
-        current_period_computed_current_score: nil,
-        current_period_computed_final_score: nil,
-        current_period_computed_current_grade: nil,
-        current_period_computed_final_grade: nil,
-        observed_user: nil
-    )
+    private static func makeEnrollment(
+        id: Int, courseIntID: Int, type: String, roleId: Int, userId: Int
+    ) -> EnrollmentAPI {
+        EnrollmentAPI(
+            id: id, course_id: courseIntID, course_section_id: nil,
+            enrollment_state: .active, type: type, user_id: userId,
+            associated_user_id: nil, role: type, role_id: roleId,
+            start_at: nil, end_at: nil, last_activity_at: nil,
+            grades: nil, user: nil,
+            computed_current_score: nil, computed_final_score: nil,
+            computed_current_grade: nil, computed_current_letter_grade: nil,
+            computed_final_grade: nil, multiple_grading_periods_enabled: nil,
+            totals_for_all_grading_periods_option: nil,
+            current_grading_period_id: nil,
+            current_period_computed_current_score: nil,
+            current_period_computed_final_score: nil,
+            current_period_computed_current_grade: nil,
+            current_period_computed_final_grade: nil,
+            observed_user: nil
+        )
+    }
 
     private static let sandboxTeacherEnrollment = EnrollmentAPI(
         id: 2,
@@ -310,63 +566,64 @@ enum SandboxData {
         observed_user: nil
     )
 
-    static var dummyUsers: [User] {
-        let studentUserAPI = UserAPI(
-            id: 1001,
-            name: "Steven Liu",
-            sortable_name: "Liu, Steven",
-            last_name: "Liu",
-            first_name: "Steven",
-            short_name: "Steven",
-            sis_user_id: "AC1001",
-            sis_import_id: 5001,
-            integration_id: "INT-1001",
-            login_id: "sliu",
-            avatar_url: URL(string: "https://canvas.example.edu/users/1001/avatar.png"),
-            avatar_state: "approved",
-            enrollments: [sandboxStudentEnrollment],
-            email: "steven.liu@example.edu",
-            locale: "en",
-            last_login: "2025-03-20T14:30:45Z",
-            time_zone: "America/Los_Angeles",
-            bio: "Computer Science major with an interest in mobile app development.",
-            pronouns: "he/him",
-            role: "student"
-        )
-        let teacherUserAPI = UserAPI(
-            id: 1002,
-            name: "Ivan Li",
-            sortable_name: "Li, Ivan",
-            last_name: "Li",
-            first_name: "Ivan",
-            short_name: "Ivan",
-            sis_user_id: "JS1002",
-            sis_import_id: 5002,
-            integration_id: "INT-1002",
-            login_id: "iLi",
-            avatar_url: URL(string: "https://canvas.example.edu/users/1002/avatar.png"),
-            avatar_state: "approved",
-            enrollments: [sandboxTeacherEnrollment],
-            email: "ivan.li@example.edu",
-            locale: "en",
-            last_login: "2025-03-23T09:15:22Z",
-            time_zone: "America/Chicago",
-            bio: "Design student focusing on UI/UX for mobile applications.",
-            pronouns: "they/them",
-            role: "teacher"
-        )
+    private static var course1Users: [User] {
+        let studentEnrollment1 = makeEnrollment(id: 1, courseIntID: courseIntID, type: "StudentEnrollment", roleId: 3, userId: 1001)
+        let studentEnrollment2 = makeEnrollment(id: 3, courseIntID: courseIntID, type: "StudentEnrollment", roleId: 3, userId: 1003)
+        let studentEnrollment3 = makeEnrollment(id: 4, courseIntID: courseIntID, type: "StudentEnrollment", roleId: 3, userId: 1004)
+        let studentEnrollment4 = makeEnrollment(id: 5, courseIntID: courseIntID, type: "StudentEnrollment", roleId: 3, userId: 1005)
+        let studentEnrollment5 = makeEnrollment(id: 6, courseIntID: courseIntID, type: "StudentEnrollment", roleId: 3, userId: 1006)
+        let teacherEnrollment = makeEnrollment(id: 2, courseIntID: courseIntID, type: "TeacherEnrollment", roleId: 4, userId: 1002)
+        let taEnrollment = makeEnrollment(id: 7, courseIntID: courseIntID, type: "TaEnrollment", roleId: 5, userId: 1007)
+
         return [
             User(from: studentUserAPI),
             User(from: teacherUserAPI)
         ]
     }
 
+    private static var course2Users: [User] {
+        let studentE1 = makeEnrollment(id: 101, courseIntID: courseInt2ID, type: "StudentEnrollment", roleId: 3, userId: 2001)
+        let studentE2 = makeEnrollment(id: 102, courseIntID: courseInt2ID, type: "StudentEnrollment", roleId: 3, userId: 2002)
+        let studentE3 = makeEnrollment(id: 103, courseIntID: courseInt2ID, type: "StudentEnrollment", roleId: 3, userId: 2003)
+        let teacherE = makeEnrollment(id: 104, courseIntID: courseInt2ID, type: "TeacherEnrollment", roleId: 4, userId: 1002)
+        let taE = makeEnrollment(id: 105, courseIntID: courseInt2ID, type: "TaEnrollment", roleId: 5, userId: 2004)
+
+        return [
+            makeUser(id: 2001, first: "Rahul", last: "Shrestha",
+                     enrollment: studentE1, role: "student",
+                     email: "rahul.shrestha@example.edu", bio: "iOS dev enthusiast.", pronouns: "he/him"),
+            makeUser(id: 1002, first: "Ivan", last: "Li",
+                     enrollment: teacherE, role: "teacher",
+                     email: "ivan.li@example.edu", bio: "Instructor for CS4261 — iOS apps & Swift."),
+            makeUser(id: 2002, first: "Priya", last: "Anand",
+                     enrollment: studentE2, role: "student",
+                     email: "priya.anand@example.edu", bio: "Full-stack dev turning mobile.", pronouns: "she/her"),
+            makeUser(id: 2003, first: "Chris", last: "O'Connell",
+                     enrollment: studentE3, role: "student",
+                     email: "chris.oconnell@example.edu", bio: "Indie game developer."),
+            makeUser(id: 2004, first: "Dana", last: "Kim",
+                     enrollment: taE, role: "ta",
+                     email: "dana.kim@example.edu", bio: "TA — previous student of CS4261."),
+        ].map { User(from: $0) }
+    }
+
+    static func dummyUsers(forCourseID id: String) -> [User] {
+        id == courseID2 ? course2Users : course1Users
+    }
+
+    static var dummyUsers: [User] {
+        course1Users + course2Users
+    }
+
     // MARK: - Grades (Enrollment)
 
-    static var dummyEnrollment: Enrollment {
+    private static func makeGradesEnrollment(
+        enrollmentId: Int, courseIntID: Int,
+        gradesURL: String, letterGrade: String, score: Double
+    ) -> Enrollment {
         Enrollment(from: EnrollmentAPI(
-            id: 1,
-            course_id: 12345,
+            id: enrollmentId,
+            course_id: courseIntID,
             course_section_id: nil,
             enrollment_state: .active,
             type: "StudentEnrollment",
@@ -378,10 +635,10 @@ enum SandboxData {
             end_at: nil,
             last_activity_at: nil,
             grades: Grades(
-                html_url: "https://canvas.example.edu/courses/12345/grades",
-                current_grade: "B+",
+                html_url: gradesURL,
+                current_grade: letterGrade,
                 final_grade: nil,
-                current_score: 87,
+                current_score: score,
                 final_score: nil,
                 override_grade: nil,
                 override_score: nil,
@@ -405,9 +662,33 @@ enum SandboxData {
         ))
     }
 
+    static func dummyEnrollment(forCourseID id: String) -> Enrollment {
+        if id == courseID2 {
+            return makeGradesEnrollment(
+                enrollmentId: 2, courseIntID: courseInt2ID,
+                gradesURL: "https://canvas.example.edu/courses/67890/grades",
+                letterGrade: "A-", score: 92
+            )
+        }
+        return makeGradesEnrollment(
+            enrollmentId: 1, courseIntID: courseIntID,
+            gradesURL: "https://canvas.example.edu/courses/12345/grades",
+            letterGrade: "B+", score: 87
+        )
+    }
+
+    static var dummyEnrollment: Enrollment { dummyEnrollment(forCourseID: courseID) }
+
     // MARK: - Quizzes
 
-    static var dummyQuizzes: [Quiz] {
+    private static func makeQuiz(
+        id: Int, courseID: String, courseIntID: Int,
+        title: String, description: String,
+        questionCount: Int, points: Double, timeLimit: Double?,
+        dueDaysFromNow: Double, attempts: Int = 1,
+        quizType: QuizType = .assignment
+    ) -> Quiz {
+        let htmlURL = URL(string: "https://canvas.example.edu/courses/\(courseIntID)/quizzes/\(id)")!
         let quizAPI = QuizAPI(
             id: 1,
             access_code: nil,
@@ -420,18 +701,13 @@ enum SandboxData {
             has_access_code: false,
             hide_correct_answers_at: nil,
             hide_results: nil,
-            html_url: URL(string: "https://canvas.example.edu/courses/12345/quizzes/1")!,
-            ip_filter: nil,
-            lock_at: nil,
-            lock_explanation: nil,
+            html_url: htmlURL,
+            ip_filter: nil, lock_at: nil, lock_explanation: nil,
             locked_for_user: false,
-            mobile_url: URL(string: "https://canvas.example.edu/courses/12345/quizzes/1")!,
-            one_question_at_a_time: false,
-            points_possible: 10,
-            published: true,
-            question_count: 5,
-            question_types: nil,
-            quiz_type: .assignment,
+            mobile_url: htmlURL,
+            one_question_at_a_time: false, points_possible: points,
+            published: true, question_count: questionCount,
+            question_types: nil, quiz_type: quizType,
             require_lockdown_browser_for_results: false,
             require_lockdown_browser: false,
             scoring_policy: nil,
@@ -447,18 +723,65 @@ enum SandboxData {
         )
         var quiz = Quiz(api: quizAPI)
         quiz.courseID = courseID
-        return [quiz]
+        return quiz
+    }
+
+    private static var course1Quizzes: [Quiz] {
+        [
+            makeQuiz(id: 1, courseID: courseID, courseIntID: courseIntID,
+                     title: "Syllabus Quiz", description: "Quiz on the course syllabus.",
+                     questionCount: 5, points: 10, timeLimit: 15, dueDaysFromNow: 3, attempts: 3,
+                     quizType: .practiceQuiz),
+            makeQuiz(id: 2, courseID: courseID, courseIntID: courseIntID,
+                     title: "Week 1 Knowledge Check", description: "Covers Lectures 1 and 2.",
+                     questionCount: 10, points: 20, timeLimit: 30, dueDaysFromNow: 7),
+            makeQuiz(id: 3, courseID: courseID, courseIntID: courseIntID,
+                     title: "Midterm Practice Exam", description: "Ungraded practice for the midterm.",
+                     questionCount: 25, points: 50, timeLimit: 60, dueDaysFromNow: 18, attempts: -1,
+                     quizType: .practiceQuiz),
+        ]
+    }
+
+    private static var course2Quizzes: [Quiz] {
+        [
+            makeQuiz(id: 101, courseID: courseID2, courseIntID: courseInt2ID,
+                     title: "Swift Basics Check", description: "Warm-up quiz on Swift syntax & types.",
+                     questionCount: 8, points: 15, timeLimit: 20, dueDaysFromNow: 2, attempts: 2),
+            makeQuiz(id: 102, courseID: courseID2, courseIntID: courseInt2ID,
+                     title: "SwiftUI Layout Quiz", description: "HStack, VStack, ZStack and friends.",
+                     questionCount: 12, points: 25, timeLimit: 30, dueDaysFromNow: 9),
+        ]
+    }
+
+    static func dummyQuizzes(forCourseID id: String) -> [Quiz] {
+        id == courseID2 ? course2Quizzes : course1Quizzes
+    }
+
+    static var dummyQuizzes: [Quiz] {
+        course1Quizzes + course2Quizzes
     }
 
     // MARK: - Modules
 
-    static var dummyModules: [Module] {
-        let moduleAPI = APIModule(
-            id: 1,
-            workflow_state: .active,
-            position: 0,
-            name: "Getting Started",
-            unlock_at: nil,
+    private static func makeModuleItem(
+        id: Int, moduleId: Int, position: Int, title: String,
+        type: APIModuleItemType, contentId: Int? = nil,
+        pageUrl: String? = nil
+    ) -> APIModuleItem {
+        APIModuleItem(
+            id: id, module_id: moduleId, position: position,
+            title: title, indent: 0, type: type,
+            content_id: contentId, html_url: nil, url: nil,
+            page_url: pageUrl, external_url: nil, new_tab: nil,
+            completion_requirement: nil, content_details: nil,
+            published: true, quiz_lti: nil
+        )
+    }
+
+    private static var course1Modules: [Module] {
+        let module1 = APIModule(
+            id: 1, workflow_state: .active, position: 0,
+            name: "Getting Started", unlock_at: nil,
             require_sequential_progress: false,
             prerequisite_module_ids: [],
             items_count: 2,
@@ -510,6 +833,76 @@ enum SandboxData {
         return [module]
     }
 
+    private static var course2Modules: [Module] {
+        let module1 = APIModule(
+            id: 101, workflow_state: .active, position: 0,
+            name: "Intro to Swift", unlock_at: nil,
+            require_sequential_progress: false,
+            prerequisite_module_ids: [], items_count: 3, items_url: nil,
+            items: [
+                makeModuleItem(id: 101, moduleId: 101, position: 0, title: "Welcome to CS4261",
+                               type: .page, pageUrl: "cs4261-welcome"),
+                makeModuleItem(id: 102, moduleId: 101, position: 1, title: "Swift Basics Check",
+                               type: .quiz, contentId: 101),
+                makeModuleItem(id: 103, moduleId: 101, position: 2, title: "Lab 1: Hello SwiftUI",
+                               type: .assignment, contentId: 101),
+            ],
+            state: .unlocked, completed_at: nil, published: true
+        )
+
+        let module2 = APIModule(
+            id: 102, workflow_state: .active, position: 1,
+            name: "SwiftUI Fundamentals", unlock_at: nil,
+            require_sequential_progress: false,
+            prerequisite_module_ids: [101], items_count: 3, items_url: nil,
+            items: [
+                makeModuleItem(id: 104, moduleId: 102, position: 0, title: "SwiftUI Cheatsheet",
+                               type: .file, contentId: 102),
+                makeModuleItem(id: 105, moduleId: 102, position: 1, title: "Layout Containers",
+                               type: .page, pageUrl: "cs4261-layout"),
+                makeModuleItem(id: 106, moduleId: 102, position: 2, title: "Lab 2: Navigation & State",
+                               type: .assignment, contentId: 102),
+            ],
+            state: .unlocked, completed_at: nil, published: true
+        )
+
+        let module3 = APIModule(
+            id: 103, workflow_state: .active, position: 2,
+            name: "Networking & Persistence", unlock_at: nil,
+            require_sequential_progress: false,
+            prerequisite_module_ids: [102], items_count: 3, items_url: nil,
+            items: [
+                makeModuleItem(id: 107, moduleId: 103, position: 0, title: "async/await Overview",
+                               type: .page, pageUrl: "cs4261-async"),
+                makeModuleItem(id: 108, moduleId: 103, position: 1, title: "Starter Project",
+                               type: .file, contentId: 103),
+                makeModuleItem(id: 109, moduleId: 103, position: 2, title: "Lab 3: Networking",
+                               type: .assignment, contentId: 103),
+            ],
+            state: .locked, completed_at: nil, published: true
+        )
+
+        return [module1, module2, module3].map { api in
+            var m = Module(from: api)
+            m.courseID = courseID2
+            return m
+        }
+    }
+
+    static func dummyModules(forCourseID id: String) -> [Module] {
+        id == courseID2 ? course2Modules : course1Modules
+    }
+
+    static var dummyModules: [Module] {
+        course1Modules + course2Modules
+    }
+
+    static func dummyModuleItems(forCourseID id: String) -> [ModuleItem] {
+        dummyModules(forCourseID: id).flatMap { module in
+            (module.items ?? []).map { ModuleItem(from: $0) }
+        }
+    }
+
     static var dummyModuleItems: [ModuleItem] {
         dummyModules.flatMap { module in
             (module.items ?? []).map { apiItem in
@@ -521,40 +914,73 @@ enum SandboxData {
 
     // MARK: - Pages
 
-    static var dummyPages: [Page] {
+    private static func makePage(
+        id: Int, courseID: String, url: String, title: String,
+        body: String, isFront: Bool, daysAgo: Double
+    ) -> Page {
         let page = Page(pageAPI: PageAPI(
-            page_id: 1,
-            url: "welcome",
-            title: "Welcome",
-            created_at: Date.now.addingTimeInterval(-86400),
-            updated_at: Date.now.addingTimeInterval(-86400),
-            body: "<p>Welcome to the sandbox course!</p>",
-            published: true,
-            publish_at: nil,
-            front_page: true
+            page_id: id, url: url, title: title,
+            created_at: Date.now.addingTimeInterval(-86400 * daysAgo),
+            updated_at: Date.now.addingTimeInterval(-86400 * daysAgo),
+            body: body, published: true, publish_at: nil, front_page: isFront
         ))
         page.courseID = courseID
-        return [page]
+        return page
+    }
+
+    private static var course1Pages: [Page] {
+        [
+            makePage(id: 1, courseID: courseID, url: "welcome", title: "Welcome",
+                     body: "<h2>Welcome!</h2><p>This is the sandbox course homepage. Use the navigation tabs to explore.</p>",
+                     isFront: true, daysAgo: 14),
+            makePage(id: 2, courseID: courseID, url: "resources", title: "Resources",
+                     body: "<h2>Helpful Resources</h2><ul><li>Textbook: Intro to CS, 4th Ed.</li><li>Office Hours: Tues/Thurs 2-4 PM</li><li>Tutoring Center: Room 110</li></ul>",
+                     isFront: false, daysAgo: 10),
+            makePage(id: 3, courseID: courseID, url: "faq", title: "FAQ",
+                     body: "<h2>Frequently Asked Questions</h2><p><strong>Q: How is the grade calculated?</strong></p><p>A: Homework 40%, Exams 40%, Participation 20%.</p><p><strong>Q: Can I submit late?</strong></p><p>A: Late work loses 10% per day.</p>",
+                     isFront: false, daysAgo: 10),
+            makePage(id: 4, courseID: courseID, url: "schedule", title: "Course Schedule",
+                     body: "<h2>Schedule</h2><p>Week 1: Intro &amp; Setup</p><p>Week 2: Data Structures</p><p>Week 3: Algorithms</p><p>Week 4: Midterm Review</p>",
+                     isFront: false, daysAgo: 8),
+        ]
+    }
+
+    private static var course2Pages: [Page] {
+        [
+            makePage(id: 101, courseID: courseID2, url: "cs4261-welcome", title: "Welcome to CS4261",
+                     body: "<h2>Welcome to Mobile App Development!</h2><p>We'll build iOS apps with SwiftUI and Swift. Check the schedule page for weekly topics.</p>",
+                     isFront: true, daysAgo: 14),
+            makePage(id: 102, courseID: courseID2, url: "cs4261-layout", title: "Layout Containers",
+                     body: "<h2>SwiftUI Layout Containers</h2><ul><li>HStack — horizontal</li><li>VStack — vertical</li><li>ZStack — overlapping</li><li>Grid — 2D layout</li></ul>",
+                     isFront: false, daysAgo: 8),
+            makePage(id: 103, courseID: courseID2, url: "cs4261-async", title: "async/await Overview",
+                     body: "<h2>Structured Concurrency</h2><p>Swift's async/await makes networking simple. Use <code>Task</code> to bridge UI events and async work.</p>",
+                     isFront: false, daysAgo: 5),
+        ]
+    }
+
+    static func dummyPages(forCourseID id: String) -> [Page] {
+        id == courseID2 ? course2Pages : course1Pages
+    }
+
+    static var dummyPages: [Page] {
+        course1Pages + course2Pages
     }
 
     // MARK: - Groups
 
-    static var dummyGroups: [CanvasGroup] {
-        let sandboxGroup = APIGroup(
-            id: 12345,
-            name: "Sandbox Project Group",
-            description: "A sample group for sandbox exploration",
-            concluded: false,
-            members_count: 2,
-            course_id: 12345,
-            group_category: APIGroup.GroupCategory(
-                id: 42,
-                name: "Project Teams",
-                group_limit: 8,
-                allows_multiple_memberships: false
-            ),
-            storage_quota_mb: 1024,
-            is_public: false,
+    private static var course1Groups: [CanvasGroup] {
+        let projectTeams = APIGroup.GroupCategory(
+            id: 42, name: "Project Teams",
+            group_limit: 6, allows_multiple_memberships: false
+        )
+
+        let group1 = APIGroup(
+            id: 101, name: "Team Alpha",
+            description: "Working on the data visualization project.",
+            concluded: false, members_count: 3, course_id: courseIntID,
+            group_category: projectTeams,
+            storage_quota_mb: 1024, is_public: false,
             users: [UserAPI.sample1, UserAPI.sample2],
             permissions: APIGroup.Permissions(
                 create_discussion_topic: true,
@@ -565,7 +991,86 @@ enum SandboxData {
             avatar_url: nil,
             max_membership: 8
         )
-        return [CanvasGroup(from: sandboxGroup)]
+
+        let group2 = APIGroup(
+            id: 102, name: "Team Beta",
+            description: "Responsible for the testing framework.",
+            concluded: false, members_count: 2, course_id: courseIntID,
+            group_category: projectTeams,
+            storage_quota_mb: 1024, is_public: false,
+            users: [UserAPI.sample1],
+            permissions: APIGroup.Permissions(
+                create_discussion_topic: true, join: true,
+                create_announcement: false
+            ),
+            join_level: .parentContextAutoJoin, avatar_url: nil, max_membership: 6
+        )
+
+        let studyGroups = APIGroup.GroupCategory(
+            id: 43, name: "Study Groups",
+            group_limit: 10, allows_multiple_memberships: true
+        )
+
+        let group3 = APIGroup(
+            id: 103, name: "Exam Prep Study Group",
+            description: "Open study group for midterm preparation.",
+            concluded: false, members_count: 5, course_id: courseIntID,
+            group_category: studyGroups,
+            storage_quota_mb: 512, is_public: true,
+            users: nil,
+            permissions: APIGroup.Permissions(
+                create_discussion_topic: true, join: true,
+                create_announcement: false
+            ),
+            join_level: .parentContextAutoJoin, avatar_url: nil, max_membership: 10
+        )
+
+        return [group1, group2, group3].map { CanvasGroup(from: $0) }
+    }
+
+    private static var course2Groups: [CanvasGroup] {
+        let appTeams = APIGroup.GroupCategory(
+            id: 142, name: "App Teams",
+            group_limit: 4, allows_multiple_memberships: false
+        )
+
+        let group1 = APIGroup(
+            id: 201, name: "Team Swift",
+            description: "Building a productivity app for students.",
+            concluded: false, members_count: 3, course_id: courseInt2ID,
+            group_category: appTeams,
+            storage_quota_mb: 1024, is_public: false,
+            users: [UserAPI.sample1, UserAPI.sample2],
+            permissions: APIGroup.Permissions(
+                create_discussion_topic: true, join: false,
+                create_announcement: true
+            ),
+            join_level: .invitationOnly, avatar_url: nil, max_membership: 4
+        )
+
+        let group2 = APIGroup(
+            id: 202, name: "Team Kotlin",
+            description: "Exploring cross-platform with Kotlin Multiplatform.",
+            concluded: false, members_count: 2, course_id: courseInt2ID,
+            group_category: appTeams,
+            storage_quota_mb: 1024, is_public: false,
+            users: [UserAPI.sample1],
+            permissions: APIGroup.Permissions(
+                create_discussion_topic: true, join: true,
+                create_announcement: false
+            ),
+            join_level: .parentContextAutoJoin, avatar_url: nil, max_membership: 4
+        )
+
+        return [group1, group2].map { CanvasGroup(from: $0) }
+    }
+
+    static func dummyGroups(forCourseID id: String) -> [CanvasGroup] {
+        id == courseID2 ? course2Groups : course1Groups
+    }
+
+    static var dummyGroups: [CanvasGroup] {
+        course1Groups + course2Groups
     }
 
     // MARK: - To-Do
