@@ -25,7 +25,7 @@ class PagesManager {
 
     func fetchPages() async {
         if AppEnvironment.isSandbox {
-            setPages(SandboxData.dummyPages)
+            setPages(SandboxData.dummyPages(forCourseID: courseID))
             return
         }
         let request = CanvasRequest.getPages(courseId: self.courseID)

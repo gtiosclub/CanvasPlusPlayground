@@ -30,6 +30,14 @@ extension CanvasSchemaV1 {
         var quizAPIData: Data?
         var htmlURL: String
 
+        // MARK: User-Created Properties
+        /// `true` for items the user created locally (not from Canvas API).
+        var isUserCreated: Bool
+        var customTitle: String?
+        var customDueDate: Date?
+        var customUrgency: String?
+        var eventLocation: String?
+
         // MARK: Custom Properties
         @Transient
         var course: Course?
@@ -74,11 +82,13 @@ extension CanvasSchemaV1 {
 
         // MARK: Computed Properties
         var title: String {
-            assignmentAPI?.name ?? quizAPI?.title ?? "Unknown Item"
+            // User-created items always use their custom title.
+            if isUserCreated { return customTitle ?? "Unknown Item" }
+            return assignmentAPI?.name ?? quizAPI?.title ?? customTitle ?? "Unknown Item"
         }
 
         var dueDate: Date? {
-            assignmentAPI?.dueDate ?? quizAPI?.due_at
+            assignmentAPI?.dueDate ?? quizAPI?.due_at ?? customDueDate
         }
 
         var itemType: TodoItemType? {
@@ -104,6 +114,33 @@ extension CanvasSchemaV1 {
             self.assignmentAPIData = toDoItemAPI.assignment.flatMap { try? JSONEncoder().encode($0) }
             self.quizAPIData = toDoItemAPI.quiz.flatMap { try? JSONEncoder().encode($0) }
             self.htmlURL = toDoItemAPI.htmlURL
+            self.isUserCreated = false
+        }
+
+        /// Creates a locally-authored todo item (not backed by the Canvas API).
+        init(
+            courseID: Int,
+            contextName: String,
+            title: String,
+            dueDate: Date? = nil,
+            urgency: String? = nil,
+            location: String? = nil
+        ) {
+            self.id = UUID().uuidString
+            self.parentID = ""
+            self.contextType = .course
+            self.courseID = courseID
+            self.groupID = nil
+            self.contextName = contextName
+            self.type = .submitting
+            self.ignoreURL = ""
+            self.ignorePermanentlyURL = ""
+            self.htmlURL = ""
+            self.isUserCreated = true
+            self.customTitle = title
+            self.customDueDate = dueDate
+            self.customUrgency = urgency
+            self.eventLocation = location
         }
     }
 }
@@ -127,6 +164,14 @@ extension ToDoItem: Cacheable {
         self._assignmentAPICache = nil
         self._quizAPICache = nil
         self.htmlURL = other.htmlURL
+        // Never overwrite user-created metadata from an API sync
+        if !self.isUserCreated {
+            self.isUserCreated = other.isUserCreated
+            self.customTitle = other.customTitle
+            self.customDueDate = other.customDueDate
+            self.customUrgency = other.customUrgency
+            self.eventLocation = other.eventLocation
+        }
     }
 }
 

@@ -138,6 +138,29 @@ class NavigationModel {
                 GlobalCalendarView()
             }
         }
+        /// The course this destination is scoped to, if any.
+        /// Used by descendants to inherit the course's gradient background.
+        var associatedCourse: Course? {
+            switch self {
+            case .course(let course): course
+            case .coursePage(_, let course): course
+            case .folder(_, let course): course
+            case .calendarEvent(_, let course): course
+            default: nil
+            }
+        }
+
+        var associatedCourseID: Course.ID? {
+            switch self {
+            case .assignment(let assignment): assignment.courseId?.asString
+            case .announcement(let topic): topic.courseId
+            case .page(let page): page.courseID
+            case .quiz(let quiz): quiz.courseID
+            case .file(_, let courseID): courseID
+            default: nil
+            }
+        }
+
         // Computed displayTitle
         var displayTitle: String {
             switch self {

@@ -27,7 +27,7 @@ import Foundation
 
     func fetchAnnouncements() async {
         if AppEnvironment.isSandbox {
-            setAnnouncements(SandboxData.dummyAnnouncements)
+            setAnnouncements(SandboxData.dummyAnnouncements(forCourseID: courseId))
             return
         }
         let request = CanvasRequest.getDiscussionTopics(

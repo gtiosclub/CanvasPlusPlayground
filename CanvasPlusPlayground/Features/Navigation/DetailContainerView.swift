@@ -26,8 +26,11 @@ struct DetailContainerView: View {
             if let course = courseManager.course(withID: courseID) {
                 NavigationStack(path: $navigationModel.coursePath) {
                     CourseOverviewView(course: course)
+                        .courseGradientBackground(courses: [course])
+                        .toolbarBackground(.hidden, for: .automatic)
                         .defaultNavigationDestination()
                 }
+                .id(courseID)
             } else {
                 ContentUnavailableView("Course unavailable", systemImage: "folder")
             }
@@ -35,8 +38,11 @@ struct DetailContainerView: View {
             if let course = courseManager.course(withID: courseID) {
                 NavigationStack(path: $navigationModel.coursePath) {
                     CourseDetailView(course: course, coursePage: page)
+                        .courseGradientBackground(courses: [course])
+                        .toolbarBackground(.hidden, for: .automatic)
                         .defaultNavigationDestination()
                 }
+                .id(courseID)
             } else {
                 ContentUnavailableView("Course unavailable", systemImage: "folder")
             }

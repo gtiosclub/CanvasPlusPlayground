@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import SwiftData
 
 @Observable
 class ToDoListManager: ListWidgetDataSource, BigNumberWidgetDataSource {
@@ -80,6 +81,10 @@ class ToDoListManager: ListWidgetDataSource, BigNumberWidgetDataSource {
                 self.errorMessage = "Failed to load to-do items: \(error.localizedDescription)"
             }
         }
+
+        Task { @MainActor in
+            self.loadUserCreatedItems(courses: courses)
+        }
     }
 
     func ignoreToDoItem(_ item: ToDoItem) async {
@@ -109,10 +114,34 @@ class ToDoListManager: ListWidgetDataSource, BigNumberWidgetDataSource {
         }
 
         if replaceExisting {
-            self.toDoItems = Set(newItems)
+            // Keep any locally-created items — they don't come back from the API.
+            let userCreated = self.toDoItems.filter { $0.isUserCreated }
+            self.toDoItems = Set(newItems).union(userCreated)
         } else {
             self.toDoItems.formUnion(newItems)
         }
+    }
+
+    /// Persists a user-created item to SwiftData and adds it to the live set.
+    @MainActor
+    func addUserCreatedItem(_ item: ToDoItem, course: Course?) {
+        item.course = course
+        ModelContext.shared.insert(item)
+        try? ModelContext.shared.save()
+        toDoItems.insert(item)
+    }
+
+    /// Loads user-created items persisted in SwiftData into the live set.
+    @MainActor
+    func loadUserCreatedItems(courses: [Course]) {
+        let descriptor = FetchDescriptor<ToDoItem>(
+            predicate: #Predicate { $0.isUserCreated == true }
+        )
+        guard let items = try? ModelContext.shared.fetch(descriptor) else { return }
+        items.forEach { item in
+            item.course = courses.first { $0.id == item.courseID.asString }
+        }
+        toDoItems.formUnion(items)
     }
 
     // MARK: ListWidgetDataSource

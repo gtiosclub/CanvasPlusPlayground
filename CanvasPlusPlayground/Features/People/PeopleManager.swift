@@ -58,7 +58,7 @@ class PeopleManager: SearchResultListDataSource {
         guard let courseID else { return }
 
         if AppEnvironment.isSandbox {
-            addNewUsers(SandboxData.dummyUsers)
+            addNewUsers(SandboxData.dummyUsers(forCourseID: courseID))
             return
         }
 

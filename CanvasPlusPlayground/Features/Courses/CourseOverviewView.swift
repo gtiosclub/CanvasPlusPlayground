@@ -17,6 +17,7 @@ struct CourseOverviewView: View {
     @State private var gradesVM: GradesViewModel
     @State private var expandedSections: Set<String> = []
     @State private var ringProgress: Double = 0
+    @State private var showTodoCreation = false
 
     init(course: Course) {
         self.course = course
@@ -34,7 +35,7 @@ struct CourseOverviewView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
-                Text("Course Dashboard")
+                Text(course.displayName)
                     .font(.system(size: 56, weight: .heavy))
                     .padding(.bottom, 4)
 
@@ -56,6 +57,22 @@ struct CourseOverviewView: View {
                 }
             }
             .padding(24)
+        }
+        .overlay(alignment: .bottomTrailing) {
+            Button {
+                showTodoCreation = true
+            } label: {
+                Image(systemName: "plus")
+                    .font(.system(size: 20, weight: .semibold))
+                    .foregroundStyle(.primary)
+                    .frame(width: 52, height: 52)
+                    .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
+            }
+            .buttonStyle(.plain)
+            .padding(24)
+        }
+        .sheet(isPresented: $showTodoCreation) {
+            CourseTodoCreationSheet(course: course)
         }
         .courseGradientBackground(
             courses: [course],

@@ -12,8 +12,6 @@ struct SidebarView: View {
 
     @Binding var selectedTab: NavigationModel.Tab?
     @Binding var expandedCourses: Set<Course.ID>
-    @State private var visiblePages: [Course.ID: Int] = [:]
-    @State private var revealGeneration: [Course.ID: Int] = [:]
 
     var body: some View {
         List(selection: $selectedTab) {
@@ -52,13 +50,12 @@ struct SidebarView: View {
             CourseListCell(course: course)
             Spacer(minLength: 0)
             Button {
-                if expanded {
-                    visiblePages[course.id] = 0
-                    expandedCourses.remove(course.id)
-                } else {
-                    expandedCourses.insert(course.id)
-                    visiblePages[course.id] = 0
-                    revealPages(for: course)
+                withAnimation(.easeInOut(duration: 0.45)) {
+                    if expanded {
+                        expandedCourses.remove(course.id)
+                    } else {
+                        expandedCourses.insert(course.id)
+                    }
                 }
             } label: {
                 Image(systemName: "chevron.right")
@@ -75,32 +72,14 @@ struct SidebarView: View {
         .tag(NavigationModel.Tab.course(course.id))
 
         if expanded {
-            let pages = NavigationModel.CoursePage.available(for: course)
-            let revealed = visiblePages[course.id] ?? 0
-            ForEach(Array(pages.enumerated()), id: \.element) { index, page in
+            ForEach(NavigationModel.CoursePage.available(for: course), id: \.self) { page in
                 NavigationLink(value: NavigationModel.Tab.coursePage(course.id, page)) {
                     Label(page.title, systemImage: page.systemImageIcon)
                         .padding(.leading)
                 }
-                .id("\(course.id)-\(page.rawValue)")
-                .opacity(index < revealed ? 1 : 0)
-                .offset(y: index < revealed ? 0 : -10)
-                .animation(.spring(duration: 0.2, bounce: 0.15), value: index < revealed)
+                .id(NavigationModel.Tab.coursePage(course.id, page))
             }
         }
     }
 
-    private func revealPages(for course: Course) {
-        let gen = (revealGeneration[course.id] ?? 0) + 1
-        revealGeneration[course.id] = gen
-        visiblePages[course.id] = 0
-
-        let count = NavigationModel.CoursePage.available(for: course).count
-        for i in 1...count {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.06 + Double(i) * 0.018) {
-                guard revealGeneration[course.id] == gen else { return }
-                visiblePages[course.id] = i
-            }
-        }
-    }
 }

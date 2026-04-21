@@ -10,6 +10,7 @@ import SwiftData
 
 struct CalendarOverviewView: View {
     @Environment(NavigationModel.self) private var navigationModel
+    @Environment(ToDoListManager.self) private var toDoListManager
 
     let course: Course
 
@@ -79,6 +80,11 @@ struct CalendarOverviewView: View {
         items += quizzes
             .filter { $0.dueAt != nil }
             .map { .quiz($0) }
+
+        // User-created todos for this course that have a due date
+        items += toDoListManager.displayedToDoItems
+            .filter { $0.isUserCreated && $0.courseID.asString == course.id && $0.dueDate != nil }
+            .map { .userTodo($0) }
 
         return items
     }
@@ -177,6 +183,9 @@ struct CalendarOverviewView: View {
 
         case .quiz(let quiz):
             navigationModel.push(.quiz(quiz))
+
+        case .userTodo:
+            navigationModel.push(.allToDos)
         }
     }
 }
@@ -252,6 +261,7 @@ private enum CourseCalendarItem: Identifiable {
     case assignment(AssignmentAPI)
     case announcement(DiscussionTopic)
     case quiz(Quiz)
+    case userTodo(ToDoItem)
 
     var id: String {
         switch self {
@@ -259,6 +269,7 @@ private enum CourseCalendarItem: Identifiable {
         case .assignment(let a):   "assignment-\(a.id)"
         case .announcement(let t): "announcement-\(t.id)"
         case .quiz(let q):         "quiz-\(q.id)"
+        case .userTodo(let item):  "todo-\(item.id)"
         }
     }
 
@@ -268,6 +279,7 @@ private enum CourseCalendarItem: Identifiable {
         case .assignment(let a):   a.dueDate
         case .announcement(let t): t.date
         case .quiz(let q):         q.dueAt
+        case .userTodo(let item):  item.dueDate
         }
     }
 
@@ -277,6 +289,7 @@ private enum CourseCalendarItem: Identifiable {
         case .assignment(let a):   a.name
         case .announcement(let t): t.title ?? ""
         case .quiz(let q):         q.title
+        case .userTodo(let item):  item.title
         }
     }
 
@@ -286,6 +299,7 @@ private enum CourseCalendarItem: Identifiable {
         case .assignment:     "circle.inset.filled"
         case .announcement:   "bubble"
         case .quiz:           "questionmark.circle.fill"
+        case .userTodo:       "checklist"
         }
     }
 
@@ -295,6 +309,7 @@ private enum CourseCalendarItem: Identifiable {
         case .assignment:     .orange
         case .announcement:   .purple
         case .quiz:           .green
+        case .userTodo:       .teal
         }
     }
 }

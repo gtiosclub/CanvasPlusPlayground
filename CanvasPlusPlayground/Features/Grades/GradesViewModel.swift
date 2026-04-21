@@ -48,7 +48,7 @@ class GradesViewModel {
         }
 
         if AppEnvironment.isSandbox {
-            verifyAndSetEnrollment(SandboxData.dummyEnrollment, currentUserID: currentUserID)
+            verifyAndSetEnrollment(SandboxData.dummyEnrollment(forCourseID: courseId), currentUserID: currentUserID)
             return
         }
 

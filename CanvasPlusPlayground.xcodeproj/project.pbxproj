@@ -40,6 +40,8 @@
 		8CD6A4E72F95E37000BD3903 /* AssignmentOverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD6A4E62F95E36700BD3903 /* AssignmentOverviewView.swift */; };
 		8CD6A4E92F95EA4000BD3903 /* AnnouncementOverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD6A4E82F95EA4000BD3903 /* AnnouncementOverviewView.swift */; };
 		8CD6A4EE2F9681F900BD3903 /* CalendarOverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD6A4EB2F9681F900BD3903 /* CalendarOverviewView.swift */; };
+		8CD6A4F02F96910200BD3903 /* CourseTodoCreationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD6A4EF2F96910200BD3903 /* CourseTodoCreationSheet.swift */; };
+		8CD6A4F22F971C9B00BD3903 /* Color+HexString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD6A4F12F971C9B00BD3903 /* Color+HexString.swift */; };
 		95BA93482C9CE20D00137A91 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95BA93472C9CE20D00137A91 /* CalendarView.swift */; };
 		9A977E832D6C322F001D7F0A /* LoggerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A977E822D6C322F001D7F0A /* LoggerService.swift */; };
 		9B07E7122D779CAB00359B69 /* Date+RelativeDates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B07E7112D779CA500359B69 /* Date+RelativeDates.swift */; };
@@ -359,6 +361,8 @@
 		8CD6A4E62F95E36700BD3903 /* AssignmentOverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentOverviewView.swift; sourceTree = "<group>"; };
 		8CD6A4E82F95EA4000BD3903 /* AnnouncementOverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementOverviewView.swift; sourceTree = "<group>"; };
 		8CD6A4EB2F9681F900BD3903 /* CalendarOverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarOverviewView.swift; sourceTree = "<group>"; };
+		8CD6A4EF2F96910200BD3903 /* CourseTodoCreationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseTodoCreationSheet.swift; sourceTree = "<group>"; };
+		8CD6A4F12F971C9B00BD3903 /* Color+HexString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+HexString.swift"; sourceTree = "<group>"; };
 		95BA93472C9CE20D00137A91 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		9A977E822D6C322F001D7F0A /* LoggerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerService.swift; sourceTree = "<group>"; };
 		9B07E7112D779CA500359B69 /* Date+RelativeDates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+RelativeDates.swift"; sourceTree = "<group>"; };
@@ -862,6 +866,7 @@
 		A324BA522D079666005F53FA /* Courses */ = {
 			isa = PBXGroup;
 			children = (
+				8CD6A4EF2F96910200BD3903 /* CourseTodoCreationSheet.swift */,
 				8CD6A4EB2F9681F900BD3903 /* CalendarOverviewView.swift */,
 				8CD6A4E82F95EA4000BD3903 /* AnnouncementOverviewView.swift */,
 				8CD6A4E62F95E36700BD3903 /* AssignmentOverviewView.swift */,
@@ -909,6 +914,7 @@
 		A324BA552D0796BE005F53FA /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				8CD6A4F12F971C9B00BD3903 /* Color+HexString.swift */,
 				B75BFD552EA3EC7600BB74C3 /* NSApp+NewTab.swift */,
 				B7909DAA2E99CC5B00E37387 /* CompatibleGlassProminentButton.swift */,
 				B7AF516D2E9B584100457E8A /* CompatibleGlassEffectViewModifier.swift */,
@@ -1711,6 +1717,7 @@
 				B7AF50F12E9AF9EF00457E8A /* RecentItemCard.swift in Sources */,
 				B7A12F3F2D69441500EDFA0A /* GetAssignmentGroupsRequest.swift in Sources */,
 				9BEB4ED02D56AF570013869D /* AssignmentDetailView.swift in Sources */,
+				8CD6A4F02F96910200BD3903 /* CourseTodoCreationSheet.swift in Sources */,
 				A3049B592D0E5A96002F3166 /* LockInfo.swift in Sources */,
 				8C0A84272E9FF2850036D1F6 /* CalendarEventDetailView.swift in Sources */,
 				A3E7F3932C99338B00DC4300 /* TabAPI.swift in Sources */,
@@ -1923,6 +1930,7 @@
 				B75684F42DA5A6B2003B4A32 /* HTMLView.swift in Sources */,
 				B7D751312D3D688C00F7B8B8 /* AnnouncementRow.swift in Sources */,
 				9B801DEB2E66659D00DF4942 /* NetworkRequestRecorder.swift in Sources */,
+				8CD6A4F22F971C9B00BD3903 /* Color+HexString.swift in Sources */,
 				9B801DEC2E66659D00DF4942 /* NetworkRequestDebugView.swift in Sources */,
 				A339D3FD2DB1B65000952536 /* MigrationPlan.swift in Sources */,
 				A372D1102D91D1A1005E94CA /* GroupDetailView.swift in Sources */,

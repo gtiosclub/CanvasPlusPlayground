@@ -28,7 +28,7 @@ class CourseGroupsViewModel {
 
     func fetchGroups(for courseId: String) async {
         if AppEnvironment.isSandbox {
-            insertGroups(SandboxData.dummyGroups)
+            insertGroups(SandboxData.dummyGroups(forCourseID: courseId))
             return
         }
         let req = CanvasRequest.getCourseGroups(courseId: courseId, perPage: 15)
