@@ -59,13 +59,13 @@ private struct CustomizeCourseMenu: ViewModifier {
             .toolbar {
                 if placement == .toolbar && pickerService == nil {
                     courseActionsMenu
-                    #if os(macOS)
-                        .popover(isPresented: $showCourseCustomizer) {
-                            customizeCourseView
-                        }
-                    #endif
                 }
             }
+            #if os(macOS)
+            .popover(isPresented: $showCourseCustomizer) {
+                customizeCourseView
+            }
+            #endif
             .alert("Rename Course", isPresented: $showRenameTextField) {
                 TextField(course.name ?? "", text: $renameCourseFieldText)
 

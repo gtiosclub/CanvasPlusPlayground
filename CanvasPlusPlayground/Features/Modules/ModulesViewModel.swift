@@ -47,9 +47,10 @@ class ModulesViewModel {
 
     func fetchModules() async {
         if AppEnvironment.isSandbox {
-            setModules(SandboxData.dummyModules)
+            setModules(SandboxData.dummyModules(forCourseID: courseID))
+            let items = SandboxData.dummyModuleItems(forCourseID: courseID)
             for module in _modules {
-                setModuleItems(SandboxData.dummyModuleItems.filter { String($0.moduleID) == module.id })
+                setModuleItems(items.filter { String($0.moduleID) == module.id })
             }
             return
         }

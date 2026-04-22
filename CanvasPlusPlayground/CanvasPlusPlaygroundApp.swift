@@ -220,6 +220,9 @@ struct CanvasPlusPlaygroundApp: App {
                     self.launchState = .loading
                     try ModelContainer.eraseSQLiteStore()
                     self.launchState = Self.setupModelContainer()
+                    if launchState == .ready {
+                        CanvasService.shared.setupStorage()
+                    }
                 } catch {
                     self.launchState = .failed
                     LoggerService.main.error("Erasing SQLite store failed with: \(error)")
@@ -236,7 +239,9 @@ struct CanvasPlusPlaygroundApp: App {
 
         self.launchState = Self.setupModelContainer()
 
-        CanvasService.shared.setupStorage()
+        if launchState == .ready {
+            CanvasService.shared.setupStorage()
+        }
     }
 
     /// Attempts to setup the model container and returns app launch status based on success of setup

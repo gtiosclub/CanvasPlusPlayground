@@ -128,6 +128,51 @@ extension CanvasSchemaV1 {
     }
 }
 
+// MARK: - API Conversion
+
+extension Quiz {
+    /// Reconstructs a `QuizAPI` value from this SwiftData model.
+    func toAPI() -> QuizAPI {
+        QuizAPI(
+            id: Int(self.id) ?? 0,
+            access_code: self.accessCode,
+            all_dates: Array(self.allDates),
+            allowed_attempts: self.allowedAttempts,
+            assignment_id: self.assignmentID.flatMap { Int($0) },
+            cant_go_back: self.cantGoBack,
+            description: self.details,
+            due_at: self.dueAt,
+            has_access_code: self.hasAccessCode,
+            hide_correct_answers_at: self.hideCorrectAnswersAt,
+            hide_results: self.hideResults,
+            html_url: self.htmlURL ?? URL(string: "about:blank")!,
+            ip_filter: self.ipFilter,
+            lock_at: self.lockAt,
+            lock_explanation: self.lockExplanation,
+            locked_for_user: self.lockedForUser,
+            mobile_url: self.mobileURL ?? URL(string: "about:blank")!,
+            one_question_at_a_time: self.oneQuestionAtATime,
+            points_possible: self.pointsPossible,
+            published: self.published,
+            question_count: self.questionCount,
+            question_types: self.questionTypes,
+            quiz_type: self.quizType,
+            require_lockdown_browser_for_results: self.requireLockdownBrowserForResults,
+            require_lockdown_browser: self.requireLockdownBrowser,
+            scoring_policy: self.scoringPolicy,
+            show_correct_answers: self.showCorrectAnswers,
+            show_correct_answers_at: self.showCorrectAnswersAt,
+            show_correct_answers_last_attempt: self.showCorrectAnswersLastAttempt,
+            shuffle_answers: self.shuffleAnswers,
+            time_limit: self.timeLimit,
+            title: self.title,
+            unlock_at: self.unlockAt,
+            unpublishable: self.unpublishable,
+            anonymous_submissions: self.anonymousSubmissions
+        )
+    }
+}
+
 // MARK: Cacheable
 
 extension Quiz: Cacheable {

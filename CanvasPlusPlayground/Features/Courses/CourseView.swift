@@ -18,25 +18,9 @@ struct CourseView: View {
     }
 
     private var coursePages: [NavigationModel.CoursePage] {
-        guard !course.tabs.isEmpty else {
-            return []
-        }
-
-        let availableTabs = Set<NavigationModel.CoursePage>(
-            course.tabs.compactMap { tab in
-                NavigationModel.CoursePage(rawValue: tab.label.lowercased())
-            }
-        )
-
-        return NavigationModel.CoursePage.allCases.filter {
-            var isAvailable = availableTabs.contains($0) || NavigationModel.CoursePage.requiredTabs.contains($0)
-
-            if let pickerService {
-                isAvailable = isAvailable && pickerService.supportedPickerViews.contains($0)
-            }
-
-            return isAvailable
-        }
+        let pages = NavigationModel.CoursePage.available(for: course)
+        guard let pickerService else { return pages }
+        return pages.filter { pickerService.supportedPickerViews.contains($0) }
     }
 
     private var externalCoursePageLinks: [CanvasTab] {

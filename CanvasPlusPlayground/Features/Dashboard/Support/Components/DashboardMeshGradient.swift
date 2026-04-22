@@ -77,16 +77,14 @@ enum DashboardGradientColors {
             .compactMap { $0.rgbColors }
             .map { Color(rgbColors: $0) }
 
-        let uniqueColors = Array(Set(customColors.map { $0.hexString }))
-            .compactMap { hex -> Color? in
-                customColors.first { $0.hexString == hex }
-            }
+        // De-dupe while preserving order.
+        var seen = Set<String>()
+        let uniqueColors = customColors.filter { seen.insert($0.hexString).inserted }
 
         if uniqueColors.isEmpty {
-            return [.c1, .c2, .c3, .c4] // Use intelligence gradient if no colors
-        } else {
-            return uniqueColors
+            return [.c1, .c2, .c3, .c4] // Intelligence fallback — default for every course until customized
         }
+        return uniqueColors
     }
 }
 

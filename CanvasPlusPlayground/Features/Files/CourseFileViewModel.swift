@@ -59,7 +59,7 @@ class CourseFileViewModel: SearchResultListDataSource {
 
     func fetchRoot() async -> Folder? {
         if AppEnvironment.isSandbox {
-            let rootFolder = SandboxData.dummyRootFolder
+            let rootFolder = SandboxData.dummyRootFolder(forCourseID: courseID)
             await fetchContent(in: rootFolder)
             return rootFolder
         }
@@ -79,8 +79,8 @@ class CourseFileViewModel: SearchResultListDataSource {
     func fetchContent(in folder: Folder) async {
         if AppEnvironment.isSandbox {
             let folderId = Int(folder.id)
-            self.folders = SandboxData.dummySubfolders.filter { $0.parentFolderId == folderId }
-            self.files = SandboxData.dummyFiles.filter { $0.folderId == folderId }
+            self.folders = SandboxData.dummySubfolders(forCourseID: courseID).filter { $0.parentFolderId == folderId }
+            self.files = SandboxData.dummyFiles(forCourseID: courseID).filter { $0.folderId == folderId }
             return
         }
         async let foldersInRootFolder: [Folder] = CanvasService.shared.loadAndSync(
