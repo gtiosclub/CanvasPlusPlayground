@@ -47,6 +47,11 @@ class GradesViewModel {
             return
         }
 
+        if AppEnvironment.isSandbox {
+            verifyAndSetEnrollment(SandboxData.dummyEnrollment(forCourseID: courseId), currentUserID: currentUserID)
+            return
+        }
+
         let request = CanvasRequest.getEnrollments(
             courseId: courseId,
             userId: currentUserID.asString

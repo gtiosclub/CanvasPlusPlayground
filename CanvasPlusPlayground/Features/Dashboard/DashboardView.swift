@@ -40,7 +40,10 @@ struct DashboardView: View {
             .padding()
             .animation(.spring, value: widgetStore.widgetConfigurations)
         }
-        .courseGradientBackground(courses: courseManager.activeCourses)
+        .courseGradientBackground(
+            courses: [],
+            isActive: true
+        )
         .navigationTitle("Dashboard")
         #if os(iOS)
         .toolbar {
@@ -232,7 +235,9 @@ private struct NavigationBanner: View {
             .padding(.vertical, 4)
             #endif
             .padding(8)
+            #if !os(visionOS)
             .compatibleGlassEffect(isInteractive: true, in: .capsule)
+            #endif
         }
     }
 }

@@ -58,6 +58,17 @@ struct PinnedItemCard: View {
             }
         }
         .buttonStyle(.plain)
+        .contextMenu {
+            Button(role: .destructive) {
+                PinnedItemsManager.shared.removePinnedItem(
+                    itemID: item.id,
+                    courseID: item.courseID,
+                    type: item.type
+                )
+            } label: {
+                Label("Unpin", systemImage: "pin.slash")
+            }
+        }
     }
 }
 

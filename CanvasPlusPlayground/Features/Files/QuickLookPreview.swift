@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-#if os(iOS)
+#if os(iOS) || os(visionOS)
 import QuickLook
 #elseif os(macOS)
 import QuickLookUI
@@ -17,7 +17,7 @@ struct QuickLookPreview: PlatformViewControllerRepresentable {
     let url: URL
     let onDismiss: () -> Void
 
-    #if os(iOS)
+    #if os(iOS) || os(visionOS)
     func makeUIViewController(context: Context) -> UINavigationController {
         let controller = QLPreviewController()
         controller.dataSource = context.coordinator
@@ -53,7 +53,7 @@ struct QuickLookPreview: PlatformViewControllerRepresentable {
         Coordinator(parent: self)
     }
 
-    #if os(iOS)
+    #if os(iOS) || os(visionOS)
     class Coordinator: NSObject, QLPreviewControllerDataSource {
         let parent: QuickLookPreview
 
@@ -98,7 +98,7 @@ struct QuickLookPreview: PlatformViewControllerRepresentable {
     #endif
 }
 
-#if os(iOS)
+#if os(iOS) || os(visionOS)
 typealias PlatformViewControllerRepresentable = UIViewControllerRepresentable
 #elseif os(macOS)
 typealias PlatformViewControllerRepresentable = NSViewRepresentable

@@ -7,9 +7,9 @@
 
 import SwiftUI
 @preconcurrency import WebKit
-#if os(iOS)
+#if os(iOS) || os(visionOS)
 import UIKit
-#else
+#elseif os(macOS)
 import AppKit
 #endif
 
@@ -19,7 +19,7 @@ struct HTMLView: ViewRepresentable {
     let html: String
     let courseID: Course.ID?
 
-    #if os(iOS)
+    #if os(iOS) || os(visionOS)
     func makeUIView(context: Context) -> WKWebView {
         makeView(context: context)
     }
@@ -29,7 +29,7 @@ struct HTMLView: ViewRepresentable {
     }
     #endif
 
-    #if os(iOS)
+    #if os(iOS) || os(visionOS)
     func updateUIView(_ uiView: WKWebView, context: Context) {
         updateView(uiView, context: context)
     }
@@ -295,7 +295,7 @@ struct HTMLView: ViewRepresentable {
                     ) {
                         await onDestinationLink(potentialDestination)
                     } else {
-                        #if os(iOS)
+                        #if os(iOS) || os(visionOS)
                         await UIApplication.shared.open(url)
                         #else
                         NSWorkspace.shared.open(url)
@@ -311,8 +311,10 @@ struct HTMLView: ViewRepresentable {
     }
 }
 
-#if os(iOS)
+
+
+#if os(iOS) || os(visionOS)
 typealias ViewRepresentable = UIViewRepresentable
-#else
+#elseif os(macOS)
 typealias ViewRepresentable = NSViewRepresentable
 #endif

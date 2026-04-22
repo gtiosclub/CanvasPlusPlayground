@@ -37,6 +37,10 @@ class CourseAssignmentManager {
     }
 
     func fetchAssignmentGroups() async {
+        if AppEnvironment.isSandbox {
+            self.assignmentGroups = SandboxData.dummyAssignmentGroups(forCourseID: courseID)
+            return
+        }
         let request = CanvasRequest.getAssignmentGroups(courseId: courseID)
 
         do {

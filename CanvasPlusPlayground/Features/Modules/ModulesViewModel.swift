@@ -46,6 +46,14 @@ class ModulesViewModel {
     }
 
     func fetchModules() async {
+        if AppEnvironment.isSandbox {
+            setModules(SandboxData.dummyModules(forCourseID: courseID))
+            let items = SandboxData.dummyModuleItems(forCourseID: courseID)
+            for module in _modules {
+                setModuleItems(items.filter { String($0.moduleID) == module.id })
+            }
+            return
+        }
         do {
             try await CanvasService.shared
                 .loadAndSync(

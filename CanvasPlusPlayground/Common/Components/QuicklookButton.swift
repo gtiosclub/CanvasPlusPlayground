@@ -24,7 +24,7 @@ struct QuickLookButton: View {
                     ProgressView()
                         .controlSize(.small)
                 } else {
-                    Button("Quick Look", systemImage: "magnifyingglass", action: downloadFile)
+                    Button("Quick Look", systemImage: "eye", action: downloadFile)
                         .labelStyle(.iconOnly)
                 }
             }

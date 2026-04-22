@@ -72,15 +72,4 @@ extension NSAttributedString {
     }
 }
 
-extension Color {
-    var hexString: String {
-        // swiftlint:disable:next force_unwrapping
-        let colorComponents = PlatformColor(self).cgColor.components!
-        return String(
-            format: "#%02X%02X%02X",
-            Int(colorComponents[0] * 255),
-            Int(colorComponents[1] * 255),
-            Int(colorComponents[2] * 255)
-        )
-    }
-}
+

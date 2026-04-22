@@ -6,78 +6,66 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct HomeView: View {
     @Environment(ToDoListManager.self) private var toDoListManager
     @Environment(ProfileManager.self) private var profileManager
-    @Environment(CourseManager.self) private var courseManager
+    @Environment(CourseManager.self) var courseManager
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     @State private var columnVisibility = NavigationSplitViewVisibility.all
     @State private var isLoadingCourses = false
-    @State private var navigationModel = NavigationModel()
+    @State var navigationModel = NavigationModel()
+    @State var pendingSpotlightIdentifier: String?
+    @State private var expandedCourses: Set<Course.ID> = []
+
+    /// `List(selection:)` requires an optional binding, but `selectedTab` is non-optional.
+    private var selectedTabBinding: Binding<NavigationModel.Tab?> {
+        Binding(
+            get: { navigationModel.selectedTab },
+            set: { newValue in
+                if let newValue {
+                    navigationModel.selectedTab = newValue
+                }
+            }
+        )
+    }
 
     var body: some View {
         @Bindable var courseManager = courseManager
         @Bindable var navigationModel = navigationModel
 
-        TabView(selection: $navigationModel.selectedTab) {
-            // dashboard
-            Tab("Dashboard", systemImage: "rectangle.grid.2x2.fill", value: .dashboard) {
-                NavigationStack(path: $navigationModel.dashboardPath) {
-                    DashboardView()
-                }
-            }
-
-            // course/courses
-            TabSection("Favorited Courses") {
-                ForEach(courseManager.favoritedCourses) { course in
-                    Tab(value: NavigationModel.Tab.course(course.id)) {
-                        NavigationStack(path: $navigationModel.coursePath) {
-                            CourseView(course: course)
-                                .defaultNavigationDestination()
-                        }
-                    } label: {
-                        CourseListCell(course: course)
-                    }
-                }
-            }
-            .tabPlacement(.sidebarOnly)
-            .hidden(horizontalSizeClass == .compact)
-
-            TabSection("Other Courses") {
-                ForEach(courseManager.unfavoritedCourses) { course in
-                    Tab(value: NavigationModel.Tab.course(course.id)) {
-                        NavigationStack(path: $navigationModel.coursePath) {
-                            CourseView(course: course)
-                                .defaultNavigationDestination()
-                        }
-                    } label: {
-                        CourseListCell(course: course)
-                    }
-                }
-            }
-            .tabPlacement(.sidebarOnly)
-            .hidden(horizontalSizeClass == .compact)
-
-            Tab("Courses", systemImage: "book.pages.fill", value: .allCourses) {
-                CourseListView()
-            }
-            .hidden(horizontalSizeClass == .regular)
+        NavigationSplitView(columnVisibility: $columnVisibility) {
+            SidebarView(
+                selectedTab: selectedTabBinding,
+                expandedCourses: $expandedCourses
+            )
+        } detail: {
+            DetailContainerView()
         }
         .tabViewStyle(.sidebarAdaptable)
+        .globalAppBackground(courses: [])
         .task {
-            if !StorageKeys.hasCompletedOnboarding {
+            if AppEnvironment.isSandbox {
+                await loadCourses()
+                SandboxDataLoader.persistSandboxData()
+                await SpotlightIndexer.shared.indexAllContent()
+                drainPendingSpotlightDeepLink()
+            } else if !StorageKeys.hasCompletedOnboarding {
                 navigationModel.showAuthorizationSheet = true
             } else if StorageKeys.needsAuthorization {
                 navigationModel.showAuthorizationSheet = true
             } else {
                 await loadCourses()
+                await SpotlightIndexer.shared.indexAllContent()
+                drainPendingSpotlightDeepLink()
             }
         }
         .sheet(isPresented: $navigationModel.showAuthorizationSheet) {
             Task {
                 await loadCourses()
+                drainPendingSpotlightDeepLink()
             }
         } content: {
             if !StorageKeys.hasCompletedOnboarding {
@@ -104,17 +92,44 @@ struct HomeView: View {
             SettingsView()
         }
         #endif
+        .sheet(isPresented: $navigationModel.showSpotlightSearch) {
+            SpotlightSearchView()
+        }
+        .background {
+            Button("") {
+                navigationModel.showSpotlightSearch = true
+            }
+            .keyboardShortcut("k", modifiers: .command)
+            .hidden()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .openSpotlightDeepLink)) { notification in
+            guard let identifier = notification.userInfo?[SpotlightDeepLinkUserInfoKey.identifier] as? String else {
+                return
+            }
+            if !handleSpotlightDeepLink(identifier) {
+                pendingSpotlightIdentifier = identifier
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .openSpotlightSearch)) { _ in
+            navigationModel.showSpotlightSearch = true
+        }
         .environment(navigationModel)
     }
 
     private func loadCourses() async {
         isLoadingCourses = true
 
-        async let coursesTask: Void = courseManager.getCourses()
-        async let profileTask: Void = profileManager.getCurrentUserAndProfile()
-        async let todoTask: Void = toDoListManager.fetchToDoItemCount()
+        if AppEnvironment.isSandbox {
+            await courseManager.getSandboxedCourses()
+            await profileManager.getSandboxedCurrentUserAndProfile()
+            await toDoListManager.fetchSandboxedToDoItemCount()
+        } else {
+            async let coursesTask: Void = courseManager.getCourses()
+            async let profileTask: Void = profileManager.getCurrentUserAndProfile()
+            async let todoTask: Void = toDoListManager.fetchToDoItemCount()
 
-        await (_, _, _) = (coursesTask, profileTask, todoTask)
+            await (_, _, _) = (coursesTask, profileTask, todoTask)
+        }
 
         isLoadingCourses = false
     }
