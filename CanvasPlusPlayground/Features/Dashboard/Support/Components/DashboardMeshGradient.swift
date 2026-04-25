@@ -10,6 +10,7 @@ import SwiftUI
 struct DashboardMeshGradient: View {
     let colors: [Color]
 
+    @Environment(\.colorScheme) private var colorScheme
     @State private var startTime = Date.now
 
     var body: some View {
@@ -23,19 +24,25 @@ struct DashboardMeshGradient: View {
                 colors: meshColors
             )
         }
-        .blur(radius: 60)
-        .opacity(0.6)
+        .blur(radius: colorScheme == .dark ? 120 : 60)
+        .opacity(colorScheme == .dark ? 0.2 : 0.6)
+    }
+
+    private var fallbackColors: [Color] {
+        colorScheme == .dark
+            ? [.c1, .c2, .c3, .c4, .c5]
+            : [.c1, .c2, .c3, .c4]
     }
 
     private var meshWidth: Int {
         guard !colors.isEmpty else {
-            return 3 // Fallback width for intelligence gradient
+            return fallbackColors.count
         }
         return max(3, colors.count)
     }
 
     private var meshColors: [Color] {
-        let actualColors = colors.isEmpty ? [.c1, .c2, .c3, .c4] : colors
+        let actualColors = colors.isEmpty ? fallbackColors : colors
         let width = actualColors.count
 
         var result: [Color] = []
@@ -82,13 +89,18 @@ enum DashboardGradientColors {
         let uniqueColors = customColors.filter { seen.insert($0.hexString).inserted }
 
         if uniqueColors.isEmpty {
-            return [.c1, .c2, .c3, .c4] // Intelligence fallback — default for every course until customized
+            return [] // Let DashboardMeshGradient pick the right fallback based on color scheme
         }
         return uniqueColors
     }
 }
 
 #Preview {
-    DashboardMeshGradient(colors: [.c1, .c2, .c3, .c4])
+    DashboardMeshGradient(colors: [])
         .frame(height: 400)
+        .preferredColorScheme(.light)
+
+    DashboardMeshGradient(colors: [])
+        .frame(height: 400)
+        .preferredColorScheme(.dark)
 }

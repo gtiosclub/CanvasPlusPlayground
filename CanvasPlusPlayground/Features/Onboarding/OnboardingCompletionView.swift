@@ -46,7 +46,7 @@ struct OnboardingCompletionView: View {
         }
         .fontDesign(.rounded)
         .padding()
-        .courseGradientBackground(courses: [], edge: .bottom)
+        .globalAppBackground(courses: [])
     }
 }
 

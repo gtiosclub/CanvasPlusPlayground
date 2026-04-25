@@ -19,9 +19,16 @@ private struct CourseGradientBackgroundModifier: ViewModifier {
     let showIcon: Bool
     let edge: VerticalEdge
 
+    /// Whether any course has custom colors that should override the global gradient.
+    private var hasCustomColors: Bool {
+        courses.contains { $0.rgbColors != nil }
+    }
+
     public func body(content: Content) -> some View {
-        if isActive {
+        if isActive && hasCustomColors {
+            // Course has custom colors — paint an opaque background with the course gradient.
             content
+                .scrollContentBackground(.hidden)
                 .background {
                     Group {
                         switch backgroundStyle {
@@ -67,7 +74,9 @@ private struct CourseGradientBackgroundModifier: ViewModifier {
                     .ignoresSafeArea()
                 }
         } else {
+            // No custom colors — stay transparent so the global gradient shows through.
             content
+                .scrollContentBackground(.hidden)
         }
     }
 }

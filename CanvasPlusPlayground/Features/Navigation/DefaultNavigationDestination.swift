@@ -25,6 +25,7 @@ private struct DefaultNavigationDestinationModifier: ViewModifier {
 
                 destination.destinationView()
                     .toolbarBackground(.hidden, for: .automatic)
+                    .scrollContentBackground(.hidden)
                     .courseGradientBackground(
                         courses: course.map { [$0] } ?? [],
                         isActive: course != nil

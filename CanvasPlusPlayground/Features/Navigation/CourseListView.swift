@@ -35,6 +35,7 @@ struct CourseListView: View {
                     }
                 }
             }
+            .scrollContentBackground(.hidden)
             .navigationTitle("Courses")
             .defaultNavigationDestination()
         }
