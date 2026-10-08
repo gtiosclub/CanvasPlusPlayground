@@ -325,6 +325,17 @@
 		SANDBOX052E5F6789012345A5 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = SANDBOX012E5F6789012345A1 /* AppEnvironment.swift */; };
 		SANDBOX062E5F6789012345A6 /* SandboxData.swift in Sources */ = {isa = PBXBuildFile; fileRef = SANDBOX022E5F6789012345A2 /* SandboxData.swift */; };
 		SANDBOX072E5F6789012345A7 /* ManagerSandboxExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = SANDBOX042E5F6789012345A4 /* ManagerSandboxExtensions.swift */; };
+		6204C4A47E026593D316F6DD /* Evidence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11046ED5D2AE7F0A82590071 /* Evidence.swift */; };
+		3075780020470B1A8E3839B0 /* AgentTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89364269EB40CC7B93A9F874 /* AgentTool.swift */; };
+		E8FA64FAF1448B4C492E6AE5 /* CanvasCacheAgentDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4574EB753A61E5DD15D902 /* CanvasCacheAgentDataSource.swift */; };
+		E598A6F843E7FA4D3FB1EA18 /* AgentDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060AF253FE96305A18A3807A /* AgentDataSource.swift */; };
+		1CB18305374B374BB379C2B3 /* AgentReadTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07318AEE6950C94F2BB06D89 /* AgentReadTools.swift */; };
+		780A657AD70E0AECF302E7AA /* ListCoursesTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B120D4ED02369F462D3A94 /* ListCoursesTool.swift */; };
+		50886A500F45E8553BC769AB /* ListAssignmentsTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A75177AC5E17B42CD7EDEB /* ListAssignmentsTool.swift */; };
+		EDA3584931BF4C200B379229 /* ListAnnouncementsTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF8198AE487BB58BC50392D1 /* ListAnnouncementsTool.swift */; };
+		B46115F06D1405A52BBBCF19 /* ListCalendarEventsTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC9BD284F09E234BDD9AB8A /* ListCalendarEventsTool.swift */; };
+		C2BD6CDCCDAF47A788FC5799 /* ListToDosTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D5F818E1A23D2B93C9F9D5F /* ListToDosTool.swift */; };
+		B990A3D329B8AAE920F8EA85 /* ListFilesTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3721DD28B5475C3CB5CEE71D /* ListFilesTool.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -649,6 +660,17 @@
 		SANDBOX012E5F6789012345A1 /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
 		SANDBOX022E5F6789012345A2 /* SandboxData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandboxData.swift; sourceTree = "<group>"; };
 		SANDBOX042E5F6789012345A4 /* ManagerSandboxExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerSandboxExtensions.swift; sourceTree = "<group>"; };
+		11046ED5D2AE7F0A82590071 /* Evidence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Evidence.swift; sourceTree = "<group>"; };
+		89364269EB40CC7B93A9F874 /* AgentTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentTool.swift; sourceTree = "<group>"; };
+		FA4574EB753A61E5DD15D902 /* CanvasCacheAgentDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasCacheAgentDataSource.swift; sourceTree = "<group>"; };
+		060AF253FE96305A18A3807A /* AgentDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentDataSource.swift; sourceTree = "<group>"; };
+		07318AEE6950C94F2BB06D89 /* AgentReadTools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentReadTools.swift; sourceTree = "<group>"; };
+		F5B120D4ED02369F462D3A94 /* ListCoursesTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCoursesTool.swift; sourceTree = "<group>"; };
+		A3A75177AC5E17B42CD7EDEB /* ListAssignmentsTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListAssignmentsTool.swift; sourceTree = "<group>"; };
+		DF8198AE487BB58BC50392D1 /* ListAnnouncementsTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListAnnouncementsTool.swift; sourceTree = "<group>"; };
+		2BC9BD284F09E234BDD9AB8A /* ListCalendarEventsTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCalendarEventsTool.swift; sourceTree = "<group>"; };
+		1D5F818E1A23D2B93C9F9D5F /* ListToDosTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListToDosTool.swift; sourceTree = "<group>"; };
+		3721DD28B5475C3CB5CEE71D /* ListFilesTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListFilesTool.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1352,6 +1374,7 @@
 				B72D82C02E4B503300BA1DAD /* AnnouncementSummaryService.swift */,
 				B72D83012E4F853300BA1DAD /* RAGSystem.swift */,
 				B72D83032E4F85EF00BA1DAD /* GradeCalculatorIntelligenceService.swift */,
+				5DC33DEFCBDB7D24A06A7DFC /* Agent */,
 			);
 			path = Intelligence;
 			sourceTree = "<group>";
@@ -1557,6 +1580,24 @@
 			path = Sandbox;
 			sourceTree = "<group>";
 		};
+		5DC33DEFCBDB7D24A06A7DFC /* Agent */ = {
+			isa = PBXGroup;
+			children = (
+				11046ED5D2AE7F0A82590071 /* Evidence.swift */,
+				89364269EB40CC7B93A9F874 /* AgentTool.swift */,
+				FA4574EB753A61E5DD15D902 /* CanvasCacheAgentDataSource.swift */,
+				060AF253FE96305A18A3807A /* AgentDataSource.swift */,
+				07318AEE6950C94F2BB06D89 /* AgentReadTools.swift */,
+				F5B120D4ED02369F462D3A94 /* ListCoursesTool.swift */,
+				A3A75177AC5E17B42CD7EDEB /* ListAssignmentsTool.swift */,
+				DF8198AE487BB58BC50392D1 /* ListAnnouncementsTool.swift */,
+				2BC9BD284F09E234BDD9AB8A /* ListCalendarEventsTool.swift */,
+				1D5F818E1A23D2B93C9F9D5F /* ListToDosTool.swift */,
+				3721DD28B5475C3CB5CEE71D /* ListFilesTool.swift */,
+			);
+			path = Agent;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1636,6 +1677,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B990A3D329B8AAE920F8EA85 /* ListFilesTool.swift in Sources */,
+				C2BD6CDCCDAF47A788FC5799 /* ListToDosTool.swift in Sources */,
+				B46115F06D1405A52BBBCF19 /* ListCalendarEventsTool.swift in Sources */,
+				EDA3584931BF4C200B379229 /* ListAnnouncementsTool.swift in Sources */,
+				50886A500F45E8553BC769AB /* ListAssignmentsTool.swift in Sources */,
+				780A657AD70E0AECF302E7AA /* ListCoursesTool.swift in Sources */,
+				1CB18305374B374BB379C2B3 /* AgentReadTools.swift in Sources */,
+				E598A6F843E7FA4D3FB1EA18 /* AgentDataSource.swift in Sources */,
+				E8FA64FAF1448B4C492E6AE5 /* CanvasCacheAgentDataSource.swift in Sources */,
+				3075780020470B1A8E3839B0 /* AgentTool.swift in Sources */,
+				6204C4A47E026593D316F6DD /* Evidence.swift in Sources */,
 				A301EE0B2D61148C00D71139 /* MarkCourseDiscussionTopicUnreadRequest.swift in Sources */,
 				9B92A4232C93853C00C21CFC /* Announcement.swift in Sources */,
 				9BFD457D2D80F6EB00BBAA01 /* UploadAssignmentFileNotificationRequest.swift in Sources */,
