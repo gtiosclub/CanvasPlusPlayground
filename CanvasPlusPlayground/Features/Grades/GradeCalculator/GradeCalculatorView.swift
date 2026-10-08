@@ -50,6 +50,7 @@ struct GradeCalculatorView: View {
         .navigationTitle("Calculate Grades")
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
+        .scrollDismissesKeyboard(.interactively)
         .safeAreaInset(edge: .top) {
             totalGradeView
         }
@@ -81,6 +82,17 @@ struct GradeCalculatorView: View {
                     assignmentRowFocus == nil && groupRowFocus == nil ? .defaultAction : .none
                 )
             }
+            #if os(iOS)
+            // Only shown while a field is being edited; the xmark closes the sheet.
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                Button("Done") {
+                    assignmentRowFocus = nil
+                    groupRowFocus = nil
+                }
+                .bold()
+            }
+            #else
             ToolbarItemGroup(placement: .automatic) {
                 Spacer()
                 Button("Done") {
@@ -89,6 +101,7 @@ struct GradeCalculatorView: View {
                 }
                 .bold()
             }
+            #endif
         }
         .sheet(isPresented: $showIGCSetup) {
             if #available(macOS 26.0, iOS 26.0, *) {
@@ -105,14 +118,26 @@ struct GradeCalculatorView: View {
 
     private var totalGradeView: some View {
         #if os(iOS)
-        AccessoryBar(title: "Total", value: "\(calculator.totalGrade.truncatingTrailingZeros)%")
-            .animation(.default, value: calculator.totalGrade)
+        AccessoryBar(
+            title: "Total",
+            value: formattedTotal,
+            caption: calculator.totalGrade == nil ? Self.emptyTotalHint : nil
+        )
+        .animation(.default, value: calculator.totalGrade)
         #else
-        Text("Total: \(calculator.totalGrade.truncatingTrailingZeros)%")
+        Text("Total: \(formattedTotal)")
             .bold()
             .contentTransition(.numericText())
             .animation(.default, value: calculator.totalGrade)
+            .help(calculator.totalGrade == nil ? Self.emptyTotalHint : "")
         #endif
+    }
+
+    private static let emptyTotalHint = "Enter scores to see your total."
+
+    private var formattedTotal: String {
+        guard let totalGrade = calculator.totalGrade else { return "—" }
+        return "\(totalGrade.truncatingTrailingZeros)%"
     }
 
     private var intelligentGradeCalculatorToolbarItem: some View {
