@@ -69,11 +69,19 @@ struct CourseOverviewView: View {
                     .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
             }
             .buttonStyle(.plain)
+            #if os(macOS)
+            // Popover so clicking outside dismisses; macOS sheets are window-modal
+            .popover(isPresented: $showTodoCreation) {
+                CourseTodoCreationSheet(course: course)
+            }
+            #endif
             .padding(24)
         }
+        #if !os(macOS)
         .sheet(isPresented: $showTodoCreation) {
             CourseTodoCreationSheet(course: course)
         }
+        #endif
         .courseGradientBackground(
             courses: [course],
             isActive: course.rgbColors != nil,
