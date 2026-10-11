@@ -66,13 +66,13 @@ private struct GenericRecentCard: View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Image(systemName: icon)
-                    .foregroundStyle(course.rgbColors?.color ?? .accentColor)
                     .font(.caption)
 
                 Text(course.displayName.uppercased())
                     .font(.caption)
-                    .foregroundStyle(course.rgbColors?.color ?? .accentColor)
             }
+            .foregroundStyle(.tint)
+            .readableCourseTint(course.rgbColors?.color ?? .accentColor)
 
             VStack(alignment: .leading, spacing: 3) {
                 Text(title)
@@ -157,7 +157,8 @@ private struct PlaceholderCard: View {
             if let course {
                 Text(course.displayName.uppercased())
                     .font(.caption)
-                    .foregroundStyle(course.rgbColors?.color ?? .accentColor)
+                    .foregroundStyle(.tint)
+                    .readableCourseTint(course.rgbColors?.color ?? .accentColor)
             }
 
             HStack {
