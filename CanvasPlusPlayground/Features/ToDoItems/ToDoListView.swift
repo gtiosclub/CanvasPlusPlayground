@@ -155,7 +155,8 @@ private struct ToDoItemRow: View {
     private var courseName: some View {
         Text(item.course?.displayName.uppercased() ?? "")
             .font(.caption)
-            .foregroundStyle(item.course?.rgbColors?.color ?? .accentColor)
+            .foregroundStyle(.tint)
+            .readableCourseTint(item.course?.rgbColors?.color ?? .accentColor)
     }
 
     private var ignoreItemButton: some View {

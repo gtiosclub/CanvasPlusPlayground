@@ -201,7 +201,7 @@ struct CourseTodoCreationSheet: View {
             // Course pill — standalone capsule, no wrapper needed
             Text(course.displayName)
                 .font(.system(size: 15, weight: .semibold))
-                .foregroundStyle(.white)
+                .readableForeground(course.rgbColors?.color ?? .accentColor)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 10)
                 .frame(maxWidth: .infinity, alignment: .leading)

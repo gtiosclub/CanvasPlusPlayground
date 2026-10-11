@@ -54,7 +54,8 @@ struct AnnouncementRow: View {
     private var courseName: some View {
         Text(course?.displayName.uppercased() ?? "")
             .font(.caption)
-            .foregroundStyle(course?.rgbColors?.color ?? .accentColor)
+            .foregroundStyle(.tint)
+            .readableCourseTint(course?.rgbColors?.color ?? .accentColor)
             .alignmentGuide(.announcementRowAlignment) { context in
                 context[.leading]
             }

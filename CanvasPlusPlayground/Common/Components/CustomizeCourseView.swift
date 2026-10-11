@@ -72,7 +72,7 @@ struct CustomizeCourseView: View {
                 
                 Image(systemName: (selectedSymbol))
                     .font(.system(size: 44, weight: .semibold))
-                    .foregroundStyle(.white)
+                    .readableForeground(displayedColor)
             }
             Text(courseName)
                 .font(.title.bold())
