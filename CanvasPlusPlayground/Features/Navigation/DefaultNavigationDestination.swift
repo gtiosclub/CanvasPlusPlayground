@@ -29,7 +29,7 @@ private struct DefaultNavigationDestinationModifier: ViewModifier {
                         courses: course.map { [$0] } ?? [],
                         isActive: course != nil
                     )
-                    .tint(course?.rgbColors?.color)
+                    .readableCourseTint(course?.rgbColors?.color)
                     .onAppear {
                         navigationModel.recordDestination(destination)
                     }

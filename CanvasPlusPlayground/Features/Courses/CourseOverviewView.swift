@@ -88,7 +88,7 @@ struct CourseOverviewView: View {
             backgroundStyle: .grouped,
             showIcon: true
         )
-        .tint(course.rgbColors?.color)
+        .readableCourseTint(course.rgbColors?.color)
         .navigationTitle(course.displayName)
         .task {
             await gradesVM.getEnrollments(currentUserID: profileManager.currentUser?.id)

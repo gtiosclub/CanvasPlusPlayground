@@ -25,7 +25,7 @@ struct CourseAnnouncementsView: View {
             ) {
                 AnnouncementRow(course: course, announcement: announcement)
             }
-            .tint(course.rgbColors?.color)
+            .readableCourseTint(course.rgbColors?.color)
             .tag(announcement)
         }
         #if os(iOS)
