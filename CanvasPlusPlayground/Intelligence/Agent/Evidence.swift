@@ -114,6 +114,8 @@ struct EvidenceFacts: Hashable, Codable, Sendable {
     var postedAt: Date?
     var pointsPossible: Double?
     var score: Double?
+    /// Assignment group weight as a percentage, e.g. 40 for 40%.
+    var weight: Double?
     var location: String?
 }
 
@@ -169,6 +171,7 @@ extension Evidence {
         if let postedAt = facts.postedAt { fields.append("posted: \(Self.iso(postedAt))") }
         if let pointsPossible = facts.pointsPossible { fields.append("points: \(Self.number(pointsPossible))") }
         if let score = facts.score { fields.append("score: \(Self.number(score))") }
+        if let weight = facts.weight { fields.append("weight: \(Self.number(weight))%") }
         if let location = facts.location { fields.append("location: \(location)") }
 
         let header = fields.joined(separator: " | ")
