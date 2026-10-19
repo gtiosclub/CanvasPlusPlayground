@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 63;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -20,6 +20,7 @@
 		26BF115D2E92E1D2000680D4 /* ExampleDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26BF11592E92E1D2000680D4 /* ExampleDashboardView.swift */; };
 		26C2182A2F2E65500050594A /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 26C218292F2E65460050594A /* README.md */; };
 		3DAE85002C9A0E4F008C22E7 /* BridgedPDFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DAE84FF2C9A0E4F008C22E7 /* BridgedPDFView.swift */; };
+		43442445BFD42629A0D7B336 /* TextChunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1037B0D6AD89C331C3B01C4F /* TextChunk.swift */; };
 		7F8535742C98DE3C0023E384 /* CourseGradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8535732C98DE3C0023E384 /* CourseGradeView.swift */; };
 		8C0A84272E9FF2850036D1F6 /* CalendarEventDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0A84262E9FF2850036D1F6 /* CalendarEventDetailView.swift */; };
 		8C5A13172F8D95AE00E09B46 /* Homeview+DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5A13162F8D95AE00E09B46 /* Homeview+DeepLink.swift */; };
@@ -81,6 +82,7 @@
 		9BFBD8C62E6B2FAD00690E47 /* GetSubmissionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFBD8C52E6B2FAD00690E47 /* GetSubmissionRequest.swift */; };
 		9BFD457D2D80F6EB00BBAA01 /* UploadAssignmentFileNotificationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFD457C2D80F6EB00BBAA01 /* UploadAssignmentFileNotificationRequest.swift */; };
 		9BFD45812D811B1000BBAA01 /* UploadSubmissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFD45802D811B1000BBAA01 /* UploadSubmissionManager.swift */; };
+		9FD5EFF13F14FDE3DA5ED547 /* HTMLTextNormalizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264D096CABDE188FFFE48692 /* HTMLTextNormalizer.swift */; };
 		A301EE092D61137400D71139 /* MarkCourseDiscussionTopicReadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A301EE082D61137400D71139 /* MarkCourseDiscussionTopicReadRequest.swift */; };
 		A301EE0B2D61148C00D71139 /* MarkCourseDiscussionTopicUnreadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A301EE0A2D61148C00D71139 /* MarkCourseDiscussionTopicUnreadRequest.swift */; };
 		A301EE0D2D612E7100D71139 /* DiscussionTopicAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A301EE0C2D612E7100D71139 /* DiscussionTopicAPI.swift */; };
@@ -317,6 +319,7 @@
 		B7F950392D1279A1004BB470 /* UserAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F950382D1279A1004BB470 /* UserAPI.swift */; };
 		B7F9503B2D127AD0004BB470 /* ProfileAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F9503A2D127AD0004BB470 /* ProfileAPI.swift */; };
 		B7F9503D2D12ADAE004BB470 /* SubmissionAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F9503C2D12ADAE004BB470 /* SubmissionAPI.swift */; };
+		BFA76A3C8DC631D6CEFB67D6 /* Chunker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A9239BC87FBD0B487E6343 /* Chunker.swift */; };
 		D411AB682E765AD100AEB627 /* GetQuizRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411AB672E765AD100AEB627 /* GetQuizRequest.swift */; };
 		D43B58032E7658560054C12C /* DisplayableItemType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43B58022E7658560054C12C /* DisplayableItemType.swift */; };
 		D43B58052E76586A0054C12C /* AssignmentQuizDetailsForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43B58042E76586A0054C12C /* AssignmentQuizDetailsForm.swift */; };
@@ -327,11 +330,24 @@
 		SANDBOX072E5F6789012345A7 /* ManagerSandboxExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = SANDBOX042E5F6789012345A4 /* ManagerSandboxExtensions.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		122888A1308573FE00023F47 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B764545C2C8BBC7F002DF00E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B76454632C8BBC7F002DF00E;
+			remoteInfo = CanvasPlusPlayground;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		1037B0D6AD89C331C3B01C4F /* TextChunk.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TextChunk.swift; sourceTree = "<group>"; };
+		1228889D308573FE00023F47 /* CanvasPlusPlaygroundTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CanvasPlusPlaygroundTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		192EC0472C963ACB00AF8528 /* CourseAssignmentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAssignmentManager.swift; sourceTree = "<group>"; };
 		192EC0492C963B9000AF8528 /* AssignmentAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentAPI.swift; sourceTree = "<group>"; };
 		192EC04B2C963EE600AF8528 /* CourseAssignmentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAssignmentsView.swift; sourceTree = "<group>"; };
 		262CA4612E6A34A000BB7C00 /* DefaultNavigationDestination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultNavigationDestination.swift; sourceTree = "<group>"; };
+		264D096CABDE188FFFE48692 /* HTMLTextNormalizer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HTMLTextNormalizer.swift; sourceTree = "<group>"; };
 		26589EEF2E75C84700234C2F /* GetAllCourseFilesRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAllCourseFilesRequest.swift; sourceTree = "<group>"; };
 		267D85252E662009007F821B /* NewWindowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewWindowButton.swift; sourceTree = "<group>"; };
 		267D85272E662AB0007F821B /* FocusWindowInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusWindowInfo.swift; sourceTree = "<group>"; };
@@ -341,6 +357,7 @@
 		26BF11592E92E1D2000680D4 /* ExampleDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleDashboardView.swift; sourceTree = "<group>"; };
 		26C218292F2E65460050594A /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		3DAE84FF2C9A0E4F008C22E7 /* BridgedPDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgedPDFView.swift; sourceTree = "<group>"; };
+		41A9239BC87FBD0B487E6343 /* Chunker.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Chunker.swift; sourceTree = "<group>"; };
 		7F8535732C98DE3C0023E384 /* CourseGradeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseGradeView.swift; sourceTree = "<group>"; };
 		8C0A84262E9FF2850036D1F6 /* CalendarEventDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarEventDetailView.swift; sourceTree = "<group>"; };
 		8C5A13162F8D95AE00E09B46 /* Homeview+DeepLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Homeview+DeepLink.swift"; sourceTree = "<group>"; };
@@ -651,7 +668,18 @@
 		SANDBOX042E5F6789012345A4 /* ManagerSandboxExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerSandboxExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		1228889E308573FE00023F47 /* CanvasPlusPlaygroundTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = CanvasPlusPlaygroundTests; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
+		1228889A308573FE00023F47 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B76454612C8BBC7F002DF00E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1258,6 +1286,7 @@
 			isa = PBXGroup;
 			children = (
 				B76454FD2C8DF61B002DF00E /* CanvasPlusPlayground */,
+				1228889E308573FE00023F47 /* CanvasPlusPlaygroundTests */,
 				B76454652C8BBC7F002DF00E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -1266,6 +1295,7 @@
 			isa = PBXGroup;
 			children = (
 				B76454642C8BBC7F002DF00E /* CanvasPlusPlayground.app */,
+				1228889D308573FE00023F47 /* CanvasPlusPlaygroundTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1352,6 +1382,7 @@
 				B72D82C02E4B503300BA1DAD /* AnnouncementSummaryService.swift */,
 				B72D83012E4F853300BA1DAD /* RAGSystem.swift */,
 				B72D83032E4F85EF00BA1DAD /* GradeCalculatorIntelligenceService.swift */,
+				CE9CE7137C5C035ACDB7B921 /* Index */,
 			);
 			path = Intelligence;
 			sourceTree = "<group>";
@@ -1547,6 +1578,16 @@
 			path = Profile;
 			sourceTree = "<group>";
 		};
+		CE9CE7137C5C035ACDB7B921 /* Index */ = {
+			isa = PBXGroup;
+			children = (
+				1037B0D6AD89C331C3B01C4F /* TextChunk.swift */,
+				264D096CABDE188FFFE48692 /* HTMLTextNormalizer.swift */,
+				41A9239BC87FBD0B487E6343 /* Chunker.swift */,
+			);
+			path = Index;
+			sourceTree = "<group>";
+		};
 		SANDBOX032E5F6789012345A3 /* Sandbox */ = {
 			isa = PBXGroup;
 			children = (
@@ -1560,6 +1601,27 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		1228889C308573FE00023F47 /* CanvasPlusPlaygroundTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 122888A3308573FE00023F47 /* Build configuration list for PBXNativeTarget "CanvasPlusPlaygroundTests" */;
+			buildPhases = (
+				12288899308573FE00023F47 /* Sources */,
+				1228889A308573FE00023F47 /* Frameworks */,
+				1228889B308573FE00023F47 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				122888A2308573FE00023F47 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				1228889E308573FE00023F47 /* CanvasPlusPlaygroundTests */,
+			);
+			name = CanvasPlusPlaygroundTests;
+			productName = CanvasPlusPlaygroundTests;
+			productReference = 1228889D308573FE00023F47 /* CanvasPlusPlaygroundTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		B76454632C8BBC7F002DF00E /* CanvasPlusPlayground */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B76454722C8BBC81002DF00E /* Build configuration list for PBXNativeTarget "CanvasPlusPlayground" */;
@@ -1573,8 +1635,6 @@
 			dependencies = (
 			);
 			name = CanvasPlusPlayground;
-			packageProductDependencies = (
-			);
 			productName = CanvasPlusPlayground;
 			productReference = B76454642C8BBC7F002DF00E /* CanvasPlusPlayground.app */;
 			productType = "com.apple.product-type.application";
@@ -1586,9 +1646,13 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1610;
+				LastSwiftUpdateCheck = 2620;
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
+					1228889C308573FE00023F47 = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = B76454632C8BBC7F002DF00E;
+					};
 					B76454632C8BBC7F002DF00E = {
 						CreatedOnToolsVersion = 16.1;
 					};
@@ -1604,18 +1668,24 @@
 			);
 			mainGroup = B764545B2C8BBC7F002DF00E;
 			minimizedProjectReferenceProxies = 1;
-			packageReferences = (
-			);
 			productRefGroup = B76454652C8BBC7F002DF00E /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				B76454632C8BBC7F002DF00E /* CanvasPlusPlayground */,
+				1228889C308573FE00023F47 /* CanvasPlusPlaygroundTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		1228889B308573FE00023F47 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B76454622C8BBC7F002DF00E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1632,6 +1702,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		12288899308573FE00023F47 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B76454602C8BBC7F002DF00E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1948,12 +2025,65 @@
 				B7E073622D986DD300A7E82F /* ToDoItemCount.swift in Sources */,
 				8CD6A4E72F95E37000BD3903 /* AssignmentOverviewView.swift in Sources */,
 				A373DC272D1D4C4A00215019 /* QuizSubmissionWorkflowState.swift in Sources */,
+				43442445BFD42629A0D7B336 /* TextChunk.swift in Sources */,
+				9FD5EFF13F14FDE3DA5ED547 /* HTMLTextNormalizer.swift in Sources */,
+				BFA76A3C8DC631D6CEFB67D6 /* Chunker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		122888A2308573FE00023F47 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B76454632C8BBC7F002DF00E /* CanvasPlusPlayground */;
+			targetProxy = 122888A1308573FE00023F47 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		122888A4308573FE00023F47 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.gtiosclub.CanvasPlusPlaygroundTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CanvasPlusPlayground.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CanvasPlusPlayground";
+			};
+			name = Debug;
+		};
+		122888A5308573FE00023F47 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.gtiosclub.CanvasPlusPlaygroundTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CanvasPlusPlayground.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CanvasPlusPlayground";
+			};
+			name = Release;
+		};
 		B76454702C8BBC81002DF00E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2190,6 +2320,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		122888A3308573FE00023F47 /* Build configuration list for PBXNativeTarget "CanvasPlusPlaygroundTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				122888A4308573FE00023F47 /* Debug */,
+				122888A5308573FE00023F47 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		B764545F2C8BBC7F002DF00E /* Build configuration list for PBXProject "CanvasPlusPlayground" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
