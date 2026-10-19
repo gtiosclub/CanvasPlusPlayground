@@ -78,7 +78,7 @@ struct ChunkerPackTests {
 }
 
 struct ChunkerTests {
-    private static let syllabus = """
+    static let syllabus = """
         <h2>Grading</h2><p>Your grade is computed as follows.&nbsp;Late work loses 10%/day.</p>
         <h3>Exams</h3><ul><li>Exam 1 &ndash; Oct 3</li><li>Exam 2 &#8211; Nov 7</li></ul>
         <table><tr><th>Category</th><th>Weight</th></tr><tr><td>Homework</td><td>40%</td></tr></table>
