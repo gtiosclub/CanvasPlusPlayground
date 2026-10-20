@@ -81,9 +81,15 @@ struct CourseTodoCreationSheet: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            if Self.showsCancelButton {
+                header
+                    .padding(.horizontal, 16)
+                    .padding(.top, 12)
+            }
+
             kindPicker
                 .padding(.horizontal, 16)
-                .padding(.top, 20)
+                .padding(.top, Self.showsCancelButton ? 12 : 20)
                 .padding(.bottom, 20)
 
             fieldsCard
@@ -94,12 +100,35 @@ struct CourseTodoCreationSheet: View {
             saveButton
                 .padding(16)
         }
+        #if os(macOS)
+        // Fixed size: letting the popover resize while the event/task switch animates crashes AppKit layout
+        .frame(width: 360, height: 460)
+        #endif
         .presentationDetents([.medium, .large])
         .presentationDragIndicator(.visible)
         .task {
             async let _a: () = assignmentManager.fetchAssignmentGroups()
             async let _q: () = fetchQuizzes()
             await _a; await _q
+        }
+    }
+
+    // MARK: - Header
+
+    // iOS sheets dismiss via the grabber or backdrop; macOS popovers and visionOS sheets need an explicit Cancel.
+    private static var showsCancelButton: Bool {
+        #if os(iOS)
+        return false
+        #else
+        return true
+        #endif
+    }
+
+    private var header: some View {
+        HStack {
+            Button("Cancel") { dismiss() }
+                .keyboardShortcut(.cancelAction)
+            Spacer()
         }
     }
 
@@ -296,6 +325,7 @@ struct CourseTodoCreationSheet: View {
         }
         .disabled(empty)
         .buttonStyle(.plain)
+        .keyboardShortcut(.defaultAction)
     }
 
     // MARK: - Helpers
