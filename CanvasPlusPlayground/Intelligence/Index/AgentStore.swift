@@ -41,6 +41,8 @@ extension AgentSchemaV1 {
         var headingPath: [String]
         var text: String
         var contentHash: String
+        /// `IndexSource.revision` at the time this row was written.
+        var sourceRevision: String?
         /// `vectorCount` vectors of Float32, concatenated.
         var vectorData: Data
         var vectorCount: Int
@@ -48,9 +50,10 @@ extension AgentSchemaV1 {
         var modelRevision: Int
         var indexedAt: Date
 
-        init(chunk: TextChunk, courseID: String?, vectorData: Data, vectorCount: Int, modelVersion: ChunkEmbedder.ModelVersion) {
+        init(chunk: TextChunk, courseID: String?, sourceRevision: String?, vectorData: Data, vectorCount: Int, modelVersion: ChunkEmbedder.ModelVersion) {
             sourceID = chunk.sourceID
             self.courseID = courseID
+            self.sourceRevision = sourceRevision
             ordinal = chunk.ordinal
             headingPath = chunk.headingPath
             text = chunk.text
@@ -62,8 +65,9 @@ extension AgentSchemaV1 {
             indexedAt = .now
         }
 
-        func update(chunk: TextChunk, courseID: String?, vectorData: Data, vectorCount: Int, modelVersion: ChunkEmbedder.ModelVersion) {
+        func update(chunk: TextChunk, courseID: String?, sourceRevision: String?, vectorData: Data, vectorCount: Int, modelVersion: ChunkEmbedder.ModelVersion) {
             self.courseID = courseID
+            self.sourceRevision = sourceRevision
             headingPath = chunk.headingPath
             text = chunk.text
             contentHash = chunk.contentHash
@@ -111,13 +115,38 @@ extension AgentSchemaV1 {
 }
 
 extension ModelContainer {
-    /// - Parameter inMemory: Keeps the store out of Application Support, for tests and previews.
-    static func makeAgentContainer(inMemory: Bool = false) throws -> ModelContainer {
+    static var agentStoreURL: URL {
+        .applicationSupportDirectory.appending(path: "agent.store")
+    }
+
+    /// - Parameters:
+    ///   - inMemory: Keeps the store out of Application Support, for tests and previews.
+    ///   - url: Where the store file lives on disk. Ignored when `inMemory` is true.
+    /// - Returns: The agent container. An on-disk store that can't be opened (e.g. an
+    ///   incompatible schema) is deleted and recreated, since everything in it can be rebuilt.
+    static func makeAgentContainer(inMemory: Bool = false, url: URL = agentStoreURL) throws -> ModelContainer {
         let schema = Schema(versionedSchema: AgentSchemaV1.self)
         let configuration = inMemory
             ? ModelConfiguration("Agent", schema: schema, isStoredInMemoryOnly: true)
-            : ModelConfiguration("Agent", schema: schema, url: .applicationSupportDirectory.appending(path: "agent.store"))
+            : ModelConfiguration("Agent", schema: schema, url: url)
+        let open = { try ModelContainer(for: schema, migrationPlan: AgentMigrationPlan.self, configurations: configuration) }
 
-        return try ModelContainer(for: schema, migrationPlan: AgentMigrationPlan.self, configurations: configuration)
+        do {
+            return try open()
+        } catch where !inMemory {
+            LoggerService.main.error("Agent store unreadable, rebuilding: \(error)")
+            try eraseAgentStore(at: url)
+            return try open()
+        }
+    }
+
+    /// - Parameter url: The store file. Its `-wal` and `-shm` companions are removed too.
+    static func eraseAgentStore(at url: URL = agentStoreURL) throws {
+        for suffix in ["", "-wal", "-shm"] {
+            let file = URL(filePath: url.path(percentEncoded: false) + suffix)
+            if FileManager.default.fileExists(atPath: file.path(percentEncoded: false)) {
+                try FileManager.default.removeItem(at: file)
+            }
+        }
     }
 }

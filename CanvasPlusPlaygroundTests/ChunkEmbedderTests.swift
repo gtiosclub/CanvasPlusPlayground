@@ -104,7 +104,7 @@ struct ChunkEmbedderPoolTests {
 }
 
 // Requires the on-device embedding assets; skipped rather than downloading them during a test run.
-@Suite(.enabled(if: NLContextualEmbedding(language: .english)?.hasAvailableAssets ?? false))
+@Suite(.enabled(if: EmbeddingModel.isUsable))
 struct ChunkEmbedderModelTests {
     @Test func reportsModelVersionAndDimension() throws {
         let embedder = try ChunkEmbedder()
@@ -191,4 +191,13 @@ struct ChunkEmbedderModelTests {
             #expect(result.sequenceLength == tokens, "\(text) — re-measure if the model revision changed")
         }
     }
+}
+
+enum EmbeddingModel {
+    // Having the assets isn't enough: the iOS Simulator reports them available but fails to load
+    // ("Embedding model requires compilation"), so gate model tests on an actual load.
+    static let isUsable: Bool = {
+        guard let embedding = NLContextualEmbedding(language: .english), embedding.hasAvailableAssets else { return false }
+        return (try? embedding.load()) != nil
+    }()
 }
