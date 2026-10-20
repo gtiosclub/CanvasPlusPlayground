@@ -10,6 +10,7 @@ import SwiftUI
 struct AccessoryBar: View {
     let title: String
     let value: String
+    var caption: String?
 
     var body: some View {
         VStack {
@@ -27,6 +28,14 @@ struct AccessoryBar: View {
             .bold()
             .padding(.horizontal)
             .padding(.vertical, 4)
+
+            if let caption {
+                Text(caption)
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal)
+            }
 
             Divider()
         }
