@@ -11,6 +11,7 @@
 		192EC04A2C963B9000AF8528 /* AssignmentAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192EC0492C963B9000AF8528 /* AssignmentAPI.swift */; };
 		192EC04C2C963EE600AF8528 /* CourseAssignmentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192EC04B2C963EE600AF8528 /* CourseAssignmentsView.swift */; };
 		204FC32D5481BD71604178E2 /* SemanticIndexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C077D07EDD6A888712D52F /* SemanticIndexer.swift */; };
+		23CED77DBFE1383B47A216C5 /* SearchIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FD41BDFC159122618A59A5 /* SearchIndex.swift */; };
 		262CA4622E6A34A000BB7C00 /* DefaultNavigationDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 262CA4612E6A34A000BB7C00 /* DefaultNavigationDestination.swift */; };
 		26589EF02E75C85100234C2F /* GetAllCourseFilesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26589EEF2E75C84700234C2F /* GetAllCourseFilesRequest.swift */; };
 		267D85262E662019007F821B /* NewWindowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 267D85252E662009007F821B /* NewWindowButton.swift */; };
@@ -363,6 +364,7 @@
 		26C218292F2E65460050594A /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		3DAE84FF2C9A0E4F008C22E7 /* BridgedPDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgedPDFView.swift; sourceTree = "<group>"; };
 		41A9239BC87FBD0B487E6343 /* Chunker.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Chunker.swift; sourceTree = "<group>"; };
+		49FD41BDFC159122618A59A5 /* SearchIndex.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SearchIndex.swift; sourceTree = "<group>"; };
 		549B94212FEA04399A960798 /* SemanticIndexable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SemanticIndexable.swift; sourceTree = "<group>"; };
 		78C077D07EDD6A888712D52F /* SemanticIndexer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SemanticIndexer.swift; sourceTree = "<group>"; };
 		7F8535732C98DE3C0023E384 /* CourseGradeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseGradeView.swift; sourceTree = "<group>"; };
@@ -1596,6 +1598,7 @@
 				0201124C6AC625FC1CD2A76A /* AgentStore.swift */,
 				549B94212FEA04399A960798 /* SemanticIndexable.swift */,
 				78C077D07EDD6A888712D52F /* SemanticIndexer.swift */,
+				49FD41BDFC159122618A59A5 /* SearchIndex.swift */,
 			);
 			path = Index;
 			sourceTree = "<group>";
@@ -2044,6 +2047,7 @@
 				F21E36EB44CA37732191E8EC /* AgentStore.swift in Sources */,
 				E1B4D3BE5A7D3F1453EE795A /* SemanticIndexable.swift in Sources */,
 				204FC32D5481BD71604178E2 /* SemanticIndexer.swift in Sources */,
+				23CED77DBFE1383B47A216C5 /* SearchIndex.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

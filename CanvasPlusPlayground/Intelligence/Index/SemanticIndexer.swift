@@ -36,10 +36,50 @@ actor SemanticIndexer {
         let score: Float
     }
 
+    struct StorageReport: Sendable, CustomStringConvertible {
+        struct Usage: Sendable, Equatable {
+            var chunks = 0
+            var vectorBytes = 0
+            var textBytes = 0
+        }
+
+        /// Keyed by course ID; content without a course is under `nil`.
+        var byCourse: [String?: Usage] = [:]
+        /// Size of the store file and its write-ahead log on disk; nil for in-memory stores.
+        var storeFileBytes: Int?
+
+        var total: Usage {
+            byCourse.values.reduce(into: Usage()) {
+                $0.chunks += $1.chunks
+                $0.vectorBytes += $1.vectorBytes
+                $0.textBytes += $1.textBytes
+            }
+        }
+
+        var description: String {
+            let megabytes = { (bytes: Int) in String(format: "%.2f MB", Double(bytes) / 1_048_576) }
+            let courses = byCourse
+                .sorted { $0.value.chunks > $1.value.chunks }
+                .map { "\($0.key ?? "none"): \($0.value.chunks) chunks, \(megabytes($0.value.vectorBytes + $0.value.textBytes))" }
+                .joined(separator: "; ")
+            return "\(total.chunks) chunks, vectors \(megabytes(total.vectorBytes)), text \(megabytes(total.textBytes)), "
+                + "on disk \(storeFileBytes.map(megabytes) ?? "n/a") — \(courses)"
+        }
+    }
+
     private let chunker = Chunker()
     private var embedder: ChunkEmbedder?
     private var pending: Task<Report, Never>?
-    private var cachedCentroid: [Float]?
+    private var searchCaches: [Bool: SearchCache] = [:]
+
+    private struct SearchCache {
+        let index: SearchIndex
+        let rows: [Match]
+    }
+
+    // Embeddings cost ~26 ms per chunk, so a first backfill runs for minutes; committing this
+    // often means suspension or a crash loses at most a few seconds of work.
+    private static let embeddedChunksPerSave = 25
 
     /// - Parameter sources: Snapshots of the content to index. Sources not listed are left untouched.
     /// - Returns: What changed. Runs are serialized, so concurrent callers never interleave on a source.
@@ -59,7 +99,26 @@ actor SemanticIndexer {
         let stale = try modelContext.fetch(FetchDescriptor<IndexedChunk>()).filter { !sourceIDs.contains($0.sourceID) }
         stale.forEach(modelContext.delete)
         try modelContext.save()
-        cachedCentroid = nil
+        searchCaches.removeAll()
+    }
+
+    /// - Returns: Chunk counts and payload bytes per course, plus the store's size on disk.
+    func storageReport() throws -> StorageReport {
+        var report = StorageReport()
+        for row in try modelContext.fetch(FetchDescriptor<IndexedChunk>()) {
+            report.byCourse[row.courseID, default: .init()].chunks += 1
+            report.byCourse[row.courseID, default: .init()].vectorBytes += row.vectorData.count
+            report.byCourse[row.courseID, default: .init()].textBytes += row.text.utf8.count
+        }
+
+        if let configuration = modelContainer.configurations.first, !configuration.isStoredInMemoryOnly {
+            let path = configuration.url.path(percentEncoded: false)
+            report.storeFileBytes = ["", "-wal"].reduce(0) { total, suffix in
+                let size = (try? FileManager.default.attributesOfItem(atPath: path + suffix)[.size] as? Int) ?? nil
+                return total + (size ?? 0)
+            }
+        }
+        return report
     }
 
     /// - Parameters:
@@ -75,15 +134,12 @@ actor SemanticIndexer {
         let queryChunk = TextChunk(sourceID: "query", ordinal: 0, headingPath: [], text: query)
         guard let queryVector = Self.mean(try await embedder.vectors(for: queryChunk)) else { return [] }
 
-        let rows = try modelContext.fetch(FetchDescriptor<IndexedChunk>())
-            .filter { $0.isEmbedded(by: embedder.modelVersion) }
-        let candidates = courseID.map { id in rows.filter { $0.courseID == id } } ?? rows
-
-        let centroid = meanCentered ? centroid(of: rows) : nil
-        return Self.rank(query: queryVector, candidates: candidates.map(\.vectors), centroid: centroid)
+        let cache = try searchCache(meanCentered: meanCentered, embedder: embedder)
+        return cache.index
+            .rank(query: queryVector) { courseID == nil || cache.rows[$0].courseID == courseID }
             .prefix(limit)
             .map { index, score in
-                let row = candidates[index]
+                let row = cache.rows[index]
                 return Match(sourceID: row.sourceID, courseID: row.courseID, ordinal: row.ordinal, headingPath: row.headingPath, text: row.text, score: score)
             }
     }
@@ -97,17 +153,7 @@ actor SemanticIndexer {
     /// - Returns: Indices into `candidates` with their scores, best first. Candidates without
     ///   a vector matching the query's dimension are omitted.
     static func rank(query: [Float], candidates: [[[Float]]], centroid: [Float]?) -> [(index: Int, score: Float)] {
-        let center = centroid?.count == query.count ? centroid : nil
-        let centeredQuery = center.map { zip(query, $0).map(-) } ?? query
-
-        return candidates.enumerated()
-            .compactMap { index, vectors -> (index: Int, score: Float)? in
-                let scores = vectors
-                    .filter { $0.count == query.count }
-                    .map { vector in cosine(centeredQuery, center.map { zip(vector, $0).map(-) } ?? vector) }
-                return scores.max().map { (index, $0) }
-            }
-            .sorted { $0.score > $1.score }
+        SearchIndex(candidates: candidates, centroid: centroid, dimension: query.count).rank(query: query)
     }
 
     /// - Parameter vectors: Vectors of equal length.
@@ -125,23 +171,27 @@ actor SemanticIndexer {
         return sum.map { Float($0 / Double(nonEmpty.count)) }
     }
 
-    private static func cosine(_ lhs: [Float], _ rhs: [Float]) -> Float {
-        var dot: Float = 0
-        var lhsLength: Float = 0
-        var rhsLength: Float = 0
-        for index in lhs.indices {
-            dot += lhs[index] * rhs[index]
-            lhsLength += lhs[index] * lhs[index]
-            rhsLength += rhs[index] * rhs[index]
-        }
-        let length = (lhsLength * rhsLength).squareRoot()
-        return length > 0 ? dot / length : 0
+    // Built from the store once, then reused until a write clears it.
+    private func searchCache(meanCentered: Bool, embedder: ChunkEmbedder) throws -> SearchCache {
+        if let cached = searchCaches[meanCentered] { return cached }
+
+        let stored = try modelContext.fetch(FetchDescriptor<IndexedChunk>()).filter { $0.isEmbedded(by: embedder.modelVersion) }
+        let vectors = stored.map(\.vectors)
+        let centroid = meanCentered ? Self.mean(vectors.flatMap { $0 }) : nil
+        let cache = SearchCache(
+            index: SearchIndex(candidates: vectors, centroid: centroid, dimension: embedder.dimension),
+            rows: stored.map { Match(sourceID: $0.sourceID, courseID: $0.courseID, ordinal: $0.ordinal, headingPath: $0.headingPath, text: $0.text, score: 0) }
+        )
+        searchCaches[meanCentered] = cache
+        return cache
     }
 
-    private func centroid(of rows: [IndexedChunk]) -> [Float]? {
-        if let cachedCentroid { return cachedCentroid }
-        cachedCentroid = Self.mean(rows.flatMap(\.vectors))
-        return cachedCentroid
+    /// - Parameter sources: A batch that may list the same source more than once.
+    /// - Returns: One source per `sourceID`, in first-seen order, carrying the last snapshot of each.
+    static func uniqued(_ sources: [IndexSource]) -> [IndexSource] {
+        let latest = Dictionary(sources.map { ($0.sourceID, $0) }, uniquingKeysWith: { _, last in last })
+        var seen = Set<String>()
+        return sources.compactMap { seen.insert($0.sourceID).inserted ? latest[$0.sourceID] : nil }
     }
 
     /// Decides, per incoming chunk, whether its stored vectors can be kept, reused, or must be recomputed.
@@ -173,23 +223,32 @@ actor SemanticIndexer {
         guard let embedder = await loadedEmbedder() else { return Report() }
 
         var report = Report()
-        for source in sources {
+        var embeddedAtLastSave = 0
+        for source in Self.uniqued(sources) {
             do {
                 try await index(source, with: embedder, into: &report)
             } catch {
                 LoggerService.main.error("SemanticIndexer: indexing \(source.sourceID) failed: \(error)")
             }
+            if report.embedded - embeddedAtLastSave >= Self.embeddedChunksPerSave {
+                save()
+                embeddedAtLastSave = report.embedded
+            }
         }
 
+        save()
+        if report.embedded + report.reused + report.deleted > 0 {
+            searchCaches.removeAll()
+        }
+        return report
+    }
+
+    private func save() {
         do {
             try modelContext.save()
         } catch {
             LoggerService.main.error("SemanticIndexer: save failed: \(error)")
         }
-        if report.embedded + report.reused + report.deleted > 0 {
-            cachedCentroid = nil
-        }
-        return report
     }
 
     private func index(_ source: IndexSource, with embedder: ChunkEmbedder, into report: inout Report) async throws {
@@ -289,7 +348,8 @@ extension SemanticIndexer {
     @MainActor
     static func enqueue(_ models: [some PersistentModel]) {
         let context = ModelContext.shared
-        enqueue(models.compactMap { ($0 as? any SemanticIndexable)?.indexSource(in: context) })
+        let sources = models.compactMap { ($0 as? any SemanticIndexable)?.indexSource(in: context) }
+        enqueue(excludingRetired(sources, retiredCourseIDs: retiredCourseIDs(in: context)))
     }
 
     /// - Parameter sources: Already-snapshotted sources, e.g. a file right after it was downloaded.
@@ -317,6 +377,8 @@ extension SemanticIndexer {
         sources += cachedSources(Quiz.self, in: context)
         sources += cachedSources(Course.self, in: context)
         sources += cachedSources(File.self, in: context)
+        // Retired courses drop out here, and prune then deletes their existing rows.
+        sources = excludingRetired(sources, retiredCourseIDs: retiredCourseIDs(in: context))
 
         let report = await shared.index(sources)
         do {
@@ -325,6 +387,33 @@ extension SemanticIndexer {
             LoggerService.main.error("SemanticIndexer: prune failed: \(error)")
         }
         LoggerService.main.debug("SemanticIndexer: backfill \(sources.count) sources — \(String(describing: report))")
+        if let storage = try? await shared.storageReport() {
+            LoggerService.main.debug("SemanticIndexer: storage \(storage)")
+        }
+    }
+
+    /// Whether a course's content should leave the index. Its rows are deleted at the next backfill,
+    /// and syncs stop re-adding them.
+    ///
+    /// - Parameter course: A cached course, read on the main actor.
+    @MainActor
+    static func isRetired(_ course: Course) -> Bool {
+        if course.isCourseDeleted { return true }
+        return !course.isFavorite && !course.hasActiveEnrollment &&
+            (course.isPastEnrollment || course.concluded == true)
+    }
+
+    /// - Parameters:
+    ///   - sources: Candidate sources.
+    ///   - retiredCourseIDs: Courses whose content should not be indexed.
+    /// - Returns: The sources that belong to no course or to a course that isn't retired.
+    static func excludingRetired(_ sources: [IndexSource], retiredCourseIDs: Set<String>) -> [IndexSource] {
+        sources.filter { source in source.courseID.map { !retiredCourseIDs.contains($0) } ?? true }
+    }
+
+    @MainActor
+    private static func retiredCourseIDs(in context: ModelContext) -> Set<String> {
+        Set(((try? context.fetch(FetchDescriptor<Course>())) ?? []).filter(isRetired).map(\.id))
     }
 
     @MainActor
