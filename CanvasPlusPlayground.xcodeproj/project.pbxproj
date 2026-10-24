@@ -334,6 +334,10 @@
 		7762EAD57519DC6AE765B5E1 /* OnDeviceModelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674238C0C0474630AF71D7CD /* OnDeviceModelProvider.swift */; };
 		3FDBDAD16AD5CEBDA078B0A7 /* ScriptedModelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E203A072FFF514C9048C383B /* ScriptedModelProvider.swift */; };
 		D89F786926BF3A54540F9BE8 /* AgentModelRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F448595F94F993DB005352FB /* AgentModelRouter.swift */; };
+		D5DCBE18CE970D6707BD52D0 /* AgentBudget.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9139DD3CEFD4B19EDFFF3F /* AgentBudget.swift */; };
+		97FF9E1BD45E41EC213DA6E7 /* AgentRuntime.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48E10994D88EA3342E5183A /* AgentRuntime.swift */; };
+		F19C5B756DF6414C756B9B07 /* AgentRunStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DE6468225F37F06BB8AAF7 /* AgentRunStore.swift */; };
+		2C96CB03DE3C00583ED1D924 /* ContextBudgeter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B8D00C30A42EB33243D3612 /* ContextBudgeter.swift */; };
 		22FD623E03B7C611F2255F76 /* AgentOutputSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C99FC228A4AACC8EBE3CBB /* AgentOutputSchema.swift */; };
 		1CB18305374B374BB379C2B3 /* AgentReadTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07318AEE6950C94F2BB06D89 /* AgentReadTools.swift */; };
 		780A657AD70E0AECF302E7AA /* ListCoursesTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B120D4ED02369F462D3A94 /* ListCoursesTool.swift */; };
@@ -675,6 +679,10 @@
 		674238C0C0474630AF71D7CD /* OnDeviceModelProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnDeviceModelProvider.swift; sourceTree = "<group>"; };
 		E203A072FFF514C9048C383B /* ScriptedModelProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptedModelProvider.swift; sourceTree = "<group>"; };
 		F448595F94F993DB005352FB /* AgentModelRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentModelRouter.swift; sourceTree = "<group>"; };
+		AF9139DD3CEFD4B19EDFFF3F /* AgentBudget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentBudget.swift; sourceTree = "<group>"; };
+		E48E10994D88EA3342E5183A /* AgentRuntime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentRuntime.swift; sourceTree = "<group>"; };
+		E2DE6468225F37F06BB8AAF7 /* AgentRunStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentRunStore.swift; sourceTree = "<group>"; };
+		0B8D00C30A42EB33243D3612 /* ContextBudgeter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextBudgeter.swift; sourceTree = "<group>"; };
 		74C99FC228A4AACC8EBE3CBB /* AgentOutputSchema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentOutputSchema.swift; sourceTree = "<group>"; };
 		07318AEE6950C94F2BB06D89 /* AgentReadTools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentReadTools.swift; sourceTree = "<group>"; };
 		F5B120D4ED02369F462D3A94 /* ListCoursesTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCoursesTool.swift; sourceTree = "<group>"; };
@@ -1604,6 +1612,10 @@
 				674238C0C0474630AF71D7CD /* OnDeviceModelProvider.swift */,
 				E203A072FFF514C9048C383B /* ScriptedModelProvider.swift */,
 				F448595F94F993DB005352FB /* AgentModelRouter.swift */,
+				AF9139DD3CEFD4B19EDFFF3F /* AgentBudget.swift */,
+				E48E10994D88EA3342E5183A /* AgentRuntime.swift */,
+				E2DE6468225F37F06BB8AAF7 /* AgentRunStore.swift */,
+				0B8D00C30A42EB33243D3612 /* ContextBudgeter.swift */,
 				74C99FC228A4AACC8EBE3CBB /* AgentOutputSchema.swift */,
 				07318AEE6950C94F2BB06D89 /* AgentReadTools.swift */,
 				F5B120D4ED02369F462D3A94 /* ListCoursesTool.swift */,
@@ -1708,6 +1720,10 @@
 				7762EAD57519DC6AE765B5E1 /* OnDeviceModelProvider.swift in Sources */,
 				3FDBDAD16AD5CEBDA078B0A7 /* ScriptedModelProvider.swift in Sources */,
 				D89F786926BF3A54540F9BE8 /* AgentModelRouter.swift in Sources */,
+				D5DCBE18CE970D6707BD52D0 /* AgentBudget.swift in Sources */,
+				97FF9E1BD45E41EC213DA6E7 /* AgentRuntime.swift in Sources */,
+				F19C5B756DF6414C756B9B07 /* AgentRunStore.swift in Sources */,
+				2C96CB03DE3C00583ED1D924 /* ContextBudgeter.swift in Sources */,
 				22FD623E03B7C611F2255F76 /* AgentOutputSchema.swift in Sources */,
 				E8FA64FAF1448B4C492E6AE5 /* CanvasCacheAgentDataSource.swift in Sources */,
 				3075780020470B1A8E3839B0 /* AgentTool.swift in Sources */,
