@@ -336,6 +336,18 @@
 		B46115F06D1405A52BBBCF19 /* ListCalendarEventsTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC9BD284F09E234BDD9AB8A /* ListCalendarEventsTool.swift */; };
 		C2BD6CDCCDAF47A788FC5799 /* ListToDosTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D5F818E1A23D2B93C9F9D5F /* ListToDosTool.swift */; };
 		B990A3D329B8AAE920F8EA85 /* ListFilesTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3721DD28B5475C3CB5CEE71D /* ListFilesTool.swift */; };
+		0B24B93E28C8487C3BF75ACE /* ProposedAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC1F21E98E664D1C5114D3C /* ProposedAction.swift */; };
+		5FDC092D770CA8994DF6DF01 /* AgentRunLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856950EE08774AC76D227804 /* AgentRunLog.swift */; };
+		AF403AE22E3A2A680BA72E90 /* RecordingTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5660F930E4676DFF8A85CA7B /* RecordingTool.swift */; };
+		9F7FDD27EDAA7A2750BAA855 /* AgentWriteTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359DCD9F08949120384454DD /* AgentWriteTool.swift */; };
+		8374D86253ACD9ADDF225EA5 /* ProposeReminderTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026766E8CEDB54CCF595B95C /* ProposeReminderTool.swift */; };
+		F6473B2C9179473E9A992FFA /* ProposePinTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31D885ED14CBCF025EA7056 /* ProposePinTool.swift */; };
+		BD7690712A4B8135940EDF55 /* ProposeToDoDoneTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4B8E7F36A95761BAE01BDF /* ProposeToDoDoneTool.swift */; };
+		1CA82E17EAA43F325CA847E4 /* ToolRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93386EF0849671E3CAEC764A /* ToolRegistry.swift */; };
+		87CBE00147E6FBEF3FD76AC1 /* ActionExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA669EB59FEE978D33557040 /* ActionExecutor.swift */; };
+		9AE3FAFD62E1660693FCA6E7 /* AppActionExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F03CD8D515FCFB478D02B1F /* AppActionExecutor.swift */; };
+		C4ED7153EE27FBA7FB56CF3C /* ActionApprovalModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BEB7550797271E3B5D6B6FC /* ActionApprovalModel.swift */; };
+		14C5468C622542C88A32B72E /* ProposedActionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52A3CDF81C869122D20B911 /* ProposedActionsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -671,6 +683,18 @@
 		2BC9BD284F09E234BDD9AB8A /* ListCalendarEventsTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCalendarEventsTool.swift; sourceTree = "<group>"; };
 		1D5F818E1A23D2B93C9F9D5F /* ListToDosTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListToDosTool.swift; sourceTree = "<group>"; };
 		3721DD28B5475C3CB5CEE71D /* ListFilesTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListFilesTool.swift; sourceTree = "<group>"; };
+		5DC1F21E98E664D1C5114D3C /* ProposedAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProposedAction.swift; sourceTree = "<group>"; };
+		856950EE08774AC76D227804 /* AgentRunLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentRunLog.swift; sourceTree = "<group>"; };
+		5660F930E4676DFF8A85CA7B /* RecordingTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingTool.swift; sourceTree = "<group>"; };
+		359DCD9F08949120384454DD /* AgentWriteTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentWriteTool.swift; sourceTree = "<group>"; };
+		026766E8CEDB54CCF595B95C /* ProposeReminderTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProposeReminderTool.swift; sourceTree = "<group>"; };
+		B31D885ED14CBCF025EA7056 /* ProposePinTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProposePinTool.swift; sourceTree = "<group>"; };
+		CC4B8E7F36A95761BAE01BDF /* ProposeToDoDoneTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProposeToDoDoneTool.swift; sourceTree = "<group>"; };
+		93386EF0849671E3CAEC764A /* ToolRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolRegistry.swift; sourceTree = "<group>"; };
+		FA669EB59FEE978D33557040 /* ActionExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionExecutor.swift; sourceTree = "<group>"; };
+		7F03CD8D515FCFB478D02B1F /* AppActionExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppActionExecutor.swift; sourceTree = "<group>"; };
+		0BEB7550797271E3B5D6B6FC /* ActionApprovalModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionApprovalModel.swift; sourceTree = "<group>"; };
+		C52A3CDF81C869122D20B911 /* ProposedActionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProposedActionsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1594,6 +1618,18 @@
 				2BC9BD284F09E234BDD9AB8A /* ListCalendarEventsTool.swift */,
 				1D5F818E1A23D2B93C9F9D5F /* ListToDosTool.swift */,
 				3721DD28B5475C3CB5CEE71D /* ListFilesTool.swift */,
+				5DC1F21E98E664D1C5114D3C /* ProposedAction.swift */,
+				856950EE08774AC76D227804 /* AgentRunLog.swift */,
+				5660F930E4676DFF8A85CA7B /* RecordingTool.swift */,
+				359DCD9F08949120384454DD /* AgentWriteTool.swift */,
+				026766E8CEDB54CCF595B95C /* ProposeReminderTool.swift */,
+				B31D885ED14CBCF025EA7056 /* ProposePinTool.swift */,
+				CC4B8E7F36A95761BAE01BDF /* ProposeToDoDoneTool.swift */,
+				93386EF0849671E3CAEC764A /* ToolRegistry.swift */,
+				FA669EB59FEE978D33557040 /* ActionExecutor.swift */,
+				7F03CD8D515FCFB478D02B1F /* AppActionExecutor.swift */,
+				0BEB7550797271E3B5D6B6FC /* ActionApprovalModel.swift */,
+				C52A3CDF81C869122D20B911 /* ProposedActionsView.swift */,
 			);
 			path = Agent;
 			sourceTree = "<group>";
@@ -1678,6 +1714,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				B990A3D329B8AAE920F8EA85 /* ListFilesTool.swift in Sources */,
+				0B24B93E28C8487C3BF75ACE /* ProposedAction.swift in Sources */,
+				5FDC092D770CA8994DF6DF01 /* AgentRunLog.swift in Sources */,
+				AF403AE22E3A2A680BA72E90 /* RecordingTool.swift in Sources */,
+				9F7FDD27EDAA7A2750BAA855 /* AgentWriteTool.swift in Sources */,
+				8374D86253ACD9ADDF225EA5 /* ProposeReminderTool.swift in Sources */,
+				F6473B2C9179473E9A992FFA /* ProposePinTool.swift in Sources */,
+				BD7690712A4B8135940EDF55 /* ProposeToDoDoneTool.swift in Sources */,
+				1CA82E17EAA43F325CA847E4 /* ToolRegistry.swift in Sources */,
+				87CBE00147E6FBEF3FD76AC1 /* ActionExecutor.swift in Sources */,
+				9AE3FAFD62E1660693FCA6E7 /* AppActionExecutor.swift in Sources */,
+				C4ED7153EE27FBA7FB56CF3C /* ActionApprovalModel.swift in Sources */,
+				14C5468C622542C88A32B72E /* ProposedActionsView.swift in Sources */,
 				C2BD6CDCCDAF47A788FC5799 /* ListToDosTool.swift in Sources */,
 				B46115F06D1405A52BBBCF19 /* ListCalendarEventsTool.swift in Sources */,
 				EDA3584931BF4C200B379229 /* ListAnnouncementsTool.swift in Sources */,
