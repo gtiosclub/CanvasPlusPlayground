@@ -30,14 +30,18 @@ private struct ReadableCourseTintModifier: ViewModifier {
     @Environment(\.self) private var environment
 
     let color: Color?
+    let cardOpacity: Double?
 
     func body(content: Content) -> some View {
-        content.tint(
-            color?.readable(
-                against: .courseContentBackground(for: environment.colorScheme),
-                in: environment
-            )
-        )
+        content.tint(color?.readable(against: background, in: environment))
+    }
+
+    private var background: Color {
+        if let cardOpacity {
+            .cardSurface(opacity: cardOpacity, in: environment)
+        } else {
+            .courseContentBackground(for: environment.colorScheme)
+        }
     }
 }
 
@@ -120,13 +124,23 @@ extension Color {
         }
         #endif
     }
+
+    static func cardSurface(opacity: Double, in environment: EnvironmentValues) -> Color {
+        var secondary = Color.secondary.resolve(in: environment)
+        let fraction = opacity * Double(secondary.opacity)
+        secondary.opacity = 1
+        return courseContentBackground(for: environment.colorScheme)
+            .mix(with: Color(secondary), by: fraction, in: .device)
+    }
 }
 
 extension View {
-    /// Tints this view with a course color, adjusted to meet 4.5:1 contrast against the page background.
-    /// - Parameter color: The course color, or `nil` to keep the default tint.
-    func readableCourseTint(_ color: Color?) -> some View {
-        modifier(ReadableCourseTintModifier(color: color))
+    /// Tints this view with a course color, adjusted to meet 4.5:1 contrast against the page background or a `.secondary` card fill.
+    /// - Parameters:
+    ///   - color: The course color, or `nil` to keep the default tint.
+    ///   - cardOpacity: The opacity of the `.secondary` card fill behind this view, or `nil` when it sits on the page background.
+    func readableCourseTint(_ color: Color?, cardOpacity: Double? = nil) -> some View {
+        modifier(ReadableCourseTintModifier(color: color, cardOpacity: cardOpacity))
     }
 
     /// Sets the foreground to black or white, whichever is more legible on the given background color.

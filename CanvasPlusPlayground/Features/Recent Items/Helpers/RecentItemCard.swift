@@ -72,7 +72,7 @@ private struct GenericRecentCard: View {
                     .font(.caption)
             }
             .foregroundStyle(.tint)
-            .readableCourseTint(course.rgbColors?.color ?? .accentColor)
+            .readableCourseTint(course.rgbColors?.color ?? .accentColor, cardOpacity: 0.15)
 
             VStack(alignment: .leading, spacing: 3) {
                 Text(title)
@@ -158,7 +158,7 @@ private struct PlaceholderCard: View {
                 Text(course.displayName.uppercased())
                     .font(.caption)
                     .foregroundStyle(.tint)
-                    .readableCourseTint(course.rgbColors?.color ?? .accentColor)
+                    .readableCourseTint(course.rgbColors?.color ?? .accentColor, cardOpacity: 0.15)
             }
 
             HStack {

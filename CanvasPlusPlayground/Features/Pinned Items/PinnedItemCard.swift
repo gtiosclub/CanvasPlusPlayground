@@ -96,7 +96,7 @@ private struct BasePinnedItemCard<Content: View>: View {
             if let icon {
                 Image(systemName: icon)
                     .foregroundStyle(.tint)
-                    .readableCourseTint(course?.rgbColors?.color ?? .accentColor)
+                    .readableCourseTint(course?.rgbColors?.color ?? .accentColor, cardOpacity: 0.30)
                     .font(.title)
             }
 
@@ -105,7 +105,7 @@ private struct BasePinnedItemCard<Content: View>: View {
                     Text(course.displayName.uppercased())
                         .font(.caption)
                         .foregroundStyle(.tint)
-                        .readableCourseTint(course.rgbColors?.color ?? .accentColor)
+                        .readableCourseTint(course.rgbColors?.color ?? .accentColor, cardOpacity: 0.30)
                         .lineLimit(1)
                 }
 
