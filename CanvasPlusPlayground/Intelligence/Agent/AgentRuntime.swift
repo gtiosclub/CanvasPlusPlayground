@@ -104,6 +104,7 @@ final class AgentNodeContext {
     let budget: AgentBudget
     let provider: any AgentModelProvider
     let estimator: TokenEstimator
+    let ledger: ExecutionLedger?
     var state: AgentRunState
     private(set) var usage: AgentUsage
 
@@ -112,6 +113,7 @@ final class AgentNodeContext {
         budget: AgentBudget,
         provider: any AgentModelProvider,
         estimator: TokenEstimator,
+        ledger: ExecutionLedger?,
         state: AgentRunState,
         usage: AgentUsage
     ) {
@@ -119,8 +121,14 @@ final class AgentNodeContext {
         self.budget = budget
         self.provider = provider
         self.estimator = estimator
+        self.ledger = ledger
         self.state = state
         self.usage = usage
+    }
+
+    /// Records a decision in the run's ledger, e.g. "Kept 4 records, summarized 2".
+    func note(_ decision: String) {
+        ledger?.record(.decision(decision), runID: runID)
     }
 
     /// Tokens left in the run's budget.
@@ -156,10 +164,43 @@ final class AgentNodeContext {
         usage.modelCalls += 1
         usage.tokens += promptTokens
 
-        let response = try await provider.respond(to: prompt, tools: tools, generating: type)
-        usage.tokens += estimator.tokens(in: response.content.generatedContent.jsonString)
+        let tools = ledger?.recording(tools, runID: runID) ?? tools
+        let clock = ContinuousClock()
+        let started = clock.now
 
-        return response
+        do {
+            let response = try await provider.respond(to: prompt, tools: tools, generating: type)
+            let outputTokens = estimator.tokens(in: response.content.generatedContent.jsonString)
+            usage.tokens += outputTokens
+
+            ledger?.record(
+                .modelCall(
+                    tier: "\(response.tier)",
+                    provider: String(describing: Swift.type(of: provider)),
+                    promptTokens: promptTokens,
+                    outputTokens: outputTokens,
+                    toolCalls: response.toolCalls,
+                    error: nil
+                ),
+                runID: runID,
+                duration: clock.now - started
+            )
+            return response
+        } catch {
+            ledger?.record(
+                .modelCall(
+                    tier: "\(provider.tier)",
+                    provider: String(describing: Swift.type(of: provider)),
+                    promptTokens: promptTokens,
+                    outputTokens: 0,
+                    toolCalls: [],
+                    error: error.localizedDescription
+                ),
+                runID: runID,
+                duration: clock.now - started
+            )
+            throw error
+        }
     }
 
     func estimatedTokens(for prompt: AgentPrompt, tools: [any Tool]) -> Int {
@@ -210,24 +251,29 @@ final class AgentRuntime {
     private let provider: any AgentModelProvider
     private let budget: AgentBudget
     private let estimator: TokenEstimator
+    private let ledger: ExecutionLedger?
     private let clock = ContinuousClock()
 
-    /// - Parameter store: where checkpoints go. `nil` runs without saving (nothing to resume).
+    /// - Parameters:
+    ///   - store: where checkpoints go. `nil` runs without saving (nothing to resume).
+    ///   - ledger: where the trace goes. `nil` records nothing.
     init(
         provider: any AgentModelProvider,
         budget: AgentBudget = .onDevice,
         store: AgentRunStore?,
+        ledger: ExecutionLedger? = nil,
         estimator: TokenEstimator = TokenEstimator()
     ) {
         self.provider = provider
         self.budget = budget
         self.store = store
+        self.ledger = ledger
         self.estimator = estimator
     }
 
-    /// Saves checkpoints to the app's shared run store.
+    /// Saves checkpoints and the trace to the app's shared store.
     convenience init(provider: any AgentModelProvider, budget: AgentBudget = .onDevice) {
-        self.init(provider: provider, budget: budget, store: .shared)
+        self.init(provider: provider, budget: budget, store: .shared, ledger: .shared)
     }
 
     /// Starts a new run of `graph` with `state` as its input.
@@ -246,6 +292,7 @@ final class AgentRuntime {
             updatedAt: .now
         )
         try store?.save(snapshot)
+        ledger?.record(.runStarted(graph: graph.name), runID: snapshot.runID)
 
         return try await execute(graph, from: snapshot)
     }
@@ -266,6 +313,11 @@ final class AgentRuntime {
         var resumed = snapshot
         resumed.status = .running
         resumed.errorMessage = nil
+        ledger?.record(
+            .runResumed(graph: graph.name, atNode: snapshot.nextNodeID ?? graph.startNodeID),
+            runID: snapshot.runID,
+            usage: snapshot.usage
+        )
         return try await execute(graph, from: resumed)
     }
 
@@ -298,6 +350,7 @@ final class AgentRuntime {
             budget: budget,
             provider: provider,
             estimator: estimator,
+            ledger: ledger,
             state: snapshot.state,
             usage: snapshot.usage
         )
@@ -332,6 +385,13 @@ final class AgentRuntime {
                     snapshot.status = .finished
                 }
 
+                ledger?.record(
+                    .node(id: nodeID, transition: snapshot.nextNodeID),
+                    runID: snapshot.runID,
+                    duration: clock.now - started,
+                    usage: context.usage
+                )
+
                 snapshot.state = context.state
                 snapshot.usage = context.usage
                 snapshot.updatedAt = .now
@@ -352,8 +412,15 @@ final class AgentRuntime {
             }
 
             try? store?.save(snapshot)
+            ledger?.record(
+                .runEnded(status: snapshot.status, message: snapshot.status == .paused ? nil : error.localizedDescription),
+                runID: snapshot.runID,
+                usage: snapshot.usage
+            )
             throw error
         }
+
+        ledger?.record(.runEnded(status: snapshot.status, message: nil), runID: snapshot.runID, usage: snapshot.usage)
 
         return AgentRunResult(
             runID: snapshot.runID,
