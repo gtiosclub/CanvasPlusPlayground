@@ -10,6 +10,7 @@ import SwiftUI
 struct CourseTodoCreationSheet: View {
     @Environment(ToDoListManager.self) private var toDoListManager
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     let course: Course
 
@@ -148,13 +149,13 @@ struct CourseTodoCreationSheet: View {
                     .frame(width: geo.size.width / 2, height: 32)
                     .padding(.horizontal, 2)
                     .offset(x: kind == .event ? 0 : geo.size.width / 2)
-                    .animation(.spring(response: 0.35, dampingFraction: 0.65), value: kind)
+                    .animation(reduceMotion ? nil : .spring(response: 0.35, dampingFraction: 0.65), value: kind)
                     .shadow(color: .black.opacity(0.08), radius: 4, x: 0, y: 2)
 
                 // Labels — full-width tap targets
                 HStack(spacing: 0) {
                     Button {
-                        withAnimation(.spring(response: 0.35, dampingFraction: 0.65)) {
+                        withAnimation(reduceMotion ? nil : .spring(response: 0.35, dampingFraction: 0.65)) {
                             kind = .event
                         }
                     } label: {
@@ -167,7 +168,7 @@ struct CourseTodoCreationSheet: View {
                     .buttonStyle(.plain)
 
                     Button {
-                        withAnimation(.spring(response: 0.35, dampingFraction: 0.65)) {
+                        withAnimation(reduceMotion ? nil : .spring(response: 0.35, dampingFraction: 0.65)) {
                             kind = .task
                         }
                     } label: {

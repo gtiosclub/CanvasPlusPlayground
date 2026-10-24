@@ -11,6 +11,7 @@ import SwiftUI
 @available(macOS 26.0, iOS 26.0, *)
 struct IntelligenceContentView<V: View>: View {
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     /// This view ripples upon change of this condition
     let condition: Bool
@@ -48,11 +49,11 @@ struct IntelligenceContentView<V: View>: View {
                         center = newValue.center
                     }
             }
-            .rippleEffect(origin: center, condition: condition)
+            .rippleEffect(origin: center, condition: reduceMotion ? false : condition)
     }
 
     private var cardBackground: some View {
-        TimelineView(.animation) { _ in
+        TimelineView(.animation(minimumInterval: nil, paused: reduceMotion)) { _ in
             let elapsedTime = startTime.distance(to: Date.now)
 
             Rectangle()

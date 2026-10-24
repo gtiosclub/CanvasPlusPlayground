@@ -74,6 +74,7 @@ private struct CourseGradientBackgroundModifier: ViewModifier {
 
 private struct CourseIcon: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     let symbolName: String
 
@@ -94,6 +95,7 @@ private struct CourseIcon: View {
                 )
         }
         .onAppear {
+            guard !reduceMotion else { return }
             withAnimation(.spring) {
                 symbolToggle.toggle()
             }

@@ -11,6 +11,7 @@ struct CourseOverviewView: View {
     @Environment(ProfileManager.self) private var profileManager
     @Environment(ToDoListManager.self) private var toDoListManager
     @Environment(NavigationModel.self) private var navigationModel
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     let course: Course
 
@@ -245,7 +246,7 @@ struct CourseOverviewView: View {
                 .trim(from: 0, to: ringProgress)
                 .stroke(Color.accentColor, style: StrokeStyle(lineWidth: 12, lineCap: .round))
                 .rotationEffect(.degrees(-90))
-                .animation(.easeOut(duration: 0.8), value: ringProgress)
+                .animation(reduceMotion ? nil : .easeOut(duration: 0.8), value: ringProgress)
 
             Text("\(Int(scoreValue))%")
                 .font(.system(size: 30, weight: .semibold))
@@ -269,7 +270,7 @@ struct CourseOverviewView: View {
 
     private func animateRingToCurrentScore() {
         let target = (Double(gradesVM.currentScore) ?? 0) / 100.0
-        withAnimation(.easeOut(duration: 0.8).delay(0.2)) {
+        withAnimation(reduceMotion ? nil : .easeOut(duration: 0.8).delay(0.2)) {
             ringProgress = target
         }
     }

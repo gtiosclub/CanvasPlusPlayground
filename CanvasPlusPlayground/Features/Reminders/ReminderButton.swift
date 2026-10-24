@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ReminderButton: View {
     @Environment(RemindersManager.self) private var reminderManager
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var showDatePicker = false
 
     let item: ReminderType
@@ -29,7 +30,7 @@ struct ReminderButton: View {
         } label: {
             if #available(iOS 18.0, macOS 15.0, *) {
                 Image(systemName: reminderEnabled ? "bell.fill" : "bell")
-                    .symbolEffect(.wiggle, options: .speed(3), value: reminderEnabled) // no wiggles for the old phones :(
+                    .symbolEffect(.wiggle, options: .speed(3), value: reduceMotion ? false : reminderEnabled) // no wiggles for the old phones :(
             } else {
                 Image(systemName: reminderEnabled ? "bell.fill" : "bell")
             }
