@@ -115,6 +115,18 @@ struct EvidenceFacts: Hashable, Codable, Sendable {
     var pointsPossible: Double?
     var score: Double?
     var location: String?
+    /// Where the student's submission stands. `nil` when Canvas didn't send a submission.
+    var submissionStatus: SubmissionStatus?
+}
+
+/// The state of the student's own submission, derived from Canvas's submission record.
+enum SubmissionStatus: String, Hashable, Codable, Sendable, CaseIterable {
+    case submitted
+    case missing
+    case late
+    case excused
+    case graded
+    case notSubmitted = "not submitted"
 }
 
 // MARK: - Snippets
@@ -157,26 +169,33 @@ extension Evidence {
 
 extension Evidence {
     /// One compact entry for the model, e.g.
-    /// `[assignment:1234] Problem Set 5 | course: CS 1331 | due: 2026-10-08T20:59:00Z | points: 10`
+    /// `[assignment:1234] Problem Set 5 | course: CS 1331 | due: 2026-10-08T23:59:00-04:00 | points: 10`
     /// followed by the snippet on the next line. Dates are ISO 8601 so the model copies them exactly.
     var promptText: String {
+        promptText(in: .current)
+    }
+
+    /// Dates are written in `timeZone` with its UTC offset, so the model reads the student's
+    /// local date. In UTC an 11:59 PM Eastern deadline would look like it's due the next day.
+    func promptText(in timeZone: TimeZone) -> String {
         var fields = ["[\(id)] \(title)"]
 
         if let courseName = facts.courseName { fields.append("course: \(courseName)") }
-        if let dueDate = facts.dueDate { fields.append("due: \(Self.iso(dueDate))") }
-        if let startDate = facts.startDate { fields.append("starts: \(Self.iso(startDate))") }
-        if let endDate = facts.endDate { fields.append("ends: \(Self.iso(endDate))") }
-        if let postedAt = facts.postedAt { fields.append("posted: \(Self.iso(postedAt))") }
+        if let dueDate = facts.dueDate { fields.append("due: \(Self.iso(dueDate, in: timeZone))") }
+        if let startDate = facts.startDate { fields.append("starts: \(Self.iso(startDate, in: timeZone))") }
+        if let endDate = facts.endDate { fields.append("ends: \(Self.iso(endDate, in: timeZone))") }
+        if let postedAt = facts.postedAt { fields.append("posted: \(Self.iso(postedAt, in: timeZone))") }
         if let pointsPossible = facts.pointsPossible { fields.append("points: \(Self.number(pointsPossible))") }
         if let score = facts.score { fields.append("score: \(Self.number(score))") }
         if let location = facts.location { fields.append("location: \(location)") }
+        if let status = facts.submissionStatus { fields.append("status: \(status.rawValue)") }
 
         let header = fields.joined(separator: " | ")
         return snippet.isEmpty ? header : "\(header)\n  \(snippet)"
     }
 
-    private static func iso(_ date: Date) -> String {
-        date.formatted(.iso8601)
+    private static func iso(_ date: Date, in timeZone: TimeZone) -> String {
+        date.formatted(Date.ISO8601FormatStyle(timeZoneSeparator: .colon, timeZone: timeZone))
     }
 
     private static func number(_ value: Double) -> String {
