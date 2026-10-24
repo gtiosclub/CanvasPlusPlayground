@@ -186,6 +186,7 @@ struct CanvasPlusPlaygroundApp: App {
                 launchFailurePage
             case .ready:
                 SettingsView()
+                    .environment(listManager)
                     .environment(profileManager)
                     .environment(courseManager)
                     .environment(pinnedItemsManager)

@@ -12,10 +12,12 @@ struct SettingsView: View {
     @Environment(\.openWindow) private var openWindow
     @Environment(PinnedItemsManager.self) private var pinnedItemManager
     @Environment(CourseManager.self) private var courseManager
+    @Environment(ToDoListManager.self) private var toDoListManager
 
     @State private var selectedItem: (any PickableItem)?
     @State private var selectedCourseForItemPicker: Course?
     @State private var showWidgetShowcase = false
+    @State private var showAgentRuns = false
     #endif
 
     @Environment(\.dismiss) private var dismiss
@@ -38,6 +40,18 @@ struct SettingsView: View {
                 WidgetShowcase()
             }
             .environment(courseManager)
+        }
+        .sheet(isPresented: $showAgentRuns) {
+            if #available(iOS 26.0, macOS 26.0, *) {
+                NavigationStack {
+                    AgentRunTraceView()
+                }
+                .environment(courseManager)
+                .environment(toDoListManager)
+                #if os(macOS)
+                .frame(minWidth: 480, minHeight: 560)
+                #endif
+            }
         }
         #endif
         .sheet(isPresented: $showChangeAccessToken) {
@@ -120,6 +134,11 @@ struct SettingsView: View {
                 Button("Show Widget Showcase", systemImage: "widget.small") {
                     showWidgetShowcase = true
                 }
+                if #available(iOS 26.0, macOS 26.0, *) {
+                    Button("Agent Run Traces", systemImage: "point.3.connected.trianglepath.dotted") {
+                        showAgentRuns = true
+                    }
+                }
                 Button("View Item Picker", systemImage: "filemenu.and.selection") {
                     selectedCourseForItemPicker = courseManager.activeCourses.first
                 }
@@ -170,4 +189,5 @@ struct SettingsView: View {
 #Preview {
     SettingsView()
         .environment(CourseManager())
+        .environment(ToDoListManager())
 }

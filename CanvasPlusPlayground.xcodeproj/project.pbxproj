@@ -60,6 +60,8 @@
 		9B7B3E342E7BA59F004D5FDD /* CustomizeCourseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B7B3E332E7BA59F004D5FDD /* CustomizeCourseView.swift */; };
 		9B801DEB2E66659D00DF4942 /* NetworkRequestRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B801DEA2E66659D00DF4942 /* NetworkRequestRecorder.swift */; };
 		9B801DEC2E66659D00DF4942 /* NetworkRequestDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B801DE92E66659D00DF4942 /* NetworkRequestDebugView.swift */; };
+		62CF3CA04141D36EE2699FFC /* AgentRunTraceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080002681C7EC048199F546D /* AgentRunTraceView.swift */; };
+		C3CDF381D71471D594285420 /* AgentSampleRun.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FDB47CE2ED47FE3DF1ACBBA /* AgentSampleRun.swift */; };
 		9B81E2832E8F84BD00675B90 /* CustomizeCourseMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B81E2822E8F84BD00675B90 /* CustomizeCourseMenu.swift */; };
 		9B92A4232C93853C00C21CFC /* Announcement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B92A4222C93853C00C21CFC /* Announcement.swift */; };
 		9B92A4252C93856100C21CFC /* CourseAnnouncementManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B92A4242C93856100C21CFC /* CourseAnnouncementManager.swift */; };
@@ -338,6 +340,7 @@
 		97FF9E1BD45E41EC213DA6E7 /* AgentRuntime.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48E10994D88EA3342E5183A /* AgentRuntime.swift */; };
 		F19C5B756DF6414C756B9B07 /* AgentRunStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DE6468225F37F06BB8AAF7 /* AgentRunStore.swift */; };
 		2C96CB03DE3C00583ED1D924 /* ContextBudgeter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B8D00C30A42EB33243D3612 /* ContextBudgeter.swift */; };
+		F1B342424415E70E95230F53 /* ExecutionLedger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476C4F7284BC5654B01145A7 /* ExecutionLedger.swift */; };
 		22FD623E03B7C611F2255F76 /* AgentOutputSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C99FC228A4AACC8EBE3CBB /* AgentOutputSchema.swift */; };
 		1CB18305374B374BB379C2B3 /* AgentReadTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07318AEE6950C94F2BB06D89 /* AgentReadTools.swift */; };
 		780A657AD70E0AECF302E7AA /* ListCoursesTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B120D4ED02369F462D3A94 /* ListCoursesTool.swift */; };
@@ -401,6 +404,8 @@
 		9B762BC82D7BF8E70051F1F6 /* SubmitAssignmentRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitAssignmentRequest.swift; sourceTree = "<group>"; };
 		9B7B3E332E7BA59F004D5FDD /* CustomizeCourseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizeCourseView.swift; sourceTree = "<group>"; };
 		9B801DE92E66659D00DF4942 /* NetworkRequestDebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRequestDebugView.swift; sourceTree = "<group>"; };
+		080002681C7EC048199F546D /* AgentRunTraceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentRunTraceView.swift; sourceTree = "<group>"; };
+		4FDB47CE2ED47FE3DF1ACBBA /* AgentSampleRun.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentSampleRun.swift; sourceTree = "<group>"; };
 		9B801DEA2E66659D00DF4942 /* NetworkRequestRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRequestRecorder.swift; sourceTree = "<group>"; };
 		9B81E2822E8F84BD00675B90 /* CustomizeCourseMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizeCourseMenu.swift; sourceTree = "<group>"; };
 		9B92A4222C93853C00C21CFC /* Announcement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Announcement.swift; sourceTree = "<group>"; };
@@ -683,6 +688,7 @@
 		E48E10994D88EA3342E5183A /* AgentRuntime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentRuntime.swift; sourceTree = "<group>"; };
 		E2DE6468225F37F06BB8AAF7 /* AgentRunStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentRunStore.swift; sourceTree = "<group>"; };
 		0B8D00C30A42EB33243D3612 /* ContextBudgeter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextBudgeter.swift; sourceTree = "<group>"; };
+		476C4F7284BC5654B01145A7 /* ExecutionLedger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutionLedger.swift; sourceTree = "<group>"; };
 		74C99FC228A4AACC8EBE3CBB /* AgentOutputSchema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentOutputSchema.swift; sourceTree = "<group>"; };
 		07318AEE6950C94F2BB06D89 /* AgentReadTools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentReadTools.swift; sourceTree = "<group>"; };
 		F5B120D4ED02369F462D3A94 /* ListCoursesTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCoursesTool.swift; sourceTree = "<group>"; };
@@ -774,6 +780,8 @@
 			isa = PBXGroup;
 			children = (
 				9B801DE92E66659D00DF4942 /* NetworkRequestDebugView.swift */,
+				080002681C7EC048199F546D /* AgentRunTraceView.swift */,
+				4FDB47CE2ED47FE3DF1ACBBA /* AgentSampleRun.swift */,
 				9B801DEA2E66659D00DF4942 /* NetworkRequestRecorder.swift */,
 				B7D193B82E7E28EC00FF4C84 /* IGCPlayground.swift */,
 			);
@@ -1616,6 +1624,7 @@
 				E48E10994D88EA3342E5183A /* AgentRuntime.swift */,
 				E2DE6468225F37F06BB8AAF7 /* AgentRunStore.swift */,
 				0B8D00C30A42EB33243D3612 /* ContextBudgeter.swift */,
+				476C4F7284BC5654B01145A7 /* ExecutionLedger.swift */,
 				74C99FC228A4AACC8EBE3CBB /* AgentOutputSchema.swift */,
 				07318AEE6950C94F2BB06D89 /* AgentReadTools.swift */,
 				F5B120D4ED02369F462D3A94 /* ListCoursesTool.swift */,
@@ -1724,6 +1733,7 @@
 				97FF9E1BD45E41EC213DA6E7 /* AgentRuntime.swift in Sources */,
 				F19C5B756DF6414C756B9B07 /* AgentRunStore.swift in Sources */,
 				2C96CB03DE3C00583ED1D924 /* ContextBudgeter.swift in Sources */,
+				F1B342424415E70E95230F53 /* ExecutionLedger.swift in Sources */,
 				22FD623E03B7C611F2255F76 /* AgentOutputSchema.swift in Sources */,
 				E8FA64FAF1448B4C492E6AE5 /* CanvasCacheAgentDataSource.swift in Sources */,
 				3075780020470B1A8E3839B0 /* AgentTool.swift in Sources */,
@@ -2024,6 +2034,8 @@
 				9B801DEB2E66659D00DF4942 /* NetworkRequestRecorder.swift in Sources */,
 				8CD6A4F22F971C9B00BD3903 /* Color+HexString.swift in Sources */,
 				9B801DEC2E66659D00DF4942 /* NetworkRequestDebugView.swift in Sources */,
+				62CF3CA04141D36EE2699FFC /* AgentRunTraceView.swift in Sources */,
+				C3CDF381D71471D594285420 /* AgentSampleRun.swift in Sources */,
 				A339D3FD2DB1B65000952536 /* MigrationPlan.swift in Sources */,
 				A372D1102D91D1A1005E94CA /* GroupDetailView.swift in Sources */,
 				A3049B792D15E162002F3166 /* GetCourseRootFolderRequest.swift in Sources */,

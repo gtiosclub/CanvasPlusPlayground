@@ -41,6 +41,7 @@ struct AgentRunSnapshot: Identifiable, Hashable, Sendable {
 }
 
 typealias AgentRunCheckpoint = AgentRunSchemaV1.AgentRunCheckpoint
+typealias AgentLedgerRecord = AgentRunSchemaV1.AgentLedgerRecord
 
 /// Agent state gets its own schema and store file so it never touches `CanvasSchema`
 /// and can be deleted without losing the Canvas cache.
@@ -48,7 +49,7 @@ enum AgentRunSchemaV1: VersionedSchema {
     static var versionIdentifier = Schema.Version(1, 0, 0)
 
     static var models: [any PersistentModel.Type] {
-        [AgentRunCheckpoint.self]
+        [AgentRunCheckpoint.self, AgentLedgerRecord.self]
     }
 }
 
@@ -108,7 +109,31 @@ extension AgentRunSchemaV1 {
     }
 }
 
-/// Saves and loads run checkpoints in `agent-runs.store` in Application Support.
+extension AgentRunSchemaV1 {
+    /// One `LedgerEntry`, stored encoded so new entry kinds don't need a schema change.
+    @Model
+    final class AgentLedgerRecord {
+        #Index<AgentLedgerRecord>([\.runID])
+
+        var runID: UUID
+        var sequence: Int
+        var timestamp: Date
+        var entryData: Data
+
+        init(entry: LedgerEntry) throws {
+            runID = entry.runID
+            sequence = entry.sequence
+            timestamp = entry.timestamp
+            entryData = try JSONEncoder().encode(entry)
+        }
+
+        func entry() throws -> LedgerEntry {
+            try JSONDecoder().decode(LedgerEntry.self, from: entryData)
+        }
+    }
+}
+
+/// Saves and loads run checkpoints and ledger entries in `agent-runs.store` in Application Support.
 @MainActor
 final class AgentRunStore {
     static let shared = AgentRunStore()
@@ -160,19 +185,44 @@ final class AgentRunStore {
     func delete(runID: UUID) throws {
         if let checkpoint = try checkpoint(for: runID) {
             context.delete(checkpoint)
-            try context.save()
         }
+        try context.delete(model: AgentLedgerRecord.self, where: #Predicate { $0.runID == runID })
+        try context.save()
     }
 
     /// Drops runs that ended before `date`. Unfinished runs are kept so they can still resume.
     func deleteEndedRuns(before date: Date) throws {
         let running = AgentRunStatus.running.rawValue
         let paused = AgentRunStatus.paused.rawValue
-        try context.delete(
-            model: AgentRunCheckpoint.self,
-            where: #Predicate { $0.updatedAt < date && $0.statusRaw != running && $0.statusRaw != paused }
-        )
+        let ended = try context.fetch(FetchDescriptor<AgentRunCheckpoint>(
+            predicate: #Predicate { $0.updatedAt < date && $0.statusRaw != running && $0.statusRaw != paused }
+        ))
+
+        for checkpoint in ended {
+            let runID = checkpoint.runID
+            try context.delete(model: AgentLedgerRecord.self, where: #Predicate { $0.runID == runID })
+            context.delete(checkpoint)
+        }
         try context.save()
+    }
+
+    // MARK: Ledger
+
+    func append(_ entry: LedgerEntry) throws {
+        context.insert(try AgentLedgerRecord(entry: entry))
+        try context.save()
+    }
+
+    func ledgerEntries(runID: UUID) throws -> [LedgerEntry] {
+        let descriptor = FetchDescriptor<AgentLedgerRecord>(
+            predicate: #Predicate { $0.runID == runID },
+            sortBy: [SortDescriptor(\.sequence)]
+        )
+        return try context.fetch(descriptor).compactMap { try? $0.entry() }
+    }
+
+    func ledgerEntryCount(runID: UUID) throws -> Int {
+        try context.fetchCount(FetchDescriptor<AgentLedgerRecord>(predicate: #Predicate { $0.runID == runID }))
     }
 
     private func checkpoint(for runID: UUID) throws -> AgentRunCheckpoint? {
