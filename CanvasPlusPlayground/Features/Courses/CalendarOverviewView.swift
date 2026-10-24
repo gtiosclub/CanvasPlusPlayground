@@ -193,6 +193,8 @@ struct CalendarOverviewView: View {
 // MARK: - Day Column
 
 private struct DayColumn: View {
+    @Environment(\.self) private var environment
+
     let date: Date
     let items: [CourseCalendarItem]
     let onTap: (CourseCalendarItem) -> Void
@@ -205,6 +207,12 @@ private struct DayColumn: View {
 
     private var dayNumber: String {
         date.formatted(.dateTime.day())
+    }
+
+    private func readableColor(for item: CourseCalendarItem) -> Color {
+        let chipBackground = Color.courseContentBackground(for: environment.colorScheme)
+            .mix(with: item.accentColor, by: 0.15, in: .device)
+        return item.accentColor.readable(against: chipBackground, in: environment)
     }
 
     var body: some View {
@@ -239,7 +247,7 @@ private struct DayColumn: View {
                             .lineLimit(2)
                             .multilineTextAlignment(.leading)
                     }
-                    .foregroundStyle(item.accentColor)
+                    .foregroundStyle(readableColor(for: item))
                     .padding(.horizontal, 5)
                     .padding(.vertical, 4)
                     .frame(maxWidth: .infinity, alignment: .leading)
