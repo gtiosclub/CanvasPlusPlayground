@@ -35,6 +35,7 @@ struct ReminderButton: View {
                 Image(systemName: reminderEnabled ? "bell.fill" : "bell")
             }
         }
+        .accessibilityLabel(reminderEnabled ? "Remove Reminder" : "Add Reminder")
         .sheet(isPresented: $showDatePicker) {
             ReminderDatePicker(item: item)
         }

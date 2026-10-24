@@ -160,5 +160,8 @@ struct AnnouncementOverviewView: View {
                 .font(.system(size: 13, weight: .semibold))
                 .foregroundStyle(.primary)
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Posted by \(name)")
+        .accessibilityHidden(initial == "?")
     }
 }

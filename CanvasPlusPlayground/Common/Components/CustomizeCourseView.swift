@@ -48,6 +48,7 @@ struct CustomizeCourseView: View {
                     } label: {
                         Image(systemName: "xmark")
                     }
+                    .accessibilityLabel("Cancel")
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button {
@@ -57,6 +58,7 @@ struct CustomizeCourseView: View {
                     } label: {
                         Image(systemName: "checkmark")
                     }
+                    .accessibilityLabel("Save")
                 }
             }
         }

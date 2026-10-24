@@ -89,6 +89,7 @@ private struct CourseIcon: View {
                 .symbolEffect(.breathe, value: symbolToggle)
                 .opacity(0.2)
                 .font(.system(size: 125))
+                .accessibilityHidden(true)
                 .position(
                     x: geo.size.width - xFactor,
                     y: geo.size.height * yFactor

@@ -109,6 +109,7 @@ struct CalendarOverviewView: View {
                         .font(.body.weight(.semibold))
                 }
                 .buttonStyle(.plain)
+                .accessibilityLabel("Previous Week")
 
                 Text(weekTitle)
                     .font(.system(size: 22, weight: .semibold))
@@ -119,6 +120,7 @@ struct CalendarOverviewView: View {
                         .font(.body.weight(.semibold))
                 }
                 .buttonStyle(.plain)
+                .accessibilityLabel("Next Week")
             }
 
             // 7-day grid

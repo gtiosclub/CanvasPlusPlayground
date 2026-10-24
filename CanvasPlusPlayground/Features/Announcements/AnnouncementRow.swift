@@ -75,6 +75,7 @@ struct AnnouncementRow: View {
                 if !(announcement.isRead) {
                     Circle()
                         .fill(.tint)
+                        .accessibilityLabel("Unread")
                 } else {
                     Spacer().frame(width: unreadIndicatorWidth)
                 }

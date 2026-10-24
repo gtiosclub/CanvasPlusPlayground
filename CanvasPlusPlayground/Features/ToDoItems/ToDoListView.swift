@@ -79,6 +79,7 @@ struct ToDoListView: View {
                     } label: {
                         Image(systemName: "line.3.horizontal.decrease.circle")
                             .symbolVariant(filterCourse != nil ? .fill : .none)
+                            .accessibilityLabel("Filter by Course")
                     }
                     #else
                     courseFilterPicker
@@ -101,6 +102,7 @@ struct ToDoListView: View {
         } label: {
             Image(systemName: "line.3.horizontal.decrease.circle")
                 .symbolVariant(filterCourse != nil ? .fill : .none)
+                .accessibilityLabel("Filter by Course")
         }
         .labelStyle(.iconOnly)
     }

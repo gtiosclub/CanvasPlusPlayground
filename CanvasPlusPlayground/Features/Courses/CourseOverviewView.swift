@@ -70,6 +70,7 @@ struct CourseOverviewView: View {
                     .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
             }
             .buttonStyle(.plain)
+            .accessibilityLabel("Add To-Do")
             #if os(macOS)
             // Popover so clicking outside dismisses; macOS sheets are window-modal
             .popover(isPresented: $showTodoCreation) {
@@ -120,11 +121,13 @@ struct CourseOverviewView: View {
                         .font(.body.weight(.medium))
                         .foregroundStyle(.secondary)
                         .rotationEffect(.degrees(isExpanded ? 0 : -90))
+                        .accessibilityHidden(true)
                 }
                 .contentShape(Rectangle())
                 .padding(.vertical, 12)
             }
             .buttonStyle(.plain)
+            .accessibilityValue(isExpanded ? "Expanded" : "Collapsed")
 
             if isExpanded {
                 AssignmentOverviewView(course: course)
@@ -158,11 +161,13 @@ struct CourseOverviewView: View {
                         .font(.body.weight(.medium))
                         .foregroundStyle(.secondary)
                         .rotationEffect(.degrees(isExpanded ? 0 : -90))
+                        .accessibilityHidden(true)
                 }
                 .contentShape(Rectangle())
                 .padding(.vertical, 12)
             }
             .buttonStyle(.plain)
+            .accessibilityValue(isExpanded ? "Expanded" : "Collapsed")
 
             if isExpanded {
                 AnnouncementOverviewView(course: course)
@@ -196,11 +201,13 @@ struct CourseOverviewView: View {
                         .font(.body.weight(.medium))
                         .foregroundStyle(.secondary)
                         .rotationEffect(.degrees(isExpanded ? 0 : -90))
+                        .accessibilityHidden(true)
                 }
                 .contentShape(Rectangle())
                 .padding(.vertical, 12)
             }
             .buttonStyle(.plain)
+            .accessibilityValue(isExpanded ? "Expanded" : "Collapsed")
 
             if isExpanded {
                 CalendarOverviewView(course: course)
@@ -223,6 +230,7 @@ struct CourseOverviewView: View {
                     Spacer()
                     Image(systemName: "chevron.right")
                         .foregroundStyle(.secondary)
+                        .accessibilityHidden(true)
                 }
 
                 gradeRing
@@ -233,6 +241,13 @@ struct CourseOverviewView: View {
             .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
         }
         .buttonStyle(.plain)
+        .accessibilityLabel("Grade")
+        .accessibilityValue(gradeAccessibilityValue)
+    }
+
+    private var gradeAccessibilityValue: String {
+        guard let score = Double(gradesVM.currentScore), score.isFinite else { return "No Grade" }
+        return "\(Int(score)) percent"
     }
 
     private var gradeRing: some View {
@@ -288,6 +303,7 @@ struct CourseOverviewView: View {
                     Spacer()
                     Image(systemName: "chevron.right")
                         .foregroundStyle(.secondary)
+                        .accessibilityHidden(true)
                 }
 
                 if courseToDoItems.isEmpty {
@@ -301,6 +317,7 @@ struct CourseOverviewView: View {
                                 Image(systemName: "circle")
                                     .font(.system(size: 13))
                                     .foregroundStyle(.secondary)
+                                    .accessibilityHidden(true)
                                 Text(item.title)
                                     .font(.system(size: 13))
                                     .lineLimit(1)
@@ -308,6 +325,7 @@ struct CourseOverviewView: View {
                                     Circle()
                                         .fill(.red)
                                         .frame(width: 6, height: 6)
+                                        .accessibilityLabel("Has Due Date")
                                 }
                             }
                         }

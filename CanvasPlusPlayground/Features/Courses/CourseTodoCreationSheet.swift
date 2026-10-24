@@ -166,6 +166,7 @@ struct CourseTodoCreationSheet: View {
                             .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
+                    .accessibilityAddTraits(kind == .event ? .isSelected : [])
 
                     Button {
                         withAnimation(reduceMotion ? nil : .spring(response: 0.35, dampingFraction: 0.65)) {
@@ -179,6 +180,7 @@ struct CourseTodoCreationSheet: View {
                             .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
+                    .accessibilityAddTraits(kind == .task ? .isSelected : [])
                 }
                 .frame(height: 36)
             }
@@ -221,9 +223,10 @@ struct CourseTodoCreationSheet: View {
                             .labelsHidden()
                         Text("Add Time")
                             .foregroundStyle(hasDueDate ? .primary : .secondary)
+                            .accessibilityHidden(true)
                         Spacer()
                         if hasDueDate {
-                            DatePicker("", selection: $dueDate)
+                            DatePicker("Time", selection: $dueDate)
                                 .labelsHidden()
                         }
                     }
@@ -243,7 +246,7 @@ struct CourseTodoCreationSheet: View {
                             Text("Urgency")
                                 .foregroundStyle(.secondary)
                             Spacer()
-                            Picker("", selection: $urgency) {
+                            Picker("Urgency", selection: $urgency) {
                                 ForEach(Urgency.allCases) { u in
                                     Text(u.rawValue).tag(u)
                                 }
