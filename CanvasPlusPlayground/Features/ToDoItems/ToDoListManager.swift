@@ -67,7 +67,8 @@ class ToDoListManager: ListWidgetDataSource, BigNumberWidgetDataSource {
                     })
                 )
 
-            Task { @MainActor in
+            // Applied before returning, so callers that await this see the new items.
+            await MainActor.run {
                 self.addItems(
                     items,
                     courses: courses,
@@ -77,12 +78,12 @@ class ToDoListManager: ListWidgetDataSource, BigNumberWidgetDataSource {
             }
         } catch {
             LoggerService.main.error("Failed to fetch to-do items: \(error)")
-            Task { @MainActor in
+            await MainActor.run {
                 self.errorMessage = "Failed to load to-do items: \(error.localizedDescription)"
             }
         }
 
-        Task { @MainActor in
+        await MainActor.run {
             self.loadUserCreatedItems(courses: courses)
         }
     }
