@@ -265,7 +265,23 @@ enum SandboxData {
                 message: "Make sure you've updated to Xcode 16 before starting Lab 2 next week.",
                 postedDaysAgo: 1, readState: .unread
             ),
+            // Disagrees with the Project Proposal's due date (3 days out) so the briefing has a conflict to show.
+            makeAnnouncement(
+                id: 104, courseID: courseID2, authorName: "Ivan Li", authorId: 1002,
+                title: "Project Proposal Deadline Moved",
+                message: "Heads up: the Project Proposal is now due \(sandboxDay(daysFromNow: 5)) at 11:59 PM. "
+                    + "Lab 1: Hello SwiftUI is still due on \(sandboxDay(daysFromNow: 5)).",
+                postedDaysAgo: 0.2, readState: .unread
+            ),
         ]
+    }
+
+    /// "Thursday, October 29", for announcement text that has to line up with relative due dates.
+    private static func sandboxDay(daysFromNow: Double) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US")
+        formatter.dateFormat = "EEEE, MMMM d"
+        return formatter.string(from: Date.now.addingTimeInterval(86400 * daysFromNow))
     }
 
     static func dummyAnnouncements(forCourseID id: String) -> [DiscussionTopic] {

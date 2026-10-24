@@ -295,6 +295,7 @@
 		B7CC4D712D91C9FB00254F55 /* ToDoListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D702D91C9EE00254F55 /* ToDoListManager.swift */; };
 		B7CC4D732D91D14600254F55 /* ToDoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC4D722D91D14300254F55 /* ToDoListView.swift */; };
 		B7D193B92E7E28EC00FF4C84 /* IGCPlayground.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D193B82E7E28EC00FF4C84 /* IGCPlayground.swift */; };
+		64A46498F5167E7180A80086 /* BriefingConflictsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB30F72B283970B40643177 /* BriefingConflictsView.swift */; };
 		B7D7512B2D3D5D8000F7B8B8 /* AllAnnouncementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D7512A2D3D5D7700F7B8B8 /* AllAnnouncementsView.swift */; };
 		B7D7512D2D3D652300F7B8B8 /* GetAnnouncementsBatchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D7512C2D3D652300F7B8B8 /* GetAnnouncementsBatchRequest.swift */; };
 		B7D7512F2D3D660B00F7B8B8 /* AllAnnouncementsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D7512E2D3D660B00F7B8B8 /* AllAnnouncementsManager.swift */; };
@@ -331,6 +332,10 @@
 		E598A6F843E7FA4D3FB1EA18 /* AgentDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060AF253FE96305A18A3807A /* AgentDataSource.swift */; };
 		9AE9F743BAF4B7432D55F5CE /* AgentModelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97225210A5309861222CA9A0 /* AgentModelProvider.swift */; };
 		0E28ACD31B3DCF68E997D1FD /* NoModelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF2B03787AA8489E25B5B9D0 /* NoModelProvider.swift */; };
+		2851BD6208EF7A0D75895917 /* BriefingDateClaim.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53233ECE5B6D303A2A1E0AD4 /* BriefingDateClaim.swift */; };
+		043C1CA2BA249037DFE01555 /* AnnouncementDateExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB10A9FA29DA9D7EEC3FD0E3 /* AnnouncementDateExtractor.swift */; };
+		D0A112D8F256080E1657403A /* BriefingReconciler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90582F2F32D6E943F9625A2 /* BriefingReconciler.swift */; };
+		AA4FF68D0B21B653C4CCD667 /* BriefingConflictFinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43B71336C9ED2F2D2B08347 /* BriefingConflictFinder.swift */; };
 		7762EAD57519DC6AE765B5E1 /* OnDeviceModelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674238C0C0474630AF71D7CD /* OnDeviceModelProvider.swift */; };
 		3FDBDAD16AD5CEBDA078B0A7 /* ScriptedModelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E203A072FFF514C9048C383B /* ScriptedModelProvider.swift */; };
 		D89F786926BF3A54540F9BE8 /* AgentModelRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F448595F94F993DB005352FB /* AgentModelRouter.swift */; };
@@ -636,6 +641,7 @@
 		B7CC4D702D91C9EE00254F55 /* ToDoListManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoListManager.swift; sourceTree = "<group>"; };
 		B7CC4D722D91D14300254F55 /* ToDoListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoListView.swift; sourceTree = "<group>"; };
 		B7D193B82E7E28EC00FF4C84 /* IGCPlayground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGCPlayground.swift; sourceTree = "<group>"; };
+		BCB30F72B283970B40643177 /* BriefingConflictsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BriefingConflictsView.swift; sourceTree = "<group>"; };
 		B7D7512A2D3D5D7700F7B8B8 /* AllAnnouncementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllAnnouncementsView.swift; sourceTree = "<group>"; };
 		B7D7512C2D3D652300F7B8B8 /* GetAnnouncementsBatchRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAnnouncementsBatchRequest.swift; sourceTree = "<group>"; };
 		B7D7512E2D3D660B00F7B8B8 /* AllAnnouncementsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllAnnouncementsManager.swift; sourceTree = "<group>"; };
@@ -672,6 +678,10 @@
 		060AF253FE96305A18A3807A /* AgentDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentDataSource.swift; sourceTree = "<group>"; };
 		97225210A5309861222CA9A0 /* AgentModelProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentModelProvider.swift; sourceTree = "<group>"; };
 		EF2B03787AA8489E25B5B9D0 /* NoModelProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoModelProvider.swift; sourceTree = "<group>"; };
+		53233ECE5B6D303A2A1E0AD4 /* BriefingDateClaim.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BriefingDateClaim.swift; sourceTree = "<group>"; };
+		BB10A9FA29DA9D7EEC3FD0E3 /* AnnouncementDateExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementDateExtractor.swift; sourceTree = "<group>"; };
+		F90582F2F32D6E943F9625A2 /* BriefingReconciler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BriefingReconciler.swift; sourceTree = "<group>"; };
+		A43B71336C9ED2F2D2B08347 /* BriefingConflictFinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BriefingConflictFinder.swift; sourceTree = "<group>"; };
 		674238C0C0474630AF71D7CD /* OnDeviceModelProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnDeviceModelProvider.swift; sourceTree = "<group>"; };
 		E203A072FFF514C9048C383B /* ScriptedModelProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptedModelProvider.swift; sourceTree = "<group>"; };
 		F448595F94F993DB005352FB /* AgentModelRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentModelRouter.swift; sourceTree = "<group>"; };
@@ -768,6 +778,7 @@
 				9B801DE92E66659D00DF4942 /* NetworkRequestDebugView.swift */,
 				9B801DEA2E66659D00DF4942 /* NetworkRequestRecorder.swift */,
 				B7D193B82E7E28EC00FF4C84 /* IGCPlayground.swift */,
+				BCB30F72B283970B40643177 /* BriefingConflictsView.swift */,
 			);
 			path = Debug;
 			sourceTree = "<group>";
@@ -1601,6 +1612,10 @@
 				060AF253FE96305A18A3807A /* AgentDataSource.swift */,
 				97225210A5309861222CA9A0 /* AgentModelProvider.swift */,
 				EF2B03787AA8489E25B5B9D0 /* NoModelProvider.swift */,
+				53233ECE5B6D303A2A1E0AD4 /* BriefingDateClaim.swift */,
+				BB10A9FA29DA9D7EEC3FD0E3 /* AnnouncementDateExtractor.swift */,
+				F90582F2F32D6E943F9625A2 /* BriefingReconciler.swift */,
+				A43B71336C9ED2F2D2B08347 /* BriefingConflictFinder.swift */,
 				674238C0C0474630AF71D7CD /* OnDeviceModelProvider.swift */,
 				E203A072FFF514C9048C383B /* ScriptedModelProvider.swift */,
 				F448595F94F993DB005352FB /* AgentModelRouter.swift */,
@@ -1705,6 +1720,10 @@
 				E598A6F843E7FA4D3FB1EA18 /* AgentDataSource.swift in Sources */,
 				9AE9F743BAF4B7432D55F5CE /* AgentModelProvider.swift in Sources */,
 				0E28ACD31B3DCF68E997D1FD /* NoModelProvider.swift in Sources */,
+				2851BD6208EF7A0D75895917 /* BriefingDateClaim.swift in Sources */,
+				043C1CA2BA249037DFE01555 /* AnnouncementDateExtractor.swift in Sources */,
+				D0A112D8F256080E1657403A /* BriefingReconciler.swift in Sources */,
+				AA4FF68D0B21B653C4CCD667 /* BriefingConflictFinder.swift in Sources */,
 				7762EAD57519DC6AE765B5E1 /* OnDeviceModelProvider.swift in Sources */,
 				3FDBDAD16AD5CEBDA078B0A7 /* ScriptedModelProvider.swift in Sources */,
 				D89F786926BF3A54540F9BE8 /* AgentModelRouter.swift in Sources */,
@@ -1808,6 +1827,7 @@
 				A372D1142D91D2B9005E94CA /* String+SFSymbols.swift in Sources */,
 				B72D83022E4F853300BA1DAD /* RAGSystem.swift in Sources */,
 				B7D193B92E7E28EC00FF4C84 /* IGCPlayground.swift in Sources */,
+				64A46498F5167E7180A80086 /* BriefingConflictsView.swift in Sources */,
 				B7460A962D6CCD730069CF5B /* GradeCalculatorView.swift in Sources */,
 				A3049B5B2D0E5C18002F3166 /* QuizPermissions.swift in Sources */,
 				B7C0A3C52D2F4C19003E5A36 /* GetAssignmentRequest.swift in Sources */,

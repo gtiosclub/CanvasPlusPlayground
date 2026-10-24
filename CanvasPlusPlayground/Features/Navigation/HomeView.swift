@@ -52,6 +52,7 @@ struct HomeView: View {
                 SandboxDataLoader.persistSandboxData()
                 await SpotlightIndexer.shared.indexAllContent()
                 drainPendingSpotlightDeepLink()
+                await runBriefingIfDue()
             } else if !StorageKeys.hasCompletedOnboarding {
                 navigationModel.showAuthorizationSheet = true
             } else if StorageKeys.needsAuthorization {
@@ -60,6 +61,7 @@ struct HomeView: View {
                 await loadCourses()
                 await SpotlightIndexer.shared.indexAllContent()
                 drainPendingSpotlightDeepLink()
+                await runBriefingIfDue()
             }
         }
         .sheet(isPresented: $navigationModel.showAuthorizationSheet) {
@@ -132,6 +134,14 @@ struct HomeView: View {
         }
 
         isLoadingCourses = false
+    }
+
+    /// Checks recent announcements for dates that disagree with Canvas, at most every few hours.
+    private func runBriefingIfDue() async {
+        guard #available(iOS 26.0, macOS 26.0, *) else { return }
+
+        let dataSource = CanvasCacheAgentDataSource(courseManager: courseManager, toDoListManager: toDoListManager)
+        await BriefingConflictFinder.shared.runIfDue(source: CanvasBriefingSource(dataSource: dataSource))
     }
 }
 
