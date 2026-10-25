@@ -40,6 +40,6 @@ struct CourseDetailView: View {
                 PagesListView(courseId: course.id)
             }
         }
-        .tint(course.rgbColors?.color)
+        .readableCourseTint(course.rgbColors?.color)
     }
 }

@@ -57,6 +57,7 @@ struct GroupRowView: View {
             Image(systemName: .infoCircle)
         }
         .buttonStyle(.plain)
+        .accessibilityLabel("Details for \(group.name)")
 #if os(macOS)
         .foregroundStyle(.secondary)
 #else

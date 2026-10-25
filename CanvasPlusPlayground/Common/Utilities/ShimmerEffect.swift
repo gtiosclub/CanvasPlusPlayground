@@ -8,6 +8,7 @@
 import SwiftUI
 
 private struct ShimmerEffect: ViewModifier {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var phase: CGFloat = 0
 
     var duration: Double = 2.0
@@ -39,6 +40,7 @@ private struct ShimmerEffect: ViewModifier {
                 content
             }
             .onAppear {
+                guard !reduceMotion else { return }
                 withAnimation(
                     .linear(duration: duration)
                     .repeatForever(autoreverses: bounce)

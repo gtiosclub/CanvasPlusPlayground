@@ -8,12 +8,14 @@
 import SwiftUI
 
 struct DashboardMeshGradient: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     let colors: [Color]
 
     @State private var startTime = Date.now
 
     var body: some View {
-        TimelineView(.animation) { timeline in
+        TimelineView(.animation(minimumInterval: nil, paused: reduceMotion)) { timeline in
             let time = timeline.date.timeIntervalSince(startTime)
 
             MeshGradient(

@@ -62,6 +62,8 @@ struct CourseAnnouncementDetailView: View {
                 courseID: announcement.courseId,
                 type: .announcement
             )
+
+            ReadAloudButton(html: announcement.message ?? "")
         }
         .openInCanvasToolbarButton(.announcement(announcement.courseId ?? "", announcement.id))
         .id(announcement.id)

@@ -11,6 +11,8 @@ struct CourseOverviewView: View {
     @Environment(ProfileManager.self) private var profileManager
     @Environment(ToDoListManager.self) private var toDoListManager
     @Environment(NavigationModel.self) private var navigationModel
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     let course: Course
 
@@ -18,6 +20,9 @@ struct CourseOverviewView: View {
     @State private var expandedSections: Set<String> = []
     @State private var ringProgress: Double = 0
     @State private var showTodoCreation = false
+
+    @ScaledMetric(relativeTo: .title3) private var addButtonSize: CGFloat = 52
+    @ScaledMetric(relativeTo: .title) private var gradeRingSize: CGFloat = 120
 
     init(course: Course) {
         self.course = course
@@ -36,10 +41,11 @@ struct CourseOverviewView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
                 Text(course.displayName)
-                    .font(.system(size: 56, weight: .heavy))
+                    .scaledFont(size: 56, relativeTo: .largeTitle, weight: .heavy)
+                    .dynamicTypeSize(...DynamicTypeSize.accessibility1)
                     .padding(.bottom, 4)
 
-                HStack(alignment: .top, spacing: 20) {
+                columnLayout {
                     // Left column: expandable page rows
                     VStack(alignment: .leading, spacing: 0) {
                         assignmentsExpandableRow
@@ -53,7 +59,7 @@ struct CourseOverviewView: View {
                         gradeCard
                         toDoCard
                     }
-                    .frame(width: 220)
+                    .frame(width: dynamicTypeSize.isAccessibilitySize ? nil : 220)
                 }
             }
             .padding(24)
@@ -63,12 +69,13 @@ struct CourseOverviewView: View {
                 showTodoCreation = true
             } label: {
                 Image(systemName: "plus")
-                    .font(.system(size: 20, weight: .semibold))
+                    .scaledFont(size: 20, relativeTo: .title3, weight: .semibold)
                     .foregroundStyle(.primary)
-                    .frame(width: 52, height: 52)
+                    .frame(width: addButtonSize, height: addButtonSize)
                     .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
             }
             .buttonStyle(.plain)
+            .accessibilityLabel("Add To-Do")
             #if os(macOS)
             // Popover so clicking outside dismisses; macOS sheets are window-modal
             .popover(isPresented: $showTodoCreation) {
@@ -88,11 +95,19 @@ struct CourseOverviewView: View {
             backgroundStyle: .grouped,
             showIcon: true
         )
-        .tint(course.rgbColors?.color)
+        .readableCourseTint(course.rgbColors?.color)
         .navigationTitle(course.displayName)
         .task {
             await gradesVM.getEnrollments(currentUserID: profileManager.currentUser?.id)
         }
+    }
+
+    // MARK: - Layout
+
+    private var columnLayout: AnyLayout {
+        dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: 20))
+            : AnyLayout(HStackLayout(alignment: .top, spacing: 20))
     }
 
     // MARK: - Assignments Expandable Row
@@ -112,18 +127,20 @@ struct CourseOverviewView: View {
             } label: {
                 HStack {
                     Text("Assignments")
-                        .font(.system(size: 30, weight: .semibold))
+                        .scaledFont(size: 30, relativeTo: .title, weight: .semibold)
                         .foregroundStyle(.primary)
                     Spacer()
                     Image(systemName: "chevron.down")
                         .font(.body.weight(.medium))
                         .foregroundStyle(.secondary)
                         .rotationEffect(.degrees(isExpanded ? 0 : -90))
+                        .accessibilityHidden(true)
                 }
                 .contentShape(Rectangle())
                 .padding(.vertical, 12)
             }
             .buttonStyle(.plain)
+            .accessibilityValue(isExpanded ? "Expanded" : "Collapsed")
 
             if isExpanded {
                 AssignmentOverviewView(course: course)
@@ -150,18 +167,20 @@ struct CourseOverviewView: View {
             } label: {
                 HStack {
                     Text("Announcements")
-                        .font(.system(size: 30, weight: .semibold))
+                        .scaledFont(size: 30, relativeTo: .title, weight: .semibold)
                         .foregroundStyle(.primary)
                     Spacer()
                     Image(systemName: "chevron.down")
                         .font(.body.weight(.medium))
                         .foregroundStyle(.secondary)
                         .rotationEffect(.degrees(isExpanded ? 0 : -90))
+                        .accessibilityHidden(true)
                 }
                 .contentShape(Rectangle())
                 .padding(.vertical, 12)
             }
             .buttonStyle(.plain)
+            .accessibilityValue(isExpanded ? "Expanded" : "Collapsed")
 
             if isExpanded {
                 AnnouncementOverviewView(course: course)
@@ -188,18 +207,20 @@ struct CourseOverviewView: View {
             } label: {
                 HStack {
                     Text("Calendar")
-                        .font(.system(size: 30, weight: .semibold))
+                        .scaledFont(size: 30, relativeTo: .title, weight: .semibold)
                         .foregroundStyle(.primary)
                     Spacer()
                     Image(systemName: "chevron.down")
                         .font(.body.weight(.medium))
                         .foregroundStyle(.secondary)
                         .rotationEffect(.degrees(isExpanded ? 0 : -90))
+                        .accessibilityHidden(true)
                 }
                 .contentShape(Rectangle())
                 .padding(.vertical, 12)
             }
             .buttonStyle(.plain)
+            .accessibilityValue(isExpanded ? "Expanded" : "Collapsed")
 
             if isExpanded {
                 CalendarOverviewView(course: course)
@@ -218,10 +239,11 @@ struct CourseOverviewView: View {
             VStack(alignment: .leading, spacing: 12) {
                 HStack {
                     Text("Grade")
-                        .font(.system(size: 30, weight: .semibold))
+                        .scaledFont(size: 30, relativeTo: .title, weight: .semibold)
                     Spacer()
                     Image(systemName: "chevron.right")
                         .foregroundStyle(.secondary)
+                        .accessibilityHidden(true)
                 }
 
                 gradeRing
@@ -232,6 +254,13 @@ struct CourseOverviewView: View {
             .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
         }
         .buttonStyle(.plain)
+        .accessibilityLabel("Grade")
+        .accessibilityValue(gradeAccessibilityValue)
+    }
+
+    private var gradeAccessibilityValue: String {
+        guard let score = Double(gradesVM.currentScore), score.isFinite else { return "No Grade" }
+        return "\(Int(score)) percent"
     }
 
     private var gradeRing: some View {
@@ -245,12 +274,12 @@ struct CourseOverviewView: View {
                 .trim(from: 0, to: ringProgress)
                 .stroke(Color.accentColor, style: StrokeStyle(lineWidth: 12, lineCap: .round))
                 .rotationEffect(.degrees(-90))
-                .animation(.easeOut(duration: 0.8), value: ringProgress)
+                .animation(reduceMotion ? nil : .easeOut(duration: 0.8), value: ringProgress)
 
             Text("\(Int(scoreValue))%")
-                .font(.system(size: 30, weight: .semibold))
+                .scaledFont(size: 30, relativeTo: .title, weight: .semibold)
         }
-        .frame(width: 120, height: 120)
+        .frame(width: gradeRingSize, height: gradeRingSize)
         .onAppear {
             animateRingToCurrentScore()
         }
@@ -269,7 +298,7 @@ struct CourseOverviewView: View {
 
     private func animateRingToCurrentScore() {
         let target = (Double(gradesVM.currentScore) ?? 0) / 100.0
-        withAnimation(.easeOut(duration: 0.8).delay(0.2)) {
+        withAnimation(reduceMotion ? nil : .easeOut(duration: 0.8).delay(0.2)) {
             ringProgress = target
         }
     }
@@ -283,30 +312,33 @@ struct CourseOverviewView: View {
             VStack(alignment: .leading, spacing: 12) {
                 HStack {
                     Text("To-Do List")
-                        .font(.system(size: 30, weight: .semibold))
+                        .scaledFont(size: 30, relativeTo: .title, weight: .semibold)
                     Spacer()
                     Image(systemName: "chevron.right")
                         .foregroundStyle(.secondary)
+                        .accessibilityHidden(true)
                 }
 
                 if courseToDoItems.isEmpty {
                     Text("No items")
-                        .font(.system(size: 13))
+                        .scaledFont(size: 13, relativeTo: .footnote)
                         .foregroundStyle(.secondary)
                 } else {
                     VStack(alignment: .leading, spacing: 8) {
                         ForEach(courseToDoItems.prefix(3)) { item in
                             HStack(spacing: 8) {
                                 Image(systemName: "circle")
-                                    .font(.system(size: 13))
+                                    .scaledFont(size: 13, relativeTo: .footnote)
                                     .foregroundStyle(.secondary)
+                                    .accessibilityHidden(true)
                                 Text(item.title)
-                                    .font(.system(size: 13))
+                                    .scaledFont(size: 13, relativeTo: .footnote)
                                     .lineLimit(1)
                                 if item.dueDate != nil {
                                     Circle()
                                         .fill(.red)
                                         .frame(width: 6, height: 6)
+                                        .accessibilityLabel("Has Due Date")
                                 }
                             }
                         }

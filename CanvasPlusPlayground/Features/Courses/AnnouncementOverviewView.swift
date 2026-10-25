@@ -15,6 +15,8 @@ struct AnnouncementOverviewView: View {
 
     @State private var announcementManager: CourseAnnouncementManager
 
+    @ScaledMetric(relativeTo: .footnote) private var authorCircleSize: CGFloat = 32
+
     init(course: Course) {
         self.course = course
         self._announcementManager = State(initialValue: CourseAnnouncementManager(course: course))
@@ -57,7 +59,7 @@ struct AnnouncementOverviewView: View {
         Group {
             if recentAnnouncements.isEmpty {
                 Text("No announcements")
-                    .font(.system(size: 13))
+                    .scaledFont(size: 13, relativeTo: .footnote)
                     .foregroundStyle(.secondary)
                     .padding(.bottom, 12)
                     .padding(.leading, 4)
@@ -85,7 +87,7 @@ struct AnnouncementOverviewView: View {
     private func announcementSection(label: String, announcements: [DiscussionTopic]) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             Text(label)
-                .font(.system(size: 22, weight: .semibold))
+                .scaledFont(size: 22, relativeTo: .title2, weight: .semibold)
 
             VStack(spacing: 8) {
                 ForEach(announcements) { announcement in
@@ -106,7 +108,7 @@ struct AnnouncementOverviewView: View {
                 // Left: title + body preview
                 VStack(alignment: .leading, spacing: 4) {
                     Text(announcement.title ?? "")
-                        .font(.system(size: 15, weight: .semibold))
+                        .scaledFont(size: 15, relativeTo: .callout, weight: .semibold)
                         .foregroundStyle(.primary)
                         .lineLimit(1)
 
@@ -116,7 +118,7 @@ struct AnnouncementOverviewView: View {
                             .trimmingCharacters(in: .whitespacesAndNewlines)
                         ?? ""
                     )
-                    .font(.system(size: 13))
+                    .scaledFont(size: 13, relativeTo: .footnote)
                     .foregroundStyle(.secondary)
                     .lineLimit(2)
                     .multilineTextAlignment(.leading)
@@ -127,17 +129,17 @@ struct AnnouncementOverviewView: View {
                 VStack(alignment: .trailing, spacing: 8) {
                     if let date = announcement.date {
                         Text(date, format: .dateTime.month(.abbreviated).day())
-                            .font(.system(size: 11))
+                            .scaledFont(size: 11, relativeTo: .caption2)
                             .foregroundStyle(.secondary)
                     }
 
                     authorCircle(for: announcement)
                 }
-                .frame(width: 44)
+                .frame(minWidth: 44)
             }
             .padding(.horizontal, 14)
             .padding(.vertical, 12)
-            .frame(height: 88)
+            .frame(minHeight: 88)
             .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
             .clipped()
         }
@@ -154,11 +156,14 @@ struct AnnouncementOverviewView: View {
         ZStack {
             Circle()
                 .fill(.ultraThinMaterial)
-                .frame(width: 32, height: 32)
+                .frame(width: authorCircleSize, height: authorCircleSize)
 
             Text(initial)
-                .font(.system(size: 13, weight: .semibold))
+                .scaledFont(size: 13, relativeTo: .footnote, weight: .semibold)
                 .foregroundStyle(.primary)
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Posted by \(name)")
+        .accessibilityHidden(initial == "?")
     }
 }
