@@ -12,6 +12,8 @@ struct CourseTodoCreationSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
+    @ScaledMetric(relativeTo: .callout) private var kindPickerHeight: CGFloat = 36
+
     let course: Course
 
     // MARK: - State
@@ -141,12 +143,12 @@ struct CourseTodoCreationSheet: View {
                 // Track
                 Capsule()
                     .fill(.quaternary)
-                    .frame(height: 36)
+                    .frame(height: kindPickerHeight)
 
                 // Sliding indicator
                 Capsule()
                     .fill(.background)
-                    .frame(width: geo.size.width / 2, height: 32)
+                    .frame(width: geo.size.width / 2, height: kindPickerHeight - 4)
                     .padding(.horizontal, 2)
                     .offset(x: kind == .event ? 0 : geo.size.width / 2)
                     .animation(reduceMotion ? nil : .spring(response: 0.35, dampingFraction: 0.65), value: kind)
@@ -160,7 +162,7 @@ struct CourseTodoCreationSheet: View {
                         }
                     } label: {
                         Text("Event")
-                            .font(.system(size: 15, weight: kind == .event ? .semibold : .regular))
+                            .scaledFont(size: 15, relativeTo: .callout, weight: kind == .event ? .semibold : .regular)
                             .foregroundStyle(kind == .event ? .primary : .secondary)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                             .contentShape(Rectangle())
@@ -174,7 +176,7 @@ struct CourseTodoCreationSheet: View {
                         }
                     } label: {
                         Text("Task")
-                            .font(.system(size: 15, weight: kind == .task ? .semibold : .regular))
+                            .scaledFont(size: 15, relativeTo: .callout, weight: kind == .task ? .semibold : .regular)
                             .foregroundStyle(kind == .task ? .primary : .secondary)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                             .contentShape(Rectangle())
@@ -182,10 +184,10 @@ struct CourseTodoCreationSheet: View {
                     .buttonStyle(.plain)
                     .accessibilityAddTraits(kind == .task ? .isSelected : [])
                 }
-                .frame(height: 36)
+                .frame(height: kindPickerHeight)
             }
         }
-        .frame(height: 36)
+        .frame(height: kindPickerHeight)
     }
 
     // MARK: - Fields Card
@@ -197,13 +199,13 @@ struct CourseTodoCreationSheet: View {
             card {
                 fieldRow {
                     TextField(kind == .event ? "New Event" : "New Task", text: $title)
-                        .font(.system(size: 16))
+                        .scaledFont(size: 16, relativeTo: .body)
                 }
             }
 
             // Course pill — standalone capsule, no wrapper needed
             Text(course.displayName)
-                .font(.system(size: 15, weight: .semibold))
+                .scaledFont(size: 15, relativeTo: .callout, weight: .semibold)
                 .readableForeground(course.rgbColors?.color ?? .accentColor)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 10)
@@ -295,7 +297,7 @@ struct CourseTodoCreationSheet: View {
                 HStack {
                     if relatedEntity != .none {
                         Image(systemName: relatedEntity == .none ? "" : "link")
-                            .font(.system(size: 13))
+                            .scaledFont(size: 13, relativeTo: .footnote)
                             .foregroundStyle(.secondary)
                     }
                     Text(relatedEntity.displayName)
@@ -317,7 +319,7 @@ struct CourseTodoCreationSheet: View {
         let empty = title.trimmingCharacters(in: .whitespaces).isEmpty
         return Button { save() } label: {
             Text("Add \(kind == .event ? "Event" : "Task")")
-                .font(.system(size: 16, weight: .semibold))
+                .scaledFont(size: 16, relativeTo: .body, weight: .semibold)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 14)
                 .background(

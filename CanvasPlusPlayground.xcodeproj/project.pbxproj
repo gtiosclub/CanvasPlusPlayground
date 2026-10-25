@@ -262,6 +262,7 @@
 		B7AF51642E9B30E100457E8A /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AF51602E9B30E100457E8A /* WelcomeView.swift */; };
 		B7AF51652E9B30E100457E8A /* OnboardingFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AF515E2E9B30E100457E8A /* OnboardingFlowView.swift */; };
 		B7AF51682E9B33EA00457E8A /* ShimmerEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AF51672E9B33EA00457E8A /* ShimmerEffect.swift */; };
+		C42D01454766D41C4D7E364E /* ScaledFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE8FD952C262258790C7D29 /* ScaledFont.swift */; };
 		B7AF516C2E9B343800457E8A /* SetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AF516B2E9B343800457E8A /* SetupView.swift */; };
 		B7AF516E2E9B584A00457E8A /* CompatibleGlassEffectViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AF516D2E9B584100457E8A /* CompatibleGlassEffectViewModifier.swift */; };
 		B7AF52D02EA0085E00457E8A /* CourseListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AF52CF2EA0085C00457E8A /* CourseListView.swift */; };
@@ -586,6 +587,7 @@
 		B7AF515E2E9B30E100457E8A /* OnboardingFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFlowView.swift; sourceTree = "<group>"; };
 		B7AF51602E9B30E100457E8A /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		B7AF51672E9B33EA00457E8A /* ShimmerEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerEffect.swift; sourceTree = "<group>"; };
+		5DE8FD952C262258790C7D29 /* ScaledFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaledFont.swift; sourceTree = "<group>"; };
 		B7AF516B2E9B343800457E8A /* SetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupView.swift; sourceTree = "<group>"; };
 		B7AF516D2E9B584100457E8A /* CompatibleGlassEffectViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompatibleGlassEffectViewModifier.swift; sourceTree = "<group>"; };
 		B7AF52CF2EA0085C00457E8A /* CourseListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseListView.swift; sourceTree = "<group>"; };
@@ -939,6 +941,7 @@
 				A372D0FA2D90A709005E94CA /* HTTPURLResponse+Codes.swift */,
 				A372D1132D91D2B9005E94CA /* String+SFSymbols.swift */,
 				B7AF51672E9B33EA00457E8A /* ShimmerEffect.swift */,
+				5DE8FD952C262258790C7D29 /* ScaledFont.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -1941,6 +1944,7 @@
 				A3049B792D15E162002F3166 /* GetCourseRootFolderRequest.swift in Sources */,
 				9BD75D6E2E763A10008BF846 /* URL+SafeCopyOut.swift in Sources */,
 				B7AF51682E9B33EA00457E8A /* ShimmerEffect.swift in Sources */,
+				C42D01454766D41C4D7E364E /* ScaledFont.swift in Sources */,
 				9BF8E43F2D90DE4F00B5A50D /* UploadAssignmentFileTransmissionRequest.swift in Sources */,
 				7F8535742C98DE3C0023E384 /* CourseGradeView.swift in Sources */,
 				A3049B7F2D160C03002F3166 /* GetTabsRequest.swift in Sources */,
