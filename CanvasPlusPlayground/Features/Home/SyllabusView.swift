@@ -15,6 +15,9 @@ struct SyllabusView: View {
             if let syllabusBody = course.syllabusBody {
                 HTMLView(html: syllabusBody, courseID: course.id)
                     .pickedItem(AnyPickableItem(name: "Syllabus", contents: syllabusBody))
+                    .toolbar {
+                        ReadAloudButton(html: syllabusBody)
+                    }
             } else {
                 ContentUnavailableView(
                     "Could not load syllabus",

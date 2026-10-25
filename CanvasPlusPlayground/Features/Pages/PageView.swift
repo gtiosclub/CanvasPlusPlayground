@@ -15,6 +15,9 @@ struct PageView: View {
             if let htmlContent = page.body, !htmlContent.isEmpty {
                 HTMLView(html: htmlContent, courseID: page.courseID)
                     .pickedItem(page)
+                    .toolbar {
+                        ReadAloudButton(html: htmlContent)
+                    }
             } else {
                 ContentUnavailableView("No pages available", systemImage: "exclamationmark.bubble.fill")
             }
