@@ -39,6 +39,7 @@
 		8CAC2F2A2F7A36A400EC5FA4 /* NotificationExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAC2F292F7A369B00EC5FA4 /* NotificationExtensions.swift */; };
 		8CAC2F2D2F7B296B00EC5FA4 /* BreadcrumbView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAC2F2C2F7B296B00EC5FA4 /* BreadcrumbView.swift */; };
 		8CC6226E2EA4D44C00A12B5D /* TodayDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC6226A2EA4D44C00A12B5D /* TodayDataSource.swift */; };
+		F8B5F08153935ED9F49FCAC0 /* TodaySchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F37129EDAC05C02A6343029 /* TodaySchedule.swift */; };
 		8CC6226F2EA4D44C00A12B5D /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC6226B2EA4D44C00A12B5D /* TodayView.swift */; };
 		8CC622702EA4D44C00A12B5D /* TodayWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC6226C2EA4D44C00A12B5D /* TodayWidget.swift */; };
 		8CD6A4E72F95E37000BD3903 /* AssignmentOverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD6A4E62F95E36700BD3903 /* AssignmentOverviewView.swift */; };
@@ -382,6 +383,7 @@
 		8CAC2F292F7A369B00EC5FA4 /* NotificationExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationExtensions.swift; sourceTree = "<group>"; };
 		8CAC2F2C2F7B296B00EC5FA4 /* BreadcrumbView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadcrumbView.swift; sourceTree = "<group>"; };
 		8CC6226A2EA4D44C00A12B5D /* TodayDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayDataSource.swift; sourceTree = "<group>"; };
+		9F37129EDAC05C02A6343029 /* TodaySchedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaySchedule.swift; sourceTree = "<group>"; };
 		8CC6226B2EA4D44C00A12B5D /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
 		8CC6226C2EA4D44C00A12B5D /* TodayWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayWidget.swift; sourceTree = "<group>"; };
 		8CD6A4E62F95E36700BD3903 /* AssignmentOverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentOverviewView.swift; sourceTree = "<group>"; };
@@ -762,6 +764,7 @@
 				8CC6226A2EA4D44C00A12B5D /* TodayDataSource.swift */,
 				8CC6226B2EA4D44C00A12B5D /* TodayView.swift */,
 				8CC6226C2EA4D44C00A12B5D /* TodayWidget.swift */,
+				9F37129EDAC05C02A6343029 /* TodaySchedule.swift */,
 			);
 			path = Today;
 			sourceTree = "<group>";
@@ -2033,6 +2036,7 @@
 				7F8535742C98DE3C0023E384 /* CourseGradeView.swift in Sources */,
 				A3049B7F2D160C03002F3166 /* GetTabsRequest.swift in Sources */,
 				8CC6226E2EA4D44C00A12B5D /* TodayDataSource.swift in Sources */,
+				F8B5F08153935ED9F49FCAC0 /* TodaySchedule.swift in Sources */,
 				8CC6226F2EA4D44C00A12B5D /* TodayView.swift in Sources */,
 				8CC622702EA4D44C00A12B5D /* TodayWidget.swift in Sources */,
 				A373DC372D28285300215019 /* ModuleItem.swift in Sources */,
