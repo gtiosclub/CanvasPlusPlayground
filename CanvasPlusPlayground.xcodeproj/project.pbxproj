@@ -60,6 +60,7 @@
 		9B7B3E342E7BA59F004D5FDD /* CustomizeCourseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B7B3E332E7BA59F004D5FDD /* CustomizeCourseView.swift */; };
 		9B801DEB2E66659D00DF4942 /* NetworkRequestRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B801DEA2E66659D00DF4942 /* NetworkRequestRecorder.swift */; };
 		9B801DEC2E66659D00DF4942 /* NetworkRequestDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B801DE92E66659D00DF4942 /* NetworkRequestDebugView.swift */; };
+		AA0000000000000000000001 /* AgentProviderProbeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000002 /* AgentProviderProbeView.swift */; };
 		9B81E2832E8F84BD00675B90 /* CustomizeCourseMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B81E2822E8F84BD00675B90 /* CustomizeCourseMenu.swift */; };
 		9B92A4232C93853C00C21CFC /* Announcement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B92A4222C93853C00C21CFC /* Announcement.swift */; };
 		9B92A4252C93856100C21CFC /* CourseAnnouncementManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B92A4242C93856100C21CFC /* CourseAnnouncementManager.swift */; };
@@ -329,6 +330,12 @@
 		3075780020470B1A8E3839B0 /* AgentTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89364269EB40CC7B93A9F874 /* AgentTool.swift */; };
 		E8FA64FAF1448B4C492E6AE5 /* CanvasCacheAgentDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4574EB753A61E5DD15D902 /* CanvasCacheAgentDataSource.swift */; };
 		E598A6F843E7FA4D3FB1EA18 /* AgentDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060AF253FE96305A18A3807A /* AgentDataSource.swift */; };
+		9AE9F743BAF4B7432D55F5CE /* AgentModelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97225210A5309861222CA9A0 /* AgentModelProvider.swift */; };
+		0E28ACD31B3DCF68E997D1FD /* NoModelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF2B03787AA8489E25B5B9D0 /* NoModelProvider.swift */; };
+		7762EAD57519DC6AE765B5E1 /* OnDeviceModelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674238C0C0474630AF71D7CD /* OnDeviceModelProvider.swift */; };
+		3FDBDAD16AD5CEBDA078B0A7 /* ScriptedModelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E203A072FFF514C9048C383B /* ScriptedModelProvider.swift */; };
+		D89F786926BF3A54540F9BE8 /* AgentModelRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F448595F94F993DB005352FB /* AgentModelRouter.swift */; };
+		22FD623E03B7C611F2255F76 /* AgentOutputSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C99FC228A4AACC8EBE3CBB /* AgentOutputSchema.swift */; };
 		1CB18305374B374BB379C2B3 /* AgentReadTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07318AEE6950C94F2BB06D89 /* AgentReadTools.swift */; };
 		780A657AD70E0AECF302E7AA /* ListCoursesTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B120D4ED02369F462D3A94 /* ListCoursesTool.swift */; };
 		50886A500F45E8553BC769AB /* ListAssignmentsTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A75177AC5E17B42CD7EDEB /* ListAssignmentsTool.swift */; };
@@ -391,6 +398,7 @@
 		9B762BC82D7BF8E70051F1F6 /* SubmitAssignmentRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitAssignmentRequest.swift; sourceTree = "<group>"; };
 		9B7B3E332E7BA59F004D5FDD /* CustomizeCourseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizeCourseView.swift; sourceTree = "<group>"; };
 		9B801DE92E66659D00DF4942 /* NetworkRequestDebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRequestDebugView.swift; sourceTree = "<group>"; };
+		AA0000000000000000000002 /* AgentProviderProbeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentProviderProbeView.swift; sourceTree = "<group>"; };
 		9B801DEA2E66659D00DF4942 /* NetworkRequestRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRequestRecorder.swift; sourceTree = "<group>"; };
 		9B81E2822E8F84BD00675B90 /* CustomizeCourseMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizeCourseMenu.swift; sourceTree = "<group>"; };
 		9B92A4222C93853C00C21CFC /* Announcement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Announcement.swift; sourceTree = "<group>"; };
@@ -664,6 +672,12 @@
 		89364269EB40CC7B93A9F874 /* AgentTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentTool.swift; sourceTree = "<group>"; };
 		FA4574EB753A61E5DD15D902 /* CanvasCacheAgentDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasCacheAgentDataSource.swift; sourceTree = "<group>"; };
 		060AF253FE96305A18A3807A /* AgentDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentDataSource.swift; sourceTree = "<group>"; };
+		97225210A5309861222CA9A0 /* AgentModelProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentModelProvider.swift; sourceTree = "<group>"; };
+		EF2B03787AA8489E25B5B9D0 /* NoModelProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoModelProvider.swift; sourceTree = "<group>"; };
+		674238C0C0474630AF71D7CD /* OnDeviceModelProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnDeviceModelProvider.swift; sourceTree = "<group>"; };
+		E203A072FFF514C9048C383B /* ScriptedModelProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptedModelProvider.swift; sourceTree = "<group>"; };
+		F448595F94F993DB005352FB /* AgentModelRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentModelRouter.swift; sourceTree = "<group>"; };
+		74C99FC228A4AACC8EBE3CBB /* AgentOutputSchema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentOutputSchema.swift; sourceTree = "<group>"; };
 		07318AEE6950C94F2BB06D89 /* AgentReadTools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentReadTools.swift; sourceTree = "<group>"; };
 		F5B120D4ED02369F462D3A94 /* ListCoursesTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCoursesTool.swift; sourceTree = "<group>"; };
 		A3A75177AC5E17B42CD7EDEB /* ListAssignmentsTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListAssignmentsTool.swift; sourceTree = "<group>"; };
@@ -754,6 +768,7 @@
 			isa = PBXGroup;
 			children = (
 				9B801DE92E66659D00DF4942 /* NetworkRequestDebugView.swift */,
+				AA0000000000000000000002 /* AgentProviderProbeView.swift */,
 				9B801DEA2E66659D00DF4942 /* NetworkRequestRecorder.swift */,
 				B7D193B82E7E28EC00FF4C84 /* IGCPlayground.swift */,
 			);
@@ -1587,6 +1602,12 @@
 				89364269EB40CC7B93A9F874 /* AgentTool.swift */,
 				FA4574EB753A61E5DD15D902 /* CanvasCacheAgentDataSource.swift */,
 				060AF253FE96305A18A3807A /* AgentDataSource.swift */,
+				97225210A5309861222CA9A0 /* AgentModelProvider.swift */,
+				EF2B03787AA8489E25B5B9D0 /* NoModelProvider.swift */,
+				674238C0C0474630AF71D7CD /* OnDeviceModelProvider.swift */,
+				E203A072FFF514C9048C383B /* ScriptedModelProvider.swift */,
+				F448595F94F993DB005352FB /* AgentModelRouter.swift */,
+				74C99FC228A4AACC8EBE3CBB /* AgentOutputSchema.swift */,
 				07318AEE6950C94F2BB06D89 /* AgentReadTools.swift */,
 				F5B120D4ED02369F462D3A94 /* ListCoursesTool.swift */,
 				A3A75177AC5E17B42CD7EDEB /* ListAssignmentsTool.swift */,
@@ -1685,6 +1706,12 @@
 				780A657AD70E0AECF302E7AA /* ListCoursesTool.swift in Sources */,
 				1CB18305374B374BB379C2B3 /* AgentReadTools.swift in Sources */,
 				E598A6F843E7FA4D3FB1EA18 /* AgentDataSource.swift in Sources */,
+				9AE9F743BAF4B7432D55F5CE /* AgentModelProvider.swift in Sources */,
+				0E28ACD31B3DCF68E997D1FD /* NoModelProvider.swift in Sources */,
+				7762EAD57519DC6AE765B5E1 /* OnDeviceModelProvider.swift in Sources */,
+				3FDBDAD16AD5CEBDA078B0A7 /* ScriptedModelProvider.swift in Sources */,
+				D89F786926BF3A54540F9BE8 /* AgentModelRouter.swift in Sources */,
+				22FD623E03B7C611F2255F76 /* AgentOutputSchema.swift in Sources */,
 				E8FA64FAF1448B4C492E6AE5 /* CanvasCacheAgentDataSource.swift in Sources */,
 				3075780020470B1A8E3839B0 /* AgentTool.swift in Sources */,
 				6204C4A47E026593D316F6DD /* Evidence.swift in Sources */,
@@ -1984,6 +2011,7 @@
 				9B801DEB2E66659D00DF4942 /* NetworkRequestRecorder.swift in Sources */,
 				8CD6A4F22F971C9B00BD3903 /* Color+HexString.swift in Sources */,
 				9B801DEC2E66659D00DF4942 /* NetworkRequestDebugView.swift in Sources */,
+				AA0000000000000000000001 /* AgentProviderProbeView.swift in Sources */,
 				A339D3FD2DB1B65000952536 /* MigrationPlan.swift in Sources */,
 				A372D1102D91D1A1005E94CA /* GroupDetailView.swift in Sources */,
 				A3049B792D15E162002F3166 /* GetCourseRootFolderRequest.swift in Sources */,
