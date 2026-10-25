@@ -70,7 +70,7 @@ struct SearchResultsListView<Content: View, DataSource: SearchResultListDataSour
             Image(systemName: "wifi.slash")
             Text("Offline Results")
                 .foregroundStyle(.gray)
-                .font(.system(size: 16))
+                .scaledFont(size: 16, relativeTo: .body)
         }
     }
 }
