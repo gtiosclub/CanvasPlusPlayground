@@ -22,6 +22,10 @@ struct GetUserRequest: CacheableAPIRequest {
 
     var path: String { "users/\(userId)" }
 
+    var cachePolicy: URLRequest.CachePolicy {
+        userId == "self" ? .reloadIgnoringLocalCacheData : .useProtocolCachePolicy
+    }
+
     var requestId: String { userId }
     var requestIdKey: ParentKeyPath<User, String> { .createWritable(\.tag) }
     var idPredicate: Predicate<User> {

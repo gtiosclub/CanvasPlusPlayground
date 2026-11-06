@@ -65,6 +65,11 @@ struct AccountKey: Codable, Hashable, Sendable {
     }
 }
 
+struct TrackingIdentity: Hashable, Sendable {
+    let account: AccountKey
+    let credentialGeneration: UUID
+}
+
 enum ChangeItemType: String, Codable, Sendable {
     case assignment
     case announcement
