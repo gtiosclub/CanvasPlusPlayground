@@ -35,6 +35,7 @@ enum ChangeStoreLoadResult: Equatable, Sendable {
 
 enum ChangeStoreError: Error, Equatable, Sendable {
     case unsupportedFormat(Int)
+    case revisionExhausted
 }
 
 actor JSONChangeEventStore: ChangeEventStore {
@@ -86,6 +87,10 @@ actor JSONChangeEventStore: ChangeEventStore {
     func save(_ envelope: ChangeStoreEnvelope) async throws {
         guard envelope.formatVersion == ChangeStoreEnvelope.currentFormatVersion else {
             throw ChangeStoreError.unsupportedFormat(envelope.formatVersion)
+        }
+
+        guard envelope.commitRevision < UInt64.max else {
+            throw ChangeStoreError.revisionExhausted
         }
 
         let encoder = JSONEncoder()

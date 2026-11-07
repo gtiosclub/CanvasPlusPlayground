@@ -87,9 +87,10 @@ actor InMemoryChangeEventStore: ChangeEventStore {
     private var shouldFailLoad = false
     private var shouldFailQuarantine = false
     private var shouldFailSave = false
-    private var shouldSuspendSave = false
-    private var suspendedSave: CheckedContinuation<Void, Never>?
-    private var suspensionWaiters: [CheckedContinuation<Void, Never>] = []
+    private var armedSave: SaveGate?
+    private var suspendedSave: (gate: SaveGate, continuation: CheckedContinuation<Void, Error>)?
+    private var suspensionWaiters: [SaveGate: [CheckedContinuation<Void, Error>]] = [:]
+    private var completedGates: Set<SaveGate> = []
 
     private(set) var loadCount = 0
     private(set) var saveCount = 0
@@ -131,12 +132,15 @@ actor InMemoryChangeEventStore: ChangeEventStore {
     }
 
     func save(_ envelope: ChangeStoreEnvelope) async throws {
-        if shouldSuspendSave {
-            shouldSuspendSave = false
-            await withCheckedContinuation { continuation in
-                suspendedSave = continuation
-                suspensionWaiters.forEach { $0.resume() }
-                suspensionWaiters.removeAll()
+        if let gate = armedSave {
+            guard suspendedSave == nil else {
+                abortGates(.overlappingSaves)
+                throw GateError.overlappingSaves
+            }
+            armedSave = nil
+            try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+                suspendedSave = (gate, continuation)
+                suspensionWaiters.removeValue(forKey: gate)?.forEach { $0.resume() }
             }
         }
         if shouldFailSave {
@@ -152,21 +156,62 @@ actor InMemoryChangeEventStore: ChangeEventStore {
         shouldFailSave = true
     }
 
-    /// Suspends the next save until resumeSave is called.
-    func suspendNextSave() {
-        shouldSuspendSave = true
+    /// Arms a distinct gate for the next save, including while an earlier save is suspended.
+    /// - Returns: Ticket required to wait for and resume that save.
+    func suspendNextSave() throws -> SaveGate {
+        guard armedSave == nil else {
+            abortGates(.alreadyArmed)
+            throw GateError.alreadyArmed
+        }
+        let gate = SaveGate()
+        armedSave = gate
+        return gate
     }
 
-    /// Waits until the controlled save reaches its suspension point.
-    func waitForSuspendedSave() async {
-        guard suspendedSave == nil else { return }
-        await withCheckedContinuation { suspensionWaiters.append($0) }
+    /// Waits for the specified save rather than any previous suspension.
+    /// - Parameters:
+    ///   - gate: Ticket returned when the save was armed.
+    func waitForSuspendedSave(_ gate: SaveGate) async throws {
+        guard !completedGates.contains(gate) else { throw GateError.alreadyFinished }
+        if suspendedSave?.gate == gate { return }
+        guard armedSave == gate else { throw GateError.unknownGate }
+        try await withCheckedThrowingContinuation { suspensionWaiters[gate, default: []].append($0) }
     }
 
-    /// Allows the controlled save to complete.
-    func resumeSave() {
-        suspendedSave?.resume()
+    /// Resumes exactly one active save; incorrect tickets fail and release blocked operations.
+    /// - Parameters:
+    ///   - gate: Ticket identifying the suspended save.
+    func resumeSave(_ gate: SaveGate) throws {
+        guard let suspended = suspendedSave, suspended.gate == gate else {
+            abortGates(.wrongGate)
+            throw GateError.wrongGate
+        }
         suspendedSave = nil
+        completedGates.insert(gate)
+        suspended.continuation.resume()
+    }
+
+    private func abortGates(_ error: GateError) {
+        let suspended = suspendedSave
+        suspendedSave = nil
+        if let armedSave { completedGates.insert(armedSave) }
+        if let suspended { completedGates.insert(suspended.gate) }
+        armedSave = nil
+        suspensionWaiters.values.flatMap { $0 }.forEach { $0.resume(throwing: error) }
+        suspensionWaiters.removeAll()
+        suspended?.continuation.resume(throwing: error)
+    }
+
+    struct SaveGate: Hashable, Sendable {
+        private let id = UUID()
+    }
+
+    enum GateError: Error, Equatable {
+        case alreadyArmed
+        case alreadyFinished
+        case unknownGate
+        case wrongGate
+        case overlappingSaves
     }
 
     enum Failure: Error {
