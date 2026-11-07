@@ -10,6 +10,7 @@
 		120285B330968D2E00D1567E /* ChangeStoreEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120285B230968D2A00D1567E /* ChangeStoreEnvelope.swift */; };
 		120285B530968EFA00D1567E /* ChangeEventStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120285B430968EEC00D1567E /* ChangeEventStore.swift */; };
 		120285B73096CDC800D1567E /* ChangeEventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120285B63096CDBF00D1567E /* ChangeEventManager.swift */; };
+		120285E93097D71F00D1567E /* ChangeBaseline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120285E83097D71C00D1567E /* ChangeBaseline.swift */; };
 		12D20D22308E7B5800271D27 /* ChangeModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D20D21308E7B5300271D27 /* ChangeModels.swift */; };
 		192EC0482C963ACB00AF8528 /* CourseAssignmentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192EC0472C963ACB00AF8528 /* CourseAssignmentManager.swift */; };
 		192EC04A2C963B9000AF8528 /* AssignmentAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192EC0492C963B9000AF8528 /* AssignmentAPI.swift */; };
@@ -327,6 +328,7 @@
 		B7F9503B2D127AD0004BB470 /* ProfileAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F9503A2D127AD0004BB470 /* ProfileAPI.swift */; };
 		B7F9503D2D12ADAE004BB470 /* SubmissionAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F9503C2D12ADAE004BB470 /* SubmissionAPI.swift */; };
 		BFA76A3C8DC631D6CEFB67D6 /* Chunker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A9239BC87FBD0B487E6343 /* Chunker.swift */; };
+		C523B0013097000000000002 /* ChangeTrackingReset.swift in Sources */ = {isa = PBXBuildFile; fileRef = C523B0013097000000000001 /* ChangeTrackingReset.swift */; };
 		D411AB682E765AD100AEB627 /* GetQuizRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411AB672E765AD100AEB627 /* GetQuizRequest.swift */; };
 		D43B58032E7658560054C12C /* DisplayableItemType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43B58022E7658560054C12C /* DisplayableItemType.swift */; };
 		D43B58052E76586A0054C12C /* AssignmentQuizDetailsForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43B58042E76586A0054C12C /* AssignmentQuizDetailsForm.swift */; };
@@ -355,6 +357,7 @@
 		120285B230968D2A00D1567E /* ChangeStoreEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeStoreEnvelope.swift; sourceTree = "<group>"; };
 		120285B430968EEC00D1567E /* ChangeEventStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEventStore.swift; sourceTree = "<group>"; };
 		120285B63096CDBF00D1567E /* ChangeEventManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEventManager.swift; sourceTree = "<group>"; };
+		120285E83097D71C00D1567E /* ChangeBaseline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeBaseline.swift; sourceTree = "<group>"; };
 		1228889D308573FE00023F47 /* CanvasPlusPlaygroundTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CanvasPlusPlaygroundTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		12D20D21308E7B5300271D27 /* ChangeModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeModels.swift; sourceTree = "<group>"; };
 		192EC0472C963ACB00AF8528 /* CourseAssignmentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAssignmentManager.swift; sourceTree = "<group>"; };
@@ -675,6 +678,7 @@
 		B7F950382D1279A1004BB470 /* UserAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAPI.swift; sourceTree = "<group>"; };
 		B7F9503A2D127AD0004BB470 /* ProfileAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAPI.swift; sourceTree = "<group>"; };
 		B7F9503C2D12ADAE004BB470 /* SubmissionAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmissionAPI.swift; sourceTree = "<group>"; };
+		C523B0013097000000000001 /* ChangeTrackingReset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeTrackingReset.swift; sourceTree = "<group>"; };
 		D411AB672E765AD100AEB627 /* GetQuizRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetQuizRequest.swift; sourceTree = "<group>"; };
 		D43B58022E7658560054C12C /* DisplayableItemType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayableItemType.swift; sourceTree = "<group>"; };
 		D43B58042E76586A0054C12C /* AssignmentQuizDetailsForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentQuizDetailsForm.swift; sourceTree = "<group>"; };
@@ -1027,6 +1031,8 @@
 		A324BA582D079730005F53FA /* Storage */ = {
 			isa = PBXGroup;
 			children = (
+				120285E83097D71C00D1567E /* ChangeBaseline.swift */,
+				C523B0013097000000000001 /* ChangeTrackingReset.swift */,
 				120285B63096CDBF00D1567E /* ChangeEventManager.swift */,
 				120285B430968EEC00D1567E /* ChangeEventStore.swift */,
 				120285B230968D2A00D1567E /* ChangeStoreEnvelope.swift */,
@@ -2043,6 +2049,8 @@
 				A339D3FD2DB1B65000952536 /* MigrationPlan.swift in Sources */,
 				A372D1102D91D1A1005E94CA /* GroupDetailView.swift in Sources */,
 				A3049B792D15E162002F3166 /* GetCourseRootFolderRequest.swift in Sources */,
+				120285E93097D71F00D1567E /* ChangeBaseline.swift in Sources */,
+				C523B0013097000000000002 /* ChangeTrackingReset.swift in Sources */,
 				9BD75D6E2E763A10008BF846 /* URL+SafeCopyOut.swift in Sources */,
 				B7AF51682E9B33EA00457E8A /* ShimmerEffect.swift in Sources */,
 				9BF8E43F2D90DE4F00B5A50D /* UploadAssignmentFileTransmissionRequest.swift in Sources */,

@@ -197,6 +197,7 @@ struct CanvasPlusPlaygroundApp: App {
                     .environment(courseManager)
                     .environment(pinnedItemsManager)
                     .environment(recentItemsManager)
+                    .environment(changeEventManager)
                     .frame(width: 400, height: 500)
             }
         }
@@ -231,16 +232,20 @@ struct CanvasPlusPlaygroundApp: App {
             Spacer()
 
             Button("Reset local storage") {
-                do {
-                    self.launchState = .loading
-                    try ModelContainer.eraseSQLiteStore()
-                    self.launchState = Self.setupModelContainer()
-                    if launchState == .ready {
-                        CanvasService.shared.setupStorage()
+                self.launchState = .loading
+                Task { @MainActor in
+                    do {
+                        try await ChangeTrackingReset.recoverStorage(manager: changeEventManager) {
+                            try ModelContainer.eraseSQLiteStore()
+                            self.launchState = Self.setupModelContainer()
+                            if launchState == .ready {
+                                CanvasService.shared.setupStorage()
+                            }
+                        }
+                    } catch {
+                        self.launchState = .failed
+                        LoggerService.main.error("Erasing SQLite store failed with: \(error)")
                     }
-                } catch {
-                    self.launchState = .failed
-                    LoggerService.main.error("Erasing SQLite store failed with: \(error)")
                 }
             }
         }

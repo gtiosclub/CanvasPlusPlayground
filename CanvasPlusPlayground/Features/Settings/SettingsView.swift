@@ -12,10 +12,13 @@ struct SettingsView: View {
     @Environment(\.openWindow) private var openWindow
     @Environment(PinnedItemsManager.self) private var pinnedItemManager
     @Environment(CourseManager.self) private var courseManager
+    @Environment(ChangeEventManager.self) private var changeEventManager
 
     @State private var selectedItem: (any PickableItem)?
     @State private var selectedCourseForItemPicker: Course?
     @State private var showWidgetShowcase = false
+    @State private var isClearingCache = false
+    @State private var showClearCacheFailure = false
     #endif
 
     @Environment(\.dismiss) private var dismiss
@@ -38,6 +41,11 @@ struct SettingsView: View {
                 WidgetShowcase()
             }
             .environment(courseManager)
+        }
+        .alert("Couldn't Clear Cache", isPresented: $showClearCacheFailure) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("Change tracking couldn't be reset, so your local cache was kept.")
         }
         #endif
         .sheet(isPresented: $showChangeAccessToken) {
@@ -137,8 +145,18 @@ struct SettingsView: View {
                 }
 
                 Button("Clear Cache", systemImage: "opticaldiscdrive") {
-                    CanvasService.shared.clearStorage()
+                    isClearingCache = true
+                    Task { @MainActor in
+                        defer { isClearingCache = false }
+                        do {
+                            try await CanvasService.shared.clearStorage(changeEventManager: changeEventManager)
+                        } catch {
+                            LoggerService.main.error("Clearing local cache failed: \(error)")
+                            showClearCacheFailure = true
+                        }
+                    }
                 }
+                .disabled(isClearingCache)
 
                 Button("Delete all files", systemImage: "folder.badge.minus") {
                     do {
@@ -168,6 +186,14 @@ struct SettingsView: View {
 }
 
 #Preview {
+    let store = JSONChangeEventStore(
+        fileURL: .temporaryDirectory
+            .appending(path: "settings-preview-\(UUID().uuidString)")
+            .appending(path: "change-events.json")
+    )
     SettingsView()
         .environment(CourseManager())
+        .environment(PinnedItemsManager.shared)
+        .environment(RecentItemsManager.shared)
+        .environment(ChangeEventManager(store: store))
 }

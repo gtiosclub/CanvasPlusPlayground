@@ -75,7 +75,10 @@ extension APIRequest where QueryResult == Subject {
 }
 
 extension APIRequest {
-    func fetchResponse(at page: Int? = nil) async throws -> (data: Data, url: URLResponse) {
+    /// Builds a request before credentials are attached.
+    /// - Parameter page: Optional page number for a paginated request.
+    /// - Returns: The configured request without an Authorization header.
+    func makeURLRequest(at page: Int? = nil) -> URLRequest {
         var url = self.url
         if let page {
             url = url.appending(queryItems: [
@@ -83,12 +86,17 @@ extension APIRequest {
             ])
         }
 
-        var urlRequest = URLRequest(url: url)
+        var urlRequest = URLRequest(url: url, cachePolicy: cachePolicy)
 
         urlRequest.httpMethod = self.method.rawValue
         urlRequest.httpBody = self.body
         urlRequest.setValue(contentType, forHTTPHeaderField: "Content-Type")
         urlRequest.setValue(contentLength, forHTTPHeaderField: "Content-Length")
+        return urlRequest
+    }
+
+    func fetchResponse(at page: Int? = nil) async throws -> (data: Data, url: URLResponse) {
+        var urlRequest = makeURLRequest(at: page)
         urlRequest.setValue("Bearer \(StorageKeys.accessTokenValue)", forHTTPHeaderField: "Authorization")
 
         let (data, response) = try await URLSession.shared.data(for: urlRequest)

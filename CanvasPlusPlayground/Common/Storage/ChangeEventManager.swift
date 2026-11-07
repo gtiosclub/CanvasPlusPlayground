@@ -8,8 +8,13 @@
 import Foundation
 import Observation
 
+// Keep the serialized mutation code and its validation in one file.
+// swiftlint:disable file_length
+
 @MainActor
 @Observable
+// Keep the serialized mutation implementations together in this declaration.
+// swiftlint:disable:next type_body_length
 final class ChangeEventManager {
     private(set) var isLoaded = false
     private(set) var recoveryReason: ChangeStoreLoadResult.RecoveryReason?
@@ -43,7 +48,7 @@ final class ChangeEventManager {
                 do {
                     try self.validate(saved)
                     restored = saved
-                } catch ManagerError.invalidState {
+                } catch ManagerError.invalidState, ManagerError.revisionExhausted {
                     reason = .corrupt
                 }
             case .empty(let emptyReason):
@@ -65,11 +70,35 @@ final class ChangeEventManager {
         }
     }
 
-    /// Commits snapshots and coalesced changes together before publishing them.
-    /// - Parameter observation: Authoritative snapshots and field changes from one observation.
-    func apply(_ observation: ChangeObservationResult) async throws {
+    /// Captures the reset boundary before collection or observation work begins.
+    /// - Returns: The current reset generation, valid until a reset successfully commits.
+    func captureResetBoundary() throws -> ResetBoundary {
+        try requireLoaded()
+        return ResetBoundary(resetGeneration: envelope.resetGeneration)
+    }
+
+    /// Removes all accounts' tracking state and invalidates earlier reset boundaries and captures.
+    func reset() async throws {
         try await serialized {
             try self.requireLoaded()
+            let next = ChangeStoreEnvelope(commitRevision: try self.nextRevision())
+            try self.validate(next)
+            try await self.store.save(next)
+            self.envelope = next
+        }
+    }
+
+    /// Commits snapshots and coalesced changes together before publishing them.
+    /// - Parameters:
+    ///   - observation: Authoritative snapshots and field changes from one observation.
+    ///   - boundary: Reset boundary captured before observation work began.
+    func apply(
+        _ observation: ChangeObservationResult,
+        boundary: ResetBoundary
+    ) async throws {
+        try await serialized {
+            try self.requireLoaded()
+            try self.requireCurrentBoundary(boundary)
             guard !observation.snapshots.isEmpty || !observation.changes.isEmpty else { return }
 
             let snapshotKeys = observation.snapshots.map(\.itemKey)
@@ -82,7 +111,7 @@ final class ChangeEventManager {
             }
 
             var next = self.envelope
-            let revision = self.nextRevision()
+            let revision = try self.nextRevision()
             let timestamp = self.clock()
 
             for snapshot in observation.snapshots {
@@ -115,6 +144,48 @@ final class ChangeEventManager {
         }
     }
 
+    /// Returns whether a baseline exists; returns false while the manager is unloaded.
+    /// - Parameters:
+    ///   - baseline: Course and resource family to query.
+    ///   - account: Account owning the collection.
+    func hasBaseline(_ baseline: ChangeBaseline, for account: AccountKey) -> Bool {
+        envelope.accounts.first { $0.account == account }?.baselines.contains(baseline) == true
+    }
+
+    /// Persists a qualifying collection's baseline, including an empty collection.
+    /// - Parameters:
+    ///   - baseline: Course and resource family established by the collection.
+    ///   - account: Account owning the collection.
+    ///   - eligibility: Collection outcome determining whether recording is allowed.
+    ///   - boundary: Reset boundary captured before collection work began.
+    func recordBaseline(
+        _ baseline: ChangeBaseline,
+        for account: AccountKey,
+        eligibility: CollectionEligibility,
+        boundary: ResetBoundary
+    ) async throws {
+        try requireLoaded()
+        try await serialized {
+            try self.requireLoaded()
+            try self.requireCurrentBoundary(boundary)
+            switch eligibility {
+            case .completeUnfilteredAllPagesSuccess:
+                break
+            case .rejected(let reason):
+                throw ManagerError.collectionNotEligible(reason)
+            }
+            guard !self.hasBaseline(baseline, for: account) else { return }
+
+            var next = self.envelope
+            let index = self.accountIndex(account, in: &next)
+            next.accounts[index].baselines.append(baseline)
+            next.commitRevision = try self.nextRevision()
+            try self.validate(next)
+            try await self.store.save(next)
+            self.envelope = next
+        }
+    }
+
     /// Captures the unseen records and acknowledgement boundary for an item visit.
     /// - Parameter itemKey: Item whose changes are being presented.
     /// - Returns: Records and the store generation and revision at capture time.
@@ -133,6 +204,7 @@ final class ChangeEventManager {
     func acknowledge(_ capture: CapturedChanges) async throws {
         try await serialized {
             try self.requireLoaded()
+            // Defense in depth across resets: monotonic revisions already protect valid pre-reset captures.
             guard capture.resetGeneration == self.envelope.resetGeneration else { return }
             guard capture.throughRevision <= self.envelope.commitRevision else { throw ManagerError.invalidState }
 
@@ -144,7 +216,7 @@ final class ChangeEventManager {
             }
             guard next != self.envelope else { return }
 
-            next.commitRevision = self.nextRevision()
+            next.commitRevision = try self.nextRevision()
             try self.validate(next)
             try await self.store.save(next)
             self.envelope = next
@@ -206,8 +278,18 @@ final class ChangeEventManager {
         guard isLoaded else { throw ManagerError.notLoaded }
     }
 
-    private func nextRevision() -> UInt64 {
-        envelope.commitRevision + 1
+    private func requireCurrentBoundary(_ boundary: ResetBoundary) throws {
+        guard boundary.resetGeneration == envelope.resetGeneration else {
+            throw ManagerError.staleResetBoundary
+        }
+    }
+
+    private func nextRevision() throws -> UInt64 {
+        // Defense in depth: the next revision stays below .max; validate also rejects .max before save or publish.
+        guard envelope.commitRevision < UInt64.max - 1 else {
+            throw ManagerError.revisionExhausted
+        }
+        return envelope.commitRevision + 1
     }
 
     private func accountIndex(_ account: AccountKey, in next: inout ChangeStoreEnvelope) -> Int {
@@ -287,6 +369,10 @@ final class ChangeEventManager {
         }
     }
 
+    struct ResetBoundary: Equatable, Sendable {
+        fileprivate let resetGeneration: UUID
+    }
+
     struct CapturedChanges: Equatable, Sendable {
         let itemKey: ChangeItemKey
         let records: [ChangeRecord]
@@ -294,9 +380,27 @@ final class ChangeEventManager {
         let throughRevision: UInt64
     }
 
-    enum ManagerError: Error {
+    enum CollectionEligibility: Equatable, Sendable {
+        case completeUnfilteredAllPagesSuccess
+        case rejected(RejectionReason)
+
+        // Keep rejection reasons namespaced under collection eligibility.
+        // swiftlint:disable:next nesting
+        enum RejectionReason: CaseIterable, Equatable, Sendable {
+            case detail
+            case filtered
+            case singlePage
+            case incomplete
+            case failure
+        }
+    }
+
+    enum ManagerError: Error, Equatable {
         case notLoaded
         case invalidState
+        case collectionNotEligible(CollectionEligibility.RejectionReason)
+        case staleResetBoundary
+        case revisionExhausted
     }
 
     private struct RecordKey: Hashable {
@@ -310,6 +414,7 @@ private extension ChangeEventManager {
         guard state.formatVersion == ChangeStoreEnvelope.currentFormatVersion else {
             throw ChangeStoreError.unsupportedFormat(state.formatVersion)
         }
+        guard state.commitRevision < UInt64.max else { throw ManagerError.revisionExhausted }
         guard Set(state.accounts.map(\.account)).count == state.accounts.count else { throw ManagerError.invalidState }
 
         for account in state.accounts {
@@ -321,6 +426,13 @@ private extension ChangeEventManager {
         _ account: ChangeStoreEnvelope.AccountState,
         throughRevision revision: UInt64
     ) throws {
+        guard Set(account.baselines).count == account.baselines.count,
+              account.baselines.allSatisfy({
+                  !$0.courseID.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+              }) else {
+            throw ManagerError.invalidState
+        }
+
         let snapshots = account.snapshots
         guard Set(snapshots.map(\.itemKey)).count == snapshots.count else { throw ManagerError.invalidState }
         let snapshotLookup = Dictionary(uniqueKeysWithValues: snapshots.map {
