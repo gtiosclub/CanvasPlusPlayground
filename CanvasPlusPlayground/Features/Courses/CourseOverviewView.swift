@@ -18,9 +18,12 @@ struct CourseOverviewView: View {
     @State private var expandedSections: Set<NavigationModel.CoursePage> = []
     @State private var ringProgress: Double = 0
     @State private var showTodoCreation = false
+    @State private var showEditSections = false
+    @State private var sectionStore: CourseSectionStore
 
     init(course: Course) {
         self.course = course
+        self._sectionStore = State(initialValue: CourseSectionStore(courseID: course.id))
         self._gradesVM = State(initialValue: GradesViewModel(courseId: course.id))
     }
 
@@ -42,7 +45,15 @@ struct CourseOverviewView: View {
                 HStack(alignment: .top, spacing: 20) {
                     // Left column: expandable page rows
                     VStack(alignment: .leading, spacing: 0) {
-                        ForEach([NavigationModel.CoursePage.assignments, .announcements, .calendar], id: \.self) { page in
+                        if visibleSections.isEmpty {
+                            ContentUnavailableView {
+                                Label("No Sections", systemImage: "rectangle.stack")
+                                    .lineLimit(2)
+                            } actions: {
+                                Button("Edit Sections…") { showEditSections = true }
+                            }
+                        }
+                        ForEach(visibleSections, id: \.self) { page in
                             CourseSectionRow(page: page, course: course, expandedSections: $expandedSections)
                         }
                     }
@@ -90,9 +101,29 @@ struct CourseOverviewView: View {
         )
         .tint(course.rgbColors?.color)
         .navigationTitle(course.displayName)
+        .toolbar {
+            Menu("Customize…", systemImage: "ellipsis") {
+                Button("Edit Sections…") { showEditSections = true }
+            }
+        }
+        .sheet(isPresented: $showEditSections) {
+            NavigationStack {
+                EditCourseSectionsView(store: sectionStore, course: course)
+            }
+            #if os(macOS)
+            .frame(width: 360, height: 480)
+            #endif
+        }
         .task {
             await gradesVM.getEnrollments(currentUserID: profileManager.currentUser?.id)
         }
+    }
+
+    private var visibleSections: [NavigationModel.CoursePage] {
+        sectionStore.layout.visiblePages(
+            available: NavigationModel.CoursePage.available(for: course),
+            tabsLoaded: !course.tabs.isEmpty
+        )
     }
 
     // MARK: - Grade Card
