@@ -29,16 +29,31 @@ struct CoursePeoplePreviewTests {
         #expect(calls == 1)
     }
 
-    @Test func fetchErrorStopsPagination() async {
+    @Test func pageCapStopsEndlessPagination() async throws {
         var calls = 0
+        try await CoursePeoplePreview.loadPages(maxPages: 3) {
+            calls += 1
+            return true
+        }
+        #expect(calls == 3)
+    }
+
+    @Test func laterPageErrorStopsPaginationAndKeepsEarlierUsers() async {
+        let fixtures = SandboxData.dummyUsers(forCourseID: "12345")
+        var calls = 0
+        var loaded: [User] = []
         do {
             try await CoursePeoplePreview.loadPages {
                 calls += 1
-                throw FetchFailure()
+                if calls == 2 { throw FetchFailure() }
+                loaded.append(contentsOf: fixtures)
+                return true
             }
             Issue.record("Expected fetch failure")
         } catch is FetchFailure {
-            #expect(calls == 1)
+            #expect(calls == 2)
+            #expect(!loaded.isEmpty)
+            #expect(loaded.count == fixtures.count)
         } catch {
             Issue.record("Unexpected error: \(error)")
         }
