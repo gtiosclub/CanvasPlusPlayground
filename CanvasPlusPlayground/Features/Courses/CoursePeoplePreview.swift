@@ -27,10 +27,35 @@ struct CoursePeoplePreview: View {
                 .buttonStyle(.plain)
             }
         }
-        .task { try? await manager.fetchPeople() }
+        .task { await loadPeople(manager) }
         .onChange(of: course.id) {
             manager = PeopleManager(courseID: course.id)
-            Task { try? await manager.fetchPeople() }
+            let replacement = manager
+            Task { await loadPeople(replacement) }
+        }
+    }
+
+    private func loadPeople(_ manager: PeopleManager) async {
+        do {
+            try await Self.loadPages {
+                let previousPage = manager.page
+                try await manager.fetchPeople()
+                return !AppEnvironment.isSandbox && manager.page > previousPage
+            }
+        } catch is CancellationError {
+            return
+        } catch {
+            LoggerService.main.error("People preview fetch failed: \(error)")
+        }
+    }
+
+    /// - Parameter fetchNext: Loads one page and returns whether another page is available.
+    /// - Throws: Cancellation or the first page-fetch failure; neither is retried.
+    @MainActor
+    static func loadPages(fetchNext: () async throws -> Bool) async throws {
+        while true {
+            try Task.checkCancellation()
+            if try await !fetchNext() { return }
         }
     }
 }
