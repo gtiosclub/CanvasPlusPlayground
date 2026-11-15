@@ -114,11 +114,14 @@ struct CourseOverviewView: View {
             }
         }
         .sheet(isPresented: $showEditSections) {
+            #if os(macOS)
+            // No NavigationStack on macOS: its toolbar title sits off-centre in a sheet.
+            EditCourseSectionsView(store: sectionStore, course: course)
+                .frame(width: 420, height: 520)
+            #else
             NavigationStack {
                 EditCourseSectionsView(store: sectionStore, course: course)
             }
-            #if os(macOS)
-            .frame(width: 360, height: 480)
             #endif
         }
         .task {
