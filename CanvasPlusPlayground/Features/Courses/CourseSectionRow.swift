@@ -32,7 +32,17 @@ struct CourseSectionRow: View {
                 Text(CoursePreviewSelection.gradeSummary(score: gradesVM.currentScore, grade: gradesVM.currentGrade))
                     .lineLimit(2)
             }
-        case .home, .files, .people, .groups, .quizzes, .modules:
+        case .files:
+            preview { CourseFilesPreview(course: course) }
+        case .people:
+            preview { CoursePeoplePreview(course: course) }
+        case .groups:
+            preview { CourseGroupsPreview(course: course) }
+        case .quizzes:
+            preview { CourseQuizzesPreview(course: course) }
+        case .modules:
+            preview { CourseModulesPreview(course: course) }
+        case .home:
             plainRow
         }
     }

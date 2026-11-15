@@ -38,4 +38,65 @@ enum CoursePreviewSelection {
     static func showsGradeCard(pages: [NavigationModel.CoursePage]) -> Bool {
         !pages.contains(.grades)
     }
+
+    /// - Parameter blocks: Fetched modules, possibly awaiting their items.
+    /// - Returns: Started, next unlocked, next incomplete, or first module in position order.
+    static func currentModule(_ blocks: [ModulesViewModel.ModuleBlock]) -> ModulesViewModel.ModuleBlock? {
+        let ordered = blocks.sorted {
+            $0.module.position == $1.module.position ? $0.module.id < $1.module.id : $0.module.position < $1.module.position
+        }
+        return ordered.first { $0.module.state == .started }
+            ?? ordered.first { $0.module.state != .completed && $0.module.state != .locked }
+            ?? ordered.first { $0.module.state != .completed }
+            ?? ordered.first
+    }
+
+    /// - Parameter block: The selected module and any loaded items.
+    /// - Returns: Up to three items in position order; empty lets the view show itemsCount.
+    static func moduleItems(_ block: ModulesViewModel.ModuleBlock) -> [ModuleItem] {
+        let sorted = block.items.sorted {
+            $0.position == $1.position ? $0.id < $1.id : $0.position < $1.position
+        }
+        return Array(sorted.prefix(3))
+    }
+
+    /// - Parameter files: Files from the root folder only.
+    /// - Returns: Up to three newest files, using creation date when update date is absent.
+    static func files(_ files: [File]) -> [File] {
+        let sorted = files.sorted {
+            let lhs = $0.updatedAt ?? $0.createdAt ?? .distantPast
+            let rhs = $1.updatedAt ?? $1.createdAt ?? .distantPast
+            return lhs == rhs ? $0.id < $1.id : lhs > rhs
+        }
+        return Array(sorted.prefix(3))
+    }
+
+    /// - Parameter quizzes: Fetched quizzes, including overdue and undated quizzes.
+    /// - Returns: Up to three by earliest due date, undated last, with stable ID ties.
+    static func quizzes(_ quizzes: [Quiz]) -> [Quiz] {
+        let sorted = quizzes.sorted {
+            let lhs = $0.dueAt ?? .distantFuture
+            let rhs = $1.dueAt ?? .distantFuture
+            return lhs == rhs ? $0.id < $1.id : lhs < rhs
+        }
+        return Array(sorted.prefix(3))
+    }
+
+    /// - Parameter users: People loaded by the preview's own manager.
+    /// - Returns: Up to five people, teachers first, then sortable name and ID.
+    static func people(_ users: [User]) -> [User] {
+        let sorted = users.sorted {
+            let lhs = $0.enrollmentRoles.contains(.teacher)
+            let rhs = $1.enrollmentRoles.contains(.teacher)
+            if lhs != rhs { return lhs }
+            return $0.sortableName == $1.sortableName ? $0.id < $1.id : $0.sortableName < $1.sortableName
+        }
+        return Array(sorted.prefix(5))
+    }
+
+    /// - Parameter displayed: The manager's groupsDisplayed list.
+    /// - Returns: Up to three groups, preserving displayed order.
+    static func groups(_ displayed: [CanvasGroup]) -> [CanvasGroup] {
+        Array(displayed.prefix(3))
+    }
 }
