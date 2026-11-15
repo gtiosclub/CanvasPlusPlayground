@@ -13,7 +13,23 @@ struct EditCourseSectionsView: View {
         List {
             Section("Sections") {
                 ForEach(store.layout.pages, id: \.self) { page in
-                    Label(page.title, systemImage: page.systemImageIcon)
+                    HStack {
+                        Label(page.title, systemImage: page.systemImageIcon)
+                        #if os(macOS)
+                        // macOS rows here are not selectable, so onDelete has no trigger.
+                        Spacer()
+                        Button {
+                            if let index = store.layout.pages.firstIndex(of: page) {
+                                store.layout.remove(at: IndexSet(integer: index))
+                            }
+                        } label: {
+                            Label("Remove \(page.title)", systemImage: "minus.circle")
+                                .labelStyle(.iconOnly)
+                        }
+                        .buttonStyle(.borderless)
+                        .help("Remove \(page.title)")
+                        #endif
+                    }
                 }
                 .onMove { store.layout.move(from: $0, to: $1) }
                 .onDelete { store.layout.remove(at: $0) }
