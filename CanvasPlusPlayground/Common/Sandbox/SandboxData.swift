@@ -925,7 +925,7 @@ enum SandboxData {
                 makeModuleItem(id: 106, moduleId: 102, position: 2, title: "Lab 2: Navigation & State",
                                type: .assignment, contentId: 102),
             ],
-            state: .unlocked, completed_at: nil, published: true
+            state: .started, completed_at: nil, published: true
         )
 
         let module3 = APIModule(
