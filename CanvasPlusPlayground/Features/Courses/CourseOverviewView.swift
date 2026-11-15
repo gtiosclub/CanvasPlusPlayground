@@ -15,12 +15,15 @@ struct CourseOverviewView: View {
     let course: Course
 
     @State private var gradesVM: GradesViewModel
-    @State private var expandedSections: Set<String> = []
+    @State private var expandedSections: Set<NavigationModel.CoursePage> = []
     @State private var ringProgress: Double = 0
     @State private var showTodoCreation = false
+    @State private var showEditSections = false
+    @State private var sectionStore: CourseSectionStore
 
     init(course: Course) {
         self.course = course
+        self._sectionStore = State(initialValue: CourseSectionStore(courseID: course.id))
         self._gradesVM = State(initialValue: GradesViewModel(courseId: course.id))
     }
 
@@ -42,15 +45,30 @@ struct CourseOverviewView: View {
                 HStack(alignment: .top, spacing: 20) {
                     // Left column: expandable page rows
                     VStack(alignment: .leading, spacing: 0) {
-                        assignmentsExpandableRow
-                        announcementsExpandableRow
-                        calendarExpandableRow
+                        if visibleSections.isEmpty {
+                            ContentUnavailableView {
+                                Label("No Sections", systemImage: "rectangle.stack")
+                                    .lineLimit(2)
+                            } actions: {
+                                Button("Edit Sections…") { showEditSections = true }
+                            }
+                        }
+                        ForEach(visibleSections, id: \.self) { page in
+                            CourseSectionRow(
+                                page: page,
+                                course: course,
+                                gradesVM: gradesVM,
+                                expandedSections: $expandedSections
+                            )
+                        }
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                     // Right column: grade + to-do cards
                     VStack(spacing: 16) {
-                        gradeCard
+                        if CoursePreviewSelection.showsGradeCard(pages: visibleSections) {
+                            gradeCard
+                        }
                         toDoCard
                     }
                     .frame(width: 220)
@@ -90,123 +108,32 @@ struct CourseOverviewView: View {
         )
         .tint(course.rgbColors?.color)
         .navigationTitle(course.displayName)
+        .toolbar {
+            Menu("Customize…", systemImage: "ellipsis") {
+                Button("Edit Sections…") { showEditSections = true }
+            }
+        }
+        .sheet(isPresented: $showEditSections) {
+            #if os(macOS)
+            // No NavigationStack on macOS: its toolbar title sits off-centre in a sheet.
+            EditCourseSectionsView(store: sectionStore, course: course)
+                .frame(width: 420, height: 520)
+            #else
+            NavigationStack {
+                EditCourseSectionsView(store: sectionStore, course: course)
+            }
+            #endif
+        }
         .task {
             await gradesVM.getEnrollments(currentUserID: profileManager.currentUser?.id)
         }
     }
 
-    // MARK: - Assignments Expandable Row
-
-    private var assignmentsExpandableRow: some View {
-        let isExpanded = expandedSections.contains("Assignments")
-
-        return VStack(alignment: .leading, spacing: 0) {
-            Button {
-                withAnimation(.spring(duration: 0.3, bounce: 0.15)) {
-                    if isExpanded {
-                        expandedSections.remove("Assignments")
-                    } else {
-                        expandedSections.insert("Assignments")
-                    }
-                }
-            } label: {
-                HStack {
-                    Text("Assignments")
-                        .font(.system(size: 30, weight: .semibold))
-                        .foregroundStyle(.primary)
-                    Spacer()
-                    Image(systemName: "chevron.down")
-                        .font(.body.weight(.medium))
-                        .foregroundStyle(.secondary)
-                        .rotationEffect(.degrees(isExpanded ? 0 : -90))
-                }
-                .contentShape(Rectangle())
-                .padding(.vertical, 12)
-            }
-            .buttonStyle(.plain)
-
-            if isExpanded {
-                AssignmentOverviewView(course: course)
-                    .transition(.opacity)
-            }
-        }
-        .clipped()
-    }
-
-    // MARK: - Announcements Expandable Row
-
-    private var announcementsExpandableRow: some View {
-        let isExpanded = expandedSections.contains("Announcements")
-
-        return VStack(alignment: .leading, spacing: 0) {
-            Button {
-                withAnimation(.spring(duration: 0.3, bounce: 0.15)) {
-                    if isExpanded {
-                        expandedSections.remove("Announcements")
-                    } else {
-                        expandedSections.insert("Announcements")
-                    }
-                }
-            } label: {
-                HStack {
-                    Text("Announcements")
-                        .font(.system(size: 30, weight: .semibold))
-                        .foregroundStyle(.primary)
-                    Spacer()
-                    Image(systemName: "chevron.down")
-                        .font(.body.weight(.medium))
-                        .foregroundStyle(.secondary)
-                        .rotationEffect(.degrees(isExpanded ? 0 : -90))
-                }
-                .contentShape(Rectangle())
-                .padding(.vertical, 12)
-            }
-            .buttonStyle(.plain)
-
-            if isExpanded {
-                AnnouncementOverviewView(course: course)
-                    .transition(.opacity)
-            }
-        }
-        .clipped()
-    }
-
-    // MARK: - Calendar Expandable Row
-
-    private var calendarExpandableRow: some View {
-        let isExpanded = expandedSections.contains("Calendar")
-
-        return VStack(alignment: .leading, spacing: 0) {
-            Button {
-                withAnimation(.spring(duration: 0.3, bounce: 0.15)) {
-                    if isExpanded {
-                        expandedSections.remove("Calendar")
-                    } else {
-                        expandedSections.insert("Calendar")
-                    }
-                }
-            } label: {
-                HStack {
-                    Text("Calendar")
-                        .font(.system(size: 30, weight: .semibold))
-                        .foregroundStyle(.primary)
-                    Spacer()
-                    Image(systemName: "chevron.down")
-                        .font(.body.weight(.medium))
-                        .foregroundStyle(.secondary)
-                        .rotationEffect(.degrees(isExpanded ? 0 : -90))
-                }
-                .contentShape(Rectangle())
-                .padding(.vertical, 12)
-            }
-            .buttonStyle(.plain)
-
-            if isExpanded {
-                CalendarOverviewView(course: course)
-                    .transition(.opacity)
-            }
-        }
-        .clipped()
+    private var visibleSections: [NavigationModel.CoursePage] {
+        sectionStore.layout.visiblePages(
+            available: NavigationModel.CoursePage.available(for: course),
+            tabsLoaded: !course.tabs.isEmpty
+        )
     }
 
     // MARK: - Grade Card

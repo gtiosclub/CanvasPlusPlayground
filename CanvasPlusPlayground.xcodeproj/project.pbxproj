@@ -30,6 +30,17 @@
 		8C5A13192F8D961200E09B46 /* DetailContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5A13182F8D961200E09B46 /* DetailContainerView.swift */; };
 		8C5A131B2F8D96A400E09B46 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5A131A2F8D96A400E09B46 /* SidebarView.swift */; };
 		8C5A131D2F8DA17000E09B46 /* CourseOverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5A131C2F8DA17000E09B46 /* CourseOverviewView.swift */; };
+		B39ACD0293FE42A49B6251A5 /* CourseGroupsPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F97682C5F3D496E8EA7E95B /* CourseGroupsPreview.swift */; };
+		4D0948EA9A47496E921B2B72 /* CoursePeoplePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54AB40CD72F945649348302B /* CoursePeoplePreview.swift */; };
+		AF4DD2AD41C44A8DBD2665C2 /* CourseQuizzesPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F90D2DC301D49EA9D05E150 /* CourseQuizzesPreview.swift */; };
+		552E2B95612B4981B89E1658 /* CourseFilesPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88B0F9C6F007499892FB4A10 /* CourseFilesPreview.swift */; };
+		C4D88206C1C8490C9E1AC66A /* CourseModulesPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1786364236B742D4BA106494 /* CourseModulesPreview.swift */; };
+		E0CD0DD2FC4B4ECEBA737C04 /* CoursePagesPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD45A3A25E8A4ED28191E61C /* CoursePagesPreview.swift */; };
+		1CD89A6D81064E7FAF4D36F8 /* CoursePreviewSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E34FF0072AF490DABD29A73 /* CoursePreviewSelection.swift */; };
+		1F5A10E5A86A4205BD15B060 /* EditCourseSectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C017353F7234BB0BA394280 /* EditCourseSectionsView.swift */; };
+		F6BBECDCB24D475EA063E74E /* CourseSectionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99283065439E4C9CA98B5C02 /* CourseSectionStore.swift */; };
+		D4820F07FFE34E1A904D0F18 /* CourseSectionLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33FD4DDA69C4686B31179F9 /* CourseSectionLayout.swift */; };
+		C8813D5622184999941FC8F0 /* CourseSectionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9648266545EE4184B0FB76E5 /* CourseSectionRow.swift */; };
 		8CAC2F192F7A1D8E00EC5FA4 /* SpotlightSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAC2F182F7A1D8500EC5FA4 /* SpotlightSearchResult.swift */; };
 		8CAC2F1B2F7A204300EC5FA4 /* SearchCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAC2F1A2F7A203B00EC5FA4 /* SearchCategory.swift */; };
 		8CAC2F202F7A224200EC5FA4 /* SpotlightIndexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAC2F1F2F7A223F00EC5FA4 /* SpotlightIndexer.swift */; };
@@ -373,6 +384,17 @@
 		8C5A13182F8D961200E09B46 /* DetailContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailContainerView.swift; sourceTree = "<group>"; };
 		8C5A131A2F8D96A400E09B46 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
 		8C5A131C2F8DA17000E09B46 /* CourseOverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseOverviewView.swift; sourceTree = "<group>"; };
+		9F97682C5F3D496E8EA7E95B /* CourseGroupsPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseGroupsPreview.swift; sourceTree = "<group>"; };
+		54AB40CD72F945649348302B /* CoursePeoplePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoursePeoplePreview.swift; sourceTree = "<group>"; };
+		9F90D2DC301D49EA9D05E150 /* CourseQuizzesPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseQuizzesPreview.swift; sourceTree = "<group>"; };
+		88B0F9C6F007499892FB4A10 /* CourseFilesPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseFilesPreview.swift; sourceTree = "<group>"; };
+		1786364236B742D4BA106494 /* CourseModulesPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseModulesPreview.swift; sourceTree = "<group>"; };
+		BD45A3A25E8A4ED28191E61C /* CoursePagesPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoursePagesPreview.swift; sourceTree = "<group>"; };
+		4E34FF0072AF490DABD29A73 /* CoursePreviewSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoursePreviewSelection.swift; sourceTree = "<group>"; };
+		7C017353F7234BB0BA394280 /* EditCourseSectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCourseSectionsView.swift; sourceTree = "<group>"; };
+		99283065439E4C9CA98B5C02 /* CourseSectionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseSectionStore.swift; sourceTree = "<group>"; };
+		F33FD4DDA69C4686B31179F9 /* CourseSectionLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseSectionLayout.swift; sourceTree = "<group>"; };
+		9648266545EE4184B0FB76E5 /* CourseSectionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseSectionRow.swift; sourceTree = "<group>"; };
 		8CAC2F182F7A1D8500EC5FA4 /* SpotlightSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightSearchResult.swift; sourceTree = "<group>"; };
 		8CAC2F1A2F7A203B00EC5FA4 /* SearchCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCategory.swift; sourceTree = "<group>"; };
 		8CAC2F1F2F7A223F00EC5FA4 /* SpotlightIndexer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightIndexer.swift; sourceTree = "<group>"; };
@@ -909,6 +931,17 @@
 				8CD6A4E82F95EA4000BD3903 /* AnnouncementOverviewView.swift */,
 				8CD6A4E62F95E36700BD3903 /* AssignmentOverviewView.swift */,
 				8C5A131C2F8DA17000E09B46 /* CourseOverviewView.swift */,
+				9F97682C5F3D496E8EA7E95B /* CourseGroupsPreview.swift */,
+				54AB40CD72F945649348302B /* CoursePeoplePreview.swift */,
+				9F90D2DC301D49EA9D05E150 /* CourseQuizzesPreview.swift */,
+				88B0F9C6F007499892FB4A10 /* CourseFilesPreview.swift */,
+				1786364236B742D4BA106494 /* CourseModulesPreview.swift */,
+				BD45A3A25E8A4ED28191E61C /* CoursePagesPreview.swift */,
+				4E34FF0072AF490DABD29A73 /* CoursePreviewSelection.swift */,
+				7C017353F7234BB0BA394280 /* EditCourseSectionsView.swift */,
+				99283065439E4C9CA98B5C02 /* CourseSectionStore.swift */,
+				F33FD4DDA69C4686B31179F9 /* CourseSectionLayout.swift */,
+				9648266545EE4184B0FB76E5 /* CourseSectionRow.swift */,
 				A3777E012D9F148300A8B00C /* CourseRepository.swift */,
 				A3777E052D9F152400A8B00C /* CourseService.swift */,
 				A373DC182D1A40EC00215019 /* Models */,
@@ -2019,6 +2052,17 @@
 				B7CC4D432D8DFF0A00254F55 /* PickerServiceViewModifier.swift in Sources */,
 				B73AE0BD2D4FB68B007094A8 /* Profile.swift in Sources */,
 				8C5A131D2F8DA17000E09B46 /* CourseOverviewView.swift in Sources */,
+				B39ACD0293FE42A49B6251A5 /* CourseGroupsPreview.swift in Sources */,
+				4D0948EA9A47496E921B2B72 /* CoursePeoplePreview.swift in Sources */,
+				AF4DD2AD41C44A8DBD2665C2 /* CourseQuizzesPreview.swift in Sources */,
+				552E2B95612B4981B89E1658 /* CourseFilesPreview.swift in Sources */,
+				C4D88206C1C8490C9E1AC66A /* CourseModulesPreview.swift in Sources */,
+				E0CD0DD2FC4B4ECEBA737C04 /* CoursePagesPreview.swift in Sources */,
+				1CD89A6D81064E7FAF4D36F8 /* CoursePreviewSelection.swift in Sources */,
+				1F5A10E5A86A4205BD15B060 /* EditCourseSectionsView.swift in Sources */,
+				F6BBECDCB24D475EA063E74E /* CourseSectionStore.swift in Sources */,
+				D4820F07FFE34E1A904D0F18 /* CourseSectionLayout.swift in Sources */,
+				C8813D5622184999941FC8F0 /* CourseSectionRow.swift in Sources */,
 				B75684F42DA5A6B2003B4A32 /* HTMLView.swift in Sources */,
 				B7D751312D3D688C00F7B8B8 /* AnnouncementRow.swift in Sources */,
 				9B801DEB2E66659D00DF4942 /* NetworkRequestRecorder.swift in Sources */,
