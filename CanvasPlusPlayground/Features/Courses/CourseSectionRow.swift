@@ -5,6 +5,7 @@ struct CourseSectionRow: View {
 
     let page: NavigationModel.CoursePage
     let course: Course
+    let gradesVM: GradesViewModel
     @Binding var expandedSections: Set<NavigationModel.CoursePage>
 
     private var isExpanded: Bool { expandedSections.contains(page) }
@@ -17,8 +18,37 @@ struct CourseSectionRow: View {
             expandable { AnnouncementOverviewView(course: course) }
         case .calendar:
             expandable { CalendarOverviewView(course: course) }
-        case .home, .syllabus, .files, .grades, .people, .groups, .quizzes, .modules, .pages:
+        case .syllabus:
+            let excerpt = CoursePreviewSelection.syllabusExcerpt(course.syllabusBody)
+            if excerpt.isEmpty {
+                plainRow
+            } else {
+                preview { Text(excerpt).lineLimit(4) }
+            }
+        case .pages:
+            preview { CoursePagesPreview(course: course) }
+        case .grades:
+            preview {
+                Text(CoursePreviewSelection.gradeSummary(score: gradesVM.currentScore, grade: gradesVM.currentGrade))
+                    .lineLimit(2)
+            }
+        case .home, .files, .people, .groups, .quizzes, .modules:
             plainRow
+        }
+    }
+
+    private func preview<Content: View>(@ViewBuilder content: () -> Content) -> some View {
+        expandable {
+            VStack(alignment: .leading, spacing: 8) {
+                content()
+                    .font(.subheadline)
+                Button(page == .syllabus ? "Open" : "See all") {
+                    navigationModel.push(.coursePage(page, course))
+                }
+                .font(.footnote)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.bottom, 12)
         }
     }
 

@@ -54,14 +54,21 @@ struct CourseOverviewView: View {
                             }
                         }
                         ForEach(visibleSections, id: \.self) { page in
-                            CourseSectionRow(page: page, course: course, expandedSections: $expandedSections)
+                            CourseSectionRow(
+                                page: page,
+                                course: course,
+                                gradesVM: gradesVM,
+                                expandedSections: $expandedSections
+                            )
                         }
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                     // Right column: grade + to-do cards
                     VStack(spacing: 16) {
-                        gradeCard
+                        if CoursePreviewSelection.showsGradeCard(pages: visibleSections) {
+                            gradeCard
+                        }
                         toDoCard
                     }
                     .frame(width: 220)
