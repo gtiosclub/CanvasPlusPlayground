@@ -52,6 +52,7 @@ struct HomeView: View {
                 SandboxDataLoader.persistSandboxData()
                 await SpotlightIndexer.shared.indexAllContent()
                 drainPendingSpotlightDeepLink()
+                await SemanticIndexer.backfill()
             } else if !StorageKeys.hasCompletedOnboarding {
                 navigationModel.showAuthorizationSheet = true
             } else if StorageKeys.needsAuthorization {
@@ -60,6 +61,7 @@ struct HomeView: View {
                 await loadCourses()
                 await SpotlightIndexer.shared.indexAllContent()
                 drainPendingSpotlightDeepLink()
+                await SemanticIndexer.backfill()
             }
         }
         .sheet(isPresented: $navigationModel.showAuthorizationSheet) {
