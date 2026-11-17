@@ -22,10 +22,21 @@ enum ICSParser {
     ) async -> [CanvasCalendarEventGroup] {
         guard let icsURL else { return [] }
 
-        guard let content = try? await fetchICSContentsFromURL(icsURL) else {
+        do {
+            return try await fetchEvents(from: icsURL, for: course)
+        } catch {
             LoggerService.main.error("Error fetching ICS contents")
             return []
         }
+    }
+
+    /// Same as `parseEvents`, but throws when the feed can't be downloaded
+    /// so callers can tell a failed feed apart from a day with no events.
+    static func fetchEvents(
+        from icsURL: URL,
+        for course: Course
+    ) async throws -> [CanvasCalendarEventGroup] {
+        let content = try await fetchICSContentsFromURL(icsURL)
 
         var events = [CanvasCalendarEvent]()
 
