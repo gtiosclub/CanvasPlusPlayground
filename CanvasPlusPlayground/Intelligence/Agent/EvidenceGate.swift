@@ -13,10 +13,11 @@ import Foundation
 /// 1. Each citation has to be evidence a tool actually returned during this run, and the record
 ///    behind it has to still exist (re-read through an `EvidenceResolver`). Citations that fail
 ///    either test are ignored. A claim with no citation left is dropped and never rendered.
-/// 2. Every date, points, score or weight the claim asserts is rechecked in Swift against the
-///    re-read records. A match passes. A mismatch becomes a conflict carrying the source value,
-///    so the UI can show a conflict card (or drop it). A value none of the cited records has is
-///    unsupported, and the claim is dropped.
+/// 2. Every date, points, score or weight the claim asserts names the record it's about, and is
+///    rechecked in Swift against that re-read record only. A check about a record that isn't
+///    among the claim's resolved citations drops the claim. A match passes. A mismatch becomes a
+///    conflict carrying the source value, so the UI can show a conflict card (or drop it). A value
+///    the record doesn't have is unsupported, and the claim is dropped.
 ///
 /// No model is involved, so the same claims and records always give the same result.
 struct EvidenceGate: Sendable {
@@ -68,6 +69,7 @@ struct EvidenceGate: Sendable {
 
         // Resolve each citation once, in the order the model gave them.
         var resolved: [Evidence] = []
+        var resolvedByID: [String: Evidence] = [:]
         var seen = Set<String>()
         for citation in claim.citations where seen.insert(citation).inserted {
             guard let ref = known[citation]?.ref,
@@ -75,6 +77,7 @@ struct EvidenceGate: Sendable {
                 continue
             }
             resolved.append(current)
+            resolvedByID[citation] = current
         }
 
         guard !resolved.isEmpty else {
@@ -83,7 +86,11 @@ struct EvidenceGate: Sendable {
 
         var mismatches: [ClaimMismatch] = []
         for check in claim.checks {
-            switch outcome(of: check, against: resolved) {
+            guard let record = resolvedByID[check.evidenceID] else {
+                return .dropped(.uncitedCheck(check))
+            }
+
+            switch outcome(of: check, against: record) {
             case .match:
                 continue
             case .mismatch(let mismatch):
@@ -102,32 +109,21 @@ struct EvidenceGate: Sendable {
         case unsupported
     }
 
-    /// A check passes if any cited record matches. It's a mismatch if at least one cited record
-    /// has the value but none match, and unsupported if no cited record has the value at all.
-    private func outcome(of check: ClaimCheck, against evidence: [Evidence]) -> CheckOutcome {
-        var firstMismatch: ClaimMismatch?
-
-        for item in evidence {
-            guard let (sourceValue, matches) = compare(check, with: item.facts) else { continue }
-
-            if matches {
-                return .match
-            } else if firstMismatch == nil {
-                firstMismatch = ClaimMismatch(check: check, sourceValue: sourceValue, evidenceID: item.id)
-            }
+    /// Whether `record` has the value `check` asserts. Unsupported if the record has no such value.
+    private func outcome(of check: ClaimCheck, against record: Evidence) -> CheckOutcome {
+        guard let (sourceValue, matches) = compare(check.assertion, with: record.facts) else {
+            return .unsupported
         }
 
-        if let firstMismatch {
-            return .mismatch(firstMismatch)
-        }
-
-        return .unsupported
+        return matches
+            ? .match
+            : .mismatch(ClaimMismatch(check: check, sourceValue: sourceValue, evidenceID: record.id))
     }
 
-    /// The record's value for `check` and whether the claim matches it, or `nil` if the record
+    /// The record's value for `assertion` and whether the claim matches it, or `nil` if the record
     /// doesn't have that value.
-    private func compare(_ check: ClaimCheck, with facts: EvidenceFacts) -> (ClaimMismatch.Value, Bool)? {
-        switch check {
+    private func compare(_ assertion: ClaimCheck.Assertion, with facts: EvidenceFacts) -> (ClaimMismatch.Value, Bool)? {
+        switch assertion {
         case let .date(field, claimed, precision):
             field.value(in: facts).map { (.date($0), datesMatch(claimed, $0, precision: precision)) }
         case .pointsPossible(let claimed):
@@ -193,7 +189,10 @@ struct DroppedClaim: Sendable {
         case noCitations
         /// None of the citations was evidence from this run whose record still exists.
         case unresolvableCitations([String])
-        /// The claim asserts a value that none of its cited records has.
+        /// A check is about a record that isn't among the claim's resolved citations (not cited,
+        /// not returned by a tool this run, or deleted since).
+        case uncitedCheck(ClaimCheck)
+        /// The claim asserts a value its record doesn't have.
         case unsupportedCheck(ClaimCheck)
     }
 

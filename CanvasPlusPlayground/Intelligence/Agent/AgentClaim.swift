@@ -21,18 +21,55 @@ struct AgentClaim: Identifiable, Hashable, Codable, Sendable {
     var checks: [ClaimCheck] = []
 }
 
-/// A value a claim asserts that the gate can recheck against the source record.
-enum ClaimCheck: Hashable, Codable, Sendable {
-    case date(ClaimDateField, Date, precision: DatePrecision = .minute)
-    case pointsPossible(Double)
-    case score(Double)
-    case weight(Double)
+/// A value a claim asserts about one specific cited record, which the gate rechecks against
+/// that record only.
+///
+/// Tying each check to a record matters for comparisons: a claim citing two assignments and
+/// saying "Problem Set 5 is due Oct 8" must match Problem Set 5's date, not whichever cited
+/// record happens to be due Oct 8.
+struct ClaimCheck: Hashable, Codable, Sendable {
+    /// The evidence id the value is about, e.g. `assignment:1234`. Must be one of the claim's citations.
+    var evidenceID: String
+    var assertion: Assertion
+
+    enum Assertion: Hashable, Codable, Sendable {
+        case date(ClaimDateField, Date, precision: DatePrecision)
+        case pointsPossible(Double)
+        case score(Double)
+        case weight(Double)
+    }
 
     enum DatePrecision: String, Hashable, Codable, Sendable {
         /// Same minute. For claims like "due at 11:59 PM".
         case minute
         /// Same calendar day. For claims like "due Friday".
         case day
+    }
+
+    init(evidenceID: String, assertion: Assertion) {
+        self.evidenceID = evidenceID
+        self.assertion = assertion
+    }
+
+    static func date(
+        _ field: ClaimDateField,
+        _ date: Date,
+        precision: DatePrecision = .minute,
+        of evidenceID: String
+    ) -> ClaimCheck {
+        ClaimCheck(evidenceID: evidenceID, assertion: .date(field, date, precision: precision))
+    }
+
+    static func pointsPossible(_ value: Double, of evidenceID: String) -> ClaimCheck {
+        ClaimCheck(evidenceID: evidenceID, assertion: .pointsPossible(value))
+    }
+
+    static func score(_ value: Double, of evidenceID: String) -> ClaimCheck {
+        ClaimCheck(evidenceID: evidenceID, assertion: .score(value))
+    }
+
+    static func weight(_ value: Double, of evidenceID: String) -> ClaimCheck {
+        ClaimCheck(evidenceID: evidenceID, assertion: .weight(value))
     }
 }
 
