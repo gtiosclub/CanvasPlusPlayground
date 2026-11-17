@@ -145,9 +145,20 @@ final class AgentRunStore {
         URL.applicationSupportDirectory.appending(path: "agent-runs.store")
     }
 
+    /// Ended runs (and their ledgers) older than this are removed when the store opens.
+    static let endedRunRetention: TimeInterval = 7 * 86_400
+
     /// - Parameter inMemory: for previews and tests.
     init(inMemory: Bool = false) {
         container = Self.makeContainer(inMemory: inMemory)
+
+        if !inMemory {
+            do {
+                try deleteEndedRuns(before: .now.addingTimeInterval(-Self.endedRunRetention))
+            } catch {
+                LoggerService.main.error("[Agent] Couldn't prune old agent runs: \(error)")
+            }
+        }
     }
 
     func save(_ snapshot: AgentRunSnapshot) throws {

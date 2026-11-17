@@ -93,10 +93,11 @@ struct AgentRunTraceView: View {
                 var input = AgentRunState()
                 try input.set(interrupt, for: AgentSampleRun.interruptKey)
 
-                try await AgentRuntime(provider: provider).start(
+                let result = try await AgentRuntime(provider: provider).start(
                     AgentSampleRun.graph(dataSource: dataSource),
                     state: input
                 )
+                errorMessage = result.budgetError?.localizedDescription
             } catch is CancellationError {
                 // Paused on purpose; it shows up in the list as resumable.
             } catch {
@@ -229,10 +230,11 @@ struct AgentRunDetailView: View {
 
             do {
                 let provider = try await AgentSampleRun.provider(dataSource: dataSource, resumingAt: run.nextNodeID)
-                try await AgentRuntime(provider: provider).resume(
+                let result = try await AgentRuntime(provider: provider).resume(
                     AgentSampleRun.graph(dataSource: dataSource),
                     runID: run.runID
                 )
+                errorMessage = result.budgetError?.localizedDescription
             } catch {
                 errorMessage = error.localizedDescription
             }

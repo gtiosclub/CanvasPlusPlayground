@@ -87,8 +87,8 @@ enum AgentSampleRun {
 
                 let brief = try await context.respond(
                     to: AgentPrompt(
-                        instructions: "Answer using only these records and cite their ids.",
-                        text: context.value(contextKey) ?? ""
+                        instructions: "Answer the student's question using only the records given, and cite their ids.",
+                        text: "Question: What's due this week across my courses?\n\nRecords:\n" + (context.value(contextKey) ?? "")
                     ),
                     generating: Brief.self
                 )

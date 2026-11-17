@@ -48,7 +48,10 @@ struct LedgerEntry: Identifiable, Codable, Hashable, Sendable {
 final class ExecutionLedger {
     static let shared = ExecutionLedger(store: .shared)
 
-    /// Entries recorded by this ledger since it was created, oldest first.
+    /// How many recent entries stay in memory. Older ones are still in the store.
+    static let maxLiveEntries = 500
+
+    /// The most recent entries recorded by this ledger (at most `maxLiveEntries`), oldest first.
     private(set) var liveEntries: [LedgerEntry] = []
 
     @ObservationIgnored private let store: AgentRunStore?
@@ -79,6 +82,9 @@ final class ExecutionLedger {
             usage: usage
         )
         liveEntries.append(entry)
+        if liveEntries.count > Self.maxLiveEntries {
+            liveEntries.removeFirst(liveEntries.count - Self.maxLiveEntries)
+        }
 
         do {
             try store?.append(entry)
