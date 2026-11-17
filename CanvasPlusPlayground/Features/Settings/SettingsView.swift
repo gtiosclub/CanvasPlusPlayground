@@ -117,6 +117,12 @@ struct SettingsView: View {
 
         Section {
             Group {
+                if #available(iOS 26.0, macOS 26.0, *) {
+                    NavigationLink("Agent Provider Probe") {
+                        AgentProviderProbeView(courseManager: courseManager)
+                    }
+                }
+
                 Button("Show Widget Showcase", systemImage: "widget.small") {
                     showWidgetShowcase = true
                 }
