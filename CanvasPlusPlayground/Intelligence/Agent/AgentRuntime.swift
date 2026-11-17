@@ -234,14 +234,19 @@ struct AgentRunResult: Sendable {
     let status: AgentRunStatus
     let state: AgentRunState
     let usage: AgentUsage
+    /// Set when the run ran out of steps, time or tokens. The status is `.failed`, but `state`
+    /// still holds whatever the nodes produced before the budget ran out.
+    var budgetError: AgentRunError? = nil
 }
 
 /// Runs an `AgentGraph` one node at a time inside an `AgentBudget`.
 ///
 /// - Budgets: steps and tokens are checked before each node and each model call. Time is enforced
-///   while a node runs: when it's up the node's task is cancelled.
+///   while a node runs: when it's up the node's task is cancelled. Running out of budget doesn't
+///   throw: the run is saved as `.failed` and returned with `budgetError` set and its partial state.
 /// - Cancellation: cancelling the task that called `start` or `resume` stops the run between
-///   nodes (or inside a node that checks for it) and saves it as `.paused`.
+///   nodes (or inside a node that checks for it), saves it as `.paused` and throws `CancellationError`,
+///   even when the node surfaced the cancellation as another error (e.g. a cancelled URL request).
 /// - Checkpoints: the state is saved after every node, so a run interrupted by the app being
 ///   suspended or killed resumes from the next node instead of starting over.
 @available(iOS 26.0, macOS 26.0, *)
@@ -402,7 +407,11 @@ final class AgentRuntime {
             snapshot.usage = context.usage
             snapshot.updatedAt = .now
 
-            if error is CancellationError {
+            // A node's network call often reports cancellation as its own error (e.g. a cancelled
+            // URL request), so the task's cancelled flag decides too.
+            let wasCancelled = error is CancellationError || Task.isCancelled
+
+            if wasCancelled {
                 // Keep `nextNodeID` so the run picks up at the node that was interrupted.
                 snapshot.status = .paused
             } else {
@@ -417,6 +426,19 @@ final class AgentRuntime {
                 runID: snapshot.runID,
                 usage: snapshot.usage
             )
+
+            if wasCancelled {
+                throw CancellationError()
+            }
+            if let runError = error as? AgentRunError, runError.isBudgetExhaustion {
+                return AgentRunResult(
+                    runID: snapshot.runID,
+                    status: snapshot.status,
+                    state: snapshot.state,
+                    usage: snapshot.usage,
+                    budgetError: runError
+                )
+            }
             throw error
         }
 
