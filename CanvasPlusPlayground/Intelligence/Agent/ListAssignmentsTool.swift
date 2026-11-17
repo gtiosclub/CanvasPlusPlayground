@@ -39,14 +39,14 @@ struct ListAssignmentsTool: AgentTool {
     func evidence(for arguments: Arguments) async throws -> [Evidence] {
         let now = now()
         let courseIDs = try await AgentReadTools.courseIDs(for: arguments.course, in: dataSource)
-        let assignments = try await AgentReadTools.collect(courseIDs) { try await dataSource.assignments(courseID: $0) }
+        let allAssignments = try await AgentReadTools.collect(courseIDs) { try await dataSource.assignments(courseID: $0) }
 
         let horizon = arguments.daysAhead.map { now.addingTimeInterval(TimeInterval(max($0, 0)) * 86_400) }
         let includePastDue = arguments.includePastDue ?? false
         let includeCompleted = arguments.includeCompleted ?? false
 
         // Drop finished work before the result cap, so it can't push out work that's still to do.
-        let assignments = includeCompleted ? assignments : assignments.filter { assignment in
+        let assignments = includeCompleted ? allAssignments : allAssignments.filter { assignment in
             assignment.facts.submissionStatus.map { !Self.completedStatuses.contains($0) } ?? true
         }
 
