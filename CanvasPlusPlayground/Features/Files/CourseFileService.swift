@@ -125,6 +125,7 @@ struct CourseFileService {
 
                 Task { @MainActor in
                     file.localURL = url
+                    SemanticIndexer.enqueue([file.indexSource(courseID: courseID)].compactMap { $0 })
                 }
 
                 return (content, url)

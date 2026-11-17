@@ -94,6 +94,7 @@ extension CacheableAPIRequest {
         }
 
         try repository.modelContext.save()
+        SemanticIndexer.enqueue(latest)
 
         return latest
     }
