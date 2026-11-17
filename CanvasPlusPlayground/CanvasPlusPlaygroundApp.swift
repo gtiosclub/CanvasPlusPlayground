@@ -95,6 +95,7 @@ struct CanvasPlusPlaygroundApp: App {
     @State private var pinnedItemsManager = PinnedItemsManager.shared
     @State private var recentItemsManager = RecentItemsManager.shared
     @State private var remindersManager = RemindersManager()
+    @State private var changeEventManager = ChangeEventManager()
 #if DEBUG
     @State private var networkRecorder = NetworkRequestRecorder.shared
 
@@ -117,8 +118,10 @@ struct CanvasPlusPlaygroundApp: App {
                     .environment(pinnedItemsManager)
                     .environment(recentItemsManager)
                     .environment(remindersManager)
+                    .environment(changeEventManager)
                     .task {
                         WidgetContext.setup(courseManager: courseManager)
+                        await loadChangeEvents()
                     }
             }
         }
@@ -174,6 +177,10 @@ struct CanvasPlusPlaygroundApp: App {
                     .environment(pinnedItemsManager)
                     .environment(recentItemsManager)
                     .environment(remindersManager)
+                    .environment(changeEventManager)
+                    .task {
+                        await loadChangeEvents()
+                    }
             }
         }
 
@@ -194,6 +201,14 @@ struct CanvasPlusPlaygroundApp: App {
             }
         }
 #endif
+    }
+
+    private func loadChangeEvents() async {
+        do {
+            try await changeEventManager.load()
+        } catch {
+            LoggerService.main.error("Failed to load change indicators: \(error)")
+        }
     }
 
     var launchFailurePage: some View {
