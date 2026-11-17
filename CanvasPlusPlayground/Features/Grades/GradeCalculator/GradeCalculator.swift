@@ -119,7 +119,8 @@ class GradeCalculator {
             calculateTotalGrade()
         }
     }
-    var totalGrade: Double = 0.0
+    /// `nil` when nothing has been scored yet, so there's no total to show.
+    var totalGrade: Double?
     var expandedAssignmentGroups: [GradeGroup: Bool] = [:]
 
     init(assignmentGroups: [AssignmentGroup]) {
@@ -248,6 +249,12 @@ class GradeCalculator {
                 "Weighted Total: \(weightedTotal), Used Weightage: \(usedWeightage)"
             )
 
+            // No group has a score yet, so there's nothing to divide by.
+            guard usedWeightage > 0 else {
+                totalGrade = nil
+                return
+            }
+
             // Adjust final grade based on used weightage.
             // Take the max of the percentage based on how much is used
             // and the weighted total in case the used weightage is less than 100%.
@@ -269,7 +276,7 @@ class GradeCalculator {
                 }
             }
 
-            totalGrade = totalPossible > 0 ? (totalPoints / totalPossible) * 100 : 0.0
+            totalGrade = totalPossible > 0 ? (totalPoints / totalPossible) * 100 : nil
         }
     }
 }
