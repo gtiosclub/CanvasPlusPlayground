@@ -1138,6 +1138,98 @@ enum SandboxData {
     // MARK: - To-Do
 
     static let dummyToDoCount = 2
+
+    // MARK: - Today
+
+    private static func makeToDoItem(
+        id: Int,
+        course: Course,
+        courseIntID: Int,
+        name: String,
+        dueHoursFromNow: Double?
+    ) -> ToDoItem {
+        var assignment = makeAssignment(
+            id: id,
+            courseIntID: courseIntID,
+            name: name,
+            groupID: 0,
+            dueDaysFromNow: (dueHoursFromNow ?? 0) / 24,
+            points: 10
+        )
+        if dueHoursFromNow == nil {
+            assignment.due_at = nil
+        }
+
+        let item = ToDoItem(
+            from: ToDoItemAPI(
+                contextType: .course,
+                courseID: courseIntID,
+                groupID: nil,
+                contextName: course.displayName,
+                type: .submitting,
+                ignoreURL: "",
+                ignorePermanentlyURL: "",
+                assignment: assignment,
+                quiz: nil,
+                htmlURL: ""
+            )
+        )
+        item.course = course
+        return item
+    }
+
+    /// To-dos for the Today screen: two overdue, three due in the next 48 hours, and two
+    /// that Today should leave out (due in four days, and no due date at all).
+    static var dummyTodayToDoItems: [ToDoItem] {
+        let course1 = dummyCourse
+        let course2 = dummyCourse2
+
+        return [
+            makeToDoItem(id: 901, course: course1, courseIntID: courseIntID, name: "Lab Report 2", dueHoursFromNow: -26),
+            makeToDoItem(id: 902, course: course2, courseIntID: courseInt2ID, name: "Reading Quiz 4", dueHoursFromNow: -3),
+            makeToDoItem(id: 903, course: course1, courseIntID: courseIntID, name: "Problem Set 5", dueHoursFromNow: 5),
+            makeToDoItem(id: 904, course: course2, courseIntID: courseInt2ID, name: "Lab 4: Persistence", dueHoursFromNow: 20),
+            makeToDoItem(id: 905, course: course1, courseIntID: courseIntID, name: "Discussion Reply", dueHoursFromNow: 40),
+            makeToDoItem(id: 906, course: course2, courseIntID: courseInt2ID, name: "Final App Pitch", dueHoursFromNow: 96),
+            makeToDoItem(id: 907, course: course1, courseIntID: courseIntID, name: "Optional Survey", dueHoursFromNow: nil)
+        ]
+    }
+
+    /// Calendar events happening today.
+    static var dummyTodayCalendarEvents: [(CanvasCalendarEvent, Course)] {
+        let course1 = dummyCourse
+        let course2 = dummyCourse2
+        let calendar = Calendar.current
+
+        func today(hour: Int, minute: Int = 0) -> Date {
+            calendar.date(bySettingHour: hour, minute: minute, second: 0, of: .now) ?? .now
+        }
+
+        return [
+            (
+                CanvasCalendarEvent(
+                    id: "sandbox-event-1",
+                    course: course1,
+                    summary: "Office Hours",
+                    startDate: today(hour: 14),
+                    endDate: today(hour: 15),
+                    location: "Klaus 1116"
+                ),
+                course1
+            ),
+            (
+                CanvasCalendarEvent(
+                    id: "sandbox-event-2",
+                    course: course2,
+                    summary: "Project Check-in",
+                    startDate: today(hour: 16, minute: 30),
+                    endDate: today(hour: 17),
+                    location: "CULC 152"
+                ),
+                course2
+            )
+        ]
+    }
 }
 
 // MARK: - TabAPI Sandbox Extension

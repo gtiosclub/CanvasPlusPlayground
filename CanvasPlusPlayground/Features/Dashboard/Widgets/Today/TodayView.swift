@@ -5,7 +5,6 @@
 //  Created by Ivan Li on 10/19/25.
 //
 
-
 import SwiftUI
 
 struct TodayView: View {
@@ -14,49 +13,16 @@ struct TodayView: View {
     @State private var dataSource = TodayDataSource()
     @State private var isLoading = false
 
-    private var todayDate: String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .full
-        return formatter.string(from: Date())
-    }
-
     var body: some View {
         List {
-            Section {
-                if !dataSource.todoItems.isEmpty {
-                    ForEach(dataSource.todoItems) { item in
-                        NavigationLink(value: dataSource.destinationView(for: item)) {
-                            TodayItemRow(item: item)
-                        }
-                    }
-                } else {
-                    Text("No to-do items")
-                        .foregroundStyle(.secondary)
-                        .font(.callout)
-                }
-            } header: {
-                Label("To-Do Items", systemImage: "checklist")
-                    .font(.headline)
-                    .foregroundStyle(.red)
+            // Overdue only shows up when there's something overdue.
+            if dataSource.state(for: .overdue) != .loaded || !dataSource.overdueItems.isEmpty {
+                section(.overdue)
             }
 
-            Section {
-                if !dataSource.calendarEventItems.isEmpty {
-                    ForEach(dataSource.calendarEventItems) { item in
-                        NavigationLink(value: dataSource.destinationView(for: item)) {
-                            TodayItemRow(item: item)
-                        }
-                    }
-                } else {
-                    Text("No calendar events")
-                        .foregroundStyle(.secondary)
-                        .font(.callout)
-                }
-            } header: {
-                Label("Calendar Events", systemImage: "calendar")
-                    .font(.headline)
-                    .foregroundStyle(.purple)
-            }
+            section(.dueSoon)
+
+            section(.calendarEvents)
         }
         .listStyle(.inset)
         .navigationTitle("Today")
@@ -73,13 +39,44 @@ struct TodayView: View {
         }
         .statusToolbarItem("Today", isVisible: isLoading)
         .overlay {
-            if dataSource.widgetData.isEmpty && !isLoading {
+            if dataSource.isEmpty {
                 ContentUnavailableView(
                     "Nothing for Today",
                     systemImage: "calendar.badge.checkmark",
-                    description: Text("You have no todos or events scheduled for today.")
+                    description: Text("Nothing is overdue or due in the next 48 hours, and you have no events today.")
                 )
             }
+        }
+    }
+
+    private func section(_ section: TodaySection) -> some View {
+        Section {
+            switch dataSource.state(for: section) {
+            case .loading:
+                ProgressView()
+                    .frame(maxWidth: .infinity)
+            case .failed(let message):
+                TodaySectionErrorRow(message: message) {
+                    Task { await loadItems() }
+                }
+            case .loaded:
+                let items = dataSource.items(in: section)
+                if items.isEmpty {
+                    Text(section.emptyMessage)
+                        .foregroundStyle(.secondary)
+                        .font(.callout)
+                } else {
+                    ForEach(items) { item in
+                        NavigationLink(value: dataSource.destinationView(for: item)) {
+                            TodayItemRow(item: item, isOverdue: section == .overdue)
+                        }
+                    }
+                }
+            }
+        } header: {
+            Label(section.title, systemImage: section.systemImage)
+                .font(.headline)
+                .foregroundStyle(section.color)
         }
     }
 
@@ -92,6 +89,7 @@ struct TodayView: View {
 
 private struct TodayItemRow: View {
     let item: ListWidgetData
+    var isOverdue = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
@@ -101,8 +99,72 @@ private struct TodayItemRow: View {
 
             Text(item.description)
                 .font(.caption)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(isOverdue ? AnyShapeStyle(.red) : AnyShapeStyle(.secondary))
         }
         .padding(.vertical, 4)
+    }
+}
+
+private struct TodaySectionErrorRow: View {
+    let message: String
+    let retry: () -> Void
+
+    var body: some View {
+        HStack {
+            Label(message, systemImage: "exclamationmark.triangle")
+                .font(.callout)
+                .foregroundStyle(.secondary)
+
+            Spacer()
+
+            Button("Retry", action: retry)
+                .buttonStyle(.borderless)
+        }
+    }
+}
+
+extension TodaySection {
+    var title: String {
+        switch self {
+        case .overdue:
+            "Overdue"
+        case .dueSoon:
+            "Due Soon"
+        case .calendarEvents:
+            "Calendar Events"
+        }
+    }
+
+    var systemImage: String {
+        switch self {
+        case .overdue:
+            "exclamationmark.circle"
+        case .dueSoon:
+            "checklist"
+        case .calendarEvents:
+            "calendar"
+        }
+    }
+
+    var color: Color {
+        switch self {
+        case .overdue:
+            .red
+        case .dueSoon:
+            .orange
+        case .calendarEvents:
+            .purple
+        }
+    }
+
+    var emptyMessage: String {
+        switch self {
+        case .overdue:
+            "Nothing overdue"
+        case .dueSoon:
+            "Nothing due in the next 48 hours"
+        case .calendarEvents:
+            "No calendar events today"
+        }
     }
 }
