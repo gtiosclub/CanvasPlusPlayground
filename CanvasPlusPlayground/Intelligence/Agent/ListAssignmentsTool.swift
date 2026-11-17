@@ -21,10 +21,17 @@ struct ListAssignmentsTool: AgentTool {
 
         @Guide(description: "Set to true to also include assignments whose due date has already passed.")
         var includePastDue: Bool?
+
+        @Guide(description: "Set to true to also include assignments that are already submitted, graded or excused.")
+        var includeCompleted: Bool?
     }
 
+    /// Statuses that mean the student has nothing left to do. Canvas only marks a submission
+    /// `late` once it's been turned in, so late work counts as done too.
+    static let completedStatuses: Set<SubmissionStatus> = [.submitted, .late, .graded, .excused]
+
     let name = "listAssignments"
-    let description = "Lists assignments with their due dates, points and scores, soonest due first."
+    let description = "Lists assignments the student still needs to do, with due dates, points, scores and submission status, soonest due first. Set includeCompleted to see finished work too."
 
     let dataSource: any AgentDataSource
     var now: @Sendable () -> Date = { .now }
@@ -32,10 +39,16 @@ struct ListAssignmentsTool: AgentTool {
     func evidence(for arguments: Arguments) async throws -> [Evidence] {
         let now = now()
         let courseIDs = try await AgentReadTools.courseIDs(for: arguments.course, in: dataSource)
-        let assignments = try await AgentReadTools.collect(courseIDs) { try await dataSource.assignments(courseID: $0) }
+        let allAssignments = try await AgentReadTools.collect(courseIDs) { try await dataSource.assignments(courseID: $0) }
 
         let horizon = arguments.daysAhead.map { now.addingTimeInterval(TimeInterval(max($0, 0)) * 86_400) }
         let includePastDue = arguments.includePastDue ?? false
+        let includeCompleted = arguments.includeCompleted ?? false
+
+        // Drop finished work before the result cap, so it can't push out work that's still to do.
+        let assignments = includeCompleted ? allAssignments : allAssignments.filter { assignment in
+            assignment.facts.submissionStatus.map { !Self.completedStatuses.contains($0) } ?? true
+        }
 
         var upcoming: [Evidence] = []
         var pastDue: [Evidence] = []

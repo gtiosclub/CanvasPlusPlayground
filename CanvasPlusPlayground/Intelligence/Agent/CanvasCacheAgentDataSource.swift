@@ -10,12 +10,16 @@ import Foundation
 /// The app's `AgentDataSource`. Reads go to the local cache first through
 /// `CanvasService.load`, and only hit the network (`syncWithAPI`) when nothing is cached,
 /// so tools are fast and work offline. Sandbox mode uses `SandboxData`, like the managers do.
+/// To-dos are the exception: they come from `ToDoListManager`, so the agent sees the same list the student does.
 @MainActor
 final class CanvasCacheAgentDataSource: AgentDataSource {
     private let courseManager: CourseManager
+    private let toDoListManager: ToDoListManager
 
-    init(courseManager: CourseManager) {
+    /// Pass the app's shared `ToDoListManager` (the one in the environment), not a new instance.
+    init(courseManager: CourseManager, toDoListManager: ToDoListManager) {
         self.courseManager = courseManager
+        self.toDoListManager = toDoListManager
     }
 
     func courses() async throws -> [Evidence] {
@@ -63,11 +67,20 @@ final class CanvasCacheAgentDataSource: AgentDataSource {
             .map { $0.evidence(courseID: courseID, courseName: course.displayName) }
     }
 
+    /// Reads `displayedToDoItems` instead of the cache. The cache keeps items the student has
+    /// already submitted, so the agent would disagree with the to-do list.
     func toDos() async throws -> [Evidence] {
-        guard !AppEnvironment.isSandbox else { return [] }
+        // Nothing has loaded the list yet (e.g. the To-Do tab was never opened), so load it now.
+        if toDoListManager.toDoItems.isEmpty && !AppEnvironment.isSandbox {
+            await toDoListManager.fetchToDoItems(courses: courseManager.activeCourses)
+        }
 
-        let toDos: [ToDoItem] = try await cacheFirst(CanvasRequest.getToDoItems(include: [.ungradedQuizzes]))
-        return toDos.map { toDo in
+        // Without this an empty list after a failed fetch would read as "nothing due".
+        if toDoListManager.toDoItems.isEmpty, let errorMessage = toDoListManager.errorMessage {
+            throw ToDoListUnavailableError(message: errorMessage)
+        }
+
+        return toDoListManager.displayedToDoItems.map { toDo in
             toDo.evidence(courseName: course(for: toDo.courseID.asString)?.displayName ?? toDo.contextName)
         }
     }
@@ -105,6 +118,12 @@ final class CanvasCacheAgentDataSource: AgentDataSource {
     }
 }
 
+struct ToDoListUnavailableError: LocalizedError {
+    let message: String
+
+    var errorDescription: String? { message }
+}
+
 // MARK: - Evidence from Canvas models
 
 extension Course {
@@ -129,9 +148,25 @@ extension Assignment {
                 // `dueDate` falls back to a placeholder when `dueAt` is missing; never pass that on as a fact.
                 dueDate: dueAt == nil ? nil : dueDate,
                 pointsPossible: pointsPossible,
-                score: submission?.score
+                score: submission?.score,
+                submissionStatus: submission?.status
             )
         )
+    }
+}
+
+extension SubmissionAPI {
+    /// One status for the agent. Excused and missing win over the rest because they change what
+    /// the student should do next; a graded late submission reads as graded.
+    var status: SubmissionStatus {
+        let state = workflow_state.flatMap(SubmissionWorkflowState.init(rawValue:))
+
+        if excused == true { return .excused }
+        if missing == true { return .missing }
+        if state == .graded { return .graded }
+        if late == true { return .late }
+        if state == .submitted || state == .pendingReview || submitted_at != nil { return .submitted }
+        return .notSubmitted
     }
 }
 
@@ -181,7 +216,8 @@ extension ToDoItem {
             facts: EvidenceFacts(
                 courseName: courseName,
                 dueDate: realDueDate,
-                pointsPossible: assignmentAPI?.points_possible
+                pointsPossible: assignmentAPI?.points_possible,
+                submissionStatus: assignmentAPI?.submission?.status
             )
         )
     }
