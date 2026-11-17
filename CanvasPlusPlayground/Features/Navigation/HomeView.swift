@@ -127,10 +127,11 @@ struct HomeView: View {
             await toDoListManager.fetchSandboxedToDoItemCount()
         } else {
             async let coursesTask: Void = courseManager.getCourses()
-            async let profileTask: Void = profileManager.getCurrentUserAndProfile()
+            async let identityTask: Void = profileManager.refreshTrackingIdentity()
+            async let profileTask: Void = profileManager.getCurrentProfile()
             async let todoTask: Void = toDoListManager.fetchToDoItemCount()
 
-            await (_, _, _) = (coursesTask, profileTask, todoTask)
+            await (_, _, _, _) = (coursesTask, identityTask, profileTask, todoTask)
         }
 
         isLoadingCourses = false

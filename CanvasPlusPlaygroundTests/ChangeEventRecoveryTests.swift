@@ -5,6 +5,9 @@ import Testing
 @MainActor
 struct ChangeEventRecoveryTests {
     @Test func failedLoadLeavesManagerUnloadedUntilRetry() async throws {
+        let loadedManager = makeManager(InMemoryChangeEventStore())
+        try await loadedManager.load()
+        let unloadedBoundary = try loadedManager.captureResetBoundary()
         let store = InMemoryChangeEventStore()
         let manager = makeManager(store)
         let item = try ChangeTestSupport.item()
@@ -12,12 +15,13 @@ struct ChangeEventRecoveryTests {
         await store.failNextLoad()
         await #expect(throws: InMemoryChangeEventStore.Failure.simulated) { try await manager.load() }
         #expect(!manager.isLoaded)
-        await #expect(throws: ChangeEventManager.ManagerError.notLoaded) { try await manager.apply(observation) }
+        await #expect(throws: ChangeEventManager.ManagerError.notLoaded) { try await manager.apply(observation, boundary: unloadedBoundary) }
         #expect(await store.saveCount == 0)
 
         try await manager.load()
+        let boundary = try manager.captureResetBoundary()
         #expect(manager.isLoaded)
-        try await manager.apply(observation)
+        try await manager.apply(observation, boundary: boundary)
         #expect(await store.saveCount == 1)
         #expect(manager.records(for: item).count == 1)
     }
@@ -28,12 +32,16 @@ struct ChangeEventRecoveryTests {
         let store = InMemoryChangeEventStore()
         let manager = makeManager(store)
         try await manager.load()
+        let boundary = try manager.captureResetBoundary()
         let item = try ChangeTestSupport.item()
-        try await manager.apply(ChangeTestSupport.observation(item, field: .pointsPossible, oldValue: .number(100), newValue: .number(125)))
+        try await manager.apply(
+            ChangeTestSupport.observation(item, field: .pointsPossible, oldValue: .number(100), newValue: .number(125)),
+            boundary: boundary
+        )
         let before = try manager.captureChanges(for: item)
         let saves = await store.saveCount
         let invalid = ChangeTestSupport.observation(item, field: .pointsPossible, oldValue: .number(125), newValue: .number(points))
-        await #expect(throws: ChangeEventManager.ManagerError.invalidState) { try await manager.apply(invalid) }
+        await #expect(throws: ChangeEventManager.ManagerError.invalidState) { try await manager.apply(invalid, boundary: boundary) }
         #expect(await store.saveCount == saves)
         #expect(try manager.captureChanges(for: item) == before)
     }
@@ -46,10 +54,11 @@ struct ChangeEventRecoveryTests {
         try corrupt.write(to: url)
         let manager = ChangeEventManager(store: JSONChangeEventStore(fileURL: url), clock: { ChangeTestSupport.time })
         try await manager.load()
+        let boundary = try manager.captureResetBoundary()
         #expect(manager.recoveryReason == .corrupt)
 
         let item = try ChangeTestSupport.item()
-        try await manager.apply(ChangeTestSupport.observation(item, oldValue: .text("A"), newValue: .text("B")))
+        try await manager.apply(ChangeTestSupport.observation(item, oldValue: .text("A"), newValue: .text("B")), boundary: boundary)
         let quarantined = try FileManager.default.contentsOfDirectory(atPath: root.path(percentEncoded: false))
             .filter { $0.hasPrefix("change-events.corrupt-") }
         #expect(quarantined.count == 1)
@@ -62,6 +71,9 @@ struct ChangeEventRecoveryTests {
     }
 
     @Test func failedQuarantineLeavesManagerUnloaded() async throws {
+        let loadedManager = makeManager(InMemoryChangeEventStore())
+        try await loadedManager.load()
+        let boundary = try loadedManager.captureResetBoundary()
         let store = InMemoryChangeEventStore(result: .empty(.corrupt))
         let manager = makeManager(store)
         await store.failNextQuarantine()
@@ -69,7 +81,7 @@ struct ChangeEventRecoveryTests {
         #expect(!manager.isLoaded)
         let item = try ChangeTestSupport.item()
         let observation = ChangeTestSupport.observation(item, oldValue: .text("A"), newValue: .text("B"))
-        await #expect(throws: ChangeEventManager.ManagerError.notLoaded) { try await manager.apply(observation) }
+        await #expect(throws: ChangeEventManager.ManagerError.notLoaded) { try await manager.apply(observation, boundary: boundary) }
         #expect(await store.saveCount == 0)
     }
 

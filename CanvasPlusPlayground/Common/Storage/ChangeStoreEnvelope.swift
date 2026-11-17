@@ -34,5 +34,23 @@ struct ChangeStoreEnvelope: Codable, Equatable, Sendable {
         let account: AccountKey
         var snapshots: [ChangeSnapshot] = []
         var records: [ChangeRecord] = []
+        var baselines: [ChangeBaseline] = []
+    }
+}
+
+extension ChangeStoreEnvelope.AccountState {
+    /// Decodes account state written before or after baselines were introduced.
+    /// - Parameters:
+    ///   - decoder: Source of the persisted account state.
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        account = try container.decode(AccountKey.self, forKey: .account)
+        snapshots = try container.decode([ChangeSnapshot].self, forKey: .snapshots)
+        records = try container.decode([ChangeRecord].self, forKey: .records)
+        if container.contains(.baselines) {
+            baselines = try container.decode([ChangeBaseline].self, forKey: .baselines)
+        } else {
+            baselines = []
+        }
     }
 }

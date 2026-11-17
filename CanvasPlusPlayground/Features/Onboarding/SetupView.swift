@@ -58,8 +58,10 @@ struct SetupView: View {
             if !isOnboarding {
                 Task {
                     StorageKeys.accessTokenValue = tempAccessKey.trimmingCharacters(in: .whitespacesAndNewlines)
-                    await courseManager.getCourses()
-                    await profileManager.getCurrentUserAndProfile()
+                    async let coursesTask: Void = courseManager.getCourses()
+                    async let identityTask: Void = profileManager.refreshTrackingIdentity()
+                    async let profileTask: Void = profileManager.getCurrentProfile()
+                    await (_, _, _) = (coursesTask, identityTask, profileTask)
                 }
             }
         }

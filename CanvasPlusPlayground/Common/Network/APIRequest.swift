@@ -23,6 +23,7 @@ protocol APIRequest {
     var contentType: String? { get }
     var forceURL: String? { get }
     var contentLength: String? { get }
+    var cachePolicy: URLRequest.CachePolicy { get }
 }
 
 protocol ArrayAPIRequest: APIRequest {
@@ -81,6 +82,8 @@ extension APIRequest {
             fatalError("Invalid URL \(url)")
         }
     }
+
+    var cachePolicy: URLRequest.CachePolicy { .useProtocolCachePolicy }
 
     var method: RequestMethod { .GET }
 

@@ -20,20 +20,24 @@ struct ChangeEventManagerTests {
         let store = InMemoryChangeEventStore()
         let manager = makeManager(store)
         try await manager.load()
+        let boundary = try manager.captureResetBoundary()
         let item = try ChangeTestSupport.item()
         let observation = ChangeObservationResult(
             snapshots: [.init(itemKey: item, displayTitle: "Essay", values: [.name: .null])],
             changes: [.init(itemKey: item, field: .name, oldValue: .text("Essay"), newValue: .null)]
         )
-        await #expect(throws: ChangeEventManager.ManagerError.invalidState) { try await manager.apply(observation) }
+        await #expect(throws: ChangeEventManager.ManagerError.invalidState) { try await manager.apply(observation, boundary: boundary) }
         #expect(await store.saveCount == 0)
     }
 
     @Test func rejectsMutationBeforeLoading() async throws {
+        let loadedManager = makeManager(InMemoryChangeEventStore())
+        try await loadedManager.load()
+        let boundary = try loadedManager.captureResetBoundary()
         let manager = makeManager(InMemoryChangeEventStore())
         let item = try ChangeTestSupport.item()
         let observation = ChangeTestSupport.observation(item, oldValue: .text("A"), newValue: .text("B"))
-        await #expect(throws: ChangeEventManager.ManagerError.self) { try await manager.apply(observation) }
+        await #expect(throws: ChangeEventManager.ManagerError.notLoaded) { try await manager.apply(observation, boundary: boundary) }
         #expect(manager.records(for: item).isEmpty)
     }
 
@@ -41,15 +45,16 @@ struct ChangeEventManagerTests {
     func recordsAndRevertsEveryField(field: ChangeField) async throws {
         let manager = makeManager(InMemoryChangeEventStore())
         try await manager.load()
+        let boundary = try manager.captureResetBoundary()
         let item = try ChangeTestSupport.item()
         let values = ChangeTestSupport.values(for: field)
-        try await manager.apply(ChangeTestSupport.observation(item, field: field, oldValue: values.old, newValue: values.new))
+        try await manager.apply(ChangeTestSupport.observation(item, field: field, oldValue: values.old, newValue: values.new), boundary: boundary)
         let record = try #require(manager.records(for: item).first)
         #expect(record.field == field)
         #expect(record.oldValue == values.old)
         #expect(record.newValue == values.new)
         #expect(record.firstDetectedAt == ChangeTestSupport.time)
-        try await manager.apply(ChangeTestSupport.observation(item, field: field, oldValue: values.new, newValue: values.old))
+        try await manager.apply(ChangeTestSupport.observation(item, field: field, oldValue: values.new, newValue: values.old), boundary: boundary)
         #expect(manager.records(for: item).isEmpty)
     }
 
@@ -57,16 +62,17 @@ struct ChangeEventManagerTests {
         let store = InMemoryChangeEventStore()
         let manager = makeManager(store)
         try await manager.load()
+        let boundary = try manager.captureResetBoundary()
         let item = try ChangeTestSupport.item()
         for (old, new) in [("A", "B"), ("B", "C"), ("C", "D")] {
-            try await manager.apply(ChangeTestSupport.observation(item, oldValue: .text(old), newValue: .text(new)))
+            try await manager.apply(ChangeTestSupport.observation(item, oldValue: .text(old), newValue: .text(new)), boundary: boundary)
         }
         let capture = try manager.captureChanges(for: item)
         #expect(capture.records.count == 1)
         #expect(capture.records.first?.oldValue == .text("A"))
         #expect(capture.records.first?.newValue == .text("D"))
         let saves = await store.saveCount
-        try await manager.apply(ChangeTestSupport.observation(item, oldValue: .text("C"), newValue: .text("D")))
+        try await manager.apply(ChangeTestSupport.observation(item, oldValue: .text("C"), newValue: .text("D")), boundary: boundary)
         #expect(try manager.captureChanges(for: item) == capture)
         #expect(await store.saveCount == saves)
     }
@@ -90,7 +96,8 @@ struct ChangeEventManagerTests {
         )
         let manager = makeManager(InMemoryChangeEventStore(result: .loaded(envelope)))
         try await manager.load()
-        try await manager.apply(ChangeTestSupport.observation(item, oldValue: .text("B"), newValue: .text("C")))
+        let boundary = try manager.captureResetBoundary()
+        try await manager.apply(ChangeTestSupport.observation(item, oldValue: .text("B"), newValue: .text("C")), boundary: boundary)
         let updated = try #require(manager.records(for: item).first)
         #expect(updated.oldValue == .text("A"))
         #expect(updated.firstDetectedAt == firstDate)
@@ -101,21 +108,23 @@ struct ChangeEventManagerTests {
     func tracksExplicitNullTransitions(field: ChangeField) async throws {
         let manager = makeManager(InMemoryChangeEventStore())
         try await manager.load()
+        let boundary = try manager.captureResetBoundary()
         let item = try ChangeTestSupport.item()
         let value = ChangeTestSupport.values(for: field).new
-        try await manager.apply(ChangeTestSupport.observation(item, field: field, oldValue: .null, newValue: value))
+        try await manager.apply(ChangeTestSupport.observation(item, field: field, oldValue: .null, newValue: value), boundary: boundary)
         #expect(manager.records(for: item).first?.oldValue == .null)
-        try await manager.apply(ChangeTestSupport.observation(item, field: field, oldValue: value, newValue: .null))
+        try await manager.apply(ChangeTestSupport.observation(item, field: field, oldValue: value, newValue: .null), boundary: boundary)
         #expect(manager.records(for: item).isEmpty)
     }
 
     @Test func acknowledgementPreservesNewerChanges() async throws {
         let manager = makeManager(InMemoryChangeEventStore())
         try await manager.load()
+        let boundary = try manager.captureResetBoundary()
         let item = try ChangeTestSupport.item()
-        try await manager.apply(ChangeTestSupport.observation(item, oldValue: .text("A"), newValue: .text("B")))
+        try await manager.apply(ChangeTestSupport.observation(item, oldValue: .text("A"), newValue: .text("B")), boundary: boundary)
         let capture = try manager.captureChanges(for: item)
-        try await manager.apply(ChangeTestSupport.observation(item, oldValue: .text("B"), newValue: .text("C")))
+        try await manager.apply(ChangeTestSupport.observation(item, oldValue: .text("B"), newValue: .text("C")), boundary: boundary)
         try await manager.acknowledge(capture)
         #expect(manager.records(for: item).first?.newValue == .text("C"))
         #expect(capture.records.first?.newValue == .text("B"))
@@ -126,19 +135,20 @@ struct ChangeEventManagerTests {
     @Test func newItemSuppressesEditsUntilAcknowledged() async throws {
         let manager = makeManager(InMemoryChangeEventStore())
         try await manager.load()
+        let boundary = try manager.captureResetBoundary()
         let item = try ChangeTestSupport.item()
         let added = ChangeTestSupport.observation(item, field: .itemAdded, oldValue: .boolean(false), newValue: .boolean(true))
         let changes = [
             ChangeObservationResult.FieldChange(itemKey: item, field: .name, oldValue: .text("Old"), newValue: .text("Essay"))
         ] + added.changes
-        try await manager.apply(.init(snapshots: added.snapshots, changes: changes))
+        try await manager.apply(.init(snapshots: added.snapshots, changes: changes), boundary: boundary)
         let capture = try manager.captureChanges(for: item)
         #expect(capture.records.map(\.field) == [.itemAdded])
-        try await manager.apply(ChangeTestSupport.observation(item, oldValue: .text("Essay"), newValue: .text("Updated")))
+        try await manager.apply(ChangeTestSupport.observation(item, oldValue: .text("Essay"), newValue: .text("Updated")), boundary: boundary)
         try await manager.acknowledge(capture)
         #expect(manager.records(for: item).map(\.field) == [.itemAdded])
         try await manager.acknowledge(manager.captureChanges(for: item))
-        try await manager.apply(ChangeTestSupport.observation(item, oldValue: .text("Updated"), newValue: .text("Final")))
+        try await manager.apply(ChangeTestSupport.observation(item, oldValue: .text("Updated"), newValue: .text("Final")), boundary: boundary)
         #expect(manager.records(for: item).map(\.field) == [.name])
         #expect(manager.records(for: item).first?.oldValue == .text("Updated"))
     }
@@ -146,18 +156,19 @@ struct ChangeEventManagerTests {
     @Test func queriesRespectAccountCourseAndDistinctItemScope() async throws {
         let manager = makeManager(InMemoryChangeEventStore())
         try await manager.load()
+        let boundary = try manager.captureResetBoundary()
         let item = try ChangeTestSupport.item()
         let otherCourse = try ChangeTestSupport.item(courseID: "456")
         let otherAccount = try ChangeTestSupport.item(userID: "999")
         for key in [item, otherCourse, otherAccount] {
-            try await manager.apply(ChangeTestSupport.observation(key, oldValue: .text("A"), newValue: .text("B")))
+            try await manager.apply(ChangeTestSupport.observation(key, oldValue: .text("A"), newValue: .text("B")), boundary: boundary)
         }
         var points = ChangeTestSupport.observation(item, field: .pointsPossible, oldValue: .number(100), newValue: .number(125))
         points = .init(
             snapshots: [.init(itemKey: item, displayTitle: "B", values: [.pointsPossible: .number(125)])],
             changes: points.changes
         )
-        try await manager.apply(points)
+        try await manager.apply(points, boundary: boundary)
         #expect(manager.records(for: item).count == 2)
         #expect(manager.records(in: "123", account: item.account).count == 2)
         #expect(manager.unseenItemCount(in: "123", account: item.account) == 1)
@@ -173,16 +184,17 @@ struct ChangeEventManagerTests {
         let store = InMemoryChangeEventStore()
         let manager = makeManager(store)
         try await manager.load()
+        let boundary = try manager.captureResetBoundary()
         let item = try ChangeTestSupport.item()
-        try await manager.apply(ChangeTestSupport.observation(item, oldValue: .text("A"), newValue: .text("B")))
+        try await manager.apply(ChangeTestSupport.observation(item, oldValue: .text("A"), newValue: .text("B")), boundary: boundary)
         let before = try manager.captureChanges(for: item)
         let committed = try await store.load()
         let update = ChangeTestSupport.observation(item, oldValue: .text("B"), newValue: .text("C"))
         await store.failNextSave()
-        await #expect(throws: InMemoryChangeEventStore.Failure.self) { try await manager.apply(update) }
+        await #expect(throws: InMemoryChangeEventStore.Failure.self) { try await manager.apply(update, boundary: boundary) }
         #expect(try manager.captureChanges(for: item) == before)
         #expect(try await store.load() == committed)
-        try await manager.apply(update)
+        try await manager.apply(update, boundary: boundary)
         #expect(manager.records(for: item).first?.newValue == .text("C"))
         await store.failNextSave()
         let capture = try manager.captureChanges(for: item)
@@ -194,19 +206,20 @@ struct ChangeEventManagerTests {
         let store = InMemoryChangeEventStore()
         let manager = makeManager(store)
         try await manager.load()
+        let boundary = try manager.captureResetBoundary()
         let item = try ChangeTestSupport.item()
-        await store.suspendNextSave()
+        let gate = try await store.suspendNextSave()
         let first = Task { @MainActor in
-            try await manager.apply(ChangeTestSupport.observation(item, oldValue: .text("A"), newValue: .text("B")))
+            try await manager.apply(ChangeTestSupport.observation(item, oldValue: .text("A"), newValue: .text("B")), boundary: boundary)
         }
-        await store.waitForSuspendedSave()
+        try await store.waitForSuspendedSave(gate)
         #expect(manager.records(for: item).isEmpty)
         let second = Task { @MainActor in
-            try await manager.apply(ChangeTestSupport.observation(item, oldValue: .text("B"), newValue: .text("C")))
+            try await manager.apply(ChangeTestSupport.observation(item, oldValue: .text("B"), newValue: .text("C")), boundary: boundary)
         }
         await Task.yield()
         #expect(manager.records(for: item).isEmpty)
-        await store.resumeSave()
+        try await store.resumeSave(gate)
         try await first.value
         try await second.value
         #expect(manager.records(for: item).count == 1)
@@ -217,8 +230,9 @@ struct ChangeEventManagerTests {
     @Test func ignoresCapturesFromAnotherGeneration() async throws {
         let manager = makeManager(InMemoryChangeEventStore())
         try await manager.load()
+        let boundary = try manager.captureResetBoundary()
         let item = try ChangeTestSupport.item()
-        try await manager.apply(ChangeTestSupport.observation(item, oldValue: .text("A"), newValue: .text("B")))
+        try await manager.apply(ChangeTestSupport.observation(item, oldValue: .text("A"), newValue: .text("B")), boundary: boundary)
         let capture = ChangeEventManager.CapturedChanges(
             itemKey: item, records: [], resetGeneration: UUID(), throughRevision: .max
         )
@@ -234,11 +248,12 @@ struct ChangeEventManagerTests {
         let store = InMemoryChangeEventStore(result: .loaded(invalid))
         let manager = makeManager(store)
         try await manager.load()
+        let boundary = try manager.captureResetBoundary()
         #expect(manager.recoveryReason == .corrupt)
         #expect(await store.quarantineCount == 1)
         #expect(manager.records(for: item).isEmpty)
         let duplicates = ChangeObservationResult(snapshots: observation.snapshots + observation.snapshots, changes: [])
-        await #expect(throws: ChangeEventManager.ManagerError.self) { try await manager.apply(duplicates) }
+        await #expect(throws: ChangeEventManager.ManagerError.self) { try await manager.apply(duplicates, boundary: boundary) }
         #expect(await store.saveCount == 0)
     }
 

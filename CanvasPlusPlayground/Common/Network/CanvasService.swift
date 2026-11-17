@@ -106,8 +106,14 @@ class CanvasService {
 
     // MARK: Repository actions
 
-    func clearStorage() {
-        repository?.modelContainer.deleteAllData()
+    /// Clears the main cache after tracking state has been reset.
+    /// - Parameters:
+    ///   - changeEventManager: The app-owned tracking manager shared with its views.
+    @MainActor
+    func clearStorage(changeEventManager: ChangeEventManager) async throws {
+        try await ChangeTrackingReset.clearCache(manager: changeEventManager) {
+            repository?.modelContainer.deleteAllData()
+        }
     }
 
     private func filterByDescriptor<T>(

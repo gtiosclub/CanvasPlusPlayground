@@ -9,6 +9,7 @@ import SwiftUI
 
 struct FocusWindowView: View {
     @Environment(CourseManager.self) private var courseManager
+    @Environment(ProfileManager.self) private var profileManager
     @State private var navigationModel = NavigationModel()
     @State private var destination: NavigationModel.Destination?
     @State private var isLoading = true
@@ -60,6 +61,7 @@ struct FocusWindowView: View {
             if courseManager.activeCourses.isEmpty {
                 await courseManager.getCourses()
             }
+            try Task.checkCancellation()
 
             switch info.destination {
             case .course(let courseID):
@@ -69,9 +71,11 @@ struct FocusWindowView: View {
                 try await loadCoursePage(coursePage: coursePage, courseID: courseID)
 
             case .assignment(let assignmentID, let courseID):
+                try await refreshIdentity()
                 try await loadAssignment(assignmentID: assignmentID, courseID: courseID)
 
             case .announcement(let announcementID, let courseID):
+                try await refreshIdentity()
                 try await loadAnnouncement(announcementID: announcementID, courseID: courseID)
 
             case .page(let pageID, let courseID):
@@ -85,12 +89,15 @@ struct FocusWindowView: View {
             case .quiz(let quizID, let courseID):
                 try await loadQuiz(quizID: quizID, courseID: courseID)
             case .allAnnouncements:
+                try await refreshIdentity()
                 destination = .allAnnouncements
             case .allToDos:
                 destination = .allToDos
             case .pinnedItems:
+                try await refreshIdentity()
                 destination = .pinnedItems
             case .recentItems:
+                try await refreshIdentity()
                 destination = .recentItems
             case .today:
                 destination = .today
@@ -100,11 +107,39 @@ struct FocusWindowView: View {
                 destination = .allCalendar
             }
         } catch {
+            guard !Task.isCancelled, !(error is CancellationError) else { return }
             errorMessage = "Failed to load content: \(error.localizedDescription)"
             LoggerService.main.error("FocusWindowView: Failed to load destination - \(error)")
         }
 
+        guard !Task.isCancelled else { return }
         isLoading = false
+    }
+
+    /// Awaits bounded identity loading and stops destination loading when the window closes.
+    private func refreshIdentity() async throws {
+        await profileManager.refreshTrackingIdentity()
+        try Task.checkCancellation()
+    }
+
+    /// Refreshes identity before a course page starts assignment or announcement loading.
+    /// - Parameters:
+    ///   - coursePage: Page about to be displayed.
+    ///   - course: Resolved course, including its home-page configuration.
+    private func refreshIdentityIfNeeded(
+        for coursePage: NavigationModel.CoursePage,
+        course: Course
+    ) async throws {
+        switch coursePage {
+        case .assignments, .grades, .announcements:
+            try await refreshIdentity()
+        case .home:
+            if course.defaultView == .assignments {
+                try await refreshIdentity()
+            }
+        default:
+            break
+        }
     }
 
     private func loadCourse(courseID: Course.ID) async throws {
@@ -128,19 +163,20 @@ struct FocusWindowView: View {
 
     private func loadCoursePage(coursePage: NavigationModel.CoursePage, courseID: Course.ID) async throws {
         if let course = courseManager.course(withID: courseID) {
+            try await refreshIdentityIfNeeded(for: coursePage, course: course)
             destination = .coursePage(coursePage, course)
             return
         }
 
+        var cachedCourse: Course?
         let courses = try await CanvasService.shared.loadAndSync(
             CanvasRequest.getCourse(id: courseID)
         ) { cachedCourses in
-            if let course = cachedCourses?.first {
-                destination = .coursePage(coursePage, course)
-            }
+            cachedCourse = cachedCourses?.first
         }
 
-        if destination == nil, let course = courses.first {
+        if let course = cachedCourse ?? courses.first {
+            try await refreshIdentityIfNeeded(for: coursePage, course: course)
             destination = .coursePage(coursePage, course)
         }
     }
