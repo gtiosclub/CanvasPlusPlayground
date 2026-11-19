@@ -12,6 +12,7 @@ struct HomeView: View {
     @Environment(ToDoListManager.self) private var toDoListManager
     @Environment(ProfileManager.self) private var profileManager
     @Environment(CourseManager.self) var courseManager
+    @Environment(RemindersManager.self) private var remindersManager
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     @State private var columnVisibility = NavigationSplitViewVisibility.all
@@ -61,6 +62,8 @@ struct HomeView: View {
                 await loadCourses()
                 await SpotlightIndexer.shared.indexAllContent()
                 drainPendingSpotlightDeepLink()
+                // Relative reminders follow due dates that moved since they were set.
+                await remindersManager.refreshRelativeReminders(dueDate: RemindersManager.cachedDueDate(in: .shared))
                 await SemanticIndexer.backfill()
             }
         }

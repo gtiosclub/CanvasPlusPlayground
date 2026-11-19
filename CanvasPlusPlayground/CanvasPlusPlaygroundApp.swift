@@ -191,6 +191,7 @@ struct CanvasPlusPlaygroundApp: App {
                     .environment(courseManager)
                     .environment(pinnedItemsManager)
                     .environment(recentItemsManager)
+                    .environment(remindersManager)
                     .frame(width: 400, height: 500)
             }
         }

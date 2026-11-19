@@ -80,6 +80,9 @@ struct CalendarEventDetailView: View {
             }
         }
         .formStyle(.grouped)
+        .toolbar {
+            ReminderButton(item: .calendarEvent(event, courseID: course?.id))
+        }
         .navigationTitle("Event")
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)

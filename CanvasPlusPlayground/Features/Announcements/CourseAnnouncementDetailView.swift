@@ -57,11 +57,14 @@ struct CourseAnnouncementDetailView: View {
             type: .announcement
         )
         .toolbar {
-            PinButton(
-                itemID: announcement.id,
-                courseID: announcement.courseId,
-                type: .announcement
-            )
+            ToolbarItemGroup {
+                PinButton(
+                    itemID: announcement.id,
+                    courseID: announcement.courseId,
+                    type: .announcement
+                )
+                ReminderButton(item: .announcement(announcement))
+            }
         }
         .openInCanvasToolbarButton(.announcement(announcement.courseId ?? "", announcement.id))
         .id(announcement.id)
