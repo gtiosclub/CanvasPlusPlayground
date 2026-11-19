@@ -15,6 +15,7 @@ struct SettingsView: View {
     @Environment(ToDoListManager.self) private var toDoListManager
 
     @State private var selectedItem: (any PickableItem)?
+    @State private var showBriefingDates = false
     @State private var selectedCourseForItemPicker: Course?
     @State private var showWidgetShowcase = false
     @State private var showAgentRuns = false
@@ -32,6 +33,18 @@ struct SettingsView: View {
             mainBody
         }
         #if DEBUG
+        .sheet(isPresented: $showBriefingDates) {
+            if #available(iOS 26.0, macOS 26.0, *) {
+                NavigationStack {
+                    BriefingConflictsView()
+                }
+                .environment(courseManager)
+                .environment(toDoListManager)
+                #if os(macOS)
+                .frame(minWidth: 480, minHeight: 560)
+                #endif
+            }
+        }
         .sheet(item: $selectedCourseForItemPicker) {
             CourseItemPicker(course: $0, selectedItem: $selectedItem)
         }
@@ -147,6 +160,11 @@ struct SettingsView: View {
                 }
                 Button("View Item Picker", systemImage: "filemenu.and.selection") {
                     selectedCourseForItemPicker = courseManager.activeCourses.first
+                }
+                if #available(iOS 26.0, macOS 26.0, *) {
+                    Button("Briefing Date Check", systemImage: "calendar.badge.exclamationmark") {
+                        showBriefingDates = true
+                    }
                 }
 
                 #if os(macOS)
