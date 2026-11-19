@@ -53,6 +53,7 @@ struct HomeView: View {
                 await SpotlightIndexer.shared.indexAllContent()
                 drainPendingSpotlightDeepLink()
                 await runBriefingIfDue()
+                await SemanticIndexer.backfill()
             } else if !StorageKeys.hasCompletedOnboarding {
                 navigationModel.showAuthorizationSheet = true
             } else if StorageKeys.needsAuthorization {
@@ -62,6 +63,7 @@ struct HomeView: View {
                 await SpotlightIndexer.shared.indexAllContent()
                 drainPendingSpotlightDeepLink()
                 await runBriefingIfDue()
+                await SemanticIndexer.backfill()
             }
         }
         .sheet(isPresented: $navigationModel.showAuthorizationSheet) {

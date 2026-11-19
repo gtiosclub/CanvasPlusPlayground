@@ -21,6 +21,27 @@ class RemindersManager: NSObject, UNUserNotificationCenterDelegate {
     }
 
     func scheduleReminder(for item: ReminderType, at date: Date) async throws {
+        let title: String
+        let body: String
+
+        switch item {
+        case .assignment(let assignment):
+            title = "REMINDER: \(assignment.name)"
+            // we want to let the user know how much time left if the assignment has a due date
+            if let dueDate = assignment.dueDate {
+                let deltaText = Date.timeDeltaString(from: dueDate, to: date)
+                body = "Assignment is due in \(deltaText)"
+            } else {
+                body = ""
+            }
+        }
+
+        try await scheduleReminder(identifier: item.reminderIdentifier, title: title, body: body, at: date)
+    }
+
+    /// Schedules a local notification. Used directly for reminders that aren't tied to a
+    /// `ReminderType`, such as ones the agent proposes and the student approves.
+    func scheduleReminder(identifier: String, title: String, body: String, at date: Date) async throws {
         if date < Date.now { // scheduling a reminder for the past
             throw ReminderSchedulingError.invalidDate
         }
@@ -32,29 +53,18 @@ class RemindersManager: NSObject, UNUserNotificationCenterDelegate {
         }
 
         let content = UNMutableNotificationContent()
-
-        switch item {
-        case .assignment(let assignment):
-            content.title = "REMINDER: \(assignment.name)"
-            // we want to let the user know how much time left if the assignment has a due date
-            if let dueDate = assignment.dueDate {
-                let deltaText = Date.timeDeltaString(from: dueDate, to: date)
-                content.body = "Assignment is due in \(deltaText)"
-            } else {
-                content.body = ""
-            }
-        }
-
+        content.title = title
+        content.body = body
         content.sound = .default
         let components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: date)
         let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
-        let request = UNNotificationRequest(identifier: item.reminderIdentifier, content: content, trigger: trigger)
+        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
 
         do {
             try await center.add(request)
             self.reminders.append(request)
 
-            LoggerService.main.debug("Scheduling a reminder \(item.reminderIdentifier) for \(date.description)")
+            LoggerService.main.debug("Scheduling a reminder \(identifier) for \(date.description)")
         } catch {
             LoggerService.main.error("Error adding notification: \(error)")
         }
