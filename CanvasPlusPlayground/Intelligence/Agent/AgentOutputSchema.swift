@@ -23,7 +23,12 @@ enum AgentOutputSchema {
     /// JSON Schema for `type`. FoundationModels adds an `x-order` key (property order) that
     /// isn't standard JSON Schema; it's removed here.
     static func jsonSchema<Output: Generable>(for type: Output.Type) throws -> Data {
-        let encoded = try JSONEncoder().encode(type.generationSchema)
+        try jsonSchema(type.generationSchema)
+    }
+
+    /// JSON Schema for any `GenerationSchema`, e.g. a tool's `parameters`.
+    static func jsonSchema(_ schema: GenerationSchema) throws -> Data {
+        let encoded = try JSONEncoder().encode(schema)
         let object = try JSONSerialization.jsonObject(with: encoded)
         return try JSONSerialization.data(withJSONObject: removingNonStandardKeys(object), options: [.sortedKeys])
     }
