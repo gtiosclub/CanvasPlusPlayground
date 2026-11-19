@@ -89,6 +89,8 @@ class NavigationModel {
         case pinnedItems
         case recentItems
         case today
+        /// "Plan my week": the 21-day workload horizon and plan (#591).
+        case crunch
         case course(Course)
         case coursePage(CoursePage, Course)
         case announcement(DiscussionTopic)
@@ -132,6 +134,8 @@ class NavigationModel {
                 RecentItemsView()
             case .today:
                 TodayView()
+            case .crunch:
+                CrunchView()
             case let .calendarEvent(event, course):
                 CalendarEventDetailView(event: event, course: course)
             case .allCalendar:
@@ -169,6 +173,7 @@ class NavigationModel {
             case .pinnedItems: "Pinned"
             case .recentItems: "Recent Items"
             case .today: "Today"
+            case .crunch: "Plan My Week"
             case .allCalendar: "Calendar"
             case .course(let c): c.displayName
             case .coursePage(let page, _): page.title

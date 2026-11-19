@@ -47,7 +47,7 @@ struct FocusWindowView: View {
             return courseID
         case .announcement(_, let courseID), .assignment(_, let courseID), .page(_, let courseID), .quiz(_, let courseID):
             return courseID
-        case .allAnnouncements, .allToDos, .recentItems, .pinnedItems, .today, .allCalendar:
+        case .allAnnouncements, .allToDos, .recentItems, .pinnedItems, .today, .crunch, .allCalendar:
             return ""
         case .calendarEvent(_, let courseID):
             return courseID ?? ""
@@ -94,6 +94,8 @@ struct FocusWindowView: View {
                 destination = .recentItems
             case .today:
                 destination = .today
+            case .crunch:
+                destination = .crunch
             case .calendarEvent(let event, let course):
                 try await loadEvent(eventID: event, course: course)
             case .allCalendar:
