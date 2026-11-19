@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8EA2BCBEE243ED1F2057639C /* CourseContractView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10DBD9B00160CA6AEFBAB64C /* CourseContractView.swift */; };
+		0EB5E4ADDA3EC5B777307FFB /* CourseContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1B461B48DE17B7146DC4D2 /* CourseContract.swift */; };
 		6B8F684A854B79BE1693E3FA /* ExamDatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0147F4067F2540586E6A9ED /* ExamDatesView.swift */; };
 		1FDD0B17AE8607215318E2BD /* ExamDateExtraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C684AEA7F9564791A5A795CE /* ExamDateExtraction.swift */; };
 		192EC0482C963ACB00AF8528 /* CourseAssignmentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192EC0472C963ACB00AF8528 /* CourseAssignmentManager.swift */; };
@@ -388,6 +390,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		10DBD9B00160CA6AEFBAB64C /* CourseContractView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseContractView.swift; sourceTree = "<group>"; };
+		1F1B461B48DE17B7146DC4D2 /* CourseContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseContract.swift; sourceTree = "<group>"; };
 		B0147F4067F2540586E6A9ED /* ExamDatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamDatesView.swift; sourceTree = "<group>"; };
 		C684AEA7F9564791A5A795CE /* ExamDateExtraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamDateExtraction.swift; sourceTree = "<group>"; };
 		0201124C6AC625FC1CD2A76A /* AgentStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AgentStore.swift; sourceTree = "<group>"; };
@@ -784,6 +788,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B5AC9F0F94D6F6AAEA6CA266 /* CourseContract */ = {
+			isa = PBXGroup;
+			children = (
+				10DBD9B00160CA6AEFBAB64C /* CourseContractView.swift */,
+				1F1B461B48DE17B7146DC4D2 /* CourseContract.swift */,
+			);
+			path = CourseContract;
+			sourceTree = "<group>";
+		};
 		8C9F04345C47A9F52A52007E /* ExamDates */ = {
 			isa = PBXGroup;
 			children = (
@@ -953,6 +966,7 @@
 		A324BA502D07963D005F53FA /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				B5AC9F0F94D6F6AAEA6CA266 /* CourseContract */,
 				8C9F04345C47A9F52A52007E /* ExamDates */,
 				8CAC2F172F79FB6900EC5FA4 /* SpotlightSearch */,
 				B7AF51612E9B30E100457E8A /* Onboarding */,
@@ -2230,6 +2244,8 @@
 				E1B4D3BE5A7D3F1453EE795A /* SemanticIndexable.swift in Sources */,
 				204FC32D5481BD71604178E2 /* SemanticIndexer.swift in Sources */,
 				23CED77DBFE1383B47A216C5 /* SearchIndex.swift in Sources */,
+				8EA2BCBEE243ED1F2057639C /* CourseContractView.swift in Sources */,
+				0EB5E4ADDA3EC5B777307FFB /* CourseContract.swift in Sources */,
 				6B8F684A854B79BE1693E3FA /* ExamDatesView.swift in Sources */,
 				1FDD0B17AE8607215318E2BD /* ExamDateExtraction.swift in Sources */,
 			);
