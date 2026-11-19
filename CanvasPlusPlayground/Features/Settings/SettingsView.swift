@@ -118,10 +118,15 @@ struct SettingsView: View {
     private var intelligenceSettings: some View {
         Section {
             Text(IntelligenceSupport.modelAvailabilityDescription)
+                .foregroundStyle(.secondary)
+            NavigationLink {
+                CloudIntelligenceSettingsView()
+            } label: {
+                LabeledContent("Cloud Intelligence", value: CloudSettings.shared.isReady ? "On" : "Off")
+            }
         } header: {
             Label("Intelligence", systemImage: "wand.and.stars")
         }
-        .foregroundStyle(.secondary)
     }
 
     #if DEBUG

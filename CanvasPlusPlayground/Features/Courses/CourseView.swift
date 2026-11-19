@@ -39,6 +39,16 @@ struct CourseView: View {
         @Bindable var navigationModel = navigationModel
 
         List(selection: $selectedCoursePage) {
+            if #available(iOS 26.0, macOS 26.0, *), pickerService == nil {
+                Section {
+                    NavigationLink {
+                        AskView(course: course)
+                    } label: {
+                        Label("Ask About This Course", systemImage: "questionmark.bubble")
+                    }
+                }
+            }
+
             Section {
                 ForEach(coursePages, id: \.self) { page in
                     NavigationLink(value: NavigationModel.Destination.coursePage(page, course)) {
