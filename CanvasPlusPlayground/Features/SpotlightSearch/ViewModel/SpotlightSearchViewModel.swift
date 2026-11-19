@@ -16,9 +16,22 @@ import SwiftData
 @Observable
 @MainActor
 class SpotlightSearchViewModel {
+    /// A record the semantic index found by meaning, with the passage that matched.
+    struct RelatedResult: Identifiable, Hashable {
+        let result: SpotlightSearchResult
+        let snippet: String
+
+        var id: String { result.id }
+    }
+
     var searchText = ""
     var results: [SpotlightSearchResult] = []
+    /// Hybrid (semantic + keyword) matches from the content index that the title search didn't
+    /// already find. Needs no language model; empty until the index has content.
+    var relatedResults: [RelatedResult] = []
     var isSearching = false
+
+    static let relatedLimit = 5
 
     var groupedResults: [(category: SearchCategory, items: [SpotlightSearchResult])] {
         Dictionary(grouping: results, by: \.category)
@@ -31,6 +44,7 @@ class SpotlightSearchViewModel {
         let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !query.isEmpty else {
             results = []
+            relatedResults = []
             return
         }
 
@@ -183,5 +197,73 @@ class SpotlightSearchViewModel {
         }
 
         results = newResults
+
+        let related = await relatedResults(for: query, excluding: Set(newResults.map(\.id)), in: context)
+        // The query changed while the index was searching; a newer search will fill this in.
+        guard !Task.isCancelled else { return }
+        relatedResults = related
+    }
+
+    // MARK: - Related content
+
+    private func relatedResults(
+        for query: String,
+        excluding shownIDs: Set<String>,
+        in context: ModelContext
+    ) async -> [RelatedResult] {
+        guard let indexer = SemanticIndexer.shared,
+              let matches = try? await indexer.hybridSearch(query, limit: Self.relatedLimit * 3) else {
+            return []
+        }
+
+        var related: [RelatedResult] = []
+        var seen = shownIDs
+
+        // Several chunks of one page can match; keep the best one per record.
+        for match in matches {
+            guard let result = Self.result(forSourceID: match.sourceID, courseID: match.courseID, in: context),
+                  seen.insert(result.id).inserted else {
+                continue
+            }
+            related.append(RelatedResult(result: result, snippet: Self.snippet(match.text)))
+            if related.count == Self.relatedLimit { break }
+        }
+
+        return related
+    }
+
+    /// The cached record behind an index `sourceID` such as `page:123` or `syllabus:456`.
+    static func result(forSourceID sourceID: String, courseID: String?, in context: ModelContext) -> SpotlightSearchResult? {
+        guard let separator = sourceID.firstIndex(of: ":") else { return nil }
+        let kind = sourceID[..<separator]
+        let id = String(sourceID[sourceID.index(after: separator)...])
+
+        switch kind {
+        case "page":
+            return first(Page.self, #Predicate { $0.id == id }, in: context).map { .page($0) }
+        case "assignment":
+            return first(Assignment.self, #Predicate { $0.id == id }, in: context).map { .assignment($0) }
+        case "quiz":
+            return first(Quiz.self, #Predicate { $0.id == id }, in: context).map { .quiz($0) }
+        case "announcement", "discussion":
+            return first(DiscussionTopic.self, #Predicate { $0.id == id }, in: context).map { .announcement($0) }
+        case "syllabus":
+            return first(Course.self, #Predicate { $0.id == id }, in: context).map { .course($0) }
+        case "file":
+            return first(File.self, #Predicate { $0.id == id }, in: context).map { .file($0, courseID: courseID ?? "") }
+        default:
+            return nil
+        }
+    }
+
+    private static func first<T: PersistentModel>(_ type: T.Type, _ predicate: Predicate<T>, in context: ModelContext) -> T? {
+        var descriptor = FetchDescriptor<T>(predicate: predicate)
+        descriptor.fetchLimit = 1
+        return try? context.fetch(descriptor).first
+    }
+
+    private static func snippet(_ text: String) -> String {
+        let collapsed = text.split(whereSeparator: \.isWhitespace).joined(separator: " ")
+        return collapsed.count > 140 ? String(collapsed.prefix(139)) + "…" : collapsed
     }
 }

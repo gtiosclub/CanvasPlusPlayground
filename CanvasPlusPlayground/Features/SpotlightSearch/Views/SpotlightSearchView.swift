@@ -93,7 +93,7 @@ struct SpotlightSearchView: View {
         Group {
             if viewModel.searchText.isEmpty {
                 recentSearchesPlaceholder
-            } else if viewModel.groupedResults.isEmpty && !viewModel.isSearching {
+            } else if viewModel.groupedResults.isEmpty && viewModel.relatedResults.isEmpty && !viewModel.isSearching {
                 ContentUnavailableView.search(text: viewModel.searchText)
                     .frame(maxHeight: 300)
             } else {
@@ -113,6 +113,35 @@ struct SpotlightSearchView: View {
                             }
                         } header: {
                             Label(group.category.displayName, systemImage: group.category.systemImage)
+                                .font(.caption)
+                                .fontDesign(.rounded)
+                                .foregroundStyle(.secondary)
+                                .textCase(.uppercase)
+                        }
+                    }
+
+                    if !viewModel.relatedResults.isEmpty {
+                        Section {
+                            ForEach(viewModel.relatedResults) { related in
+                                VStack(alignment: .leading, spacing: 2) {
+                                    SpotlightSearchRow(
+                                        result: related.result,
+                                        isSelected: related.result == selectedResult
+                                    )
+                                    Text(related.snippet)
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                        .lineLimit(2)
+                                        .padding(.leading, 40)
+                                }
+                                .tag(related.result)
+                                .onTapGesture {
+                                    selectedResult = related.result
+                                    navigateToSelected()
+                                }
+                            }
+                        } header: {
+                            Label("Related Content", systemImage: "sparkle.magnifyingglass")
                                 .font(.caption)
                                 .fontDesign(.rounded)
                                 .foregroundStyle(.secondary)
@@ -173,7 +202,7 @@ struct SpotlightSearchView: View {
     private func navigateToSelected() {
         guard let result = selectedResult else {
             // If nothing is selected but user hit Enter, select the first result
-            if let first = viewModel.groupedResults.first?.items.first {
+            if let first = allResults.first {
                 selectedResult = first
                 navigateToSelected()
             }
@@ -192,9 +221,14 @@ struct SpotlightSearchView: View {
 
     // MARK: - Keyboard Selection
 
+    /// Every row in display order: grouped title matches, then related content.
+    private var allResults: [SpotlightSearchResult] {
+        viewModel.groupedResults.flatMap(\.items) + viewModel.relatedResults.map(\.result)
+    }
+
     /// Moves the keyboard selection up or down through the flattened results list.
     private func moveSelection(by offset: Int) {
-        let allItems = viewModel.groupedResults.flatMap(\.items) // treat all entities as parallel
+        let allItems = allResults
         guard !allItems.isEmpty else { return }
 
         if let current = selectedResult,
