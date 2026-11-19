@@ -203,6 +203,13 @@ private struct NavigationBanner: View {
                     tint: .purple,
                     destination: .allCalendar
                 )
+
+                NavigationCapsule(
+                    title: "Plan My Week",
+                    systemImage: "chart.bar.xaxis",
+                    tint: .orange,
+                    destination: .crunch
+                )
             }
         }
         .scrollClipDisabled()
