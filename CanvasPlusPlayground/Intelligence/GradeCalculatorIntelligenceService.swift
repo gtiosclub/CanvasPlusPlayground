@@ -29,21 +29,21 @@ final class GradeCalculatorIntelligenceService: IntelligenceServiceProvider {
             throw IntelligenceServiceError.sessionNotAvailable
         }
 
-        let rag = RAGSystem()
+        // Paragraph chunks, ranked with the same hybrid retrieval as the semantic index:
+        // keyword matches ("Homework 20%") always, plus embeddings when the model is available.
+        let paragraphs = input.contents
+            .split(separator: "\n\n")
+            .map { String($0).trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
 
-        // Use paragraph chunks
-        input.contents.split(separator: "\n\n").forEach {
-            rag.addDocument(.init(id: UUID().uuidString, content: String($0)))
-        }
-
-        // Pick the top two relevant paragraph chunks to use for
-        // the inference
-        let relevantDocs = rag.searchRelevantDocuments(
-            for: "What are the assignment groups and their corresponding weights in this course?",
-            limit: 2
+        let relevant = await PassageRetriever.rank(
+            paragraphs,
+            for: "assignment groups categories weights percent grade breakdown homework exams quizzes",
+            limit: 2,
+            embedder: await PassageRetriever.loadEmbedder()
         )
 
-        let context = relevantDocs.map { $0.content }.joined(separator: " ")
+        let context = relevant.map { paragraphs[$0] }.joined(separator: " ")
 
         let response = try await session.respond(to: Prompt {
             """

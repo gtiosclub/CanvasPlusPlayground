@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		06D1F802B192D3249BCEF5F6 /* LexicalIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BF17C47EECC696DAD4E380 /* LexicalIndex.swift */; };
 		192EC0482C963ACB00AF8528 /* CourseAssignmentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192EC0472C963ACB00AF8528 /* CourseAssignmentManager.swift */; };
 		192EC04A2C963B9000AF8528 /* AssignmentAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192EC0492C963B9000AF8528 /* AssignmentAPI.swift */; };
 		192EC04C2C963EE600AF8528 /* CourseAssignmentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192EC04B2C963EE600AF8528 /* CourseAssignmentsView.swift */; };
@@ -202,7 +203,6 @@
 		B72D82C12E4B503B00BA1DAD /* AnnouncementSummaryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72D82C02E4B503300BA1DAD /* AnnouncementSummaryService.swift */; };
 		B72D82FE2E4B904100BA1DAD /* IntelligenceServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72D82FD2E4B903C00BA1DAD /* IntelligenceServiceProvider.swift */; };
 		B72D83002E4F7A3300BA1DAD /* IntelligenceServiceProvider+SystemPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72D82FF2E4F7A2B00BA1DAD /* IntelligenceServiceProvider+SystemPrompt.swift */; };
-		B72D83022E4F853300BA1DAD /* RAGSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72D83012E4F853300BA1DAD /* RAGSystem.swift */; };
 		B72D83042E4F860700BA1DAD /* GradeCalculatorIntelligenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72D83032E4F85EF00BA1DAD /* GradeCalculatorIntelligenceService.swift */; };
 		B72EA5702D5689B20013070E /* QuickLookPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72EA56F2D5689B20013070E /* QuickLookPreview.swift */; };
 		B733340D2E916FEB0011E8A9 /* AllToDosWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B733340C2E916FE50011E8A9 /* AllToDosWidget.swift */; };
@@ -386,6 +386,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		13BF17C47EECC696DAD4E380 /* LexicalIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LexicalIndex.swift; sourceTree = "<group>"; };
 		0201124C6AC625FC1CD2A76A /* AgentStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AgentStore.swift; sourceTree = "<group>"; };
 		1037B0D6AD89C331C3B01C4F /* TextChunk.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TextChunk.swift; sourceTree = "<group>"; };
 		1228889D308573FE00023F47 /* CanvasPlusPlaygroundTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CanvasPlusPlaygroundTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -585,7 +586,6 @@
 		B72D82C02E4B503300BA1DAD /* AnnouncementSummaryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementSummaryService.swift; sourceTree = "<group>"; };
 		B72D82FD2E4B903C00BA1DAD /* IntelligenceServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntelligenceServiceProvider.swift; sourceTree = "<group>"; };
 		B72D82FF2E4F7A2B00BA1DAD /* IntelligenceServiceProvider+SystemPrompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IntelligenceServiceProvider+SystemPrompt.swift"; sourceTree = "<group>"; };
-		B72D83012E4F853300BA1DAD /* RAGSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGSystem.swift; sourceTree = "<group>"; };
 		B72D83032E4F85EF00BA1DAD /* GradeCalculatorIntelligenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradeCalculatorIntelligenceService.swift; sourceTree = "<group>"; };
 		B72EA56F2D5689B20013070E /* QuickLookPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookPreview.swift; sourceTree = "<group>"; };
 		B733340C2E916FE50011E8A9 /* AllToDosWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllToDosWidget.swift; sourceTree = "<group>"; };
@@ -1473,7 +1473,6 @@
 				B72D82FD2E4B903C00BA1DAD /* IntelligenceServiceProvider.swift */,
 				B72D82FF2E4F7A2B00BA1DAD /* IntelligenceServiceProvider+SystemPrompt.swift */,
 				B72D82C02E4B503300BA1DAD /* AnnouncementSummaryService.swift */,
-				B72D83012E4F853300BA1DAD /* RAGSystem.swift */,
 				B72D83032E4F85EF00BA1DAD /* GradeCalculatorIntelligenceService.swift */,
 				5DC33DEFCBDB7D24A06A7DFC /* Agent */,
 				CE9CE7137C5C035ACDB7B921 /* Index */,
@@ -1675,6 +1674,7 @@
 		CE9CE7137C5C035ACDB7B921 /* Index */ = {
 			isa = PBXGroup;
 			children = (
+				13BF17C47EECC696DAD4E380 /* LexicalIndex.swift */,
 				1037B0D6AD89C331C3B01C4F /* TextChunk.swift */,
 				264D096CABDE188FFFE48692 /* HTMLTextNormalizer.swift */,
 				41A9239BC87FBD0B487E6343 /* Chunker.swift */,
@@ -1987,7 +1987,6 @@
 				B7AF516E2E9B584A00457E8A /* CompatibleGlassEffectViewModifier.swift in Sources */,
 				8CAC2F2A2F7A36A400EC5FA4 /* NotificationExtensions.swift in Sources */,
 				A372D1142D91D2B9005E94CA /* String+SFSymbols.swift in Sources */,
-				B72D83022E4F853300BA1DAD /* RAGSystem.swift in Sources */,
 				B7D193B92E7E28EC00FF4C84 /* IGCPlayground.swift in Sources */,
 				B7460A962D6CCD730069CF5B /* GradeCalculatorView.swift in Sources */,
 				A3049B5B2D0E5C18002F3166 /* QuizPermissions.swift in Sources */,
@@ -2216,6 +2215,7 @@
 				E1B4D3BE5A7D3F1453EE795A /* SemanticIndexable.swift in Sources */,
 				204FC32D5481BD71604178E2 /* SemanticIndexer.swift in Sources */,
 				23CED77DBFE1383B47A216C5 /* SearchIndex.swift in Sources */,
+				06D1F802B192D3249BCEF5F6 /* LexicalIndex.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

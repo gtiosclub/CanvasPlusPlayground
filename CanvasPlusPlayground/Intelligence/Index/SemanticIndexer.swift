@@ -71,6 +71,12 @@ actor SemanticIndexer {
     private var embedder: ChunkEmbedder?
     private var pending: Task<Report, Never>?
     private var searchCaches: [Bool: SearchCache] = [:]
+    private var lexicalCache: LexicalCache?
+
+    private struct LexicalCache {
+        let index: LexicalIndex
+        let rows: [Match]
+    }
 
     private struct SearchCache {
         let index: SearchIndex
@@ -100,6 +106,7 @@ actor SemanticIndexer {
         stale.forEach(modelContext.delete)
         try modelContext.save()
         searchCaches.removeAll()
+        lexicalCache = nil
     }
 
     /// - Returns: Chunk counts and payload bytes per course, plus the store's size on disk.
@@ -130,7 +137,16 @@ actor SemanticIndexer {
     func search(_ query: String, courseID: String? = nil, limit: Int = 5, meanCentered: Bool = true) async throws -> [Match] {
         guard limit > 0, let embedder = await loadedEmbedder() else { return [] }
         _ = await pending?.value
+        return try await semanticMatches(query, courseID: courseID, limit: limit, meanCentered: meanCentered, embedder: embedder)
+    }
 
+    private func semanticMatches(
+        _ query: String,
+        courseID: String?,
+        limit: Int,
+        meanCentered: Bool,
+        embedder: ChunkEmbedder
+    ) async throws -> [Match] {
         let queryChunk = TextChunk(sourceID: "query", ordinal: 0, headingPath: [], text: query)
         guard let queryVector = Self.mean(try await embedder.vectors(for: queryChunk)) else { return [] }
 
@@ -142,6 +158,71 @@ actor SemanticIndexer {
                 let row = cache.rows[index]
                 return Match(sourceID: row.sourceID, courseID: row.courseID, ordinal: row.ordinal, headingPath: row.headingPath, text: row.text, score: score)
             }
+    }
+
+    /// Semantic and keyword (BM25) search fused with reciprocal-rank fusion, so exact tokens like
+    /// "CS 1331" or "Lab 2" stay findable next to meaning-based matches.
+    ///
+    /// Meant for interactive search, so it never waits: it doesn't wait for an indexing run in
+    /// progress, and it only uses semantic matches once the embedding model has been loaded
+    /// (by indexing or `search`). Until then it returns keyword results alone.
+    ///
+    /// - Parameters:
+    ///   - query: Free-text question or keywords.
+    ///   - courseID: Restricts results to one course; nil searches everything.
+    ///   - limit: Maximum number of matches.
+    /// - Returns: Best first. `score` is the fused RRF score, only meaningful for ordering.
+    func hybridSearch(_ query: String, courseID: String? = nil, limit: Int = 5) async throws -> [Match] {
+        guard limit > 0 else { return [] }
+
+        // Each list is deeper than `limit` so an item ranked moderately by both can still win.
+        let depth = max(limit * 4, 20)
+        let lexical = try lexicalSearch(query, courseID: courseID, limit: depth)
+        let semantic: [Match] = if let embedder {
+            (try? await semanticMatches(query, courseID: courseID, limit: depth, meanCentered: true, embedder: embedder)) ?? []
+        } else {
+            []
+        }
+
+        let key = { (match: Match) in "\(match.sourceID)#\(match.ordinal)" }
+        var byKey: [String: Match] = [:]
+        for match in semantic + lexical where byKey[key(match)] == nil {
+            byKey[key(match)] = match
+        }
+
+        return RankFusion.fuse([semantic.map(key), lexical.map(key)])
+            .prefix(limit)
+            .compactMap { fused in
+                byKey[fused.key].map {
+                    Match(sourceID: $0.sourceID, courseID: $0.courseID, ordinal: $0.ordinal, headingPath: $0.headingPath, text: $0.text, score: Float(fused.score))
+                }
+            }
+    }
+
+    /// BM25 over every stored chunk (title path plus text). Needs no model.
+    func lexicalSearch(_ query: String, courseID: String? = nil, limit: Int = 5) throws -> [Match] {
+        guard limit > 0 else { return [] }
+        let cache = try lexicalSearchCache()
+
+        return cache.index
+            .rank(query) { courseID == nil || cache.rows[$0].courseID == courseID }
+            .prefix(limit)
+            .map { index, score in
+                let row = cache.rows[index]
+                return Match(sourceID: row.sourceID, courseID: row.courseID, ordinal: row.ordinal, headingPath: row.headingPath, text: row.text, score: Float(score))
+            }
+    }
+
+    private func lexicalSearchCache() throws -> LexicalCache {
+        if let lexicalCache { return lexicalCache }
+
+        let stored = try modelContext.fetch(FetchDescriptor<IndexedChunk>())
+        let cache = LexicalCache(
+            index: LexicalIndex(documents: stored.map { ($0.headingPath + [$0.text]).joined(separator: " ") }),
+            rows: stored.map { Match(sourceID: $0.sourceID, courseID: $0.courseID, ordinal: $0.ordinal, headingPath: $0.headingPath, text: $0.text, score: 0) }
+        )
+        lexicalCache = cache
+        return cache
     }
 
     /// Scores each candidate by its best vector's cosine similarity to the query.
@@ -239,6 +320,7 @@ actor SemanticIndexer {
         save()
         if report.embedded + report.reused + report.deleted > 0 {
             searchCaches.removeAll()
+            lexicalCache = nil
         }
         return report
     }
