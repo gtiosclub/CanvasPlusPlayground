@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C484C0C61F441E7F48D40405 /* AskIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29A7628997FCB93D0BCE44CD /* AskIntent.swift */; };
+		EF8D1AF55172B21071378003 /* AskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC0E8E6741C3C2E57F3ED80 /* AskView.swift */; };
+		7552AD7A95386ED69C08E6C2 /* AskSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0441E5B83C216D6169E960AE /* AskSession.swift */; };
 		06D1F802B192D3249BCEF5F6 /* LexicalIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BF17C47EECC696DAD4E380 /* LexicalIndex.swift */; };
 		7195721CA7C1BE86C333B98D /* CloudIntelligenceSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04838F2A4A4E2E053D1915A5 /* CloudIntelligenceSettingsView.swift */; };
 		9516EB6BC97296F0A7998630 /* GeminiProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834CE556C172C28D99DD657F /* GeminiProvider.swift */; };
@@ -392,6 +395,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		29A7628997FCB93D0BCE44CD /* AskIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskIntent.swift; sourceTree = "<group>"; };
+		2BC0E8E6741C3C2E57F3ED80 /* AskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskView.swift; sourceTree = "<group>"; };
+		0441E5B83C216D6169E960AE /* AskSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskSession.swift; sourceTree = "<group>"; };
 		13BF17C47EECC696DAD4E380 /* LexicalIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LexicalIndex.swift; sourceTree = "<group>"; };
 		04838F2A4A4E2E053D1915A5 /* CloudIntelligenceSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudIntelligenceSettingsView.swift; sourceTree = "<group>"; };
 		834CE556C172C28D99DD657F /* GeminiProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeminiProvider.swift; sourceTree = "<group>"; };
@@ -792,6 +798,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8537F67CF6F515C85D2C5875 /* Ask */ = {
+			isa = PBXGroup;
+			children = (
+				29A7628997FCB93D0BCE44CD /* AskIntent.swift */,
+				2BC0E8E6741C3C2E57F3ED80 /* AskView.swift */,
+				0441E5B83C216D6169E960AE /* AskSession.swift */,
+			);
+			path = Ask;
+			sourceTree = "<group>";
+		};
 		26BF115A2E92E1D2000680D4 /* Layout */ = {
 			isa = PBXGroup;
 			children = (
@@ -952,6 +968,7 @@
 		A324BA502D07963D005F53FA /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				8537F67CF6F515C85D2C5875 /* Ask */,
 				8CAC2F172F79FB6900EC5FA4 /* SpotlightSearch */,
 				B7AF51612E9B30E100457E8A /* Onboarding */,
 				B7F375C12E85EE82008F0846 /* Dashboard */,
@@ -2233,6 +2250,9 @@
 				E1B4D3BE5A7D3F1453EE795A /* SemanticIndexable.swift in Sources */,
 				204FC32D5481BD71604178E2 /* SemanticIndexer.swift in Sources */,
 				23CED77DBFE1383B47A216C5 /* SearchIndex.swift in Sources */,
+				C484C0C61F441E7F48D40405 /* AskIntent.swift in Sources */,
+				EF8D1AF55172B21071378003 /* AskView.swift in Sources */,
+				7552AD7A95386ED69C08E6C2 /* AskSession.swift in Sources */,
 				06D1F802B192D3249BCEF5F6 /* LexicalIndex.swift in Sources */,
 				7195721CA7C1BE86C333B98D /* CloudIntelligenceSettingsView.swift in Sources */,
 				9516EB6BC97296F0A7998630 /* GeminiProvider.swift in Sources */,

@@ -42,6 +42,8 @@ enum EvidenceKind: String, Codable, Sendable, CaseIterable {
     case calendarEvent = "event"
     case toDo = "todo"
     case file
+    /// A chunk of course content from the semantic index (a page, announcement, syllabus…).
+    case passage
 }
 
 /// A typed reference to the record behind a piece of evidence.
@@ -56,6 +58,8 @@ enum EvidenceRef: Hashable, Codable, Sendable {
     case calendarEvent(uid: String, courseID: String)
     case toDo(id: String, courseID: String?)
     case file(id: String, courseID: String)
+    /// Chunk `ordinal` of an indexed source such as `page:123`. `recordID` is `page:123#2`.
+    case passage(sourceID: String, ordinal: Int, courseID: String?)
 
     var kind: EvidenceKind {
         switch self {
@@ -71,6 +75,8 @@ enum EvidenceRef: Hashable, Codable, Sendable {
             .toDo
         case .file:
             .file
+        case .passage:
+            .passage
         }
     }
 
@@ -84,6 +90,8 @@ enum EvidenceRef: Hashable, Codable, Sendable {
             id
         case .calendarEvent(let uid, _):
             uid
+        case let .passage(sourceID, ordinal, _):
+            "\(sourceID)#\(ordinal)"
         }
     }
 
@@ -96,7 +104,7 @@ enum EvidenceRef: Hashable, Codable, Sendable {
              .calendarEvent(_, let courseID),
              .file(_, let courseID):
             courseID
-        case .toDo(_, let courseID):
+        case .toDo(_, let courseID), .passage(_, _, let courseID):
             courseID
         }
     }

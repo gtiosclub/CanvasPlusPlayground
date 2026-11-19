@@ -72,7 +72,7 @@ final class AppActionExecutor: ActionExecutor {
             .file
         case .calendarEvent:
             .calendarEvent
-        case .course, .toDo:
+        case .course, .toDo, .passage:
             nil
         }
     }
