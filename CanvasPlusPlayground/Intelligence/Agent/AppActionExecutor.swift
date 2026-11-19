@@ -67,7 +67,8 @@ final class AppActionExecutor: ActionExecutor {
         case let .announcement(id, courseID): .announcement(id: id, courseID: courseID)
         case let .calendarEvent(uid, courseID): .calendarEvent(uid: uid, courseID: courseID)
         case let .toDo(id, _): .toDo(id: id)
-        case .course, .file: .personal
+        // Courses, files and anything added later: a reminder that isn't tied to an item.
+        default: .personal
         }
     }
 
