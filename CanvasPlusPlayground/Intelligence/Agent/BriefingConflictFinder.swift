@@ -77,6 +77,8 @@ final class BriefingConflictFinder {
     private(set) var isRunning = false
     /// Which tier did the extraction in the last run.
     private(set) var lastTier: AgentTier?
+    /// How long the last run took, to see whether it fits a background refresh (#588).
+    private(set) var lastRunDuration: Duration?
 
     /// Only announcements posted this recently are read.
     var lookback: TimeInterval = 14 * 86_400
@@ -110,7 +112,13 @@ final class BriefingConflictFinder {
     ) async -> BriefingReport {
         guard !isRunning else { return report ?? BriefingReport() }
         isRunning = true
-        defer { isRunning = false }
+        let clock = ContinuousClock()
+        let started = clock.now
+        defer {
+            isRunning = false
+            lastRunDuration = clock.now - started
+            LoggerService.main.debug("[Briefing] Run took \(String(describing: self.lastRunDuration ?? .zero))")
+        }
 
         let provider = provider ?? AgentModelRouter().provider()
         let extractor = AnnouncementDateExtractor(provider: provider)

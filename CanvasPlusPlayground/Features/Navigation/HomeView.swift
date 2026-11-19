@@ -13,6 +13,7 @@ struct HomeView: View {
     @Environment(ProfileManager.self) private var profileManager
     @Environment(CourseManager.self) var courseManager
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(\.scenePhase) private var scenePhase
 
     @State private var columnVisibility = NavigationSplitViewVisibility.all
     @State private var isLoadingCourses = false
@@ -106,6 +107,11 @@ struct HomeView: View {
             .keyboardShortcut("k", modifiers: .command)
             .hidden()
         }
+        // Coming back to the app re-checks announcements (at most every few hours).
+        .onChange(of: scenePhase) { _, phase in
+            guard phase == .active, !courseManager.activeCourses.isEmpty else { return }
+            Task { await runBriefingIfDue() }
+        }
         .onReceive(NotificationCenter.default.publisher(for: .openSpotlightDeepLink)) { notification in
             guard let identifier = notification.userInfo?[SpotlightDeepLinkUserInfoKey.identifier] as? String else {
                 return
@@ -144,6 +150,7 @@ struct HomeView: View {
 
         let dataSource = CanvasCacheAgentDataSource(courseManager: courseManager, toDoListManager: toDoListManager)
         await BriefingConflictFinder.shared.runIfDue(source: CanvasBriefingSource(dataSource: dataSource))
+        await BriefingFeed.shared.rebuild(courseManager: courseManager, toDoListManager: toDoListManager)
     }
 }
 
