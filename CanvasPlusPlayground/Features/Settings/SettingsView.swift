@@ -64,6 +64,7 @@ struct SettingsView: View {
     private var mainBody: some View {
         Form {
             loginSettings
+            remindersSettings
             recentItemsSettings
             if #available(macOS 26.0, iOS 26.0, *) {
                 intelligenceSettings
@@ -90,6 +91,20 @@ struct SettingsView: View {
             }
         } header: {
             Label("Login", systemImage: "lock.fill")
+        }
+    }
+
+    private var remindersSettings: some View {
+        Section {
+            NavigationLink {
+                MyRemindersView()
+            } label: {
+                Label("My Reminders", systemImage: "bell.badge")
+            }
+        } header: {
+            Label("Reminders", systemImage: "bell")
+        } footer: {
+            Text("Reminders you set only notify you. They never change anything on Canvas.")
         }
     }
 

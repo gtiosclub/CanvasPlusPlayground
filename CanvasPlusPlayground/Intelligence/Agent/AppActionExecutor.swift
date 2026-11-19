@@ -30,12 +30,11 @@ final class AppActionExecutor: ActionExecutor {
 
         switch action.kind {
         case .reminder(let date):
-            try await remindersManager.scheduleReminder(
-                // Unique per proposal, so this can't replace a reminder the student set by hand.
-                identifier: "agent-\(target.id)-\(action.id.uuidString)",
-                title: "REMINDER: \(target.title)",
-                body: target.facts.dueDate.map { "Due in \(Date.timeDeltaString(from: $0, to: date))" } ?? "",
-                at: date
+            // A new reminder of its own, so it adds to (never replaces) ones the student set by hand,
+            // and shows up in My Reminders like any other.
+            try await remindersManager.add(
+                PersonalReminder(id: action.id, target: Self.reminderTarget(for: target.ref), title: target.title, timing: .absolute(date)),
+                dueDate: target.facts.dueDate
             )
 
         case .pin:
@@ -59,6 +58,17 @@ final class AppActionExecutor: ActionExecutor {
 
             await toDoListManager.ignoreToDoItem(item)
             toDoListManager.toDoItems.remove(item)
+        }
+    }
+
+    static func reminderTarget(for ref: EvidenceRef) -> PersonalReminder.Target {
+        switch ref {
+        case let .assignment(id, courseID): .assignment(id: id, courseID: courseID)
+        case let .announcement(id, courseID): .announcement(id: id, courseID: courseID)
+        case let .calendarEvent(uid, courseID): .calendarEvent(uid: uid, courseID: courseID)
+        case let .toDo(id, _): .toDo(id: id)
+        // Courses, files and anything added later: a reminder that isn't tied to an item.
+        default: .personal
         }
     }
 

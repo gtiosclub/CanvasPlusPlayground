@@ -116,6 +116,7 @@ struct ToDoListView: View {
 private struct ToDoItemRow: View {
     @Environment(ToDoListManager.self) private var listManager
     @Environment(NavigationModel.self) private var navigationModel
+    @State private var showReminder = false
 
     let item: ToDoItem
     let onIgnoreItem: () -> Void
@@ -145,10 +146,19 @@ private struct ToDoItemRow: View {
                 }
             }
 
+            Button("Remind Me…", systemImage: "bell") { showReminder = true }
+
             ignoreItemButton
         }
         .swipeActions(edge: .trailing) {
             ignoreItemButton
+        }
+        .swipeActions(edge: .leading) {
+            Button("Remind Me", systemImage: "bell") { showReminder = true }
+                .tint(.orange)
+        }
+        .sheet(isPresented: $showReminder) {
+            ReminderEditorSheet(context: .item(.toDo(item)))
         }
     }
 

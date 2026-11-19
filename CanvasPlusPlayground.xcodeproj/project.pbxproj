@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5273BEE87837199C9379ED21 /* MyRemindersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E6A3A5A7952DDDEC2F80EB /* MyRemindersView.swift */; };
+		B62B780181E0A41C41FBFB91 /* PersonalReminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766B628566B52D9A04290043 /* PersonalReminder.swift */; };
 		192EC0482C963ACB00AF8528 /* CourseAssignmentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192EC0472C963ACB00AF8528 /* CourseAssignmentManager.swift */; };
 		192EC04A2C963B9000AF8528 /* AssignmentAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192EC0492C963B9000AF8528 /* AssignmentAPI.swift */; };
 		192EC04C2C963EE600AF8528 /* CourseAssignmentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192EC04B2C963EE600AF8528 /* CourseAssignmentsView.swift */; };
@@ -386,6 +388,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		29E6A3A5A7952DDDEC2F80EB /* MyRemindersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRemindersView.swift; sourceTree = "<group>"; };
+		766B628566B52D9A04290043 /* PersonalReminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalReminder.swift; sourceTree = "<group>"; };
 		0201124C6AC625FC1CD2A76A /* AgentStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AgentStore.swift; sourceTree = "<group>"; };
 		1037B0D6AD89C331C3B01C4F /* TextChunk.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TextChunk.swift; sourceTree = "<group>"; };
 		1228889D308573FE00023F47 /* CanvasPlusPlaygroundTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CanvasPlusPlaygroundTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -871,6 +875,8 @@
 		9BF228C62D6CD1DF000676F2 /* Reminders */ = {
 			isa = PBXGroup;
 			children = (
+				29E6A3A5A7952DDDEC2F80EB /* MyRemindersView.swift */,
+				766B628566B52D9A04290043 /* PersonalReminder.swift */,
 				9BF228C72D6CD1EB000676F2 /* RemindersManager.swift */,
 				9B6D4F7F2D6E48340033044F /* ReminderButton.swift */,
 			);
@@ -2216,6 +2222,8 @@
 				E1B4D3BE5A7D3F1453EE795A /* SemanticIndexable.swift in Sources */,
 				204FC32D5481BD71604178E2 /* SemanticIndexer.swift in Sources */,
 				23CED77DBFE1383B47A216C5 /* SearchIndex.swift in Sources */,
+				5273BEE87837199C9379ED21 /* MyRemindersView.swift in Sources */,
+				B62B780181E0A41C41FBFB91 /* PersonalReminder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
