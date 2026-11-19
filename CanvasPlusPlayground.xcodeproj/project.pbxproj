@@ -8,6 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		06D1F802B192D3249BCEF5F6 /* LexicalIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BF17C47EECC696DAD4E380 /* LexicalIndex.swift */; };
+		7195721CA7C1BE86C333B98D /* CloudIntelligenceSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04838F2A4A4E2E053D1915A5 /* CloudIntelligenceSettingsView.swift */; };
+		9516EB6BC97296F0A7998630 /* GeminiProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834CE556C172C28D99DD657F /* GeminiProvider.swift */; };
+		0BA3F0B349E9F1FEC102EDF1 /* CloudEgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F327267A2BFE94FCB3BCB94 /* CloudEgress.swift */; };
+		A7956BDDA7F11F9ED44C93BF /* GeminiAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E196D1A16E18D056B3CBFC /* GeminiAPI.swift */; };
+		6EB9B72D90A1ABACD1AC7FD8 /* EgressRedactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD43F604ECBE5018383370B /* EgressRedactor.swift */; };
+		FE867C3AB63648747ED710BB /* CloudSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5E377FFB47D2D0A6A68695 /* CloudSettings.swift */; };
 		192EC0482C963ACB00AF8528 /* CourseAssignmentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192EC0472C963ACB00AF8528 /* CourseAssignmentManager.swift */; };
 		192EC04A2C963B9000AF8528 /* AssignmentAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192EC0492C963B9000AF8528 /* AssignmentAPI.swift */; };
 		192EC04C2C963EE600AF8528 /* CourseAssignmentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192EC04B2C963EE600AF8528 /* CourseAssignmentsView.swift */; };
@@ -387,6 +393,12 @@
 
 /* Begin PBXFileReference section */
 		13BF17C47EECC696DAD4E380 /* LexicalIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LexicalIndex.swift; sourceTree = "<group>"; };
+		04838F2A4A4E2E053D1915A5 /* CloudIntelligenceSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudIntelligenceSettingsView.swift; sourceTree = "<group>"; };
+		834CE556C172C28D99DD657F /* GeminiProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeminiProvider.swift; sourceTree = "<group>"; };
+		4F327267A2BFE94FCB3BCB94 /* CloudEgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudEgress.swift; sourceTree = "<group>"; };
+		B5E196D1A16E18D056B3CBFC /* GeminiAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeminiAPI.swift; sourceTree = "<group>"; };
+		8BD43F604ECBE5018383370B /* EgressRedactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EgressRedactor.swift; sourceTree = "<group>"; };
+		4D5E377FFB47D2D0A6A68695 /* CloudSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudSettings.swift; sourceTree = "<group>"; };
 		0201124C6AC625FC1CD2A76A /* AgentStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AgentStore.swift; sourceTree = "<group>"; };
 		1037B0D6AD89C331C3B01C4F /* TextChunk.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TextChunk.swift; sourceTree = "<group>"; };
 		1228889D308573FE00023F47 /* CanvasPlusPlaygroundTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CanvasPlusPlaygroundTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1596,6 +1608,7 @@
 		B7D95DB52D0A8D6A002AD955 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				04838F2A4A4E2E053D1915A5 /* CloudIntelligenceSettingsView.swift */,
 				B7D95DB62D0A8D75002AD955 /* SettingsView.swift */,
 			);
 			path = Settings;
@@ -1700,6 +1713,11 @@
 		5DC33DEFCBDB7D24A06A7DFC /* Agent */ = {
 			isa = PBXGroup;
 			children = (
+				834CE556C172C28D99DD657F /* GeminiProvider.swift */,
+				4F327267A2BFE94FCB3BCB94 /* CloudEgress.swift */,
+				B5E196D1A16E18D056B3CBFC /* GeminiAPI.swift */,
+				8BD43F604ECBE5018383370B /* EgressRedactor.swift */,
+				4D5E377FFB47D2D0A6A68695 /* CloudSettings.swift */,
 				11046ED5D2AE7F0A82590071 /* Evidence.swift */,
 				8D749938D40828AD92D7475F /* AgentClaim.swift */,
 				B47A9CFA5173F8B5BE50DEAC /* EvidenceGate.swift */,
@@ -2216,6 +2234,12 @@
 				204FC32D5481BD71604178E2 /* SemanticIndexer.swift in Sources */,
 				23CED77DBFE1383B47A216C5 /* SearchIndex.swift in Sources */,
 				06D1F802B192D3249BCEF5F6 /* LexicalIndex.swift in Sources */,
+				7195721CA7C1BE86C333B98D /* CloudIntelligenceSettingsView.swift in Sources */,
+				9516EB6BC97296F0A7998630 /* GeminiProvider.swift in Sources */,
+				0BA3F0B349E9F1FEC102EDF1 /* CloudEgress.swift in Sources */,
+				A7956BDDA7F11F9ED44C93BF /* GeminiAPI.swift in Sources */,
+				6EB9B72D90A1ABACD1AC7FD8 /* EgressRedactor.swift in Sources */,
+				FE867C3AB63648747ED710BB /* CloudSettings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

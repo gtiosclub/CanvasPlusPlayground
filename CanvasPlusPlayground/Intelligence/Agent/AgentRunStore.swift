@@ -232,6 +232,15 @@ final class AgentRunStore {
         return try context.fetch(descriptor).compactMap { try? $0.entry() }
     }
 
+    /// Every entry recorded at or after `date`, across all runs, oldest first.
+    func ledgerEntries(since date: Date) throws -> [LedgerEntry] {
+        let descriptor = FetchDescriptor<AgentLedgerRecord>(
+            predicate: #Predicate { $0.timestamp >= date },
+            sortBy: [SortDescriptor(\.timestamp)]
+        )
+        return try context.fetch(descriptor).compactMap { try? $0.entry() }
+    }
+
     func ledgerEntryCount(runID: UUID) throws -> Int {
         try context.fetchCount(FetchDescriptor<AgentLedgerRecord>(predicate: #Predicate { $0.runID == runID }))
     }
