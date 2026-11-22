@@ -3,6 +3,7 @@
 //  CanvasPlusPlayground
 //
 
+import SwiftData
 import SwiftUI
 
 /// The floating assistant, pinned to the bottom-right corner.
@@ -25,6 +26,7 @@ struct AgentOrbOverlay: View {
         VStack(alignment: .trailing, spacing: 12) {
             if model.mode == .chat {
                 AssistantChatCard(model: model)
+                    .environment(model)
                     .frame(width: cardWidth)
                     .frame(maxHeight: 560)
                     .transition(.asymmetric(
@@ -49,6 +51,16 @@ struct AgentOrbOverlay: View {
 
                 if model.mode != .chat {
                     AgentOrb(isActive: model.mode != .idle, isListening: model.voice.isListening)
+                        .overlay(alignment: .topTrailing) {
+                            if model.hasConversation && model.mode == .idle {
+                                Circle()
+                                    .fill(.blue)
+                                    .frame(width: 11, height: 11)
+                                    .overlay(Circle().strokeBorder(.white, lineWidth: 2))
+                                    .transition(.scale.combined(with: .opacity))
+                                    .accessibilityLabel("Conversation in progress")
+                            }
+                        }
                         // Long press wins over tap, so holding never also opens the text field.
                         .gesture(
                             LongPressGesture(minimumDuration: 0.35)
@@ -216,7 +228,7 @@ struct SuggestionChip: View {
             .background(.regularMaterial, in: .rect(cornerRadius: 10, style: .continuous))
             .scaleEffect(isHovered ? 1.03 : 1, anchor: .trailing)
         }
-        .buttonStyle(.plain)
+        .buttonStyle(AssistantPressStyle())
         .onHover { hovering in
             withAnimation(.spring(response: 0.25, dampingFraction: 0.6)) { isHovered = hovering }
         }
@@ -558,9 +570,11 @@ struct BlockView: View {
 @available(iOS 26.0, macOS 26.0, *)
 private struct RecordRow: View {
     @Environment(CourseManager.self) private var courseManager
+    @Environment(AssistantModel.self) private var model
     let evidence: Evidence
 
     var body: some View {
+        let isOpening = model.openingID == evidence.id
         Button(action: open) {
             HStack(alignment: .bottom) {
                 VStack(alignment: .leading, spacing: 2) {
@@ -576,10 +590,12 @@ private struct RecordRow: View {
             .padding(.horizontal, 10)
             .padding(.vertical, 7)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color.secondary.opacity(0.1), in: .rect(cornerRadius: 6))
+            .background(isOpening ? Color.accentColor.opacity(0.18) : Color.secondary.opacity(0.1), in: .rect(cornerRadius: 6))
+            .overlay(RoundedRectangle(cornerRadius: 6).strokeBorder(Color.accentColor.opacity(isOpening ? 0.6 : 0), lineWidth: 1.5))
             .contentShape(.rect)
         }
-        .buttonStyle(.plain)
+        .buttonStyle(AssistantPressStyle())
+        .sensoryFeedback(.selection, trigger: isOpening) { _, new in new }
     }
 
     private var trailing: String {
@@ -596,18 +612,20 @@ private struct RecordRow: View {
     }
 
     private func open() {
-        AssistantNavigation.open(evidence)
+        model.open(evidence)
     }
 }
 
 @available(iOS 26.0, macOS 26.0, *)
 private struct WeekRow: View {
+    @Environment(AssistantModel.self) private var model
     let evidence: Evidence
 
     var body: some View {
         let isExam = WeekLayout.isExam(evidence)
+        let isOpening = model.openingID == evidence.id
         Button {
-            AssistantNavigation.open(evidence)
+            model.open(evidence)
         } label: {
             HStack(spacing: 12) {
                 if let start = evidence.facts.startDate {
@@ -633,9 +651,11 @@ private struct WeekRow: View {
             .padding(.horizontal, 10)
             .padding(.vertical, 8)
             .background(isExam ? Color.green.opacity(0.3) : Color.secondary.opacity(0.1), in: .rect(cornerRadius: 6))
+            .overlay(RoundedRectangle(cornerRadius: 6).strokeBorder(Color.accentColor.opacity(isOpening ? 0.6 : 0), lineWidth: 1.5))
             .contentShape(.rect)
         }
-        .buttonStyle(.plain)
+        .buttonStyle(AssistantPressStyle())
+        .sensoryFeedback(.selection, trigger: isOpening) { _, new in new }
     }
 }
 
@@ -653,8 +673,53 @@ private struct CourseCode: View {
     }
 }
 
+/// Presses down a little with a quick spring, so every tap feels answered.
+struct AssistantPressStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.965 : 1)
+            .brightness(configuration.isPressed ? -0.03 : 0)
+            .animation(.spring(response: 0.22, dampingFraction: 0.6), value: configuration.isPressed)
+    }
+}
+
 enum AssistantNavigation {
     /// Opens a record through the app's deep-link path (the same one Spotlight uses).
+    /// Where a record opens, looked up in the cache. Nil when it can't be found.
+    @MainActor
+    static func destination(for evidence: Evidence, courseManager: CourseManager) -> NavigationModel.Destination? {
+        guard let link = AskRetrieval.deepLink(for: evidence),
+              let separator = link.firstIndex(of: ":") else {
+            switch evidence.ref.kind {
+            case .calendarEvent: return .allCalendar
+            case .toDo: return .allToDos
+            default: return nil
+            }
+        }
+        let kind = String(link[..<separator])
+        let id = String(link[link.index(after: separator)...])
+        let context = ModelContext.shared
+
+        func first<T: PersistentModel>(_ predicate: Predicate<T>) -> T? {
+            var descriptor = FetchDescriptor<T>(predicate: predicate)
+            descriptor.fetchLimit = 1
+            return try? context.fetch(descriptor).first
+        }
+
+        switch kind {
+        case "course": return courseManager.course(withID: id).map { .course($0) }
+        case "assignment": return first(#Predicate<Assignment> { $0.id == id }).map { .assignment($0) }
+        case "announcement": return first(#Predicate<DiscussionTopic> { $0.id == id }).map { .announcement($0) }
+        case "quiz": return first(#Predicate<Quiz> { $0.id == id }).map { .quiz($0) }
+        case "page": return first(#Predicate<Page> { $0.id == id }).map { .page($0) }
+        case "file":
+            guard let file = first(#Predicate<File> { $0.id == id }), let courseID = evidence.ref.courseID else { return nil }
+            return .file(file, courseID)
+        case "todo": return .allToDos
+        default: return nil
+        }
+    }
+
     @MainActor
     static func open(_ evidence: Evidence) {
         guard let link = AskRetrieval.deepLink(for: evidence) else { return }

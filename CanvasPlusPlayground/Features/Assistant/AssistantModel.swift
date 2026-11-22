@@ -44,6 +44,12 @@ final class AssistantModel {
 
     let voice = VoiceInput()
 
+    /// The record being opened, so its row can pulse while the card folds away.
+    private(set) var openingID: String?
+    /// Opens a record with an animated push on the current screen. Set by the host; returns false
+    /// when the record has nowhere to go.
+    @ObservationIgnored var navigate: ((Evidence) -> Bool)?
+
     @ObservationIgnored private var engine: AssistantEngine?
     @ObservationIgnored private var generationTask: Task<Void, Never>?
     @ObservationIgnored private var generatedCache: [String: [AssistantSuggestion]] = [:]
@@ -170,6 +176,35 @@ final class AssistantModel {
         }
     }
 
+    // MARK: Opening records
+
+    /// A tap on a record: the row pulses, the card folds back into the orb (the conversation is
+    /// kept; tap the orb to bring it back), then the record opens with an animated push.
+    func open(_ evidence: Evidence) {
+        guard openingID == nil else { return }
+        withAnimation(.spring(response: 0.25, dampingFraction: 0.6)) { openingID = evidence.id }
+
+        Task {
+            try? await Task.sleep(for: .milliseconds(140))
+            minimize()
+            try? await Task.sleep(for: .milliseconds(220))
+            if navigate?(evidence) != true {
+                AssistantNavigation.open(evidence)
+            }
+            try? await Task.sleep(for: .milliseconds(300))
+            openingID = nil
+        }
+    }
+
+    /// Folds the chat back into the orb without forgetting it.
+    func minimize() {
+        if voice.isListening { voice.stop() }
+        withAnimation(.spring(response: 0.42, dampingFraction: 0.8)) { mode = .idle }
+    }
+
+    /// There's a conversation to come back to.
+    var hasConversation: Bool { !turns.isEmpty }
+
     // MARK: Orb
 
     func close() {
@@ -195,7 +230,7 @@ final class AssistantModel {
     func tapOrb() {
         withAnimation(.spring(response: 0.42, dampingFraction: 0.66)) {
             switch mode {
-            case .idle, .suggestions: mode = .input
+            case .idle, .suggestions: mode = hasConversation ? .chat : .input
             case .input: mode = .idle
             case .chat: break
             }

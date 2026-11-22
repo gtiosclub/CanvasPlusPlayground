@@ -19,6 +19,14 @@ struct AssistantHost: View {
             .environment(courseManager)
             .onAppear {
                 model.configure(dataSource: CanvasCacheAgentDataSource(courseManager: courseManager, toDoListManager: toDoListManager))
+                model.navigate = { evidence in
+                    guard let destination = AssistantNavigation.destination(for: evidence, courseManager: courseManager) else { return false }
+                    // Push on the screen the student is on, with a spring, instead of jumping tabs.
+                    withAnimation(.spring(response: 0.5, dampingFraction: 0.86)) {
+                        navigationModel.push(destination)
+                    }
+                    return true
+                }
                 syncContext()
             }
             .onChange(of: navigationModel.breadcrumbs) { syncContext() }
