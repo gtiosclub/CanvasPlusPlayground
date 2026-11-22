@@ -497,8 +497,8 @@ struct AssistantEngine {
 
         return result
             // A removed id can leave a dangling dash: "due soon— is" → "due soon is".
-            .replacingOccurrences(of: #"\s*[—–]\s*(?=[a-z])"#, with: " ", options: .regularExpression)
-            .replacingOccurrences(of: #"\s*[—–]\s*(?=[.,;!?]|$)"#, with: "", options: .regularExpression)
+            .replacingOccurrences(of: #"\s*(?:[—–]\s*)+(?=[a-z])"#, with: " ", options: .regularExpression)
+            .replacingOccurrences(of: #"\s*(?:[—–]\s*)+(?=[.,;!?]|$)"#, with: "", options: .regularExpression)
             .replacingOccurrences(of: #"\s+([.,;!?])"#, with: "$1", options: .regularExpression)
             .replacingOccurrences(of: #"\s{2,}"#, with: " ", options: .regularExpression)
             .trimmingCharacters(in: .whitespacesAndNewlines)
