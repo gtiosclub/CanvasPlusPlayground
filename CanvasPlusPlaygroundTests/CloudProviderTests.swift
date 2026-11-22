@@ -143,18 +143,27 @@ struct CloudEgressTests {
         #expect(await fake.bodies().first?.contents.first?.parts.first?.text == "Is [person] ([email]) my TA?")
     }
 
-    @Test func retriesOnceWhenGeminiIsBusy() async throws {
+    @Test func fallsBackToFlashLiteWhenTheChosenModelIsBusy() async throws {
         let fake = FakeGemini([(503, #"{"error":{"code":503,"message":"high demand"}}"#), textReply("ok")])
-        var busy = egress(makeSettings(), fake)
-        busy.retryDelay = .zero
+        let settings = makeSettings()
+        settings.model = "gemini-flash-latest"
 
-        let response = try await busy.generateContent(.init(contents: [.user("hi")]), courseIDs: [])
+        let response = try await egress(settings, fake).generateContent(.init(contents: [.user("hi")]), courseIDs: [])
         #expect(response.text == "ok")
-        #expect(await fake.requests.count == 2)
+        let paths = await fake.requests.map { $0.url?.lastPathComponent ?? "" }
+        #expect(paths == ["gemini-flash-latest:generateContent", "gemini-flash-lite-latest:generateContent"])
     }
 
-    @Test func usesTheFlashAliasByDefault() {
-        #expect(CloudSettings.defaultModel == "gemini-flash-latest")
+    @Test func busyEverywhereIsReportedAsBusy() async {
+        let fake = FakeGemini([(503, #"{"error":{"code":503,"message":"high demand"}}"#)])
+        await #expect(throws: CloudEgressError.http(status: 503, message: "high demand")) {
+            try await egress(makeSettings(), fake).generateContent(.init(contents: [.user("hi")]), courseIDs: [])
+        }
+        #expect(CloudEgressError.http(status: 503, message: nil).agentError == .rateLimited)
+    }
+
+    @Test func usesTheFlashLiteAliasByDefault() {
+        #expect(CloudSettings.defaultModel == "gemini-flash-lite-latest")
     }
 
     @Test func mapsHTTPErrors() async {

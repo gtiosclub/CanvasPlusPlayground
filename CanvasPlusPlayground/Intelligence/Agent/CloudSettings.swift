@@ -14,9 +14,12 @@ import Security
 final class CloudSettings: @unchecked Sendable {
     static let shared = CloudSettings()
 
-    /// Google's alias for its current Flash model, so a retired model version doesn't break
-    /// requests (gemini-2.5-flash was closed to new keys in 2026).
-    static let defaultModel = "gemini-flash-latest"
+    /// Google's alias for its current Flash-Lite model: fast (about a second) and an alias, so a
+    /// retired model version doesn't break requests (gemini-2.5-flash was closed to new keys in 2026).
+    /// Full Flash models were taking 20–60 s under load.
+    static let defaultModel = "gemini-flash-lite-latest"
+    /// Tried when the chosen model is busy or slow.
+    static let fallbackModel = "gemini-flash-lite-latest"
 
     private enum Key {
         static let enabled = "com.canvasPlus.cloud.enabled"

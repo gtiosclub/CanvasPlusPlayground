@@ -17,7 +17,8 @@ struct CloudEgress: Sendable {
     /// Built fresh for each request, so names from rosters synced since the last request are covered.
     let makeRedactor: @Sendable () async -> EgressRedactor
     let transport: Transport
-    var retryDelay: Duration = .seconds(1.5)
+    /// How long one model gets before the next is tried.
+    var requestTimeout: TimeInterval = 25
 
     init(
         settings: CloudSettings = .shared,
@@ -38,23 +39,36 @@ struct CloudEgress: Sendable {
         let redactor = await makeRedactor()
         let body = try JSONEncoder().encode(request.redacted(with: redactor.redact))
 
-        let url = GeminiAPI.baseURL.appending(path: "\(settings.model):generateContent")
-        var urlRequest = URLRequest(url: url)
-        urlRequest.httpMethod = "POST"
-        urlRequest.timeoutInterval = 60
-        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        // A header, not a query parameter, so the key never ends up in URL logs.
-        urlRequest.setValue(apiKey, forHTTPHeaderField: "x-goog-api-key")
-        urlRequest.httpBody = body
+        // The chosen model first, then the fast Flash-Lite alias if it's busy or slow. Flash models
+        // can sit on a request for most of a minute under load; Flash-Lite usually answers in ~1 s.
+        var models = [settings.model]
+        if settings.model != CloudSettings.fallbackModel { models.append(CloudSettings.fallbackModel) }
 
-        var (data, response) = try await transport(urlRequest)
-        var status = (response as? HTTPURLResponse)?.statusCode ?? 0
+        var data = Data()
+        var status = 0
+        for (index, model) in models.enumerated() {
+            let url = GeminiAPI.baseURL.appending(path: "\(model):generateContent")
+            var urlRequest = URLRequest(url: url)
+            urlRequest.httpMethod = "POST"
+            urlRequest.timeoutInterval = requestTimeout
+            urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            // A header, not a query parameter, so the key never ends up in URL logs.
+            urlRequest.setValue(apiKey, forHTTPHeaderField: "x-goog-api-key")
+            urlRequest.httpBody = body
 
-        // Gemini sometimes answers 503 ("high demand") or 500 for a moment; one retry usually works.
-        if status == 503 || status == 500 {
-            try await Task.sleep(for: retryDelay)
-            (data, response) = try await transport(urlRequest)
-            status = (response as? HTTPURLResponse)?.statusCode ?? 0
+            let isLast = index == models.count - 1
+            do {
+                let (responseData, response) = try await transport(urlRequest)
+                data = responseData
+                status = (response as? HTTPURLResponse)?.statusCode ?? 0
+            } catch let error as URLError where error.code == .timedOut && !isLast {
+                continue
+            } catch let error as URLError where error.code == .timedOut {
+                throw CloudEgressError.busy
+            }
+
+            if Self.isBusy(status), !isLast { continue }
+            break
         }
 
         guard (200..<300).contains(status) else {
@@ -67,6 +81,11 @@ struct CloudEgress: Sendable {
         } catch {
             throw CloudEgressError.malformedResponse
         }
+    }
+
+    /// Overloaded, failing for a moment, or rate limited: worth trying another model.
+    static func isBusy(_ status: Int) -> Bool {
+        status == 503 || status == 500 || status == 429
     }
 
     /// The API key, if the settings allow a request drawing on `courseIDs`.
@@ -89,6 +108,8 @@ enum CloudEgressError: Error, Equatable, LocalizedError {
     case courseNotShared([String])
     case http(status: Int, message: String?)
     case malformedResponse
+    /// Every model tried was overloaded or too slow.
+    case busy
 
     var errorDescription: String? {
         switch self {
@@ -104,6 +125,8 @@ enum CloudEgressError: Error, Equatable, LocalizedError {
             message.map { "Gemini returned an error (\(status)): \($0)" } ?? "Gemini returned an error (\(status))."
         case .malformedResponse:
             "Gemini sent a reply the app couldn't read."
+        case .busy:
+            "Gemini is busy right now. Try again in a minute."
         }
     }
 
@@ -114,7 +137,7 @@ enum CloudEgressError: Error, Equatable, LocalizedError {
         switch self {
         case .disabled, .consentRequired, .missingAPIKey, .courseNotShared:
             .unavailable(errorDescription ?? "")
-        case .http(429, _):
+        case .http(429, _), .http(503, _), .busy:
             .rateLimited
         case .http(400, let message) where message?.localizedCaseInsensitiveContains("API key") == true:
             .unavailable(Self.rejectedKeyMessage)
