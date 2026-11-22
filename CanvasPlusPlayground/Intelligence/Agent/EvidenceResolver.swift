@@ -48,6 +48,9 @@ final class DataSourceEvidenceResolver: EvidenceResolver {
         case .file(_, let courseID):
             key = "files:\(courseID)"
             load = { try await self.dataSource.files(courseID: courseID) }
+        case .passage:
+            // Passages come from the index, not a data source. `PassageEvidenceResolver` handles them.
+            return nil
         }
 
         if cache[key] == nil {

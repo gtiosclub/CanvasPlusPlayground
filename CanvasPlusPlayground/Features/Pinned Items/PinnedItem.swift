@@ -203,6 +203,8 @@ struct PinnedItemData {
 extension PinnedItem.PinnedItemType {
     init?(coursePage: NavigationModel.CoursePage) {
         switch coursePage {
+        case .ask:
+            return nil
         case .home:
             self = .home
         case .syllabus:

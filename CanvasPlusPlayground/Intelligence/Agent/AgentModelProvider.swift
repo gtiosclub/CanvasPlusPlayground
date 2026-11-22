@@ -33,7 +33,7 @@ enum AgentTier: Int, Comparable, Sendable, CaseIterable {
     case none = 0
     /// On-device FoundationModels. The default.
     case onDevice = 1
-    /// Cloud model (Gemini), explicit opt-in only. Not implemented yet (#604).
+    /// Cloud model (Gemini), explicit opt-in only, with the student's own key (#604).
     case cloud = 2
 
     static func < (lhs: AgentTier, rhs: AgentTier) -> Bool {
@@ -48,11 +48,15 @@ struct AgentPrompt: Sendable {
     var text: String
     /// `nil` uses the model's default. Lower is more deterministic.
     var temperature: Double?
+    /// Every course whose content is in `instructions` or `text`. Only the cloud tier uses it:
+    /// a request naming a course the student hasn't shared with the cloud isn't sent.
+    var courseIDs: Set<String>
 
-    init(instructions: String, text: String, temperature: Double? = nil) {
+    init(instructions: String, text: String, temperature: Double? = nil, courseIDs: Set<String> = []) {
         self.instructions = instructions
         self.text = text
         self.temperature = temperature
+        self.courseIDs = courseIDs
     }
 }
 
@@ -78,4 +82,20 @@ enum AgentModelError: Error, Equatable {
     /// A script asked for a tool that wasn't passed in.
     case toolNotFound(String)
     case other(String)
+}
+
+extension AgentModelError: LocalizedError {
+    var errorDescription: String? {
+        switch self {
+        case .unavailable(let reason): reason
+        case .contextWindowExceeded: "The request was too long for the model."
+        case .guardrailViolation: "The model declined because of its safety guidelines."
+        case .refused: "The model declined to answer."
+        case .rateLimited: "The model is busy right now. Try again in a moment."
+        case .decodingFailed: "The model's answer wasn't in the expected format."
+        case .scriptExhausted: "The scripted model ran out of steps."
+        case .toolNotFound(let name): "The model asked for a tool that isn't available: \(name)."
+        case .other(let message): message
+        }
+    }
 }

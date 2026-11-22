@@ -20,6 +20,21 @@ struct SpotlightSearchView: View {
     /// Focus state so the text field auto-focuses when the sheet appears.
     @FocusState private var isSearchFieldFocused: Bool
 
+    /// The question handed to Ask, when the student picks "Ask".
+    @State private var askQuestion: AskQuestion?
+
+    private struct AskQuestion: Identifiable {
+        let text: String
+        var id: String { text }
+    }
+
+    /// Searches that read like questions get an "Ask" row.
+    private var looksLikeQuestion: Bool {
+        let text = viewModel.searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        let words = text.split(whereSeparator: \.isWhitespace).count
+        return text.hasSuffix("?") || words >= 4
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             searchBar
@@ -42,6 +57,20 @@ struct SpotlightSearchView: View {
         .task(id: viewModel.searchText) {
             try? await Task.sleep(for: .seconds(0.3))
             await viewModel.search()
+        }
+        .sheet(item: $askQuestion) { question in
+            if #available(iOS 26.0, macOS 26.0, *) {
+                NavigationStack {
+                    AskView(initialQuestion: question.text)
+                }
+                #if os(macOS)
+                .frame(minWidth: 480, minHeight: 520)
+                #endif
+            }
+        }
+        // A source opened from Ask navigates the app; close search too.
+        .onReceive(NotificationCenter.default.publisher(for: .openSpotlightDeepLink)) { _ in
+            if askQuestion != nil { dismiss() }
         }
     }
 
@@ -93,11 +122,29 @@ struct SpotlightSearchView: View {
         Group {
             if viewModel.searchText.isEmpty {
                 recentSearchesPlaceholder
-            } else if viewModel.groupedResults.isEmpty && viewModel.relatedResults.isEmpty && !viewModel.isSearching {
+            } else if viewModel.groupedResults.isEmpty && viewModel.relatedResults.isEmpty && !viewModel.isSearching && !canAsk {
                 ContentUnavailableView.search(text: viewModel.searchText)
                     .frame(maxHeight: 300)
             } else {
                 List(selection: $selectedResult) {
+                    if canAsk {
+                        Section {
+                            Button {
+                                askQuestion = AskQuestion(text: viewModel.searchText.trimmingCharacters(in: .whitespacesAndNewlines))
+                            } label: {
+                                Label("Ask “\(viewModel.searchText.trimmingCharacters(in: .whitespacesAndNewlines))”", systemImage: "questionmark.bubble")
+                                    .lineLimit(2)
+                            }
+                            .buttonStyle(.plain)
+                        } header: {
+                            Label("Ask Your Courses", systemImage: "sparkles")
+                                .font(.caption)
+                                .fontDesign(.rounded)
+                                .foregroundStyle(.secondary)
+                                .textCase(.uppercase)
+                        }
+                    }
+
                     ForEach(viewModel.groupedResults, id: \.category) { group in
                         Section {
                             ForEach(group.items) { result in
@@ -217,6 +264,11 @@ struct SpotlightSearchView: View {
 
         navigationModel.navigationPath.append(destination)
         dismiss()
+    }
+
+    private var canAsk: Bool {
+        guard #available(iOS 26.0, macOS 26.0, *) else { return false }
+        return looksLikeQuestion
     }
 
     // MARK: - Keyboard Selection
