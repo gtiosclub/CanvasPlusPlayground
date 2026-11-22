@@ -46,8 +46,11 @@ struct AssistantReply: Codable, Hashable, Sendable {
     var canTryCloud = false
     /// Sentences the gate hid because their citations didn't check out.
     var droppedCount = 0
+    /// Shown instead of an answer when the records don't answer the question, e.g. the model's
+    /// "Your course calendars don't list class times." Never carries facts, so it needs no citation.
+    var note: String?
 
-    var isEmpty: Bool { sentences.isEmpty && block == nil }
+    var isEmpty: Bool { sentences.isEmpty && block == nil && note == nil }
 }
 
 extension AgentTier: Codable {}
@@ -61,6 +64,8 @@ enum AssistantIntent: String, Codable, Sendable, CaseIterable {
     case graded
     /// "What's my grade in CS 1332?"
     case grade
+    /// "What classes do I have today?", "What's due today?"
+    case today
     /// "What does my next week look like?"
     case week
     /// "Did anything change in my courses?"
@@ -84,6 +89,7 @@ enum AssistantIntent: String, Codable, Sendable, CaseIterable {
         if has("urgent", "priorit", "first", "to-do", "todo", "to do") { return .urgent }
         if has("announcement", "unread", "inbox", "e-mail", "email", "message") { return .announcements }
         if has("change", "anything new", "what's new", "whats new", "updated", "update") { return .changes }
+        if has("today", "tonight", "class", "lecture", "my day", "right now") { return .today }
         if has("week", "upcoming", "coming up", "schedule", "calendar", "due soon", "exam", "plan") { return .week }
         return .general
     }
@@ -94,6 +100,7 @@ enum AssistantIntent: String, Codable, Sendable, CaseIterable {
         switch self {
         case .graded, .missing, .grade: [.listAssignments]
         case .week: [.listAssignments, .listCalendarEvents]
+        case .today: [.listCalendarEvents, .listAssignments, .listToDos]
         case .changes: [.listAnnouncements, .listAssignments]
         case .announcements: [.listAnnouncements]
         case .urgent: [.listToDos, .listAssignments]
@@ -106,6 +113,7 @@ enum AssistantIntent: String, Codable, Sendable, CaseIterable {
         switch self {
         case .graded: "Checking your graded work"
         case .grade: "Adding up your grade"
+        case .today: "Looking at today"
         case .week: "Looking at your week"
         case .changes: "Looking for what changed"
         case .announcements: "Reading announcements"
@@ -137,7 +145,8 @@ struct AssistantEngine {
         await GradeGroupScore.load(courseID: courseID)
     }
     var router = AgentModelRouter()
-    var runtime: (any AgentModelProvider) -> AgentRuntime = { AgentRuntime(provider: $0) }
+    /// Cloud runs get more time and context than on-device ones.
+    var runtime: (any AgentModelProvider) -> AgentRuntime = { AgentRuntime(provider: $0, budget: $0.tier == .cloud ? .cloud : .onDevice) }
     var now: @Sendable () -> Date = { .now }
     var calendar: Calendar = .current
 
@@ -159,6 +168,8 @@ struct AssistantEngine {
         var followUps: [String]
         var lowConfidence: Bool
         var tier: AgentTier
+        /// The model's own "I couldn't find that" sentence, when it cited nothing.
+        var note: String? = nil
     }
 
     @Generable
@@ -284,6 +295,18 @@ struct AssistantEngine {
             let events = await call(.listCalendarEvents, #"{"course": \#(course), "daysAhead": 7}"#)
             return (assignments + events).sorted { ($0.primaryDate ?? .distantFuture) < ($1.primaryDate ?? .distantFuture) }
 
+        case .today:
+            let endOfToday = calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: now()))!
+            let events = await call(.listCalendarEvents, #"{"course": \#(course), "daysAhead": 0}"#)
+            let due = await call(.listAssignments, #"{"course": \#(course), "daysAhead": 1}"#)
+            let todos = await call(.listToDos, #"{"daysAhead": 1}"#)
+            var seen = Set<String>()
+            let dueToday = (due + todos).filter { item in
+                guard let date = item.facts.dueDate else { return false }
+                return date >= now() && date < endOfToday && seen.insert(item.title.lowercased()).inserted
+            }
+            return (events + dueToday).sorted { ($0.primaryDate ?? .distantFuture) < ($1.primaryDate ?? .distantFuture) }
+
         case .changes:
             let announcements = await call(.listAnnouncements, #"{"course": \#(course), "daysBack": 7}"#)
             let graded = await call(.listAssignments, #"{"course": \#(course), "onlyGraded": true}"#)
@@ -326,12 +349,32 @@ struct AssistantEngine {
             return evidence
 
         case .general:
-            let passages = await retrievePassages(question, courseID)
+            // Search finds the closest passages even when nothing is relevant ("welcome" pages for
+            // "what classes do I have"), so keep only records that share a real word with the question.
+            let terms = Self.significantTerms(in: question)
+            let passages = await retrievePassages(question, courseID).filter { Self.mentions($0, anyOf: terms) }
             let assignments = await call(.listAssignments, #"{"course": \#(course), "includePastDue": true, "includeCompleted": true}"#)
-            let index = LexicalIndex(documents: assignments.map(\.title))
-            let named = index.rank(question).prefix(3).map { assignments[$0.index] }
-            return named + passages
+            let named = assignments.filter { Self.mentions($0, anyOf: terms, titleOnly: true) }.prefix(3)
+            context.note("Kept \(named.count) assignments and \(passages.count) passages that mention: \(terms.sorted().joined(separator: ", "))")
+            return Array(named) + passages
         }
+    }
+
+    /// Words that say what a question is about, without question words or filler.
+    nonisolated static func significantTerms(in question: String) -> Set<String> {
+        let filler: Set<String> = [
+            "what", "when", "where", "which", "who", "how", "why", "do", "does", "did", "is", "are", "was", "be",
+            "i", "me", "my", "you", "your", "we", "it", "this", "that", "there", "have", "has", "had", "can", "could",
+            "will", "would", "should", "about", "any", "get", "got", "tell", "show", "know", "need", "want", "the",
+            "a", "an", "of", "to", "in", "on", "for", "at", "and", "or", "with", "today", "class", "classes", "course", "courses",
+        ]
+        return Set(LexicalIndex.tokens(in: question).filter { !filler.contains($0) && $0.count > 1 })
+    }
+
+    nonisolated static func mentions(_ evidence: Evidence, anyOf terms: Set<String>, titleOnly: Bool = false) -> Bool {
+        guard !terms.isEmpty else { return false }
+        let text = titleOnly ? evidence.title : evidence.title + " " + evidence.snippet
+        return !Set(LexicalIndex.tokens(in: text)).isDisjoint(with: terms)
     }
 
     /// The JSON value for a tool's `course` argument.
@@ -395,13 +438,23 @@ struct AssistantEngine {
             let response = try await context.respond(to: prompt, generating: ModelAnswer.self)
             let known = Set(evidence.map(\.id))
             let shown = response.content.showIDs.filter(known.contains)
+            let sentences = response.content.sentences
+                .map { AssistantReply.Sentence(text: Self.readable($0.text, calendar: calendar), evidenceIDs: $0.citedIDs) }
+                .filter { !$0.text.isEmpty }
+            let lowConfidence = response.content.confidence == "low"
+
+            // "The records don't say" with no citations is an honest answer, not a made-up claim:
+            // show it as a note instead of letting the gate hide it.
+            if lowConfidence, sentences.allSatisfy(\.evidenceIDs.isEmpty), let first = sentences.first {
+                context.note("Model found no answer in the records")
+                return Draft(sentences: [], highlightIDs: [], followUps: Self.cleanFollowUps(response.content.followUps, fallback: template.followUps), lowConfidence: true, tier: response.tier, note: first.text)
+            }
+
             return Draft(
-                sentences: response.content.sentences
-                    .map { .init(text: Self.readable($0.text, calendar: calendar), evidenceIDs: $0.citedIDs) }
-                    .filter { !$0.text.isEmpty },
+                sentences: sentences,
                 highlightIDs: shown.isEmpty ? template.highlightIDs : shown,
                 followUps: Self.cleanFollowUps(response.content.followUps, fallback: template.followUps),
-                lowConfidence: response.content.confidence == "low",
+                lowConfidence: lowConfidence,
                 tier: response.tier
             )
         } catch is CancellationError {
@@ -426,6 +479,13 @@ struct AssistantEngine {
             sentences = empty ? [] : sentence("Here are your most recent assignments that have been graded.")
         case .missing:
             sentences = empty ? [] : sentence("You have \(evidence.count) past-due \(evidence.count == 1 ? "item" : "items") without a submission.")
+        case .today:
+            let events = evidence.filter { $0.ref.kind == .calendarEvent }
+            let due = evidence.count - events.count
+            var parts: [String] = []
+            if !events.isEmpty { parts.append("\(events.count) event\(events.count == 1 ? "" : "s") on your course calendars") }
+            if due > 0 { parts.append("\(due) \(due == 1 ? "item" : "items") due") }
+            sentences = empty ? [] : sentence("Today you have \(ListFormatter.localizedString(byJoining: parts)).")
         case .week:
             let exams = evidence.filter { WeekLayout.isExam($0) }.count
             let assignments = evidence.filter { $0.ref.kind == .assignment }.count
@@ -461,12 +521,22 @@ struct AssistantEngine {
             }
         }
 
+        let note: String? = switch intent {
+        case .today where empty:
+            "There's nothing on your course calendars or due today. Canvas doesn't list regular class meeting times, so lectures won't show up here."
+        case _ where empty:
+            "I couldn't find that in your synced courses."
+        default:
+            nil
+        }
+
         return Draft(
             sentences: sentences,
             highlightIDs: ids,
             followUps: AssistantSuggestions.followUps(after: intent),
             lowConfidence: empty,
-            tier: .none
+            tier: .none,
+            note: note
         )
     }
 
@@ -523,8 +593,13 @@ struct AssistantEngine {
 
         let block: AssistantReply.Block?
         switch intent {
-        case .week:
+        case .week, .today:
             block = evidence.isEmpty ? nil : .week(WeekLayout.days(evidence, from: now(), calendar: calendar))
+        case .general:
+            // Only what a verified sentence relies on: retrieved-but-unused passages aren't an answer.
+            let cited = Set(draft.sentences.flatMap(\.evidenceIDs))
+            let rows = evidence.filter { cited.contains($0.id) }
+            block = rows.isEmpty ? nil : .records(Array(rows.prefix(6)))
         case .grade where evidence.first?.ref.kind == .course:
             block = evidence.isEmpty ? nil : .records(evidence)
         case .grade:
@@ -535,14 +610,19 @@ struct AssistantEngine {
         }
 
         let rejected = draft.sentences.isEmpty || dropped > draft.sentences.count || draft.lowConfidence
+        let note = draft.note ?? (draft.sentences.isEmpty && block == nil
+            ? Self.template(intent: intent, evidence: [], overall: nil, now: now(), calendar: calendar).note
+            : nil)
         return AssistantReply(
             sentences: draft.sentences,
             block: block,
             followUps: draft.followUps,
             evidence: evidence,
             tier: draft.tier,
+            // Cloud only helps when there's something to read; it can't find what isn't synced.
             canTryCloud: draft.tier != .cloud && rejected && !evidence.isEmpty,
-            droppedCount: dropped
+            droppedCount: dropped,
+            note: note
         )
     }
 }
