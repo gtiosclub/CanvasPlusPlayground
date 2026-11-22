@@ -35,6 +35,8 @@ struct GlobalCalendarView: View {
             .containerRelativeFrame(.vertical)
         }
         .scrollBounceBehavior(.basedOnSize)
+        // Day's timeline runs to the screen edge; its own bottom padding keeps late events reachable.
+        .ignoresSafeArea(.container, edges: calendarManager.viewMode == .day ? .bottom : [])
         .contentShape(.rect)
         .simultaneousGesture(DragGesture(minimumDistance: 30).onEnded(pageOnSwipe))
         .accessibilityAction(named: "Previous") { calendarManager.step(by: -1) }

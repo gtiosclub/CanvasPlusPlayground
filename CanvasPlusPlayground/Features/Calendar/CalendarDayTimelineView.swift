@@ -56,7 +56,10 @@ struct CalendarDayTimelineView: View {
                 }
             }
             .frame(height: hourHeight * 24)
-            .padding(.vertical, 12)
+            .padding(.top, 12)
+            // The timeline runs under the home indicator, so leave room to scroll an 11:59 PM item (drawn at
+            // min height past midnight) clear of the floating buttons (2×52 + 16 + 24) and home indicator (~34).
+            .padding(.bottom, 220)
             .padding(.trailing, 8)
         }
         // Opens around 8 AM instead of midnight.
