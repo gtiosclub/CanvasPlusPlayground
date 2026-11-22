@@ -84,4 +84,61 @@ struct GlobalCalendarManagerTests {
         #expect(manager.viewMode == .day)
         #expect(manager.visibleDates == [Calendar.current.startOfDay(for: target)])
     }
+
+    // MARK: - Timeline columns
+
+    private func event(_ id: String, _ start: (Int, Int), _ end: (Int, Int), course: Course) -> CanvasCalendarEvent {
+        let cal = Calendar.current
+        return CanvasCalendarEvent(
+            id: id,
+            course: course,
+            summary: id,
+            startDate: cal.date(bySettingHour: start.0, minute: start.1, second: 0, of: thursday)!,
+            endDate: cal.date(bySettingHour: end.0, minute: end.1, second: 0, of: thursday)!,
+            location: ""
+        )
+    }
+
+    private var course: Course { SandboxData.dummyCourses.first! }
+
+    @Test func overlappingEventsSplitTheWidthAndReuseFreedColumns() {
+        // The overlap trio from the mock data, plus an unrelated later event.
+        let events = [
+            event("lecture", (10, 0), (11, 30), course: course),
+            event("office", (11, 0), (12, 0), course: course),
+            event("study", (11, 30), (12, 15), course: course),
+            event("later", (13, 0), (14, 0), course: course),
+        ]
+        let slots = GlobalCalendarManager.timelineColumns(for: events)
+
+        #expect(slots["lecture"]! == (0, 2))
+        #expect(slots["office"]! == (1, 2))
+        #expect(slots["study"]! == (0, 2))  // lecture's column is free again at 11:30
+        #expect(slots["later"]! == (0, 1))
+    }
+
+    @Test func zeroLengthEventsStillCollide() {
+        let events = [
+            event("lab", (9, 0), (10, 0), course: course),
+            event("due", (9, 30), (9, 30), course: course),
+            event("lateDue", (23, 59), (23, 59), course: course),
+        ]
+        let slots = GlobalCalendarManager.timelineColumns(for: events)
+
+        #expect(slots["lab"]! == (0, 2))
+        #expect(slots["due"]! == (1, 2))
+        #expect(slots["lateDue"]! == (0, 1))
+    }
+
+    @Test func everyMockEventGetsASlotWithinBounds() {
+        let mocks = GlobalCalendarManager.mockEvents(courses: [course], around: thursday, calendar: .current)
+        for day in Set(mocks.map { Calendar.current.startOfDay(for: $0.startDate) }) {
+            let events = mocks.filter { Calendar.current.isDate($0.startDate, inSameDayAs: day) }
+            let slots = GlobalCalendarManager.timelineColumns(for: events)
+            #expect(slots.count == events.count)
+            for slot in slots.values {
+                #expect(slot.column >= 0 && slot.column < slot.columns)
+            }
+        }
+    }
 }

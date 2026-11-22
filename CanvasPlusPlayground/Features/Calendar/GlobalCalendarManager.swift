@@ -12,7 +12,8 @@ import SwiftUI
 @Observable
 class GlobalCalendarManager {
     var currentDate: Date = .now
-    var viewMode: CalendarViewMode = .week
+    // Day is the only mode where individual events are tappable.
+    var viewMode: CalendarViewMode = .day
 
     // Weeks start on Sunday regardless of locale, per the design.
     let calendar: Calendar = {
@@ -117,7 +118,42 @@ class GlobalCalendarManager {
     nonisolated static func timelineColumns(
         for events: [CanvasCalendarEvent]
     ) -> [CanvasCalendarEvent.ID: (column: Int, columns: Int)] {
-        [:]
+        // Zero-length "due" events still draw ~24pt tall, so give them a visual length to collide with.
+        let minimumVisualDuration: TimeInterval = 30 * 60
+
+        var slots: [CanvasCalendarEvent.ID: (column: Int, columns: Int)] = [:]
+        var columnEnds: [Date] = []  // latest end time in each column of the current cluster
+        var cluster: [(id: CanvasCalendarEvent.ID, column: Int)] = []
+        var clusterEnd = Date.distantPast
+
+        // Every event in a cluster of transitively-overlapping events shares the cluster's column count.
+        func closeCluster() {
+            for member in cluster {
+                slots[member.id] = (member.column, columnEnds.count)
+            }
+            cluster = []
+            columnEnds = []
+        }
+
+        for event in events.sorted(by: { $0.startDate < $1.startDate }) {
+            let end = max(event.endDate, event.startDate.addingTimeInterval(minimumVisualDuration))
+            if event.startDate >= clusterEnd {
+                closeCluster()
+            }
+
+            // Reuse the first column that's free by this start time, else open a new one.
+            let column = columnEnds.firstIndex { $0 <= event.startDate } ?? columnEnds.count
+            if column == columnEnds.count {
+                columnEnds.append(end)
+            } else {
+                columnEnds[column] = end
+            }
+            cluster.append((event.id, column))
+            clusterEnd = max(clusterEnd, end)
+        }
+        closeCluster()
+
+        return slots
     }
 
     func getCalendarEventsForCourses(courses: [Course]) async {

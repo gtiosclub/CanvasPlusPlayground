@@ -17,19 +17,19 @@ struct CalendarFloatingButtons: View {
             Button("Ask AI", systemImage: "sparkles", action: assistantAction)
         }
         .labelStyle(.iconOnly)
-        .font(.title2)
-        .bold()
-        .buttonStyle(FloatingCircleButtonStyle())
+        .font(.system(size: 20, weight: .semibold))
+        .buttonStyle(FloatingButtonStyle())
         .padding(24)
     }
 }
 
-private struct FloatingCircleButtonStyle: ButtonStyle {
+// Matches the + button in CourseOverviewView: 52pt rounded square on material.
+private struct FloatingButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .foregroundStyle(.primary)
-            .frame(width: 60, height: 60)
-            .background(.ultraThinMaterial, in: .circle)
+            .frame(width: 52, height: 52)
+            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
             .shadow(color: .black.opacity(0.12), radius: 10, y: 4)
             .scaleEffect(configuration.isPressed ? 0.92 : 1)
             .animation(.snappy, value: configuration.isPressed)

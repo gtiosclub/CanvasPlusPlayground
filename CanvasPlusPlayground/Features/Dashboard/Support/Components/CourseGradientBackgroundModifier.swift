@@ -20,9 +20,11 @@ private struct CourseGradientBackgroundModifier: ViewModifier {
     let edge: VerticalEdge
 
     public func body(content: Content) -> some View {
-        if isActive {
-            content
-                .background {
+        // Branch inside the background, not around `content`: an if/else around content gives it a new
+        // identity whenever isActive flips (e.g. a child view with a course is pushed), resetting its @State.
+        content
+            .background {
+                if isActive {
                     Group {
                         switch backgroundStyle {
                         case .default:
@@ -66,9 +68,7 @@ private struct CourseGradientBackgroundModifier: ViewModifier {
                     }
                     .ignoresSafeArea()
                 }
-        } else {
-            content
-        }
+            }
     }
 }
 
