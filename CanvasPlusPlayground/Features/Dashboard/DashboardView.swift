@@ -14,6 +14,7 @@ struct DashboardView: View {
     @Environment(NavigationModel.self) private var navigationModel
     @Environment(CourseManager.self) private var courseManager
     @Environment(ProfileManager.self) private var profileManager
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @Bindable var widgetStore = WidgetStore.shared
     @State private var showWidgetShowcase = false
@@ -34,7 +35,11 @@ struct DashboardView: View {
                         .contextMenu {
                             WidgetContextMenu(item: item)
                         }
-                        .transition(.scale.combined(with: .blurReplace))
+                        .transition(
+                            reduceMotion
+                                ? AnyTransition.opacity
+                                : AnyTransition(.scale.combined(with: .blurReplace))
+                        )
                 }
             }
             .padding()

@@ -13,3 +13,4 @@ Fixes #<issue number, e.g. #100>
 - [ ] I have verified my implementation across all edge cases.
 - [ ] I have ensured my changes compile on macOS & iOS.
 - [ ] I have resolved all SwiftLint warnings.
+- [ ] I have checked accessibility where relevant: Dynamic Type at large sizes, VoiceOver labels, and Reduce Motion.

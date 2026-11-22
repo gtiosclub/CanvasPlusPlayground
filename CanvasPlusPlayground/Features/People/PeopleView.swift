@@ -182,6 +182,7 @@ private struct UserCell: View {
             } label: {
                 Image(systemName: "info.circle")
             }
+            .accessibilityLabel("Details for \(user.name)")
         }
     }
 }

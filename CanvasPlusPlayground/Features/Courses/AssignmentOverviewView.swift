@@ -75,7 +75,7 @@ struct AssignmentOverviewView: View {
         Group {
             if !hasToday && !hasThisWeek {
                 Text("No upcoming assignments")
-                    .font(.system(size: 13))
+                    .scaledFont(size: 13, relativeTo: .footnote)
                     .foregroundStyle(.secondary)
                     .padding(.bottom, 12)
                     .padding(.leading, 4)
@@ -126,7 +126,7 @@ struct AssignmentOverviewView: View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(alignment: .center, spacing: 12) {
                 Text(title)
-                    .font(.system(size: 22, weight: .semibold))
+                    .scaledFont(size: 22, relativeTo: .title2, weight: .semibold)
 
                 GeometryReader { geo in
                     ZStack(alignment: .leading) {
@@ -141,7 +141,7 @@ struct AssignmentOverviewView: View {
                 .frame(height: 6)
 
                 Text("\(completedCount)/\(totalCount)")
-                    .font(.system(size: 13))
+                    .scaledFont(size: 13, relativeTo: .footnote)
                     .foregroundStyle(.secondary)
                     .monospacedDigit()
             }
@@ -171,7 +171,7 @@ struct AssignmentOverviewView: View {
         } label: {
             HStack(alignment: .top) {
                 Text(assignment.name)
-                    .font(.system(size: 15, weight: .medium))
+                    .scaledFont(size: 15, relativeTo: .callout, weight: .medium)
                     .foregroundStyle(.primary)
                     .multilineTextAlignment(.leading)
                     .lineLimit(2)
@@ -179,12 +179,12 @@ struct AssignmentOverviewView: View {
 
                 VStack(alignment: .trailing, spacing: 4) {
                     Text(status.label)
-                        .font(.system(size: 12, weight: .semibold))
+                        .scaledFont(size: 12, relativeTo: .caption, weight: .semibold)
                         .foregroundStyle(status.color)
 
                     if let dueDate = assignment.dueDate {
                         Text(dueDate, format: .dateTime.month(.abbreviated).day().hour().minute())
-                            .font(.system(size: 11))
+                            .scaledFont(size: 11, relativeTo: .caption2)
                             .foregroundStyle(.secondary)
                     }
                 }

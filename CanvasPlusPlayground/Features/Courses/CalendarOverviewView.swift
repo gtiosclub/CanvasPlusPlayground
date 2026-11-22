@@ -11,6 +11,7 @@ import SwiftData
 struct CalendarOverviewView: View {
     @Environment(NavigationModel.self) private var navigationModel
     @Environment(ToDoListManager.self) private var toDoListManager
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     let course: Course
 
@@ -98,6 +99,14 @@ struct CalendarOverviewView: View {
             .sorted { ($0.date ?? .distantFuture) < ($1.date ?? .distantFuture) }
     }
 
+    // MARK: - Layout
+
+    private var weekLayout: AnyLayout {
+        dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: 12))
+            : AnyLayout(HStackLayout(alignment: .top, spacing: 4))
+    }
+
     // MARK: - Body
 
     var body: some View {
@@ -109,9 +118,10 @@ struct CalendarOverviewView: View {
                         .font(.body.weight(.semibold))
                 }
                 .buttonStyle(.plain)
+                .accessibilityLabel("Previous Week")
 
                 Text(weekTitle)
-                    .font(.system(size: 22, weight: .semibold))
+                    .scaledFont(size: 22, relativeTo: .title2, weight: .semibold)
                     .frame(maxWidth: .infinity)
 
                 Button { incrementWeek() } label: {
@@ -119,10 +129,11 @@ struct CalendarOverviewView: View {
                         .font(.body.weight(.semibold))
                 }
                 .buttonStyle(.plain)
+                .accessibilityLabel("Next Week")
             }
 
             // 7-day grid
-            HStack(alignment: .top, spacing: 4) {
+            weekLayout {
                 ForEach(currentWeekDates, id: \.self) { date in
                     DayColumn(
                         date: date,
@@ -193,6 +204,11 @@ struct CalendarOverviewView: View {
 // MARK: - Day Column
 
 private struct DayColumn: View {
+    @Environment(\.self) private var environment
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+    @ScaledMetric(relativeTo: .title3) private var todayCircleSize: CGFloat = 32
+
     let date: Date
     let items: [CourseCalendarItem]
     let onTap: (CourseCalendarItem) -> Void
@@ -207,22 +223,34 @@ private struct DayColumn: View {
         date.formatted(.dateTime.day())
     }
 
+    private func readableColor(for item: CourseCalendarItem) -> Color {
+        let chipBackground = Color.courseContentBackground(for: environment.colorScheme)
+            .mix(with: item.accentColor, by: 0.15, in: .device)
+        return item.accentColor.readable(against: chipBackground, in: environment)
+    }
+
+    private var headerLayout: AnyLayout {
+        dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(HStackLayout(spacing: 8))
+            : AnyLayout(VStackLayout(spacing: 3))
+    }
+
     var body: some View {
-        VStack(spacing: 6) {
+        VStack(alignment: dynamicTypeSize.isAccessibilitySize ? .leading : .center, spacing: 6) {
             // Day header
-            VStack(spacing: 3) {
+            headerLayout {
                 Text(dayAbbrev)
-                    .font(.system(size: 13, weight: .medium))
+                    .scaledFont(size: 13, relativeTo: .footnote, weight: .medium)
                     .foregroundStyle(.secondary)
 
                 ZStack {
                     if isToday {
                         Circle()
                             .fill(Color.accentColor)
-                            .frame(width: 32, height: 32)
+                            .frame(width: todayCircleSize, height: todayCircleSize)
                     }
                     Text(dayNumber)
-                        .font(.system(size: 18, weight: isToday ? .bold : .regular))
+                        .scaledFont(size: 18, relativeTo: .title3, weight: isToday ? .bold : .regular)
                         .foregroundStyle(isToday ? .white : .primary)
                 }
             }
@@ -232,14 +260,14 @@ private struct DayColumn: View {
                 Button { onTap(item) } label: {
                     HStack(alignment: .top, spacing: 4) {
                         Image(systemName: item.systemImage)
-                            .font(.system(size: 11))
+                            .scaledFont(size: 11, relativeTo: .caption2)
                             .padding(.top, 1)
                         Text(item.title)
-                            .font(.system(size: 12, weight: .medium))
+                            .scaledFont(size: 12, relativeTo: .caption, weight: .medium)
                             .lineLimit(2)
                             .multilineTextAlignment(.leading)
                     }
-                    .foregroundStyle(item.accentColor)
+                    .foregroundStyle(readableColor(for: item))
                     .padding(.horizontal, 5)
                     .padding(.vertical, 4)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -250,7 +278,7 @@ private struct DayColumn: View {
 
             Spacer(minLength: 0)
         }
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity, alignment: dynamicTypeSize.isAccessibilitySize ? .leading : .center)
     }
 }
 

@@ -86,7 +86,7 @@ struct CourseView: View {
         .onAppear {
             selectedCoursePage = nil
         }
-        .tint(course.rgbColors?.color)
+        .readableCourseTint(course.rgbColors?.color)
         .customizeCourseMenu(course: course, placement: .toolbar)
 #if os(iOS)
         .listStyle(.insetGrouped)

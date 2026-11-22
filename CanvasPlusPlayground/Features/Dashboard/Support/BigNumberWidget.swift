@@ -48,7 +48,9 @@ private struct DefaultBigNumberWidgetBody: View {
 
     var body: some View {
         Text(displayString)
-            .font(.system(size: 64, weight: .bold, design: .rounded))
+            .scaledFont(size: 64, relativeTo: .largeTitle, weight: .bold, design: .rounded)
+            .lineLimit(1)
+            .minimumScaleFactor(0.5)
             .foregroundStyle(widget.color.gradient)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
     }

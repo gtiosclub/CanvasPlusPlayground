@@ -68,6 +68,8 @@ struct SidebarView: View {
                     .padding(.horizontal, 4)
             }
             .buttonStyle(.plain)
+            .accessibilityLabel("\(course.displayName) Pages")
+            .accessibilityValue(expanded ? "Expanded" : "Collapsed")
         }
         .tag(NavigationModel.Tab.course(course.id))
 
