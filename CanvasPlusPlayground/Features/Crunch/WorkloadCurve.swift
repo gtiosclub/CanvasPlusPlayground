@@ -131,6 +131,23 @@ struct WorkloadCurve: Sendable {
     let days: [Day]
 
     var crunchDays: [Day] { days.filter(\.isCrunch) }
+
+    /// A day needs at least this much load to count as one of the busiest days.
+    static let busiestFloor = 1.0
+
+    /// The days a plan should work around: the crunch days, or when there are none, the two
+    /// busiest days (if they're busy at all). In date order.
+    var focusDays: [Day] {
+        let crunch = crunchDays
+        if !crunch.isEmpty { return crunch }
+        return days
+            .filter { $0.load >= Self.busiestFloor }
+            .sorted { $0.load > $1.load }
+            .prefix(2)
+            .sorted { $0.date < $1.date }
+    }
+
+    var hasCrunch: Bool { days.contains(where: \.isCrunch) }
     var peakLoad: Double { days.map(\.load).max() ?? 0 }
 
     /// - Parameters:

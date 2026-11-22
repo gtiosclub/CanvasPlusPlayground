@@ -54,7 +54,7 @@ struct CrunchView: View {
         List {
             Section {
                 HorizonRibbon(curve: model.curve, selectedDay: $selectedDay)
-                    .frame(height: 120)
+                    .frame(height: 150)
                     .listRowInsets(EdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12))
             } header: {
                 Text("Next 3 Weeks")
@@ -79,7 +79,7 @@ struct CrunchView: View {
                         CrunchSuggestionRow(suggestion: suggestion)
                     }
                 } header: {
-                    Text("Plan")
+                    Text(model.curve.hasCrunch ? "Plan for Crunch Days" : "Plan for Your Busiest Days")
                 } footer: {
                     Text(model.plan.source == .model
                          ? "Suggested on this device from the dates above."
@@ -110,10 +110,13 @@ struct CrunchView: View {
     }
 
     private var summary: String {
-        let crunch = model.curve.crunchDays
-        guard !crunch.isEmpty else { return "No crunch days ahead." }
-        let names = crunch.prefix(3).map { $0.date.formatted(.dateTime.weekday(.abbreviated).month(.abbreviated).day()) }
-        return "Crunch \(crunch.count == 1 ? "day" : "days"): \(names.joined(separator: ", "))\(crunch.count > 3 ? " and more" : "")."
+        let focus = model.curve.focusDays
+        let names = focus.prefix(3).map { $0.date.formatted(.dateTime.weekday(.abbreviated).month(.abbreviated).day()) }
+        if model.curve.hasCrunch {
+            return "Crunch \(focus.count == 1 ? "day" : "days"): \(names.joined(separator: ", "))\(focus.count > 3 ? " and more" : ""). Hover or tap a day for details."
+        }
+        guard !focus.isEmpty else { return "No crunch days ahead. Hover or tap a day for details." }
+        return "No crunch days ahead. Busiest: \(names.joined(separator: ", ")). Hover or tap a day for details."
     }
 
     private func reload() async {
@@ -122,44 +125,100 @@ struct CrunchView: View {
 }
 
 /// 21 columns, one per day. Height is load, crunch days are highlighted. Works without a model.
+/// Bars grow from the bottom, left to right, when the data arrives. On a Mac, hovering a bar
+/// selects it; on touch, tapping does.
 struct HorizonRibbon: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     let curve: WorkloadCurve
     var selectedDay: Binding<WorkloadCurve.Day?>?
     var showsLabels = true
 
+    @State private var grown = false
+    @State private var hovered: WorkloadCurve.Day?
+
     var body: some View {
         let peak = max(curve.peakLoad, WorkloadCurve.crunchFloor)
 
-        HStack(alignment: .bottom, spacing: 3) {
-            ForEach(curve.days) { day in
-                VStack(spacing: 4) {
-                    GeometryReader { geometry in
-                        VStack {
-                            Spacer(minLength: 0)
-                            RoundedRectangle(cornerRadius: 3)
-                                .fill(color(for: day))
-                                .frame(height: max(3, geometry.size.height * day.load / peak))
-                        }
-                    }
-                    if showsLabels {
-                        Text(day.date.formatted(.dateTime.weekday(.narrow)))
-                            .font(.system(size: 9, weight: Calendar.current.isDateInToday(day.date) ? .bold : .regular))
-                            .foregroundStyle(Calendar.current.isDateInToday(day.date) ? .primary : .secondary)
-                    }
+        VStack(spacing: 6) {
+            HStack(alignment: .bottom, spacing: 3) {
+                ForEach(Array(curve.days.enumerated()), id: \.element.id) { index, day in
+                    bar(for: day, index: index, peak: peak)
                 }
-                .contentShape(.rect)
-                .onTapGesture {
-                    selectedDay?.wrappedValue = selectedDay?.wrappedValue == day ? nil : day
-                }
-                .accessibilityElement()
-                .accessibilityLabel(accessibilityLabel(for: day))
-                .accessibilityAddTraits(selectedDay == nil ? [] : .isButton)
             }
+
+            if showsLabels, let first = curve.days.first, let last = curve.days.last {
+                HStack {
+                    Text(first.date, format: .dateTime.month(.abbreviated).day())
+                    Spacer()
+                    Text(last.date, format: .dateTime.month(.abbreviated).day())
+                }
+                .font(.system(size: 9, weight: .medium))
+                .foregroundStyle(.tertiary)
+            }
+        }
+        .task(id: curve.days.map(\.load)) {
+            guard !curve.days.isEmpty else { return }
+            grown = false
+            try? await Task.sleep(for: .milliseconds(60))
+            grown = true
         }
     }
 
-    private func color(for day: WorkloadCurve.Day) -> Color {
-        if selectedDay?.wrappedValue == day { return .accentColor }
+    private func bar(for day: WorkloadCurve.Day, index: Int, peak: Double) -> some View {
+        let isHighlighted = hovered == day || selectedDay?.wrappedValue == day
+        let isToday = Calendar.current.isDateInToday(day.date)
+
+        return VStack(spacing: 4) {
+            GeometryReader { geometry in
+                VStack(spacing: 3) {
+                    Spacer(minLength: 0)
+                    if isHighlighted {
+                        Text(day.date, format: .dateTime.weekday(.abbreviated).day())
+                            .font(.system(size: 9, weight: .semibold))
+                            .fixedSize()
+                            .padding(.horizontal, 5)
+                            .padding(.vertical, 2)
+                            .background(.thinMaterial, in: Capsule())
+                            .transition(.opacity.combined(with: .scale(scale: 0.8, anchor: .bottom)))
+                    }
+                    RoundedRectangle(cornerRadius: 3, style: .continuous)
+                        .fill(color(for: day, isHighlighted: isHighlighted))
+                        .frame(height: grown || reduceMotion ? max(3, geometry.size.height * 0.85 * day.load / peak) : 3)
+                        .animation(
+                            reduceMotion ? nil : .spring(duration: 0.55, bounce: 0.25).delay(Double(index) * 0.03),
+                            value: grown
+                        )
+                }
+                .frame(maxWidth: .infinity)
+            }
+
+            if showsLabels {
+                Text(day.date.formatted(.dateTime.weekday(.narrow)))
+                    .font(.system(size: 9, weight: isToday ? .bold : .regular))
+                    .foregroundStyle(isToday ? .primary : .secondary)
+            }
+        }
+        .contentShape(.rect)
+        .onHover { inside in
+            withAnimation(.easeOut(duration: 0.15)) {
+                hovered = inside ? day : (hovered == day ? nil : hovered)
+            }
+            if inside, let selectedDay { selectedDay.wrappedValue = day }
+        }
+        .onTapGesture {
+            guard let selectedDay else { return }
+            withAnimation(.easeOut(duration: 0.15)) {
+                selectedDay.wrappedValue = selectedDay.wrappedValue == day ? nil : day
+            }
+        }
+        .accessibilityElement()
+        .accessibilityLabel(accessibilityLabel(for: day))
+        .accessibilityAddTraits(selectedDay == nil ? [] : .isButton)
+    }
+
+    private func color(for day: WorkloadCurve.Day, isHighlighted: Bool) -> Color {
+        if isHighlighted { return .accentColor }
         if day.isCrunch { return .orange }
         return day.load > 0 ? .secondary.opacity(0.5) : .secondary.opacity(0.15)
     }
@@ -267,10 +326,12 @@ final class CrunchWidgetDataSource: GenericWidgetDataSource {
     private(set) var curve = WorkloadCurve(items: [], from: .now)
 
     var caption: String {
-        let crunch = curve.crunchDays
-        guard let first = crunch.first else { return "No crunch days ahead." }
-        let day = first.date.formatted(.dateTime.weekday(.wide))
-        return crunch.count == 1 ? "Busiest: \(day)." : "Busiest: \(day), plus \(crunch.count - 1) more."
+        let focus = curve.focusDays
+        guard let first = focus.max(by: { $0.load < $1.load }) else { return "A light three weeks ahead." }
+        let day = first.date.formatted(.dateTime.weekday(.wide).month(.abbreviated).day())
+        return curve.hasCrunch
+            ? (focus.count == 1 ? "Crunch: \(day)." : "Crunch: \(day), plus \(focus.count - 1) more.")
+            : "No crunch days. Busiest: \(day)."
     }
 
     @MainActor

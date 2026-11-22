@@ -126,7 +126,24 @@ struct CrunchPlannerTests {
         }
     }
 
-    @Test func baselineIsEmptyWithoutCrunchDays() {
+    @Test func withoutCrunchDaysThePlanUsesTheBusiestDays() throws {
+        // Two assignments the same day: busy (load ~1.04) but well under the crunch floor.
+        let curve = WorkloadCurve(items: [item("a", due: 6, points: 50), item("b", due: 6)], from: start, calendar: calendar)
+        #expect(curve.crunchDays.isEmpty)
+        #expect(curve.focusDays.map(\.date) == [calendar.startOfDay(for: day(6))])
+
+        let plan = CrunchPlanner.baseline(for: curve, today: start, calendar: calendar)
+        let first = try #require(plan.suggestions.first)
+        guard case .startEarly(let date) = first.kind else {
+            Issue.record("Expected a start-early suggestion")
+            return
+        }
+        #expect(date < calendar.startOfDay(for: day(6)))
+        #expect(first.reason.contains("busiest"))
+        #expect(CrunchPlanner.promptText(for: curve, today: start, calendar: calendar).contains("busiest days"))
+    }
+
+    @Test func baselineIsEmptyWhenNothingIsBusy() {
         let curve = WorkloadCurve(items: [item("a", due: 4)], from: start, calendar: calendar)
         #expect(CrunchPlanner.baseline(for: curve, today: start, calendar: calendar).suggestions.isEmpty)
     }

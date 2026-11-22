@@ -73,8 +73,9 @@ enum CrunchPlanner {
         var suggestions: [CrunchSuggestion] = []
         var planned = Set<String>()
         let todayIndex = curve.index(of: today, calendar: calendar) ?? 0
+        let label = curve.hasCrunch ? "a crunch day" : "one of your busiest days"
 
-        for crunch in curve.crunchDays {
+        for crunch in curve.focusDays {
             guard let crunchIndex = curve.index(of: crunch.date, calendar: calendar) else { continue }
             var startedEarly = 0
 
@@ -104,7 +105,7 @@ enum CrunchPlanner {
                     suggestions.append(CrunchSuggestion(
                         item: item,
                         kind: .startEarly(on: lighter.date),
-                        reason: "\(day(crunch.date)) is a crunch day. \(day(lighter.date)) is lighter."
+                        reason: "\(day(crunch.date)) is \(label). \(day(lighter.date)) is lighter."
                     ))
                 }
             }
@@ -154,13 +155,13 @@ enum CrunchPlanner {
         today: Date = .now,
         calendar: Calendar = .current
     ) async -> CrunchPlan? {
-        guard provider.tier != .none, provider.isAvailable, !curve.crunchDays.isEmpty else { return nil }
+        guard provider.tier != .none, provider.isAvailable, !curve.focusDays.isEmpty else { return nil }
 
         let prompt = AgentPrompt(
             instructions: """
             You help a student plan a busy few weeks. The workload numbers are already computed; don't change them.
-            For items due on or just after a crunch day, suggest starting early on a lighter day (startEarly).
-            For work that isn't due until well after a crunch, say it can slip (canSlip).
+            The busiest days are marked with *. For items due on or just after a marked day, suggest starting early on a lighter, unmarked day (startEarly).
+            For work that isn't due until well after a marked day, say it can slip (canSlip).
             Use warning only when nothing can move. Use only the ids listed. Be brief and kind.
             """,
             text: promptText(for: curve, today: today, calendar: calendar),
@@ -187,7 +188,7 @@ enum CrunchPlanner {
         calendar: Calendar
     ) -> [CrunchSuggestion] {
         let items = Dictionary(curve.days.flatMap(\.contributions).map { ($0.item.id, $0.item) }, uniquingKeysWith: { first, _ in first })
-        let firstCrunch = curve.crunchDays.first?.date
+        let firstCrunch = curve.focusDays.first?.date
         var seen = Set<String>()
 
         return proposals.compactMap { proposal in
@@ -199,6 +200,7 @@ enum CrunchPlanner {
                 guard let text = proposal.startDay, let start = parseDay(text, calendar: calendar),
                       let index = curve.index(of: start, calendar: calendar),
                       !curve.days[index].isCrunch,
+                      !curve.focusDays.contains(where: { calendar.isDate($0.date, inSameDayAs: start) }),
                       calendar.startOfDay(for: start) >= calendar.startOfDay(for: today),
                       calendar.startOfDay(for: start) < calendar.startOfDay(for: item.date) else {
                     return nil
@@ -216,14 +218,18 @@ enum CrunchPlanner {
     }
 
     static func promptText(for curve: WorkloadCurve, today: Date, calendar: Calendar) -> String {
-        var lines = ["Today is \(isoDay(today, calendar: calendar)).", "", "Days (load, crunch marked *):"]
+        let focus = Set(curve.focusDays.map(\.date))
+        var lines = [
+            "Today is \(isoDay(today, calendar: calendar)).", "",
+            "Days (load, \(curve.hasCrunch ? "crunch days" : "busiest days") marked *):",
+        ]
         for day in curve.days {
-            lines.append("\(isoDay(day.date, calendar: calendar)) \(String(format: "%.1f", day.load))\(day.isCrunch ? " *" : "")")
+            lines.append("\(isoDay(day.date, calendar: calendar)) \(String(format: "%.1f", day.load))\(focus.contains(day.date) ? " *" : "")")
         }
 
-        lines += ["", "Items on crunch days:"]
+        lines += ["", "Items on the marked days:"]
         var listed = Set<String>()
-        for crunch in curve.crunchDays {
+        for crunch in curve.focusDays {
             for contribution in crunch.contributions where listed.insert(contribution.item.id).inserted {
                 let item = contribution.item
                 let course = item.courseName.map { " (\($0))" } ?? ""

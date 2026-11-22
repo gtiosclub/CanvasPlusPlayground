@@ -166,6 +166,8 @@ class WidgetStore {
             return PinnedFilesWidget()
         case TodayWidget.widgetID:
             return TodayWidget()
+        case CrunchWidget.widgetID:
+            return CrunchWidget()
         default:
             return nil
         }
