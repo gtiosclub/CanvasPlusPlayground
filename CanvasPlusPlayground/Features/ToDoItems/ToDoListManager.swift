@@ -53,6 +53,13 @@ class ToDoListManager: ListWidgetDataSource, BigNumberWidgetDataSource {
     }
 
     func fetchToDoItems(courses: [Course]) async {
+        if AppEnvironment.isSandbox {
+            await MainActor.run {
+                addItems(SandboxData.dummyToDoItems, courses: courses, replaceExisting: true)
+                loadUserCreatedItems(courses: courses)
+            }
+            return
+        }
         let request = CanvasRequest.getToDoItems(include: [.ungradedQuizzes])
 
         do {
@@ -100,6 +107,11 @@ class ToDoListManager: ListWidgetDataSource, BigNumberWidgetDataSource {
         } catch {
             LoggerService.main.error("Failed to ignore todo item: \(error)")
         }
+    }
+
+    /// Marks an item done: drops it from the list and tells Canvas (or SwiftData, for user-created items).
+    func complete(_ item: ToDoItem) async {
+        // TODO(human)
     }
 
     private func addItems(

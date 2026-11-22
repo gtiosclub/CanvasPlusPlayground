@@ -1189,3 +1189,24 @@ extension SandboxData {
         }
     }
 }
+
+// MARK: - To-Do Items
+
+extension SandboxData {
+    /// Upcoming sandbox assignments, shaped like Canvas's to-do API response.
+    static var dummyToDoItems: [ToDoItem] {
+        dummyCourses.flatMap { course in
+            dummyAssignmentGroups(forCourseID: course.id)
+                .flatMap { $0.assignments ?? [] }
+                .filter { ($0.dueDate ?? .distantPast) > .now }
+                .map {
+                    ToDoItem(from: ToDoItemAPI(
+                        contextType: .course, courseID: intID(for: course.id), groupID: nil,
+                        contextName: course.displayName, type: .submitting,
+                        ignoreURL: "", ignorePermanentlyURL: "",
+                        assignment: $0, quiz: nil, htmlURL: ""
+                    ))
+                }
+        }
+    }
+}

@@ -30,6 +30,9 @@
 		8C5A13192F8D961200E09B46 /* DetailContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5A13182F8D961200E09B46 /* DetailContainerView.swift */; };
 		8C5A131B2F8D96A400E09B46 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5A131A2F8D96A400E09B46 /* SidebarView.swift */; };
 		8C5A131D2F8DA17000E09B46 /* CourseOverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5A131C2F8DA17000E09B46 /* CourseOverviewView.swift */; };
+		571790B100DEB102487D16AD /* CourseGradeWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004E75CA2E549FC0FC4BE177 /* CourseGradeWidget.swift */; };
+		974FA80C099FABA8483A8D9A /* CourseToDoWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7E64942441B0C1D02C3AE6 /* CourseToDoWidget.swift */; };
+		D75A5C08F647764DE91D2328 /* CourseWidgetCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F64E369D4FA7733B22770E5 /* CourseWidgetCard.swift */; };
 		A4D289F934A37920D270793B /* CourseTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B927AC59B451D9786070406 /* CourseTabBar.swift */; };
 		8CAC2F192F7A1D8E00EC5FA4 /* SpotlightSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAC2F182F7A1D8500EC5FA4 /* SpotlightSearchResult.swift */; };
 		8CAC2F1B2F7A204300EC5FA4 /* SearchCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAC2F1A2F7A203B00EC5FA4 /* SearchCategory.swift */; };
@@ -414,6 +417,9 @@
 		8C5A13182F8D961200E09B46 /* DetailContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailContainerView.swift; sourceTree = "<group>"; };
 		8C5A131A2F8D96A400E09B46 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
 		8C5A131C2F8DA17000E09B46 /* CourseOverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseOverviewView.swift; sourceTree = "<group>"; };
+		004E75CA2E549FC0FC4BE177 /* CourseGradeWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseGradeWidget.swift; sourceTree = "<group>"; };
+		3E7E64942441B0C1D02C3AE6 /* CourseToDoWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseToDoWidget.swift; sourceTree = "<group>"; };
+		8F64E369D4FA7733B22770E5 /* CourseWidgetCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseWidgetCard.swift; sourceTree = "<group>"; };
 		2B927AC59B451D9786070406 /* CourseTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseTabBar.swift; sourceTree = "<group>"; };
 		8CAC2F182F7A1D8500EC5FA4 /* SpotlightSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightSearchResult.swift; sourceTree = "<group>"; };
 		8CAC2F1A2F7A203B00EC5FA4 /* SearchCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCategory.swift; sourceTree = "<group>"; };
@@ -994,6 +1000,9 @@
 				8CD6A4E82F95EA4000BD3903 /* AnnouncementOverviewView.swift */,
 				8CD6A4E62F95E36700BD3903 /* AssignmentOverviewView.swift */,
 				8C5A131C2F8DA17000E09B46 /* CourseOverviewView.swift */,
+				004E75CA2E549FC0FC4BE177 /* CourseGradeWidget.swift */,
+				3E7E64942441B0C1D02C3AE6 /* CourseToDoWidget.swift */,
+				8F64E369D4FA7733B22770E5 /* CourseWidgetCard.swift */,
 				2B927AC59B451D9786070406 /* CourseTabBar.swift */,
 				A3777E012D9F148300A8B00C /* CourseRepository.swift */,
 				A3777E052D9F152400A8B00C /* CourseService.swift */,
@@ -2187,6 +2196,9 @@
 				B7CC4D432D8DFF0A00254F55 /* PickerServiceViewModifier.swift in Sources */,
 				B73AE0BD2D4FB68B007094A8 /* Profile.swift in Sources */,
 				8C5A131D2F8DA17000E09B46 /* CourseOverviewView.swift in Sources */,
+				571790B100DEB102487D16AD /* CourseGradeWidget.swift in Sources */,
+				974FA80C099FABA8483A8D9A /* CourseToDoWidget.swift in Sources */,
+				D75A5C08F647764DE91D2328 /* CourseWidgetCard.swift in Sources */,
 				A4D289F934A37920D270793B /* CourseTabBar.swift in Sources */,
 				B75684F42DA5A6B2003B4A32 /* HTMLView.swift in Sources */,
 				B7D751312D3D688C00F7B8B8 /* AnnouncementRow.swift in Sources */,
