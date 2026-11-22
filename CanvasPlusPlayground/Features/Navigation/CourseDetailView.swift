@@ -16,6 +16,12 @@ struct CourseDetailView: View {
             switch coursePage {
             case .home:
                 CourseHomePage(course: course)
+            case .ask:
+                if #available(iOS 26.0, macOS 26.0, *) {
+                    AskView(course: course)
+                } else {
+                    ContentUnavailableView("Needs iOS 26", systemImage: "questionmark.bubble", description: Text("Asking your course needs iOS 26 or macOS 26."))
+                }
             case .syllabus:
                 SyllabusView(course: course)
             case .files:

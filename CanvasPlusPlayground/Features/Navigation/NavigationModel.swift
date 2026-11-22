@@ -21,6 +21,8 @@ class NavigationModel {
 
     enum CoursePage: String, CaseIterable, Codable {
         case home
+        /// Ask your course (#600). Only offered on iOS/macOS 26.
+        case ask
         case syllabus
         case assignments
         case files
@@ -45,6 +47,8 @@ class NavigationModel {
             switch self {
             case .home:
                 "house.fill"
+            case .ask:
+                "questionmark.bubble.fill"
             case .syllabus:
                 "book.pages"
             case .files:
@@ -78,8 +82,13 @@ class NavigationModel {
                 course.tabs.compactMap { CoursePage(rawValue: $0.label.lowercased()) }
             )
             return CoursePage.allCases.filter {
-                availableTabs.contains($0) || CoursePage.requiredTabs.contains($0)
+                if $0 == .ask { return isAskAvailable }
+                return availableTabs.contains($0) || CoursePage.requiredTabs.contains($0)
             }
+        }
+
+        private static var isAskAvailable: Bool {
+            if #available(iOS 26.0, macOS 26.0, *) { true } else { false }
         }
     }
 
