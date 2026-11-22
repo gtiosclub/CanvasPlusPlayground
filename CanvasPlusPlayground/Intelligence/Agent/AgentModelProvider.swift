@@ -91,7 +91,7 @@ extension AgentModelError: LocalizedError {
         case .contextWindowExceeded: "The request was too long for the model."
         case .guardrailViolation: "The model declined because of its safety guidelines."
         case .refused: "The model declined to answer."
-        case .rateLimited: "Too many requests right now. Try again in a moment."
+        case .rateLimited: "The model is busy right now. Try again in a moment."
         case .decodingFailed: "The model's answer wasn't in the expected format."
         case .scriptExhausted: "The scripted model ran out of steps."
         case .toolNotFound(let name): "The model asked for a tool that isn't available: \(name)."
