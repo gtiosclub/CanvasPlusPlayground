@@ -10,6 +10,8 @@ import SwiftUI
 struct SyllabusView: View {
     let course: Course
 
+    @State private var showExamDates = false
+
     var body: some View {
         Group {
             if let syllabusBody = course.syllabusBody {
@@ -21,6 +23,26 @@ struct SyllabusView: View {
                     systemImage: "exclamationmark.triangle.fill"
                 )
             }
+        }
+        .toolbar {
+            if course.syllabusBody != nil {
+                ToolbarItem(placement: .primaryAction) {
+                    Button("Find Exam Dates", systemImage: "calendar.badge.plus") { showExamDates = true }
+                }
+            }
+        }
+        .sheet(isPresented: $showExamDates) {
+            NavigationStack {
+                ExamDatesView(course: course)
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button("Close") { showExamDates = false }
+                        }
+                    }
+            }
+            #if os(macOS)
+            .frame(minWidth: 520, idealWidth: 560, minHeight: 600, idealHeight: 680)
+            #endif
         }
         #if os(iOS)
         .navigationTitle("Syllabus")

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6B8F684A854B79BE1693E3FA /* ExamDatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0147F4067F2540586E6A9ED /* ExamDatesView.swift */; };
+		1FDD0B17AE8607215318E2BD /* ExamDateExtraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C684AEA7F9564791A5A795CE /* ExamDateExtraction.swift */; };
 		192EC0482C963ACB00AF8528 /* CourseAssignmentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192EC0472C963ACB00AF8528 /* CourseAssignmentManager.swift */; };
 		192EC04A2C963B9000AF8528 /* AssignmentAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192EC0492C963B9000AF8528 /* AssignmentAPI.swift */; };
 		192EC04C2C963EE600AF8528 /* CourseAssignmentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192EC04B2C963EE600AF8528 /* CourseAssignmentsView.swift */; };
@@ -386,6 +388,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B0147F4067F2540586E6A9ED /* ExamDatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamDatesView.swift; sourceTree = "<group>"; };
+		C684AEA7F9564791A5A795CE /* ExamDateExtraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamDateExtraction.swift; sourceTree = "<group>"; };
 		0201124C6AC625FC1CD2A76A /* AgentStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AgentStore.swift; sourceTree = "<group>"; };
 		1037B0D6AD89C331C3B01C4F /* TextChunk.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TextChunk.swift; sourceTree = "<group>"; };
 		1228889D308573FE00023F47 /* CanvasPlusPlaygroundTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CanvasPlusPlaygroundTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -780,6 +784,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8C9F04345C47A9F52A52007E /* ExamDates */ = {
+			isa = PBXGroup;
+			children = (
+				B0147F4067F2540586E6A9ED /* ExamDatesView.swift */,
+				C684AEA7F9564791A5A795CE /* ExamDateExtraction.swift */,
+			);
+			path = ExamDates;
+			sourceTree = "<group>";
+		};
 		26BF115A2E92E1D2000680D4 /* Layout */ = {
 			isa = PBXGroup;
 			children = (
@@ -940,6 +953,7 @@
 		A324BA502D07963D005F53FA /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				8C9F04345C47A9F52A52007E /* ExamDates */,
 				8CAC2F172F79FB6900EC5FA4 /* SpotlightSearch */,
 				B7AF51612E9B30E100457E8A /* Onboarding */,
 				B7F375C12E85EE82008F0846 /* Dashboard */,
@@ -2216,6 +2230,8 @@
 				E1B4D3BE5A7D3F1453EE795A /* SemanticIndexable.swift in Sources */,
 				204FC32D5481BD71604178E2 /* SemanticIndexer.swift in Sources */,
 				23CED77DBFE1383B47A216C5 /* SearchIndex.swift in Sources */,
+				6B8F684A854B79BE1693E3FA /* ExamDatesView.swift in Sources */,
+				1FDD0B17AE8607215318E2BD /* ExamDateExtraction.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
