@@ -153,7 +153,9 @@ enum JSONValue: Codable, Hashable, Sendable {
 
     /// Compact JSON text.
     var jsonString: String {
-        let data = (try? JSONEncoder().encode(self)) ?? Data("null".utf8)
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.sortedKeys]
+        let data = (try? encoder.encode(self)) ?? Data("null".utf8)
         return String(decoding: data, as: UTF8.self)
     }
 

@@ -158,8 +158,33 @@ struct GeminiProvider: AgentModelProvider {
         )
     }
 
+    /// JSON Schema for Gemini, with every `$ref` replaced by its definition. FoundationModels puts
+    /// nested types in `$defs`; Gemini's schema support is a subset, so a flat schema is safest.
     static func schema(_ schema: GenerationSchema) throws -> JSONValue {
-        try JSONValue(jsonData: AgentOutputSchema.jsonSchema(schema))
+        inliningReferences(try JSONValue(jsonData: AgentOutputSchema.jsonSchema(schema)))
+    }
+
+    static func inliningReferences(_ schema: JSONValue) -> JSONValue {
+        guard case .object(var root) = schema else { return schema }
+        var definitions: [String: JSONValue] = [:]
+        if case .object(let defs)? = root.removeValue(forKey: "$defs") { definitions = defs }
+
+        func resolve(_ value: JSONValue, depth: Int) -> JSONValue {
+            switch value {
+            case .object(let object):
+                if case .string(let ref)? = object["$ref"], ref.hasPrefix("#/$defs/"), depth < 8,
+                   let definition = definitions[String(ref.dropFirst("#/$defs/".count))] {
+                    return resolve(definition, depth: depth + 1)
+                }
+                return .object(object.filter { $0.key != "title" }.mapValues { resolve($0, depth: depth) })
+            case .array(let items):
+                return .array(items.map { resolve($0, depth: depth) })
+            default:
+                return value
+            }
+        }
+
+        return resolve(.object(root), depth: 0)
     }
 
     private static func checkNotBlocked(_ response: GeminiAPI.Response) throws {
