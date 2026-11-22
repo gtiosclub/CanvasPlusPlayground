@@ -234,3 +234,11 @@ struct AssistantSuggestionTests {
         #expect(AssistantSuggestions.faq(for: context).first?.text == "What's due in CS 1332 next week?")
     }
 }
+
+struct AssistantTextCleanupTests {
+    @Test func noDanglingDashesWhereIDsWere() {
+        let calendar = Calendar(identifier: .gregorian)
+        #expect(AssistantEngine.readable("The quiz due soon— [assignment:106] —is a must-do.", calendar: calendar) == "The quiz due soon is a must-do.")
+        #expect(AssistantEngine.readable("Lab 2—the hard one—is due Friday.", calendar: calendar) == "Lab 2 the hard one is due Friday.")
+    }
+}
