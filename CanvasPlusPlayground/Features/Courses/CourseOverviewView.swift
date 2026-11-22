@@ -18,6 +18,7 @@ struct CourseOverviewView: View {
     @State private var expandedSections: Set<String> = []
     @State private var ringProgress: Double = 0
     @State private var showTodoCreation = false
+    @State private var meetings: [CanvasCourseScheduleMeeting] = []
 
     init(course: Course) {
         self.course = course
@@ -30,14 +31,29 @@ struct CourseOverviewView: View {
         toDoListManager.displayedToDoItems.filter { $0.courseID.asString == course.id }
     }
 
+    // MARK: - Subtitle
+
+    /// e.g. "CS 1332 A | 3:30 – 4:45 PM"; just the course code when no meeting time is known.
+    private var subtitle: String {
+        let code = course.courseCode?.replacingOccurrences(of: "-", with: " ") ?? ""
+        // shortcut: shows the first meeting's time only; courses whose meetings differ (e.g. recitations) need per-day times
+        guard let interval = meetings.first?.interval(on: .now) else { return code }
+        let time = (interval.start..<interval.end).formatted(.interval.hour().minute())
+        return code.isEmpty ? time : "\(code) | \(time)"
+    }
+
     // MARK: - Body
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
-                Text(course.displayName)
-                    .font(.system(size: 56, weight: .heavy))
-                    .padding(.bottom, 4)
+                if !subtitle.isEmpty {
+                    Text(subtitle)
+                        .font(.title3)
+                        .foregroundStyle(.secondary)
+                }
+
+                CourseTabBar(course: course)
 
                 HStack(alignment: .top, spacing: 20) {
                     // Left column: expandable page rows
@@ -90,8 +106,14 @@ struct CourseOverviewView: View {
         )
         .tint(course.rgbColors?.color)
         .navigationTitle(course.displayName)
+        .handleDeepLinks(for: course.id)
+        .customizeCourseMenu(course: course, placement: .toolbar)
+        .openInCanvasToolbarButton(.homepage(course.id))
         .task {
             await gradesVM.getEnrollments(currentUserID: profileManager.currentUser?.id)
+        }
+        .task(id: course.id) {
+            meetings = (try? await GTSchedulerParser.shared.getCanvasCourseScheduleMeetings(course: course).meetings) ?? []
         }
     }
 
