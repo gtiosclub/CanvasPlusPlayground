@@ -80,6 +80,13 @@
 		9BD75D6E2E763A10008BF846 /* URL+SafeCopyOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD75D6D2E763A10008BF846 /* URL+SafeCopyOut.swift */; };
 		9BD75D702E77127C008BF846 /* OpenInWebButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD75D6F2E771277008BF846 /* OpenInWebButton.swift */; };
 		9BD883B32EAE9ED800371BBB /* GlobalCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD883B22EAE9ED800371BBB /* GlobalCalendarView.swift */; };
+		0DAF6BC035B886C71EEE9726 /* CalendarFloatingButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFC66FAD61C5853727593B1 /* CalendarFloatingButtons.swift */; };
+		75546D2939B20A5A8653A4D4 /* CalendarDayTimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3CC621255509864F048B58 /* CalendarDayTimelineView.swift */; };
+		8E1A49FD4F706F3E75B04F25 /* CalendarGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82605A0DDA2D4F614D18EAC9 /* CalendarGridView.swift */; };
+		12A4F7A615B5E6CB3F3A885A /* CalendarDayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8CEF8214A59F6E5D1CF7FF /* CalendarDayCell.swift */; };
+		EA263CDD92EBAE1E67AE2489 /* CalendarEventCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9F66A025CC0608FDF225C7 /* CalendarEventCard.swift */; };
+		EE4C04CD3EE456FA8F3E87CE /* GlobalCalendarManager+MockEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4261CECD3F8D127ACC6E6312 /* GlobalCalendarManager+MockEvents.swift */; };
+		3185409686A284DE59D67959 /* CalendarViewMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = F368FBC51BA85E0E1BF10BC7 /* CalendarViewMode.swift */; };
 		9BDFF27E2DA6B6D7009F0DE9 /* OpenInCanvasButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BDFF27D2DA6B6D7009F0DE9 /* OpenInCanvasButton.swift */; };
 		9BEB4ED02D56AF570013869D /* AssignmentDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BEB4ECF2D56AF570013869D /* AssignmentDetailView.swift */; };
 		9BF228C82D6CD1EB000676F2 /* RemindersManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF228C72D6CD1EB000676F2 /* RemindersManager.swift */; };
@@ -464,6 +471,13 @@
 		9BD75D6D2E763A10008BF846 /* URL+SafeCopyOut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+SafeCopyOut.swift"; sourceTree = "<group>"; };
 		9BD75D6F2E771277008BF846 /* OpenInWebButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenInWebButton.swift; sourceTree = "<group>"; };
 		9BD883B22EAE9ED800371BBB /* GlobalCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalCalendarView.swift; sourceTree = "<group>"; };
+		7AFC66FAD61C5853727593B1 /* CalendarFloatingButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CalendarFloatingButtons.swift"; sourceTree = "<group>"; };
+		5B3CC621255509864F048B58 /* CalendarDayTimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CalendarDayTimelineView.swift"; sourceTree = "<group>"; };
+		82605A0DDA2D4F614D18EAC9 /* CalendarGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CalendarGridView.swift"; sourceTree = "<group>"; };
+		BB8CEF8214A59F6E5D1CF7FF /* CalendarDayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CalendarDayCell.swift"; sourceTree = "<group>"; };
+		BA9F66A025CC0608FDF225C7 /* CalendarEventCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CalendarEventCard.swift"; sourceTree = "<group>"; };
+		4261CECD3F8D127ACC6E6312 /* GlobalCalendarManager+MockEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GlobalCalendarManager+MockEvents.swift"; sourceTree = "<group>"; };
+		F368FBC51BA85E0E1BF10BC7 /* CalendarViewMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CalendarViewMode.swift"; sourceTree = "<group>"; };
 		9BDFF27D2DA6B6D7009F0DE9 /* OpenInCanvasButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenInCanvasButton.swift; sourceTree = "<group>"; };
 		9BEB4ECF2D56AF570013869D /* AssignmentDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentDetailView.swift; sourceTree = "<group>"; };
 		9BF228C72D6CD1EB000676F2 /* RemindersManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindersManager.swift; sourceTree = "<group>"; };
@@ -1149,6 +1163,13 @@
 			isa = PBXGroup;
 			children = (
 				9BD883B22EAE9ED800371BBB /* GlobalCalendarView.swift */,
+				7AFC66FAD61C5853727593B1 /* CalendarFloatingButtons.swift */,
+				5B3CC621255509864F048B58 /* CalendarDayTimelineView.swift */,
+				82605A0DDA2D4F614D18EAC9 /* CalendarGridView.swift */,
+				BB8CEF8214A59F6E5D1CF7FF /* CalendarDayCell.swift */,
+				BA9F66A025CC0608FDF225C7 /* CalendarEventCard.swift */,
+				4261CECD3F8D127ACC6E6312 /* GlobalCalendarManager+MockEvents.swift */,
+				F368FBC51BA85E0E1BF10BC7 /* CalendarViewMode.swift */,
 				9B3BAA0C2EADA7FF0031F402 /* GlobalCalendarManager.swift */,
 				9BA2D9352EB109AF0098544B /* Helpers */,
 				8C0A84262E9FF2850036D1F6 /* CalendarEventDetailView.swift */,
@@ -2181,6 +2202,13 @@
 				B7AF50F42E9B03FC00457E8A /* RecentItemsWidget.swift in Sources */,
 				267D85282E662AC5007F821B /* FocusWindowInfo.swift in Sources */,
 				9BD883B32EAE9ED800371BBB /* GlobalCalendarView.swift in Sources */,
+				0DAF6BC035B886C71EEE9726 /* CalendarFloatingButtons.swift in Sources */,
+				75546D2939B20A5A8653A4D4 /* CalendarDayTimelineView.swift in Sources */,
+				8E1A49FD4F706F3E75B04F25 /* CalendarGridView.swift in Sources */,
+				12A4F7A615B5E6CB3F3A885A /* CalendarDayCell.swift in Sources */,
+				EA263CDD92EBAE1E67AE2489 /* CalendarEventCard.swift in Sources */,
+				EE4C04CD3EE456FA8F3E87CE /* GlobalCalendarManager+MockEvents.swift in Sources */,
+				3185409686A284DE59D67959 /* CalendarViewMode.swift in Sources */,
 				B7CC4D432D8DFF0A00254F55 /* PickerServiceViewModifier.swift in Sources */,
 				B73AE0BD2D4FB68B007094A8 /* Profile.swift in Sources */,
 				8C5A131D2F8DA17000E09B46 /* CourseOverviewView.swift in Sources */,

@@ -11,7 +11,9 @@ struct CourseTodoCreationSheet: View {
     @Environment(ToDoListManager.self) private var toDoListManager
     @Environment(\.dismiss) private var dismiss
 
-    let course: Course
+    @State private var course: Course
+    /// When more than one, the course pill becomes a menu (e.g. from the all-courses calendar).
+    private let courseOptions: [Course]
 
     // MARK: - State
 
@@ -28,8 +30,8 @@ struct CourseTodoCreationSheet: View {
     @State private var relatedEntity: RelatedEntity = .none
 
     // Shared
-    @State private var dueDate: Date = .now
-    @State private var hasDueDate: Bool = false
+    @State private var dueDate: Date
+    @State private var hasDueDate: Bool
 
     // Backing data for related picker
     @State private var assignmentManager: CourseAssignmentManager
@@ -70,8 +72,11 @@ struct CourseTodoCreationSheet: View {
 
     // MARK: - Init
 
-    init(course: Course) {
-        self.course = course
+    init(course: Course, courseOptions: [Course] = [], initialDate: Date? = nil) {
+        self._course = State(initialValue: course)
+        self.courseOptions = courseOptions
+        self._dueDate = State(initialValue: initialDate ?? .now)
+        self._hasDueDate = State(initialValue: initialDate != nil)
         self._assignmentManager = State(
             initialValue: CourseAssignmentManager(courseID: course.id)
         )
@@ -106,11 +111,20 @@ struct CourseTodoCreationSheet: View {
         #endif
         .presentationDetents([.medium, .large])
         .presentationDragIndicator(.visible)
-        .task {
-            async let _a: () = assignmentManager.fetchAssignmentGroups()
-            async let _q: () = fetchQuizzes()
-            await _a; await _q
+        .task(id: course.id) {
+            await loadRelatedItems()
         }
+    }
+
+    private func loadRelatedItems() async {
+        if assignmentManager.courseID != course.id {
+            relatedEntity = .none
+            quizzes = []
+            assignmentManager = CourseAssignmentManager(courseID: course.id)
+        }
+        async let _a: () = assignmentManager.fetchAssignmentGroups()
+        async let _q: () = fetchQuizzes()
+        await _a; await _q
     }
 
     // MARK: - Header
@@ -199,13 +213,20 @@ struct CourseTodoCreationSheet: View {
             }
 
             // Course pill — standalone capsule, no wrapper needed
-            Text(course.displayName)
-                .font(.system(size: 15, weight: .semibold))
-                .foregroundStyle(.white)
-                .padding(.horizontal, 16)
-                .padding(.vertical, 10)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(course.rgbColors?.color ?? .accentColor, in: Capsule())
+            if courseOptions.count > 1 {
+                Menu {
+                    Picker("Course", selection: $course) {
+                        ForEach(courseOptions) { option in
+                            Text(option.displayName).tag(option)
+                        }
+                    }
+                } label: {
+                    coursePill(showsChevron: true)
+                }
+                .buttonStyle(.plain)
+            } else {
+                coursePill(showsChevron: false)
+            }
 
             // Related picker — its own card, task only
             if kind == .task {
@@ -254,6 +275,23 @@ struct CourseTodoCreationSheet: View {
             }
         }
         .animation(.spring(response: 0.35, dampingFraction: 0.75), value: kind)
+    }
+
+    private func coursePill(showsChevron: Bool) -> some View {
+        HStack {
+            Text(course.displayName)
+            Spacer()
+            if showsChevron {
+                Image(systemName: "chevron.up.chevron.down")
+                    .font(.caption.weight(.semibold))
+            }
+        }
+        .font(.system(size: 15, weight: .semibold))
+        .foregroundStyle(.white)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 10)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(course.rgbColors?.color ?? .accentColor, in: Capsule())
     }
 
     @ViewBuilder
