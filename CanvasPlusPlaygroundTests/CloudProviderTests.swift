@@ -324,3 +324,26 @@ private struct UnavailableProvider: AgentModelProvider {
         throw AgentModelError.unavailable("test")
     }
 }
+
+struct GeminiSchemaTests {
+    @Test func inlinesDefinitionsAndDropsTitles() {
+        guard #available(iOS 26.0, macOS 26.0, *) else { return }
+        let schema: JSONValue = .object([
+            "title": .string("Answer"),
+            "type": .string("object"),
+            "$defs": .object(["Sentence": .object(["title": .string("Sentence"), "type": .string("object"), "properties": .object(["text": .object(["type": .string("string")])])])]),
+            "properties": .object(["sentences": .object(["type": .string("array"), "items": .object(["$ref": .string("#/$defs/Sentence")])])]),
+        ])
+
+        let flat = GeminiProvider.inliningReferences(schema).jsonString
+        #expect(!flat.contains("$defs"))
+        #expect(!flat.contains("$ref"))
+        #expect(!flat.contains("title"))
+        #expect(flat.contains(#""items":{"properties":{"text":{"type":"string"}},"type":"object"}"#))
+    }
+
+    @Test func errorsReadAsSentences() {
+        #expect(AgentModelError.other("Gemini returned an error (400).").localizedDescription == "Gemini returned an error (400).")
+        #expect(AgentModelError.rateLimited.localizedDescription.hasPrefix("Too many requests"))
+    }
+}
