@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		431D13FB09310539DD42AFC6 /* StartMyDayPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C1E7A5CF4B14CA802CC6666 /* StartMyDayPanel.swift */; };
+		1E159D1E17E16AAAD2722FAE /* StartMyDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179706E5357E3C04E3D13CDF /* StartMyDay.swift */; };
 		A91E2E544EB83B47064FFCA3 /* AssistantHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7A5EBB6655BE8504E5516A /* AssistantHost.swift */; };
 		C9DD97ED47BA4C1B316FA42E /* AgentOrbView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB9DCD00C124159A4158AF9F /* AgentOrbView.swift */; };
 		15CA3BD4C829C0A4FB79FA9F /* VoiceInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382A6468BE1D2FB7943FFC6A /* VoiceInput.swift */; };
@@ -401,6 +403,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5C1E7A5CF4B14CA802CC6666 /* StartMyDayPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartMyDayPanel.swift; sourceTree = "<group>"; };
+		179706E5357E3C04E3D13CDF /* StartMyDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartMyDay.swift; sourceTree = "<group>"; };
 		0B7A5EBB6655BE8504E5516A /* AssistantHost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssistantHost.swift; sourceTree = "<group>"; };
 		FB9DCD00C124159A4158AF9F /* AgentOrbView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentOrbView.swift; sourceTree = "<group>"; };
 		382A6468BE1D2FB7943FFC6A /* VoiceInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceInput.swift; sourceTree = "<group>"; };
@@ -810,6 +814,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CF1746117C8BB7772EF31071 /* StartMyDay */ = {
+			isa = PBXGroup;
+			children = (
+				5C1E7A5CF4B14CA802CC6666 /* StartMyDayPanel.swift */,
+				179706E5357E3C04E3D13CDF /* StartMyDay.swift */,
+			);
+			path = StartMyDay;
+			sourceTree = "<group>";
+		};
 		E5E440D3B8E55026F906E55A /* Assistant */ = {
 			isa = PBXGroup;
 			children = (
@@ -993,6 +1006,7 @@
 		A324BA502D07963D005F53FA /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				CF1746117C8BB7772EF31071 /* StartMyDay */,
 				E5E440D3B8E55026F906E55A /* Assistant */,
 				8537F67CF6F515C85D2C5875 /* Ask */,
 				8CAC2F172F79FB6900EC5FA4 /* SpotlightSearch */,
@@ -2276,6 +2290,8 @@
 				E1B4D3BE5A7D3F1453EE795A /* SemanticIndexable.swift in Sources */,
 				204FC32D5481BD71604178E2 /* SemanticIndexer.swift in Sources */,
 				23CED77DBFE1383B47A216C5 /* SearchIndex.swift in Sources */,
+				431D13FB09310539DD42AFC6 /* StartMyDayPanel.swift in Sources */,
+				1E159D1E17E16AAAD2722FAE /* StartMyDay.swift in Sources */,
 				A91E2E544EB83B47064FFCA3 /* AssistantHost.swift in Sources */,
 				C9DD97ED47BA4C1B316FA42E /* AgentOrbView.swift in Sources */,
 				15CA3BD4C829C0A4FB79FA9F /* VoiceInput.swift in Sources */,
