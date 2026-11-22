@@ -57,6 +57,9 @@ struct SyllabusView: View {
                         }
                     }
             }
+            #if os(macOS)
+            .frame(minWidth: 520, idealWidth: 580, minHeight: 600, idealHeight: 720)
+            #endif
         }
         #if os(iOS)
         .navigationTitle("Syllabus")
