@@ -166,6 +166,8 @@ class WidgetStore {
             return PinnedFilesWidget()
         case TodayWidget.widgetID:
             return TodayWidget()
+        case BriefingWidget.widgetID:
+            return BriefingWidget()
         default:
             return nil
         }
