@@ -17,6 +17,7 @@ struct GradeCalculatorView: View {
 
     let course: Course
     @State private var showIGCSetup = false
+    @State private var showContract = false
 
     init(course: Course, assignmentGroups: [AssignmentGroup]) {
         self.course = course
@@ -55,6 +56,19 @@ struct GradeCalculatorView: View {
             totalGradeView
         }
         #endif
+        .sheet(isPresented: $showContract) {
+            NavigationStack {
+                CourseContractView(course: course)
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button("Close") { showContract = false }
+                        }
+                    }
+            }
+            #if os(macOS)
+            .frame(minWidth: 480, minHeight: 560)
+            #endif
+        }
         .toolbar {
             #if os(macOS)
             ToolbarItem(placement: .destructiveAction) {
@@ -66,6 +80,11 @@ struct GradeCalculatorView: View {
                 ToolbarItem(placement: .automatic) {
                     intelligentGradeCalculatorToolbarItem
                 }
+            }
+
+            ToolbarItem(placement: .automatic) {
+                Button("Course Contract", systemImage: "checkmark.seal") { showContract = true }
+                    .help("Grade weights and policies from the syllabus, checked against Canvas")
             }
 
             ToolbarItem(placement: .cancellationAction) {

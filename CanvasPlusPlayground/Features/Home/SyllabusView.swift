@@ -11,6 +11,7 @@ struct SyllabusView: View {
     let course: Course
 
     @State private var showExamDates = false
+    @State private var showContract = false
 
     var body: some View {
         Group {
@@ -27,7 +28,10 @@ struct SyllabusView: View {
         .toolbar {
             if course.syllabusBody != nil {
                 ToolbarItem(placement: .primaryAction) {
-                    Button("Find Exam Dates", systemImage: "calendar.badge.plus") { showExamDates = true }
+                    Menu("Syllabus Tools", systemImage: "wand.and.stars") {
+                        Button("Find Exam Dates", systemImage: "calendar.badge.plus") { showExamDates = true }
+                        Button("Course Contract", systemImage: "checkmark.seal") { showContract = true }
+                    }
                 }
             }
         }
@@ -42,6 +46,19 @@ struct SyllabusView: View {
             }
             #if os(macOS)
             .frame(minWidth: 520, idealWidth: 560, minHeight: 600, idealHeight: 680)
+            #endif
+        }
+        .sheet(isPresented: $showContract) {
+            NavigationStack {
+                CourseContractView(course: course)
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button("Close") { showContract = false }
+                        }
+                    }
+            }
+            #if os(macOS)
+            .frame(minWidth: 520, idealWidth: 580, minHeight: 600, idealHeight: 720)
             #endif
         }
         #if os(iOS)
