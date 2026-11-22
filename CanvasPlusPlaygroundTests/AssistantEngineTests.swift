@@ -189,6 +189,22 @@ struct AssistantEngineTests {
         #expect(reply.sentences.first?.text.contains("90%") == true)
     }
 
+    @Test func weekAnswersNeverTakeDaysFromTheModel() async throws {
+        guard #available(iOS 26.0, macOS 26.0, *) else { return }
+        let source = FakeSource()
+        source.assignmentList = [assignment("1", days: 1), assignment("2", days: 3)]
+        let json = """
+        {"sentences": [{"text": "The earliest due date is Friday at 11:59 PM.", "citedIDs": ["assignment:1"]}],
+         "showIDs": ["assignment:1"], "followUps": [], "confidence": "high"}
+        """
+        let model = ScriptedModelProvider(steps: [.respond(json: json)])
+
+        let reply = try await engine(source, model: model).answer("What's due this week?", context: .dashboard)
+
+        #expect(reply.sentences.map(\.text) == ["There are 2 assignments in the next week."])
+        #expect(await model.receivedPrompts.isEmpty)
+    }
+
     @Test func theGateHidesSentencesWithMadeUpCitations() async throws {
         guard #available(iOS 26.0, macOS 26.0, *) else { return }
         let source = FakeSource()

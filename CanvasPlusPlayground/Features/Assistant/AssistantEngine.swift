@@ -108,6 +108,15 @@ enum AssistantIntent: String, Codable, Sendable, CaseIterable {
         }
     }
 
+    /// The answer is the list itself (days, dates, counts), so the sentence comes from Swift.
+    /// The model would only restate it, and it has been seen getting the days wrong.
+    var answersFromRecords: Bool {
+        switch self {
+        case .week, .today: true
+        default: false
+        }
+    }
+
     /// What the thinking indicator says while the tools run.
     var workingLabel: String {
         switch self {
@@ -415,6 +424,10 @@ struct AssistantEngine {
 
         guard provider.tier != .none, !evidence.isEmpty else {
             context.note("No model: answered from a template")
+            return template
+        }
+        guard !intent.answersFromRecords else {
+            context.note("Answered from the records: counts and days come straight from the list")
             return template
         }
 
