@@ -11,21 +11,58 @@ import SwiftUI
 
 struct BreadcrumbView: View {
     @Environment(NavigationModel.self) private var navigationModel
+    @Environment(CourseManager.self) private var courseManager
+
+    private struct RootCrumb {
+        let title: String
+        var systemImage: String?
+        let action: () -> Void
+    }
+
+    /// Crumbs before the pushed path: "Home", plus the course (and course page) when a course sidebar tab is open.
+    private var rootCrumbs: [RootCrumb] {
+        let home = RootCrumb(title: "Home", systemImage: "house") { [navigationModel] in
+            navigationModel.popToRoot()
+        }
+        switch navigationModel.selectedTab {
+        case .course(let id):
+            guard let course = courseManager.course(withID: id) else { return [home] }
+            return [
+                RootCrumb(title: "Home", systemImage: "house") { [navigationModel] in navigationModel.selectedTab = .dashboard },
+                RootCrumb(title: course.displayName) { [navigationModel] in navigationModel.popToRoot() },
+            ]
+        case let .coursePage(id, page):
+            guard let course = courseManager.course(withID: id) else { return [home] }
+            return [
+                RootCrumb(title: "Home", systemImage: "house") { [navigationModel] in navigationModel.selectedTab = .dashboard },
+                RootCrumb(title: course.displayName) { [navigationModel] in navigationModel.selectedTab = .course(id) },
+                RootCrumb(title: page.title) { [navigationModel] in navigationModel.popToRoot() },
+            ]
+        default:
+            return [home]
+        }
+    }
 
     var body: some View {
         let crumbs = navigationModel.breadcrumbs
-        guard !crumbs.isEmpty else { return AnyView(EmptyView()) }
+        let roots = rootCrumbs
+        guard !crumbs.isEmpty || roots.count > 1 else { return AnyView(EmptyView()) }
 
         return AnyView(
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 6) {
-                    // Root "Home" crumb
-                    BreadcrumbButton(
-                        title: "Home",
-                        systemImage: "house",
-                        isLast: false
-                    ) {
-                        navigationModel.popToRoot()
+                    ForEach(Array(roots.enumerated()), id: \.offset) { index, root in
+                        if index > 0 {
+                            Image(systemName: "chevron.right")
+                                .font(.caption)
+                                .foregroundStyle(.quaternary)
+                        }
+                        BreadcrumbButton(
+                            title: root.title,
+                            systemImage: root.systemImage,
+                            isLast: crumbs.isEmpty && index == roots.count - 1,
+                            action: root.action
+                        )
                     }
 
                     ForEach(Array(crumbs.enumerated()), id: \.offset) { index, crumb in

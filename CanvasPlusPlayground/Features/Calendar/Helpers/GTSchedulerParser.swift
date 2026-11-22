@@ -103,6 +103,9 @@ class GTSchedulerParser {
     ///   - Each meeting indicates days (e.g., "MWF"), period index (idx), and location
     ///   - This function matches those up to return CanvasCourseScheduleMeeting entries for each weekday/period/location combination
     func getCanvasCourseScheduleMeetings(course: Course) async throws -> CanvasCourseSchedule {
+        if AppEnvironment.isSandbox {
+            return CanvasCourseSchedule(course: course, meetings: SandboxData.dummyMeetings(forCourseID: course.id))
+        }
 
         // 1. If catalog has not been fetched yet, fetch it
         if catalog == nil { // should only be fetched once
@@ -254,5 +257,12 @@ struct CanvasCourseScheduleMeeting {
     let endTime: DateComponents
     let location: String
 
+    /// This meeting's start and end placed on `day`.
+    func interval(on day: Date, calendar: Calendar = .current) -> DateInterval? {
+        guard let start = calendar.date(bySettingHour: startTime.hour ?? 0, minute: startTime.minute ?? 0, second: 0, of: day),
+              let end = calendar.date(bySettingHour: endTime.hour ?? 0, minute: endTime.minute ?? 0, second: 0, of: day),
+              end > start else { return nil }
+        return DateInterval(start: start, end: end)
+    }
 }
 

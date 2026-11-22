@@ -53,6 +53,13 @@ class ToDoListManager: ListWidgetDataSource, BigNumberWidgetDataSource {
     }
 
     func fetchToDoItems(courses: [Course]) async {
+        if AppEnvironment.isSandbox {
+            await MainActor.run {
+                addItems(SandboxData.dummyToDoItems, courses: courses, replaceExisting: true)
+                loadUserCreatedItems(courses: courses)
+            }
+            return
+        }
         let request = CanvasRequest.getToDoItems(include: [.ungradedQuizzes])
 
         do {
@@ -88,7 +95,9 @@ class ToDoListManager: ListWidgetDataSource, BigNumberWidgetDataSource {
         }
     }
 
-    func ignoreToDoItem(_ item: ToDoItem) async {
+    /// Returns whether Canvas accepted the request.
+    @discardableResult
+    func ignoreToDoItem(_ item: ToDoItem) async -> Bool {
         // We can either use the ignoreURL or the ignorePermanentlyURL.
         // ignoreURL will add the item back if the item is updated in the future.
         // ignorePermanentlyURL will remove the item from the list forever.
@@ -97,8 +106,26 @@ class ToDoListManager: ListWidgetDataSource, BigNumberWidgetDataSource {
 
         do {
             try await CanvasService.shared.fetch(request)
+            return true
         } catch {
             LoggerService.main.error("Failed to ignore todo item: \(error)")
+            return false
+        }
+    }
+
+    /// Marks an item done: drops it from the list and tells Canvas (or SwiftData, for user-created items).
+    func complete(_ item: ToDoItem) async {
+        // Remove first so the row animates out without waiting on the network.
+        await MainActor.run { _ = toDoItems.remove(item) }
+
+        if item.isUserCreated {
+            await MainActor.run {
+                ModelContext.shared.delete(item)
+                try? ModelContext.shared.save()
+            }
+        } else if !AppEnvironment.isSandbox, await !ignoreToDoItem(item) {
+            // Canvas didn't record it; put it back so the user sees it isn't done.
+            await MainActor.run { _ = toDoItems.insert(item) }
         }
     }
 

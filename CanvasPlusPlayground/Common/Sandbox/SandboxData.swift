@@ -1174,3 +1174,39 @@ extension TabAPI {
         ]
     }
 }
+
+// MARK: - Class Meetings
+
+extension SandboxData {
+    /// Stand-in for GT Scheduler meeting times, which sandbox sections can't be looked up in.
+    static func dummyMeetings(forCourseID id: String) -> [CanvasCourseScheduleMeeting] {
+        let isCourse2 = id == courseID2
+        let days: [Locale.Weekday] = isCourse2 ? [.monday, .wednesday] : [.tuesday, .thursday]
+        let start = DateComponents(hour: isCourse2 ? 9 : 15, minute: 30)
+        let end = DateComponents(hour: isCourse2 ? 10 : 16, minute: 45)
+        return days.map {
+            CanvasCourseScheduleMeeting(weekday: $0, startTime: start, endTime: end, location: "Klaus 1443")
+        }
+    }
+}
+
+// MARK: - To-Do Items
+
+extension SandboxData {
+    /// Upcoming sandbox assignments, shaped like Canvas's to-do API response.
+    static var dummyToDoItems: [ToDoItem] {
+        dummyCourses.flatMap { course in
+            dummyAssignmentGroups(forCourseID: course.id)
+                .flatMap { $0.assignments ?? [] }
+                .filter { ($0.dueDate ?? .distantPast) > .now }
+                .map {
+                    ToDoItem(from: ToDoItemAPI(
+                        contextType: .course, courseID: intID(for: course.id), groupID: nil,
+                        contextName: course.displayName, type: .submitting,
+                        ignoreURL: "", ignorePermanentlyURL: "",
+                        assignment: $0, quiz: nil, htmlURL: ""
+                    ))
+                }
+        }
+    }
+}

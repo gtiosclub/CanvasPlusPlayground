@@ -107,7 +107,7 @@ class NavigationModel {
         func destinationView() -> some View {
             switch self {
             case .course(let course):
-                CourseView(course: course)
+                CourseOverviewView(course: course)
             case let .coursePage(coursePage, course):
                 CourseDetailView(course: course, coursePage: coursePage)
             case .announcement(let announcement):

@@ -15,6 +15,14 @@ struct SidebarView: View {
 
     var body: some View {
         List(selection: $selectedTab) {
+            #if os(macOS)
+            SidebarQuickLinks()
+                .padding(.bottom, 12)
+                .listRowInsets(EdgeInsets(top: 4, leading: 0, bottom: 8, trailing: 0))
+                .listRowSeparator(.hidden)
+                .selectionDisabled()
+            #endif
+
             NavigationLink(value: NavigationModel.Tab.dashboard) {
                 Label("Dashboard", systemImage: "rectangle.grid.2x2.fill")
             }
@@ -83,3 +91,51 @@ struct SidebarView: View {
     }
 
 }
+
+#if os(macOS)
+/// 2x2 grid of the Dashboard's global pages (same destinations and colors as its navigation capsules).
+private struct SidebarQuickLinks: View {
+    @Environment(NavigationModel.self) private var navigationModel
+
+    private let links: [(title: String, systemImage: String, tint: Color, destination: NavigationModel.Destination)] = [
+        ("Announcements", "bubble.fill", .blue, .allAnnouncements),
+        ("Calendar", "calendar", .purple, .allCalendar),
+        ("Pinned", "pin.fill", .orange, .pinnedItems),
+        ("To-Do", "list.bullet", .red, .allToDos),
+    ]
+
+    var body: some View {
+        Grid(horizontalSpacing: 8, verticalSpacing: 8) {
+            GridRow { tile(links[0]); tile(links[1]) }
+            GridRow { tile(links[2]); tile(links[3]) }
+        }
+    }
+
+    private func tile(_ link: (title: String, systemImage: String, tint: Color, destination: NavigationModel.Destination)) -> some View {
+        Button {
+            navigationModel.selectedTab = .dashboard
+            guard navigationModel.breadcrumbs != [link.destination] else { return }
+            navigationModel.popToRoot()
+            // Push after the pop lands: swapping the top page in one update leaves NavigationStack blank.
+            Task { @MainActor in navigationModel.push(link.destination) }
+        } label: {
+            VStack(alignment: .leading, spacing: 8) {
+                Image(systemName: link.systemImage)
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundStyle(.white)
+                    .frame(width: 28, height: 28)
+                    .background(link.tint, in: .circle)
+                Text(link.title)
+                    .font(.callout.weight(.medium))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
+            }
+            .padding(10)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(.background, in: .rect(cornerRadius: 10))
+            .contentShape(.rect(cornerRadius: 10))
+        }
+        .buttonStyle(.plain)
+    }
+}
+#endif

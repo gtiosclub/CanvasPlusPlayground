@@ -118,7 +118,7 @@ struct CourseAssignmentsView: View {
         #if os(iOS)
         .navigationTitle(showGrades ? "Grades" : "Assignments")
         #else
-        .navigationTitle(showGrades ? "\(course.displayName) -- Grades" : "\(course.displayName) -- Assignments")
+        .navigationTitle(showGrades ? "Grades" : "Assignments")
         #endif
         .sheet(isPresented: $showingGradeCalculator) {
             NavigationStack {

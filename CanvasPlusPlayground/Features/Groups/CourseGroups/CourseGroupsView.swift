@@ -40,7 +40,7 @@ struct CourseGroupsView: View {
         #if os(iOS)
         .navigationTitle("Groups")
         #else
-        .navigationTitle("\(course.displayName) -- Groups")
+        .navigationTitle("Groups")
         #endif
     }
 }

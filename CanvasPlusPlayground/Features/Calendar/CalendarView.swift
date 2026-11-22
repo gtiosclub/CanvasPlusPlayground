@@ -54,7 +54,7 @@ struct CalendarView: View {
         .navigationTitle("Calendar")
 
         #else
-        .navigationTitle("\(course.displayName) -- Calendar")
+        .navigationTitle("Calendar")
         #endif
     }
 
