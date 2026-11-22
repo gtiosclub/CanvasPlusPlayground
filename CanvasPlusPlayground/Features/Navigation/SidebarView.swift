@@ -114,8 +114,10 @@ private struct SidebarQuickLinks: View {
     private func tile(_ link: (title: String, systemImage: String, tint: Color, destination: NavigationModel.Destination)) -> some View {
         Button {
             navigationModel.selectedTab = .dashboard
+            guard navigationModel.breadcrumbs != [link.destination] else { return }
             navigationModel.popToRoot()
-            navigationModel.push(link.destination)
+            // Push after the pop lands: swapping the top page in one update leaves NavigationStack blank.
+            Task { @MainActor in navigationModel.push(link.destination) }
         } label: {
             VStack(alignment: .leading, spacing: 8) {
                 Image(systemName: link.systemImage)
