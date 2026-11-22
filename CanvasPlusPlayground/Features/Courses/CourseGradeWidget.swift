@@ -37,7 +37,8 @@ struct CourseGradeWidget: View {
         ) {
             HStack(spacing: 24) {
                 ring
-                    .frame(width: 140, height: 140)
+                    .frame(width: 112, height: 112)
+                    .padding(14)
 
                 if !weightedGroups.isEmpty {
                     weightsTable
@@ -59,18 +60,18 @@ struct CourseGradeWidget: View {
     private var ring: some View {
         ZStack {
             Circle()
-                .stroke(.tint.opacity(0.3), lineWidth: 20)
+                .stroke(.tint.opacity(0.3), lineWidth: 16)
 
             Circle()
                 .trim(from: 0, to: ringProgress)
-                .stroke(.tint, style: StrokeStyle(lineWidth: 20, lineCap: .round))
+                .stroke(.tint, style: StrokeStyle(lineWidth: 16, lineCap: .round))
                 .rotationEffect(.degrees(-90))
 
             Text(score.map { "\(Int($0))%" } ?? "--")
-                .font(.system(size: 40, weight: .bold, design: .rounded))
+                .font(.system(size: 32, weight: .bold, design: .rounded))
                 .foregroundStyle(.tint)
                 .minimumScaleFactor(0.5)
-                .padding(24)
+                .padding(19)
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("Current grade")
