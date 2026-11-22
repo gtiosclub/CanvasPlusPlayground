@@ -38,6 +38,8 @@ struct AgentBudget: Codable, Hashable, Sendable {
     }
 
     static let onDevice = AgentBudget()
+    /// Cloud models have a far larger window and can be slow under load.
+    static let cloud = AgentBudget(maxSteps: 8, maxDuration: .seconds(90), maxTokens: 60_000, contextWindow: 32_000, outputReserve: 2_000)
 
     /// The most prompt tokens one call can use and still leave `outputReserve` for the answer.
     var maxPromptTokens: Int {

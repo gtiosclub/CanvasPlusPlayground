@@ -168,6 +168,7 @@ enum AssistantSuggestions {
         switch intent {
         case .graded: ["What's my grade overall?", "Am I missing any work?"]
         case .grade: ["What assignments have been graded?", "What's due next week?"]
+        case .today: ["What does my next week look like?", "What should I do first?"]
         case .week: ["What should I do first?", "Am I missing any work?"]
         case .changes: ["What does my next week look like?", "Any new announcements?"]
         case .announcements: ["Did anything change in my courses?", "What's due next week?"]

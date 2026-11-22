@@ -79,9 +79,18 @@ struct AssistantIntentTests {
         ("What should I do first?", .urgent),
         ("Am I missing any work?", .missing),
         ("Where is the lab room?", .general),
+        ("What classes do I have today", .today),
+        ("What's due today?", .today),
     ])
     func classifies(_ question: String, expected: AssistantIntent) {
         #expect(AssistantIntent.classify(question) == expected)
+    }
+}
+
+struct AssistantRelevanceTests {
+    @Test func significantTermsDropQuestionWords() {
+        #expect(AssistantEngine.significantTerms(in: "What classes do I have today?").isEmpty)
+        #expect(AssistantEngine.significantTerms(in: "When is the lab policy due?") == ["lab", "policy", "due"])
     }
 }
 
@@ -206,6 +215,55 @@ struct AssistantEngineTests {
             return
         }
         #expect(rows.map(\.id) == ["assignment:2"])
+    }
+
+    @Test func todayWithNothingScheduledSaysSoHonestly() async throws {
+        guard #available(iOS 26.0, macOS 26.0, *) else { return }
+        let source = FakeSource()
+        source.assignmentList = [assignment("far", days: 5)]
+
+        let reply = try await engine(source).answer("What classes do I have today", context: .dashboard)
+
+        #expect(reply.block == nil)
+        #expect(reply.sentences.isEmpty)
+        #expect(reply.note?.contains("class meeting times") == true)
+        #expect(!reply.canTryCloud)
+    }
+
+    @Test func generalQuestionsNeverListIrrelevantPassages() async throws {
+        guard #available(iOS 26.0, macOS 26.0, *) else { return }
+        let welcome = Evidence(ref: .passage(sourceID: "page:1", ordinal: 0, courseID: "1"), title: "Welcome", snippet: "Welcome to the course! We have labs every week.")
+        let labs = Evidence(ref: .passage(sourceID: "page:2", ordinal: 0, courseID: "1"), title: "Lab Policy", snippet: "Labs are due Fridays.")
+        var e = engine(FakeSource())
+        e.retrievePassages = { _, _ in [welcome, labs] }
+
+        // Nothing in the records mentions "parking": no rows, an honest note.
+        let none = try await e.answer("Where do I park?", context: .dashboard)
+        #expect(none.block == nil)
+        #expect(none.note == "I couldn't find that in your synced courses.")
+
+        // "policy" matches the lab policy page only.
+        let some = try await e.answer("What is the lab policy?", context: .dashboard)
+        guard case .records(let rows)? = some.block else {
+            Issue.record("Expected records")
+            return
+        }
+        #expect(rows.map(\.id).contains(labs.id))
+    }
+
+    @Test func aModelThatFindsNothingIsShownAsANoteNotHidden() async throws {
+        guard #available(iOS 26.0, macOS 26.0, *) else { return }
+        let labs = Evidence(ref: .passage(sourceID: "page:2", ordinal: 0, courseID: "1"), title: "Lab Policy", snippet: "Labs are due Fridays.")
+        let json = #"{"sentences": [{"text": "The records don't say when labs start.", "citedIDs": []}], "showIDs": ["passage:page:2#0"], "followUps": [], "confidence": "low"}"#
+        var e = engine(FakeSource(), model: ScriptedModelProvider(steps: [.respond(json: json)]))
+        e.retrievePassages = { _, _ in [labs] }
+
+        let reply = try await e.answer("When do labs start?", context: .dashboard)
+
+        #expect(reply.note == "The records don't say when labs start.")
+        #expect(reply.droppedCount == 0)
+        #expect(reply.block == nil)
+        #expect(reply.canTryCloud)
     }
 
     @Test func nothingFoundOffersNoCloud() async throws {

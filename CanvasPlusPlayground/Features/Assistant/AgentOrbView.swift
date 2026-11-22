@@ -453,7 +453,12 @@ private struct ReplyView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            if reply.isEmpty {
+            if let note = reply.note {
+                Label(note, systemImage: "info.circle")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            } else if reply.isEmpty {
                 Text("I couldn't find anything about that in your synced courses.")
                     .font(.callout)
                     .foregroundStyle(.secondary)
