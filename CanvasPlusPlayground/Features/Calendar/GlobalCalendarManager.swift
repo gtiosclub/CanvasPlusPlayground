@@ -40,6 +40,7 @@ class GlobalCalendarManager {
 
     /// Empty cells before the 1st so it lands under the right weekday column (0 for day/week).
     var leadingBlankDays: Int {
+        guard viewMode == .month else { return 0 }
         let weekday = calendar.component(.weekday, from: visibleInterval.start)
         return (weekday - calendar.firstWeekday + 7) % 7
     }
