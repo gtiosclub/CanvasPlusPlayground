@@ -42,7 +42,7 @@ struct GlobalCalendarView: View {
         .accessibilityAction(named: "Previous") { calendarManager.step(by: -1) }
         .accessibilityAction(named: "Next") { calendarManager.step(by: 1) }
         .overlay(alignment: .bottomTrailing) {
-            CalendarFloatingButtons(addAction: showNewItemSheet, assistantAction: askAssistant)
+            CalendarFloatingButtons(addAction: showNewItemSheet)
                 #if os(macOS)
                 .popover(isPresented: $isShowingNewItemSheet) { newItemSheet }
                 #endif
@@ -95,9 +95,6 @@ struct GlobalCalendarView: View {
         isShowingNewItemSheet = true
     }
 
-    private func askAssistant() {
-        // Stub: AI assistant entry point, not wired up yet.
-    }
 
     private func pageOnSwipe(_ value: DragGesture.Value) {
         let dx = value.translation.width

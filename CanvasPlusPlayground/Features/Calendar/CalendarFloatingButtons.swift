@@ -9,17 +9,13 @@ import SwiftUI
 
 struct CalendarFloatingButtons: View {
     let addAction: () -> Void
-    let assistantAction: () -> Void
 
     var body: some View {
-        VStack(spacing: 16) {
-            Button("Add Item", systemImage: "plus", action: addAction)
-            Button("Ask AI", systemImage: "sparkles", action: assistantAction)
-        }
-        .labelStyle(.iconOnly)
-        .font(.system(size: 20, weight: .semibold))
-        .buttonStyle(FloatingButtonStyle())
-        .padding(24)
+        Button("Add Item", systemImage: "plus", action: addAction)
+            .labelStyle(.iconOnly)
+            .font(.system(size: 20, weight: .semibold))
+            .buttonStyle(FloatingButtonStyle())
+            .padding(24)
     }
 }
 
