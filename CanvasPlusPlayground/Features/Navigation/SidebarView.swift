@@ -17,6 +17,7 @@ struct SidebarView: View {
         List(selection: $selectedTab) {
             #if os(macOS)
             SidebarQuickLinks()
+                .padding(.bottom, 12)
                 .listRowInsets(EdgeInsets(top: 4, leading: 0, bottom: 8, trailing: 0))
                 .listRowSeparator(.hidden)
                 .selectionDisabled()
