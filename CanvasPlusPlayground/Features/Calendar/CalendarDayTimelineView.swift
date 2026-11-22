@@ -48,7 +48,9 @@ struct CalendarDayTimelineView: View {
                         let bottom = min(minutes(from: dayStart, to: event.endDate), 24 * 60) * hourHeight / 60
 
                         CalendarEventCard(event: event)
-                            .frame(width: width - 2, height: max(bottom - top, minEventHeight))
+                            // Short events can't fit all three lines; overflow downward and clip.
+                            .frame(width: width - 2, height: max(bottom - top, minEventHeight), alignment: .top)
+                            .clipShape(.rect(cornerRadius: 6))
                             .offset(x: labelWidth + 8 + CGFloat(slot.column) * width, y: top)
                     }
                 }

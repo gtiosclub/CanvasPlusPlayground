@@ -42,9 +42,6 @@ struct GlobalCalendarView: View {
         .sheet(isPresented: $isShowingNewItemSheet) { newItemSheet }
         #endif
         .navigationTitle(calendarManager.title)
-        .toolbarTitleMenu {
-            Button("Today", systemImage: "calendar.badge.clock", action: calendarManager.setToNow)
-        }
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Menu {
@@ -53,9 +50,16 @@ struct GlobalCalendarView: View {
                             Label(mode.title, systemImage: mode.systemImage)
                         }
                     }
+                    // toolbarTitleMenu doesn't attach to large titles, so "jump to today" lives here.
+                    Divider()
+                    Button("Today", systemImage: "calendar.badge.clock", action: calendarManager.setToNow)
                 } label: {
-                    Label(calendarManager.viewMode.title, systemImage: calendarManager.viewMode.systemImage)
-                        .labelStyle(.titleAndIcon)
+                    // Toolbars render a Label icon-only; an HStack keeps the mode name visible.
+                    HStack {
+                        Image(systemName: calendarManager.viewMode.systemImage)
+                        Text(calendarManager.viewMode.title)
+                    }
+                    .accessibilityElement(children: .combine)
                 }
             }
         }

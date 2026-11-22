@@ -35,7 +35,11 @@ struct CalendarEventCard: View {
             .padding(.horizontal, 6)
             .padding(.vertical, 4)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-            .background((event.course.rgbColors?.color ?? .accentColor).opacity(0.25), in: .rect(cornerRadius: 6))
+            .background {
+                // Opaque base so timeline hour lines don't show through the tint.
+                RoundedRectangle(cornerRadius: 6).fill(.background)
+                RoundedRectangle(cornerRadius: 6).fill((event.course.rgbColors?.color ?? .accentColor).opacity(0.25))
+            }
             .overlay(alignment: .leading) {
                 UnevenRoundedRectangle(topLeadingRadius: 6, bottomLeadingRadius: 6)
                     .fill(event.course.rgbColors?.color ?? .accentColor)

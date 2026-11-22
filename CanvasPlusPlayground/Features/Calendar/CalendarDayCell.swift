@@ -52,7 +52,7 @@ struct CalendarDayCell: View {
                 }
             }
             .padding(4)
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
             .contentShape(.rect)
             .clipped()
         }
