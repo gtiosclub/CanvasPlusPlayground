@@ -31,6 +31,7 @@ enum CodableDestination: Codable, Hashable {
     case pinnedItems
     case recentItems
     case today
+    case crunch
     case calendarEvent(String, Course.ID?)
     case allCalendar
 }
@@ -67,6 +68,8 @@ extension CodableDestination {
             self = .calendarEvent(event.id, course.id)
         case .today:
             self = .today
+        case .crunch:
+            self = .crunch
         case .allCalendar:
             self = .allCalendar
         }

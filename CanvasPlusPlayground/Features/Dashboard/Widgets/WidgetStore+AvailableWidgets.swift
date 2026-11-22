@@ -16,7 +16,8 @@ extension WidgetStore {
         WidgetTypeInfo(widgetType: PinnedAnnouncementsWidget.self),
         WidgetTypeInfo(widgetType: PinnedAssignmentsWidget.self),
         WidgetTypeInfo(widgetType: PinnedFilesWidget.self),
-        WidgetTypeInfo(widgetType: TodayWidget.self)
+        WidgetTypeInfo(widgetType: TodayWidget.self),
+        WidgetTypeInfo(widgetType: CrunchWidget.self)
     ]
 
     /// The default configuration of widgets when Canvas Plus is first launched.
