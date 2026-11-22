@@ -367,6 +367,6 @@ struct GeminiSchemaTests {
 
     @Test func errorsReadAsSentences() {
         #expect(AgentModelError.other("Gemini returned an error (400).").localizedDescription == "Gemini returned an error (400).")
-        #expect(AgentModelError.rateLimited.localizedDescription.hasPrefix("Too many requests"))
+        #expect(AgentModelError.rateLimited.localizedDescription.hasPrefix("The model is busy"))
     }
 }
