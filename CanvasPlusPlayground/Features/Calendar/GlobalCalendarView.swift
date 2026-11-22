@@ -16,18 +16,25 @@ struct GlobalCalendarView: View {
     var body: some View {
         @Bindable var calendarManager = calendarManager
 
-        VStack(spacing: 0) {
-            switch calendarManager.viewMode {
-            case .day:
-                CalendarDayTimelineView(
-                    date: calendarManager.currentDate,
-                    events: calendarManager.events(on: calendarManager.currentDate),
-                    calendar: calendarManager.calendar
-                )
-            case .week, .month:
-                CalendarGridView(manager: calendarManager)
+        // One outer, never-scrolling ScrollView for every mode. The large nav title tracks the first scroll
+        // view it finds; letting Day's timeline drive it left the title collapsed or blank after switching
+        // to Week/Month, since grids never scroll it back open. Day's timeline scrolls inside this one.
+        ScrollView {
+            VStack(spacing: 0) {
+                switch calendarManager.viewMode {
+                case .day:
+                    CalendarDayTimelineView(
+                        date: calendarManager.currentDate,
+                        events: calendarManager.events(on: calendarManager.currentDate),
+                        calendar: calendarManager.calendar
+                    )
+                case .week, .month:
+                    CalendarGridView(manager: calendarManager)
+                }
             }
+            .containerRelativeFrame(.vertical)
         }
+        .scrollBounceBehavior(.basedOnSize)
         .contentShape(.rect)
         .simultaneousGesture(DragGesture(minimumDistance: 30).onEnded(pageOnSwipe))
         .accessibilityAction(named: "Previous") { calendarManager.step(by: -1) }
