@@ -23,7 +23,7 @@ class CourseAssignmentManager {
         }
     }
 
-    private let courseID: String
+    let courseID: String
     var assignmentGroups = [AssignmentGroup]()
 
     var allAssignments: [AssignmentAPI] {

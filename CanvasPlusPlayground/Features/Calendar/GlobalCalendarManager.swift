@@ -8,175 +8,68 @@
 import Foundation
 import SwiftUI
 
+@MainActor
 @Observable
 class GlobalCalendarManager {
-    var currentDate: Date = .now // currently displayed date
+    var currentDate: Date = .now
+    // Day is the only mode where individual events are tappable.
+    var viewMode: CalendarViewMode = .day
 
-    enum DisplayMode { case compact, entireWeek }
+    // Weeks start on Sunday regardless of locale, per the design.
+    let calendar: Calendar = {
+        var calendar = Calendar.current
+        calendar.firstWeekday = 1
+        return calendar
+    }()
 
-    var displayMode: DisplayMode = .entireWeek
+    private var courseSchedules: [CanvasCourseSchedule] = []
+    private var extraEvents: [CanvasCalendarEvent] = []
+    private var toDoEvents: [CanvasCalendarEvent] = []
+    private var toDoDestinations: [CanvasCalendarEvent.ID: NavigationModel.Destination] = [:]
 
-    // how much should the stepper move by (macOS: increment by week, iOS: increment by 2 day segments)
-    var stepperIncrementCount: Int {
-        return displayMode == .compact ? 2 : 7
+    // MARK: - Visible range
+
+    /// The day, Sunday-start week, or month containing `currentDate`.
+    var visibleInterval: DateInterval {
+        calendar.dateInterval(of: viewMode.component, for: currentDate)
+            ?? DateInterval(start: calendar.startOfDay(for: currentDate), duration: 86_400)
     }
 
-    // all dates currently displayed (macOS: entire week, iOS: just 2 days)
-    var currentWeekDates: [Date] {
-        if displayMode == .entireWeek {
-            let calendar = Calendar.current
-            guard let weekInterval = calendar.dateInterval(of: .weekOfYear, for: currentDate) else {
-                return [currentDate]
-            }
-            return (0..<7).compactMap { offset in
-                calendar.date(byAdding: .day, value: offset, to: weekInterval.start)
-            }
-        } else {
-            // Returns the current date and the next date (2 consecutive days)
-            let calendar = Calendar.current
-            guard let nextDate = calendar.date(byAdding: .day, value: 1, to: currentDate) else {
-                return [currentDate]
-            }
-            return [currentDate, nextDate]
+    var visibleDates: [Date] {
+        let interval = visibleInterval
+        let dayCount = calendar.dateComponents([.day], from: interval.start, to: interval.end).day ?? 1
+        return (0..<dayCount).compactMap { calendar.date(byAdding: .day, value: $0, to: interval.start) }
+    }
+
+    /// Empty cells before the 1st so it lands under the right weekday column (0 for day/week).
+    var leadingBlankDays: Int {
+        guard viewMode == .month else { return 0 }
+        let weekday = calendar.component(.weekday, from: visibleInterval.start)
+        return (weekday - calendar.firstWeekday + 7) % 7
+    }
+
+    var title: String {
+        let start = visibleInterval.start
+        switch viewMode {
+        case .day:
+            return "\(start.formatted(.dateTime.weekday(.wide))) \(start.formatted(.dateTime.month(.defaultDigits).day()))"
+        case .week:
+            return "Week of \(start.formatted(.dateTime.month(.defaultDigits).day()))"
+        case .month:
+            return start.formatted(.dateTime.month(.wide).year())
         }
     }
 
-    var calendarEvents: [CanvasCalendarEvent] {
-        return calendarEventGroups.flatMap { $0.events }
+    /// First day of the visible range (the day, its Sunday, or the 1st) at the next full hour.
+    var defaultNewItemDate: Date {
+        let nextHour = calendar.component(.hour, from: .now) + 1
+        return calendar.date(byAdding: .hour, value: nextHour, to: visibleInterval.start) ?? visibleInterval.start
     }
 
-    private var calendarEventGroups: [CanvasCalendarEventGroup] {
-        weekAlignedEventsFromCourseSchedule // + ... (when you want to add more calendar events (like todos/etc, add them to this computed property
-    }
+    // MARK: - Navigation
 
-    private var calendarEventsFromCourseSchedule: [CanvasCalendarEventGroup] = []
-
-
-    private var weekAlignedEventsFromCourseSchedule: [CanvasCalendarEventGroup] {
-        // Build a mapping: weekday number (Sunday=1 ... Saturday=7) -> date in current week
-        let calendar = Calendar.current
-        let weekDayToDate: [Int: Date] = Dictionary(uniqueKeysWithValues: currentWeekDates.map {
-            (calendar.component(.weekday, from: $0), $0)
-        })
-        
-        return calendarEventsFromCourseSchedule.compactMap { group in
-            // Get the weekday of this group's date
-            let groupWeekday = calendar.component(.weekday, from: group.date)
-            guard let alignedDate = weekDayToDate[groupWeekday] else { return nil }
-            
-            // For each event, align its startDate and endDate to the new date
-            let alignedEvents = group.events.map { event -> CanvasCalendarEvent in
-                // Extract time components from original start/end dates
-                let startTime = calendar.dateComponents([.hour, .minute, .second], from: event.startDate)
-                let endTime = calendar.dateComponents([.hour, .minute, .second], from: event.endDate)
-                
-                // Build new start/end dates using the aligned date
-                var startComponents = calendar.dateComponents([.year, .month, .day], from: alignedDate)
-                startComponents.hour = startTime.hour
-                startComponents.minute = startTime.minute
-                startComponents.second = startTime.second
-                let newStartDate = calendar.date(from: startComponents) ?? event.startDate
-                
-                var endComponents = calendar.dateComponents([.year, .month, .day], from: alignedDate)
-                endComponents.hour = endTime.hour
-                endComponents.minute = endTime.minute
-                endComponents.second = endTime.second
-                let newEndDate = calendar.date(from: endComponents) ?? event.endDate
-                
-                // Return a new CanvasCalendarEvent with adjusted dates
-                return CanvasCalendarEvent(
-                    id: event.id,
-                    course: event.course,
-                    summary: event.summary,
-                    startDate: newStartDate,
-                    endDate: newEndDate,
-                    location: event.location
-                )
-            }
-            
-            return CanvasCalendarEventGroup(date: alignedDate, events: alignedEvents)
-        }
-    }
-
-
-    func getCalendarEventsForCourses(courses: [Course]) async {
-
-        let gtScheduler = GTSchedulerParser.shared
-        let calendar = Calendar.current
-        let today = calendar.startOfDay(for: Date.now)
-
-        var allEventGroups: [CanvasCalendarEventGroup] = []
-
-        for course in courses {
-            
-            let courseSchedule = try? await gtScheduler.getCanvasCourseScheduleMeetings(course: course) // TODO: ERROR HANDLING
-            guard let courseSchedule = courseSchedule else { continue }
-
-            // Dictionary to collect CanvasCalendarEvents grouped by date
-            var eventsByDate: [Date: [CanvasCalendarEvent]] = [:]
-
-            // Just make calendar events for one week (since that's all that can be displayed)
-            for dayOffset in 0..<7 {
-                guard let currentDate = calendar.date(byAdding: .day, value: dayOffset, to: today) else { continue }
-                let weekday = calendar.component(.weekday, from: currentDate) // Sunday=1 ... Saturday=7
-
-                for meeting in courseSchedule.meetings {
-                    // Check if currentDate weekday matches meeting.weekday (which is Locale.Weekday)
-                    if weekday == meeting.weekday.number(calendar: calendar) {
-                        // Construct startDate and endDate by combining currentDate with meeting startTime/endTime
-                        var startComponents = calendar.dateComponents([.year, .month, .day], from: currentDate)
-                        startComponents.hour = meeting.startTime.hour
-                        startComponents.minute = meeting.startTime.minute
-                        startComponents.second = 0
-
-                        var endComponents = calendar.dateComponents([.year, .month, .day], from: currentDate)
-                        endComponents.hour = meeting.endTime.hour
-                        endComponents.minute = meeting.endTime.minute
-                        endComponents.second = 0
-
-                        guard let startDate = calendar.date(from: startComponents),
-                              let endDate = calendar.date(from: endComponents) else { continue }
-
-                        // Create CanvasCalendarEvent
-                        let event = CanvasCalendarEvent(
-                            id: UUID().uuidString,
-                            course: course,
-                            summary: course.displayName,
-                            startDate: startDate,
-                            endDate: endDate,
-                            location: meeting.location
-                        )
-
-                        // Append this event to eventsByDate for currentDate
-                        if eventsByDate[currentDate] != nil {
-                            eventsByDate[currentDate]?.append(event)
-                        } else {
-                            eventsByDate[currentDate] = [event]
-                        }
-                    }
-                }
-            }
-
-            // For each date with events, create a CanvasCalendarEventGroup and add to allEventGroups
-            for (date, events) in eventsByDate {
-                let eventGroup = CanvasCalendarEventGroup(date: date, events: events)
-                allEventGroups.append(eventGroup)
-            }
-        }
-
-        // Assign the accumulated event groups to calendarEvents
-        calendarEventsFromCourseSchedule = allEventGroups
-    }
-
-    func incrementWeek() {
-
-        if let newDate = Calendar.current.date(byAdding: .day, value: stepperIncrementCount, to: currentDate) {
-            currentDate = newDate
-        }
-    }
-
-    func decrementWeek() {
-        if let newDate = Calendar.current.date(byAdding: .day, value: -stepperIncrementCount, to: currentDate) {
+    func step(by pages: Int) {
+        if let newDate = calendar.date(byAdding: viewMode.component, value: pages, to: currentDate) {
             currentDate = newDate
         }
     }
@@ -184,5 +77,129 @@ class GlobalCalendarManager {
     func setToNow() {
         currentDate = .now
     }
-}
 
+    func showDay(_ date: Date) {
+        currentDate = date
+        viewMode = .day
+    }
+
+    // MARK: - Events
+
+    func events(on day: Date) -> [CanvasCalendarEvent] {
+        let weekday = calendar.component(.weekday, from: day)
+        let meetings = courseSchedules.flatMap { schedule in
+            schedule.meetings
+                .filter { $0.weekday.number(calendar: calendar) == weekday }
+                .compactMap { event(for: $0, course: schedule.course, on: day) }
+        }
+        let extras = (extraEvents + toDoEvents).filter { calendar.isDate($0.startDate, inSameDayAs: day) }
+        return (meetings + extras).sorted { $0.startDate < $1.startDate }
+    }
+
+    /// Shows every to-do with a due date (Canvas assignments/quizzes and items added with +) as a
+    /// zero-length "due" entry. Undated items, and items with no course to attribute them to, are skipped.
+    /// `courses` backs up `item.course`, which stays nil if the to-dos were fetched before courses loaded.
+    func setToDoItems(_ items: [ToDoItem], courses: [Course]) {
+        var events: [CanvasCalendarEvent] = []
+        var destinations: [CanvasCalendarEvent.ID: NavigationModel.Destination] = [:]
+        for item in items {
+            guard let due = item.dueDate,
+                  let course = item.course ?? courses.first(where: { $0.id == item.courseID.asString })
+            else { continue }
+            let event = CanvasCalendarEvent(
+                id: "todo-\(item.id)",
+                course: course,
+                summary: item.title,
+                startDate: due,
+                endDate: due,
+                location: item.eventLocation ?? ""
+            )
+            events.append(event)
+            destinations[event.id] = item.navigationDestination()
+        }
+        toDoEvents = events
+        toDoDestinations = destinations
+    }
+
+    /// Canvas to-dos open their assignment/quiz page; everything else opens the event detail.
+    func destination(for event: CanvasCalendarEvent) -> NavigationModel.Destination {
+        toDoDestinations[event.id] ?? .calendarEvent(event, event.course)
+    }
+
+    /// Class meetings repeat weekly, so they're stored as weekday templates and dated on demand.
+    private func event(for meeting: CanvasCourseScheduleMeeting, course: Course, on day: Date) -> CanvasCalendarEvent? {
+        guard let startDate = calendar.date(
+                bySettingHour: meeting.startTime.hour ?? 0, minute: meeting.startTime.minute ?? 0, second: 0, of: day
+              ),
+              let endDate = calendar.date(
+                bySettingHour: meeting.endTime.hour ?? 0, minute: meeting.endTime.minute ?? 0, second: 0, of: day
+              ) else { return nil }
+
+        return CanvasCalendarEvent(
+            id: "\(course.id)-\(startDate.timeIntervalSince1970)-\(meeting.location)",
+            course: course,
+            summary: course.displayName,
+            startDate: startDate,
+            endDate: endDate,
+            location: meeting.location
+        )
+    }
+
+    /// Side-by-side placement for the day timeline: each event's column, and how many columns its
+    /// group of time-overlapping events splits the width into. Missing events default to full width.
+    nonisolated static func timelineColumns(
+        for events: [CanvasCalendarEvent]
+    ) -> [CanvasCalendarEvent.ID: (column: Int, columns: Int)] {
+        // Zero-length "due" events still draw ~24pt tall, so give them a visual length to collide with.
+        let minimumVisualDuration: TimeInterval = 30 * 60
+
+        var slots: [CanvasCalendarEvent.ID: (column: Int, columns: Int)] = [:]
+        var columnEnds: [Date] = []  // latest end time in each column of the current cluster
+        var cluster: [(id: CanvasCalendarEvent.ID, column: Int)] = []
+        var clusterEnd = Date.distantPast
+
+        // Every event in a cluster of transitively-overlapping events shares the cluster's column count.
+        func closeCluster() {
+            for member in cluster {
+                slots[member.id] = (member.column, columnEnds.count)
+            }
+            cluster = []
+            columnEnds = []
+        }
+
+        for event in events.sorted(by: { $0.startDate < $1.startDate }) {
+            let end = max(event.endDate, event.startDate.addingTimeInterval(minimumVisualDuration))
+            if event.startDate >= clusterEnd {
+                closeCluster()
+            }
+
+            // Reuse the first column that's free by this start time, else open a new one.
+            let column = columnEnds.firstIndex { $0 <= event.startDate } ?? columnEnds.count
+            if column == columnEnds.count {
+                columnEnds.append(end)
+            } else {
+                columnEnds[column] = end
+            }
+            cluster.append((event.id, column))
+            clusterEnd = max(clusterEnd, end)
+        }
+        closeCluster()
+
+        return slots
+    }
+
+    func getCalendarEventsForCourses(courses: [Course]) async {
+        var schedules: [CanvasCourseSchedule] = []
+        for course in courses {
+            // TODO: ERROR HANDLING
+            if let schedule = try? await GTSchedulerParser.shared.getCanvasCourseScheduleMeetings(course: course) {
+                schedules.append(schedule)
+            }
+        }
+        courseSchedules = schedules
+
+        #if DEBUG
+        extraEvents = Self.mockEvents(courses: courses, around: .now, calendar: calendar)
+        #endif
+    }
+}
