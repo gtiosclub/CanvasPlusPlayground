@@ -24,6 +24,8 @@ class GlobalCalendarManager {
 
     private var courseSchedules: [CanvasCourseSchedule] = []
     private var extraEvents: [CanvasCalendarEvent] = []
+    private var toDoEvents: [CanvasCalendarEvent] = []
+    private var toDoDestinations: [CanvasCalendarEvent.ID: NavigationModel.Destination] = [:]
 
     // MARK: - Visible range
 
@@ -90,8 +92,38 @@ class GlobalCalendarManager {
                 .filter { $0.weekday.number(calendar: calendar) == weekday }
                 .compactMap { event(for: $0, course: schedule.course, on: day) }
         }
-        let extras = extraEvents.filter { calendar.isDate($0.startDate, inSameDayAs: day) }
+        let extras = (extraEvents + toDoEvents).filter { calendar.isDate($0.startDate, inSameDayAs: day) }
         return (meetings + extras).sorted { $0.startDate < $1.startDate }
+    }
+
+    /// Shows every to-do with a due date (Canvas assignments/quizzes and items added with +) as a
+    /// zero-length "due" entry. Undated items, and items with no course to attribute them to, are skipped.
+    /// `courses` backs up `item.course`, which stays nil if the to-dos were fetched before courses loaded.
+    func setToDoItems(_ items: [ToDoItem], courses: [Course]) {
+        var events: [CanvasCalendarEvent] = []
+        var destinations: [CanvasCalendarEvent.ID: NavigationModel.Destination] = [:]
+        for item in items {
+            guard let due = item.dueDate,
+                  let course = item.course ?? courses.first(where: { $0.id == item.courseID.asString })
+            else { continue }
+            let event = CanvasCalendarEvent(
+                id: "todo-\(item.id)",
+                course: course,
+                summary: item.title,
+                startDate: due,
+                endDate: due,
+                location: item.eventLocation ?? ""
+            )
+            events.append(event)
+            destinations[event.id] = item.navigationDestination()
+        }
+        toDoEvents = events
+        toDoDestinations = destinations
+    }
+
+    /// Canvas to-dos open their assignment/quiz page; everything else opens the event detail.
+    func destination(for event: CanvasCalendarEvent) -> NavigationModel.Destination {
+        toDoDestinations[event.id] ?? .calendarEvent(event, event.course)
     }
 
     /// Class meetings repeat weekly, so they're stored as weekday templates and dated on demand.

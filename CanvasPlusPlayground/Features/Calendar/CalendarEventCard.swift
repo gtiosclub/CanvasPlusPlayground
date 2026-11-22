@@ -9,9 +9,10 @@ import SwiftUI
 
 struct CalendarEventCard: View {
     let event: CanvasCalendarEvent
+    let destination: NavigationModel.Destination
 
     var body: some View {
-        NavigationLink(value: NavigationModel.Destination.calendarEvent(event, event.course)) {
+        NavigationLink(value: destination) {
             VStack(alignment: .leading, spacing: 2) {
                 Text(event.summary)
                     .bold()

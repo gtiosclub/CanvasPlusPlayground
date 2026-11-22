@@ -141,4 +141,59 @@ struct GlobalCalendarManagerTests {
             }
         }
     }
+
+    // MARK: - To-dos
+
+    private func toDo(_ title: String, due: Date?, location: String? = nil, course: Course?) -> ToDoItem {
+        let item = ToDoItem(courseID: 12345, contextName: "Example", title: title, dueDate: due, location: location)
+        item.course = course
+        return item
+    }
+
+    @Test func datedToDosAppearOnTheirDayAndUndatedOrCourselessOnesDoNot() {
+        let manager = manager(.day)
+        let dated = toDo("Problem set", due: thursday, location: "Klaus", course: course)
+        manager.setToDoItems([
+            dated,
+            toDo("No date", due: nil, course: course),
+            toDo("No course", due: thursday, course: nil),
+        ], courses: [])
+
+        let toDos = manager.events(on: thursday).filter { $0.id.hasPrefix("todo-") }
+        #expect(toDos.map(\.summary) == ["Problem set"])
+        #expect(toDos.first?.location == "Klaus")
+        #expect(toDos.first?.startDate == thursday)
+        #expect(manager.events(on: Calendar.current.date(byAdding: .day, value: 1, to: thursday)!)
+            .allSatisfy { !$0.id.hasPrefix("todo-") })
+    }
+
+    @Test func userCreatedToDosOpenTheEventDetail() throws {
+        let manager = manager(.day)
+        manager.setToDoItems([toDo("Study session", due: thursday, course: course)], courses: [])
+        let event = try #require(manager.events(on: thursday).first { $0.id.hasPrefix("todo-") })
+
+        guard case .calendarEvent(let routed, _) = manager.destination(for: event) else {
+            Issue.record("Expected the event detail destination")
+            return
+        }
+        #expect(routed.id == event.id)
+    }
+
+    @Test func replacingToDosDropsRemovedOnes() {
+        let manager = manager(.day)
+        manager.setToDoItems([toDo("Old", due: thursday, course: course)], courses: [])
+        manager.setToDoItems([], courses: [])
+        #expect(manager.events(on: thursday).allSatisfy { !$0.id.hasPrefix("todo-") })
+    }
+
+    @Test func toDosFetchedBeforeCoursesLoadedStillFindTheirCourse() {
+        let manager = manager(.day)
+        // The live fetch leaves `course` nil when courses weren't loaded yet; courseID still matches.
+        let orphan = ToDoItem(courseID: Int(course.id)!, contextName: "Example", title: "Late link", dueDate: thursday)
+        manager.setToDoItems([orphan], courses: SandboxData.dummyCourses)
+
+        let toDo = manager.events(on: thursday).first { $0.id.hasPrefix("todo-") }
+        #expect(toDo?.summary == "Late link")
+        #expect(toDo?.course.id == course.id)
+    }
 }

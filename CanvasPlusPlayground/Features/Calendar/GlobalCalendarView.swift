@@ -9,6 +9,7 @@ import SwiftUI
 
 struct GlobalCalendarView: View {
     @Environment(CourseManager.self) private var courseManager
+    @Environment(ToDoListManager.self) private var toDoListManager
 
     @State private var calendarManager = GlobalCalendarManager()
     @State private var isShowingNewItemSheet = false
@@ -26,7 +27,8 @@ struct GlobalCalendarView: View {
                     CalendarDayTimelineView(
                         date: calendarManager.currentDate,
                         events: calendarManager.events(on: calendarManager.currentDate),
-                        calendar: calendarManager.calendar
+                        calendar: calendarManager.calendar,
+                        destination: calendarManager.destination(for:)
                     )
                 case .week, .month:
                     CalendarGridView(manager: calendarManager)
@@ -73,8 +75,14 @@ struct GlobalCalendarView: View {
             }
         }
         .task {
+            // The environment to-do manager is only filled when a screen fetches into it (dashboard widgets keep their own).
+            async let toDos: () = toDoListManager.fetchToDoItems(courses: courseManager.activeCourses)
             await calendarManager.getCalendarEventsForCourses(courses: courseManager.favoritedCourses)
+            await toDos
         }
+        // Includes items saved from the + sheet, so they appear as soon as it closes.
+        .onChange(of: toDoListManager.toDoItems, initial: true, refreshToDos)
+        .onChange(of: courseManager.activeCourses, refreshToDos)
     }
 
     // Items belong to a course, so with no favorited courses there's nothing to attach one to.
@@ -89,6 +97,10 @@ struct GlobalCalendarView: View {
         } else {
             ContentUnavailableView("No Courses", systemImage: "book.closed", description: Text("Favorite a course to add items to it."))
         }
+    }
+
+    private func refreshToDos() {
+        calendarManager.setToDoItems(Array(toDoListManager.toDoItems), courses: courseManager.activeCourses)
     }
 
     private func showNewItemSheet() {

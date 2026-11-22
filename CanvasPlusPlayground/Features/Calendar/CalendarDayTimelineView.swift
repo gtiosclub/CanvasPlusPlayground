@@ -12,6 +12,7 @@ struct CalendarDayTimelineView: View {
     let date: Date
     let events: [CanvasCalendarEvent]
     let calendar: Calendar
+    let destination: (CanvasCalendarEvent) -> NavigationModel.Destination
 
     @ScaledMetric private var hourHeight: CGFloat = 60
     @ScaledMetric private var labelWidth: CGFloat = 52
@@ -47,7 +48,7 @@ struct CalendarDayTimelineView: View {
                         let top = minutes(from: dayStart, to: event.startDate) * hourHeight / 60
                         let bottom = min(minutes(from: dayStart, to: event.endDate), 24 * 60) * hourHeight / 60
 
-                        CalendarEventCard(event: event)
+                        CalendarEventCard(event: event, destination: destination(event))
                             // Short events can't fit all three lines; overflow downward and clip.
                             .frame(width: width - 2, height: max(bottom - top, minEventHeight), alignment: .top)
                             .clipShape(.rect(cornerRadius: 6))
