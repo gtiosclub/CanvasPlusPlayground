@@ -281,7 +281,8 @@ enum SandboxData {
     private static func makeAssignment(
         id: Int, courseIntID: Int, name: String, groupID: Int,
         dueDaysFromNow: Double, points: Double,
-        submissionTypes: [String] = ["online_upload"]
+        submissionTypes: [String] = ["online_upload"],
+        gradedScore: Double? = nil
     ) -> AssignmentAPI {
         var a = AssignmentAPI(id: id, name: name, groupID: groupID)
         a.due_at = ISO8601DateFormatter().string(from: Date.now.addingTimeInterval(86400 * dueDaysFromNow))
@@ -289,7 +290,26 @@ enum SandboxData {
         a.published = true
         a.course_id = courseIntID
         a.submission_types = submissionTypes
+        if let gradedScore {
+            a.submission = gradedSubmission(assignmentID: id, score: gradedScore, dueDaysFromNow: dueDaysFromNow)
+        }
         return a
+    }
+
+    /// A submitted and graded submission, graded a day after the due date.
+    private static func gradedSubmission(assignmentID: Int, score: Double, dueDaysFromNow: Double) -> SubmissionAPI? {
+        let iso = ISO8601DateFormatter()
+        let json: [String: Any] = [
+            "assignment_id": assignmentID,
+            "user_id": 1,
+            "score": score,
+            "grade": String(score),
+            "workflow_state": "graded",
+            "submitted_at": iso.string(from: Date.now.addingTimeInterval(86400 * (dueDaysFromNow - 0.2))),
+            "graded_at": iso.string(from: Date.now.addingTimeInterval(86400 * (dueDaysFromNow + 1))),
+        ]
+        guard let data = try? JSONSerialization.data(withJSONObject: json) else { return nil }
+        return try? JSONDecoder().decode(SubmissionAPI.self, from: data)
     }
 
     private static var course1AssignmentGroups: [AssignmentGroup] {
@@ -303,7 +323,7 @@ enum SandboxData {
                 makeAssignment(id: 2, courseIntID: courseIntID, name: "Week 1 Reading Response", groupID: 1, dueDaysFromNow: 1, points: 50),
                 makeAssignment(id: 3, courseIntID: courseIntID, name: "Data Structures Problem Set", groupID: 1, dueDaysFromNow: 14, points: 75),
                 makeAssignment(id: 4, courseIntID: courseIntID, name: "Essay Draft", groupID: 1, dueDaysFromNow: -2, points: 100,
-                               submissionTypes: ["online_text_entry"]),
+                               submissionTypes: ["online_text_entry"], gradedScore: 93),
             ],
             rules: nil
         )
@@ -327,7 +347,7 @@ enum SandboxData {
             group_weight: 20,
             assignments: [
                 makeAssignment(id: 7, courseIntID: courseIntID, name: "Discussion Post Week 1", groupID: 3, dueDaysFromNow: -5, points: 10,
-                               submissionTypes: ["discussion_topic"]),
+                               submissionTypes: ["discussion_topic"], gradedScore: 10),
                 makeAssignment(id: 8, courseIntID: courseIntID, name: "Discussion Post Week 2", groupID: 3, dueDaysFromNow: 2, points: 10,
                                submissionTypes: ["discussion_topic"]),
             ],

@@ -228,6 +228,7 @@ private struct ChipRow: View {
         case .course: "book"
         case .toDo: "checklist"
         case .passage: "text.quote"
+        case .assignmentGroup: "chart.bar"
         }
     }
 }

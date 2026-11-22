@@ -149,7 +149,8 @@ extension Assignment {
                 dueDate: dueAt == nil ? nil : dueDate,
                 pointsPossible: pointsPossible,
                 score: submission?.score,
-                submissionStatus: submission?.status
+                submissionStatus: submission?.status,
+                gradedAt: submission?.graded_at.flatMap { ISO8601DateFormatter().date(from: $0) }
             )
         )
     }

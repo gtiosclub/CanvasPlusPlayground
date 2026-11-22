@@ -24,6 +24,12 @@ struct ListAssignmentsTool: AgentTool {
 
         @Guide(description: "Set to true to also include assignments that are already submitted, graded or excused.")
         var includeCompleted: Bool?
+
+        @Guide(description: "Set to true to list only graded work, most recently graded first.")
+        var onlyGraded: Bool?
+
+        @Guide(description: "Set to true to list only work whose due date has passed, most recent first.")
+        var onlyPastDue: Bool?
     }
 
     /// Statuses that mean the student has nothing left to do. Canvas only marks a submission
@@ -40,6 +46,29 @@ struct ListAssignmentsTool: AgentTool {
         let now = now()
         let courseIDs = try await AgentReadTools.courseIDs(for: arguments.course, in: dataSource)
         let allAssignments = try await AgentReadTools.collect(courseIDs) { try await dataSource.assignments(courseID: $0) }
+
+        // Filters that change what counts are applied before the result cap, so the cap can't
+        // fill up with upcoming work and push out the graded or past-due items asked for.
+        if arguments.onlyGraded == true {
+            return Array(
+                allAssignments
+                    .filter { $0.facts.submissionStatus == .graded && $0.facts.score != nil }
+                    .sorted { ($0.facts.gradedAt ?? $0.facts.dueDate ?? .distantPast) > ($1.facts.gradedAt ?? $1.facts.dueDate ?? .distantPast) }
+                    .prefix(AgentReadTools.maxResults)
+            )
+        }
+        if arguments.onlyPastDue == true {
+            let includeCompleted = arguments.includeCompleted ?? false
+            return Array(
+                allAssignments
+                    .filter { assignment in
+                        guard let due = assignment.facts.dueDate, due < now else { return false }
+                        return includeCompleted || assignment.facts.submissionStatus.map { !Self.completedStatuses.contains($0) } ?? true
+                    }
+                    .sorted { ($0.facts.dueDate ?? .distantPast) > ($1.facts.dueDate ?? .distantPast) }
+                    .prefix(AgentReadTools.maxResults)
+            )
+        }
 
         let horizon = arguments.daysAhead.map { now.addingTimeInterval(TimeInterval(max($0, 0)) * 86_400) }
         let includePastDue = arguments.includePastDue ?? false

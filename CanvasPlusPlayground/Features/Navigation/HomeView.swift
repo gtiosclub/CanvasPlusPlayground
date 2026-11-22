@@ -46,6 +46,11 @@ struct HomeView: View {
         }
         .tabViewStyle(.sidebarAdaptable)
         .globalAppBackground(courses: [])
+        .overlay(alignment: .bottomTrailing) {
+            if #available(iOS 26.0, macOS 26.0, *) {
+                AssistantHost(navigationModel: navigationModel, courseManager: courseManager, toDoListManager: toDoListManager)
+            }
+        }
         .task {
             if AppEnvironment.isSandbox {
                 await loadCourses()
