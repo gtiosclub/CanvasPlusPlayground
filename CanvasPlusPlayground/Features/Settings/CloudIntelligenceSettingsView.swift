@@ -192,7 +192,7 @@ struct CloudIntelligenceSettingsView: View {
                 )
             }
         } footer: {
-            Text("Estimated from the agent's run log at Gemini 2.5 Flash list prices. Your Google account shows the exact amount.")
+            Text("Estimated from the agent's run log at Gemini Flash list prices, so it's a rough guide. Your Google account shows the exact amount.")
         }
     }
 
@@ -334,7 +334,7 @@ private struct IntelligenceGlow: ViewModifier {
 /// Cloud model calls summed from the execution ledger.
 @available(iOS 26.0, macOS 26.0, *)
 struct CloudUsage: Equatable {
-    /// Gemini 2.5 Flash list prices in USD per million tokens.
+    /// Approximate Gemini Flash list prices in USD per million tokens. A rough guide only.
     static let inputPricePerMillion = 0.30
     static let outputPricePerMillion = 2.50
 

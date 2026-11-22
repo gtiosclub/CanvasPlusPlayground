@@ -14,7 +14,9 @@ import Security
 final class CloudSettings: @unchecked Sendable {
     static let shared = CloudSettings()
 
-    static let defaultModel = "gemini-2.5-flash"
+    /// Google's alias for its current Flash model, so a retired model version doesn't break
+    /// requests (gemini-2.5-flash was closed to new keys in 2026).
+    static let defaultModel = "gemini-flash-latest"
 
     private enum Key {
         static let enabled = "com.canvasPlus.cloud.enabled"
