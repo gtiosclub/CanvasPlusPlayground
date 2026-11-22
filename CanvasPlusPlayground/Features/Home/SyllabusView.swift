@@ -44,6 +44,9 @@ struct SyllabusView: View {
                         }
                     }
             }
+            #if os(macOS)
+            .frame(minWidth: 520, idealWidth: 560, minHeight: 600, idealHeight: 680)
+            #endif
         }
         .sheet(isPresented: $showContract) {
             NavigationStack {

@@ -56,6 +56,16 @@ struct HTMLView: ViewRepresentable {
     func makeView(context: Context) -> WKWebView {
         let webView = WKWebView()
         webView.navigationDelegate = context.coordinator
+        // Let the app's background show through. Otherwise WebKit paints white behind the page,
+        // and in dark mode the stylesheet's light text lands on it.
+        #if os(macOS)
+        webView.setValue(false, forKey: "drawsBackground")
+        webView.underPageBackgroundColor = .clear
+        #else
+        webView.isOpaque = false
+        webView.backgroundColor = .clear
+        webView.scrollView.backgroundColor = .clear
+        #endif
         return webView
     }
 
