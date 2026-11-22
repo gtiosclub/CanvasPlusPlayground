@@ -143,6 +143,20 @@ struct CloudEgressTests {
         #expect(await fake.bodies().first?.contents.first?.parts.first?.text == "Is [person] ([email]) my TA?")
     }
 
+    @Test func retriesOnceWhenGeminiIsBusy() async throws {
+        let fake = FakeGemini([(503, #"{"error":{"code":503,"message":"high demand"}}"#), textReply("ok")])
+        var busy = egress(makeSettings(), fake)
+        busy.retryDelay = .zero
+
+        let response = try await busy.generateContent(.init(contents: [.user("hi")]), courseIDs: [])
+        #expect(response.text == "ok")
+        #expect(await fake.requests.count == 2)
+    }
+
+    @Test func usesTheFlashAliasByDefault() {
+        #expect(CloudSettings.defaultModel == "gemini-flash-latest")
+    }
+
     @Test func mapsHTTPErrors() async {
         let fake = FakeGemini([(429, #"{"error":{"code":429,"message":"Quota exceeded"}}"#)])
         await #expect(throws: CloudEgressError.http(status: 429, message: "Quota exceeded")) {

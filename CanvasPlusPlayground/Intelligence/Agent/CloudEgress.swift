@@ -17,6 +17,7 @@ struct CloudEgress: Sendable {
     /// Built fresh for each request, so names from rosters synced since the last request are covered.
     let makeRedactor: @Sendable () async -> EgressRedactor
     let transport: Transport
+    var retryDelay: Duration = .seconds(1.5)
 
     init(
         settings: CloudSettings = .shared,
@@ -46,8 +47,15 @@ struct CloudEgress: Sendable {
         urlRequest.setValue(apiKey, forHTTPHeaderField: "x-goog-api-key")
         urlRequest.httpBody = body
 
-        let (data, response) = try await transport(urlRequest)
-        let status = (response as? HTTPURLResponse)?.statusCode ?? 0
+        var (data, response) = try await transport(urlRequest)
+        var status = (response as? HTTPURLResponse)?.statusCode ?? 0
+
+        // Gemini sometimes answers 503 ("high demand") or 500 for a moment; one retry usually works.
+        if status == 503 || status == 500 {
+            try await Task.sleep(for: retryDelay)
+            (data, response) = try await transport(urlRequest)
+            status = (response as? HTTPURLResponse)?.statusCode ?? 0
+        }
 
         guard (200..<300).contains(status) else {
             let message = (try? JSONDecoder().decode(GeminiAPI.ErrorEnvelope.self, from: data))?.error.message
