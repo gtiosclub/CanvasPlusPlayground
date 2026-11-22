@@ -28,6 +28,9 @@ struct DetailContainerView: View {
                     CourseOverviewView(course: course)
                         .courseGradientBackground(courses: [course])
                         .toolbarBackground(.hidden, for: .automatic)
+                        .safeAreaInset(edge: .top, spacing: 0) {
+                            BreadcrumbView()
+                        }
                         .defaultNavigationDestination()
                 }
                 .id(courseID)
@@ -40,6 +43,9 @@ struct DetailContainerView: View {
                     CourseDetailView(course: course, coursePage: page)
                         .courseGradientBackground(courses: [course])
                         .toolbarBackground(.hidden, for: .automatic)
+                        .safeAreaInset(edge: .top, spacing: 0) {
+                            BreadcrumbView()
+                        }
                         .defaultNavigationDestination()
                 }
                 .id(courseID)

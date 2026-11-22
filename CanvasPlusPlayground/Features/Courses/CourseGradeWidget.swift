@@ -11,13 +11,16 @@ struct CourseGradeWidget: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     let course: Course
+    /// Ring above the weights table, for narrow columns.
+    var isStacked = false
 
     @State private var gradesVM: GradesViewModel
     @State private var assignmentManager: CourseAssignmentManager
     @State private var ringProgress = 0.0
 
-    init(course: Course) {
+    init(course: Course, isStacked: Bool = false) {
         self.course = course
+        self.isStacked = isStacked
         self._gradesVM = State(initialValue: GradesViewModel(courseId: course.id))
         self._assignmentManager = State(initialValue: CourseAssignmentManager(courseID: course.id))
     }
@@ -35,7 +38,8 @@ struct CourseGradeWidget: View {
             systemImage: "a.circle",
             destination: .coursePage(.grades, course)
         ) {
-            HStack(spacing: 24) {
+            let layout = isStacked ? AnyLayout(VStackLayout(spacing: 16)) : AnyLayout(HStackLayout(spacing: 24))
+            layout {
                 ring
                     .frame(width: 112, height: 112)
                     .padding(14)

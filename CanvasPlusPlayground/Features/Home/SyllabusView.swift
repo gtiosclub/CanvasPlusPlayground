@@ -25,7 +25,7 @@ struct SyllabusView: View {
         #if os(iOS)
         .navigationTitle("Syllabus")
         #else
-        .navigationTitle("\(course.displayName) -- Syllabus")
+        .navigationTitle("Syllabus")
         #endif
     }
 }

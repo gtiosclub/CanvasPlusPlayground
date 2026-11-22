@@ -129,14 +129,14 @@ struct FoldersPageView: View {
             }
         }
         .statusToolbarItem(
-            folder?.name ?? "\(course.displayName) -- Course Files",
+            folder?.name ?? "Files",
             isVisible: isLoadingContents
         )
-//        .navigationTitle(folder?.name?.capitalized ?? "\(course.displayName) -- Course Files")
+//        .navigationTitle(folder?.name?.capitalized ?? "Files")
         #if os(iOS)
         .navigationTitle("Course Files")
         #else
-        .navigationTitle("\(course.displayName) -- Course Files") // for some reason the version above always overloads the navigation title back to "Course Files" when this view is done loading
+        .navigationTitle("Files") // for some reason the version above always overloads the navigation title back to "Course Files" when this view is done loading
         #endif
         .pickedItem(selectedItem?.pickedValue)
     }

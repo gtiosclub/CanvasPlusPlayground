@@ -12,6 +12,7 @@ struct CourseOverviewView: View {
 
     @State private var showTodoCreation = false
     @State private var meetings: [CanvasCourseScheduleMeeting] = []
+    @State private var isWide = false
 
     // MARK: - Subtitle
 
@@ -38,13 +39,31 @@ struct CourseOverviewView: View {
                 CourseTabBar(course: course)
                     .padding(.bottom, 4)
 
-                AnnouncementOverviewView(course: course)
-                CourseToDoWidget(course: course)
-                CourseGradeWidget(course: course)
-                CalendarOverviewView(course: course, meetings: meetings)
+                if isWide {
+                    // Mac only: Grade and To-Do move to a side column once there's room for both.
+                    HStack(alignment: .top, spacing: 16) {
+                        VStack(spacing: 16) {
+                            AnnouncementOverviewView(course: course)
+                            CalendarOverviewView(course: course, meetings: meetings)
+                        }
+                        VStack(spacing: 16) {
+                            CourseGradeWidget(course: course, isStacked: true)
+                            CourseToDoWidget(course: course)
+                        }
+                        .frame(width: 340)
+                    }
+                } else {
+                    AnnouncementOverviewView(course: course)
+                    CourseToDoWidget(course: course)
+                    CourseGradeWidget(course: course)
+                    CalendarOverviewView(course: course, meetings: meetings)
+                }
             }
             .padding()
         }
+        #if os(macOS)
+        .onGeometryChange(for: Bool.self) { $0.size.width >= 900 } action: { isWide = $0 }
+        #endif
         .contentMargins(.bottom, 72, for: .scrollContent)
         .overlay(alignment: .bottomTrailing) {
             Button {
