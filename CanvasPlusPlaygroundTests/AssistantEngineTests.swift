@@ -269,7 +269,8 @@ struct AssistantEngineTests {
     @Test func nothingFoundOffersNoCloud() async throws {
         guard #available(iOS 26.0, macOS 26.0, *) else { return }
         let reply = try await engine(FakeSource()).answer("Any new announcements?", context: .dashboard)
-        #expect(reply.isEmpty)
+        #expect(reply.sentences.isEmpty && reply.block == nil)
+        #expect(reply.note == "I couldn't find that in your synced courses.")
         #expect(!reply.canTryCloud)
     }
 }
