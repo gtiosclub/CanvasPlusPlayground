@@ -50,7 +50,7 @@ struct AgentOrbOverlay: View {
                 }
 
                 if model.mode != .chat {
-                    AgentOrb(isActive: model.mode != .idle, isListening: model.voice.isListening)
+                    AgentOrb(isActive: model.mode != .idle || model.isSpotlightPresented, isListening: model.voice.isListening)
                         .overlay(alignment: .topTrailing) {
                             if model.hasConversation && model.mode == .idle {
                                 Circle()
@@ -61,16 +61,20 @@ struct AgentOrbOverlay: View {
                                     .accessibilityLabel("Conversation in progress")
                             }
                         }
-                        // Long press wins over tap, so holding never also opens the text field.
+                        // Long press wins over taps, and a double tap wins over a single one, so
+                        // holding never opens the text field and a double tap never opens it twice.
                         .gesture(
                             LongPressGesture(minimumDuration: 0.35)
-                                .exclusively(before: TapGesture())
+                                .exclusively(before: TapGesture(count: 2).exclusively(before: TapGesture()))
                                 .onEnded { value in
                                     switch value {
                                     case .first:
+                                        guard !model.isSpotlightPresented else { return }
                                         model.mode == .suggestions ? model.hideSuggestions() : model.showSuggestions()
-                                    case .second:
-                                        model.tapOrb()
+                                    case .second(.first):
+                                        model.toggleSpotlight()
+                                    case .second(.second):
+                                        model.isSpotlightPresented ? model.toggleSpotlight() : model.tapOrb()
                                     }
                                 }
                         )
@@ -78,7 +82,8 @@ struct AgentOrbOverlay: View {
                         .sensoryFeedback(.impact(weight: .light), trigger: model.mode)
                         #endif
                         .accessibilityLabel("Assistant")
-                        .accessibilityHint("Tap to ask a question. Touch and hold for suggestions.")
+                        .accessibilityHint("Tap to ask a question. Double tap to search everything. Touch and hold for suggestions.")
+                        .accessibilityAction(named: "Search Everything") { model.toggleSpotlight() }
                         .accessibilityAddTraits(.isButton)
                         .transition(.scale.combined(with: .opacity))
                 }

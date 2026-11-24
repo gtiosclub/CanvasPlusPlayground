@@ -202,6 +202,28 @@ final class AssistantModel {
         withAnimation(.spring(response: 0.42, dampingFraction: 0.8)) { mode = .idle }
     }
 
+    // MARK: Spotlight
+
+    /// Double tap on the orb: search everything, over a blurred app.
+    private(set) var isSpotlightPresented = false
+
+    func toggleSpotlight() {
+        if voice.isListening { voice.stop() }
+        withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
+            if !isSpotlightPresented, mode != .idle { mode = .idle }
+            isSpotlightPresented.toggle()
+        }
+    }
+
+    /// Hands a search that reads like a question to the chat.
+    func askFromSpotlight(_ question: String) {
+        withAnimation(.spring(response: 0.45, dampingFraction: 0.82)) { isSpotlightPresented = false }
+        Task {
+            try? await Task.sleep(for: .milliseconds(180))
+            ask(question)
+        }
+    }
+
     /// There's a conversation to come back to.
     var hasConversation: Bool { !turns.isEmpty }
 
