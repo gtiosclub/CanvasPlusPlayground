@@ -4,6 +4,10 @@
 <dict>
 	<key>CFBundleGetInfoString</key>
 	<string></string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Canvas Plus uses the microphone when you talk to the assistant.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Canvas Plus turns what you say to the assistant into text, on this device when possible.</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>canvas-courses</string>

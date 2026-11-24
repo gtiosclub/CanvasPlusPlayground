@@ -44,6 +44,8 @@ enum EvidenceKind: String, Codable, Sendable, CaseIterable {
     case file
     /// A chunk of course content from the semantic index (a page, announcement, syllabus…).
     case passage
+    /// An assignment group (Homework, Exams…) with the student's score in it.
+    case assignmentGroup = "group"
 }
 
 /// A typed reference to the record behind a piece of evidence.
@@ -60,6 +62,7 @@ enum EvidenceRef: Hashable, Codable, Sendable {
     case file(id: String, courseID: String)
     /// Chunk `ordinal` of an indexed source such as `page:123`. `recordID` is `page:123#2`.
     case passage(sourceID: String, ordinal: Int, courseID: String?)
+    case assignmentGroup(id: String, courseID: String)
 
     var kind: EvidenceKind {
         switch self {
@@ -77,6 +80,8 @@ enum EvidenceRef: Hashable, Codable, Sendable {
             .file
         case .passage:
             .passage
+        case .assignmentGroup:
+            .assignmentGroup
         }
     }
 
@@ -92,6 +97,8 @@ enum EvidenceRef: Hashable, Codable, Sendable {
             uid
         case let .passage(sourceID, ordinal, _):
             "\(sourceID)#\(ordinal)"
+        case .assignmentGroup(let id, _):
+            id
         }
     }
 
@@ -102,7 +109,8 @@ enum EvidenceRef: Hashable, Codable, Sendable {
         case .assignment(_, let courseID),
              .announcement(_, let courseID),
              .calendarEvent(_, let courseID),
-             .file(_, let courseID):
+             .file(_, let courseID),
+             .assignmentGroup(_, let courseID):
             courseID
         case .toDo(_, let courseID), .passage(_, _, let courseID):
             courseID
@@ -127,6 +135,8 @@ struct EvidenceFacts: Hashable, Codable, Sendable {
     var location: String?
     /// Where the student's submission stands. `nil` when Canvas didn't send a submission.
     var submissionStatus: SubmissionStatus?
+    /// When the submission was graded, for "what's been graded recently".
+    var gradedAt: Date?
 }
 
 /// The state of the student's own submission, derived from Canvas's submission record.

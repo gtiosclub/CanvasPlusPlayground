@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A91E2E544EB83B47064FFCA3 /* AssistantHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7A5EBB6655BE8504E5516A /* AssistantHost.swift */; };
+		C9DD97ED47BA4C1B316FA42E /* AgentOrbView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB9DCD00C124159A4158AF9F /* AgentOrbView.swift */; };
+		15CA3BD4C829C0A4FB79FA9F /* VoiceInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382A6468BE1D2FB7943FFC6A /* VoiceInput.swift */; };
+		6E7EEB4F433C2E304DD864D9 /* AssistantModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9186B7A9171122C172852BD2 /* AssistantModel.swift */; };
+		2432DE04D4495E1917947A49 /* AssistantContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEF70B12786DDFD1B438513B /* AssistantContext.swift */; };
+		33AE84E3FEF345D4F2A3D4F5 /* AssistantEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D76D14F00236937BA3FFB0B /* AssistantEngine.swift */; };
 		C484C0C61F441E7F48D40405 /* AskIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29A7628997FCB93D0BCE44CD /* AskIntent.swift */; };
 		EF8D1AF55172B21071378003 /* AskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC0E8E6741C3C2E57F3ED80 /* AskView.swift */; };
 		7552AD7A95386ED69C08E6C2 /* AskSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0441E5B83C216D6169E960AE /* AskSession.swift */; };
@@ -395,6 +401,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0B7A5EBB6655BE8504E5516A /* AssistantHost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssistantHost.swift; sourceTree = "<group>"; };
+		FB9DCD00C124159A4158AF9F /* AgentOrbView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentOrbView.swift; sourceTree = "<group>"; };
+		382A6468BE1D2FB7943FFC6A /* VoiceInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceInput.swift; sourceTree = "<group>"; };
+		9186B7A9171122C172852BD2 /* AssistantModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssistantModel.swift; sourceTree = "<group>"; };
+		AEF70B12786DDFD1B438513B /* AssistantContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssistantContext.swift; sourceTree = "<group>"; };
+		2D76D14F00236937BA3FFB0B /* AssistantEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssistantEngine.swift; sourceTree = "<group>"; };
 		29A7628997FCB93D0BCE44CD /* AskIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskIntent.swift; sourceTree = "<group>"; };
 		2BC0E8E6741C3C2E57F3ED80 /* AskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskView.swift; sourceTree = "<group>"; };
 		0441E5B83C216D6169E960AE /* AskSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskSession.swift; sourceTree = "<group>"; };
@@ -798,6 +810,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E5E440D3B8E55026F906E55A /* Assistant */ = {
+			isa = PBXGroup;
+			children = (
+				0B7A5EBB6655BE8504E5516A /* AssistantHost.swift */,
+				FB9DCD00C124159A4158AF9F /* AgentOrbView.swift */,
+				382A6468BE1D2FB7943FFC6A /* VoiceInput.swift */,
+				9186B7A9171122C172852BD2 /* AssistantModel.swift */,
+				AEF70B12786DDFD1B438513B /* AssistantContext.swift */,
+				2D76D14F00236937BA3FFB0B /* AssistantEngine.swift */,
+			);
+			path = Assistant;
+			sourceTree = "<group>";
+		};
 		8537F67CF6F515C85D2C5875 /* Ask */ = {
 			isa = PBXGroup;
 			children = (
@@ -968,6 +993,7 @@
 		A324BA502D07963D005F53FA /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				E5E440D3B8E55026F906E55A /* Assistant */,
 				8537F67CF6F515C85D2C5875 /* Ask */,
 				8CAC2F172F79FB6900EC5FA4 /* SpotlightSearch */,
 				B7AF51612E9B30E100457E8A /* Onboarding */,
@@ -2250,6 +2276,12 @@
 				E1B4D3BE5A7D3F1453EE795A /* SemanticIndexable.swift in Sources */,
 				204FC32D5481BD71604178E2 /* SemanticIndexer.swift in Sources */,
 				23CED77DBFE1383B47A216C5 /* SearchIndex.swift in Sources */,
+				A91E2E544EB83B47064FFCA3 /* AssistantHost.swift in Sources */,
+				C9DD97ED47BA4C1B316FA42E /* AgentOrbView.swift in Sources */,
+				15CA3BD4C829C0A4FB79FA9F /* VoiceInput.swift in Sources */,
+				6E7EEB4F433C2E304DD864D9 /* AssistantModel.swift in Sources */,
+				2432DE04D4495E1917947A49 /* AssistantContext.swift in Sources */,
+				33AE84E3FEF345D4F2A3D4F5 /* AssistantEngine.swift in Sources */,
 				C484C0C61F441E7F48D40405 /* AskIntent.swift in Sources */,
 				EF8D1AF55172B21071378003 /* AskView.swift in Sources */,
 				7552AD7A95386ED69C08E6C2 /* AskSession.swift in Sources */,
@@ -2458,7 +2490,7 @@
 				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
 				ENABLE_OUTGOING_NETWORK_CONNECTIONS = NO;
 				ENABLE_PREVIEWS = YES;
-				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = YES;
 				ENABLE_RESOURCE_ACCESS_BLUETOOTH = NO;
 				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
 				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
@@ -2515,7 +2547,7 @@
 				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
 				ENABLE_OUTGOING_NETWORK_CONNECTIONS = NO;
 				ENABLE_PREVIEWS = YES;
-				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = YES;
 				ENABLE_RESOURCE_ACCESS_BLUETOOTH = NO;
 				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
 				ENABLE_RESOURCE_ACCESS_CAMERA = NO;

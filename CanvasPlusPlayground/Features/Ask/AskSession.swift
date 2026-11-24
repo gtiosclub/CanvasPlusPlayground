@@ -313,7 +313,7 @@ enum AskRetrieval {
             return "file:\(id)"
         case .toDo(let id, _):
             return "todo:\(id)"
-        case .calendarEvent:
+        case .calendarEvent, .assignmentGroup:
             return nil
         }
     }
