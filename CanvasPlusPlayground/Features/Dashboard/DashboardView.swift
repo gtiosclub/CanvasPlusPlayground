@@ -20,8 +20,16 @@ struct DashboardView: View {
     @State private var showReorderWidgets = false
 
     var body: some View {
+        HStack(alignment: .top, spacing: 0) {
         ScrollView {
             NavigationBanner()
+
+            // iPhone: the brief sits above the widgets.
+            if #available(iOS 26.0, macOS 26.0, *), horizontalSizeClass != .regular {
+                StartMyDayPanel()
+                    .padding(.horizontal)
+                    .padding(.top, 8)
+            }
 
             Dashboard(
                 maxSmallWidgetWidth: maxSmallWidgetWidth,
@@ -39,6 +47,18 @@ struct DashboardView: View {
             }
             .padding()
             .animation(.spring, value: widgetStore.widgetConfigurations)
+        }
+
+            // Mac and iPad: the brief is a column on the right.
+            if #available(iOS 26.0, macOS 26.0, *), horizontalSizeClass == .regular {
+                ScrollView {
+                    StartMyDayPanel()
+                        .padding(.vertical)
+                        .padding(.trailing)
+                }
+                .scrollIndicators(.hidden)
+                .frame(width: 340)
+            }
         }
         .courseGradientBackground(
             courses: [],
